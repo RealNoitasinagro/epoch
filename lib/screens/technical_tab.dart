@@ -25,11 +25,17 @@ class TechnicalTab extends StatelessWidget {
         TimeRow(
           label: AppStrings.labelUnixSeconds,
           value: unix.toString(),
+          useThousands: true,
+          info: 'Unix time counts the seconds elapsed since the Unix epoch: '
+              '1970-01-01 00:00:00 UTC. It does not account for leap seconds.',
         ),
         const SizedBox(height: 12),
         TimeRow(
           label: AppStrings.labelUnixMs,
           value: unixMs.toString(),
+          useThousands: true,
+          info: 'Unix time in milliseconds. Commonly used in programming '
+              'languages and APIs that require sub-second precision.',
         ),
         const Divider(height: 40),
         const SectionHeader(label: AppStrings.sectionAtomicGps),
@@ -37,11 +43,18 @@ class TechnicalTab extends StatelessWidget {
         TimeRow(
           label: AppStrings.labelTai,
           value: tai.toString(),
+          useThousands: true,
+          info: 'International Atomic Time (TAI) is a continuous time scale '
+              'based on atomic clocks. It currently runs 37 seconds ahead of UTC, '
+              'the difference growing each time a leap second is added to UTC.',
         ),
         const SizedBox(height: 12),
         TimeRow(
           label: AppStrings.labelGps,
           value: gps.toString(),
+          useThousands: true,
+          info: 'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does '
+              'not include leap seconds. It currently runs 18 seconds ahead of UTC.',
         ),
       ],
     );
