@@ -1,122 +1,180 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const EpochApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class EpochApp extends StatelessWidget {
+  const EpochApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Epoch',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TimeDisplay(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class TimeDisplay extends StatefulWidget {
+  const TimeDisplay({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<TimeDisplay> createState() => _TimeDisplayState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _TimeDisplayState extends State<TimeDisplay> {
+  late Timer _timer;
+  late DateTime _now;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    _now = DateTime.now();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        _now = DateTime.now();
+      });
     });
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  String _formatDate(DateTime dt) {
+    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    final wd = weekdays[dt.weekday - 1];
+    final mo = months[dt.month - 1];
+    final d = dt.day.toString().padLeft(2, '0');
+    return '$wd, ${dt.year}-$mo-$d';
+  }
+
+  String _formatTime(DateTime dt) {
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    final s = dt.second.toString().padLeft(2, '0');
+    final offset = dt.timeZoneOffset;
+    final sign = offset.isNegative ? '−' : '+';
+    final oh = offset.inHours.abs().toString().padLeft(2, '0');
+    final om = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
+    final tz = dt.timeZoneName;
+    return '$h:$m:$s $tz (UTC$sign$oh:$om)';
+  }
+
+  String _formatUtc(DateTime dt) {
+    final u = dt.toUtc();
+    final h = u.hour.toString().padLeft(2, '0');
+    final m = u.minute.toString().padLeft(2, '0');
+    final s = u.second.toString().padLeft(2, '0');
+    return '$h:$m:$s UTC';
+  }
+
+  int _localDaySecond(DateTime dt) {
+    return dt.hour * 3600 + dt.minute * 60 + dt.second;
+  }
+
+  int _utcDaySecond(DateTime dt) {
+    final u = dt.toUtc();
+    return u.hour * 3600 + u.minute * 60 + u.second;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
+        title: const Text('Epoch'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            _TimeRow(
+              label: 'Date',
+              value: _formatDate(_now),
+              textTheme: textTheme,
+            ),
+            const Divider(height: 32),
+            _TimeRow(
+              label: 'Local time',
+              value: _formatTime(_now),
+              sub: 'Day second: ${_localDaySecond(_now)}',
+              textTheme: textTheme,
+            ),
+            const Divider(height: 32),
+            _TimeRow(
+              label: 'UTC',
+              value: _formatUtc(_now),
+              sub: 'Day second: ${_utcDaySecond(_now)}',
+              textTheme: textTheme,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    );
+  }
+}
+
+class _TimeRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final String? sub;
+  final TextTheme textTheme;
+
+  const _TimeRow({
+    required this.label,
+    required this.value,
+    required this.textTheme,
+    this.sub,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label.toUpperCase(),
+          style: textTheme.labelSmall?.copyWith(
+            letterSpacing: 1.5,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: textTheme.headlineSmall?.copyWith(
+            fontFamily: 'monospace',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (sub != null) ...[
+          const SizedBox(height: 2),
+          Text(
+            sub!,
+            style: textTheme.bodySmall?.copyWith(
+              color: Colors.grey,
+              fontFamily: 'monospace',
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
