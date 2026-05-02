@@ -1,121 +1,80 @@
 import 'package:flutter/material.dart';
-import '../../strings.dart';
+import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
+import '../strings.dart';
+import '../time_utils.dart';
+import '../widgets/time_row.dart';
+import '../widgets/section_header.dart';
 
 class MainTab extends StatelessWidget {
-  final DateTime now;
+  final DateTime now; // local system time from DateTime.now()
+  final String ianaZone; // IANA zone name, or 'local' for system zone
 
-  const MainTab({super.key, required this.now});
-
-  String _formatDate(DateTime dt) {
-    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    final wd = weekdays[dt.weekday - 1];
-    final mo = months[dt.month - 1];
-    final d = dt.day.toString().padLeft(2, '0');
-    return '$wd, ${dt.year}-$mo-$d';
-  }
-
-  String _formatTime(DateTime dt) {
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-    final s = dt.second.toString().padLeft(2, '0');
-    final offset = dt.timeZoneOffset;
-    final sign = offset.isNegative ? '−' : '+';
-    final oh = offset.inHours.abs().toString().padLeft(2, '0');
-    final om = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
-    final tz = dt.timeZoneName;
-    return '$h:$m:$s $tz (UTC$sign$oh:$om)';
-  }
-
-  String _formatUtc(DateTime dt) {
-    final u = dt.toUtc();
-    final h = u.hour.toString().padLeft(2, '0');
-    final m = u.minute.toString().padLeft(2, '0');
-    final s = u.second.toString().padLeft(2, '0');
-    return '$h:$m:$s UTC';
-  }
-
-  int _localDaySecond(DateTime dt) =>
-      dt.hour * 3600 + dt.minute * 60 + dt.second;
-
-  int _utcDaySecond(DateTime dt) {
-    final u = dt.toUtc();
-    return u.hour * 3600 + u.minute * 60 + u.second;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return ListView(
-      padding: const EdgeInsets.all(24.0),
-      children: [
-        _TimeRow(
-          label: AppStrings.labelDate,
-          value: _formatDate(now),
-          textTheme: textTheme,
-        ),
-        const Divider(height: 32),
-        _TimeRow(
-          label: AppStrings.labelLocalTime,
-          value: _formatTime(now),
-          textTheme: textTheme,
-        ),
-        const Divider(height: 32),
-        _TimeRow(
-          label: AppStrings.labelDaySecondLocal,
-          value: _localDaySecond(now).toString(),
-          textTheme: textTheme,
-        ),
-        const Divider(height: 32),
-        _TimeRow(
-          label: AppStrings.labelUtc,
-          value: _formatUtc(now),
-          textTheme: textTheme,
-        ),
-        const Divider(height: 32),
-        _TimeRow(
-          label: AppStrings.labelDaySecondUtc,
-          value: _utcDaySecond(now).toString(),
-          textTheme: textTheme,
-        ),
-      ],
-    );
-  }
-}
-
-class _TimeRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final TextTheme textTheme;
-
-  const _TimeRow({
-    required this.label,
-    required this.value,
-    required this.textTheme,
+  const MainTab({
+    super.key,
+    required this.now,
+    this.ianaZone = 'local',
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final locale = Localizations.localeOf(context).toString();
+    final utcNow = now.toUtc();
+
+    // Determine local display time and timezone metadata.
+    // When ianaZone is 'local', use the system DateTime directly to avoid
+    // tz.local being unset or mismatched on some platforms.
+    final DateTime localDt;
+    final String tzLabel;
+    final Duration offset;
+
+    if (ianaZone == 'local') {
+      localDt = now;
+      tzLabel = now.timeZoneName;
+      offset = now.timeZoneOffset;
+    } else {
+      final tzDt = TimeUtils.inZone(utcNow, ianaZone);
+      localDt = tzDt;
+      tzLabel = tzDt.timeZone.abbreviation;
+      offset = tzDt.timeZoneOffset;
+    }
+
+    final localDate = DateFormat('EEE, yyyy-MM-dd', locale).format(localDt);
+    final localTime =
+        '${localDt.hour.toString().padLeft(2, '0')}:'
+        '${localDt.minute.toString().padLeft(2, '0')}:'
+        '${localDt.second.toString().padLeft(2, '0')} '
+        '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
+
+    final utcDate = DateFormat('EEE, yyyy-MM-dd', locale).format(utcNow);
+    final utcTime =
+        '${utcNow.hour.toString().padLeft(2, '0')}:'
+        '${utcNow.minute.toString().padLeft(2, '0')}:'
+        '${utcNow.second.toString().padLeft(2, '0')} UTC';
+
+    return ListView(
+      padding: const EdgeInsets.all(24.0),
       children: [
-        Text(
-          label.toUpperCase(),
-          style: textTheme.labelSmall?.copyWith(
-            letterSpacing: 1.5,
-            color: Colors.grey,
-          ),
+        const SectionHeader(label: AppStrings.labelLocal),
+        const SizedBox(height: 8),
+        TimeRow(label: AppStrings.labelDate, value: localDate),
+        const SizedBox(height: 12),
+        TimeRow(label: AppStrings.labelLocalTime, value: localTime),
+        const SizedBox(height: 12),
+        TimeRow(
+          label: AppStrings.labelDaySecond,
+          value: TimeUtils.daySecond(localDt).toString(),
         ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: textTheme.headlineSmall?.copyWith(
-            fontFamily: 'monospace',
-            fontWeight: FontWeight.w500,
-          ),
+        const Divider(height: 40),
+        const SectionHeader(label: AppStrings.labelUtc),
+        const SizedBox(height: 8),
+        TimeRow(label: AppStrings.labelDate, value: utcDate),
+        const SizedBox(height: 12),
+        TimeRow(label: AppStrings.labelUtcTime, value: utcTime),
+        const SizedBox(height: 12),
+        TimeRow(
+          label: AppStrings.labelDaySecond,
+          value: TimeUtils.daySecond(utcNow).toString(),
         ),
       ],
     );
