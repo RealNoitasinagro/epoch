@@ -1,22 +1,27 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'time_value.dart';
 
-const _kMainTabKey = 'main_tab_ids';
+const _kMainTabKey = 'main_tab_entries';
 
-// Loads the ordered list of TimeValueIds for the Main tab from persistent
-// storage. Returns defaultMainTabIds if nothing has been saved yet.
-Future<List<TimeValueId>> loadMainTabIds() async {
+Future<List<MainTabEntry>> loadMainTabEntries() async {
   final prefs = await SharedPreferences.getInstance();
   final stored = prefs.getStringList(_kMainTabKey);
-  if (stored == null) return List.of(defaultMainTabIds);
+  if (stored == null) return List.of(defaultMainTabEntries);
   return stored
-      .map((s) => TimeValueId.values.where((e) => e.name == s).firstOrNull)
-      .whereType<TimeValueId>()
+      .map(MainTabEntry.fromPrefsString)
+      .whereType<MainTabEntry>()
       .toList();
 }
 
-// Persists the current ordered list of TimeValueIds for the Main tab.
-Future<void> saveMainTabIds(List<TimeValueId> ids) async {
+Future<void> saveMainTabEntries(List<MainTabEntry> entries) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setStringList(_kMainTabKey, ids.map((e) => e.name).toList());
+  await prefs.setStringList(
+    _kMainTabKey,
+    entries.map((e) => e.toPrefsString()).toList(),
+  );
+}
+
+// Resets the Main tab to the default entry list.
+Future<void> resetMainTabEntries() async {
+  await saveMainTabEntries(List.of(defaultMainTabEntries));
 }

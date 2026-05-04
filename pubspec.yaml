@@ -37,6 +37,7 @@ dependencies:
   intl: ^0.20.2
   timezone: ^0.10.1
   shared_preferences: ^2.5.3
+  package_info_plus: ^8.3.0
 
 dev_dependencies:
   flutter_test:

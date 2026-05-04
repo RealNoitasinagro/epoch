@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import '../models/time_value.dart';
 import '../models/main_tab_config.dart';
+import '../models/timezone_data.dart';
 import '../widgets/time_row.dart';
 
 class MainTab extends StatefulWidget {
   final DateTime now;
-  final String ianaZone;
 
-  const MainTab({
-    super.key,
-    required this.now,
-    this.ianaZone = 'local',
-  });
+  const MainTab({super.key, required this.now});
 
   @override
   State<MainTab> createState() => _MainTabState();
 }
 
 class _MainTabState extends State<MainTab> {
-  List<TimeValueId> _activeIds = [];
+  List<MainTabEntry> _entries = [];
   bool _editMode = false;
   bool _loaded = false;
-  // Tracks which rows are checked in edit mode.
-  final Set<TimeValueId> _checked = {};
+  final Set<String> _checked = {};
+
+  static const int _maxEntries = 20;
 
   @override
   void initState() {
@@ -31,15 +28,15 @@ class _MainTabState extends State<MainTab> {
   }
 
   Future<void> _loadConfig() async {
-    final ids = await loadMainTabIds();
+    final entries = await loadMainTabEntries();
     setState(() {
-      _activeIds = ids;
+      _entries = entries;
       _loaded = true;
     });
   }
 
-  Future<void> _persistConfig() async {
-    await saveMainTabIds(_activeIds);
+  Future<void> _persist() async {
+    await saveMainTabEntries(_entries);
   }
 
   void _toggleEditMode() {
@@ -49,107 +46,178 @@ class _MainTabState extends State<MainTab> {
     });
   }
 
-  void _toggleCheck(TimeValueId id) {
+  void _toggleCheck(String key) {
     setState(() {
-      if (_checked.contains(id)) {
-        _checked.remove(id);
+      if (_checked.contains(key)) {
+        _checked.remove(key);
       } else {
-        _checked.add(id);
+        _checked.add(key);
       }
     });
   }
 
-  // Returns true if all active rows are checked.
   bool get _allChecked =>
-      _activeIds.isNotEmpty && _checked.containsAll(_activeIds);
+      _entries.isNotEmpty &&
+          _entries.every((e) => _checked.contains(e.key));
 
   void _toggleMasterCheck() {
     setState(() {
       if (_allChecked) {
         _checked.clear();
       } else {
-        _checked.addAll(_activeIds);
+        _checked.addAll(_entries.map((e) => e.key));
       }
     });
   }
 
   void _removeChecked() {
     setState(() {
-      _activeIds.removeWhere((id) => _checked.contains(id));
+      _entries.removeWhere((e) => _checked.contains(e.key));
       _checked.clear();
     });
-    _persistConfig();
+    _persist();
+  }
+
+  void _resetToDefaults() {
+    setState(() {
+      _entries = List.of(defaultMainTabEntries);
+      _checked.clear();
+    });
+    _persist();
   }
 
   void _moveUp(int index) {
     if (index <= 0) return;
     setState(() {
-      final item = _activeIds.removeAt(index);
-      _activeIds.insert(index - 1, item);
+      final item = _entries.removeAt(index);
+      _entries.insert(index - 1, item);
     });
-    _persistConfig();
+    _persist();
   }
 
   void _moveDown(int index) {
-    if (index >= _activeIds.length - 1) return;
+    if (index >= _entries.length - 1) return;
     setState(() {
-      final item = _activeIds.removeAt(index);
-      _activeIds.insert(index + 1, item);
+      final item = _entries.removeAt(index);
+      _entries.insert(index + 1, item);
     });
-    _persistConfig();
+    _persist();
   }
 
-  void _showAddDialog(Map<TimeValueId, TimeValue> allValues) {
-    final available =
-        allValues.keys.where((id) => !_activeIds.contains(id)).toList();
+  // Step 1: choose value type.
+  Future<ValueType?> _pickValueType() {
+    return showDialog<ValueType>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Select value type'),
+        children: ValueType.values.map((t) {
+          final label = switch (t) {
+            ValueType.date      => 'Date',
+            ValueType.time      => 'Time',
+            ValueType.daySecond => 'Day second',
+          };
+          return SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, t),
+            child: Text(label),
+          );
+        }).toList(),
+      ),
+    );
+  }
 
-    if (available.isEmpty) {
+  // Step 2: choose zone (Local / UTC / Other → region → city).
+  Future<ZoneSpec?> _pickZone() async {
+    final choice = await showDialog<String>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Select timezone'),
+        children: [
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, 'local'),
+            child: const Text('Local (system timezone)'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, 'utc'),
+            child: const Text('UTC'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, 'other'),
+            child: const Text('Other…'),
+          ),
+        ],
+      ),
+    );
+    if (choice == null) return null;
+    if (choice == 'local') return const ZoneLocal();
+    if (choice == 'utc') return const ZoneUtc();
+
+    // "Other" → region picker.
+    if (!mounted) return null;
+    final region = await showDialog<String>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Select region'),
+        children: timezonesByRegion.keys.map((r) {
+          return SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, r),
+            child: Text(r),
+          );
+        }).toList(),
+      ),
+    );
+    if (region == null || !mounted) return null;
+
+    // Region → city picker.
+    final zones = timezonesByRegion[region]!;
+    final zone = await showDialog<String>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text(region),
+        children: zones.map((z) {
+          return SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, z),
+            child: Text(friendlyZoneName(z)),
+          );
+        }).toList(),
+      ),
+    );
+    if (zone == null) return null;
+    return ZoneNamed(zone);
+  }
+
+  Future<void> _showAddDialog() async {
+    if (_entries.length >= _maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('All available values are already displayed.'),
+        SnackBar(
+          content: Text('Maximum of $_maxEntries values reached.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
       return;
     }
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Add value'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView(
-            shrinkWrap: true,
-            children: available.map((id) {
-              final tv = allValues[id]!;
-              return ListTile(
-                title: Text(tv.label),
-                subtitle: tv.info != null
-                    ? Text(
-                        tv.info!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12),
-                      )
-                    : null,
-                onTap: () {
-                  setState(() => _activeIds.add(id));
-                  _persistConfig();
-                  Navigator.pop(ctx);
-                },
-              );
-            }).toList(),
-          ),
+    final type = await _pickValueType();
+    if (type == null || !mounted) return;
+
+    final zone = await _pickZone();
+    if (zone == null) return;
+
+    final entry = MainTabEntry(type: type, zone: zone);
+
+    // Prevent duplicates.
+    if (_entries.any((e) => e.key == entry.key)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('This value is already displayed.'),
+          behavior: SnackBarBehavior.floating,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
-          ),
-        ],
-      ),
-    );
+      );
+      return;
+    }
+
+    setState(() => _entries.add(entry));
+    _persist();
   }
 
   @override
@@ -159,13 +227,9 @@ class _MainTabState extends State<MainTab> {
     }
 
     final locale = Localizations.localeOf(context).toString();
-    final allValuesList =
-        computeAllValues(widget.now, locale, widget.ianaZone);
-    final allValues = {for (final v in allValuesList) v.id: v};
 
     return Column(
       children: [
-        // Toolbar row – always visible, avoids Stack/ListView conflict.
         _EditToolbar(
           editMode: _editMode,
           allChecked: _allChecked,
@@ -173,42 +237,38 @@ class _MainTabState extends State<MainTab> {
           onToggleEditMode: _toggleEditMode,
           onToggleMasterCheck: _toggleMasterCheck,
           onDeleteChecked: _removeChecked,
+          onResetDefaults: _resetToDefaults,
         ),
-
-        // Scrollable content.
         Expanded(
           child: ListView.separated(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
-            itemCount: _activeIds.length,
+            itemCount: _entries.length,
             separatorBuilder: (_, __) => const Divider(height: 32),
             itemBuilder: (context, index) {
-              final id = _activeIds[index];
-              final tv = allValues[id];
-              if (tv == null) return const SizedBox.shrink();
+              final entry = _entries[index];
+              final locale0 = locale;
 
               if (_editMode) {
                 return _EditRow(
-                  label: tv.label,
-                  checked: _checked.contains(id),
+                  label: entry.label(entry.key),
+                  checked: _checked.contains(entry.key),
                   index: index,
-                  total: _activeIds.length,
-                  onToggleCheck: () => _toggleCheck(id),
+                  total: _entries.length,
+                  onToggleCheck: () => _toggleCheck(entry.key),
                   onMoveUp: () => _moveUp(index),
                   onMoveDown: () => _moveDown(index),
                 );
               }
 
               return TimeRow(
-                label: tv.label,
-                value: tv.value,
-                info: tv.info,
-                useThousands: tv.useThousands,
+                label: entry.label(entry.key),
+                value: entry.computeValue(widget.now, locale0),
+                info: entry.info,
+                useThousands: entry.useThousands,
               );
             },
           ),
         ),
-
-        // Add button – only in edit mode, as a bottom bar button.
         if (_editMode)
           SafeArea(
             child: Padding(
@@ -217,7 +277,7 @@ class _MainTabState extends State<MainTab> {
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
                   tooltip: 'Add value',
-                  onPressed: () => _showAddDialog(allValues),
+                  onPressed: _showAddDialog,
                   child: const Icon(Icons.add),
                 ),
               ),
@@ -228,8 +288,6 @@ class _MainTabState extends State<MainTab> {
   }
 }
 
-// Toolbar shown above the list, handles edit/done toggle,
-// master checkbox and delete button.
 class _EditToolbar extends StatelessWidget {
   final bool editMode;
   final bool allChecked;
@@ -237,6 +295,7 @@ class _EditToolbar extends StatelessWidget {
   final VoidCallback onToggleEditMode;
   final VoidCallback onToggleMasterCheck;
   final VoidCallback onDeleteChecked;
+  final VoidCallback onResetDefaults;
 
   const _EditToolbar({
     required this.editMode,
@@ -245,6 +304,7 @@ class _EditToolbar extends StatelessWidget {
     required this.onToggleEditMode,
     required this.onToggleMasterCheck,
     required this.onDeleteChecked,
+    required this.onResetDefaults,
   });
 
   @override
@@ -253,7 +313,6 @@ class _EditToolbar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
       child: Row(
         children: [
-          // Master checkbox – only visible in edit mode.
           if (editMode)
             Tooltip(
               message: allChecked ? 'Deselect all' : 'Select all',
@@ -263,19 +322,21 @@ class _EditToolbar extends StatelessWidget {
                 onChanged: (_) => onToggleMasterCheck(),
               ),
             ),
-
           const Spacer(),
-
-          // Trashcan – only visible when at least one row is checked.
-          if (editMode && anyChecked)
+          if (editMode) ...[
+            if (anyChecked)
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                color: Colors.redAccent,
+                tooltip: 'Remove selected',
+                onPressed: onDeleteChecked,
+              ),
             IconButton(
-              icon: const Icon(Icons.delete_outline),
-              color: Colors.redAccent,
-              tooltip: 'Remove selected',
-              onPressed: onDeleteChecked,
+              icon: const Icon(Icons.restart_alt),
+              tooltip: 'Reset to defaults',
+              onPressed: onResetDefaults,
             ),
-
-          // Edit / Done toggle.
+          ],
           IconButton(
             icon: Icon(editMode ? Icons.check : Icons.edit),
             tooltip: editMode ? 'Done editing' : 'Edit layout',
@@ -287,8 +348,6 @@ class _EditToolbar extends StatelessWidget {
   }
 }
 
-// A single row in edit mode: checkbox left, label centre,
-// move-up/down arrows right.
 class _EditRow extends StatelessWidget {
   final String label;
   final bool checked;
