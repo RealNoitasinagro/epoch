@@ -103,9 +103,6 @@ const Map<String, List<String>> timezonesByRegion = {
     'Europe/Warsaw',
     'Europe/Zurich',
   ],
-  'UTC': [
-    'UTC',
-  ],
 };
 
 // Returns a display-friendly name for an IANA zone string,

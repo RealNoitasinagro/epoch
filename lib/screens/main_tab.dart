@@ -126,63 +126,16 @@ class _MainTabState extends State<MainTab> {
   }
 
   // Step 2: choose zone (Local / UTC / Other → region → city).
-  Future<ZoneSpec?> _pickZone() async {
-    final choice = await showDialog<String>(
+  Future<ZoneSpec?> _pickZone(ValueType type) async {
+    final typeLabel = switch (type) {
+      ValueType.date      => 'Date',
+      ValueType.time      => 'Time',
+      ValueType.daySecond => 'Day second',
+    };
+    return showDialog<ZoneSpec>(
       context: context,
-      builder: (ctx) => SimpleDialog(
-        title: const Text('Select timezone'),
-        children: [
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, 'local'),
-            child: const Text('Local (system timezone)'),
-          ),
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, 'utc'),
-            child: const Text('UTC'),
-          ),
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, 'other'),
-            child: const Text('Other…'),
-          ),
-        ],
-      ),
+      builder: (ctx) => _ZonePicker(valueTypeLabel: typeLabel),
     );
-    if (choice == null) return null;
-    if (choice == 'local') return const ZoneLocal();
-    if (choice == 'utc') return const ZoneUtc();
-
-    // "Other" → region picker.
-    if (!mounted) return null;
-    final region = await showDialog<String>(
-      context: context,
-      builder: (ctx) => SimpleDialog(
-        title: const Text('Select region'),
-        children: timezonesByRegion.keys.map((r) {
-          return SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, r),
-            child: Text(r),
-          );
-        }).toList(),
-      ),
-    );
-    if (region == null || !mounted) return null;
-
-    // Region → city picker.
-    final zones = timezonesByRegion[region]!;
-    final zone = await showDialog<String>(
-      context: context,
-      builder: (ctx) => SimpleDialog(
-        title: Text(region),
-        children: zones.map((z) {
-          return SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, z),
-            child: Text(friendlyZoneName(z)),
-          );
-        }).toList(),
-      ),
-    );
-    if (zone == null) return null;
-    return ZoneNamed(zone);
   }
 
   Future<void> _showAddDialog() async {
@@ -199,7 +152,7 @@ class _MainTabState extends State<MainTab> {
     final type = await _pickValueType();
     if (type == null || !mounted) return;
 
-    final zone = await _pickZone();
+    final zone = await _pickZone(type);
     if (zone == null) return;
 
     final entry = MainTabEntry(type: type, zone: zone);
@@ -393,6 +346,119 @@ class _EditRow extends StatelessWidget {
           icon: const Icon(Icons.arrow_downward, size: 20),
           tooltip: 'Move down',
           onPressed: index < total - 1 ? onMoveDown : null,
+        ),
+      ],
+    );
+  }
+}
+
+// A self-contained dialog that handles zone selection in two steps:
+// step 1 = Local / UTC / Other, step 2 = region + city.
+// Displays the previously chosen value type as context.
+class _ZonePicker extends StatefulWidget {
+  final String valueTypeLabel;
+
+  const _ZonePicker({required this.valueTypeLabel});
+
+  @override
+  State<_ZonePicker> createState() => _ZonePickerState();
+}
+
+class _ZonePickerState extends State<_ZonePicker> {
+  // null = step 1 (Local/UTC/Other), non-null = step 2 (city list)
+  String? _selectedRegion;
+
+  @override
+  Widget build(BuildContext context) {
+    return _selectedRegion == null ? _buildStep1() : _buildStep2();
+  }
+
+  Widget _buildStep1() {
+    return SimpleDialog(
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.valueTypeLabel,
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: Colors.grey),
+          ),
+          const Text('Select timezone'),
+        ],
+      ),
+      children: [
+        SimpleDialogOption(
+          onPressed: () => Navigator.pop(context, const ZoneLocal()),
+          child: const Text('Local (system timezone)'),
+        ),
+        SimpleDialogOption(
+          onPressed: () => Navigator.pop(context, const ZoneUtc()),
+          child: const Text('UTC'),
+        ),
+        const Divider(),
+        ...timezonesByRegion.keys.map((region) => SimpleDialogOption(
+          onPressed: () => setState(() => _selectedRegion = region),
+          child: Row(
+            children: [
+              Expanded(child: Text(region)),
+              const Icon(Icons.chevron_right, size: 18, color: Colors.grey),
+            ],
+          ),
+        )),
+      ],
+    );
+  }
+
+  Widget _buildStep2() {
+    final zones = timezonesByRegion[_selectedRegion]!;
+    return AlertDialog(
+      titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: 'Back',
+            onPressed: () => setState(() => _selectedRegion = null),
+          ),
+          const SizedBox(width: 4),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.valueTypeLabel,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: Colors.grey),
+              ),
+              Text(
+                _selectedRegion!,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
+          ),
+        ],
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView(
+          shrinkWrap: true,
+          children: zones
+              .map((z) => ListTile(
+            title: Text(friendlyZoneName(z)),
+            onTap: () => Navigator.pop(context, ZoneNamed(z)),
+          ))
+              .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
         ),
       ],
     );

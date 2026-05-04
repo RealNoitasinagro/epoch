@@ -5,13 +5,26 @@ import '../strings.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
+// Version is read from PackageInfo where available (Android, Linux)
+  // and falls back to a build-time constant on web.
+  static const _fallbackVersion = '1.0.0';
+
   Future<void> _showAbout(BuildContext context) async {
-    final info = await PackageInfo.fromPlatform();
+    String version;
+    String build;
+    try {
+      final info = await PackageInfo.fromPlatform();
+      version = info.version.isNotEmpty ? info.version : _fallbackVersion;
+      build = info.buildNumber.isNotEmpty ? info.buildNumber : '1';
+    } catch (_) {
+      version = _fallbackVersion;
+      build = '1';
+    }
     if (!context.mounted) return;
     showAboutDialog(
       context: context,
       applicationName: AppStrings.appName,
-      applicationVersion: '${info.version} (build ${info.buildNumber})',
+      applicationVersion: '$version (build $build)',
       applicationLegalese: '© 2026 RealEarthling',
       children: const [
         SizedBox(height: 16),
