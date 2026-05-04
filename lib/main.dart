@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'screens/main_tab.dart';
 import 'screens/technical_tab.dart';
 import 'screens/astronomy_tab.dart';
