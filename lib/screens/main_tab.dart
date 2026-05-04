@@ -104,40 +104,6 @@ class _MainTabState extends State<MainTab> {
     _persist();
   }
 
-  // Step 1: choose value type.
-  Future<ValueType?> _pickValueType() {
-    return showDialog<ValueType>(
-      context: context,
-      builder: (ctx) => SimpleDialog(
-        title: const Text('Select value type'),
-        children: ValueType.values.map((t) {
-          final label = switch (t) {
-            ValueType.date      => 'Date',
-            ValueType.time      => 'Time',
-            ValueType.daySecond => 'Day second',
-          };
-          return SimpleDialogOption(
-            onPressed: () => Navigator.pop(ctx, t),
-            child: Text(label),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  // Step 2: choose zone (Local / UTC / Other → region → city).
-  Future<ZoneSpec?> _pickZone(ValueType type) async {
-    final typeLabel = switch (type) {
-      ValueType.date      => 'Date',
-      ValueType.time      => 'Time',
-      ValueType.daySecond => 'Day second',
-    };
-    return showDialog<ZoneSpec>(
-      context: context,
-      builder: (ctx) => _ZonePicker(valueTypeLabel: typeLabel),
-    );
-  }
-
   Future<void> _showAddDialog() async {
     if (_entries.length >= _maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -149,16 +115,13 @@ class _MainTabState extends State<MainTab> {
       return;
     }
 
-    final type = await _pickValueType();
-    if (type == null || !mounted) return;
+    final result = await showDialog<MainTabEntry>(
+      context: context,
+      builder: (ctx) => const _EntryPicker(),
+    );
+    if (result == null) return;
 
-    final zone = await _pickZone(type);
-    if (zone == null) return;
-
-    final entry = MainTabEntry(type: type, zone: zone);
-
-    // Prevent duplicates.
-    if (_entries.any((e) => e.key == entry.key)) {
+    if (_entries.any((e) => e.key == result.key)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -169,7 +132,7 @@ class _MainTabState extends State<MainTab> {
       return;
     }
 
-    setState(() => _entries.add(entry));
+    setState(() => _entries.add(result));
     _persist();
   }
 
@@ -352,95 +315,149 @@ class _EditRow extends StatelessWidget {
   }
 }
 
-// A self-contained dialog that handles zone selection in two steps:
-// step 1 = Local / UTC / Other, step 2 = region + city.
-// Displays the previously chosen value type as context.
-class _ZonePicker extends StatefulWidget {
-  final String valueTypeLabel;
-
-  const _ZonePicker({required this.valueTypeLabel});
+// A self-contained three-step dialog:
+// Step 1: choose value type (Date / Time / Day second)
+// Step 2: choose zone (Local / UTC / region list)
+// Step 3: choose city within region
+class _EntryPicker extends StatefulWidget {
+  const _EntryPicker();
 
   @override
-  State<_ZonePicker> createState() => _ZonePickerState();
+  State<_EntryPicker> createState() => _EntryPickerState();
 }
 
-class _ZonePickerState extends State<_ZonePicker> {
-  // null = step 1 (Local/UTC/Other), non-null = step 2 (city list)
-  String? _selectedRegion;
+enum _Step { valueType, zone, city }
+
+class _EntryPickerState extends State<_EntryPicker> {
+  _Step _step = _Step.valueType;
+  ValueType? _type;
+  String? _region;
+
+  String get _typeLabel => switch (_type) {
+    ValueType.date => 'Date',
+    ValueType.time => 'Time',
+    ValueType.daySecond => 'Day second',
+    null => '',
+  };
+
+  void _selectType(ValueType t) {
+    setState(() {
+      _type = t;
+      _step = _Step.zone;
+    });
+  }
+
+  void _selectRegion(String region) {
+    setState(() {
+      _region = region;
+      _step = _Step.city;
+    });
+  }
+
+  void _goBack() {
+    setState(() {
+      if (_step == _Step.city) {
+        _step = _Step.zone;
+        _region = null;
+      } else if (_step == _Step.zone) {
+        _step = _Step.valueType;
+        _type = null;
+      }
+    });
+  }
+
+  void _confirm(ZoneSpec zone) {
+    Navigator.pop(context, MainTabEntry(type: _type!, zone: zone));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _selectedRegion == null ? _buildStep1() : _buildStep2();
+    return switch (_step) {
+      _Step.valueType => _buildValueTypeStep(),
+      _Step.zone      => _buildZoneStep(),
+      _Step.city      => _buildCityStep(),
+    };
   }
 
-  Widget _buildStep1() {
+  // Step 1 – no back button, Cancel only.
+  Widget _buildValueTypeStep() {
     return SimpleDialog(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.valueTypeLabel,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: Colors.grey),
-          ),
-          const Text('Select timezone'),
-        ],
-      ),
+      title: const Text('Select value type'),
       children: [
-        SimpleDialogOption(
-          onPressed: () => Navigator.pop(context, const ZoneLocal()),
-          child: const Text('Local (system timezone)'),
-        ),
-        SimpleDialogOption(
-          onPressed: () => Navigator.pop(context, const ZoneUtc()),
-          child: const Text('UTC'),
-        ),
+        ...ValueType.values.map((t) {
+          final label = switch (t) {
+            ValueType.date      => 'Date',
+            ValueType.time      => 'Time',
+            ValueType.daySecond => 'Day second',
+          };
+          return SimpleDialogOption(
+            onPressed: () => _selectType(t),
+            child: Text(label),
+          );
+        }),
         const Divider(),
-        ...timezonesByRegion.keys.map((region) => SimpleDialogOption(
-          onPressed: () => setState(() => _selectedRegion = region),
-          child: Row(
-            children: [
-              Expanded(child: Text(region)),
-              const Icon(Icons.chevron_right, size: 18, color: Colors.grey),
-            ],
-          ),
-        )),
+        SimpleDialogOption(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
       ],
     );
   }
 
-  Widget _buildStep2() {
-    final zones = timezonesByRegion[_selectedRegion]!;
+  // Step 2 – back goes to Step 1.
+  Widget _buildZoneStep() {
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            tooltip: 'Back',
-            onPressed: () => setState(() => _selectedRegion = null),
-          ),
-          const SizedBox(width: 4),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.valueTypeLabel,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: Colors.grey),
+      title: _DialogTitle(
+        superLabel: _typeLabel,
+        title: 'Select timezone',
+        onBack: _goBack,
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              title: const Text('Local (system timezone)'),
+              onTap: () => _confirm(const ZoneLocal()),
+            ),
+            ListTile(
+              title: const Text('UTC'),
+              onTap: () => _confirm(const ZoneUtc()),
+            ),
+            const Divider(),
+            ...timezonesByRegion.keys.map((region) => ListTile(
+              title: Text(region),
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: Colors.grey,
               ),
-              Text(
-                _selectedRegion!,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ],
-          ),
-        ],
+              onTap: () => _selectRegion(region),
+            )),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+
+  // Step 3 – back goes to Step 2.
+  Widget _buildCityStep() {
+    final zones = timezonesByRegion[_region]!;
+    return AlertDialog(
+      titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
+      title: _DialogTitle(
+        superLabel: _typeLabel,
+        title: _region!,
+        onBack: _goBack,
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 8),
       content: SizedBox(
@@ -450,7 +467,7 @@ class _ZonePickerState extends State<_ZonePicker> {
           children: zones
               .map((z) => ListTile(
             title: Text(friendlyZoneName(z)),
-            onTap: () => Navigator.pop(context, ZoneNamed(z)),
+            onTap: () => _confirm(ZoneNamed(z)),
           ))
               .toList(),
         ),
@@ -459,6 +476,50 @@ class _ZonePickerState extends State<_ZonePicker> {
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+}
+
+// Reusable title row with optional back button and a small super-label.
+class _DialogTitle extends StatelessWidget {
+  final String superLabel;
+  final String title;
+  final VoidCallback onBack;
+
+  const _DialogTitle({
+    required this.superLabel,
+    required this.title,
+    required this.onBack,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Back',
+          onPressed: onBack,
+        ),
+        const SizedBox(width: 4),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              superLabel,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall
+                  ?.copyWith(color: Colors.grey),
+            ),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ],
         ),
       ],
     );
