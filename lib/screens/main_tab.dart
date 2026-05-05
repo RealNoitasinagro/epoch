@@ -6,8 +6,15 @@ import '../widgets/time_row.dart';
 
 class MainTab extends StatefulWidget {
   final DateTime now;
+  final bool thousandsSep;
+  final bool hourFormat24;
 
-  const MainTab({super.key, required this.now});
+  const MainTab({
+    super.key,
+    required this.now,
+    this.thousandsSep = true,
+    this.hourFormat24 = true,
+  });
 
   @override
   State<MainTab> createState() => _MainTabState();
@@ -162,7 +169,6 @@ class _MainTabState extends State<MainTab> {
             separatorBuilder: (_, __) => const Divider(height: 32),
             itemBuilder: (context, index) {
               final entry = _entries[index];
-              final locale0 = locale;
 
               if (_editMode) {
                 return _EditRow(
@@ -178,9 +184,13 @@ class _MainTabState extends State<MainTab> {
 
               return TimeRow(
                 label: entry.label(entry.key),
-                value: entry.computeValue(widget.now, locale0),
+                value: entry.computeValue(
+                  widget.now,
+                  locale,
+                  hourFormat24: widget.hourFormat24,
+                ),
                 info: entry.info,
-                useThousands: entry.useThousands,
+                useThousands: entry.useThousands && widget.thousandsSep,
               );
             },
           ),
@@ -396,9 +406,12 @@ class _EntryPickerState extends State<_EntryPicker> {
           );
         }),
         const Divider(),
-        SimpleDialogOption(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
         ),
       ],
     );

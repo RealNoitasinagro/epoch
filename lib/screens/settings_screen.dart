@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../main.dart';
 import '../strings.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
-// Version is read from PackageInfo where available (Android, Linux)
-  // and falls back to a build-time constant on web.
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late ThemeMode _themeMode;
+  late bool _thousandsSep;
+  late bool _hourFormat24;
+
   static const _fallbackVersion = '1.0.0';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Read current values from app state – runs after context is available.
+    final app = EpochApp.of(context);
+    _themeMode = app.themeMode;
+    _thousandsSep = app.thousandsSep;
+    _hourFormat24 = app.hourFormat24;
+  }
 
   Future<void> _showAbout(BuildContext context) async {
     String version;
@@ -39,6 +57,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppStrings.settings),
@@ -48,14 +67,49 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.brightness_6),
             title: const Text(AppStrings.settingsTheme),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            trailing: DropdownButton<ThemeMode>(
+              value: _themeMode,
+              underline: const SizedBox.shrink(),
+              items: const [
+                DropdownMenuItem(
+                  value: ThemeMode.system,
+                  child: Text('System'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.light,
+                  child: Text('Light'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.dark,
+                  child: Text('Dark'),
+                ),
+              ],
+              onChanged: (mode) {
+                if (mode == null) return;
+                setState(() => _themeMode = mode);
+                app.setThemeMode(mode);
+              },
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.schedule),
+          SwitchListTile(
+            secondary: const Icon(Icons.tag),
+            title: const Text('Thousands separator'),
+            subtitle: const Text('e.g. 1,746,000 instead of 1746000'),
+            value: _thousandsSep,
+            onChanged: (val) {
+              setState(() => _thousandsSep = val);
+              app.setThousandsSep(val);
+            },
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.schedule),
             title: const Text(AppStrings.settingsHourFormat),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            subtitle: const Text('Off = 12-hour with AM/PM'),
+            value: _hourFormat24,
+            onChanged: (val) {
+              setState(() => _hourFormat24 = val);
+              app.setHourFormat24(val);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.language),

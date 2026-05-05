@@ -6,8 +6,9 @@ import '../widgets/section_header.dart';
 
 class TechnicalTab extends StatelessWidget {
   final DateTime now;
+  final bool thousandsSep;
 
-  const TechnicalTab({super.key, required this.now});
+  const TechnicalTab({super.key, required this.now, this.thousandsSep = true});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class TechnicalTab extends StatelessWidget {
         TimeRow(
           label: AppStrings.labelUnixSeconds,
           value: unix.toString(),
-          useThousands: true,
+          useThousands: thousandsSep,
           info: 'Unix time counts the seconds elapsed since the Unix epoch: '
               '1970-01-01 00:00:00 UTC. It does not account for leap seconds.',
         ),
@@ -34,7 +35,7 @@ class TechnicalTab extends StatelessWidget {
         TimeRow(
           label: AppStrings.labelTai,
           value: tai.toString(),
-          useThousands: true,
+          useThousands: thousandsSep,
           info: 'International Atomic Time (TAI) is a continuous time scale '
               'based on atomic clocks. It currently runs 37 seconds ahead of UTC, '
               'the difference growing each time a leap second is added to UTC.',
@@ -43,7 +44,7 @@ class TechnicalTab extends StatelessWidget {
         TimeRow(
           label: AppStrings.labelGps,
           value: gps.toString(),
-          useThousands: true,
+          useThousands: thousandsSep,
           info: 'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does '
               'not include leap seconds. It currently runs 18 seconds ahead of UTC.',
         ),

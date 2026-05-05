@@ -80,7 +80,7 @@ class MainTabEntry {
   }
 
   // Computes the current display value for this entry.
-  String computeValue(DateTime now, String locale) {
+  String computeValue(DateTime now, String locale, {bool hourFormat24 = true}) {
     final utcNow = now.toUtc();
 
     final DateTime dt;
@@ -103,14 +103,26 @@ class MainTabEntry {
         offset = tzDt.timeZoneOffset;
     }
 
+    final hh = dt.hour.toString().padLeft(2, '0');
+    final mm = dt.minute.toString().padLeft(2, '0');
+    final ss = dt.second.toString().padLeft(2, '0');
+    final tzSuffix = zone is ZoneUtc
+        ? 'UTC'
+        : '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
+
+    if (type == ValueType.time && !hourFormat24) {
+      // 12-hour format with AM/PM.
+      final hour12 = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+      final period = dt.hour < 12 ? 'AM' : 'PM';
+      final h12 = hour12.toString().padLeft(2, '0');
+      return '$h12:$mm:$ss $period $tzSuffix';
+    }
+
     return switch (type) {
       ValueType.date =>
           DateFormat('EEE, yyyy-MM-dd', locale).format(dt),
       ValueType.time =>
-      '${dt.hour.toString().padLeft(2, '0')}:'
-          '${dt.minute.toString().padLeft(2, '0')}:'
-          '${dt.second.toString().padLeft(2, '0')} '
-          '${zone is ZoneUtc ? 'UTC' : '$tzLabel (${TimeUtils.utcOffsetString(offset)})'  }',
+      '$hh:$mm:$ss $tzSuffix',
       ValueType.daySecond =>
           TimeUtils.daySecond(dt).toString(),
     };
