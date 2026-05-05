@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 
 // The three displayable value types.
@@ -64,20 +65,59 @@ class MainTabEntry {
     return MainTabEntry(type: type, zone: zone);
   }
 
-  // Human-readable label shown in the UI.
-  String label(String ianaZone) {
-    final typeLabel = switch (type) {
-      ValueType.date => 'Date',
-      ValueType.time => 'Time',
+  // Internal key-based label, used for persistence only.
+  String get _rawLabel {
+    final typeStr = switch (type) {
+      ValueType.date      => 'Date',
+      ValueType.time      => 'Time',
       ValueType.daySecond => 'Day second',
     };
+    final zoneStr = switch (zone) {
+      ZoneLocal()                    => 'local',
+      ZoneUtc()                      => 'UTC',
+      ZoneNamed(ianaZone: final z)   =>
+          z.split('/').last.replaceAll('_', ' '),
+    };
+    return '$typeStr ($zoneStr)';
+  }
+
+  // Localized label for display in the UI.
+  String localizedLabel(AppLocalizations l10n) {
+    final typeLabel = switch (type) {
+      ValueType.date      => l10n.valueTypeDate,
+      ValueType.time      => l10n.valueTypeTime,
+      ValueType.daySecond => l10n.labelDaySecond,
+    };
     final zoneLabel = switch (zone) {
-      ZoneLocal() => 'local',
-      ZoneUtc() => 'UTC',
-      ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
+      ZoneLocal()                    => l10n.labelLocal.toLowerCase(),
+      ZoneUtc()                      => 'UTC',
+      ZoneNamed(ianaZone: final z)   =>
+          z.split('/').last.replaceAll('_', ' '),
     };
     return '$typeLabel ($zoneLabel)';
   }
+
+  // Localized info text for the (i) dialog.
+  String localizedInfo(AppLocalizations l10n) => switch (type) {
+    ValueType.date      => l10n.infoLocalDate,
+    ValueType.time      => l10n.infoLocalTime,
+    ValueType.daySecond => l10n.infoDaySecond,
+  };
+
+  // Human-readable label shown in the UI.
+  // String label(String ianaZone) {
+  //   final typeLabel = switch (type) {
+  //     ValueType.date => 'Date',
+  //     ValueType.time => 'Time',
+  //     ValueType.daySecond => 'Day second',
+  //   };
+  //   final zoneLabel = switch (zone) {
+  //     ZoneLocal() => 'local',
+  //     ZoneUtc() => 'UTC',
+  //     ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
+  //   };
+  //   return '$typeLabel ($zoneLabel)';
+  // }
 
   // Computes the current display value for this entry.
   String computeValue(DateTime now, String locale, {bool hourFormat24 = true}) {
@@ -131,14 +171,14 @@ class MainTabEntry {
   // Whether this entry's value should use thousands formatting.
   bool get useThousands => type == ValueType.daySecond;
 
-  // Info text shown in the (i) dialog.
-  String? get info => switch (type) {
-    ValueType.date => 'The current calendar date in the selected timezone.',
-    ValueType.time => 'The current time in the selected timezone.',
-    ValueType.daySecond =>
-    'Seconds elapsed since midnight in the selected timezone. '
-        'Resets to 0 at midnight.',
-  };
+  // // Info text shown in the (i) dialog.
+  // String? get info => switch (type) {
+  //   ValueType.date => 'The current calendar date in the selected timezone.',
+  //   ValueType.time => 'The current time in the selected timezone.',
+  //   ValueType.daySecond =>
+  //   'Seconds elapsed since midnight in the selected timezone. '
+  //       'Resets to 0 at midnight.',
+  // };
 }
 
 // Default entries shown on the Main tab at first launch.

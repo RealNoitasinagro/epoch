@@ -44,3 +44,22 @@ Future<void> saveHourFormat24(bool use24) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool(_kHourFormatKey, use24);
 }
+
+const _kLocaleKey = 'locale';
+
+Future<Locale?> loadLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  final code = prefs.getString(_kLocaleKey);
+  if (code == null) return null; // null = system locale
+  return Locale(code);
+}
+
+Future<void> saveLocale(String languageCode) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kLocaleKey, languageCode);
+}
+
+Future<void> clearLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove(_kLocaleKey);
+}

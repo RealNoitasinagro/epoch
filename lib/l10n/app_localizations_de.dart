@@ -1,0 +1,210 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for German (`de`).
+class AppLocalizationsDe extends AppLocalizations {
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
+
+  @override
+  String get appName => 'Epoch';
+
+  @override
+  String get tabMain => 'Haupt';
+
+  @override
+  String get tabTechnical => 'Technisch';
+
+  @override
+  String get tabAstronomy => 'Astronomie';
+
+  @override
+  String get tabCuriosities => 'Kurioses';
+
+  @override
+  String get labelLocal => 'Lokal';
+
+  @override
+  String get labelUtc => 'UTC';
+
+  @override
+  String get labelDate => 'Datum';
+
+  @override
+  String get labelTime => 'Uhrzeit';
+
+  @override
+  String get labelDaySecond => 'Tagessekunde';
+
+  @override
+  String get sectionEpoch => 'Unix-Epoche';
+
+  @override
+  String get sectionAtomicGps => 'Atom & GPS';
+
+  @override
+  String get labelUnixSeconds => 'Unix-Zeit (s)';
+
+  @override
+  String get labelTai => 'TAI (s seit Epoche)';
+
+  @override
+  String get labelGps => 'GPS-Zeit (s)';
+
+  @override
+  String get settings => 'Einstellungen';
+
+  @override
+  String get settingsTheme => 'Design';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThemeLight => 'Hell';
+
+  @override
+  String get settingsThemeDark => 'Dunkel';
+
+  @override
+  String get settingsThousandsSep => 'Tausendertrennzeichen';
+
+  @override
+  String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
+
+  @override
+  String get settingsHourFormat => '24-Stunden-Format';
+
+  @override
+  String get settingsHourFormatSub => 'Aus = 12-Stunden mit AM/PM';
+
+  @override
+  String get settingsLanguage => 'Sprache';
+
+  @override
+  String get settingsAbout => 'Über die App';
+
+  @override
+  String get aboutDescription =>
+      'Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.';
+
+  @override
+  String get aboutLegalese => '© 2026 RealEarthling';
+
+  @override
+  String get zoneLocal => 'Lokal (Systemzeitzone)';
+
+  @override
+  String get zoneUtc => 'UTC';
+
+  @override
+  String get zoneOther => 'Andere…';
+
+  @override
+  String get selectValueType => 'Werttyp auswählen';
+
+  @override
+  String get selectTimezone => 'Zeitzone auswählen';
+
+  @override
+  String get selectRegion => 'Region auswählen';
+
+  @override
+  String get valueTypeDate => 'Datum';
+
+  @override
+  String get valueTypeTime => 'Uhrzeit';
+
+  @override
+  String get valueTypeDaySecond => 'Tagessekunde';
+
+  @override
+  String get addValue => 'Wert hinzufügen';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get back => 'Zurück';
+
+  @override
+  String get editLayout => 'Layout bearbeiten';
+
+  @override
+  String get doneEditing => 'Fertig';
+
+  @override
+  String get selectAll => 'Alle auswählen';
+
+  @override
+  String get deselectAll => 'Alle abwählen';
+
+  @override
+  String get selectForRemoval => 'Zum Entfernen markieren';
+
+  @override
+  String get deselect => 'Abwählen';
+
+  @override
+  String get removeSelected => 'Markierte entfernen';
+
+  @override
+  String get resetToDefaults => 'Auf Standard zurücksetzen';
+
+  @override
+  String get moveUp => 'Nach oben';
+
+  @override
+  String get moveDown => 'Nach unten';
+
+  @override
+  String maxValuesReached(int count) {
+    return 'Maximal $count Werte erlaubt.';
+  }
+
+  @override
+  String get alreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';
+
+  @override
+  String get allValuesDisplayed =>
+      'Alle verfügbaren Werte werden bereits angezeigt.';
+
+  @override
+  String copiedToClipboard(String label) {
+    return 'Kopiert: $label';
+  }
+
+  @override
+  String get aboutThisValue => 'Über diesen Wert';
+
+  @override
+  String get copyToClipboard => 'In Zwischenablage kopieren';
+
+  @override
+  String get noDescription => 'Noch keine Beschreibung verfügbar.';
+
+  @override
+  String get infoLocalDate =>
+      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
+
+  @override
+  String get infoLocalTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
+
+  @override
+  String get infoDaySecond =>
+      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
+  String get infoUnixSeconds =>
+      'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC. Schaltsekunden werden nicht gezählt.';
+
+  @override
+  String get infoTai =>
+      'Internationale Atomzeit (TAI) basiert auf Atomuhren und läuft aktuell 37 Sekunden vor UTC.';
+
+  @override
+  String get infoGps =>
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC.';
+}

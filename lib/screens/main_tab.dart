@@ -3,6 +3,7 @@ import '../models/time_value.dart';
 import '../models/main_tab_config.dart';
 import '../models/timezone_data.dart';
 import '../widgets/time_row.dart';
+import '../l10n/app_localizations.dart';
 
 class MainTab extends StatefulWidget {
   final DateTime now;
@@ -112,10 +113,12 @@ class _MainTabState extends State<MainTab> {
   }
 
   Future<void> _showAddDialog() async {
+    final l10n = AppLocalizations.of(context)!;
     if (_entries.length >= _maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Maximum of $_maxEntries values reached.'),
+          //content: Text('Maximum of $_maxEntries values reached.'),
+          content: Text(l10n.maxValuesReached(_maxEntries)),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -131,8 +134,9 @@ class _MainTabState extends State<MainTab> {
     if (_entries.any((e) => e.key == result.key)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('This value is already displayed.'),
+        SnackBar(
+          //content: Text('This value is already displayed.'),
+          content: Text(l10n.alreadyDisplayed),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -145,6 +149,7 @@ class _MainTabState extends State<MainTab> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (!_loaded) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -172,7 +177,8 @@ class _MainTabState extends State<MainTab> {
 
               if (_editMode) {
                 return _EditRow(
-                  label: entry.label(entry.key),
+                  //label: entry.label(entry.key),
+                  label: entry.localizedLabel(l10n),
                   checked: _checked.contains(entry.key),
                   index: index,
                   total: _entries.length,
@@ -183,13 +189,15 @@ class _MainTabState extends State<MainTab> {
               }
 
               return TimeRow(
-                label: entry.label(entry.key),
+                //label: entry.label(entry.key),
+                label: entry.localizedLabel(l10n),
                 value: entry.computeValue(
                   widget.now,
                   locale,
                   hourFormat24: widget.hourFormat24,
                 ),
-                info: entry.info,
+                //info: entry.info,
+                info: entry.localizedInfo(l10n),
                 useThousands: entry.useThousands && widget.thousandsSep,
               );
             },
@@ -202,7 +210,8 @@ class _MainTabState extends State<MainTab> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
-                  tooltip: 'Add value',
+                  //tooltip: 'Add value',
+                  tooltip: l10n.addValue,
                   onPressed: _showAddDialog,
                   child: const Icon(Icons.add),
                 ),
@@ -235,13 +244,15 @@ class _EditToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
       child: Row(
         children: [
           if (editMode)
             Tooltip(
-              message: allChecked ? 'Deselect all' : 'Select all',
+              //message: allChecked ? 'Deselect all' : 'Select all',
+              message: allChecked ? l10n.deselectAll : l10n.selectAll,
               child: Checkbox(
                 value: allChecked,
                 tristate: false,
@@ -254,18 +265,21 @@ class _EditToolbar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 color: Colors.redAccent,
-                tooltip: 'Remove selected',
+                //tooltip: 'Remove selected',
+                tooltip: l10n.removeSelected,
                 onPressed: onDeleteChecked,
               ),
             IconButton(
               icon: const Icon(Icons.restart_alt),
-              tooltip: 'Reset to defaults',
+              //tooltip: 'Reset to defaults',
+              tooltip: l10n.resetToDefaults,
               onPressed: onResetDefaults,
             ),
           ],
           IconButton(
             icon: Icon(editMode ? Icons.check : Icons.edit),
-            tooltip: editMode ? 'Done editing' : 'Edit layout',
+            //tooltip: editMode ? 'Done editing' : 'Edit layout',
+            tooltip: editMode ? l10n.doneEditing : l10n.editLayout,
             onPressed: onToggleEditMode,
           ),
         ],
@@ -295,10 +309,12 @@ class _EditRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Tooltip(
-          message: checked ? 'Deselect' : 'Select for removal',
+          //message: checked ? 'Deselect' : 'Select for removal',
+          message: checked ? l10n.deselect : l10n.selectForRemoval,
           child: Checkbox(
             value: checked,
             onChanged: (_) => onToggleCheck(),
@@ -312,12 +328,14 @@ class _EditRow extends StatelessWidget {
         ),
         IconButton(
           icon: const Icon(Icons.arrow_upward, size: 20),
-          tooltip: 'Move up',
+          //tooltip: 'Move up',
+          tooltip: l10n.moveUp,
           onPressed: index > 0 ? onMoveUp : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward, size: 20),
-          tooltip: 'Move down',
+          //tooltip: 'Move down',
+          tooltip: l10n.moveDown,
           onPressed: index < total - 1 ? onMoveDown : null,
         ),
       ],
@@ -343,11 +361,11 @@ class _EntryPickerState extends State<_EntryPicker> {
   ValueType? _type;
   String? _region;
 
-  String get _typeLabel => switch (_type) {
-    ValueType.date => 'Date',
-    ValueType.time => 'Time',
-    ValueType.daySecond => 'Day second',
-    null => '',
+  String _typeLabel(AppLocalizations l10n) => switch (_type) {
+    ValueType.date      => l10n.valueTypeDate,
+    ValueType.time      => l10n.valueTypeTime,
+    ValueType.daySecond => l10n.labelDaySecond,
+    null                => '',
   };
 
   void _selectType(ValueType t) {
@@ -391,14 +409,19 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   // Step 1 – no back button, Cancel only.
   Widget _buildValueTypeStep() {
+    final l10n = AppLocalizations.of(context)!;
     return SimpleDialog(
-      title: const Text('Select value type'),
+      //title: const Text('Select value type'),
+      title: Text(l10n.selectValueType),
       children: [
         ...ValueType.values.map((t) {
           final label = switch (t) {
-            ValueType.date      => 'Date',
-            ValueType.time      => 'Time',
-            ValueType.daySecond => 'Day second',
+            //ValueType.date      => 'Date',
+            //ValueType.time      => 'Time',
+            //ValueType.daySecond => 'Day second',
+            ValueType.date      => l10n.valueTypeDate,
+            ValueType.time      => l10n.valueTypeTime,
+            ValueType.daySecond => l10n.valueTypeDaySecond,
           };
           return SimpleDialogOption(
             onPressed: () => _selectType(t),
@@ -410,7 +433,8 @@ class _EntryPickerState extends State<_EntryPicker> {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            //child: Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
         ),
       ],
@@ -419,11 +443,14 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   // Step 2 – back goes to Step 1.
   Widget _buildZoneStep() {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
       title: _DialogTitle(
-        superLabel: _typeLabel,
-        title: 'Select timezone',
+        //superLabel: _typeLabel,
+        superLabel: _typeLabel(l10n),
+        //title: 'Select timezone',
+        title: l10n.selectTimezone,
         onBack: _goBack,
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -433,11 +460,13 @@ class _EntryPickerState extends State<_EntryPicker> {
           shrinkWrap: true,
           children: [
             ListTile(
-              title: const Text('Local (system timezone)'),
+              //title: const Text('Local (system timezone)'),
+              title: Text(l10n.zoneLocal),
               onTap: () => _confirm(const ZoneLocal()),
             ),
             ListTile(
-              title: const Text('UTC'),
+              //title: const Text('UTC'),
+              title: Text(l10n.zoneUtc),
               onTap: () => _confirm(const ZoneUtc()),
             ),
             const Divider(),
@@ -456,7 +485,8 @@ class _EntryPickerState extends State<_EntryPicker> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          //child: const Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
       ],
     );
@@ -464,11 +494,13 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   // Step 3 – back goes to Step 2.
   Widget _buildCityStep() {
+    final l10n = AppLocalizations.of(context)!;
     final zones = timezonesByRegion[_region]!;
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
       title: _DialogTitle(
-        superLabel: _typeLabel,
+        //superLabel: _typeLabel,
+        superLabel: _typeLabel(l10n),
         title: _region!,
         onBack: _goBack,
       ),
@@ -488,7 +520,8 @@ class _EntryPickerState extends State<_EntryPicker> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          //child: const Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
       ],
     );
@@ -509,12 +542,14 @@ class _DialogTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
           icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back',
+          //tooltip: 'Back',
+          tooltip: l10n.back,
           onPressed: onBack,
         ),
         const SizedBox(width: 4),

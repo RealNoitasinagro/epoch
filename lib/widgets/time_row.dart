@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/app_localizations.dart';
+
 class TimeRow extends StatelessWidget {
   final String label;
   final String value;
@@ -25,23 +27,24 @@ class TimeRow extends StatelessWidget {
     return NumberFormat('#,###').format(n);
   }
 
-  void _copyToClipboard(BuildContext context) {
+  void _copyToClipboard(BuildContext context, AppLocalizations l10n) {
     Clipboard.setData(ClipboardData(text: '$label: $value'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Copied: $label'),
+        //content: Text('Copied: $label'),
+        content: Text(l10n.copiedToClipboard(label)),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
     );
   }
 
-  void _showInfo(BuildContext context) {
+  void _showInfo(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(label),
-        content: Text(info ?? 'No description available yet.'),
+        content: Text(info ?? l10n.noDescription),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -54,6 +57,7 @@ class TimeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,14 +87,15 @@ class TimeRow extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
           color: Colors.grey,
-          tooltip: 'About this value',
-          onPressed: () => _showInfo(context),
+          //tooltip: 'About this value',
+          tooltip: l10n.aboutThisValue,
+          onPressed: () => _showInfo(context, l10n),
         ),
         IconButton(
           icon: const Icon(Icons.copy, size: 20),
           color: Colors.grey,
           tooltip: 'Copy to clipboard',
-          onPressed: () => _copyToClipboard(context),
+          onPressed: () => _copyToClipboard(context, l10n),
         ),
       ],
     );
