@@ -207,4 +207,43 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoGps =>
       'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC.';
+
+  @override
+  String get sectionSwatch => 'Swatch-Internetzeit';
+
+  @override
+  String get labelSwatchBeats => 'Internetzeit';
+
+  @override
+  String get infoSwatch =>
+      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
+
+  @override
+  String get sectionBinaryClock => 'Binäruhr';
+
+  @override
+  String get labelHours => 'Std';
+
+  @override
+  String get labelMinutes => 'Min';
+
+  @override
+  String get labelSeconds => 'Sek';
+
+  @override
+  String get infoBinaryClock =>
+      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das wertvollste.';
+
+  @override
+  String get sectionDoomsday => 'Weltuntergangsuhr';
+
+  @override
+  String get labelDoomsdayClock => 'Zeit bis Mitternacht';
+
+  @override
+  String get infoDoomsday =>
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 89 Sekunden vor Mitternacht gestellt (Stand Jan. 2025).';
+
+  @override
+  String get doomsdayLink => '→ thebulletin.org/doomsday-clock';
 }

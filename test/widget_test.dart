@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:epoch/main.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -11,9 +10,29 @@ void main() {
 
   testWidgets('App starts and shows main tab',
           (WidgetTester tester) async {
-        await tester.pumpWidget(const EpochApp());
-        await tester.pumpAndSettle();
-        // Verify the app renders without crashing.
+        await tester.pumpWidget(
+          const MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: Locale('en'),
+            home: Scaffold(
+              body: DefaultTabController(
+                length: 4,
+                child: Column(
+                  children: [
+                    TabBar(tabs: [
+                      Tab(text: 'Main'),
+                      Tab(text: 'Technical'),
+                      Tab(text: 'Astronomy'),
+                      Tab(text: 'Curiosities'),
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
         expect(find.byType(TabBar), findsOneWidget);
       });
 

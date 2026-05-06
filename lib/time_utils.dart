@@ -39,4 +39,23 @@ class TimeUtils {
     const leapSeconds = 37;
     return utc.toUtc().millisecondsSinceEpoch ~/ 1000 + leapSeconds;
   }
+
+  /// Swatch Internet Time (.beat): 1 day = 1000 beats, based on UTC+1.
+  static double swatchBeats(DateTime utc) {
+    final bmt = utc.toUtc().add(const Duration(hours: 1));
+    final seconds = bmt.hour * 3600 + bmt.minute * 60 + bmt.second;
+    return seconds / 86.4; // 86400s / 1000 beats
+  }
+
+  /// Binary clock representation: hours, minutes, seconds as binary strings.
+  static ({String hours, String minutes, String seconds}) binaryTime(
+      DateTime dt) {
+    String toBin(int n, int width) =>
+        n.toRadixString(2).padLeft(width, '0');
+    return (
+    hours:   toBin(dt.hour,   5),
+    minutes: toBin(dt.minute, 6),
+    seconds: toBin(dt.second, 6),
+    );
+  }
 }

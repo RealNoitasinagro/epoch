@@ -207,4 +207,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoGps =>
       'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC.';
+
+  @override
+  String get sectionSwatch => 'Swatch Internet Time';
+
+  @override
+  String get labelSwatchBeats => 'Internet Time';
+
+  @override
+  String get infoSwatch =>
+      'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).';
+
+  @override
+  String get sectionBinaryClock => 'Binary Clock';
+
+  @override
+  String get labelHours => 'HH';
+
+  @override
+  String get labelMinutes => 'MM';
+
+  @override
+  String get labelSeconds => 'SS';
+
+  @override
+  String get infoBinaryClock =>
+      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
+
+  @override
+  String get sectionDoomsday => 'Doomsday Clock';
+
+  @override
+  String get labelDoomsdayClock => 'Time to midnight';
+
+  @override
+  String get infoDoomsday =>
+      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 89 seconds to midnight (as of Jan 2025).';
+
+  @override
+  String get doomsdayLink => '→ thebulletin.org/doomsday-clock';
 }

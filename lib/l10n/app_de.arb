@@ -72,5 +72,17 @@
   "infoDaySecond": "Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC. Schaltsekunden werden nicht gezählt.",
   "infoTai": "Internationale Atomzeit (TAI) basiert auf Atomuhren und läuft aktuell 37 Sekunden vor UTC.",
-  "infoGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC."
+  "infoGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC.",
+  "sectionSwatch": "Swatch-Internetzeit",
+  "labelSwatchBeats": "Internetzeit",
+  "infoSwatch": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
+  "sectionBinaryClock": "Binäruhr",
+  "labelHours": "Std",
+  "labelMinutes": "Min",
+  "labelSeconds": "Sek",
+  "infoBinaryClock": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das wertvollste.",
+  "sectionDoomsday": "Weltuntergangsuhr",
+  "labelDoomsdayClock": "Zeit bis Mitternacht",
+  "infoDoomsday": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 89 Sekunden vor Mitternacht gestellt (Stand Jan. 2025).",
+  "doomsdayLink": "→ thebulletin.org/doomsday-clock"
 }

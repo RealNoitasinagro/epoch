@@ -475,6 +475,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC.'**
   String get infoGps;
+
+  /// No description provided for @sectionSwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Swatch Internet Time'**
+  String get sectionSwatch;
+
+  /// No description provided for @labelSwatchBeats.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet Time'**
+  String get labelSwatchBeats;
+
+  /// No description provided for @infoSwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
+  String get infoSwatch;
+
+  /// No description provided for @sectionBinaryClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary Clock'**
+  String get sectionBinaryClock;
+
+  /// No description provided for @labelHours.
+  ///
+  /// In en, this message translates to:
+  /// **'HH'**
+  String get labelHours;
+
+  /// No description provided for @labelMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'MM'**
+  String get labelMinutes;
+
+  /// No description provided for @labelSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'SS'**
+  String get labelSeconds;
+
+  /// No description provided for @infoBinaryClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  String get infoBinaryClock;
+
+  /// No description provided for @sectionDoomsday.
+  ///
+  /// In en, this message translates to:
+  /// **'Doomsday Clock'**
+  String get sectionDoomsday;
+
+  /// No description provided for @labelDoomsdayClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to midnight'**
+  String get labelDoomsdayClock;
+
+  /// No description provided for @infoDoomsday.
+  ///
+  /// In en, this message translates to:
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 89 seconds to midnight (as of Jan 2025).'**
+  String get infoDoomsday;
+
+  /// No description provided for @doomsdayLink.
+  ///
+  /// In en, this message translates to:
+  /// **'→ thebulletin.org/doomsday-clock'**
+  String get doomsdayLink;
 }
 
 class _AppLocalizationsDelegate
