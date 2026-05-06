@@ -30,7 +30,6 @@ class _EpochAppState extends State<EpochApp> {
   bool _thousandsSep = true;
   bool _hourFormat24 = true;
   bool _settingsLoaded = false;
-  //Locale? _locale; // null = system locale (?)
   Locale _locale = const Locale('en'); // default to English
 
   @override
@@ -87,8 +86,7 @@ class _EpochAppState extends State<EpochApp> {
       );
     }
     return MaterialApp(
-      //title: AppStrings.appName,
-      title: AppLocalizations.of(context)!.appName,
+      title: 'Epoch',  // currently intentionally hard-coded
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
@@ -105,7 +103,7 @@ class _EpochAppState extends State<EpochApp> {
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen(),
+      home: const HomeScreen()
     );
   }
 }
@@ -151,31 +149,20 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          //title: const Text(AppStrings.appName),
-          //title: Text(AppLocalizations.of(context)!.appName),
           title: Text(l10n.appName),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           actions: [
             IconButton(
               icon: const Icon(Icons.menu),
-              //tooltip: AppStrings.settings,
               tooltip: l10n.settings,
               onPressed: () => _openSettings(context),
             ),
           ],
           bottom: TabBar(
             tabs: [
-              //Tab(text: AppStrings.tabMain),
-              //Tab(text: AppLocalizations.of(context)!.tabMain),
               Tab(text: l10n.tabMain),
-              //Tab(text: AppStrings.tabTechnical),
-              //Tab(text: AppLocalizations.of(context)!.tabTechnical),
               Tab(text: l10n.tabTechnical),
-              //Tab(text: AppStrings.tabAstronomy),
-              //Tab(text: AppLocalizations.of(context)!.tabAstronomy),
               Tab(text: l10n.tabAstronomy),
-              //Tab(text: AppStrings.tabCuriosities),
-              //Tab(text: AppLocalizations.of(context)!.tabCuriosities),
               Tab(text: l10n.tabCuriosities),
             ],
           ),

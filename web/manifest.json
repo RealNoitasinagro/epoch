@@ -1,6 +1,6 @@
 {
-    "name": "epoch",
-    "short_name": "epoch",
+    "name": "Epoch",
+    "short_name": "Epoch",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

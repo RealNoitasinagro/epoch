@@ -90,7 +90,7 @@ class MainTabEntry {
     };
     final zoneLabel = switch (zone) {
       ZoneLocal()                    => l10n.labelLocal.toLowerCase(),
-      ZoneUtc()                      => 'UTC',
+      ZoneUtc()                      => l10n.zoneUtc,
       ZoneNamed(ianaZone: final z)   =>
           z.split('/').last.replaceAll('_', ' '),
     };
@@ -103,21 +103,6 @@ class MainTabEntry {
     ValueType.time      => l10n.infoLocalTime,
     ValueType.daySecond => l10n.infoDaySecond,
   };
-
-  // Human-readable label shown in the UI.
-  // String label(String ianaZone) {
-  //   final typeLabel = switch (type) {
-  //     ValueType.date => 'Date',
-  //     ValueType.time => 'Time',
-  //     ValueType.daySecond => 'Day second',
-  //   };
-  //   final zoneLabel = switch (zone) {
-  //     ZoneLocal() => 'local',
-  //     ZoneUtc() => 'UTC',
-  //     ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
-  //   };
-  //   return '$typeLabel ($zoneLabel)';
-  // }
 
   // Computes the current display value for this entry.
   String computeValue(DateTime now, String locale, {bool hourFormat24 = true}) {
@@ -170,15 +155,6 @@ class MainTabEntry {
 
   // Whether this entry's value should use thousands formatting.
   bool get useThousands => type == ValueType.daySecond;
-
-  // // Info text shown in the (i) dialog.
-  // String? get info => switch (type) {
-  //   ValueType.date => 'The current calendar date in the selected timezone.',
-  //   ValueType.time => 'The current time in the selected timezone.',
-  //   ValueType.daySecond =>
-  //   'Seconds elapsed since midnight in the selected timezone. '
-  //       'Resets to 0 at midnight.',
-  // };
 }
 
 // Default entries shown on the Main tab at first launch.

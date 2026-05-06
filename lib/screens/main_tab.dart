@@ -117,7 +117,6 @@ class _MainTabState extends State<MainTab> {
     if (_entries.length >= _maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          //content: Text('Maximum of $_maxEntries values reached.'),
           content: Text(l10n.maxValuesReached(_maxEntries)),
           behavior: SnackBarBehavior.floating,
         ),
@@ -135,7 +134,6 @@ class _MainTabState extends State<MainTab> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          //content: Text('This value is already displayed.'),
           content: Text(l10n.alreadyDisplayed),
           behavior: SnackBarBehavior.floating,
         ),
@@ -189,14 +187,12 @@ class _MainTabState extends State<MainTab> {
               }
 
               return TimeRow(
-                //label: entry.label(entry.key),
                 label: entry.localizedLabel(l10n),
                 value: entry.computeValue(
                   widget.now,
                   locale,
                   hourFormat24: widget.hourFormat24,
                 ),
-                //info: entry.info,
                 info: entry.localizedInfo(l10n),
                 useThousands: entry.useThousands && widget.thousandsSep,
               );
@@ -210,7 +206,6 @@ class _MainTabState extends State<MainTab> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
-                  //tooltip: 'Add value',
                   tooltip: l10n.addValue,
                   onPressed: _showAddDialog,
                   child: const Icon(Icons.add),
@@ -251,7 +246,6 @@ class _EditToolbar extends StatelessWidget {
         children: [
           if (editMode)
             Tooltip(
-              //message: allChecked ? 'Deselect all' : 'Select all',
               message: allChecked ? l10n.deselectAll : l10n.selectAll,
               child: Checkbox(
                 value: allChecked,
@@ -265,20 +259,17 @@ class _EditToolbar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 color: Colors.redAccent,
-                //tooltip: 'Remove selected',
                 tooltip: l10n.removeSelected,
                 onPressed: onDeleteChecked,
               ),
             IconButton(
               icon: const Icon(Icons.restart_alt),
-              //tooltip: 'Reset to defaults',
               tooltip: l10n.resetToDefaults,
               onPressed: onResetDefaults,
             ),
           ],
           IconButton(
             icon: Icon(editMode ? Icons.check : Icons.edit),
-            //tooltip: editMode ? 'Done editing' : 'Edit layout',
             tooltip: editMode ? l10n.doneEditing : l10n.editLayout,
             onPressed: onToggleEditMode,
           ),
@@ -313,7 +304,6 @@ class _EditRow extends StatelessWidget {
     return Row(
       children: [
         Tooltip(
-          //message: checked ? 'Deselect' : 'Select for removal',
           message: checked ? l10n.deselect : l10n.selectForRemoval,
           child: Checkbox(
             value: checked,
@@ -328,13 +318,11 @@ class _EditRow extends StatelessWidget {
         ),
         IconButton(
           icon: const Icon(Icons.arrow_upward, size: 20),
-          //tooltip: 'Move up',
           tooltip: l10n.moveUp,
           onPressed: index > 0 ? onMoveUp : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward, size: 20),
-          //tooltip: 'Move down',
           tooltip: l10n.moveDown,
           onPressed: index < total - 1 ? onMoveDown : null,
         ),
@@ -411,14 +399,10 @@ class _EntryPickerState extends State<_EntryPicker> {
   Widget _buildValueTypeStep() {
     final l10n = AppLocalizations.of(context)!;
     return SimpleDialog(
-      //title: const Text('Select value type'),
       title: Text(l10n.selectValueType),
       children: [
         ...ValueType.values.map((t) {
           final label = switch (t) {
-            //ValueType.date      => 'Date',
-            //ValueType.time      => 'Time',
-            //ValueType.daySecond => 'Day second',
             ValueType.date      => l10n.valueTypeDate,
             ValueType.time      => l10n.valueTypeTime,
             ValueType.daySecond => l10n.valueTypeDaySecond,
@@ -433,7 +417,6 @@ class _EntryPickerState extends State<_EntryPicker> {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            //child: Text('Cancel'),
             child: Text(l10n.cancel),
           ),
         ),
@@ -447,9 +430,7 @@ class _EntryPickerState extends State<_EntryPicker> {
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
       title: _DialogTitle(
-        //superLabel: _typeLabel,
         superLabel: _typeLabel(l10n),
-        //title: 'Select timezone',
         title: l10n.selectTimezone,
         onBack: _goBack,
       ),
@@ -460,12 +441,10 @@ class _EntryPickerState extends State<_EntryPicker> {
           shrinkWrap: true,
           children: [
             ListTile(
-              //title: const Text('Local (system timezone)'),
               title: Text(l10n.zoneLocal),
               onTap: () => _confirm(const ZoneLocal()),
             ),
             ListTile(
-              //title: const Text('UTC'),
               title: Text(l10n.zoneUtc),
               onTap: () => _confirm(const ZoneUtc()),
             ),
@@ -485,7 +464,6 @@ class _EntryPickerState extends State<_EntryPicker> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          //child: const Text('Cancel'),
           child: Text(l10n.cancel),
         ),
       ],
@@ -499,7 +477,6 @@ class _EntryPickerState extends State<_EntryPicker> {
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
       title: _DialogTitle(
-        //superLabel: _typeLabel,
         superLabel: _typeLabel(l10n),
         title: _region!,
         onBack: _goBack,
@@ -520,7 +497,6 @@ class _EntryPickerState extends State<_EntryPicker> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          //child: const Text('Cancel'),
           child: Text(l10n.cancel),
         ),
       ],
@@ -548,7 +524,6 @@ class _DialogTitle extends StatelessWidget {
       children: [
         IconButton(
           icon: const Icon(Icons.arrow_back),
-          //tooltip: 'Back',
           tooltip: l10n.back,
           onPressed: onBack,
         ),

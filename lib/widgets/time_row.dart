@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
 import '../l10n/app_localizations.dart';
 
 class TimeRow extends StatelessWidget {
@@ -31,7 +30,6 @@ class TimeRow extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: '$label: $value'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        //content: Text('Copied: $label'),
         content: Text(l10n.copiedToClipboard(label)),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
@@ -87,14 +85,13 @@ class TimeRow extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
           color: Colors.grey,
-          //tooltip: 'About this value',
           tooltip: l10n.aboutThisValue,
           onPressed: () => _showInfo(context, l10n),
         ),
         IconButton(
           icon: const Icon(Icons.copy, size: 20),
           color: Colors.grey,
-          tooltip: 'Copy to clipboard',
+          tooltip: l10n.copyToClipboard,
           onPressed: () => _copyToClipboard(context, l10n),
         ),
       ],

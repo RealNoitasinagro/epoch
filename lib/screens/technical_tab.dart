@@ -21,41 +21,29 @@ class TechnicalTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(24.0),
       children: [
-        //const SectionHeader(label: AppStrings.sectionEpoch),
         SectionHeader(label: l10n.sectionEpoch),
         const SizedBox(height: 8),
         TimeRow(
-          //label: AppStrings.labelUnixSeconds,
           label: l10n.labelUnixSeconds,
           value: unix.toString(),
           useThousands: thousandsSep,
           info: l10n.infoUnixSeconds,
-          // info: 'Unix time counts the seconds elapsed since the Unix epoch: '
-          //     '1970-01-01 00:00:00 UTC. It does not account for leap seconds.',
         ),
         const Divider(height: 40),
-        //const SectionHeader(label: AppStrings.sectionAtomicGps),
         SectionHeader(label: l10n.sectionAtomicGps),
         const SizedBox(height: 8),
         TimeRow(
-          //label: AppStrings.labelTai,
           label: l10n.labelTai,
           value: tai.toString(),
           useThousands: thousandsSep,
           info: l10n.infoTai,
-          // info: 'International Atomic Time (TAI) is a continuous time scale '
-          //     'based on atomic clocks. It currently runs 37 seconds ahead of UTC, '
-          //     'the difference growing each time a leap second is added to UTC.',
         ),
         const SizedBox(height: 12),
         TimeRow(
-          //label: AppStrings.labelGps,
           label: l10n.labelGps,
           value: gps.toString(),
           useThousands: thousandsSep,
           info: l10n.infoGps,
-          // info: 'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does '
-          //     'not include leap seconds. It currently runs 18 seconds ahead of UTC.',
         ),
       ],
     );
