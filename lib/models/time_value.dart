@@ -65,22 +65,6 @@ class MainTabEntry {
     return MainTabEntry(type: type, zone: zone);
   }
 
-  // Internal key-based label, used for persistence only.
-  String get _rawLabel {
-    final typeStr = switch (type) {
-      ValueType.date      => 'Date',
-      ValueType.time      => 'Time',
-      ValueType.daySecond => 'Day second',
-    };
-    final zoneStr = switch (zone) {
-      ZoneLocal()                    => 'local',
-      ZoneUtc()                      => 'UTC',
-      ZoneNamed(ianaZone: final z)   =>
-          z.split('/').last.replaceAll('_', ' '),
-    };
-    return '$typeStr ($zoneStr)';
-  }
-
   // Localized label for display in the UI.
   String localizedLabel(AppLocalizations l10n) {
     final typeLabel = switch (type) {

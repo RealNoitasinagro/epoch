@@ -19,11 +19,12 @@ class TimeRow extends StatelessWidget {
 
   // Formats a numeric string with thousands separators if useThousands is set
   // and the value is a plain integer. Non-numeric values are returned as-is.
-  String _displayValue() {
+  String _displayValue(BuildContext context) {
     if (!useThousands) return value;
     final n = int.tryParse(value);
     if (n == null) return value;
-    return NumberFormat('#,###').format(n);
+    final locale = Localizations.localeOf(context).toString();
+    return NumberFormat.decimalPattern(locale).format(n);
   }
 
   void _copyToClipboard(BuildContext context, AppLocalizations l10n) {
@@ -73,7 +74,7 @@ class TimeRow extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                _displayValue(),
+                _displayValue(context),
                 style: textTheme.headlineSmall?.copyWith(
                   fontFamily: 'monospace',
                   fontWeight: FontWeight.w500,
