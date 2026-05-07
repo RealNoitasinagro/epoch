@@ -80,9 +80,14 @@
   "labelHours": "Std",
   "labelMinutes": "Min",
   "labelSeconds": "Sek",
-  "infoBinaryClock": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das wertvollste.",
+  "infoBinaryClock": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.",
   "sectionDoomsday": "Weltuntergangsuhr",
   "labelDoomsdayClock": "Zeit bis Mitternacht",
-  "infoDoomsday": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 89 Sekunden vor Mitternacht gestellt (Stand Jan. 2025).",
-  "doomsdayLink": "→ thebulletin.org/doomsday-clock"
+  "infoDoomsday": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).",
+  "doomsdayLink": "→ thebulletin.org/doomsday-clock",
+  "labelBinaryClockColumns": "Binäruhr (Spalten)",
+  "labelBinaryClockBcd": "Binäruhr (BCD)",
+  "labelBinaryClockString": "Binärzeit (String)",
+  "infoBinaryClockBcd": "Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.",
+  "infoBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111."
 }

@@ -232,7 +232,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoBinaryClock =>
-      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das wertvollste.';
+      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
 
   @override
   String get sectionDoomsday => 'Weltuntergangsuhr';
@@ -242,8 +242,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoDoomsday =>
-      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 89 Sekunden vor Mitternacht gestellt (Stand Jan. 2025).';
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
 
   @override
   String get doomsdayLink => '→ thebulletin.org/doomsday-clock';
+
+  @override
+  String get labelBinaryClockColumns => 'Binäruhr (Spalten)';
+
+  @override
+  String get labelBinaryClockBcd => 'Binäruhr (BCD)';
+
+  @override
+  String get labelBinaryClockString => 'Binärzeit (String)';
+
+  @override
+  String get infoBinaryClockBcd =>
+      'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
+
+  @override
+  String get infoBinaryClockString =>
+      'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
 }

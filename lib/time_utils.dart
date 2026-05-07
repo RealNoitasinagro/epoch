@@ -58,4 +58,32 @@ class TimeUtils {
     seconds: toBin(dt.second, 6),
     );
   }
+
+  /// Binary clock string representation, e.g. "10:110000:10111".
+  static String binaryTimeString(DateTime dt) {
+    String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
+    // Remove leading zeros from hours only, keep minutes/seconds padded.
+    final h = dt.hour.toRadixString(2);
+    final m = toBin(dt.minute, 6);
+    final s = toBin(dt.second, 6);
+    return '$h:$m:$s';
+  }
+
+  /// BCD (two-column) binary clock: each decimal digit as separate 4-bit value.
+  /// Returns pairs (tens, units) for hours, minutes, seconds.
+  static ({
+  String hourTens,   String hourUnits,
+  String minTens,    String minUnits,
+  String secTens,    String secUnits,
+  }) bcdTime(DateTime dt) {
+    String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
+    return (
+    hourTens:  toBin(dt.hour   ~/ 10, 2),
+    hourUnits: toBin(dt.hour    % 10, 4),
+    minTens:   toBin(dt.minute ~/ 10, 3),
+    minUnits:  toBin(dt.minute  % 10, 4),
+    secTens:   toBin(dt.second ~/ 10, 3),
+    secUnits:  toBin(dt.second  % 10, 4),
+    );
+  }
 }

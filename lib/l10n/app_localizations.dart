@@ -539,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoDoomsday.
   ///
   /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 89 seconds to midnight (as of Jan 2025).'**
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
   String get infoDoomsday;
 
   /// No description provided for @doomsdayLink.
@@ -547,6 +547,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'→ thebulletin.org/doomsday-clock'**
   String get doomsdayLink;
+
+  /// No description provided for @labelBinaryClockColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary clock (columns)'**
+  String get labelBinaryClockColumns;
+
+  /// No description provided for @labelBinaryClockBcd.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary clock (BCD)'**
+  String get labelBinaryClockBcd;
+
+  /// No description provided for @labelBinaryClockString.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary time (string)'**
+  String get labelBinaryClockString;
+
+  /// No description provided for @infoBinaryClockBcd.
+  ///
+  /// In en, this message translates to:
+  /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
+  String get infoBinaryClockBcd;
+
+  /// No description provided for @infoBinaryClockString.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
+  String get infoBinaryClockString;
 }
 
 class _AppLocalizationsDelegate

@@ -83,6 +83,11 @@
   "infoBinaryClock": "Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.",
   "sectionDoomsday": "Doomsday Clock",
   "labelDoomsdayClock": "Time to midnight",
-  "infoDoomsday": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 89 seconds to midnight (as of Jan 2025).",
-  "doomsdayLink": "→ thebulletin.org/doomsday-clock"
+  "infoDoomsday": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).",
+  "doomsdayLink": "→ thebulletin.org/doomsday-clock",
+  "labelBinaryClockColumns": "Binary clock (columns)",
+  "labelBinaryClockBcd": "Binary clock (BCD)",
+  "labelBinaryClockString": "Binary time (string)",
+  "infoBinaryClockBcd": "Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.",
+  "infoBinaryClockString": "Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111."
 }

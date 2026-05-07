@@ -242,8 +242,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoDoomsday =>
-      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 89 seconds to midnight (as of Jan 2025).';
+      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
 
   @override
   String get doomsdayLink => '→ thebulletin.org/doomsday-clock';
+
+  @override
+  String get labelBinaryClockColumns => 'Binary clock (columns)';
+
+  @override
+  String get labelBinaryClockBcd => 'Binary clock (BCD)';
+
+  @override
+  String get labelBinaryClockString => 'Binary time (string)';
+
+  @override
+  String get infoBinaryClockBcd =>
+      'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
+
+  @override
+  String get infoBinaryClockString =>
+      'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
 }
