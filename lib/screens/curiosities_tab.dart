@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
+import '../widgets/info_row.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_row.dart';
 
@@ -28,22 +29,18 @@ class CuriositiesTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionBinaryClock),
         const SizedBox(height: 8),
-        // Column-style binary clock (one column per unit).
-        TimeRow(
+        InfoRow(
           label: l10n.labelBinaryClockColumns,
-          value: '',
           info: l10n.infoBinaryClock,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         _ColumnBinaryClock(now: now, l10n: l10n),
         const SizedBox(height: 24),
-        // BCD-style binary clock (two columns per digit, like Wikipedia).
-        TimeRow(
+        InfoRow(
           label: l10n.labelBinaryClockBcd,
-          value: '',
           info: l10n.infoBinaryClockBcd,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         _BcdBinaryClock(now: now, l10n: l10n),
         const SizedBox(height: 24),
         // Compact string representation.
@@ -142,26 +139,23 @@ class _BcdBinaryClock extends StatelessWidget {
     final dimColor = Theme.of(context).colorScheme.outline;
 
     Widget bitColumn(String bits, int totalRows) {
-      final padding = totalRows - bits.length;
       return Column(
-        children: [
-          ...List.generate(padding, (_) => const SizedBox(height: 28)),
-          ...bits.split('').map((b) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 3),
-            child: Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: b == '1' ? litColor : dimColor.withAlpha(60),
-                border: Border.all(
-                  color: b == '1' ? litColor : dimColor,
-                  width: 1.5,
-                ),
+        mainAxisSize: MainAxisSize.min,
+        children: bits.split('').map((b) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Container(
+            width: 22,
+            height: 22,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: b == '1' ? litColor : dimColor.withAlpha(60),
+              border: Border.all(
+                color: b == '1' ? litColor : dimColor,
+                width: 1.5,
               ),
             ),
-          )),
-        ],
+          ),
+        )).toList(),
       );
     }
 
@@ -196,7 +190,7 @@ class _BcdBinaryClock extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end, // align bottoms
           children: [
             bitColumn(bcd.hourTens,  2),
             const SizedBox(width: 6),
