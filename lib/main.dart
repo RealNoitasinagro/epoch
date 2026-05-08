@@ -32,7 +32,7 @@ ThemeData _nightTheme() => ThemeData(
     outlineVariant: _nightRedDim,
   ),
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.grey[900],
+    //backgroundColor: Colors.grey[900],
     foregroundColor: _nightRed,
     iconTheme: const IconThemeData(color: _nightRed),
   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 import '../widgets/section_header.dart';
@@ -8,9 +9,18 @@ class AstronomyTab extends StatelessWidget {
   final DateTime now;
   const AstronomyTab({super.key, required this.now});
 
+  String _formatDecimal(double value, String locale, int decimals) {
+    final fmt = NumberFormat.decimalPatternDigits(
+      locale: locale,
+      decimalDigits: decimals,
+    );
+    return fmt.format(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
     final utcNow = now.toUtc();
 
     final gmst = TimeUtils.gmst(utcNow);
@@ -32,13 +42,15 @@ class AstronomyTab extends StatelessWidget {
         const SizedBox(height: 8),
         TimeRow(
           label: l10n.labelJd,
-          value: jd.toStringAsFixed(5),
+          //value: jd.toStringAsFixed(5),
+          value: _formatDecimal(jd, locale, 5),
           info: l10n.infoJd,
         ),
         const SizedBox(height: 12),
         TimeRow(
           label: l10n.labelMjd,
-          value: mjd.toStringAsFixed(5),
+          //value: mjd.toStringAsFixed(5),
+          value: _formatDecimal(mjd, locale, 5),
           info: l10n.infoMjd,
         ),
       ],

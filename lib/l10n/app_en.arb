@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "appName": "Epoch",
-  "tabMain": "Main",
+  "tabMain": "Civil",
   "tabTechnical": "Technical",
   "tabAstronomy": "Astronomy",
   "tabCuriosities": "Curiosities",

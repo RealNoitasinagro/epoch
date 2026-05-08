@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @tabMain.
   ///
   /// In en, this message translates to:
-  /// **'Main'**
+  /// **'Civil'**
   String get tabMain;
 
   /// No description provided for @tabTechnical.

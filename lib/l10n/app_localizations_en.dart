@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Epoch';
 
   @override
-  String get tabMain => 'Main';
+  String get tabMain => 'Civil';
 
   @override
   String get tabTechnical => 'Technical';

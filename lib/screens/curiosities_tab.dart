@@ -23,7 +23,8 @@ class CuriositiesTab extends StatelessWidget {
         const SizedBox(height: 8),
         TimeRow(
           label: l10n.labelSwatchBeats,
-          value: '@${beats.toStringAsFixed(2)}',
+          //value: '@${beats.toStringAsFixed(2)}',
+          value: '@${beats.toStringAsFixed(0)}',
           info: l10n.infoSwatch,
         ),
         const Divider(height: 40),
