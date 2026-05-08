@@ -86,4 +86,59 @@ class TimeUtils {
     secUnits:  toBin(dt.second  % 10, 4),
     );
   }
+
+
+  /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).
+  /// Based on the IAU 1982 formula, accurate to ~0.1s for dates near J2000.
+  static double gmst(DateTime utc) {
+    final jd = julianDate(utc.toUtc());
+    // Julian centuries since J2000.0
+    final t = (jd - 2451545.0) / 36525.0;
+    // GMST in seconds at 0h UT
+    double gmstSec = 24110.54841
+        + 8640184.812866 * t
+        + 0.093104 * t * t
+        - 6.2e-6 * t * t * t;
+    // Add UT seconds elapsed today.
+    final ut = utc.toUtc();
+    final secondsToday =
+        ut.hour * 3600 + ut.minute * 60 + ut.second + ut.millisecond / 1000.0;
+    gmstSec += secondsToday * 1.00273790935;
+    // Normalize to 0–24h.
+    final hours = (gmstSec / 3600.0) % 24.0;
+    return hours < 0 ? hours + 24.0 : hours;
+  }
+
+  /// Formats a fractional hour value as HH:MM:SS.
+  static String hoursToHms(double hours) {
+    final total = (hours * 3600).round();
+    final h = (total ~/ 3600) % 24;
+    final m = (total % 3600) ~/ 60;
+    final s = total % 60;
+    return '${h.toString().padLeft(2, '0')}:'
+        '${m.toString().padLeft(2, '0')}:'
+        '${s.toString().padLeft(2, '0')}';
+  }
+
+  /// Julian Date for a given UTC DateTime.
+  static double julianDate(DateTime utc) {
+    final y = utc.year;
+    final mo = utc.month;
+    final d = utc.day +
+        (utc.hour + utc.minute / 60.0 + utc.second / 3600.0) / 24.0;
+    final a = ((14 - mo) / 12).floor();
+    final yy = y + 4800 - a;
+    final mm = mo + 12 * a - 3;
+    return d +
+        ((153 * mm + 2) / 5).floor() +
+        365 * yy +
+        (yy / 4).floor() -
+        (yy / 100).floor() +
+        (yy / 400).floor() -
+        32045;
+  }
+
+  /// Modified Julian Date: JD − 2400000.5
+  static double modifiedJulianDate(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2400000.5;
 }

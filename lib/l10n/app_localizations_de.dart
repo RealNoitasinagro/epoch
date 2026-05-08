@@ -263,4 +263,31 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoBinaryClockString =>
       'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+
+  @override
+  String get sectionSidereal => 'Sternzeit';
+
+  @override
+  String get sectionJulian => 'Julianisches Datum';
+
+  @override
+  String get labelGmst => 'GMST';
+
+  @override
+  String get labelJd => 'Julianisches Datum';
+
+  @override
+  String get labelMjd => 'Modifiziertes Julianisches Datum';
+
+  @override
+  String get infoGmst =>
+      'Greenwich Mean Sidereal Time – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+
+  @override
+  String get infoJd =>
+      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+
+  @override
+  String get infoMjd =>
+      'Modifiziertes Julianisches Datum = JD − 2400000.5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.';
 }

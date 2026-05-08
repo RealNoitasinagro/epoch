@@ -577,6 +577,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoBinaryClockString;
+
+  /// No description provided for @sectionSidereal.
+  ///
+  /// In en, this message translates to:
+  /// **'Sidereal Time'**
+  String get sectionSidereal;
+
+  /// No description provided for @sectionJulian.
+  ///
+  /// In en, this message translates to:
+  /// **'Julian Date'**
+  String get sectionJulian;
+
+  /// No description provided for @labelGmst.
+  ///
+  /// In en, this message translates to:
+  /// **'GMST'**
+  String get labelGmst;
+
+  /// No description provided for @labelJd.
+  ///
+  /// In en, this message translates to:
+  /// **'Julian Date'**
+  String get labelJd;
+
+  /// No description provided for @labelMjd.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified Julian Date'**
+  String get labelMjd;
+
+  /// No description provided for @infoGmst.
+  ///
+  /// In en, this message translates to:
+  /// **'Greenwich Mean Sidereal Time – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
+  String get infoGmst;
+
+  /// No description provided for @infoJd.
+  ///
+  /// In en, this message translates to:
+  /// **'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.'**
+  String get infoJd;
+
+  /// No description provided for @infoMjd.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
+  String get infoMjd;
 }
 
 class _AppLocalizationsDelegate

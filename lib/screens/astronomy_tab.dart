@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
+import '../time_utils.dart';
+import '../widgets/section_header.dart';
+import '../widgets/time_row.dart';
 
 class AstronomyTab extends StatelessWidget {
   final DateTime now;
@@ -6,8 +10,38 @@ class AstronomyTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Astronomy – coming soon'),
+    final l10n = AppLocalizations.of(context)!;
+    final utcNow = now.toUtc();
+
+    final gmst = TimeUtils.gmst(utcNow);
+    final jd = TimeUtils.julianDate(utcNow);
+    final mjd = TimeUtils.modifiedJulianDate(utcNow);
+
+    return ListView(
+      padding: const EdgeInsets.all(24.0),
+      children: [
+        SectionHeader(label: l10n.sectionSidereal),
+        const SizedBox(height: 8),
+        TimeRow(
+          label: l10n.labelGmst,
+          value: TimeUtils.hoursToHms(gmst),
+          info: l10n.infoGmst,
+        ),
+        const Divider(height: 40),
+        SectionHeader(label: l10n.sectionJulian),
+        const SizedBox(height: 8),
+        TimeRow(
+          label: l10n.labelJd,
+          value: jd.toStringAsFixed(5),
+          info: l10n.infoJd,
+        ),
+        const SizedBox(height: 12),
+        TimeRow(
+          label: l10n.labelMjd,
+          value: mjd.toStringAsFixed(5),
+          info: l10n.infoMjd,
+        ),
+      ],
     );
   }
 }

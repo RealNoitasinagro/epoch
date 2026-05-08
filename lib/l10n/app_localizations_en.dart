@@ -263,4 +263,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoBinaryClockString =>
       'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
+
+  @override
+  String get sectionSidereal => 'Sidereal Time';
+
+  @override
+  String get sectionJulian => 'Julian Date';
+
+  @override
+  String get labelGmst => 'GMST';
+
+  @override
+  String get labelJd => 'Julian Date';
+
+  @override
+  String get labelMjd => 'Modified Julian Date';
+
+  @override
+  String get infoGmst =>
+      'Greenwich Mean Sidereal Time – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.';
+
+  @override
+  String get infoJd =>
+      'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.';
+
+  @override
+  String get infoMjd =>
+      'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
 }

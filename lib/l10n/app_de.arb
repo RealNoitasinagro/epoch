@@ -89,5 +89,13 @@
   "labelBinaryClockBcd": "Binäruhr (BCD)",
   "labelBinaryClockString": "Binärzeit (String)",
   "infoBinaryClockBcd": "Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.",
-  "infoBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111."
+  "infoBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.",
+  "sectionSidereal": "Sternzeit",
+  "sectionJulian": "Julianisches Datum",
+  "labelGmst": "GMST",
+  "labelJd": "Julianisches Datum",
+  "labelMjd": "Modifiziertes Julianisches Datum",
+  "infoGmst": "Greenwich Mean Sidereal Time – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
+  "infoJd": "Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.",
+  "infoMjd": "Modifiziertes Julianisches Datum = JD − 2400000.5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet."
 }
