@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
+  /// No description provided for @settingsThemeNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night (red)'**
+  String get settingsThemeNight;
+
   /// No description provided for @settingsThousandsSep.
   ///
   /// In en, this message translates to:

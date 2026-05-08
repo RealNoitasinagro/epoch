@@ -451,10 +451,10 @@ class _EntryPickerState extends State<_EntryPicker> {
             const Divider(),
             ...timezonesByRegion.keys.map((region) => ListTile(
               title: Text(region),
-              trailing: const Icon(
+              trailing: Icon(
                 Icons.chevron_right,
                 size: 18,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
               ),
               onTap: () => _selectRegion(region),
             )),
@@ -536,7 +536,7 @@ class _DialogTitle extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .labelSmall
-                  ?.copyWith(color: Colors.grey),
+                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
             ),
             Text(
               title,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
+import '../models/app_settings.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,11 +12,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late ThemeMode _themeMode;
+  late AppThemeMode _themeMode;
   late bool _thousandsSep;
   late bool _hourFormat24;
   Locale? _locale;
-
+  
   static const _fallbackVersion = '1.0.0';
 
   @override
@@ -84,21 +85,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
-            trailing: DropdownButton<ThemeMode>(
+            trailing: DropdownButton<AppThemeMode>(
               value: _themeMode,
               underline: const SizedBox.shrink(),
               items: [
                 DropdownMenuItem(
-                  value: ThemeMode.system,
+                  value: AppThemeMode.system,
                   child: Text(l10n.settingsThemeSystem),
                 ),
                 DropdownMenuItem(
-                  value: ThemeMode.light,
+                  value: AppThemeMode.light,
                   child: Text(l10n.settingsThemeLight),
                 ),
                 DropdownMenuItem(
-                  value: ThemeMode.dark,
+                  value: AppThemeMode.dark,
                   child: Text(l10n.settingsThemeDark),
+                ),
+                DropdownMenuItem(
+                  value: AppThemeMode.night,
+                  child: Text(l10n.settingsThemeNight),
                 ),
               ],
               onChanged: (mode) {

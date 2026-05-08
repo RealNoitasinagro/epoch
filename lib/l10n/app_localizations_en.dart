@@ -69,6 +69,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeDark => 'Dark';
 
   @override
+  String get settingsThemeNight => 'Night (red)';
+
+  @override
   String get settingsThousandsSep => 'Thousands separator';
 
   @override

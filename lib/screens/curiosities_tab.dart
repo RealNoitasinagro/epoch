@@ -88,7 +88,7 @@ class _ColumnBinaryClock extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .labelSmall
-                ?.copyWith(color: Colors.grey),
+                ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150),),
           ),
           const SizedBox(height: 6),
           // Empty spacers for alignment.
@@ -167,7 +167,7 @@ class _BcdBinaryClock extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .labelSmall
-            ?.copyWith(color: Colors.grey),
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150),),
         textAlign: TextAlign.center,
       ),
     );

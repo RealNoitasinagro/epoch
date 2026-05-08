@@ -14,10 +14,57 @@ void main() {
   runApp(const EpochApp());
 }
 
+// Night mode color: dark red, easy on dark-adapted eyes.
+const _nightRed = Color(0xFFCC1010);
+const _nightRedDim = Color(0xFF7A0000);
+
+ThemeData _nightTheme() => ThemeData(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: Colors.black,
+  colorScheme: ColorScheme.dark(
+    surface: Colors.black,
+    primary: _nightRed,
+    onPrimary: Colors.black,
+    secondary: _nightRed,
+    onSecondary: Colors.black,
+    onSurface: _nightRed,
+    outline: _nightRedDim,
+  ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.grey[900],
+    foregroundColor: _nightRed,
+    iconTheme: const IconThemeData(color: _nightRed),
+  ),
+  tabBarTheme: const TabBarThemeData(
+    labelColor: _nightRed,
+    unselectedLabelColor: _nightRedDim,
+    indicatorColor: _nightRed,
+  ),
+  iconTheme: const IconThemeData(color: _nightRed),
+  textTheme: const TextTheme(
+    headlineSmall: TextStyle(
+      color: _nightRed,
+      fontFamily: 'monospace',
+    ),
+    bodyMedium: TextStyle(color: _nightRed),
+    bodySmall: TextStyle(color: _nightRedDim),
+    labelSmall: TextStyle(color: _nightRedDim),
+    labelMedium: TextStyle(color: _nightRed),
+  ),
+  dividerColor: _nightRedDim,
+  checkboxTheme: CheckboxThemeData(
+    fillColor: WidgetStateProperty.all(_nightRed),
+  ),
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.all(_nightRed),
+    trackColor: WidgetStateProperty.all(_nightRedDim),
+  ),
+  useMaterial3: true,
+);
+
 class EpochApp extends StatefulWidget {
   const EpochApp({super.key});
 
-  // Allows child widgets to call EpochApp.of(context).setThemeMode(...)
   static _EpochAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_EpochAppState>()!;
 
@@ -26,11 +73,11 @@ class EpochApp extends StatefulWidget {
 }
 
 class _EpochAppState extends State<EpochApp> {
-  ThemeMode _themeMode = ThemeMode.system;
+  AppThemeMode _themeMode = AppThemeMode.system;
   bool _thousandsSep = true;
   bool _hourFormat24 = true;
   bool _settingsLoaded = false;
-  Locale _locale = const Locale('en'); // default to English
+  Locale _locale = const Locale('en');
 
   @override
   void initState() {
@@ -39,21 +86,20 @@ class _EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadSettings() async {
-    final theme = await loadThemeMode();
+    final theme    = await loadThemeMode();
     final thousands = await loadThousandsSep();
-    final hour24 = await loadHourFormat24();
-    final locale = await loadLocale() ?? const Locale('en');
-
+    final hour24   = await loadHourFormat24();
+    final locale   = await loadLocale() ?? const Locale('en');
     setState(() {
-      _themeMode = theme;
-      _thousandsSep = thousands;
-      _hourFormat24 = hour24;
-      _locale = locale;
+      _themeMode      = theme;
+      _thousandsSep   = thousands;
+      _hourFormat24   = hour24;
+      _locale         = locale;
       _settingsLoaded = true;
     });
   }
 
-  void setThemeMode(ThemeMode mode) {
+  void setThemeMode(AppThemeMode mode) {
     setState(() => _themeMode = mode);
     saveThemeMode(mode);
   }
@@ -73,10 +119,21 @@ class _EpochAppState extends State<EpochApp> {
     saveLocale(locale.languageCode);
   }
 
-  ThemeMode get themeMode => _themeMode;
+  AppThemeMode get themeMode => _themeMode;
   bool get thousandsSep => _thousandsSep;
   bool get hourFormat24 => _hourFormat24;
   Locale? get locale => _locale;
+
+  // Resolves AppThemeMode to Flutter's ThemeMode for MaterialApp.
+  // Night mode uses ThemeMode.dark + a custom ThemeData.
+  ThemeMode get _flutterThemeMode => switch (_themeMode) {
+    AppThemeMode.light  => ThemeMode.light,
+    AppThemeMode.dark   => ThemeMode.dark,
+    AppThemeMode.night  => ThemeMode.dark,
+    AppThemeMode.system => ThemeMode.system,
+  };
+
+  bool get isNightMode => _themeMode == AppThemeMode.night;
 
   @override
   Widget build(BuildContext context) {
@@ -86,24 +143,24 @@ class _EpochAppState extends State<EpochApp> {
       );
     }
     return MaterialApp(
-      title: 'Epoch',  // currently intentionally hard-coded
+      title: 'Epoch',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData(
+      darkTheme: isNightMode ? _nightTheme() : ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blueGrey,
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
       ),
-      themeMode: _themeMode,
+      themeMode: _flutterThemeMode,
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen()
+      home: const HomeScreen(),
     );
   }
 }

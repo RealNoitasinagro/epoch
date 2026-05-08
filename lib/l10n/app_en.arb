@@ -20,6 +20,7 @@
   "settingsThemeSystem": "System",
   "settingsThemeLight": "Light",
   "settingsThemeDark": "Dark",
+  "settingsThemeNight": "Night (red)",
   "settingsThousandsSep": "Thousands separator",
   "settingsThousandsSepSub": "e.g. 1,746,000 instead of 1746000",
   "settingsHourFormat": "24-hour format",

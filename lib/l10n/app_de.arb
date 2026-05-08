@@ -20,6 +20,7 @@
   "settingsThemeSystem": "System",
   "settingsThemeLight": "Hell",
   "settingsThemeDark": "Dunkel",
+  "settingsThemeNight": "Nacht (Rot)",
   "settingsThousandsSep": "Tausendertrennzeichen",
   "settingsThousandsSepSub": "z. B. 1.746.000 statt 1746000",
   "settingsHourFormat": "24-Stunden-Format",

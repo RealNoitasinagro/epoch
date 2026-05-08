@@ -69,6 +69,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsThemeDark => 'Dunkel';
 
   @override
+  String get settingsThemeNight => 'Nacht (Rot)';
+
+  @override
   String get settingsThousandsSep => 'Tausendertrennzeichen';
 
   @override

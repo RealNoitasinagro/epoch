@@ -40,7 +40,7 @@ class InfoRow extends StatelessWidget {
                 label.toUpperCase(),
                 style: textTheme.labelSmall?.copyWith(
                   letterSpacing: 1.5,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
                 ),
               ),
             ],
@@ -48,7 +48,7 @@ class InfoRow extends StatelessWidget {
         ),
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
-          color: Colors.grey,
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.aboutThisValue,
           onPressed: () => _showInfo(context, l10n),
         ),
