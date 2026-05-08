@@ -16,7 +16,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _thousandsSep;
   late bool _hourFormat24;
   Locale? _locale;
-  
+
   static const _fallbackVersion = '1.0.0';
 
   @override
@@ -70,6 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: DropdownButton<String>(
               value: _locale?.languageCode ?? 'en',
               underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
               items: const [
                 DropdownMenuItem(value: 'en', child: Text('English')),
                 DropdownMenuItem(value: 'de', child: Text('Deutsch')),
@@ -88,6 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: DropdownButton<AppThemeMode>(
               value: _themeMode,
               underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
               items: [
                 DropdownMenuItem(
                   value: AppThemeMode.system,

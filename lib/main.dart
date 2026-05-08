@@ -29,6 +29,7 @@ ThemeData _nightTheme() => ThemeData(
     onSecondary: Colors.black,
     onSurface: _nightRed,
     outline: _nightRedDim,
+    outlineVariant: _nightRedDim,
   ),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.grey[900],
@@ -51,7 +52,9 @@ ThemeData _nightTheme() => ThemeData(
     labelSmall: TextStyle(color: _nightRedDim),
     labelMedium: TextStyle(color: _nightRed),
   ),
-  dividerColor: _nightRedDim,
+  dividerTheme: const DividerThemeData(
+    color: _nightRedDim,
+  ),
   checkboxTheme: CheckboxThemeData(
     fillColor: WidgetStateProperty.all(_nightRed),
   ),
