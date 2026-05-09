@@ -3,7 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 
 // The three displayable value types.
-enum ValueType { date, time, daySecond }
+enum ValueType { date, time, daySecond, binaryClockString }
 
 // Zone specification: system local, UTC, or a named IANA zone.
 sealed class ZoneSpec {
@@ -68,9 +68,10 @@ class MainTabEntry {
   // Localized label for display in the UI.
   String localizedLabel(AppLocalizations l10n) {
     final typeLabel = switch (type) {
-      ValueType.date      => l10n.valueTypeDate,
-      ValueType.time      => l10n.valueTypeTime,
-      ValueType.daySecond => l10n.labelDaySecond,
+      ValueType.date              => l10n.valueTypeDate,
+      ValueType.time              => l10n.valueTypeTime,
+      ValueType.daySecond         => l10n.valueTypeDaySecond,
+      ValueType.binaryClockString => l10n.valueTypeBinaryClockString
     };
     final zoneLabel = switch (zone) {
       ZoneLocal()                    => l10n.labelLocal.toLowerCase(),
@@ -83,9 +84,10 @@ class MainTabEntry {
 
   // Localized info text for the (i) dialog.
   String localizedInfo(AppLocalizations l10n) => switch (type) {
-    ValueType.date      => l10n.infoLocalDate,
-    ValueType.time      => l10n.infoLocalTime,
-    ValueType.daySecond => l10n.infoDaySecond,
+    ValueType.date              => l10n.infoLocalDate,
+    ValueType.time              => l10n.infoLocalTime,
+    ValueType.daySecond         => l10n.infoDaySecond,
+    ValueType.binaryClockString => l10n.infoBinaryClockString
   };
 
   // Computes the current display value for this entry.
@@ -134,6 +136,7 @@ class MainTabEntry {
       '$hh:$mm:$ss $tzSuffix',
       ValueType.daySecond =>
           TimeUtils.daySecond(dt).toString(),
+      ValueType.binaryClockString => TimeUtils.binaryTimeString(dt),
     };
   }
 

@@ -124,6 +124,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeDaySecond => 'Day second';
 
   @override
+  String get valueTypeBinaryClockString => 'Binary time (string)';
+
+  @override
   String get addValue => 'Add value';
 
   @override

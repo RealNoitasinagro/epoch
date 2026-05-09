@@ -38,6 +38,7 @@
   "valueTypeDate": "Date",
   "valueTypeTime": "Time",
   "valueTypeDaySecond": "Day second",
+  "valueTypeBinaryClockString": "Binary time (string)",
   "addValue": "Add value",
   "cancel": "Cancel",
   "back": "Back",

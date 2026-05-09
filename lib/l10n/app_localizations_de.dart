@@ -124,6 +124,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeDaySecond => 'Tagessekunde';
 
   @override
+  String get valueTypeBinaryClockString => 'Binärzeit (String)';
+
+  @override
   String get addValue => 'Wert hinzufügen';
 
   @override

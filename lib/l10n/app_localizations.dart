@@ -326,6 +326,12 @@ abstract class AppLocalizations {
   /// **'Day second'**
   String get valueTypeDaySecond;
 
+  /// No description provided for @valueTypeBinaryClockString.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary time (string)'**
+  String get valueTypeBinaryClockString;
+
   /// No description provided for @addValue.
   ///
   /// In en, this message translates to:

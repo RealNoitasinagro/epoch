@@ -35,7 +35,9 @@ class TzEntry {
     if (ianaZone.toLowerCase().contains(q)) return true;
     if (offsetWinter.contains(q) || offsetSummer.contains(q)) return true;
     if (abbrWinter.toLowerCase().contains(q) ||
-        abbrSummer.toLowerCase().contains(q)) return true;
+        abbrSummer.toLowerCase().contains(q)) {
+      return true;
+    }
     return terms.any((t) => t.contains(q));
   }
 }

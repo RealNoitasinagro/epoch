@@ -347,13 +347,13 @@ enum _Step { valueType, zone }
 class _EntryPickerState extends State<_EntryPicker> {
   _Step _step = _Step.valueType;
   ValueType? _type;
-  String? _region;
 
   String _typeLabel(AppLocalizations l10n) =>
       switch (_type) {
         ValueType.date => l10n.valueTypeDate,
         ValueType.time => l10n.valueTypeTime,
-        ValueType.daySecond => l10n.labelDaySecond,
+        ValueType.daySecond => l10n.valueTypeDaySecond,
+        ValueType.binaryClockString => l10n.valueTypeDaySecond,
         null => '',
       };
 
@@ -396,6 +396,7 @@ class _EntryPickerState extends State<_EntryPicker> {
             ValueType.date => l10n.valueTypeDate,
             ValueType.time => l10n.valueTypeTime,
             ValueType.daySecond => l10n.valueTypeDaySecond,
+            ValueType.binaryClockString => l10n.valueTypeBinaryClockString
           };
           return SimpleDialogOption(
             onPressed: () => _selectType(t),

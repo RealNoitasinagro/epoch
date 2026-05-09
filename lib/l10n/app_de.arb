@@ -38,6 +38,7 @@
   "valueTypeDate": "Datum",
   "valueTypeTime": "Uhrzeit",
   "valueTypeDaySecond": "Tagessekunde",
+  "valueTypeBinaryClockString": "Binärzeit (String)",
   "addValue": "Wert hinzufügen",
   "cancel": "Abbrechen",
   "back": "Zurück",
