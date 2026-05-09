@@ -353,7 +353,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         ValueType.date => l10n.valueTypeDate,
         ValueType.time => l10n.valueTypeTime,
         ValueType.daySecond => l10n.valueTypeDaySecond,
-        ValueType.binaryClockString => l10n.valueTypeDaySecond,
+        ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
         null => '',
       };
 
