@@ -1,7 +1,7 @@
+import 'package:epoch/screens/timezone_search_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/time_value.dart';
 import '../models/main_tab_config.dart';
-import '../models/timezone_data.dart';
 import '../widgets/time_row.dart';
 import '../l10n/app_localizations.dart';
 
@@ -342,19 +342,20 @@ class _EntryPicker extends StatefulWidget {
   State<_EntryPicker> createState() => _EntryPickerState();
 }
 
-enum _Step { valueType, zone, city }
+enum _Step { valueType, zone }
 
 class _EntryPickerState extends State<_EntryPicker> {
   _Step _step = _Step.valueType;
   ValueType? _type;
   String? _region;
 
-  String _typeLabel(AppLocalizations l10n) => switch (_type) {
-    ValueType.date      => l10n.valueTypeDate,
-    ValueType.time      => l10n.valueTypeTime,
-    ValueType.daySecond => l10n.labelDaySecond,
-    null                => '',
-  };
+  String _typeLabel(AppLocalizations l10n) =>
+      switch (_type) {
+        ValueType.date => l10n.valueTypeDate,
+        ValueType.time => l10n.valueTypeTime,
+        ValueType.daySecond => l10n.labelDaySecond,
+        null => '',
+      };
 
   void _selectType(ValueType t) {
     setState(() {
@@ -363,19 +364,9 @@ class _EntryPickerState extends State<_EntryPicker> {
     });
   }
 
-  void _selectRegion(String region) {
-    setState(() {
-      _region = region;
-      _step = _Step.city;
-    });
-  }
-
   void _goBack() {
     setState(() {
-      if (_step == _Step.city) {
-        _step = _Step.zone;
-        _region = null;
-      } else if (_step == _Step.zone) {
+      if (_step == _Step.zone) {
         _step = _Step.valueType;
         _type = null;
       }
@@ -390,8 +381,7 @@ class _EntryPickerState extends State<_EntryPicker> {
   Widget build(BuildContext context) {
     return switch (_step) {
       _Step.valueType => _buildValueTypeStep(),
-      _Step.zone      => _buildZoneStep(),
-      _Step.city      => _buildCityStep(),
+      _Step.zone => _buildZoneStep(),
     };
   }
 
@@ -403,8 +393,8 @@ class _EntryPickerState extends State<_EntryPicker> {
       children: [
         ...ValueType.values.map((t) {
           final label = switch (t) {
-            ValueType.date      => l10n.valueTypeDate,
-            ValueType.time      => l10n.valueTypeTime,
+            ValueType.date => l10n.valueTypeDate,
+            ValueType.time => l10n.valueTypeTime,
             ValueType.daySecond => l10n.valueTypeDaySecond,
           };
           return SimpleDialogOption(
@@ -448,50 +438,20 @@ class _EntryPickerState extends State<_EntryPicker> {
               title: Text(l10n.zoneUtc),
               onTap: () => _confirm(const ZoneUtc()),
             ),
-            const Divider(),
-            ...timezonesByRegion.keys.map((region) => ListTile(
-              title: Text(region),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 18,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-              ),
-              onTap: () => _selectRegion(region),
-            )),
+            ListTile(
+              title: Text(l10n.zoneOther),
+              trailing: const Icon(Icons.search),
+              onTap: () async {
+                final zone = await Navigator.push<String>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TimezoneSearchScreen(),
+                  ),
+                );
+                if (zone != null) _confirm(ZoneNamed(zone));
+              },
+            ),
           ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel),
-        ),
-      ],
-    );
-  }
-
-  // Step 3 – back goes to Step 2.
-  Widget _buildCityStep() {
-    final l10n = AppLocalizations.of(context)!;
-    final zones = timezonesByRegion[_region]!;
-    return AlertDialog(
-      titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
-      title: _DialogTitle(
-        superLabel: _typeLabel(l10n),
-        title: _region!,
-        onBack: _goBack,
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 8),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: zones
-              .map((z) => ListTile(
-            title: Text(friendlyZoneName(z)),
-            onTap: () => _confirm(ZoneNamed(z)),
-          ))
-              .toList(),
         ),
       ),
       actions: [

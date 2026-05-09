@@ -3,7 +3,7 @@
   "appName": "Epoch",
   "tabMain": "Civil",
   "tabTechnical": "Technical",
-  "tabAstronomy": "Astronomy",
+  "tabAstronomy": "Astronomical",
   "tabCuriosities": "Curiosities",
   "labelLocal": "Local",
   "labelUtc": "UTC",
@@ -98,5 +98,7 @@
   "labelMjd": "Modified Julian Date",
   "infoGmst": "Greenwich Mean Sidereal Time – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.",
   "infoJd": "Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.",
-  "infoMjd": "Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy."
+  "infoMjd": "Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.",
+  "timezoneSearchHint": "City, country, abbreviation or offset (e.g. UTC+5:30)",
+  "timezoneNoResults": "No matching timezone found."
 }

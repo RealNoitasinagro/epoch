@@ -3,7 +3,7 @@
   "appName": "Epoch",
   "tabMain": "Bürgerlich",
   "tabTechnical": "Technisch",
-  "tabAstronomy": "Astronomie",
+  "tabAstronomy": "Astronomisch",
   "tabCuriosities": "Kurioses",
   "labelLocal": "Lokal",
   "labelUtc": "UTC",
@@ -98,5 +98,7 @@
   "labelMjd": "Modifiziertes Julianisches Datum",
   "infoGmst": "Greenwich Mean Sidereal Time – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
   "infoJd": "Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.",
-  "infoMjd": "Modifiziertes Julianisches Datum = JD − 2400000.5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet."
+  "infoMjd": "Modifiziertes Julianisches Datum = JD − 2400000.5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.",
+  "timezoneSearchHint": "Stadt, Land, Kürzel oder Offset (z. B. UTC+5:30)",
+  "timezoneNoResults": "Keine passende Zeitzone gefunden."
 }

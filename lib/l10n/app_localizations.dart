@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// No description provided for @tabAstronomy.
   ///
   /// In en, this message translates to:
-  /// **'Astronomy'**
+  /// **'Astronomical'**
   String get tabAstronomy;
 
   /// No description provided for @tabCuriosities.
@@ -631,6 +631,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
   String get infoMjd;
+
+  /// No description provided for @timezoneSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'City, country, abbreviation or offset (e.g. UTC+5:30)'**
+  String get timezoneSearchHint;
+
+  /// No description provided for @timezoneNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching timezone found.'**
+  String get timezoneNoResults;
 }
 
 class _AppLocalizationsDelegate

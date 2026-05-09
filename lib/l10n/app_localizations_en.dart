@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabTechnical => 'Technical';
 
   @override
-  String get tabAstronomy => 'Astronomy';
+  String get tabAstronomy => 'Astronomical';
 
   @override
   String get tabCuriosities => 'Curiosities';
@@ -293,4 +293,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoMjd =>
       'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
+
+  @override
+  String get timezoneSearchHint =>
+      'City, country, abbreviation or offset (e.g. UTC+5:30)';
+
+  @override
+  String get timezoneNoResults => 'No matching timezone found.';
 }
