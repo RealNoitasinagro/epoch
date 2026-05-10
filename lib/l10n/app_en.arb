@@ -108,6 +108,8 @@
   "tabWatchlist": "Watchlist",
   "timezoneNoResults": "No matching timezone found.",
   "timezoneSearchHint": "City, country, abbreviation or offset (e.g. UTC+5:30)",
+  "valueTypeBinaryClockBcd": "Binary clock (BCD)",
+  "valueTypeBinaryClockColumns": "Binary clock (columns)",
   "valueTypeBinaryClockString": "Binary time (string)",
   "valueTypeDate": "Date",
   "valueTypeDaySecond": "Day second",

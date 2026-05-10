@@ -662,6 +662,18 @@ abstract class AppLocalizations {
   /// **'City, country, abbreviation or offset (e.g. UTC+5:30)'**
   String get timezoneSearchHint;
 
+  /// No description provided for @valueTypeBinaryClockBcd.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary clock (BCD)'**
+  String get valueTypeBinaryClockBcd;
+
+  /// No description provided for @valueTypeBinaryClockColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Binary clock (columns)'**
+  String get valueTypeBinaryClockColumns;
+
   /// No description provided for @valueTypeBinaryClockString.
   ///
   /// In en, this message translates to:

@@ -85,10 +85,10 @@ class _EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadSettings() async {
-    final theme    = await loadThemeMode();
+    final theme     = await loadThemeMode();
     final thousands = await loadThousandsSep();
-    final hour24   = await loadHourFormat24();
-    final locale   = await loadLocale() ?? const Locale('en');
+    final hour24    = await loadHourFormat24();
+    final locale    = await loadLocale() ?? const Locale('en');
     setState(() {
       _themeMode    = theme;
       _thousandsSep = thousands;
@@ -313,10 +313,10 @@ class _HomeScreenState extends State<HomeScreen> {
             tabAlignment: TabAlignment.start,
             tabs: [
               // Fixed tabs.
-              Tab(text: l10n.tabMain),
-              Tab(text: l10n.tabTechnical),
-              Tab(text: l10n.tabAstronomy),
-              Tab(text: l10n.tabCuriosities),
+              Tab(child: Text(l10n.tabMain)),
+              Tab(child: Text(l10n.tabTechnical)),
+              Tab(child: Text(l10n.tabAstronomy)),
+              Tab(child: Text(l10n.tabCuriosities)),
               // Custom tabs – italic, long-press to rename.
               ..._customTabs.map((tab) => _CustomTab(
                 name: tab.name,
@@ -385,21 +385,33 @@ class _CustomTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPress: onLongPress,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            name,
-            style: const TextStyle(fontStyle: FontStyle.italic),
-          ),
-          const SizedBox(width: 4),
-          GestureDetector(
-            onTap: onDelete,
-            child: const Icon(Icons.close, size: 14),
-          ),
-        ],
+    return Tab(
+      child: GestureDetector(
+        // Use onLongPressEnd to ensure the gesture is fully complete
+        // before triggering the dialog, avoiding the assertion error
+        // that occurs when a dialog opens mid-gesture on Linux.
+        onLongPressEnd: (_) =>
+            WidgetsBinding.instance.addPostFrameCallback((_) => onLongPress()),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              name,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(width: 4),
+            GestureDetector(
+              onTapUp: (_) =>
+                  WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => onDelete()),
+              child: Icon(
+                Icons.close,
+                size: 14,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

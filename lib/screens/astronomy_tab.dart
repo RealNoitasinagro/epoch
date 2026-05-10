@@ -42,14 +42,12 @@ class AstronomyTab extends StatelessWidget {
         const SizedBox(height: 8),
         TimeRow(
           label: l10n.labelJd,
-          //value: jd.toStringAsFixed(5),
           value: _formatDecimal(jd, locale, 5),
           info: l10n.infoJd,
         ),
         const SizedBox(height: 12),
         TimeRow(
           label: l10n.labelMjd,
-          //value: mjd.toStringAsFixed(5),
           value: _formatDecimal(mjd, locale, 5),
           info: l10n.infoMjd,
         ),

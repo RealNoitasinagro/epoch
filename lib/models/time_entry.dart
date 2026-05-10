@@ -8,7 +8,10 @@ enum ValueType {
   date,
   time,
   daySecond,
+  // Curiosities – zone-dependent binary clocks
   binaryClockString,
+  binaryClockColumns,
+  binaryClockBcd,
   // Technical
   unixSeconds,
   tai,
@@ -17,7 +20,7 @@ enum ValueType {
   gmst,
   julianDate,
   modifiedJulianDate,
-  // Curiosities
+  // Curiosities – zone-independent
   swatchBeats,
 }
 
@@ -89,13 +92,7 @@ class TimeEntry {
       TimeEntry(type: type, zone: zone, customLabel: label);
 
   // Whether this type is zone-independent (Technical/Astronomy/Curiosities).
-  bool get isZoneIndependent => switch (type) {
-    ValueType.date            => false,
-    ValueType.time            => false,
-    ValueType.daySecond       => false,
-    ValueType.binaryClockString => false,
-    _                         => true,
-  };
+  bool get isZoneIndependent => type.isZoneIndependent;
 
   // Localized display label shown in the UI.
   String localizedLabel(AppLocalizations l10n) {
@@ -115,6 +112,8 @@ class TimeEntry {
     ValueType.time               => l10n.valueTypeTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
+    ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+    ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
     ValueType.unixSeconds        => l10n.labelUnixSeconds,
     ValueType.tai                => l10n.labelTai,
     ValueType.gps                => l10n.labelGps,
@@ -130,6 +129,8 @@ class TimeEntry {
     ValueType.time               => l10n.infoLocalTime,
     ValueType.daySecond          => l10n.infoDaySecond,
     ValueType.binaryClockString  => l10n.infoBinaryClockString,
+    ValueType.binaryClockColumns => l10n.infoBinaryClock,
+    ValueType.binaryClockBcd     => l10n.infoBinaryClockBcd,
     ValueType.unixSeconds        => l10n.infoUnixSeconds,
     ValueType.tai                => l10n.infoTai,
     ValueType.gps                => l10n.infoGps,
@@ -175,6 +176,8 @@ class TimeEntry {
             .format(TimeUtils.modifiedJulianDate(utcNow));
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
+      case ValueType.binaryClockColumns:
+      case ValueType.binaryClockBcd:
       default:
         break;
     }
@@ -248,3 +251,21 @@ const defaultCivilEntries = [
   TimeEntry(type: ValueType.time,      zone: ZoneUtc()),
   TimeEntry(type: ValueType.daySecond, zone: ZoneUtc()),
 ];
+
+extension ValueTypeProps on ValueType {
+  bool get isZoneIndependent => switch (this) {
+    ValueType.date               => false,
+    ValueType.time               => false,
+    ValueType.daySecond          => false,
+    ValueType.binaryClockString  => false,
+    ValueType.binaryClockColumns => false,
+    ValueType.binaryClockBcd     => false,
+    ValueType.unixSeconds        => true,
+    ValueType.tai                => true,
+    ValueType.gps                => true,
+    ValueType.gmst               => true,
+    ValueType.julianDate         => true,
+    ValueType.modifiedJulianDate => true,
+    ValueType.swatchBeats        => true,
+  };
+}

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
+import '../time_utils.dart';
+import '../widgets/info_row.dart';
 import '../widgets/time_row.dart';
+import 'entry_picker.dart';
 import 'timezone_search_screen.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
@@ -13,6 +16,7 @@ class ConfigurableTab extends StatefulWidget {
   final bool hourFormat24;
   final int maxEntries;
   final ValueChanged<List<TimeEntry>> onEntriesChanged;
+  final List<ValueType>? allowedTypes; // null = all types allowed
 
   const ConfigurableTab({
     super.key,
@@ -22,6 +26,7 @@ class ConfigurableTab extends StatefulWidget {
     this.thousandsSep = true,
     this.hourFormat24 = true,
     this.maxEntries = 20,
+    this.allowedTypes,
   });
 
   @override
@@ -104,9 +109,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       return;
     }
 
-    final result = await showDialog<TimeEntry>(
-      context: context,
-      builder: (ctx) => const _EntryPicker(),
+    final result = await showEntryPicker(
+      context,
+      allowedTypes: widget.allowedTypes,
     );
     if (result == null) return;
 
@@ -118,14 +123,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ));
       return;
     }
-
     widget.onEntriesChanged([...widget.entries, result]);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).toString();
+    Localizations.localeOf(context).toString();
 
     return Column(
       children: [
@@ -145,6 +149,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             separatorBuilder: (_, __) => const Divider(height: 32),
             itemBuilder: (context, index) {
               final entry = widget.entries[index];
+              final l10n = AppLocalizations.of(context)!;
+              final locale = Localizations.localeOf(context).toString();
+
               if (_editMode) {
                 return _EditRow(
                   label: entry.localizedLabel(l10n),
@@ -156,6 +163,23 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   onMoveDown: () => _moveDown(index),
                 );
               }
+
+              // Graphical binary clocks get special rendering.
+              if (entry.type == ValueType.binaryClockColumns) {
+                return _GraphicalRow(
+                  label: entry.localizedLabel(l10n),
+                  info: entry.localizedInfo(l10n),
+                  child: _ColumnBinaryClockWidget(now: widget.now),
+                );
+              }
+              if (entry.type == ValueType.binaryClockBcd) {
+                return _GraphicalRow(
+                  label: entry.localizedLabel(l10n),
+                  info: entry.localizedInfo(l10n),
+                  child: _BcdBinaryClockWidget(now: widget.now),
+                );
+              }
+
               return TimeRow(
                 label: entry.localizedLabel(l10n),
                 value: entry.computeValue(
@@ -324,6 +348,8 @@ class _EntryPickerState extends State<_EntryPicker> {
     ValueType.time               => l10n.valueTypeTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
+    ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+    ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
     ValueType.unixSeconds        => l10n.labelUnixSeconds,
     ValueType.tai                => l10n.labelTai,
     ValueType.gps                => l10n.labelGps,
@@ -468,6 +494,8 @@ class _EntryPickerState extends State<_EntryPicker> {
         ValueType.time               => l10n.valueTypeTime,
         ValueType.daySecond          => l10n.valueTypeDaySecond,
         ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
+        ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+        ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
         ValueType.unixSeconds        => l10n.labelUnixSeconds,
         ValueType.tai                => l10n.labelTai,
         ValueType.gps                => l10n.labelGps,
@@ -493,11 +521,11 @@ class _EntryPickerState extends State<_EntryPicker> {
 
 extension on ValueType {
   bool get isZoneIndependentStatic => switch (this) {
-    ValueType.date            => false,
-    ValueType.time            => false,
-    ValueType.daySecond       => false,
+    ValueType.date              => false,
+    ValueType.time              => false,
+    ValueType.daySecond         => false,
     ValueType.binaryClockString => false,
-    _                         => true,
+    _                           => true,
   };
 }
 
@@ -536,6 +564,154 @@ class _DialogTitle extends StatelessWidget {
                     ?.copyWith(color: Colors.grey)),
             Text(title,
                 style: Theme.of(context).textTheme.titleLarge),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+// Wrapper for graphical (non-text) value rows with label and info button.
+class _GraphicalRow extends StatelessWidget {
+  final String label;
+  final String info;
+  final Widget child;
+
+  const _GraphicalRow({
+    required this.label,
+    required this.info,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InfoRow(label: label, info: info),
+        const SizedBox(height: 4),
+        child,
+      ],
+    );
+  }
+}
+
+// Minimal column binary clock for use in configurable tabs.
+class _ColumnBinaryClockWidget extends StatelessWidget {
+  final DateTime now;
+  const _ColumnBinaryClockWidget({required this.now});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final bin = TimeUtils.binaryTime(now);
+    final litColor = Theme.of(context).colorScheme.primary;
+    final dimColor = Theme.of(context).colorScheme.outline;
+
+    Widget bitColumn(String bits, String header, int totalRows) {
+      final padding = totalRows - bits.length;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(header,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+              )),
+          const SizedBox(height: 6),
+          ...List.generate(padding, (_) => const SizedBox(height: 28)),
+          ...bits.split('').map((b) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3),
+            child: Container(
+              width: 22, height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: b == '1' ? litColor : dimColor.withAlpha(60),
+                border: Border.all(
+                    color: b == '1' ? litColor : dimColor, width: 1.5),
+              ),
+            ),
+          )),
+        ],
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        bitColumn(bin.hours,   l10n.labelHours,   6),
+        const SizedBox(width: 16),
+        bitColumn(bin.minutes, l10n.labelMinutes, 6),
+        const SizedBox(width: 16),
+        bitColumn(bin.seconds, l10n.labelSeconds, 6),
+      ],
+    );
+  }
+}
+
+// Minimal BCD binary clock for use in configurable tabs.
+class _BcdBinaryClockWidget extends StatelessWidget {
+  final DateTime now;
+  const _BcdBinaryClockWidget({required this.now});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final bcd = TimeUtils.bcdTime(now);
+    final litColor = Theme.of(context).colorScheme.primary;
+    final dimColor = Theme.of(context).colorScheme.outline;
+
+    Widget bitColumn(String bits) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: bits.split('').map((b) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Container(
+            width: 22, height: 22,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: b == '1' ? litColor : dimColor.withAlpha(60),
+              border: Border.all(
+                  color: b == '1' ? litColor : dimColor, width: 1.5),
+            ),
+          ),
+        )).toList(),
+      );
+    }
+
+    Widget groupLabel(String label) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Text(label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(width: 50, child: groupLabel(l10n.labelHours)),
+            const SizedBox(width: 8),
+            SizedBox(width: 50, child: groupLabel(l10n.labelMinutes)),
+            const SizedBox(width: 8),
+            SizedBox(width: 50, child: groupLabel(l10n.labelSeconds)),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            bitColumn(bcd.hourTens),  const SizedBox(width: 6),
+            bitColumn(bcd.hourUnits), const SizedBox(width: 8),
+            bitColumn(bcd.minTens),   const SizedBox(width: 6),
+            bitColumn(bcd.minUnits),  const SizedBox(width: 8),
+            bitColumn(bcd.secTens),   const SizedBox(width: 6),
+            bitColumn(bcd.secUnits),
           ],
         ),
       ],

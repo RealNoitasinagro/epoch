@@ -311,6 +311,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Stadt, Land, Kürzel oder Offset (z. B. UTC+5:30)';
 
   @override
+  String get valueTypeBinaryClockBcd => 'Binäruhr (BCD)';
+
+  @override
+  String get valueTypeBinaryClockColumns => 'Binäruhr (Spalten)';
+
+  @override
   String get valueTypeBinaryClockString => 'Binärzeit (String)';
 
   @override
