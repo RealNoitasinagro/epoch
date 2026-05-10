@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'About this value'**
   String get aboutThisValue;
 
+  /// No description provided for @addTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tab'**
+  String get addTab;
+
   /// No description provided for @addValue.
   ///
   /// In en, this message translates to:
@@ -163,6 +169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy to clipboard'**
   String get copyToClipboard;
+
+  /// No description provided for @deleteTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete tab'**
+  String get deleteTab;
 
   /// No description provided for @deselect.
   ///
@@ -410,6 +422,12 @@ abstract class AppLocalizations {
   /// **'Move up'**
   String get moveUp;
 
+  /// No description provided for @newTabName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab name'**
+  String get newTabName;
+
   /// No description provided for @noDescription.
   ///
   /// In en, this message translates to:
@@ -422,11 +440,23 @@ abstract class AppLocalizations {
   /// **'Remove selected'**
   String get removeSelected;
 
+  /// No description provided for @renameTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename tab'**
+  String get renameTab;
+
   /// No description provided for @resetToDefaults.
   ///
   /// In en, this message translates to:
   /// **'Reset to defaults'**
   String get resetToDefaults;
+
+  /// No description provided for @sectionAstronomy.
+  ///
+  /// In en, this message translates to:
+  /// **'Astronomy'**
+  String get sectionAstronomy;
 
   /// No description provided for @sectionAtomicGps.
   ///
@@ -439,6 +469,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Binary Clock'**
   String get sectionBinaryClock;
+
+  /// No description provided for @sectionCivil.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil'**
+  String get sectionCivil;
+
+  /// No description provided for @sectionCuriosities.
+  ///
+  /// In en, this message translates to:
+  /// **'Curiosities'**
+  String get sectionCuriosities;
 
   /// No description provided for @sectionDoomsday.
   ///
@@ -469,6 +511,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Swatch Internet Time'**
   String get sectionSwatch;
+
+  /// No description provided for @sectionTechnical.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical'**
+  String get sectionTechnical;
 
   /// No description provided for @selectAll.
   ///
@@ -595,6 +643,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Technical'**
   String get tabTechnical;
+
+  /// No description provided for @tabWatchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchlist'**
+  String get tabWatchlist;
 
   /// No description provided for @timezoneNoResults.
   ///

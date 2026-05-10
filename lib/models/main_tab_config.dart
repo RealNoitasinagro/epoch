@@ -1,27 +1,26 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'time_value.dart';
+import 'time_entry.dart';
 
-const _kMainTabKey = 'main_tab_entries';
+const _kCivilTabKey = 'civil_tab_entries';
 
-Future<List<MainTabEntry>> loadMainTabEntries() async {
+Future<List<TimeEntry>> loadCivilEntries() async {
   final prefs = await SharedPreferences.getInstance();
-  final stored = prefs.getStringList(_kMainTabKey);
-  if (stored == null) return List.of(defaultMainTabEntries);
+  final stored = prefs.getStringList(_kCivilTabKey);
+  if (stored == null) return List.of(defaultCivilEntries);
   return stored
-      .map(MainTabEntry.fromPrefsString)
-      .whereType<MainTabEntry>()
+      .map(TimeEntry.fromPrefsString)
+      .whereType<TimeEntry>()
       .toList();
 }
 
-Future<void> saveMainTabEntries(List<MainTabEntry> entries) async {
+Future<void> saveCivilEntries(List<TimeEntry> entries) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setStringList(
-    _kMainTabKey,
+    _kCivilTabKey,
     entries.map((e) => e.toPrefsString()).toList(),
   );
 }
 
-// Resets the Main tab to the default entry list.
-Future<void> resetMainTabEntries() async {
-  await saveMainTabEntries(List.of(defaultMainTabEntries));
+Future<void> resetCivilEntries() async {
+  await saveCivilEntries(List.of(defaultCivilEntries));
 }

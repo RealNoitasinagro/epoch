@@ -19,6 +19,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get aboutThisValue => 'Über diesen Wert';
 
   @override
+  String get addTab => 'Tab hinzufügen';
+
+  @override
   String get addValue => 'Wert hinzufügen';
 
   @override
@@ -44,6 +47,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get copyToClipboard => 'In Zwischenablage kopieren';
+
+  @override
+  String get deleteTab => 'Tab löschen';
 
   @override
   String get deselect => 'Abwählen';
@@ -184,19 +190,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String get moveUp => 'Nach oben';
 
   @override
+  String get newTabName => 'Tab-Name';
+
+  @override
   String get noDescription => 'Noch keine Beschreibung verfügbar.';
 
   @override
   String get removeSelected => 'Markierte entfernen';
 
   @override
+  String get renameTab => 'Tab umbenennen';
+
+  @override
   String get resetToDefaults => 'Auf Standard zurücksetzen';
+
+  @override
+  String get sectionAstronomy => 'Astronomisch';
 
   @override
   String get sectionAtomicGps => 'Atom & GPS';
 
   @override
   String get sectionBinaryClock => 'Binäruhr';
+
+  @override
+  String get sectionCivil => 'Bürgerlich';
+
+  @override
+  String get sectionCuriosities => 'Kurioses';
 
   @override
   String get sectionDoomsday => 'Weltuntergangsuhr';
@@ -212,6 +233,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sectionSwatch => 'Swatch-Internetzeit';
+
+  @override
+  String get sectionTechnical => 'Technisch';
 
   @override
   String get selectAll => 'Alle auswählen';
@@ -275,6 +299,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technisch';
+
+  @override
+  String get tabWatchlist => 'Watchlist';
 
   @override
   String get timezoneNoResults => 'Keine passende Zeitzone gefunden.';

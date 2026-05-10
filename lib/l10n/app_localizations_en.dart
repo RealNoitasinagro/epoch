@@ -19,6 +19,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutThisValue => 'About this value';
 
   @override
+  String get addTab => 'Add tab';
+
+  @override
   String get addValue => 'Add value';
 
   @override
@@ -44,6 +47,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copyToClipboard => 'Copy to clipboard';
+
+  @override
+  String get deleteTab => 'Delete tab';
 
   @override
   String get deselect => 'Deselect';
@@ -184,19 +190,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moveUp => 'Move up';
 
   @override
+  String get newTabName => 'Tab name';
+
+  @override
   String get noDescription => 'No description available yet.';
 
   @override
   String get removeSelected => 'Remove selected';
 
   @override
+  String get renameTab => 'Rename tab';
+
+  @override
   String get resetToDefaults => 'Reset to defaults';
+
+  @override
+  String get sectionAstronomy => 'Astronomy';
 
   @override
   String get sectionAtomicGps => 'Atomic & GPS';
 
   @override
   String get sectionBinaryClock => 'Binary Clock';
+
+  @override
+  String get sectionCivil => 'Civil';
+
+  @override
+  String get sectionCuriosities => 'Curiosities';
 
   @override
   String get sectionDoomsday => 'Doomsday Clock';
@@ -212,6 +233,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionSwatch => 'Swatch Internet Time';
+
+  @override
+  String get sectionTechnical => 'Technical';
 
   @override
   String get selectAll => 'Select all';
@@ -275,6 +299,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technical';
+
+  @override
+  String get tabWatchlist => 'Watchlist';
 
   @override
   String get timezoneNoResults => 'No matching timezone found.';

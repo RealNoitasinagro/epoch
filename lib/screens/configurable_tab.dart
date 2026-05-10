@@ -1,51 +1,36 @@
-import 'package:epoch/screens/timezone_search_screen.dart';
 import 'package:flutter/material.dart';
-import '../models/time_value.dart';
-import '../models/main_tab_config.dart';
-import '../widgets/time_row.dart';
+import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/time_row.dart';
+import 'timezone_search_screen.dart';
 
-class MainTab extends StatefulWidget {
+// A fully configurable tab used by both Civil and custom Watchlist tabs.
+// [entries] and [onEntriesChanged] are managed by the parent.
+class ConfigurableTab extends StatefulWidget {
   final DateTime now;
+  final List<TimeEntry> entries;
   final bool thousandsSep;
   final bool hourFormat24;
+  final int maxEntries;
+  final ValueChanged<List<TimeEntry>> onEntriesChanged;
 
-  const MainTab({
+  const ConfigurableTab({
     super.key,
     required this.now,
+    required this.entries,
+    required this.onEntriesChanged,
     this.thousandsSep = true,
     this.hourFormat24 = true,
+    this.maxEntries = 20,
   });
 
   @override
-  State<MainTab> createState() => _MainTabState();
+  State<ConfigurableTab> createState() => _ConfigurableTabState();
 }
 
-class _MainTabState extends State<MainTab> {
-  List<MainTabEntry> _entries = [];
+class _ConfigurableTabState extends State<ConfigurableTab> {
   bool _editMode = false;
-  bool _loaded = false;
   final Set<String> _checked = {};
-
-  static const int _maxEntries = 20;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadConfig();
-  }
-
-  Future<void> _loadConfig() async {
-    final entries = await loadMainTabEntries();
-    setState(() {
-      _entries = entries;
-      _loaded = true;
-    });
-  }
-
-  Future<void> _persist() async {
-    await saveMainTabEntries(_entries);
-  }
 
   void _toggleEditMode() {
     setState(() {
@@ -65,93 +50,81 @@ class _MainTabState extends State<MainTab> {
   }
 
   bool get _allChecked =>
-      _entries.isNotEmpty &&
-          _entries.every((e) => _checked.contains(e.key));
+      widget.entries.isNotEmpty &&
+          widget.entries.every((e) => _checked.contains(e.key));
 
   void _toggleMasterCheck() {
     setState(() {
       if (_allChecked) {
         _checked.clear();
       } else {
-        _checked.addAll(_entries.map((e) => e.key));
+        _checked.addAll(widget.entries.map((e) => e.key));
       }
     });
   }
 
   void _removeChecked() {
-    setState(() {
-      _entries.removeWhere((e) => _checked.contains(e.key));
-      _checked.clear();
-    });
-    _persist();
+    final updated = widget.entries
+        .where((e) => !_checked.contains(e.key))
+        .toList();
+    _checked.clear();
+    widget.onEntriesChanged(updated);
+    setState(() {});
   }
 
   void _resetToDefaults() {
-    setState(() {
-      _entries = List.of(defaultMainTabEntries);
-      _checked.clear();
-    });
-    _persist();
+    _checked.clear();
+    widget.onEntriesChanged(List.of(defaultCivilEntries));
+    setState(() {});
   }
 
   void _moveUp(int index) {
     if (index <= 0) return;
-    setState(() {
-      final item = _entries.removeAt(index);
-      _entries.insert(index - 1, item);
-    });
-    _persist();
+    final updated = List<TimeEntry>.of(widget.entries);
+    final item = updated.removeAt(index);
+    updated.insert(index - 1, item);
+    widget.onEntriesChanged(updated);
   }
 
   void _moveDown(int index) {
-    if (index >= _entries.length - 1) return;
-    setState(() {
-      final item = _entries.removeAt(index);
-      _entries.insert(index + 1, item);
-    });
-    _persist();
+    if (index >= widget.entries.length - 1) return;
+    final updated = List<TimeEntry>.of(widget.entries);
+    final item = updated.removeAt(index);
+    updated.insert(index + 1, item);
+    widget.onEntriesChanged(updated);
   }
 
   Future<void> _showAddDialog() async {
     final l10n = AppLocalizations.of(context)!;
-    if (_entries.length >= _maxEntries) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.maxValuesReached(_maxEntries)),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+    if (widget.entries.length >= widget.maxEntries) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l10n.maxValuesReached(widget.maxEntries)),
+        behavior: SnackBarBehavior.floating,
+      ));
       return;
     }
 
-    final result = await showDialog<MainTabEntry>(
+    final result = await showDialog<TimeEntry>(
       context: context,
       builder: (ctx) => const _EntryPicker(),
     );
     if (result == null) return;
 
-    if (_entries.any((e) => e.key == result.key)) {
+    if (widget.entries.any((e) => e.key == result.key)) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.alreadyDisplayed),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l10n.alreadyDisplayed),
+        behavior: SnackBarBehavior.floating,
+      ));
       return;
     }
 
-    setState(() => _entries.add(result));
-    _persist();
+    widget.onEntriesChanged([...widget.entries, result]);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (!_loaded) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     final locale = Localizations.localeOf(context).toString();
 
     return Column(
@@ -168,30 +141,28 @@ class _MainTabState extends State<MainTab> {
         Expanded(
           child: ListView.separated(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
-            itemCount: _entries.length,
+            itemCount: widget.entries.length,
             separatorBuilder: (_, __) => const Divider(height: 32),
             itemBuilder: (context, index) {
-              final entry = _entries[index];
-
+              final entry = widget.entries[index];
               if (_editMode) {
                 return _EditRow(
-                  //label: entry.label(entry.key),
                   label: entry.localizedLabel(l10n),
                   checked: _checked.contains(entry.key),
                   index: index,
-                  total: _entries.length,
+                  total: widget.entries.length,
                   onToggleCheck: () => _toggleCheck(entry.key),
                   onMoveUp: () => _moveUp(index),
                   onMoveDown: () => _moveDown(index),
                 );
               }
-
               return TimeRow(
                 label: entry.localizedLabel(l10n),
                 value: entry.computeValue(
                   widget.now,
                   locale,
                   hourFormat24: widget.hourFormat24,
+                  thousandsSep: widget.thousandsSep,
                 ),
                 info: entry.localizedInfo(l10n),
                 useThousands: entry.useThousands && widget.thousandsSep,
@@ -217,6 +188,8 @@ class _MainTabState extends State<MainTab> {
     );
   }
 }
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
 
 class _EditToolbar extends StatelessWidget {
   final bool editMode;
@@ -279,6 +252,8 @@ class _EditToolbar extends StatelessWidget {
   }
 }
 
+// ── Edit row ──────────────────────────────────────────────────────────────────
+
 class _EditRow extends StatelessWidget {
   final String label;
   final bool checked;
@@ -311,10 +286,8 @@ class _EditRow extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          child: Text(label,
+              style: Theme.of(context).textTheme.titleMedium),
         ),
         IconButton(
           icon: const Icon(Icons.arrow_upward, size: 20),
@@ -331,10 +304,8 @@ class _EditRow extends StatelessWidget {
   }
 }
 
-// A self-contained three-step dialog:
-// Step 1: choose value type (Date / Time / Day second)
-// Step 2: choose zone (Local / UTC / region list)
-// Step 3: choose city within region
+// ── Entry picker ──────────────────────────────────────────────────────────────
+
 class _EntryPicker extends StatefulWidget {
   const _EntryPicker();
 
@@ -348,64 +319,91 @@ class _EntryPickerState extends State<_EntryPicker> {
   _Step _step = _Step.valueType;
   ValueType? _type;
 
-  String _typeLabel(AppLocalizations l10n) =>
-      switch (_type) {
-        ValueType.date => l10n.valueTypeDate,
-        ValueType.time => l10n.valueTypeTime,
-        ValueType.daySecond => l10n.valueTypeDaySecond,
-        ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
-        null => '',
-      };
+  String _typeLabel(AppLocalizations l10n) => switch (_type) {
+    ValueType.date               => l10n.valueTypeDate,
+    ValueType.time               => l10n.valueTypeTime,
+    ValueType.daySecond          => l10n.valueTypeDaySecond,
+    ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
+    ValueType.unixSeconds        => l10n.labelUnixSeconds,
+    ValueType.tai                => l10n.labelTai,
+    ValueType.gps                => l10n.labelGps,
+    ValueType.gmst               => l10n.labelGmst,
+    ValueType.julianDate         => l10n.labelJd,
+    ValueType.modifiedJulianDate => l10n.labelMjd,
+    ValueType.swatchBeats        => l10n.labelSwatchBeats,
+    null                         => '',
+  };
 
   void _selectType(ValueType t) {
-    setState(() {
-      _type = t;
-      _step = _Step.zone;
-    });
+    if (t.isZoneIndependentStatic) {
+      // Zone-independent: confirm immediately with UTC as placeholder zone.
+      Navigator.pop(context,
+          TimeEntry(type: t, zone: const ZoneUtc()));
+    } else {
+      setState(() {
+        _type = t;
+        _step = _Step.zone;
+      });
+    }
   }
 
   void _goBack() {
     setState(() {
-      if (_step == _Step.zone) {
-        _step = _Step.valueType;
-        _type = null;
-      }
+      _step = _Step.valueType;
+      _type = null;
     });
   }
 
   void _confirm(ZoneSpec zone) {
-    Navigator.pop(context, MainTabEntry(type: _type!, zone: zone));
+    Navigator.pop(context, TimeEntry(type: _type!, zone: zone));
   }
 
   @override
   Widget build(BuildContext context) {
     return switch (_step) {
       _Step.valueType => _buildValueTypeStep(),
-      _Step.zone => _buildZoneStep(),
+      _Step.zone      => _buildZoneStep(),
     };
   }
 
-  // Step 1 – no back button, Cancel only.
   Widget _buildValueTypeStep() {
     final l10n = AppLocalizations.of(context)!;
     return SimpleDialog(
       title: Text(l10n.selectValueType),
       children: [
-        ...ValueType.values.map((t) {
-          final label = switch (t) {
-            ValueType.date => l10n.valueTypeDate,
-            ValueType.time => l10n.valueTypeTime,
-            ValueType.daySecond => l10n.valueTypeDaySecond,
-            ValueType.binaryClockString => l10n.valueTypeBinaryClockString
-          };
-          return SimpleDialogOption(
-            onPressed: () => _selectType(t),
-            child: Text(label),
-          );
-        }),
+        // Zone-dependent types.
+        _sectionLabel(context, l10n.sectionCivil),
+        ...[ ValueType.date, ValueType.time, ValueType.daySecond,
+          ValueType.binaryClockString,
+        ].map((t) => SimpleDialogOption(
+          onPressed: () => _selectType(t),
+          child: Text(_typeLabelStatic(t, l10n)),
+        )),
+        const Divider(),
+        _sectionLabel(context, l10n.sectionTechnical),
+        ...[ ValueType.unixSeconds, ValueType.tai, ValueType.gps,
+        ].map((t) => SimpleDialogOption(
+          onPressed: () => _selectType(t),
+          child: Text(_typeLabelStatic(t, l10n)),
+        )),
+        const Divider(),
+        _sectionLabel(context, l10n.sectionAstronomy),
+        ...[ ValueType.gmst, ValueType.julianDate,
+          ValueType.modifiedJulianDate,
+        ].map((t) => SimpleDialogOption(
+          onPressed: () => _selectType(t),
+          child: Text(_typeLabelStatic(t, l10n)),
+        )),
+        const Divider(),
+        _sectionLabel(context, l10n.sectionCuriosities),
+        ...[ ValueType.swatchBeats,
+        ].map((t) => SimpleDialogOption(
+          onPressed: () => _selectType(t),
+          child: Text(_typeLabelStatic(t, l10n)),
+        )),
         const Divider(),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(l10n.cancel),
@@ -415,7 +413,6 @@ class _EntryPickerState extends State<_EntryPicker> {
     );
   }
 
-  // Step 2 – back goes to Step 1.
   Widget _buildZoneStep() {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
@@ -463,9 +460,49 @@ class _EntryPickerState extends State<_EntryPicker> {
       ],
     );
   }
+
+  // Static helper – same mapping without instance state.
+  String _typeLabelStatic(ValueType t, AppLocalizations l10n) =>
+      switch (t) {
+        ValueType.date               => l10n.valueTypeDate,
+        ValueType.time               => l10n.valueTypeTime,
+        ValueType.daySecond          => l10n.valueTypeDaySecond,
+        ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
+        ValueType.unixSeconds        => l10n.labelUnixSeconds,
+        ValueType.tai                => l10n.labelTai,
+        ValueType.gps                => l10n.labelGps,
+        ValueType.gmst               => l10n.labelGmst,
+        ValueType.julianDate         => l10n.labelJd,
+        ValueType.modifiedJulianDate => l10n.labelMjd,
+        ValueType.swatchBeats        => l10n.labelSwatchBeats,
+      };
+
+  Widget _sectionLabel(BuildContext context, String text) => Padding(
+    padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
+    child: Text(
+      text.toUpperCase(),
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+        color: Theme.of(context).colorScheme.primary,
+        letterSpacing: 1.5,
+      ),
+    ),
+  );
 }
 
-// Reusable title row with optional back button and a small super-label.
+// ── Zone-independent check as extension ──────────────────────────────────────
+
+extension on ValueType {
+  bool get isZoneIndependentStatic => switch (this) {
+    ValueType.date            => false,
+    ValueType.time            => false,
+    ValueType.daySecond       => false,
+    ValueType.binaryClockString => false,
+    _                         => true,
+  };
+}
+
+// ── Shared dialog title with back button ──────────────────────────────────────
+
 class _DialogTitle extends StatelessWidget {
   final String superLabel;
   final String title;
@@ -492,17 +529,13 @@ class _DialogTitle extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              superLabel,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
-            ),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Text(superLabel,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: Colors.grey)),
+            Text(title,
+                style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
       ],
