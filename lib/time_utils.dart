@@ -62,8 +62,7 @@ class TimeUtils {
   /// Binary clock string representation, e.g. "10:110000:10111".
   static String binaryTimeString(DateTime dt) {
     String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
-    // Remove leading zeros from hours only, keep minutes/seconds padded.
-    final h = dt.hour.toRadixString(2);
+    final h = toBin(dt.hour, 5);
     final m = toBin(dt.minute, 6);
     final s = toBin(dt.second, 6);
     return '$h:$m:$s';
