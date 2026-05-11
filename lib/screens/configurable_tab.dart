@@ -112,6 +112,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final result = await showEntryPicker(
       context,
       allowedTypes: widget.allowedTypes,
+      existingEntries: widget.entries,
     );
     if (result == null) return;
 

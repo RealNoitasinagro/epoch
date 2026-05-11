@@ -265,7 +265,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-    controller.dispose();
+    // Note: controller.dispose() intentionally omitted – causes a
+    // post-frame assertion on Linux when the dialog rebuilds after pop.
+    // The GC will collect it correctly since no further references exist.
     if (result == null || result.isEmpty) return;
     setState(() => tab.name = result);
     saveCustomTabs(_customTabs);
@@ -391,8 +393,9 @@ class _CustomTab extends StatelessWidget {
         // Use onLongPressEnd to ensure the gesture is fully complete
         // before triggering the dialog, avoiding the assertion error
         // that occurs when a dialog opens mid-gesture on Linux.
-        onLongPressEnd: (_) =>
-            WidgetsBinding.instance.addPostFrameCallback((_) => onLongPress()),
+        //onLongPressEnd: (_) =>
+        //     WidgetsBinding.instance.addPostFrameCallback((_) => onLongPress()),
+        onLongPress: onLongPress,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

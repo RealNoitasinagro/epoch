@@ -8,16 +8,25 @@ import 'timezone_search_screen.dart';
 Future<TimeEntry?> showEntryPicker(
     BuildContext context, {
       List<ValueType>? allowedTypes,
+      List<TimeEntry> existingEntries = const [],
     }) {
   return showDialog<TimeEntry>(
     context: context,
-    builder: (ctx) => _EntryPicker(allowedTypes: allowedTypes),
+    builder: (ctx) => _EntryPicker(
+      allowedTypes: allowedTypes,
+      existingEntries: existingEntries,
+    ),
   );
 }
 
 class _EntryPicker extends StatefulWidget {
   final List<ValueType>? allowedTypes;
-  const _EntryPicker({this.allowedTypes});
+  final List<TimeEntry> existingEntries;
+
+  const _EntryPicker({
+    this.allowedTypes,
+    this.existingEntries = const [],
+  });
 
   @override
   State<_EntryPicker> createState() => _EntryPickerState();
@@ -31,6 +40,13 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   bool _isAllowed(ValueType t) =>
       widget.allowedTypes == null || widget.allowedTypes!.contains(t);
+
+  // Zone-independent types can only appear once.
+  // Zone-dependent types can always be added (different zones allowed).
+  bool _isDisabled(ValueType t) {
+    if (!t.isZoneIndependent) return false;
+    return widget.existingEntries.any((e) => e.type == t);
+  }
 
   String _typeLabelFor(ValueType t, AppLocalizations l10n) => switch (t) {
     ValueType.date               => l10n.valueTypeDate,
@@ -88,6 +104,18 @@ class _EntryPickerState extends State<_EntryPicker> {
       ValueType.daySecond,
     ].where(_isAllowed).toList();
 
+    final technicalTypes = [
+      ValueType.unixSeconds,
+      ValueType.tai,
+      ValueType.gps,
+    ].where(_isAllowed).toList();
+
+    final astronomicalTypes = [
+      ValueType.gmst,
+      ValueType.julianDate,
+      ValueType.modifiedJulianDate,
+    ].where(_isAllowed).toList();
+
     final curiosityTypes = [
       ValueType.binaryClockString,
       ValueType.binaryClockColumns,
@@ -95,51 +123,91 @@ class _EntryPickerState extends State<_EntryPicker> {
       ValueType.swatchBeats,
     ].where(_isAllowed).toList();
 
-    final technicalTypes = [
-      ValueType.unixSeconds,
-      ValueType.tai,
-      ValueType.gps,
-    ].where(_isAllowed).toList();
-
-    final astronomyTypes = [
-      ValueType.gmst,
-      ValueType.julianDate,
-      ValueType.modifiedJulianDate,
-    ].where(_isAllowed).toList();
-
     return SimpleDialog(
       title: Text(l10n.selectValueType),
       children: [
         if (civilTypes.isNotEmpty) ...[
           _sectionLabel(context, l10n.sectionCivil),
-          ...civilTypes.map((t) => SimpleDialogOption(
-            onPressed: () => _selectType(t),
-            child: Text(_typeLabelFor(t, l10n)),
-          )),
+          ...civilTypes.map((t) {
+            final disabled = _isDisabled(t);
+            return SimpleDialogOption(
+              onPressed: disabled ? null : () => _selectType(t),
+              child: Text(
+                _typeLabelFor(t, l10n),
+                style: disabled
+                    ? TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withAlpha(80),
+                )
+                    : null,
+              ),
+            );
+          }),
         ],
         if (technicalTypes.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabTechnical),
-          ...technicalTypes.map((t) => SimpleDialogOption(
-            onPressed: () => _selectType(t),
-            child: Text(_typeLabelFor(t, l10n)),
-          )),
+          ...technicalTypes.map((t) {
+            final disabled = _isDisabled(t);
+            return SimpleDialogOption(
+              onPressed: disabled ? null : () => _selectType(t),
+              child: Text(
+                _typeLabelFor(t, l10n),
+                style: disabled
+                    ? TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withAlpha(80),
+                )
+                    : null,
+              ),
+            );
+          }),
         ],
-        if (astronomyTypes.isNotEmpty) ...[
+        if (astronomicalTypes.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabAstronomy),
-          ...astronomyTypes.map((t) => SimpleDialogOption(
-            onPressed: () => _selectType(t),
-            child: Text(_typeLabelFor(t, l10n)),
-          )),
+          ...astronomicalTypes.map((t) {
+            final disabled = _isDisabled(t);
+            return SimpleDialogOption(
+              onPressed: disabled ? null : () => _selectType(t),
+              child: Text(
+                _typeLabelFor(t, l10n),
+                style: disabled
+                    ? TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withAlpha(80),
+                )
+                    : null,
+              ),
+            );
+          }),
         ],
         if (curiosityTypes.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabCuriosities),
-          ...curiosityTypes.map((t) => SimpleDialogOption(
-            onPressed: () => _selectType(t),
-            child: Text(_typeLabelFor(t, l10n)),
-          )),
+          ...curiosityTypes.map((t) {
+            final disabled = _isDisabled(t);
+            return SimpleDialogOption(
+              onPressed: disabled ? null : () => _selectType(t),
+              child: Text(
+                _typeLabelFor(t, l10n),
+                style: disabled
+                    ? TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withAlpha(80),
+                )
+                    : null,
+              ),
+            );
+          }),
         ],
         const Divider(),
         Padding(
