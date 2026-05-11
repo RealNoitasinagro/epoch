@@ -5,9 +5,9 @@ import '../time_utils.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_row.dart';
 
-class AstronomyTab extends StatelessWidget {
+class AstronomicalTab extends StatelessWidget {
   final DateTime now;
-  const AstronomyTab({super.key, required this.now});
+  const AstronomicalTab({super.key, required this.now});
 
   String _formatDecimal(double value, String locale, int decimals) {
     final fmt = NumberFormat.decimalPatternDigits(

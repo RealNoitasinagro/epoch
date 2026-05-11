@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 
-class InfoRow extends StatelessWidget {
+class GraphicalRow extends StatelessWidget {
   final String label;
+  final Widget value;
   final String info;
 
-  const InfoRow({super.key, required this.label, required this.info});
+  const GraphicalRow({super.key, required this.label, required this.info, required this.value});
 
   void _showInfo(BuildContext context, AppLocalizations l10n) {
     showDialog(
@@ -43,6 +44,8 @@ class InfoRow extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
                 ),
               ),
+              const SizedBox(height: 4),
+              value,
             ],
           ),
         ),

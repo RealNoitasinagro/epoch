@@ -10,14 +10,14 @@ const _civilTypes = [
   ValueType.daySecond,
 ];
 
-class MainTab extends StatelessWidget {
+class CivilTab extends StatelessWidget {
   final DateTime now;
   final bool thousandsSep;
   final bool hourFormat24;
   final List<TimeEntry> entries;
   final ValueChanged<List<TimeEntry>> onEntriesChanged;
 
-  const MainTab({
+  const CivilTab({
     super.key,
     required this.now,
     required this.entries,

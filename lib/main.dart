@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'models/app_settings.dart';
@@ -7,7 +8,7 @@ import 'models/custom_tab_model.dart';
 import 'models/time_entry.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/technical_tab.dart';
-import 'screens/astronomy_tab.dart';
+import 'screens/astronomical_tab.dart';
 import 'screens/curiosities_tab.dart';
 import 'screens/settings_screen.dart';
 import 'l10n/app_localizations.dart';
@@ -338,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: TabBarView(
           children: [
             // Fixed tabs.
-            ConfigurableTab(
+            CivilTab(
               now: _now,
               entries: _civilEntries,
               thousandsSep: app.thousandsSep,
@@ -346,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onEntriesChanged: _onCivilChanged,
             ),
             TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
-            AstronomyTab(now: _now),
+            AstronomicalTab(now: _now),
             CuriositiesTab(now: _now),
             // Custom tabs.
             ..._customTabs.map((tab) => ConfigurableTab(

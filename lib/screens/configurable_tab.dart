@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
-import '../widgets/info_row.dart';
+import '../widgets/graphical_row.dart';
 import '../widgets/time_row.dart';
 import 'entry_picker.dart';
 import 'timezone_search_screen.dart';
@@ -166,17 +166,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
               // Graphical binary clocks get special rendering.
               if (entry.type == ValueType.binaryClockColumns) {
-                return _GraphicalRow(
+                return GraphicalRow(
                   label: entry.localizedLabel(l10n),
                   info: entry.localizedInfo(l10n),
-                  child: _ColumnBinaryClockWidget(now: widget.now),
+                  value: _ColumnBinaryClockWidget(now: widget.now),
                 );
               }
               if (entry.type == ValueType.binaryClockBcd) {
-                return _GraphicalRow(
+                return GraphicalRow(
                   label: entry.localizedLabel(l10n),
                   info: entry.localizedInfo(l10n),
-                  child: _BcdBinaryClockWidget(now: widget.now),
+                  value: _BcdBinaryClockWidget(now: widget.now),
                 );
               }
 
@@ -566,31 +566,6 @@ class _DialogTitle extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
-      ],
-    );
-  }
-}
-
-// Wrapper for graphical (non-text) value rows with label and info button.
-class _GraphicalRow extends StatelessWidget {
-  final String label;
-  final String info;
-  final Widget child;
-
-  const _GraphicalRow({
-    required this.label,
-    required this.info,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InfoRow(label: label, info: info),
-        const SizedBox(height: 4),
-        child,
       ],
     );
   }
