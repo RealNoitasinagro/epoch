@@ -191,7 +191,7 @@ abstract class AppLocalizations {
   /// No description provided for @doomsdayLink.
   ///
   /// In en, this message translates to:
-  /// **'→ thebulletin.org/doomsday-clock'**
+  /// **'https://thebulletin.org/doomsday-clock/'**
   String get doomsdayLink;
 
   /// No description provided for @editLayout.

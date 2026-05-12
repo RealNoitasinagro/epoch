@@ -29,7 +29,7 @@
   "deselect": "Deselect",
   "deselectAll": "Deselect all",
   "doneEditing": "Done editing",
-  "doomsdayLink": "→ thebulletin.org/doomsday-clock",
+  "doomsdayLink": "https://thebulletin.org/doomsday-clock/",
   "editLayout": "Edit layout",
   "emptyTabHint": "Fully configurable tab.\nUse the edit mode to add values.",
   "infoBinaryClock": "Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.",

@@ -57,7 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get doneEditing => 'Done editing';
 
   @override
-  String get doomsdayLink => '→ thebulletin.org/doomsday-clock';
+  String get doomsdayLink => 'https://thebulletin.org/doomsday-clock/';
 
   @override
   String get editLayout => 'Edit layout';

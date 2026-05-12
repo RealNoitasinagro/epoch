@@ -29,7 +29,7 @@
   "deselect": "Abwählen",
   "deselectAll": "Alle abwählen",
   "doneEditing": "Fertig",
-  "doomsdayLink": "→ thebulletin.org/doomsday-clock",
+  "doomsdayLink": "https://thebulletin.org/doomsday-clock/",
   "editLayout": "Layout bearbeiten",
   "emptyTabHint": "Voll konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
   "infoBinaryClock": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.",
