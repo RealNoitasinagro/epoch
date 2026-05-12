@@ -389,7 +389,7 @@ abstract class AppLocalizations {
   /// No description provided for @labelTai.
   ///
   /// In en, this message translates to:
-  /// **'TAI (s since epoch)'**
+  /// **'TAI (s)'**
   String get labelTai;
 
   /// No description provided for @labelTime.
@@ -464,11 +464,11 @@ abstract class AppLocalizations {
   /// **'Astronomy'**
   String get sectionAstronomy;
 
-  /// No description provided for @sectionAtomicGps.
+  /// No description provided for @sectionAtomic.
   ///
   /// In en, this message translates to:
-  /// **'Atomic & GPS'**
-  String get sectionAtomicGps;
+  /// **'Atomic'**
+  String get sectionAtomic;
 
   /// No description provided for @sectionBinaryClock.
   ///
@@ -499,6 +499,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unix Epoch'**
   String get sectionEpoch;
+
+  /// No description provided for @sectionGps.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS'**
+  String get sectionGps;
 
   /// No description provided for @sectionJulian.
   ///

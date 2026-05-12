@@ -30,7 +30,7 @@ class TechnicalTab extends StatelessWidget {
           info: l10n.infoUnixSeconds,
         ),
         const Divider(height: 40),
-        SectionHeader(label: l10n.sectionAtomicGps),
+        SectionHeader(label: l10n.sectionAtomic),
         const SizedBox(height: 8),
         TimeRow(
           label: l10n.labelTai,
@@ -38,7 +38,8 @@ class TechnicalTab extends StatelessWidget {
           useThousands: thousandsSep,
           info: l10n.infoTai,
         ),
-        const SizedBox(height: 12),
+        const Divider(height: 40),
+        SectionHeader(label: l10n.sectionGps),
         TimeRow(
           label: l10n.labelGps,
           value: gps.toString(),

@@ -171,7 +171,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelSwatchBeats => 'Internetzeit';
 
   @override
-  String get labelTai => 'TAI (s seit Epoche)';
+  String get labelTai => 'TAI (s)';
 
   @override
   String get labelTime => 'Uhrzeit';
@@ -212,7 +212,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionAstronomy => 'Astronomisch';
 
   @override
-  String get sectionAtomicGps => 'Atom & GPS';
+  String get sectionAtomic => 'Atom';
 
   @override
   String get sectionBinaryClock => 'Binäruhr';
@@ -228,6 +228,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sectionEpoch => 'Unix-Epoche';
+
+  @override
+  String get sectionGps => 'GPS';
 
   @override
   String get sectionJulian => 'Julianisches Datum';

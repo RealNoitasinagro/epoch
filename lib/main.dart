@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'build_info.dart';
 import 'models/app_settings.dart';
@@ -178,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<TimeEntry> _civilEntries = [];
   List<CustomTabData> _customTabs = [];
   bool _loaded = false;
+  bool _isFullscreen = false;
 
   @override
   void initState() {
@@ -211,6 +213,17 @@ class _HomeScreenState extends State<HomeScreen>
     _updateTabController();
   }
 
+  void _toggleFullscreen() {
+    setState(() => _isFullscreen = !_isFullscreen);
+    if (_isFullscreen) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+  }
+
+
+
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
   void _onCivilChanged(List<TimeEntry> entries) {
@@ -223,13 +236,20 @@ class _HomeScreenState extends State<HomeScreen>
   void _updateTabController() {
     final newCount = _tabCount;
     final oldIndex = _tabController?.index ?? 0;
-    _tabController?.dispose();
+    final oldController = _tabController;
+
     _tabController = TabController(
       length: newCount,
       vsync: this,
       initialIndex: oldIndex.clamp(0, newCount - 1),
     );
     _tabController!.addListener(_onTabChanged);
+
+    // Dispose old controller after the current frame to avoid
+    // disposing during notifyListeners().
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      oldController?.dispose();
+    });
     setState(() {});
   }
 
@@ -263,9 +283,16 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _deleteCustomTab(String id) {
+    final idx = _customTabs.indexWhere((t) => t.id == id);
     _customTabs.removeWhere((t) => t.id == id);
     saveCustomTabs(_customTabs);
+    // Navigate to tab left of the deleted one, minimum index 0.
+    final targetIndex = (idx + 3).clamp(0, _tabCount - 2);
     _updateTabController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _tabController?.animateTo(targetIndex);
+    });
   }
 
   void _onCustomTabEntriesChanged(String id, List<TimeEntry> entries) {
@@ -332,7 +359,8 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onDoubleTap: () => _showBuildInfo(context),
+          onDoubleTap: _toggleFullscreen,
+          onLongPress: () => _showBuildInfo(context),
           child: Text(l10n.appName),
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -354,8 +382,7 @@ class _HomeScreenState extends State<HomeScreen>
             Tab(child: Text(l10n.tabCuriosities)),
             ..._customTabs.map((tab) => _CustomTab(
               name: tab.name,
-              onLongPress: () =>
-                  _renameCustomTab(context, l10n, tab.id),
+              onRename: () => _renameCustomTab(context, l10n, tab.id),
               onDelete: () => _deleteCustomTab(tab.id),
             )),
             if (_customTabs.length < maxCustomTabs)
@@ -396,14 +423,13 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-
   void _showBuildInfo(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Build info'),
         content: Text(
-          'Build: $kBuildTimestamp',
+          kBuildTimestamp,
           style: const TextStyle(fontFamily: 'monospace'),
         ),
         actions: [
@@ -421,44 +447,55 @@ class _HomeScreenState extends State<HomeScreen>
 
 class _CustomTab extends StatelessWidget {
   final String name;
-  final VoidCallback onLongPress;
+  final VoidCallback onRename;
   final VoidCallback onDelete;
 
   const _CustomTab({
     required this.name,
-    required this.onLongPress,
+    required this.onRename,
     required this.onDelete,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Tab(
-      child: GestureDetector(
-        // Use onLongPressEnd to ensure the gesture is fully complete
-        // before triggering the dialog, avoiding the assertion error
-        // that occurs when a dialog opens mid-gesture on Linux.
-        //onLongPressEnd: (_) =>
-        //     WidgetsBinding.instance.addPostFrameCallback((_) => onLongPress()),
-        onLongPress: onLongPress,
-        child: Row(
+  void _showOptions(BuildContext context, AppLocalizations l10n) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              name,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: Text(l10n.renameTab),
+              onTap: () {
+                Navigator.pop(ctx);
+                onRename();
+              },
             ),
-            const SizedBox(width: 4),
-            GestureDetector(
-              onTapUp: (_) =>
-                  WidgetsBinding.instance.addPostFrameCallback(
-                          (_) => onDelete()),
-              child: Icon(
-                Icons.close,
-                size: 14,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-              ),
+            ListTile(
+              leading: const Icon(Icons.close,
+                  color: Colors.redAccent),
+              title: Text(l10n.deleteTab,
+                  style: const TextStyle(color: Colors.redAccent)),
+              onTap: () {
+                Navigator.pop(ctx);
+                onDelete();
+              },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Tab(
+      child: GestureDetector(
+        onLongPress: () => _showOptions(context, l10n),
+        child: Text(
+          name,
+          style: const TextStyle(fontStyle: FontStyle.italic),
         ),
       ),
     );
