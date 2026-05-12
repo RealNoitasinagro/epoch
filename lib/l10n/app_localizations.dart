@@ -128,12 +128,6 @@ abstract class AppLocalizations {
   /// **'Add value'**
   String get addValue;
 
-  /// No description provided for @allValuesDisplayed.
-  ///
-  /// In en, this message translates to:
-  /// **'All available values are already displayed.'**
-  String get allValuesDisplayed;
-
   /// No description provided for @alreadyDisplayed.
   ///
   /// In en, this message translates to:
@@ -206,6 +200,12 @@ abstract class AppLocalizations {
   /// **'Edit layout'**
   String get editLayout;
 
+  /// No description provided for @emptyTabHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully configurable tab.\nUse the edit mode to add values.'**
+  String get emptyTabHint;
+
   /// No description provided for @infoBinaryClock.
   ///
   /// In en, this message translates to:
@@ -223,6 +223,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoBinaryClockString;
+
+  /// No description provided for @infoDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
+  String get infoDateTime;
 
   /// No description provided for @infoDaySecond.
   ///
@@ -530,12 +536,6 @@ abstract class AppLocalizations {
   /// **'Select for removal'**
   String get selectForRemoval;
 
-  /// No description provided for @selectRegion.
-  ///
-  /// In en, this message translates to:
-  /// **'Select region'**
-  String get selectRegion;
-
   /// No description provided for @selectTimezone.
   ///
   /// In en, this message translates to:
@@ -685,6 +685,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date'**
   String get valueTypeDate;
+
+  /// No description provided for @valueTypeDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & Time'**
+  String get valueTypeDateTime;
 
   /// No description provided for @valueTypeDaySecond.
   ///

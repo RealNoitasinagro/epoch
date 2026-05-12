@@ -25,10 +25,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addValue => 'Add value';
 
   @override
-  String get allValuesDisplayed =>
-      'All available values are already displayed.';
-
-  @override
   String get alreadyDisplayed => 'This value is already displayed.';
 
   @override
@@ -67,6 +63,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editLayout => 'Edit layout';
 
   @override
+  String get emptyTabHint =>
+      'Fully configurable tab.\nUse the edit mode to add values.';
+
+  @override
   String get infoBinaryClock =>
       'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
 
@@ -77,6 +77,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoBinaryClockString =>
       'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
+
+  @override
+  String get infoDateTime =>
+      'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
   String get infoDaySecond =>
@@ -244,9 +248,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectForRemoval => 'Select for removal';
 
   @override
-  String get selectRegion => 'Select region';
-
-  @override
   String get selectTimezone => 'Select timezone';
 
   @override
@@ -321,6 +322,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeDate => 'Date';
+
+  @override
+  String get valueTypeDateTime => 'Date & Time';
 
   @override
   String get valueTypeDaySecond => 'Day second';

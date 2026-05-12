@@ -144,7 +144,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           onResetDefaults: _resetToDefaults,
         ),
         Expanded(
-          child: ListView.separated(
+          child:
+            widget.entries.isEmpty && !_editMode
+              ? _EmptyTabHint()
+              : ListView.separated(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
             itemCount: widget.entries.length,
             separatorBuilder: (_, __) => const Divider(height: 32),
@@ -347,6 +350,7 @@ class _EntryPickerState extends State<_EntryPicker> {
   String _typeLabel(AppLocalizations l10n) => switch (_type) {
     ValueType.date               => l10n.valueTypeDate,
     ValueType.time               => l10n.valueTypeTime,
+    ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
@@ -493,6 +497,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       switch (t) {
         ValueType.date               => l10n.valueTypeDate,
         ValueType.time               => l10n.valueTypeTime,
+        ValueType.dateTime           => l10n.valueTypeDateTime,
         ValueType.daySecond          => l10n.valueTypeDaySecond,
         ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
         ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
@@ -691,6 +696,27 @@ class _BcdBinaryClockWidget extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _EmptyTabHint extends StatelessWidget {
+  const _EmptyTabHint();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Text(
+          l10n.emptyTabHint,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(120),
+          ),
+        ),
+      ),
     );
   }
 }

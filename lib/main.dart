@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'build_info.dart';
 import 'models/app_settings.dart';
 import 'models/main_tab_config.dart';
 import 'models/custom_tab_model.dart';
@@ -169,16 +170,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with TickerProviderStateMixin {
   late Timer _timer;
   late DateTime _now;
-
-  // Civil tab entries.
+  TabController? _tabController;
   List<TimeEntry> _civilEntries = [];
-
-  // Custom (Watchlist) tabs.
   List<CustomTabData> _customTabs = [];
-
   bool _loaded = false;
 
   @override
@@ -191,6 +189,17 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadData();
   }
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  int get _tabCount =>
+      4 + _customTabs.length +
+          (_customTabs.length < maxCustomTabs ? 1 : 0);
+
   Future<void> _loadData() async {
     final civil  = await loadCivilEntries();
     final custom = await loadCustomTabs();
@@ -199,12 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _customTabs   = custom;
       _loaded       = true;
     });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
+    _updateTabController();
   }
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
@@ -216,6 +220,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ── Custom tab management ────────────────────────────────────────────
 
+  void _updateTabController() {
+    final newCount = _tabCount;
+    final oldIndex = _tabController?.index ?? 0;
+    _tabController?.dispose();
+    _tabController = TabController(
+      length: newCount,
+      vsync: this,
+      initialIndex: oldIndex.clamp(0, newCount - 1),
+    );
+    _tabController!.addListener(_onTabChanged);
+    setState(() {});
+  }
+
+  void _onTabChanged() {
+    if (!_tabController!.indexIsChanging) return;
+    final addTabIndex = 4 + _customTabs.length;
+    if (_tabController!.index == addTabIndex &&
+        _customTabs.length < maxCustomTabs) {
+      // Snap back to previous tab immediately, then add.
+      _tabController!.index = _tabController!.previousIndex;
+      final l10n = AppLocalizations.of(context)!;
+      _addCustomTab(l10n);
+    }
+  }
+
   void _addCustomTab(AppLocalizations l10n) {
     if (_customTabs.length >= maxCustomTabs) return;
     final tab = CustomTabData(
@@ -223,13 +252,20 @@ class _HomeScreenState extends State<HomeScreen> {
       name:    defaultTabName(_customTabs.length),
       entries: [],
     );
-    setState(() => _customTabs.add(tab));
+    _customTabs.add(tab);
     saveCustomTabs(_customTabs);
+    _updateTabController();
+    // Navigate to the newly created tab.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _tabController?.animateTo(4 + _customTabs.length - 1);
+    });
   }
 
   void _deleteCustomTab(String id) {
-    setState(() => _customTabs.removeWhere((t) => t.id == id));
+    _customTabs.removeWhere((t) => t.id == id);
     saveCustomTabs(_customTabs);
+    _updateTabController();
   }
 
   void _onCustomTabEntriesChanged(String id, List<TimeEntry> entries) {
@@ -284,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_loaded) {
+    if (!_loaded || _tabController == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -293,81 +329,89 @@ class _HomeScreenState extends State<HomeScreen> {
     final app  = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
 
-    // Fixed tabs count: Civil, Technical, Astronomy, Curiosities.
-    // Custom tabs come after.
-    final totalTabs = 4 + _customTabs.length +
-        (_customTabs.length < maxCustomTabs ? 1 : 0); // +1 for add-button
-
-    return DefaultTabController(
-      length: totalTabs,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.appName),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              tooltip: l10n.settings,
-              onPressed: () => _openSettings(context),
-            ),
-          ],
-          bottom: TabBar(
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            tabs: [
-              // Fixed tabs.
-              Tab(child: Text(l10n.tabMain)),
-              Tab(child: Text(l10n.tabTechnical)),
-              Tab(child: Text(l10n.tabAstronomy)),
-              Tab(child: Text(l10n.tabCuriosities)),
-              // Custom tabs – italic, long-press to rename.
-              ..._customTabs.map((tab) => _CustomTab(
-                name: tab.name,
-                onLongPress: () =>
-                    _renameCustomTab(context, l10n, tab.id),
-                onDelete: () => _deleteCustomTab(tab.id),
-              )),
-              // Add-tab button (if under limit).
-              if (_customTabs.length < maxCustomTabs)
-                Tab(
-                  child: Tooltip(
-                    message: l10n.addTab,
-                    child: const Icon(Icons.add, size: 20),
-                  ),
-                ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+          onDoubleTap: () => _showBuildInfo(context),
+          child: Text(l10n.appName),
         ),
-        body: TabBarView(
-          children: [
-            // Fixed tabs.
-            CivilTab(
-              now: _now,
-              entries: _civilEntries,
-              thousandsSep: app.thousandsSep,
-              hourFormat24: app.hourFormat24,
-              onEntriesChanged: _onCivilChanged,
-            ),
-            TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
-            AstronomicalTab(now: _now),
-            CuriositiesTab(now: _now),
-            // Custom tabs.
-            ..._customTabs.map((tab) => ConfigurableTab(
-              now: _now,
-              entries: tab.entries,
-              thousandsSep: app.thousandsSep,
-              hourFormat24: app.hourFormat24,
-              onEntriesChanged: (e) =>
-                  _onCustomTabEntriesChanged(tab.id, e),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            tooltip: l10n.settings,
+            onPressed: () => _openSettings(context),
+          ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          tabs: [
+            Tab(child: Text(l10n.tabMain)),
+            Tab(child: Text(l10n.tabTechnical)),
+            Tab(child: Text(l10n.tabAstronomy)),
+            Tab(child: Text(l10n.tabCuriosities)),
+            ..._customTabs.map((tab) => _CustomTab(
+              name: tab.name,
+              onLongPress: () =>
+                  _renameCustomTab(context, l10n, tab.id),
+              onDelete: () => _deleteCustomTab(tab.id),
             )),
-            // Add-tab placeholder.
             if (_customTabs.length < maxCustomTabs)
-              _AddTabPlaceholder(
-                onAdd: () => _addCustomTab(l10n),
-                l10n: l10n,
+              Tab(
+                child: Tooltip(
+                  message: l10n.addTab,
+                  child: const Icon(Icons.add, size: 20),
+                ),
               ),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          CivilTab(
+            now: _now,
+            entries: _civilEntries,
+            thousandsSep: app.thousandsSep,
+            hourFormat24: app.hourFormat24,
+            onEntriesChanged: _onCivilChanged,
+          ),
+          TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
+          AstronomicalTab(now: _now),
+          CuriositiesTab(now: _now),
+          ..._customTabs.map((tab) => ConfigurableTab(
+            now: _now,
+            entries: tab.entries,
+            thousandsSep: app.thousandsSep,
+            hourFormat24: app.hourFormat24,
+            onEntriesChanged: (e) =>
+                _onCustomTabEntriesChanged(tab.id, e),
+          )),
+          if (_customTabs.length < maxCustomTabs)
+            const SizedBox.shrink(),
+        ],
+      ),
+    );
+  }
+
+
+  void _showBuildInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Build info'),
+        content: Text(
+          'Build: $kBuildTimestamp',
+          style: const TextStyle(fontFamily: 'monospace'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
@@ -416,34 +460,6 @@ class _CustomTab extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// ── Empty placeholder shown when user taps the + tab ─────────────────────────
-
-class _AddTabPlaceholder extends StatelessWidget {
-  final VoidCallback onAdd;
-  final AppLocalizations l10n;
-
-  const _AddTabPlaceholder({required this.onAdd, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(l10n.addTab,
-              style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 16),
-          FilledButton.icon(
-            onPressed: onAdd,
-            icon: const Icon(Icons.add),
-            label: Text(l10n.addTab),
-          ),
-        ],
       ),
     );
   }

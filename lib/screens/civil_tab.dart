@@ -7,6 +7,7 @@ import 'configurable_tab.dart';
 const _civilTypes = [
   ValueType.date,
   ValueType.time,
+  ValueType.dateTime,
   ValueType.daySecond,
 ];
 

@@ -7,6 +7,7 @@ enum ValueType {
   // Civil
   date,
   time,
+  dateTime,
   daySecond,
   // Curiosities – zone-dependent binary clocks
   binaryClockString,
@@ -110,6 +111,7 @@ class TimeEntry {
   String _typeLabel(AppLocalizations l10n) => switch (type) {
     ValueType.date               => l10n.valueTypeDate,
     ValueType.time               => l10n.valueTypeTime,
+    ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
@@ -127,6 +129,7 @@ class TimeEntry {
   String localizedInfo(AppLocalizations l10n) => switch (type) {
     ValueType.date               => l10n.infoLocalDate,
     ValueType.time               => l10n.infoLocalTime,
+    ValueType.dateTime           => l10n.infoDateTime,
     ValueType.daySecond          => l10n.infoDaySecond,
     ValueType.binaryClockString  => l10n.infoBinaryClockString,
     ValueType.binaryClockColumns => l10n.infoBinaryClock,
@@ -212,15 +215,20 @@ class TimeEntry {
 
     switch (type) {
       case ValueType.date:
-        return DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+        return TimeUtils.formatDate(locale, dt);
       case ValueType.time:
         if (!hourFormat24) {
-          final hour12 = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
-          final period = dt.hour < 12 ? 'AM' : 'PM';
-          final h12 = hour12.toString().padLeft(2, '0');
-          return '$h12:$mm:$ss $period $tzSuffix';
+          String hourFormat12 = TimeUtils.formatTime12h(dt, mm, ss, tzSuffix);
+          return hourFormat12;
         }
         return '$hh:$mm:$ss $tzSuffix';
+      case ValueType.dateTime:
+        final dateStr = TimeUtils.formatDate(locale, dt);
+        if (!hourFormat24) {
+          String hourFormat12 = TimeUtils.formatTime12h(dt, mm, ss, tzSuffix);
+          return '$dateStr $hourFormat12';
+        }
+        return '$dateStr $hh:$mm:$ss $tzSuffix';
       case ValueType.daySecond:
         final v = TimeUtils.daySecond(dt);
         return thousandsSep
@@ -233,7 +241,7 @@ class TimeEntry {
     }
   }
 
-  bool get useThousands => switch (type) {
+    bool get useThousands => switch (type) {
     ValueType.daySecond    => true,
     ValueType.unixSeconds  => true,
     ValueType.tai          => true,
@@ -256,6 +264,7 @@ extension ValueTypeProps on ValueType {
   bool get isZoneIndependent => switch (this) {
     ValueType.date               => false,
     ValueType.time               => false,
+    ValueType.dateTime           => false,
     ValueType.daySecond          => false,
     ValueType.binaryClockString  => false,
     ValueType.binaryClockColumns => false,

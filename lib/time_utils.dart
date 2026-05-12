@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class TimeUtils {
@@ -71,9 +72,9 @@ class TimeUtils {
   /// BCD (two-column) binary clock: each decimal digit as separate 4-bit value.
   /// Returns pairs (tens, units) for hours, minutes, seconds.
   static ({
-  String hourTens,   String hourUnits,
-  String minTens,    String minUnits,
-  String secTens,    String secUnits,
+    String hourTens,   String hourUnits,
+    String minTens,    String minUnits,
+    String secTens,    String secUnits,
   }) bcdTime(DateTime dt) {
     String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
     return (
@@ -85,7 +86,6 @@ class TimeUtils {
     secUnits:  toBin(dt.second  % 10, 4),
     );
   }
-
 
   /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).
   /// Based on the IAU 1982 formula, accurate to ~0.1s for dates near J2000.
@@ -140,4 +140,16 @@ class TimeUtils {
   /// Modified Julian Date: JD − 2400000.5
   static double modifiedJulianDate(DateTime utc) =>
       julianDate(utc.toUtc()) - 2400000.5;
+
+  /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
+  static String formatDate(String locale, DateTime dt) => DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+
+  /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
+  static String formatTime12h(DateTime dt, String mm, String ss, String tzSuffix) {
+    final hour12 = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+    final period = dt.hour < 12 ? 'AM' : 'PM';
+    final h12 = hour12.toString().padLeft(2, '0');
+    final timeFormat12h = '$h12:$mm:$ss $period $tzSuffix';
+    return timeFormat12h;
+  }
 }

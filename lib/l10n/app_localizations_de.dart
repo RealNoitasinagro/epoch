@@ -25,10 +25,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get addValue => 'Wert hinzufügen';
 
   @override
-  String get allValuesDisplayed =>
-      'Alle verfügbaren Werte werden bereits angezeigt.';
-
-  @override
   String get alreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';
 
   @override
@@ -67,6 +63,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editLayout => 'Layout bearbeiten';
 
   @override
+  String get emptyTabHint =>
+      'Voll konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.';
+
+  @override
   String get infoBinaryClock =>
       'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
 
@@ -77,6 +77,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoBinaryClockString =>
       'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+
+  @override
+  String get infoDateTime =>
+      'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
 
   @override
   String get infoDaySecond =>
@@ -244,9 +248,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get selectForRemoval => 'Zum Entfernen markieren';
 
   @override
-  String get selectRegion => 'Region auswählen';
-
-  @override
   String get selectTimezone => 'Zeitzone auswählen';
 
   @override
@@ -321,6 +322,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeDate => 'Datum';
+
+  @override
+  String get valueTypeDateTime => 'Datum & Uhrzeit';
 
   @override
   String get valueTypeDaySecond => 'Tagessekunde';

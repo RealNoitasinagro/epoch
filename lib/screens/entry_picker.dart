@@ -51,6 +51,7 @@ class _EntryPickerState extends State<_EntryPicker> {
   String _typeLabelFor(ValueType t, AppLocalizations l10n) => switch (t) {
     ValueType.date               => l10n.valueTypeDate,
     ValueType.time               => l10n.valueTypeTime,
+    ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
@@ -101,6 +102,7 @@ class _EntryPickerState extends State<_EntryPicker> {
     final civilTypes = [
       ValueType.date,
       ValueType.time,
+      ValueType.dateTime,
       ValueType.daySecond,
     ].where(_isAllowed).toList();
 
