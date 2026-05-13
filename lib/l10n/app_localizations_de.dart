@@ -64,7 +64,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get emptyTabHint =>
-      'Voll konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.';
+      'Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.';
 
   @override
   String get infoBinaryClock =>

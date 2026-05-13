@@ -31,7 +31,7 @@
   "doneEditing": "Done editing",
   "doomsdayLink": "https://thebulletin.org/doomsday-clock/",
   "editLayout": "Edit layout",
-  "emptyTabHint": "Fully configurable tab.\nUse the edit mode to add values.",
+  "emptyTabHint": "Configurable tab.\nUse the edit mode to add values.",
   "infoBinaryClock": "Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.",
   "infoBinaryClockBcd": "Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.",
   "infoBinaryClockString": "Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.",

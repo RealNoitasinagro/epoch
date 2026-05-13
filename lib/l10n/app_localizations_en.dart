@@ -64,7 +64,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyTabHint =>
-      'Fully configurable tab.\nUse the edit mode to add values.';
+      'Configurable tab.\nUse the edit mode to add values.';
 
   @override
   String get infoBinaryClock =>

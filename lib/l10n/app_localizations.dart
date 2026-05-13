@@ -203,7 +203,7 @@ abstract class AppLocalizations {
   /// No description provided for @emptyTabHint.
   ///
   /// In en, this message translates to:
-  /// **'Fully configurable tab.\nUse the edit mode to add values.'**
+  /// **'Configurable tab.\nUse the edit mode to add values.'**
   String get emptyTabHint;
 
   /// No description provided for @infoBinaryClock.

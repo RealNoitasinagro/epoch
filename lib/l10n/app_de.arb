@@ -31,7 +31,7 @@
   "doneEditing": "Fertig",
   "doomsdayLink": "https://thebulletin.org/doomsday-clock/",
   "editLayout": "Layout bearbeiten",
-  "emptyTabHint": "Voll konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
+  "emptyTabHint": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
   "infoBinaryClock": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.",
   "infoBinaryClockBcd": "Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.",
   "infoBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.",
