@@ -198,9 +198,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  int get _tabCount =>
-      4 + _customTabs.length +
-          (_customTabs.length < maxCustomTabs ? 1 : 0);
+  int get _tabCount => 4 + _customTabs.length;
 
   Future<void> _loadData() async {
     final civil  = await loadCivilEntries();
@@ -221,8 +219,6 @@ class _HomeScreenState extends State<HomeScreen>
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
   }
-
-
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
@@ -365,6 +361,15 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          if (_customTabs.length < maxCustomTabs)
+            IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: l10n.addTab,
+              onPressed: () {
+                final l10n = AppLocalizations.of(context)!;
+                _addCustomTab(l10n);
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.menu),
             tooltip: l10n.settings,
@@ -385,13 +390,6 @@ class _HomeScreenState extends State<HomeScreen>
               onRename: () => _renameCustomTab(context, l10n, tab.id),
               onDelete: () => _deleteCustomTab(tab.id),
             )),
-            if (_customTabs.length < maxCustomTabs)
-              Tab(
-                child: Tooltip(
-                  message: l10n.addTab,
-                  child: const Icon(Icons.add, size: 20),
-                ),
-              ),
           ],
         ),
       ),
@@ -416,8 +414,6 @@ class _HomeScreenState extends State<HomeScreen>
             onEntriesChanged: (e) =>
                 _onCustomTabEntriesChanged(tab.id, e),
           )),
-          if (_customTabs.length < maxCustomTabs)
-            const SizedBox.shrink(),
         ],
       ),
     );

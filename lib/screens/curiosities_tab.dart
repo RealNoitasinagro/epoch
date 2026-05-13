@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
-import '../widgets/graphical_row.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_row.dart';
 import '../widgets/binary_coded_decimal_clock.dart';
@@ -32,16 +31,16 @@ class CuriositiesTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionBinaryClock),
         const SizedBox(height: 8),
-        GraphicalRow(
+        TimeRow(
           label: l10n.labelBinaryClockColumns,
           info: l10n.infoBinaryClock,
-          value: ColumnBinaryClock(now: now, l10n: l10n),
+          value: '',
         ),
         const SizedBox(height: 24),
-        GraphicalRow(
+        TimeRow(
           label: l10n.labelBinaryClockBcd,
           info: l10n.infoBinaryClockBcd,
-          value: BcdBinaryClock(now: now, l10n: l10n),
+          value: '',
         ),
         const SizedBox(height: 24),
         // Compact string representation.

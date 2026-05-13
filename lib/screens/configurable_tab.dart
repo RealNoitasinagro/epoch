@@ -3,7 +3,6 @@ import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/binary_columns_clock.dart';
 import '../widgets/binary_coded_decimal_clock.dart';
-import '../widgets/graphical_row.dart';
 import '../widgets/time_row.dart';
 import 'entry_picker.dart';
 
@@ -170,17 +169,19 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
               // Graphical binary clocks get special rendering.
               if (entry.type == ValueType.binaryClockColumns) {
-                return GraphicalRow(
+                return TimeRow(
                   label: entry.localizedLabel(l10n),
                   info: entry.localizedInfo(l10n),
-                  value: ColumnBinaryClock(now: widget.now, l10n: l10n),
+                  value: '',
+                  hideCopyButton: true,
                 );
               }
               if (entry.type == ValueType.binaryClockBcd) {
-                return GraphicalRow(
+                return TimeRow(
                   label: entry.localizedLabel(l10n),
                   info: entry.localizedInfo(l10n),
-                  value: BcdBinaryClock(now: widget.now, l10n: l10n),
+                  value: '',
+                  hideCopyButton: true,
                 );
               }
 

@@ -241,7 +241,7 @@ class TimeEntry {
     }
   }
 
-    bool get useThousands => switch (type) {
+  bool get useThousands => switch (type) {
     ValueType.daySecond    => true,
     ValueType.unixSeconds  => true,
     ValueType.tai          => true,

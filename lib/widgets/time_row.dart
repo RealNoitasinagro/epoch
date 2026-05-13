@@ -8,6 +8,7 @@ class TimeRow extends StatelessWidget {
   final String value;
   final String? info;          // explanation text for the (i) button
   final bool useThousands;     // whether to format value with thousands separator
+  final bool hideCopyButton;   // set true for graphical/non-text values
 
   const TimeRow({
     super.key,
@@ -15,6 +16,7 @@ class TimeRow extends StatelessWidget {
     required this.value,
     this.info,
     this.useThousands = true,
+    this.hideCopyButton = false,
   });
 
   // Formats a numeric string with thousands separators if useThousands is set
@@ -89,12 +91,13 @@ class TimeRow extends StatelessWidget {
           tooltip: l10n.aboutThisValue,
           onPressed: () => _showInfo(context, l10n),
         ),
-        IconButton(
-          icon: const Icon(Icons.copy, size: 20),
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.copyToClipboard,
-          onPressed: () => _copyToClipboard(context, l10n),
-        ),
+        if (!hideCopyButton)
+          IconButton(
+            icon: const Icon(Icons.copy, size: 20),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            tooltip: l10n.copyToClipboard,
+            onPressed: () => _copyToClipboard(context, l10n),
+          ),
       ],
     );
   }
