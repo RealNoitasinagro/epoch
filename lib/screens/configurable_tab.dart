@@ -82,22 +82,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     setState(() {});
   }
 
-  void _moveUp(int index) {
-    if (index <= 0) return;
-    final updated = List<TimeEntry>.of(widget.entries);
-    final item = updated.removeAt(index);
-    updated.insert(index - 1, item);
-    widget.onEntriesChanged(updated);
-  }
-
-  void _moveDown(int index) {
-    if (index >= widget.entries.length - 1) return;
-    final updated = List<TimeEntry>.of(widget.entries);
-    final item = updated.removeAt(index);
-    updated.insert(index + 1, item);
-    widget.onEntriesChanged(updated);
-  }
-
   Future<void> _showAddDialog() async {
     final l10n = AppLocalizations.of(context)!;
     if (widget.entries.length >= widget.maxEntries) {
@@ -126,10 +110,232 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     widget.onEntriesChanged([...widget.entries, result]);
   }
 
+  Widget _buildDisplayList(AppLocalizations l10n, String locale) {
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+      itemCount: widget.entries.length,
+      separatorBuilder: (_, __) => const Divider(height: 32, thickness: 0),
+      itemBuilder: (context, index) {
+        final entry = widget.entries[index];
+        return _buildDisplayRow(context, entry, l10n, locale);
+      },
+    );
+  }
+
+  Widget _buildDisplayRow(
+      BuildContext context,
+      TimeEntry entry,
+      AppLocalizations l10n,
+      String locale,
+      ) {
+    if (entry.type == ValueType.binaryClockColumns) {
+      return Column(
+        key: ValueKey(entry.key),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TimeRow(
+            label: entry.localizedLabel(l10n),
+            value: '',
+            info: entry.localizedInfo(l10n),
+            hideCopyButton: true,
+          ),
+          const SizedBox(height: 4),
+          ColumnBinaryClock(now: widget.now, l10n: l10n),
+        ],
+      );
+    }
+    if (entry.type == ValueType.binaryClockBcd) {
+      return Column(
+        key: ValueKey(entry.key),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TimeRow(
+            label: entry.localizedLabel(l10n),
+            value: '',
+            info: entry.localizedInfo(l10n),
+            hideCopyButton: true,
+          ),
+          const SizedBox(height: 4),
+          BcdBinaryClock(now: widget.now, l10n: l10n),
+        ],
+      );
+    }
+    return TimeRow(
+      key: ValueKey(entry.key),
+      label: entry.localizedLabel(l10n),
+      value: entry.computeValue(
+        widget.now,
+        locale,
+        hourFormat24: widget.hourFormat24,
+        thousandsSep: widget.thousandsSep,
+      ),
+      info: entry.localizedInfo(l10n),
+      useThousands: entry.useThousands && widget.thousandsSep,
+    );
+  }
+
+  Widget _buildEditList(AppLocalizations l10n, String locale) {
+    return ReorderableListView.builder(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+      itemCount: widget.entries.length,
+      onReorder: (oldIndex, newIndex) {
+        if (newIndex > oldIndex) newIndex--;
+        final updated = List<TimeEntry>.of(widget.entries);
+        final item = updated.removeAt(oldIndex);
+        updated.insert(newIndex, item);
+        widget.onEntriesChanged(updated);
+      },
+      itemBuilder: (context, index) {
+        final entry = widget.entries[index];
+        return _buildEditRow(context, entry, index, l10n, locale);
+      },
+    );
+  }
+
+  Widget _buildEditRow(
+      BuildContext context,
+      TimeEntry entry,
+      int index,
+      AppLocalizations l10n,
+      String locale,
+      ) {
+    final isChecked = _checked.contains(entry.key);
+    final displayValue = entry.type == ValueType.binaryClockColumns ||
+        entry.type == ValueType.binaryClockBcd
+        ? '(${l10n.labelBinaryClockColumns})'
+        : entry.computeValue(
+      widget.now,
+      locale,
+      hourFormat24: widget.hourFormat24,
+      thousandsSep: widget.thousandsSep,
+    );
+
+    return Dismissible(
+      key: ValueKey(entry.key),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 16),
+        color: Colors.redAccent.withAlpha(200),
+        child: const Icon(Icons.delete_outline, color: Colors.white),
+      ),
+      onDismissed: (_) {
+        final updated = List<TimeEntry>.of(widget.entries);
+        updated.removeAt(index);
+        _checked.remove(entry.key);
+        widget.onEntriesChanged(updated);
+      },
+      child: Row(
+        children: [
+          // Checkbox for multi-select.
+          Tooltip(
+            message: isChecked ? l10n.deselect : l10n.selectForRemoval,
+            child: Checkbox(
+              value: isChecked,
+              onChanged: (_) => _toggleCheck(entry.key),
+            ),
+          ),
+          // Label and value.
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.localizedLabel(l10n),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  displayValue,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontFamily: 'monospace',
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withAlpha(150),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          // Label edit button.
+          IconButton(
+            icon: const Icon(Icons.edit, size: 18),
+            tooltip: l10n.editLabel,
+            onPressed: () => _editLabel(context, entry, l10n),
+          ),
+          // Drag handle – ReorderableListView needs this as the
+          // drag trigger when using itemBuilder.
+          ReorderableDragStartListener(
+            index: index,
+            child: const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Icon(Icons.drag_handle),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _editLabel(
+      BuildContext context,
+      TimeEntry entry,
+      AppLocalizations l10n,
+      ) async {
+    // Pre-fill with custom label if set, otherwise official label.
+    final controller = TextEditingController(
+      text: entry.customLabel ?? entry.localizedLabel(l10n),
+    );
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.editLabel),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(
+            labelText: l10n.newLabelName,
+            // Show official label as hint so user knows the default.
+            hintText: entry.localizedLabel(l10n),
+          ),
+          onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
+        ),
+        actions: [
+          // Clear custom label button.
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, ''),
+            child: Text(l10n.resetToDefaults),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(ctx, controller.text.trim()),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    // Note: controller.dispose() intentionally omitted – Linux assertion.
+    if (result == null) return;
+
+    final updated = List<TimeEntry>.of(widget.entries);
+    final idx = updated.indexWhere((e) => e.key == entry.key);
+    if (idx == -1) return;
+
+    // Empty string = clear custom label, restore official label.
+    updated[idx] = entry.withLabel(result.isEmpty ? null : result);
+    widget.onEntriesChanged(updated);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    Localizations.localeOf(context).toString();
+    final locale = Localizations.localeOf(context).toString();
 
     return Column(
       children: [
@@ -145,59 +351,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         Expanded(
           child:
             widget.entries.isEmpty && !_editMode
-              ? _EmptyTabHint()
-              : ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
-            itemCount: widget.entries.length,
-            separatorBuilder: (_, __) => const Divider(height: 32),
-            itemBuilder: (context, index) {
-              final entry = widget.entries[index];
-              final l10n = AppLocalizations.of(context)!;
-              final locale = Localizations.localeOf(context).toString();
-
-              if (_editMode) {
-                return _EditRow(
-                  label: entry.localizedLabel(l10n),
-                  checked: _checked.contains(entry.key),
-                  index: index,
-                  total: widget.entries.length,
-                  onToggleCheck: () => _toggleCheck(entry.key),
-                  onMoveUp: () => _moveUp(index),
-                  onMoveDown: () => _moveDown(index),
-                );
-              }
-
-              // Graphical binary clocks get special rendering.
-              if (entry.type == ValueType.binaryClockColumns) {
-                return TimeRow(
-                  label: entry.localizedLabel(l10n),
-                  info: entry.localizedInfo(l10n),
-                  value: '',
-                  hideCopyButton: true,
-                );
-              }
-              if (entry.type == ValueType.binaryClockBcd) {
-                return TimeRow(
-                  label: entry.localizedLabel(l10n),
-                  info: entry.localizedInfo(l10n),
-                  value: '',
-                  hideCopyButton: true,
-                );
-              }
-
-              return TimeRow(
-                label: entry.localizedLabel(l10n),
-                value: entry.computeValue(
-                  widget.now,
-                  locale,
-                  hourFormat24: widget.hourFormat24,
-                  thousandsSep: widget.thousandsSep,
-                ),
-                info: entry.localizedInfo(l10n),
-                useThousands: entry.useThousands && widget.thousandsSep,
-              );
-            },
-          ),
+              ? const _EmptyTabHint()
+                : _editMode
+                  ? _buildEditList(l10n, locale)
+                  : _buildDisplayList(l10n, locale)
         ),
         if (_editMode)
           SafeArea(
@@ -277,58 +434,6 @@ class _EditToolbar extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-// ── Edit row ──────────────────────────────────────────────────────────────────
-
-class _EditRow extends StatelessWidget {
-  final String label;
-  final bool checked;
-  final int index;
-  final int total;
-  final VoidCallback onToggleCheck;
-  final VoidCallback onMoveUp;
-  final VoidCallback onMoveDown;
-
-  const _EditRow({
-    required this.label,
-    required this.checked,
-    required this.index,
-    required this.total,
-    required this.onToggleCheck,
-    required this.onMoveUp,
-    required this.onMoveDown,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        Tooltip(
-          message: checked ? l10n.deselect : l10n.selectForRemoval,
-          child: Checkbox(
-            value: checked,
-            onChanged: (_) => onToggleCheck(),
-          ),
-        ),
-        Expanded(
-          child: Text(label,
-              style: Theme.of(context).textTheme.titleMedium),
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_upward, size: 20),
-          tooltip: l10n.moveUp,
-          onPressed: index > 0 ? onMoveUp : null,
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_downward, size: 20),
-          tooltip: l10n.moveDown,
-          onPressed: index < total - 1 ? onMoveDown : null,
-        ),
-      ],
     );
   }
 }

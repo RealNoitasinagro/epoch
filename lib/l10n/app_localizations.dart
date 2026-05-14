@@ -194,6 +194,12 @@ abstract class AppLocalizations {
   /// **'https://thebulletin.org/doomsday-clock/'**
   String get doomsdayLink;
 
+  /// No description provided for @editLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit label'**
+  String get editLabel;
+
   /// No description provided for @editLayout.
   ///
   /// In en, this message translates to:
@@ -427,6 +433,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move up'**
   String get moveUp;
+
+  /// No description provided for @newLabelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get newLabelName;
 
   /// No description provided for @newTabName.
   ///

@@ -21,9 +21,9 @@ void main() {
                 child: Column(
                   children: [
                     TabBar(tabs: [
-                      Tab(text: 'Main'),
+                      Tab(text: 'Civil'),
                       Tab(text: 'Technical'),
-                      Tab(text: 'Astronomy'),
+                      Tab(text: 'Astronomical'),
                       Tab(text: 'Curiosities'),
                     ]),
                   ],
@@ -49,7 +49,7 @@ void main() {
         await tester.pumpAndSettle();
         final l10n = lookupAppLocalizations(const Locale('en'));
         expect(l10n.appName, 'Epoch');
-        expect(l10n.tabMain, 'Main');
+        expect(l10n.tabMain, 'Civil');
         expect(l10n.tabTechnical, 'Technical');
         expect(l10n.settingsTheme, 'Theme');
       });
@@ -58,7 +58,7 @@ void main() {
           (WidgetTester tester) async {
         final l10n = lookupAppLocalizations(const Locale('de'));
         expect(l10n.appName, 'Epoch');
-        expect(l10n.tabMain, 'Haupt');
+        expect(l10n.tabMain, 'Bürgerlich');
         expect(l10n.tabTechnical, 'Technisch');
         expect(l10n.settingsTheme, 'Design');
       });

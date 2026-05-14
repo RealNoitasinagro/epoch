@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get doomsdayLink => 'https://thebulletin.org/doomsday-clock/';
 
   @override
+  String get editLabel => 'Edit label';
+
+  @override
   String get editLayout => 'Edit layout';
 
   @override
@@ -192,6 +195,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moveUp => 'Move up';
+
+  @override
+  String get newLabelName => 'Label';
 
   @override
   String get newTabName => 'Tab name';

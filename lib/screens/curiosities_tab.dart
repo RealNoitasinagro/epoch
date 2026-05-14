@@ -31,17 +31,25 @@ class CuriositiesTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionBinaryClock),
         const SizedBox(height: 8),
+
         TimeRow(
           label: l10n.labelBinaryClockColumns,
-          info: l10n.infoBinaryClock,
           value: '',
+          info: l10n.infoBinaryClock,
+          hideCopyButton: true,
         ),
+        const SizedBox(height: 4),
+        ColumnBinaryClock(now: now, l10n: l10n),
         const SizedBox(height: 24),
         TimeRow(
           label: l10n.labelBinaryClockBcd,
-          info: l10n.infoBinaryClockBcd,
           value: '',
+          info: l10n.infoBinaryClockBcd,
+          hideCopyButton: true,
         ),
+        const SizedBox(height: 4),
+        BcdBinaryClock(now: now, l10n: l10n),
+
         const SizedBox(height: 24),
         // Compact string representation.
         TimeRow(
