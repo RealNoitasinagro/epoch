@@ -22,6 +22,7 @@ void main() {
 
 const _nightRed    = Color(0xFFCC1010);
 const _nightRedDim = Color(0xFF7A0000);
+const fontFamily   = 'Courier New';
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -47,7 +48,7 @@ ThemeData _nightTheme() => ThemeData(
   ),
   iconTheme: const IconThemeData(color: _nightRed),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: 'monospace'),
+    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamily),
     bodyMedium: TextStyle(color: _nightRed),
     bodySmall: TextStyle(color: _nightRedDim),
     labelSmall: TextStyle(color: _nightRedDim),

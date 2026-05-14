@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 
 class TimeStringRow extends StatelessWidget {
   final String label;
@@ -75,8 +76,8 @@ class TimeStringRow extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 _displayValue(context),
-                style: textTheme.headlineSmall?.copyWith(
-                  fontFamily: 'monospace',
+                style: textTheme.bodyLarge?.copyWith(
+                  fontFamily: fontFamily,
                   fontWeight: FontWeight.w500,
                 ),
               ),

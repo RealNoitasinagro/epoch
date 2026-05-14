@@ -386,11 +386,11 @@ abstract class AppLocalizations {
   /// **'Binary Clock'**
   String get sectionBinaryClock;
 
-  /// No description provided for @sectionDoomsday.
+  /// No description provided for @sectionDoomsdayClock.
   ///
   /// In en, this message translates to:
   /// **'Doomsday Clock'**
-  String get sectionDoomsday;
+  String get sectionDoomsdayClock;
 
   /// No description provided for @sectionEpoch.
   ///
@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'Time to midnight'**
+  /// **'Doomsday Clock'**
   String get valueTypeDoomsdayClock;
 
   /// No description provided for @valueTypeGmst.

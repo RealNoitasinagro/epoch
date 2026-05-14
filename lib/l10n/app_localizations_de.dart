@@ -173,7 +173,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionBinaryClock => 'Binäruhr';
 
   @override
-  String get sectionDoomsday => 'Weltuntergangsuhr';
+  String get sectionDoomsdayClock => 'Weltuntergangsuhr';
 
   @override
   String get sectionEpoch => 'Unix-Epoche';
@@ -279,7 +279,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeDaySecond => 'Tagessekunde';
 
   @override
-  String get valueTypeDoomsdayClock => 'Zeit bis Mitternacht';
+  String get valueTypeDoomsdayClock => 'Doomsday Clock';
 
   @override
   String get valueTypeGmst => 'GMST';

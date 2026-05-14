@@ -56,7 +56,7 @@ class CuriositiesTab extends StatelessWidget {
           info: l10n.infoBinaryClockString,
         ),
         const Divider(height: 40),
-        SectionHeader(label: l10n.sectionDoomsday),
+        SectionHeader(label: l10n.sectionDoomsdayClock),
         const SizedBox(height: 8),
         TimeStringRow(
           label: l10n.valueTypeDoomsdayClock,
