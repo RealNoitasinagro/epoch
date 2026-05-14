@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
-import '../widgets/binary_columns_clock.dart';
-import '../widgets/binary_coded_decimal_clock.dart';
-import '../widgets/time_row.dart';
+import '../widgets/time_entry_row.dart';
 import 'entry_picker.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
@@ -128,49 +126,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
-    if (entry.type == ValueType.binaryClockColumns) {
-      return Column(
-        key: ValueKey(entry.key),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TimeRow(
-            label: entry.localizedLabel(l10n),
-            value: '',
-            info: entry.localizedInfo(l10n),
-            hideCopyButton: true,
-          ),
-          const SizedBox(height: 4),
-          ColumnBinaryClock(now: widget.now, l10n: l10n),
-        ],
-      );
-    }
-    if (entry.type == ValueType.binaryClockBcd) {
-      return Column(
-        key: ValueKey(entry.key),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TimeRow(
-            label: entry.localizedLabel(l10n),
-            value: '',
-            info: entry.localizedInfo(l10n),
-            hideCopyButton: true,
-          ),
-          const SizedBox(height: 4),
-          BcdBinaryClock(now: widget.now, l10n: l10n),
-        ],
-      );
-    }
-    return TimeRow(
+    return TimeEntryRow(
       key: ValueKey(entry.key),
-      label: entry.localizedLabel(l10n),
-      value: entry.computeValue(
-        widget.now,
-        locale,
-        hourFormat24: widget.hourFormat24,
-        thousandsSep: widget.thousandsSep,
-      ),
-      info: entry.localizedInfo(l10n),
-      useThousands: entry.useThousands && widget.thousandsSep,
+      entry: entry,
+      now: widget.now,
+      locale: locale,
+      hourFormat24: widget.hourFormat24,
+      thousandsSep: widget.thousandsSep,
     );
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 import '../widgets/section_header.dart';
-import '../widgets/time_row.dart';
+import '../widgets/time_string_row.dart';
 
 class TechnicalTab extends StatelessWidget {
   final DateTime now;
@@ -23,7 +23,7 @@ class TechnicalTab extends StatelessWidget {
       children: [
         SectionHeader(label: l10n.sectionEpoch),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelUnixSeconds,
           value: unix.toString(),
           useThousands: thousandsSep,
@@ -32,7 +32,7 @@ class TechnicalTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionAtomic),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelTai,
           value: tai.toString(),
           useThousands: thousandsSep,
@@ -41,7 +41,7 @@ class TechnicalTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionGps),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelGps,
           value: gps.toString(),
           useThousands: thousandsSep,

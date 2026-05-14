@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 import '../widgets/section_header.dart';
-import '../widgets/time_row.dart';
+import '../widgets/time_string_row.dart';
 
 class AstronomicalTab extends StatelessWidget {
   final DateTime now;
@@ -32,7 +32,7 @@ class AstronomicalTab extends StatelessWidget {
       children: [
         SectionHeader(label: l10n.sectionSidereal),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelGmst,
           value: TimeUtils.hoursToHms(gmst),
           info: l10n.infoGmst,
@@ -40,13 +40,13 @@ class AstronomicalTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionJulian),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelJd,
           value: _formatDecimal(jd, locale, 5),
           info: l10n.infoJd,
         ),
         const SizedBox(height: 12),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelMjd,
           value: _formatDecimal(mjd, locale, 5),
           info: l10n.infoMjd,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
+import '../models/time_entry.dart';
 import '../time_utils.dart';
 import '../widgets/section_header.dart';
-import '../widgets/time_row.dart';
-import '../widgets/binary_coded_decimal_clock.dart';
-import '../widgets/binary_columns_clock.dart';
+import '../widgets/time_entry_row.dart';
+import '../widgets/time_string_row.dart';
 
 class CuriositiesTab extends StatelessWidget {
   final DateTime now;
@@ -14,6 +14,7 @@ class CuriositiesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
     final utcNow = now.toUtc();
     final beats = TimeUtils.swatchBeats(utcNow);
 
@@ -22,7 +23,7 @@ class CuriositiesTab extends StatelessWidget {
       children: [
         SectionHeader(label: l10n.sectionSwatch),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelSwatchBeats,
           //value: '@${beats.toStringAsFixed(2)}',
           value: '@${beats.toStringAsFixed(0)}',
@@ -31,28 +32,22 @@ class CuriositiesTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionBinaryClock),
         const SizedBox(height: 8),
-
-        TimeRow(
-          label: l10n.labelBinaryClockColumns,
-          value: '',
-          info: l10n.infoBinaryClock,
-          hideCopyButton: true,
+        TimeEntryRow(
+          entry: const TimeEntry(
+              type: ValueType.binaryClockColumns, zone: ZoneLocal()),
+          now: now,
+          locale: locale,
         ),
-        const SizedBox(height: 4),
-        ColumnBinaryClock(now: now, l10n: l10n),
         const SizedBox(height: 24),
-        TimeRow(
-          label: l10n.labelBinaryClockBcd,
-          value: '',
-          info: l10n.infoBinaryClockBcd,
-          hideCopyButton: true,
+        TimeEntryRow(
+          entry: const TimeEntry(
+              type: ValueType.binaryClockBcd, zone: ZoneLocal()),
+          now: now,
+          locale: locale,
         ),
-        const SizedBox(height: 4),
-        BcdBinaryClock(now: now, l10n: l10n),
-
         const SizedBox(height: 24),
         // Compact string representation.
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelBinaryClockString,
           value: TimeUtils.binaryTimeString(now),
           info: l10n.infoBinaryClockString,
@@ -60,13 +55,13 @@ class CuriositiesTab extends StatelessWidget {
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionDoomsday),
         const SizedBox(height: 8),
-        TimeRow(
+        TimeStringRow(
           label: l10n.labelDoomsdayClock,
           value: '23:58:35',
           info: l10n.infoDoomsday,
         ),
-        const SizedBox(height: 8),
-        _DoomsdayLink(l10n: l10n),
+        //const SizedBox(height: 8),
+        //_DoomsdayLink(l10n: l10n),
       ],
     );
   }
