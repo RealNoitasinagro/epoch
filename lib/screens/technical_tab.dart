@@ -24,7 +24,7 @@ class TechnicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionEpoch),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelUnixSeconds,
+          label: l10n.valueTypeUnixSeconds,
           value: unix.toString(),
           useThousands: thousandsSep,
           info: l10n.infoUnixSeconds,
@@ -33,7 +33,7 @@ class TechnicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionAtomic),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelTai,
+          label: l10n.valueTypeTai,
           value: tai.toString(),
           useThousands: thousandsSep,
           info: l10n.infoTai,
@@ -42,7 +42,7 @@ class TechnicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionGps),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelGps,
+          label: l10n.valueTypeGps,
           value: gps.toString(),
           useThousands: thousandsSep,
           info: l10n.infoGps,

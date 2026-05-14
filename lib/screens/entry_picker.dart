@@ -56,13 +56,14 @@ class _EntryPickerState extends State<_EntryPicker> {
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
     ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
-    ValueType.unixSeconds        => l10n.labelUnixSeconds,
-    ValueType.tai                => l10n.labelTai,
-    ValueType.gps                => l10n.labelGps,
-    ValueType.gmst               => l10n.labelGmst,
-    ValueType.julianDate         => l10n.labelJd,
-    ValueType.modifiedJulianDate => l10n.labelMjd,
-    ValueType.swatchBeats        => l10n.labelSwatchBeats,
+    ValueType.unixSeconds        => l10n.valueTypeUnixSeconds,
+    ValueType.tai                => l10n.valueTypeTai,
+    ValueType.gps                => l10n.valueTypeGps,
+    ValueType.gmst               => l10n.valueTypeGmst,
+    ValueType.julianDate         => l10n.valueTypeJd,
+    ValueType.modifiedJulianDate => l10n.valueTypeMjd,
+    ValueType.swatchBeats        => l10n.valueTypeSwatchBeats,
+    ValueType.doomsdayClock      => l10n.valueTypeDoomsdayClock,
   };
 
   void _selectType(ValueType t) {
@@ -129,7 +130,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       title: Text(l10n.selectValueType),
       children: [
         if (civilTypes.isNotEmpty) ...[
-          _sectionLabel(context, l10n.sectionCivil),
+          _sectionLabel(context, l10n.tabCivil),
           ...civilTypes.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(

@@ -129,34 +129,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC. Does not count leap seconds.';
 
   @override
-  String get labelBinaryClockBcd => 'Binary clock (BCD)';
-
-  @override
-  String get labelBinaryClockColumns => 'Binary clock (columns)';
-
-  @override
-  String get labelBinaryClockString => 'Binary time (string)';
-
-  @override
-  String get labelDate => 'Date';
-
-  @override
-  String get labelDaySecond => 'Day second';
-
-  @override
-  String get labelDoomsdayClock => 'Time to midnight';
-
-  @override
-  String get labelGmst => 'GMST';
-
-  @override
-  String get labelGps => 'GPS time (s)';
-
-  @override
   String get labelHours => 'HH';
-
-  @override
-  String get labelJd => 'Julian Date';
 
   @override
   String get labelLocal => 'Local';
@@ -165,22 +138,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelMinutes => 'MM';
 
   @override
-  String get labelMjd => 'Modified Julian Date';
-
-  @override
   String get labelSeconds => 'SS';
-
-  @override
-  String get labelSwatchBeats => 'Internet Time';
-
-  @override
-  String get labelTai => 'TAI (s)';
-
-  @override
-  String get labelTime => 'Time';
-
-  @override
-  String get labelUnixSeconds => 'Unix time (s)';
 
   @override
   String get labelUtc => 'UTC';
@@ -189,12 +147,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String maxValuesReached(int count) {
     return 'Maximum of $count values reached.';
   }
-
-  @override
-  String get moveDown => 'Move down';
-
-  @override
-  String get moveUp => 'Move up';
 
   @override
   String get newLabelName => 'Label';
@@ -215,19 +167,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetToDefaults => 'Reset to defaults';
 
   @override
-  String get sectionAstronomy => 'Astronomical';
-
-  @override
   String get sectionAtomic => 'Atomic Clock';
 
   @override
   String get sectionBinaryClock => 'Binary Clock';
-
-  @override
-  String get sectionCivil => 'Civil';
-
-  @override
-  String get sectionCuriosities => 'Curiosities';
 
   @override
   String get sectionDoomsday => 'Doomsday Clock';
@@ -246,9 +189,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionSwatch => 'Swatch Internet Time';
-
-  @override
-  String get sectionTechnical => 'Technical';
 
   @override
   String get selectAll => 'Select all';
@@ -302,10 +242,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabAstronomical => 'Astronomical';
 
   @override
-  String get tabCuriosities => 'Curiosities';
+  String get tabCivil => 'Civil';
 
   @override
-  String get tabCivil => 'Civil';
+  String get tabCuriosities => 'Curiosities';
 
   @override
   String get tabTechnical => 'Technical';
@@ -339,7 +279,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeDaySecond => 'Day second';
 
   @override
+  String get valueTypeDoomsdayClock => 'Time to midnight';
+
+  @override
+  String get valueTypeGmst => 'GMST';
+
+  @override
+  String get valueTypeGps => 'GPS time (s)';
+
+  @override
+  String get valueTypeJd => 'Julian Date';
+
+  @override
+  String get valueTypeMjd => 'Modified Julian Date';
+
+  @override
+  String get valueTypeSwatchBeats => 'Internet Time';
+
+  @override
+  String get valueTypeTai => 'TAI (s)';
+
+  @override
   String get valueTypeTime => 'Time';
+
+  @override
+  String get valueTypeUnixSeconds => 'Unix time (s)';
 
   @override
   String get zoneLocal => 'Local (system timezone)';

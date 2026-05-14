@@ -33,7 +33,7 @@ class AstronomicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionSidereal),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelGmst,
+          label: l10n.valueTypeGmst,
           value: TimeUtils.hoursToHms(gmst),
           info: l10n.infoGmst,
         ),
@@ -41,13 +41,13 @@ class AstronomicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionJulian),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelJd,
+          label: l10n.valueTypeJd,
           value: _formatDecimal(jd, locale, 5),
           info: l10n.infoJd,
         ),
         const SizedBox(height: 12),
         TimeStringRow(
-          label: l10n.labelMjd,
+          label: l10n.valueTypeMjd,
           value: _formatDecimal(mjd, locale, 5),
           info: l10n.infoMjd,
         ),

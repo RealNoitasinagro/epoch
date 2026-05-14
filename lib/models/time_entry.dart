@@ -17,12 +17,13 @@ enum ValueType {
   unixSeconds,
   tai,
   gps,
-  // Astronomy
+  // Astronomical
   gmst,
   julianDate,
   modifiedJulianDate,
   // Curiosities – zone-independent
   swatchBeats,
+  doomsdayClock
 }
 
 // Zone specification.
@@ -92,7 +93,7 @@ class TimeEntry {
   TimeEntry withLabel(String? label) =>
       TimeEntry(type: type, zone: zone, customLabel: label);
 
-  // Whether this type is zone-independent (Technical/Astronomy/Curiosities).
+  // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => type.isZoneIndependent;
 
   // Localized display label shown in the UI.
@@ -116,13 +117,14 @@ class TimeEntry {
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
     ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
-    ValueType.unixSeconds        => l10n.labelUnixSeconds,
-    ValueType.tai                => l10n.labelTai,
-    ValueType.gps                => l10n.labelGps,
-    ValueType.gmst               => l10n.labelGmst,
-    ValueType.julianDate         => l10n.labelJd,
-    ValueType.modifiedJulianDate => l10n.labelMjd,
-    ValueType.swatchBeats        => l10n.labelSwatchBeats,
+    ValueType.unixSeconds        => l10n.valueTypeUnixSeconds,
+    ValueType.tai                => l10n.valueTypeTai,
+    ValueType.gps                => l10n.valueTypeGps,
+    ValueType.gmst               => l10n.valueTypeGmst,
+    ValueType.julianDate         => l10n.valueTypeJd,
+    ValueType.modifiedJulianDate => l10n.valueTypeMjd,
+    ValueType.swatchBeats        => l10n.valueTypeSwatchBeats,
+    ValueType.doomsdayClock      => l10n.valueTypeDoomsdayClock
   };
 
   // Localized info text.
@@ -141,6 +143,7 @@ class TimeEntry {
     ValueType.julianDate         => l10n.infoJd,
     ValueType.modifiedJulianDate => l10n.infoMjd,
     ValueType.swatchBeats        => l10n.infoSwatch,
+    ValueType.doomsdayClock      => l10n.infoDoomsday,
   };
 
   // Computes the display value string.
@@ -179,6 +182,10 @@ class TimeEntry {
             .format(TimeUtils.modifiedJulianDate(utcNow));
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
+      case ValueType.doomsdayClock:
+        return !hourFormat24
+            ? '11:58:35 PM'
+            : '23:58:35';
       case ValueType.binaryClockColumns:
       case ValueType.binaryClockBcd:
       default:
@@ -276,5 +283,6 @@ extension ValueTypeProps on ValueType {
     ValueType.julianDate         => true,
     ValueType.modifiedJulianDate => true,
     ValueType.swatchBeats        => true,
+    ValueType.doomsdayClock      => true,
   };
 }

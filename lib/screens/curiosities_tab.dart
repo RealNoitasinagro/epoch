@@ -24,7 +24,7 @@ class CuriositiesTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionSwatch),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelSwatchBeats,
+          label: l10n.valueTypeSwatchBeats,
           //value: '@${beats.toStringAsFixed(2)}',
           value: '@${beats.toStringAsFixed(0)}',
           info: l10n.infoSwatch,
@@ -48,7 +48,7 @@ class CuriositiesTab extends StatelessWidget {
         const SizedBox(height: 24),
         // Compact string representation.
         TimeStringRow(
-          label: l10n.labelBinaryClockString,
+          label: l10n.valueTypeBinaryClockString,
           value: TimeUtils.binaryTimeString(now),
           info: l10n.infoBinaryClockString,
         ),
@@ -56,7 +56,7 @@ class CuriositiesTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionDoomsday),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.labelDoomsdayClock,
+          label: l10n.valueTypeDoomsdayClock,
           value: '23:58:35',
           info: l10n.infoDoomsday,
         ),
