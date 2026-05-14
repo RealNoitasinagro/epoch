@@ -171,7 +171,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         ],
         if (astronomicalTypes.isNotEmpty) ...[
           const Divider(),
-          _sectionLabel(context, l10n.tabAstronomy),
+          _sectionLabel(context, l10n.tabAstronomical),
           ...astronomicalTypes.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(

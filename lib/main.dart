@@ -381,9 +381,9 @@ class _HomeScreenState extends State<HomeScreen>
           isScrollable: true,
           tabAlignment: TabAlignment.start,
           tabs: [
-            Tab(child: Text(l10n.tabMain)),
+            Tab(child: Text(l10n.tabCivil)),
             Tab(child: Text(l10n.tabTechnical)),
-            Tab(child: Text(l10n.tabAstronomy)),
+            Tab(child: Text(l10n.tabAstronomical)),
             Tab(child: Text(l10n.tabCuriosities)),
             ..._customTabs.map((tab) => _CustomTab(
               name: tab.name,

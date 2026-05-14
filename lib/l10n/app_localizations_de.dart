@@ -218,7 +218,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionAstronomy => 'Astronomisch';
 
   @override
-  String get sectionAtomic => 'Atom';
+  String get sectionAtomic => 'Atomuhr';
 
   @override
   String get sectionBinaryClock => 'Binäruhr';
@@ -236,7 +236,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionEpoch => 'Unix-Epoche';
 
   @override
-  String get sectionGps => 'GPS';
+  String get sectionGps => 'Global Positioning System';
 
   @override
   String get sectionJulian => 'Julianisches Datum';
@@ -299,13 +299,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
 
   @override
-  String get tabAstronomy => 'Astronomisch';
+  String get tabAstronomical => 'Astronomisch';
 
   @override
   String get tabCuriosities => 'Kurioses';
 
   @override
-  String get tabMain => 'Bürgerlich';
+  String get tabCivil => 'Bürgerlich';
 
   @override
   String get tabTechnical => 'Technisch';

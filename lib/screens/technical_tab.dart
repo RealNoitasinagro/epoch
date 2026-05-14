@@ -40,6 +40,7 @@ class TechnicalTab extends StatelessWidget {
         ),
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionGps),
+        const SizedBox(height: 8),
         TimeRow(
           label: l10n.labelGps,
           value: gps.toString(),

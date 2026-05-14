@@ -473,13 +473,13 @@ abstract class AppLocalizations {
   /// No description provided for @sectionAstronomy.
   ///
   /// In en, this message translates to:
-  /// **'Astronomy'**
+  /// **'Astronomical'**
   String get sectionAstronomy;
 
   /// No description provided for @sectionAtomic.
   ///
   /// In en, this message translates to:
-  /// **'Atomic'**
+  /// **'Atomic Clock'**
   String get sectionAtomic;
 
   /// No description provided for @sectionBinaryClock.
@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @sectionGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS'**
+  /// **'Global Positioning System'**
   String get sectionGps;
 
   /// No description provided for @sectionJulian.
@@ -638,11 +638,11 @@ abstract class AppLocalizations {
   /// **'e.g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
 
-  /// No description provided for @tabAstronomy.
+  /// No description provided for @tabAstronomical.
   ///
   /// In en, this message translates to:
   /// **'Astronomical'**
-  String get tabAstronomy;
+  String get tabAstronomical;
 
   /// No description provided for @tabCuriosities.
   ///
@@ -650,11 +650,11 @@ abstract class AppLocalizations {
   /// **'Curiosities'**
   String get tabCuriosities;
 
-  /// No description provided for @tabMain.
+  /// No description provided for @tabCivil.
   ///
   /// In en, this message translates to:
   /// **'Civil'**
-  String get tabMain;
+  String get tabCivil;
 
   /// No description provided for @tabTechnical.
   ///
