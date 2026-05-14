@@ -183,9 +183,7 @@ class TimeEntry {
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
       case ValueType.doomsdayClock:
-        return !hourFormat24
-            ? '11:58:35 PM'
-            : '23:58:35';
+        return TimeUtils.doomsDayClockString(hourFormat24);
       case ValueType.binaryClockColumns:
       case ValueType.binaryClockBcd:
       default:
@@ -225,14 +223,14 @@ class TimeEntry {
         return TimeUtils.formatDate(locale, dt);
       case ValueType.time:
         if (!hourFormat24) {
-          String hourFormat12 = TimeUtils.formatTime12h(dt, mm, ss, tzSuffix);
+          String hourFormat12 = TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix);
           return hourFormat12;
         }
         return '$hh:$mm:$ss $tzSuffix';
       case ValueType.dateTime:
         final dateStr = TimeUtils.formatDate(locale, dt);
         if (!hourFormat24) {
-          String hourFormat12 = TimeUtils.formatTime12h(dt, mm, ss, tzSuffix);
+          String hourFormat12 = TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix);
           return '$dateStr $hourFormat12';
         }
         return '$dateStr $hh:$mm:$ss $tzSuffix';

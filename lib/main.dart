@@ -408,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
           AstronomicalTab(now: _now),
-          CuriositiesTab(now: _now),
+          CuriositiesTab(now: _now, hourFormat24: app.hourFormat24),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
             entries: tab.entries,

@@ -124,6 +124,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       ValueType.binaryClockColumns,
       ValueType.binaryClockBcd,
       ValueType.swatchBeats,
+      ValueType.doomsdayClock
     ].where(_isAllowed).toList();
 
     return SimpleDialog(

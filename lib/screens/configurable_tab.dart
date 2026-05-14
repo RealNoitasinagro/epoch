@@ -162,9 +162,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       String locale,
       ) {
     final isChecked = _checked.contains(entry.key);
-    final displayValue = entry.type == ValueType.binaryClockColumns ||
+    final displayValue =
+        entry.type == ValueType.binaryClockColumns ||
         entry.type == ValueType.binaryClockBcd
-        ? '(${l10n.valueTypeBinaryClockColumns})'
+        ? '(${l10n.valueTypeBinaryClockColumns})' // ???
         : entry.computeValue(
       widget.now,
       locale,

@@ -9,14 +9,17 @@ import '../widgets/time_string_row.dart';
 
 class CuriositiesTab extends StatelessWidget {
   final DateTime now;
-  const CuriositiesTab({super.key, required this.now});
+  final bool hourFormat24;
+  const CuriositiesTab({super.key, required this.now, this.hourFormat24 = true});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
+
     final utcNow = now.toUtc();
     final beats = TimeUtils.swatchBeats(utcNow);
+    final doomsdayClock = TimeUtils.doomsDayClockString(hourFormat24);
 
     return ListView(
       padding: const EdgeInsets.all(24.0),
@@ -57,7 +60,7 @@ class CuriositiesTab extends StatelessWidget {
         const SizedBox(height: 8),
         TimeStringRow(
           label: l10n.valueTypeDoomsdayClock,
-          value: '23:58:35',
+          value: doomsdayClock,
           info: l10n.infoDoomsday,
         ),
         //const SizedBox(height: 8),
