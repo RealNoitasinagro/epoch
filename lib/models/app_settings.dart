@@ -5,6 +5,7 @@ const _kThemeModeKey = 'theme_mode';
 const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
 const _kLocaleKey = 'locale';
+const _kActiveTabKey = 'active_tab';
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
@@ -66,4 +67,14 @@ Future<void> saveLocale(String languageCode) async {
 Future<void> clearLocale() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove(_kLocaleKey);
+}
+
+Future<int> loadActiveTab() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getInt(_kActiveTabKey) ?? 0;
+}
+
+Future<void> saveActiveTab(int index) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt(_kActiveTabKey, index);
 }

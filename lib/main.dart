@@ -201,14 +201,15 @@ class _HomeScreenState extends State<HomeScreen>
   int get _tabCount => 4 + _customTabs.length;
 
   Future<void> _loadData() async {
-    final civil  = await loadCivilEntries();
-    final custom = await loadCustomTabs();
+    final civil      = await loadCivilEntries();
+    final custom     = await loadCustomTabs();
+    final activeTab  = await loadActiveTab();
     setState(() {
       _civilEntries = civil;
       _customTabs   = custom;
       _loaded       = true;
     });
-    _updateTabController();
+    _updateTabController(initialIndex: activeTab);
   }
 
   void _toggleFullscreen() {
@@ -229,36 +230,38 @@ class _HomeScreenState extends State<HomeScreen>
 
   // ── Custom tab management ────────────────────────────────────────────
 
-  void _updateTabController() {
+  void _updateTabController({int? initialIndex}) {
     final newCount = _tabCount;
-    final oldIndex = _tabController?.index ?? 0;
+    final oldIndex = initialIndex ?? _tabController?.index ?? 0;
     final oldController = _tabController;
-
     _tabController = TabController(
       length: newCount,
       vsync: this,
       initialIndex: oldIndex.clamp(0, newCount - 1),
     );
     _tabController!.addListener(_onTabChanged);
-
-    // Dispose old controller after the current frame to avoid
-    // disposing during notifyListeners().
     WidgetsBinding.instance.addPostFrameCallback((_) {
       oldController?.dispose();
     });
     setState(() {});
   }
 
+  // void _onTabChanged() {
+  //   if (!_tabController!.indexIsChanging) return;
+  //   final addTabIndex = 4 + _customTabs.length;
+  //   if (_tabController!.index == addTabIndex &&
+  //       _customTabs.length < maxCustomTabs) {
+  //     // Snap back to previous tab immediately, then add.
+  //     _tabController!.index = _tabController!.previousIndex;
+  //     final l10n = AppLocalizations.of(context)!;
+  //     _addCustomTab(l10n);
+  //   }
+  // }
+
   void _onTabChanged() {
-    if (!_tabController!.indexIsChanging) return;
-    final addTabIndex = 4 + _customTabs.length;
-    if (_tabController!.index == addTabIndex &&
-        _customTabs.length < maxCustomTabs) {
-      // Snap back to previous tab immediately, then add.
-      _tabController!.index = _tabController!.previousIndex;
-      final l10n = AppLocalizations.of(context)!;
-      _addCustomTab(l10n);
-    }
+    if (!mounted) return;
+    if (_tabController!.indexIsChanging) return;
+    saveActiveTab(_tabController!.index);
   }
 
   void _addCustomTab(AppLocalizations l10n) {
@@ -283,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen>
     _customTabs.removeWhere((t) => t.id == id);
     saveCustomTabs(_customTabs);
     // Navigate to tab left of the deleted one, minimum index 0.
-    final targetIndex = (idx + 3).clamp(0, _tabCount - 2);
+    final targetIndex = (idx + 3).clamp(0, _tabCount - 1);
     _updateTabController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
