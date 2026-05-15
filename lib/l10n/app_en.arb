@@ -22,6 +22,7 @@
   "alreadyDisplayed": "This value is already displayed.",
   "appName": "Epoch",
   "back": "Back",
+  "binaryClockPlaceholder": "Graphical binary clock",
   "cancel": "Cancel",
   "copiedToClipboard": "Copied: {label}",
   "copyToClipboard": "Copy to clipboard",

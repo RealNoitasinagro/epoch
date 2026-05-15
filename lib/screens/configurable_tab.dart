@@ -173,7 +173,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final displayValue =
     entry.type == ValueType.binaryClockColumns ||
         entry.type == ValueType.binaryClockBcd
-        ? '(${l10n.valueTypeBinaryClockColumns})'
+        ? '[${l10n.binaryClockPlaceholder}]'
         : entry.computeValue(
       widget.now,
       locale,

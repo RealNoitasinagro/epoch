@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
+  /// No description provided for @binaryClockPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Graphical binary clock'**
+  String get binaryClockPlaceholder;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:

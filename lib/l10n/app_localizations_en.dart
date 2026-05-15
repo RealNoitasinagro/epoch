@@ -34,6 +34,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
+  String get binaryClockPlaceholder => 'Graphical binary clock';
+
+  @override
   String get cancel => 'Cancel';
 
   @override

@@ -22,6 +22,7 @@
   "alreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
   "appName": "Epoch",
   "back": "Zurück",
+  "binaryClockPlaceholder": "Graphische Binäruhr",
   "cancel": "Abbrechen",
   "copiedToClipboard": "Kopiert: {label}",
   "copyToClipboard": "In Zwischenablage kopieren",
