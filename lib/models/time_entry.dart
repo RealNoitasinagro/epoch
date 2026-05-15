@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
+
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -152,6 +154,7 @@ class TimeEntry {
       String locale, {
         bool hourFormat24 = true,
         bool thousandsSep = true,
+        String localIanaZone = 'UTC', // used for ZoneLocal to get proper abbr
       }) {
     final utcNow = now.toUtc();
 
@@ -192,13 +195,21 @@ class TimeEntry {
 
     // Zone-dependent values.
     final DateTime dt;
-    final String tzLabel;
+    String tzLabel;
     final Duration offset;
 
     switch (zone) {
       case ZoneLocal():
         dt = now;
-        tzLabel = now.timeZoneName;
+        // Use the IANA zone to get the correct abbreviation on all platforms,
+        // including web where now.timeZoneName may be fully localized.
+        try {
+          final tzLocation = tz.getLocation(localIanaZone);
+          final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
+          tzLabel = tzDt.timeZone.abbreviation;
+        } catch (_) {
+          tzLabel = now.timeZoneName; // fallback
+        }
         offset = now.timeZoneOffset;
       case ZoneUtc():
         dt = utcNow;

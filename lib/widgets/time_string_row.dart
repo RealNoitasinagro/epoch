@@ -164,7 +164,7 @@ class _ValueText extends StatelessWidget {
     return Text(
       text,
       style: textTheme.bodyLarge?.copyWith(
-        fontFamily: fontFamily,
+        fontFamily: fontFamilyValues,
         fontWeight: FontWeight.w500,
         height: 1.2,
       ),
@@ -185,7 +185,7 @@ class _ZoneText extends StatelessWidget {
     return Text(
       text,
       style: textTheme.bodySmall?.copyWith(
-        fontFamily: fontFamily,
+        fontFamily: fontFamilyValues,
         color: colorScheme.onSurface.withAlpha(170),
         height: 1.2,
       ),

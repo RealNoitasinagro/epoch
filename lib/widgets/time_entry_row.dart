@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
 import 'time_string_row.dart';
@@ -26,6 +27,7 @@ class TimeEntryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    String localIanaZone = EpochApp.of(context).localIanaZone;
 
     if (entry.type == ValueType.binaryClockColumns) {
       return _GraphicalRow(
@@ -49,6 +51,7 @@ class TimeEntryRow extends StatelessWidget {
         locale,
         hourFormat24: hourFormat24,
         thousandsSep: thousandsSep,
+        localIanaZone: localIanaZone,
       ),
       info: entry.localizedInfo(l10n),
       useThousands: entry.useThousands && thousandsSep,

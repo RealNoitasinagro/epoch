@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
@@ -20,9 +21,9 @@ void main() {
   runApp(const EpochApp());
 }
 
-const _nightRed    = Color(0xFFCC1010);
-const _nightRedDim = Color(0xFF7A0000);
-const fontFamily   = 'Courier New';
+const _nightRed        = Color(0xFFCC1010);
+const _nightRedDim     = Color(0xFF7A0000);
+const fontFamilyValues = 'Courier New';
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -48,7 +49,7 @@ ThemeData _nightTheme() => ThemeData(
   ),
   iconTheme: const IconThemeData(color: _nightRed),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamily),
+    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyValues),
     bodyMedium: TextStyle(color: _nightRed),
     bodySmall: TextStyle(color: _nightRedDim),
     labelSmall: TextStyle(color: _nightRedDim),
@@ -81,6 +82,7 @@ class _EpochAppState extends State<EpochApp> {
   bool _hourFormat24       = true;
   bool _settingsLoaded     = false;
   Locale _locale           = const Locale('en');
+  String _localIanaZone    = 'UTC'; // fallback until loaded
 
   @override
   void initState() {
@@ -93,11 +95,21 @@ class _EpochAppState extends State<EpochApp> {
     final thousands = await loadThousandsSep();
     final hour24    = await loadHourFormat24();
     final locale    = await loadLocale() ?? const Locale('en');
+
+    String localZone = 'UTC';
+    try {
+      final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+      localZone = currentTimeZone.identifier;
+    } catch (_) {
+      localZone = 'UTC';
+    }
+    
     setState(() {
       _themeMode    = theme;
       _thousandsSep = thousands;
       _hourFormat24 = hour24;
       _locale       = locale;
+      _localIanaZone = localZone;
       _settingsLoaded = true;
     });
   }
@@ -122,6 +134,8 @@ class _EpochAppState extends State<EpochApp> {
     saveLocale(l.languageCode);
   }
 
+  String get localIanaZone => _localIanaZone;
+  
   AppThemeMode get themeMode  => _themeMode;
   bool get thousandsSep       => _thousandsSep;
   bool get hourFormat24       => _hourFormat24;
@@ -246,18 +260,6 @@ class _HomeScreenState extends State<HomeScreen>
     });
     setState(() {});
   }
-
-  // void _onTabChanged() {
-  //   if (!_tabController!.indexIsChanging) return;
-  //   final addTabIndex = 4 + _customTabs.length;
-  //   if (_tabController!.index == addTabIndex &&
-  //       _customTabs.length < maxCustomTabs) {
-  //     // Snap back to previous tab immediately, then add.
-  //     _tabController!.index = _tabController!.previousIndex;
-  //     final l10n = AppLocalizations.of(context)!;
-  //     _addCustomTab(l10n);
-  //   }
-  // }
 
   void _onTabChanged() {
     if (!mounted) return;

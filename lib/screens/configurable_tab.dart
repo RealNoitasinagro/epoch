@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/time_entry_row.dart';
@@ -161,6 +162,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
+    String localIanaZone = EpochApp.of(context).localIanaZone;
     final isChecked = _checked.contains(entry.key);
     final displayValue =
         entry.type == ValueType.binaryClockColumns ||
@@ -171,6 +173,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       locale,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
+      localIanaZone: localIanaZone,
     );
 
     return Dismissible(
