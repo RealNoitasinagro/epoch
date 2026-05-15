@@ -44,13 +44,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   }
 
   void _toggleCheck(String key) {
-    setState(() {
-      if (_checked.contains(key)) {
-        _checked.remove(key);
-      } else {
-        _checked.add(key);
-      }
-    });
+    if (_checked.contains(key)) {
+      _checked.remove(key);
+    } else {
+      _checked.add(key);
+    }
   }
 
   bool get _allChecked =>
@@ -151,7 +149,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       },
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
-        return _buildEditRow(context, entry, index, l10n, locale);
+        return Padding(
+          key: ValueKey(entry.key),
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildEditRow(context, entry, index, l10n, locale),
+        );
       },
     );
   }
@@ -165,6 +167,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ) {
     String localIanaZone = EpochApp.of(context).localIanaZone;
     final isChecked = _checked.contains(entry.key);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final displayValue =
     entry.type == ValueType.binaryClockColumns ||
         entry.type == ValueType.binaryClockBcd
@@ -192,18 +197,53 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         _checked.remove(entry.key);
         widget.onEntriesChanged(updated);
       },
-      child: TimeStringRow(
-        label: entry.localizedLabel(l10n),
-        value: displayValue,
-        editActions: [
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Value display – identical structure to TimeStringRow.
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.localizedLabel(l10n),  //.toUpperCase(),
+                  style: textTheme.labelSmall?.copyWith(
+                    letterSpacing: 1.5,
+                    color: colorScheme.onSurface.withAlpha(150),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: double.infinity,
+                  constraints: const BoxConstraints(minHeight: 52),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.onSurface.withAlpha(30),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    displayValue,
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontFamily: fontFamilyValues,
+                      fontWeight: FontWeight.w500,
+                      height: 1.2,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 4),
+          // Edit actions – in a Row, same vertical center as display mode.
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            color: colorScheme.onSurface.withAlpha(150),
             tooltip: l10n.editLabel,
             onPressed: () => _editLabel(context, entry, l10n),
           ),
-          // Single drag handle – ReorderableDragStartListener wraps
-          // just the icon, no extra handle widget needed.
           ReorderableDragStartListener(
             index: index,
             child: Padding(
@@ -211,20 +251,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               child: Icon(
                 Icons.drag_handle,
                 size: 20,
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withAlpha(150),
+                color: colorScheme.onSurface.withAlpha(150),
               ),
             ),
           ),
-          Tooltip(
-            message: isChecked ? l10n.deselect : l10n.selectForRemoval,
-            child: Checkbox(
-              value: isChecked,
-              tristate: false,
-              onChanged: (_) => _toggleCheck(entry.key),
-            ),
+          // Checkbox directly in State widget tree – rebuilds correctly.
+          Checkbox(
+            value: isChecked,
+            onChanged: (_) => setState(() {
+              _toggleCheck(entry.key);
+            }),
           ),
         ],
       ),

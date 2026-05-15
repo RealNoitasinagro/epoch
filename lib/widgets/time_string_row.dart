@@ -123,6 +123,7 @@ class TimeStringRow extends StatelessWidget {
               const SizedBox(height: 4),
               Container(
                 width: double.infinity,
+                constraints: const BoxConstraints(minHeight: 52),
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
