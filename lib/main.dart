@@ -360,6 +360,26 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Builder(
+          builder: (context) {
+            final isNight = EpochApp.of(context).isNightMode;
+            if (isNight) return const SizedBox.shrink();
+            final colorScheme = Theme.of(context).colorScheme;
+            return Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.primaryContainer,
+                    colorScheme.inversePrimary,
+                    colorScheme.secondaryContainer,
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
         title: GestureDetector(
           onDoubleTap: _toggleFullscreen,
           onLongPress: () => _showBuildInfo(context),

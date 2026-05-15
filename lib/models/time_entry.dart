@@ -272,7 +272,6 @@ const defaultCivilEntries = [
   TimeEntry(type: ValueType.date,      zone: ZoneLocal()),
   TimeEntry(type: ValueType.time,      zone: ZoneLocal()),
   TimeEntry(type: ValueType.daySecond, zone: ZoneLocal()),
-  TimeEntry(type: ValueType.date,      zone: ZoneUtc()),
   TimeEntry(type: ValueType.time,      zone: ZoneUtc()),
   TimeEntry(type: ValueType.daySecond, zone: ZoneUtc()),
 ];

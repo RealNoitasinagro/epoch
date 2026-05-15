@@ -1,3 +1,4 @@
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
@@ -165,9 +166,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     String localIanaZone = EpochApp.of(context).localIanaZone;
     final isChecked = _checked.contains(entry.key);
     final displayValue =
-        entry.type == ValueType.binaryClockColumns ||
+    entry.type == ValueType.binaryClockColumns ||
         entry.type == ValueType.binaryClockBcd
-        ? '(${l10n.valueTypeBinaryClockColumns})' // ???
+        ? '(${l10n.valueTypeBinaryClockColumns})'
         : entry.computeValue(
       widget.now,
       locale,
@@ -191,53 +192,38 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         _checked.remove(entry.key);
         widget.onEntriesChanged(updated);
       },
-      child: Row(
-        children: [
-          // Checkbox for multi-select.
+      child: TimeStringRow(
+        label: entry.localizedLabel(l10n),
+        value: displayValue,
+        editActions: [
+          IconButton(
+            icon: const Icon(Icons.edit, size: 20),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            tooltip: l10n.editLabel,
+            onPressed: () => _editLabel(context, entry, l10n),
+          ),
+          // Single drag handle – ReorderableDragStartListener wraps
+          // just the icon, no extra handle widget needed.
+          ReorderableDragStartListener(
+            index: index,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Icon(
+                Icons.drag_handle,
+                size: 20,
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withAlpha(150),
+              ),
+            ),
+          ),
           Tooltip(
             message: isChecked ? l10n.deselect : l10n.selectForRemoval,
             child: Checkbox(
               value: isChecked,
+              tristate: false,
               onChanged: (_) => _toggleCheck(entry.key),
-            ),
-          ),
-          // Label and value.
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.localizedLabel(l10n),
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                Text(
-                  displayValue,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontFamily: 'monospace',
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withAlpha(150),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          // Label edit button.
-          IconButton(
-            icon: const Icon(Icons.edit, size: 18),
-            tooltip: l10n.editLabel,
-            onPressed: () => _editLabel(context, entry, l10n),
-          ),
-          // Drag handle – ReorderableListView needs this as the
-          // drag trigger when using itemBuilder.
-          ReorderableDragStartListener(
-            index: index,
-            child: const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(Icons.drag_handle),
             ),
           ),
         ],
@@ -369,6 +355,25 @@ class _EditToolbar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
       child: Row(
         children: [
+          const Spacer(),
+          if (editMode && anyChecked)
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              color: Colors.redAccent,
+              tooltip: l10n.removeSelected,
+              onPressed: onDeleteChecked,
+            ),
+          if (editMode)
+            IconButton(
+              icon: const Icon(Icons.restart_alt),
+              tooltip: l10n.resetToDefaults,
+              onPressed: onResetDefaults,
+            ),
+          IconButton(
+            icon: Icon(editMode ? Icons.check : Icons.edit),
+            tooltip: editMode ? l10n.doneEditing : l10n.editLayout,
+            onPressed: onToggleEditMode,
+          ),
           if (editMode)
             Tooltip(
               message: allChecked ? l10n.deselectAll : l10n.selectAll,
@@ -378,26 +383,6 @@ class _EditToolbar extends StatelessWidget {
                 onChanged: (_) => onToggleMasterCheck(),
               ),
             ),
-          const Spacer(),
-          if (editMode) ...[
-            if (anyChecked)
-              IconButton(
-                icon: const Icon(Icons.delete_outline),
-                color: Colors.redAccent,
-                tooltip: l10n.removeSelected,
-                onPressed: onDeleteChecked,
-              ),
-            IconButton(
-              icon: const Icon(Icons.restart_alt),
-              tooltip: l10n.resetToDefaults,
-              onPressed: onResetDefaults,
-            ),
-          ],
-          IconButton(
-            icon: Icon(editMode ? Icons.check : Icons.edit),
-            tooltip: editMode ? l10n.doneEditing : l10n.editLayout,
-            onPressed: onToggleEditMode,
-          ),
         ],
       ),
     );

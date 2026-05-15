@@ -62,32 +62,9 @@ class CuriositiesTab extends StatelessWidget {
           label: l10n.valueTypeDoomsdayClock,
           value: doomsdayClock,
           info: l10n.infoDoomsday,
+          infoLink: l10n.doomsdayLink,
         ),
-        //const SizedBox(height: 8),
-        //_DoomsdayLink(l10n: l10n),
       ],
-    );
-  }
-}
-
-class _DoomsdayLink extends StatelessWidget {
-  final AppLocalizations l10n;
-  const _DoomsdayLink({required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        final uri = Uri.parse(l10n.doomsdayLink);
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      },
-      child: Text(
-        l10n.doomsdayLink,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          decoration: TextDecoration.underline,
-        ),
-      ),
     );
   }
 }
