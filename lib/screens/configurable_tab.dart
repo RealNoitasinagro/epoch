@@ -112,7 +112,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
       itemCount: widget.entries.length,
-      separatorBuilder: (_, __) => const Divider(height: 32, thickness: 0),
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
         return _buildDisplayRow(context, entry, l10n, locale);
@@ -140,7 +140,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     return ReorderableListView.builder(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
       itemCount: widget.entries.length,
-      onReorder: (oldIndex, newIndex) {
+      onReorderItem: (oldIndex, newIndex) {
         if (newIndex > oldIndex) newIndex--;
         final updated = List<TimeEntry>.of(widget.entries);
         final item = updated.removeAt(oldIndex);

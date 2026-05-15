@@ -103,7 +103,7 @@ class TimeEntry {
     if (isZoneIndependent) return typeLabel;
     final zoneLabel = switch (zone) {
       ZoneLocal()                  => l10n.labelLocal.toLowerCase(),
-      ZoneUtc()                    => 'UTC',
+      ZoneUtc()                    => l10n.zoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
     return '$typeLabel ($zoneLabel)';
@@ -214,9 +214,10 @@ class TimeEntry {
     final hh = dt.hour.toString().padLeft(2, '0');
     final mm = dt.minute.toString().padLeft(2, '0');
     final ss = dt.second.toString().padLeft(2, '0');
-    final tzSuffix = zone is ZoneUtc
-        ? 'UTC'
-        : '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
+    // final tzSuffix = zone is ZoneUtc
+    //     ? 'UTC'
+    //     : '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
+    final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
     switch (type) {
       case ValueType.date:

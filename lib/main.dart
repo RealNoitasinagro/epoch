@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'build_info.dart';
+import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
-import 'models/main_tab_config.dart';
+import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
 import 'models/time_entry.dart';
-import 'screens/configurable_tab.dart';
-import 'screens/technical_tab.dart';
 import 'screens/astronomical_tab.dart';
+import 'screens/configurable_tab.dart';
 import 'screens/curiosities_tab.dart';
 import 'screens/settings_screen.dart';
-import 'l10n/app_localizations.dart';
+import 'screens/technical_tab.dart';
 
 void main() {
   tz.initializeTimeZones();

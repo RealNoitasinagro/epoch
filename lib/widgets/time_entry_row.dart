@@ -98,7 +98,8 @@ class _GraphicalRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                label.toUpperCase(),
+                //label.toUpperCase(),
+                label,
                 style: textTheme.labelSmall?.copyWith(
                   letterSpacing: 1.5,
                   color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
