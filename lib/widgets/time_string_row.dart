@@ -1,4 +1,5 @@
 import 'package:epoch/main.dart';
+import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -55,17 +56,17 @@ class TimeStringRow extends StatelessWidget {
     );
   }
 
+// In TimeStringRow:
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final display = _displayValue(context);
     final split = ValueDisplay.split(display);
 
-    return ValueDisplay(
+    return ValueTile(
       label: label,
-      line1: split.line1,
-      line2: split.line2,
-      actions: [
+      content: TextValueContent(line1: split.line1, line2: split.line2),
+      actionSlots: [
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
@@ -78,6 +79,7 @@ class TimeStringRow extends StatelessWidget {
           tooltip: l10n.copyToClipboard,
           onPressed: () => _copyToClipboard(context, l10n),
         ),
+        null, // third slot empty in view mode
       ],
     );
   }

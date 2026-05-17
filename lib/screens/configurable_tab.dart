@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
+import '../widgets/binary_coded_decimal_clock.dart';
+import '../widgets/binary_columns_clock.dart';
 import '../widgets/time_entry_row.dart';
+import '../widgets/value_tile.dart';
 import 'entry_picker.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
@@ -41,14 +44,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       _editMode = !_editMode;
       if (!_editMode) _checked.clear();
     });
-  }
-
-  void _toggleCheck(String key) {
-    if (_checked.contains(key)) {
-      _checked.remove(key);
-    } else {
-      _checked.add(key);
-    }
   }
 
   bool get _allChecked =>
@@ -166,21 +161,22 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       String locale,
       ) {
     String localIanaZone = EpochApp.of(context).localIanaZone;
-    final isChecked = _checked.contains(entry.key);
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
+    bool isGraphical =
+      entry.type == ValueType.binaryClockColumns ||
+      entry.type == ValueType.binaryClockBcd
+      ? true
+      : false;
     final displayValue =
-    entry.type == ValueType.binaryClockColumns ||
-        entry.type == ValueType.binaryClockBcd
-        ? '[${l10n.binaryClockPlaceholder}]'
-        : entry.computeValue(
-      widget.now,
-      locale,
-      hourFormat24: widget.hourFormat24,
-      thousandsSep: widget.thousandsSep,
-      localIanaZone: localIanaZone,
-    );
+      isGraphical
+      ? '[${l10n.binaryClockPlaceholder}]'
+      : entry.computeValue(
+        widget.now,
+        locale,
+        hourFormat24: widget.hourFormat24,
+        thousandsSep: widget.thousandsSep,
+        localIanaZone: localIanaZone,
+      );
 
     final raw = displayValue; // already computed above
     final split = ValueDisplay.split(raw);
@@ -200,11 +196,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         _checked.remove(entry.key);
         widget.onEntriesChanged(updated);
       },
-      child: ValueDisplay(
+      child: ValueTile(
         label: entry.localizedLabel(l10n),
-        line1: split.line1,
-        line2: split.line2,
-        actions: [
+        height: isGraphical ? ValueTile.graphicTileHeight : null,
+        content: isGraphical
+            ? GraphicValueContent(
+          clock: entry.type == ValueType.binaryClockColumns
+              ? ColumnBinaryClock(now: widget.now, l10n: l10n)
+              : BcdBinaryClock(now: widget.now, l10n: l10n),
+        )
+            : TextValueContent(line1: split.line1, line2: split.line2),
+        actionSlots: [
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
             color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
