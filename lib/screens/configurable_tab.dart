@@ -1,8 +1,8 @@
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
-import '../l10n/app_localizations.dart';
 import '../widgets/time_entry_row.dart';
 import 'entry_picker.dart';
 
@@ -112,7 +112,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
       itemCount: widget.entries.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
         return _buildDisplayRow(context, entry, l10n, locale);
@@ -138,7 +138,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildEditList(AppLocalizations l10n, String locale) {
     return ReorderableListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       itemCount: widget.entries.length,
       onReorderItem: (oldIndex, newIndex) {
         if (newIndex > oldIndex) newIndex--;
@@ -182,6 +182,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       localIanaZone: localIanaZone,
     );
 
+    final raw = displayValue; // already computed above
+    final split = ValueDisplay.split(raw);
+
     return Dismissible(
       key: ValueKey(entry.key),
       direction: DismissDirection.endToStart,
@@ -197,70 +200,35 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         _checked.remove(entry.key);
         widget.onEntriesChanged(updated);
       },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Value display – identical structure to TimeStringRow.
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.localizedLabel(l10n),  //.toUpperCase(),
-                  style: textTheme.labelSmall?.copyWith(
-                    letterSpacing: 1.5,
-                    color: colorScheme.onSurface.withAlpha(150),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  width: double.infinity,
-                  constraints: const BoxConstraints(minHeight: 52),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: colorScheme.onSurface.withAlpha(30),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    displayValue,
-                    style: textTheme.bodyLarge?.copyWith(
-                      fontFamily: fontFamilyValues,
-                      fontWeight: FontWeight.w500,
-                      height: 1.2,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 4),
-          // Edit actions – in a Row, same vertical center as display mode.
+      child: ValueDisplay(
+        label: entry.localizedLabel(l10n),
+        line1: split.line1,
+        line2: split.line2,
+        actions: [
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
-            color: colorScheme.onSurface.withAlpha(150),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
             tooltip: l10n.editLabel,
             onPressed: () => _editLabel(context, entry, l10n),
           ),
           ReorderableDragStartListener(
             index: index,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Icon(
-                Icons.drag_handle,
-                size: 20,
-                color: colorScheme.onSurface.withAlpha(150),
-              ),
-            ),
+            child: Icon(Icons.drag_handle, size: 20,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
           ),
-          // Checkbox directly in State widget tree – rebuilds correctly.
-          Checkbox(
-            value: isChecked,
-            onChanged: (_) => setState(() {
-              _toggleCheck(entry.key);
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => setState(() {
+              if (_checked.contains(entry.key)) {
+                _checked.remove(entry.key);
+              } else {
+                _checked.add(entry.key);
+              }
             }),
+            child: Checkbox(
+              value: _checked.contains(entry.key),
+              onChanged: null,
+            ),
           ),
         ],
       ),
