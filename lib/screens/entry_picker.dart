@@ -53,6 +53,7 @@ class _EntryPickerState extends State<_EntryPicker> {
     ValueType.time               => l10n.valueTypeTime,
     ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
+    ValueType.dayPercent         => l10n.valueTypeDayPercent,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
     ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
@@ -105,6 +106,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       ValueType.time,
       ValueType.dateTime,
       ValueType.daySecond,
+      ValueType.dayPercent,
     ].where(_isAllowed).toList();
 
     final technicalTypes = [

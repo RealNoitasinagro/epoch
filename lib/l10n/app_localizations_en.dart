@@ -93,6 +93,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
 
   @override
+  String get infoDayPercent =>
+      'Percentage of the day in the selected timezone. Resets to 0 at midnight.';
+
+  @override
   String get infoDoomsday =>
       'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
 
@@ -277,6 +281,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeDateTime => 'Date & Time';
+
+  @override
+  String get valueTypeDayPercent => 'Day percent';
 
   @override
   String get valueTypeDaySecond => 'Day second';

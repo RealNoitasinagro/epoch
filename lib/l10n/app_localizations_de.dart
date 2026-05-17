@@ -93,6 +93,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
   @override
+  String get infoDayPercent =>
+      'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
   String get infoDoomsday =>
       'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
 
@@ -277,6 +281,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeDateTime => 'Datum & Uhrzeit';
+
+  @override
+  String get valueTypeDayPercent => 'Tagesprozent';
 
   @override
   String get valueTypeDaySecond => 'Tagessekunde';

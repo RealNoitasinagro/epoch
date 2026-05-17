@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
   String get infoDaySecond;
 
+  /// No description provided for @infoDayPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage of the day in the selected timezone. Resets to 0 at midnight.'**
+  String get infoDayPercent;
+
   /// No description provided for @infoDoomsday.
   ///
   /// In en, this message translates to:
@@ -595,6 +601,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date & Time'**
   String get valueTypeDateTime;
+
+  /// No description provided for @valueTypeDayPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Day percent'**
+  String get valueTypeDayPercent;
 
   /// No description provided for @valueTypeDaySecond.
   ///

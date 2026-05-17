@@ -11,6 +11,7 @@ enum ValueType {
   time,
   dateTime,
   daySecond,
+  dayPercent,
   // Curiosities – zone-dependent binary clocks
   binaryClockString,
   binaryClockColumns,
@@ -116,6 +117,7 @@ class TimeEntry {
     ValueType.time               => l10n.valueTypeTime,
     ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
+    ValueType.dayPercent         => l10n.valueTypeDayPercent,
     ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
     ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
@@ -135,6 +137,7 @@ class TimeEntry {
     ValueType.time               => l10n.infoLocalTime,
     ValueType.dateTime           => l10n.infoDateTime,
     ValueType.daySecond          => l10n.infoDaySecond,
+    ValueType.dayPercent         => l10n.infoDayPercent,
     ValueType.binaryClockString  => l10n.infoBinaryClockString,
     ValueType.binaryClockColumns => l10n.infoBinaryClock,
     ValueType.binaryClockBcd     => l10n.infoBinaryClockBcd,
@@ -225,9 +228,6 @@ class TimeEntry {
     final hh = dt.hour.toString().padLeft(2, '0');
     final mm = dt.minute.toString().padLeft(2, '0');
     final ss = dt.second.toString().padLeft(2, '0');
-    // final tzSuffix = zone is ZoneUtc
-    //     ? 'UTC'
-    //     : '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
     switch (type) {
@@ -251,6 +251,9 @@ class TimeEntry {
         return thousandsSep
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
+      case ValueType.dayPercent:
+        return NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 3)
+            .format(TimeUtils.dayPercent(dt));
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
       default:
@@ -282,6 +285,7 @@ extension ValueTypeProps on ValueType {
     ValueType.time               => false,
     ValueType.dateTime           => false,
     ValueType.daySecond          => false,
+    ValueType.dayPercent         => false,
     ValueType.binaryClockString  => false,
     ValueType.binaryClockColumns => false,
     ValueType.binaryClockBcd     => false,

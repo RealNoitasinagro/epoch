@@ -9,6 +9,7 @@ const _civilTypes = [
   ValueType.time,
   ValueType.dateTime,
   ValueType.daySecond,
+  ValueType.dayPercent,
 ];
 
 class CivilTab extends StatelessWidget {

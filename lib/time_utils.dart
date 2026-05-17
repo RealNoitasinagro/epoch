@@ -23,6 +23,15 @@ class TimeUtils {
   static int daySecond(DateTime dt) =>
       dt.hour * 3600 + dt.minute * 60 + dt.second;
 
+  /// Percentage of the day completed.
+  static double dayPercent(DateTime dt) {
+    int secondsPerDay = 24 * 60 * 60; // 86400
+    int currentDaySecond = daySecond(dt);
+
+    var percent = currentDaySecond / secondsPerDay * 100;
+    return percent;
+  }
+
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
   static String formatDate(String locale, DateTime dt) => DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
 
