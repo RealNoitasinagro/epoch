@@ -60,9 +60,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get doneEditing => 'Done editing';
 
   @override
-  String get doomsdayLink => 'https://thebulletin.org/doomsday-clock/';
-
-  @override
   String get editLabel => 'Edit label';
 
   @override
@@ -89,12 +86,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
-  String get infoDaySecond =>
-      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
-
-  @override
   String get infoDayPercent =>
       'Percentage of the day in the selected timezone. Resets to 0 at midnight.';
+
+  @override
+  String get infoDaySecond =>
+      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoDoomsday =>
@@ -111,6 +108,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoJd =>
       'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.';
+
+  @override
+  String get infoLinkDoomsday => 'https://thebulletin.org/doomsday-clock/';
+
+  @override
+  String get infoLinkGmst => 'https://en.wikipedia.org/wiki/Sidereal_time';
+
+  @override
+  String get infoLinkGps => 'https://en.wikipedia.org/wiki/GPS_signals#Timing';
+
+  @override
+  String get infoLinkJd => 'https://en.wikipedia.org/wiki/Julian_day';
+
+  @override
+  String get infoLinkMjd => 'https://en.wikipedia.org/wiki/Julian_day#Variants';
+
+  @override
+  String get infoLinkSwatch =>
+      'https://en.wikipedia.org/wiki/Swatch_Internet_Time';
+
+  @override
+  String get infoLinkTai =>
+      'https://en.wikipedia.org/wiki/International_Atomic_Time';
+
+  @override
+  String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
 
   @override
   String get infoLocalDate =>

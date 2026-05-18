@@ -151,6 +151,19 @@ class TimeEntry {
     ValueType.doomsdayClock      => l10n.infoDoomsday,
   };
 
+  // Returns a URL for further reading, or null if none defined.
+  String? localizedInfoLink(AppLocalizations l10n) => switch (type) {
+    ValueType.gmst               => l10n.infoLinkGmst,
+    ValueType.julianDate         => l10n.infoLinkJd,
+    ValueType.modifiedJulianDate => l10n.infoLinkMjd,
+    ValueType.unixSeconds        => l10n.infoLinkUnixSeconds,
+    ValueType.tai                => l10n.infoLinkTai,
+    ValueType.gps                => l10n.infoLinkGps,
+    ValueType.swatchBeats        => l10n.infoLinkSwatch,
+    ValueType.doomsdayClock      => l10n.infoLinkDoomsday,
+    _                            => null,
+  };
+
   // Computes the display value string.
   String computeValue(
       DateTime now,

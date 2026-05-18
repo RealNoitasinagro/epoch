@@ -60,9 +60,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get doneEditing => 'Fertig';
 
   @override
-  String get doomsdayLink => 'https://thebulletin.org/doomsday-clock/';
-
-  @override
   String get editLabel => 'Bezeichnung bearbeiten';
 
   @override
@@ -89,12 +86,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
 
   @override
-  String get infoDaySecond =>
-      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
-
-  @override
   String get infoDayPercent =>
       'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
+  String get infoDaySecond =>
+      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
   @override
   String get infoDoomsday =>
@@ -111,6 +108,32 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoJd =>
       'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+
+  @override
+  String get infoLinkDoomsday => 'https://thebulletin.org/doomsday-clock/';
+
+  @override
+  String get infoLinkGmst => 'https://de.wikipedia.org/wiki/Sternzeit';
+
+  @override
+  String get infoLinkGps => 'https://de.wikipedia.org/wiki/GPS';
+
+  @override
+  String get infoLinkJd => 'https://de.wikipedia.org/wiki/Julianisches_Datum';
+
+  @override
+  String get infoLinkMjd => 'https://de.wikipedia.org/wiki/Julianisches_Datum';
+
+  @override
+  String get infoLinkSwatch =>
+      'https://de.wikipedia.org/wiki/Swatch_Internet_Time';
+
+  @override
+  String get infoLinkTai =>
+      'https://de.wikipedia.org/wiki/Internationale_Atomzeit';
+
+  @override
+  String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
   String get infoLocalDate =>

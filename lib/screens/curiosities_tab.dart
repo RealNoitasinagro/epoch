@@ -61,7 +61,7 @@ class CuriositiesTab extends StatelessWidget {
           label: l10n.valueTypeDoomsdayClock,
           value: doomsdayClock,
           info: l10n.infoDoomsday,
-          infoLink: l10n.doomsdayLink,
+          infoLink: l10n.infoLinkDoomsday,
         ),
       ],
     );

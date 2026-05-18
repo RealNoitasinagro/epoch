@@ -23,13 +23,25 @@ class TimeUtils {
   static int daySecond(DateTime dt) =>
       dt.hour * 3600 + dt.minute * 60 + dt.second;
 
-  /// Percentage of the day completed.
+  /// Percentage of the day elapsed.
   static double dayPercent(DateTime dt) {
-    int secondsPerDay = 24 * 60 * 60; // 86400
+    int secondsPerDay = 24 * 60 * 60;  // 86400
     int currentDaySecond = daySecond(dt);
-
     var percent = currentDaySecond / secondsPerDay * 100;
     return percent;
+  }
+
+  /// Percentage of the hour elapsed.
+  static double hourPercent(DateTime dt) {
+    int secondsPerHour = 60 * 60;  // 3600
+    int currentHourSecond = dt.minute * 60 + dt.second;
+    var percent = currentHourSecond / secondsPerHour * 100;
+    return percent;
+  }
+
+  /// Percentage of the minute elapsed.
+  static double minutePercent (DateTime dt) {
+    return dt.second / 60 * 100;
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".

@@ -3,6 +3,7 @@ import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 
 class TimeStringRow extends StatelessWidget {
@@ -45,7 +46,30 @@ class TimeStringRow extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(label),
-        content: Text(info ?? l10n.noDescription),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(info ?? l10n.noDescription),
+            if (infoLink != null) ...[
+              const SizedBox(height: 12),
+              InkWell(
+                onTap: () async {
+                  final uri = Uri.parse(infoLink!);
+                  await launchUrl(uri,
+                      mode: LaunchMode.externalApplication);
+                },
+                child: Text(
+                  infoLink!,
+                  style: TextStyle(
+                    color: Theme.of(ctx).colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -56,7 +80,6 @@ class TimeStringRow extends StatelessWidget {
     );
   }
 
-// In TimeStringRow:
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

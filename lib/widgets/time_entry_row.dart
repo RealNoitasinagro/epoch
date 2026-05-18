@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
@@ -26,11 +27,35 @@ class TimeEntryRow extends StatelessWidget {
   });
 
   void _showInfo(BuildContext context, AppLocalizations l10n) {
+    final link = entry.localizedInfoLink(l10n);
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(entry.localizedLabel(l10n)),
-        content: Text(entry.localizedInfo(l10n)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(entry.localizedInfo(l10n)),
+            if (link != null) ...[
+              const SizedBox(height: 12),
+              InkWell(
+                onTap: () async {
+                  final uri = Uri.parse(link);
+                  await launchUrl(uri,
+                      mode: LaunchMode.externalApplication);
+                },
+                child: Text(
+                  link,
+                  style: TextStyle(
+                    color: Theme.of(ctx).colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),

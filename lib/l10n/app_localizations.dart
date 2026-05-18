@@ -194,12 +194,6 @@ abstract class AppLocalizations {
   /// **'Done editing'**
   String get doneEditing;
 
-  /// No description provided for @doomsdayLink.
-  ///
-  /// In en, this message translates to:
-  /// **'https://thebulletin.org/doomsday-clock/'**
-  String get doomsdayLink;
-
   /// No description provided for @editLabel.
   ///
   /// In en, this message translates to:
@@ -242,17 +236,17 @@ abstract class AppLocalizations {
   /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
   String get infoDateTime;
 
-  /// No description provided for @infoDaySecond.
-  ///
-  /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
-  String get infoDaySecond;
-
   /// No description provided for @infoDayPercent.
   ///
   /// In en, this message translates to:
   /// **'Percentage of the day in the selected timezone. Resets to 0 at midnight.'**
   String get infoDayPercent;
+
+  /// No description provided for @infoDaySecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  String get infoDaySecond;
 
   /// No description provided for @infoDoomsday.
   ///
@@ -277,6 +271,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.'**
   String get infoJd;
+
+  /// No description provided for @infoLinkDoomsday.
+  ///
+  /// In en, this message translates to:
+  /// **'https://thebulletin.org/doomsday-clock/'**
+  String get infoLinkDoomsday;
+
+  /// No description provided for @infoLinkGmst.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Sidereal_time'**
+  String get infoLinkGmst;
+
+  /// No description provided for @infoLinkGps.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/GPS_signals#Timing'**
+  String get infoLinkGps;
+
+  /// No description provided for @infoLinkJd.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day'**
+  String get infoLinkJd;
+
+  /// No description provided for @infoLinkMjd.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkMjd;
+
+  /// No description provided for @infoLinkSwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Swatch_Internet_Time'**
+  String get infoLinkSwatch;
+
+  /// No description provided for @infoLinkTai.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/International_Atomic_Time'**
+  String get infoLinkTai;
+
+  /// No description provided for @infoLinkUnixSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Unix_time'**
+  String get infoLinkUnixSeconds;
 
   /// No description provided for @infoLocalDate.
   ///
