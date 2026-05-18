@@ -38,11 +38,34 @@ class ConfigurableTab extends StatefulWidget {
 class _ConfigurableTabState extends State<ConfigurableTab> {
   bool _editMode = false;
   final Set<String> _checked = {};
+  final ScrollController _scrollController = ScrollController();
+  double _savedScrollOffset = 0.0;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void _toggleEditMode() {
     setState(() {
+      // Save position before switching.
+      _savedScrollOffset = _scrollController.hasClients
+          ? _scrollController.offset
+          : 0.0;
       _editMode = !_editMode;
       if (!_editMode) _checked.clear();
+    });
+    // Restore position after the new list has been built.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(
+          _savedScrollOffset.clamp(
+            0.0,
+            _scrollController.position.maxScrollExtent,
+          ),
+        );
+      }
     });
   }
 
@@ -105,6 +128,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildDisplayList(AppLocalizations l10n, String locale) {
     return ListView.separated(
+      controller: _scrollController,
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
       itemCount: widget.entries.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
@@ -133,6 +157,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildEditList(AppLocalizations l10n, String locale) {
     return ReorderableListView.builder(
+      scrollController: _scrollController,
+      buildDefaultDragHandles: false, // we provide our own via ReorderableDragStartListener
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       itemCount: widget.entries.length,
       onReorderItem: (oldIndex, newIndex) {
