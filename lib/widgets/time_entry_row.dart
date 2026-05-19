@@ -108,6 +108,7 @@ class TimeEntryRow extends StatelessWidget {
         localIanaZone: localIanaZone,
       ),
       info: entry.localizedInfo(l10n),
+      infoLink: infoLink ?? entry.localizedInfoLink(l10n),
       useThousands: entry.useThousands && thousandsSep,
     );
   }
