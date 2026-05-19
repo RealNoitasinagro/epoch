@@ -16,6 +16,7 @@ class TimeEntryRow extends StatelessWidget {
   final String locale;
   final bool hourFormat24;
   final bool thousandsSep;
+  final String? infoLink; // optional override; falls back to entry.localizedInfoLink
 
   const TimeEntryRow({
     super.key,
@@ -24,10 +25,12 @@ class TimeEntryRow extends StatelessWidget {
     required this.locale,
     this.hourFormat24 = true,
     this.thousandsSep = true,
+    this.infoLink,
   });
 
   void _showInfo(BuildContext context, AppLocalizations l10n) {
-    final link = entry.localizedInfoLink(l10n);
+    // Prefer explicit infoLink, fall back to entry's localized link.
+    final link = infoLink ?? entry.localizedInfoLink(l10n);
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(

@@ -40,12 +40,14 @@ class CuriositiesTab extends StatelessWidget {
               type: ValueType.binaryClockColumns, zone: ZoneLocal()),
           now: now,
           locale: locale,
+          infoLink: l10n.infoLinkBinaryClockColumns,
         ),
         const SizedBox(height: 24),
         TimeEntryRow(
           entry: const TimeEntry(
               type: ValueType.binaryClockBcd, zone: ZoneLocal()),
           now: now,
+          infoLink: l10n.infoLinkBinaryClockBcd,
           locale: locale,
         ),
         const SizedBox(height: 24),
