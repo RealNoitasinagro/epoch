@@ -70,16 +70,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.';
 
   @override
-  String get infoBinaryClock =>
-      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
-
-  @override
   String get infoBinaryClockBcd =>
       'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
 
   @override
+  String get infoBinaryClockColumns =>
+      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
+
+  @override
   String get infoBinaryClockString =>
       'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+
+  @override
+  String get infoDate =>
+      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
 
   @override
   String get infoDateTime =>
@@ -94,39 +98,53 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
   @override
-  String get infoDoomsday =>
+  String get infoDoomsdayClock =>
       'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
 
   @override
   String get infoGmst =>
-      'Greenwich Mean Sidereal Time – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+      'Greenwich Mean Sidereal Time (GMST) – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
 
   @override
   String get infoGps =>
       'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC.';
 
   @override
-  String get infoJd =>
-      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+  String get infoJulianDate =>
+      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
 
   @override
-  String get infoLinkDoomsday => 'https://thebulletin.org/doomsday-clock/';
+  String get infoLinkBinaryClockBcd =>
+      'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
+
+  @override
+  String get infoLinkBinaryClockColumns =>
+      'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
+
+  @override
+  String get infoLinkBinaryClockString =>
+      'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
+
+  @override
+  String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
 
   @override
   String get infoLinkGmst => 'https://de.wikipedia.org/wiki/Sternzeit';
 
   @override
-  String get infoLinkGps => 'https://de.wikipedia.org/wiki/GPS';
+  String get infoLinkGps => 'https://de.wikipedia.org/wiki/GPS-Zeit';
 
   @override
-  String get infoLinkJd => 'https://de.wikipedia.org/wiki/Julianisches_Datum';
+  String get infoLinkJulianDate =>
+      'https://de.wikipedia.org/wiki/Julianisches_Datum';
 
   @override
-  String get infoLinkMjd => 'https://de.wikipedia.org/wiki/Julianisches_Datum';
+  String get infoLinkModifiedJulianDate =>
+      'https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum';
 
   @override
-  String get infoLinkSwatch =>
-      'https://de.wikipedia.org/wiki/Swatch_Internet_Time';
+  String get infoLinkSwatchBeats =>
+      'https://de.wikipedia.org/wiki/Swatch-Internetzeit';
 
   @override
   String get infoLinkTai =>
@@ -136,27 +154,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
-  String get infoLocalDate =>
-      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
+  String get infoModifiedJulianDate =>
+      'Modifiziertes Julianisches Datum = JD − 2.400.000,5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.';
 
   @override
-  String get infoLocalTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
-
-  @override
-  String get infoMjd =>
-      'Modifiziertes Julianisches Datum = JD − 2400000.5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.';
-
-  @override
-  String get infoSwatch =>
+  String get infoSwatchBeats =>
       'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
 
   @override
   String get infoTai =>
-      'Internationale Atomzeit (TAI) basiert auf Atomuhren und läuft aktuell 37 Sekunden vor UTC.';
+      'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell 37 Sekunden vor UTC.';
+
+  @override
+  String get infoTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
 
   @override
   String get infoUnixSeconds =>
-      'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC. Schaltsekunden werden nicht gezählt.';
+      'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
 
   @override
   String get labelHours => 'Std';
@@ -321,10 +335,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeGps => 'GPS-Zeit (s)';
 
   @override
-  String get valueTypeJd => 'Julianisches Datum';
+  String get valueTypeJulianDate => 'Julianisches Datum';
 
   @override
-  String get valueTypeMjd => 'Modifiziertes Julianisches Datum';
+  String get valueTypeModifiedJulianDate => 'Modifiziertes Julianisches Datum';
 
   @override
   String get valueTypeSwatchBeats => 'Internetzeit';

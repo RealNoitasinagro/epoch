@@ -212,23 +212,29 @@ abstract class AppLocalizations {
   /// **'Configurable tab.\nUse the edit mode to add values.'**
   String get emptyTabHint;
 
-  /// No description provided for @infoBinaryClock.
-  ///
-  /// In en, this message translates to:
-  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
-  String get infoBinaryClock;
-
   /// No description provided for @infoBinaryClockBcd.
   ///
   /// In en, this message translates to:
   /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
   String get infoBinaryClockBcd;
 
+  /// No description provided for @infoBinaryClockColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  String get infoBinaryClockColumns;
+
   /// No description provided for @infoBinaryClockString.
   ///
   /// In en, this message translates to:
   /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoBinaryClockString;
+
+  /// No description provided for @infoDate.
+  ///
+  /// In en, this message translates to:
+  /// **'The current calendar date in the selected timezone.'**
+  String get infoDate;
 
   /// No description provided for @infoDateTime.
   ///
@@ -239,7 +245,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day in the selected timezone. Resets to 0 at midnight.'**
+  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
   String get infoDayPercent;
 
   /// No description provided for @infoDaySecond.
@@ -248,16 +254,16 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
   String get infoDaySecond;
 
-  /// No description provided for @infoDoomsday.
+  /// No description provided for @infoDoomsdayClock.
   ///
   /// In en, this message translates to:
   /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
-  String get infoDoomsday;
+  String get infoDoomsdayClock;
 
   /// No description provided for @infoGmst.
   ///
   /// In en, this message translates to:
-  /// **'Greenwich Mean Sidereal Time – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
+  /// **'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
   String get infoGmst;
 
   /// No description provided for @infoGps.
@@ -266,17 +272,35 @@ abstract class AppLocalizations {
   /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC.'**
   String get infoGps;
 
-  /// No description provided for @infoJd.
+  /// No description provided for @infoJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.'**
-  String get infoJd;
+  /// **'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  String get infoJulianDate;
 
-  /// No description provided for @infoLinkDoomsday.
+  /// No description provided for @infoLinkBinaryClockBcd.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Binary_clock'**
+  String get infoLinkBinaryClockBcd;
+
+  /// No description provided for @infoLinkBinaryClockColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Binary_clock'**
+  String get infoLinkBinaryClockColumns;
+
+  /// No description provided for @infoLinkBinaryClockString.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Binary_clock'**
+  String get infoLinkBinaryClockString;
+
+  /// No description provided for @infoLinkDoomsdayClock.
   ///
   /// In en, this message translates to:
   /// **'https://thebulletin.org/doomsday-clock/'**
-  String get infoLinkDoomsday;
+  String get infoLinkDoomsdayClock;
 
   /// No description provided for @infoLinkGmst.
   ///
@@ -287,26 +311,26 @@ abstract class AppLocalizations {
   /// No description provided for @infoLinkGps.
   ///
   /// In en, this message translates to:
-  /// **'https://en.wikipedia.org/wiki/GPS_signals#Timing'**
+  /// **'https://en.wikipedia.org/wiki/GPS_time#Timekeeping'**
   String get infoLinkGps;
 
-  /// No description provided for @infoLinkJd.
+  /// No description provided for @infoLinkJulianDate.
   ///
   /// In en, this message translates to:
   /// **'https://en.wikipedia.org/wiki/Julian_day'**
-  String get infoLinkJd;
+  String get infoLinkJulianDate;
 
-  /// No description provided for @infoLinkMjd.
+  /// No description provided for @infoLinkModifiedJulianDate.
   ///
   /// In en, this message translates to:
   /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
-  String get infoLinkMjd;
+  String get infoLinkModifiedJulianDate;
 
-  /// No description provided for @infoLinkSwatch.
+  /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
   /// **'https://en.wikipedia.org/wiki/Swatch_Internet_Time'**
-  String get infoLinkSwatch;
+  String get infoLinkSwatchBeats;
 
   /// No description provided for @infoLinkTai.
   ///
@@ -320,40 +344,34 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Unix_time'**
   String get infoLinkUnixSeconds;
 
-  /// No description provided for @infoLocalDate.
+  /// No description provided for @infoModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'The current calendar date in the selected timezone.'**
-  String get infoLocalDate;
+  /// **'Modified Julian Date = JD − 2,400,000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
+  String get infoModifiedJulianDate;
 
-  /// No description provided for @infoLocalTime.
-  ///
-  /// In en, this message translates to:
-  /// **'The current time in the selected timezone.'**
-  String get infoLocalTime;
-
-  /// No description provided for @infoMjd.
-  ///
-  /// In en, this message translates to:
-  /// **'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
-  String get infoMjd;
-
-  /// No description provided for @infoSwatch.
+  /// No description provided for @infoSwatchBeats.
   ///
   /// In en, this message translates to:
   /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
-  String get infoSwatch;
+  String get infoSwatchBeats;
 
   /// No description provided for @infoTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (TAI) is based on atomic clocks and currently runs 37 seconds ahead of UTC.'**
+  /// **'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC.'**
   String get infoTai;
+
+  /// No description provided for @infoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone.'**
+  String get infoTime;
 
   /// No description provided for @infoUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC. Does not count leap seconds.'**
+  /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
   String get infoUnixSeconds;
 
   /// No description provided for @labelHours.
@@ -674,17 +692,17 @@ abstract class AppLocalizations {
   /// **'GPS time (s)'**
   String get valueTypeGps;
 
-  /// No description provided for @valueTypeJd.
+  /// No description provided for @valueTypeJulianDate.
   ///
   /// In en, this message translates to:
   /// **'Julian Date'**
-  String get valueTypeJd;
+  String get valueTypeJulianDate;
 
-  /// No description provided for @valueTypeMjd.
+  /// No description provided for @valueTypeModifiedJulianDate.
   ///
   /// In en, this message translates to:
   /// **'Modified Julian Date'**
-  String get valueTypeMjd;
+  String get valueTypeModifiedJulianDate;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///

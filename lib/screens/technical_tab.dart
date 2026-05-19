@@ -28,6 +28,7 @@ class TechnicalTab extends StatelessWidget {
           value: unix.toString(),
           useThousands: thousandsSep,
           info: l10n.infoUnixSeconds,
+          infoLink: l10n.infoLinkUnixSeconds,
         ),
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionAtomic),
@@ -37,6 +38,7 @@ class TechnicalTab extends StatelessWidget {
           value: tai.toString(),
           useThousands: thousandsSep,
           info: l10n.infoTai,
+          infoLink: l10n.infoLinkTai,
         ),
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionGps),
@@ -46,6 +48,7 @@ class TechnicalTab extends StatelessWidget {
           value: gps.toString(),
           useThousands: thousandsSep,
           info: l10n.infoGps,
+          infoLink: l10n.infoLinkGps,
         ),
       ],
     );

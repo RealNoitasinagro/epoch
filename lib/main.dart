@@ -21,9 +21,9 @@ void main() {
   runApp(const EpochApp());
 }
 
+const fontFamilyValues = 'Courier New';
 const _nightRed        = Color(0xFFCC1010);
 const _nightRedDim     = Color(0xFF7A0000);
-const fontFamilyValues = 'Courier New';
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,

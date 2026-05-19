@@ -12,10 +12,6 @@ enum ValueType {
   dateTime,
   daySecond,
   dayPercent,
-  // Curiosities – zone-dependent binary clocks
-  binaryClockString,
-  binaryClockColumns,
-  binaryClockBcd,
   // Technical
   unixSeconds,
   tai,
@@ -24,8 +20,11 @@ enum ValueType {
   gmst,
   julianDate,
   modifiedJulianDate,
-  // Curiosities – zone-independent
+  // Curiosities
   swatchBeats,
+  binaryClockString,
+  binaryClockColumns,
+  binaryClockBcd,
   doomsdayClock
 }
 
@@ -118,49 +117,52 @@ class TimeEntry {
     ValueType.dateTime           => l10n.valueTypeDateTime,
     ValueType.daySecond          => l10n.valueTypeDaySecond,
     ValueType.dayPercent         => l10n.valueTypeDayPercent,
-    ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
-    ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
-    ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
     ValueType.unixSeconds        => l10n.valueTypeUnixSeconds,
     ValueType.tai                => l10n.valueTypeTai,
     ValueType.gps                => l10n.valueTypeGps,
     ValueType.gmst               => l10n.valueTypeGmst,
-    ValueType.julianDate         => l10n.valueTypeJd,
-    ValueType.modifiedJulianDate => l10n.valueTypeMjd,
+    ValueType.julianDate         => l10n.valueTypeJulianDate,
+    ValueType.modifiedJulianDate => l10n.valueTypeModifiedJulianDate,
     ValueType.swatchBeats        => l10n.valueTypeSwatchBeats,
+    ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+    ValueType.binaryClockBcd     => l10n.valueTypeBinaryClockBcd,
+    ValueType.binaryClockString  => l10n.valueTypeBinaryClockString,
     ValueType.doomsdayClock      => l10n.valueTypeDoomsdayClock
   };
 
   // Localized info text.
   String localizedInfo(AppLocalizations l10n) => switch (type) {
-    ValueType.date               => l10n.infoLocalDate,
-    ValueType.time               => l10n.infoLocalTime,
+    ValueType.date               => l10n.infoDate,
+    ValueType.time               => l10n.infoTime,
     ValueType.dateTime           => l10n.infoDateTime,
     ValueType.daySecond          => l10n.infoDaySecond,
     ValueType.dayPercent         => l10n.infoDayPercent,
-    ValueType.binaryClockString  => l10n.infoBinaryClockString,
-    ValueType.binaryClockColumns => l10n.infoBinaryClock,
-    ValueType.binaryClockBcd     => l10n.infoBinaryClockBcd,
     ValueType.unixSeconds        => l10n.infoUnixSeconds,
     ValueType.tai                => l10n.infoTai,
     ValueType.gps                => l10n.infoGps,
     ValueType.gmst               => l10n.infoGmst,
-    ValueType.julianDate         => l10n.infoJd,
-    ValueType.modifiedJulianDate => l10n.infoMjd,
-    ValueType.swatchBeats        => l10n.infoSwatch,
-    ValueType.doomsdayClock      => l10n.infoDoomsday,
+    ValueType.julianDate         => l10n.infoJulianDate,
+    ValueType.modifiedJulianDate => l10n.infoModifiedJulianDate,
+    ValueType.swatchBeats        => l10n.infoSwatchBeats,
+    ValueType.binaryClockColumns => l10n.infoBinaryClockColumns,
+    ValueType.binaryClockBcd     => l10n.infoBinaryClockBcd,
+    ValueType.binaryClockString  => l10n.infoBinaryClockString,
+    ValueType.doomsdayClock      => l10n.infoDoomsdayClock,
   };
 
   // Returns a URL for further reading, or null if none defined.
   String? localizedInfoLink(AppLocalizations l10n) => switch (type) {
-    ValueType.gmst               => l10n.infoLinkGmst,
-    ValueType.julianDate         => l10n.infoLinkJd,
-    ValueType.modifiedJulianDate => l10n.infoLinkMjd,
     ValueType.unixSeconds        => l10n.infoLinkUnixSeconds,
     ValueType.tai                => l10n.infoLinkTai,
     ValueType.gps                => l10n.infoLinkGps,
-    ValueType.swatchBeats        => l10n.infoLinkSwatch,
-    ValueType.doomsdayClock      => l10n.infoLinkDoomsday,
+    ValueType.gmst               => l10n.infoLinkGmst,
+    ValueType.julianDate         => l10n.infoLinkJulianDate,
+    ValueType.modifiedJulianDate => l10n.infoLinkModifiedJulianDate,
+    ValueType.swatchBeats        => l10n.infoLinkSwatchBeats,
+    ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
+    ValueType.binaryClockBcd     => l10n.infoLinkBinaryClockBcd,
+    ValueType.binaryClockString  => l10n.infoLinkBinaryClockString,
+    ValueType.doomsdayClock      => l10n.infoLinkDoomsdayClock,
     _                            => null,
   };
 
@@ -275,21 +277,24 @@ class TimeEntry {
   }
 
   bool get useThousands => switch (type) {
-    ValueType.daySecond    => true,
-    ValueType.unixSeconds  => true,
-    ValueType.tai          => true,
-    ValueType.gps          => true,
-    _                      => false,
+    ValueType.daySecond          => true,
+    ValueType.unixSeconds        => true,
+    ValueType.tai                => true,
+    ValueType.gps                => true,
+    ValueType.julianDate         => true, // working even without this?
+    ValueType.modifiedJulianDate => true, // working even without this?
+    _                            => false,
   };
 }
 
 // Default entries for the Civil tab.
 const defaultCivilEntries = [
-  TimeEntry(type: ValueType.date,      zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,      zone: ZoneLocal()),
-  TimeEntry(type: ValueType.daySecond, zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,      zone: ZoneUtc()),
-  TimeEntry(type: ValueType.daySecond, zone: ZoneUtc()),
+  TimeEntry(type: ValueType.date,       zone: ZoneLocal()),
+  TimeEntry(type: ValueType.time,       zone: ZoneLocal()),
+  TimeEntry(type: ValueType.daySecond,  zone: ZoneLocal()),
+  TimeEntry(type: ValueType.dayPercent, zone: ZoneLocal()),
+  TimeEntry(type: ValueType.time,       zone: ZoneUtc()),
+  TimeEntry(type: ValueType.daySecond,  zone: ZoneUtc()),
 ];
 
 extension ValueTypeProps on ValueType {
@@ -299,9 +304,6 @@ extension ValueTypeProps on ValueType {
     ValueType.dateTime           => false,
     ValueType.daySecond          => false,
     ValueType.dayPercent         => false,
-    ValueType.binaryClockString  => false,
-    ValueType.binaryClockColumns => false,
-    ValueType.binaryClockBcd     => false,
     ValueType.unixSeconds        => true,
     ValueType.tai                => true,
     ValueType.gps                => true,
@@ -309,6 +311,9 @@ extension ValueTypeProps on ValueType {
     ValueType.julianDate         => true,
     ValueType.modifiedJulianDate => true,
     ValueType.swatchBeats        => true,
+    ValueType.binaryClockString  => false,
+    ValueType.binaryClockColumns => false,
+    ValueType.binaryClockBcd     => false,
     ValueType.doomsdayClock      => true,
   };
 }

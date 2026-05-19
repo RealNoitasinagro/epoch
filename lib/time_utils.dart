@@ -144,9 +144,9 @@ class TimeUtils {
     String toBin(int n, int width) =>
         n.toRadixString(2).padLeft(width, '0');
     return (
-    hours:   toBin(dt.hour,   5),
-    minutes: toBin(dt.minute, 6),
-    seconds: toBin(dt.second, 6),
+      hours:   toBin(dt.hour,   5),
+      minutes: toBin(dt.minute, 6),
+      seconds: toBin(dt.second, 6),
     );
   }
 

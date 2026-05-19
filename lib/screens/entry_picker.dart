@@ -61,8 +61,8 @@ class _EntryPickerState extends State<_EntryPicker> {
     ValueType.tai                => l10n.valueTypeTai,
     ValueType.gps                => l10n.valueTypeGps,
     ValueType.gmst               => l10n.valueTypeGmst,
-    ValueType.julianDate         => l10n.valueTypeJd,
-    ValueType.modifiedJulianDate => l10n.valueTypeMjd,
+    ValueType.julianDate         => l10n.valueTypeJulianDate,
+    ValueType.modifiedJulianDate => l10n.valueTypeModifiedJulianDate,
     ValueType.swatchBeats        => l10n.valueTypeSwatchBeats,
     ValueType.doomsdayClock      => l10n.valueTypeDoomsdayClock,
   };

@@ -70,16 +70,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configurable tab.\nUse the edit mode to add values.';
 
   @override
-  String get infoBinaryClock =>
-      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
-
-  @override
   String get infoBinaryClockBcd =>
       'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
 
   @override
+  String get infoBinaryClockColumns =>
+      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
+
+  @override
   String get infoBinaryClockString =>
       'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
+
+  @override
+  String get infoDate => 'The current calendar date in the selected timezone.';
 
   @override
   String get infoDateTime =>
@@ -87,45 +90,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoDayPercent =>
-      'Percentage of the day in the selected timezone. Resets to 0 at midnight.';
+      'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoDaySecond =>
       'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
 
   @override
-  String get infoDoomsday =>
+  String get infoDoomsdayClock =>
       'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
 
   @override
   String get infoGmst =>
-      'Greenwich Mean Sidereal Time – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.';
+      'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.';
 
   @override
   String get infoGps =>
       'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC.';
 
   @override
-  String get infoJd =>
-      'Julian Date counts days since noon on January 1, 4713 BC. The standard time reference in astronomy for calculating intervals between events.';
+  String get infoJulianDate =>
+      'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.';
 
   @override
-  String get infoLinkDoomsday => 'https://thebulletin.org/doomsday-clock/';
+  String get infoLinkBinaryClockBcd =>
+      'https://en.wikipedia.org/wiki/Binary_clock';
+
+  @override
+  String get infoLinkBinaryClockColumns =>
+      'https://en.wikipedia.org/wiki/Binary_clock';
+
+  @override
+  String get infoLinkBinaryClockString =>
+      'https://en.wikipedia.org/wiki/Binary_clock';
+
+  @override
+  String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
 
   @override
   String get infoLinkGmst => 'https://en.wikipedia.org/wiki/Sidereal_time';
 
   @override
-  String get infoLinkGps => 'https://en.wikipedia.org/wiki/GPS_signals#Timing';
+  String get infoLinkGps =>
+      'https://en.wikipedia.org/wiki/GPS_time#Timekeeping';
 
   @override
-  String get infoLinkJd => 'https://en.wikipedia.org/wiki/Julian_day';
+  String get infoLinkJulianDate => 'https://en.wikipedia.org/wiki/Julian_day';
 
   @override
-  String get infoLinkMjd => 'https://en.wikipedia.org/wiki/Julian_day#Variants';
+  String get infoLinkModifiedJulianDate =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
-  String get infoLinkSwatch =>
+  String get infoLinkSwatchBeats =>
       'https://en.wikipedia.org/wiki/Swatch_Internet_Time';
 
   @override
@@ -136,27 +153,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
 
   @override
-  String get infoLocalDate =>
-      'The current calendar date in the selected timezone.';
+  String get infoModifiedJulianDate =>
+      'Modified Julian Date = JD − 2,400,000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
 
   @override
-  String get infoLocalTime => 'The current time in the selected timezone.';
-
-  @override
-  String get infoMjd =>
-      'Modified Julian Date = JD − 2400000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
-
-  @override
-  String get infoSwatch =>
+  String get infoSwatchBeats =>
       'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).';
 
   @override
   String get infoTai =>
-      'International Atomic Time (TAI) is based on atomic clocks and currently runs 37 seconds ahead of UTC.';
+      'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC.';
+
+  @override
+  String get infoTime => 'The current time in the selected timezone.';
 
   @override
   String get infoUnixSeconds =>
-      'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC. Does not count leap seconds.';
+      'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.';
 
   @override
   String get labelHours => 'HH';
@@ -321,10 +334,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeGps => 'GPS time (s)';
 
   @override
-  String get valueTypeJd => 'Julian Date';
+  String get valueTypeJulianDate => 'Julian Date';
 
   @override
-  String get valueTypeMjd => 'Modified Julian Date';
+  String get valueTypeModifiedJulianDate => 'Modified Julian Date';
 
   @override
   String get valueTypeSwatchBeats => 'Internet Time';
