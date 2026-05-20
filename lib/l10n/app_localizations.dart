@@ -476,6 +476,12 @@ abstract class AppLocalizations {
   /// **'Global Positioning System'**
   String get sectionGps;
 
+  /// No description provided for @sectionInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet Time'**
+  String get sectionInternet;
+
   /// No description provided for @sectionJulian.
   ///
   /// In en, this message translates to:
@@ -487,12 +493,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sidereal Time'**
   String get sectionSidereal;
-
-  /// No description provided for @sectionSwatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Swatch Internet Time'**
-  String get sectionSwatch;
 
   /// No description provided for @selectAll.
   ///
@@ -629,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @timezoneSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'City, country, abbreviation or offset (e.g. UTC+5:30)'**
+  /// **'City, country, zone or offset (e.g. UTC+5:30)'**
   String get timezoneSearchHint;
 
   /// No description provided for @valueTypeBinaryClockBcd.
@@ -707,7 +707,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Internet Time'**
+  /// **'Swatch Internet Time'**
   String get valueTypeSwatchBeats;
 
   /// No description provided for @valueTypeTai.

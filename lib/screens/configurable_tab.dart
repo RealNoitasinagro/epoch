@@ -150,6 +150,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       entry: entry,
       now: widget.now,
       locale: locale,
+      //infoLink: entry.localizedInfoLink(l10n),
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
     );

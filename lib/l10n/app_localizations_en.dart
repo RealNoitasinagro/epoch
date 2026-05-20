@@ -225,13 +225,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionGps => 'Global Positioning System';
 
   @override
+  String get sectionInternet => 'Internet Time';
+
+  @override
   String get sectionJulian => 'Julian Date';
 
   @override
   String get sectionSidereal => 'Sidereal Time';
-
-  @override
-  String get sectionSwatch => 'Swatch Internet Time';
 
   @override
   String get selectAll => 'Select all';
@@ -301,7 +301,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timezoneSearchHint =>
-      'City, country, abbreviation or offset (e.g. UTC+5:30)';
+      'City, country, zone or offset (e.g. UTC+5:30)';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
@@ -340,7 +340,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeModifiedJulianDate => 'Modified Julian Date';
 
   @override
-  String get valueTypeSwatchBeats => 'Internet Time';
+  String get valueTypeSwatchBeats => 'Swatch Internet Time';
 
   @override
   String get valueTypeTai => 'TAI (s)';

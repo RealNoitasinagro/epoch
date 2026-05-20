@@ -23,7 +23,7 @@ class CuriositiesTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(24.0),
       children: [
-        SectionHeader(label: l10n.sectionSwatch),
+        SectionHeader(label: l10n.sectionInternet),
         const SizedBox(height: 8),
         TimeStringRow(
           label: l10n.valueTypeSwatchBeats,
