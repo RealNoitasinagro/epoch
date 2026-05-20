@@ -107,7 +107,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC.';
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoJulianDate =>
@@ -163,7 +163,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTai =>
-      'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell 37 Sekunden vor UTC.';
+      'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';

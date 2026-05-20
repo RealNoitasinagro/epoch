@@ -47,4 +47,4 @@ app.*.map.json
 
 # Customization
 *~
-build_all.*
+build_all.log

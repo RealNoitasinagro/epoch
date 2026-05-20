@@ -1,0 +1,29 @@
+Epoch zeigt den aktuellen Zeitpunkt in einer Vielzahl von
+Zeitsystemen an – jede Sekunde aktualisiert, alles auf einen Blick.
+
+WAS EPOCH ANZEIGT
+
+- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent – für jede Zeitzone weltweit
+- Technisch: Unix-Zeit, Internationale Atomzeit (TAI), GPS-Zeit
+- Astronomisch: Greenwich Mean Sidereal Time, Julianisches Datum, Modifiziertes Julianisches Datum
+- Kurioses: Swatch-Internetzeit, drei Binäruhr-Varianten, Weltuntergangsuhr
+
+KONFIGURIERBAR
+
+Erstelle deine eigene Ansicht mit dem Watchlist-Tab – kombiniere
+beliebige Werte aus beliebigen Kategorien, in beliebiger Reihenfolge.
+Eigene Labels vergeben, per Drag-and-drop sortieren, per Wischgeste entfernen.
+
+NACHTMODUS FÜR ASTRONOMEN
+
+Der Nachtmodus zeigt roten Text auf schwarzem Hintergrund –
+schützt die Dunkeladaption deiner Augen beim Sternegucken.
+
+DATENSCHUTZ
+
+Keine Werbung. Keine Benachrichtigungen. Kein Tracking.
+Keine Analyse. Keine Netzwerkanfragen. Alle Einstellungen
+werden lokal auf deinem Gerät gespeichert.
+Keine besonderen Berechtigungen erforderlich.
+
+Verfügbar auf Englisch und Deutsch.
