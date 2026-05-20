@@ -205,8 +205,6 @@ class TimeEntry {
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
       case ValueType.doomsdayClock:
         return TimeUtils.doomsDayClockString(hourFormat24);
-      case ValueType.binaryClockColumns:
-      case ValueType.binaryClockBcd:
       default:
         break;
     }
@@ -271,6 +269,8 @@ class TimeEntry {
             .format(TimeUtils.dayPercent(dt));
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
+      case ValueType.binaryClockColumns:
+      case ValueType.binaryClockBcd:
       default:
         return '';
     }

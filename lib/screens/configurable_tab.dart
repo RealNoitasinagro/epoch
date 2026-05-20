@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
+import '../time_utils.dart';
 import '../widgets/binary_coded_decimal_clock.dart';
 import '../widgets/binary_columns_clock.dart';
 import '../widgets/time_entry_row.dart';
@@ -205,8 +206,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         localIanaZone: localIanaZone,
       );
 
-    final raw = displayValue; // already computed above
-    final split = ValueDisplay.split(raw);
+    final DateTime zonedNow = switch (entry.zone) {
+      ZoneLocal()                  => widget.now,
+      ZoneUtc()                    => widget.now.toUtc(),
+      ZoneNamed(ianaZone: final z) =>
+          TimeUtils.inZone(widget.now.toUtc(), z),
+    };
+
+    final split = ValueDisplay.split(displayValue);
 
     return Dismissible(
       key: ValueKey(entry.key),
@@ -229,8 +236,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         content: isGraphical
             ? GraphicValueContent(
           clock: entry.type == ValueType.binaryClockColumns
-              ? ColumnBinaryClock(now: widget.now, l10n: l10n)
-              : BcdBinaryClock(now: widget.now, l10n: l10n),
+              ? ColumnBinaryClock(now: zonedNow, l10n: l10n)
+              : BcdBinaryClock(now: zonedNow, l10n: l10n),
         )
             : TextValueContent(line1: split.line1, line2: split.line2),
         actionSlots: [

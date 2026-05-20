@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../models/time_entry.dart';
 import '../l10n/app_localizations.dart';
+import '../time_utils.dart';
 import 'time_string_row.dart';
 import 'value_tile.dart';
 import 'binary_columns_clock.dart';
@@ -74,6 +75,14 @@ class TimeEntryRow extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final String localIanaZone = EpochApp.of(context).localIanaZone;
 
+    // Resolve the correct DateTime for the entry's zone.
+    final DateTime zonedNow = switch (entry.zone) {
+      ZoneLocal()                    => now,
+      ZoneUtc()                      => now.toUtc(),
+      ZoneNamed(ianaZone: final z)   =>
+          TimeUtils.inZone(now.toUtc(), z),
+    };
+
     if (entry.type == ValueType.binaryClockColumns ||
         entry.type == ValueType.binaryClockBcd) {
       return ValueTile(
@@ -81,8 +90,8 @@ class TimeEntryRow extends StatelessWidget {
         height: ValueTile.graphicTileHeight,
         content: GraphicValueContent(
           clock: entry.type == ValueType.binaryClockColumns
-              ? ColumnBinaryClock(now: now, l10n: l10n)
-              : BcdBinaryClock(now: now, l10n: l10n),
+              ? ColumnBinaryClock(now: zonedNow, l10n: l10n)
+              : BcdBinaryClock(now: zonedNow, l10n: l10n),
         ),
         actionSlots: [
           IconButton(
