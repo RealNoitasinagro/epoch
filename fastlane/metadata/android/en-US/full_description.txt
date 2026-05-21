@@ -1,0 +1,28 @@
+Epoch displays the current moment across a wide range of time
+systems — updating every second, all in one place.
+
+WHAT EPOCH SHOWS YOU
+
+- Civil: date, time, day second, day percent — for any timezone worldwide
+- Technical: Unix time, International Atomic Time (TAI), GPS time
+- Astronomical: Greenwich Mean Sidereal Time, Julian Date, Modified Julian Date
+- Curiosities: Swatch Internet Time, three binary clock variants, Doomsday Clock
+
+CONFIGURABLE
+
+Build your own display with the Watchlist tab — combine any values
+from any category, in any order. Set custom labels, reorder by
+drag-and-drop, swipe to remove.
+
+DESIGNED FOR NIGHT USE
+
+Night mode displays red text on black — preserving your eyes'
+dark adaptation for stargazing.
+
+PRIVACY FIRST
+
+No ads. No notifications. No tracking. No analytics.
+No network requests. All settings stored locally on your device.
+No permissions required.
+
+Available in English and German.
