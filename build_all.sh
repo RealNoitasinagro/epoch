@@ -6,6 +6,7 @@ mode=$1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
 flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
+flutter_version=`$flutter_active --version | grep channel`
 
 apk_output_path='build/app/outputs/flutter-apk/app-release.apk'
 destination_path='/media/linux/'
@@ -41,6 +42,7 @@ fi
 
 echo "All builds done."
 echo -e "Last full build: $build_timestamp\nFlutter: $flutter_active\nmode: $mode" > $build_all_log
+echo -e "Flutter version: $flutter_version" >> $build_all_log
 echo
 
 # overwrite is fine (mostly), but only if all builds succeed
