@@ -1,3 +1,5 @@
+import java.util.Properties
+import java.io.FileInputStream
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 
 plugins {
@@ -34,6 +36,21 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreProperties = Properties()
+            val keystoreFile = rootProject.file("key.properties")
+            if (keystoreFile.exists()) {
+                //keystoreFile.inputStream().use { keystoreProperties.load(it) }
+                keystoreProperties.load(FileInputStream(keystoreFile))
+            }
+            keyAlias = keystoreProperties["keyAlias"] as String? ?: ""
+            keyPassword = keystoreProperties["keyPassword"] as String? ?: ""
+            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+            storePassword = keystoreProperties["storePassword"] as String? ?: ""
+        }
+    }
+
     // ABI split for F-Droid
     splits {
         abi {
@@ -59,7 +76,8 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // DONE. Was: "debug"
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }

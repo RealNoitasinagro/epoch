@@ -23,20 +23,20 @@ echo "----"
 echo
 
 echo "# apk"
-$flutter_active build apk --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+$flutter_active build apk --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 echo
 
 echo "# web"
-$flutter_active build web --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+$flutter_active build web --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 echo
 
 echo "# linux"
-$flutter_active build linux --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+$flutter_active build linux --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 echo
 
 if [ "$mode" == "split" ] ; then
   echo "# apk (--split-per-abi)"
-  $flutter_active build apk --dart-define=BUILD_TIMESTAMP="$build_timestamp" --split-per-abi
+  $flutter_active build apk --release --dart-define=BUILD_TIMESTAMP="$build_timestamp" --split-per-abi
   echo
 fi
 
