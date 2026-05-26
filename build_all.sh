@@ -6,13 +6,13 @@ mode=$1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
 flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
-flutter_version=`$flutter_active --version | grep channel`
+flutter_version=`$flutter_active --version`
 
 apk_output_path='build/app/outputs/flutter-apk/app-release.apk'
 destination_path='/media/linux/'
 
-build_all_log='build_all.log'
-build_timestamp=$(date -u '+%Y-%m-%d %H:%M:%S %Z')
+build_timestamp=$(date -u '+%Y%m%d_%H%M%S_%Z')
+build_all_log="build_all_$build_timestamp.log"
 
 rm -rf $build_all_log
 
