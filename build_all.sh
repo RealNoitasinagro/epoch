@@ -18,7 +18,8 @@ flutter_version=`$flutter_active --version`
 apk_output_path='build/app/outputs/flutter-apk'
 apk_universal='app-release.apk'
 destination_path='/media/linux/'
-checksum='/usr/bin/md5sum'
+cwd=$(pwd)
+checksum='/usr/bin/sha256sum'
 build_timestamp=$(date -u '+%Y%m%d_%H%M%S_%Z')
 dir_logs='.logs'
 build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
@@ -30,12 +31,13 @@ echo "----"
 echo "[$build_timestamp] Building apk, web, linux..."
 echo "Flutter: $flutter_active"
 echo "Logfile: $build_all_log"
+echo "Repo: $cwd"
 echo "----"
 echo
 
 echo "# apk"
 if [ ! "$skipApk" -eq "1" ] ; then
-    $flutter_active build apk --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+    $flutter_active build apk --release # --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 else
     echo "Skipped."
 fi
@@ -43,7 +45,7 @@ echo
 
 echo "# web"
 if [ ! "$skipWeb" -eq "1" ] ; then
-    $flutter_active build web --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+    $flutter_active build web --release # --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 else
     echo "Skipped."
 fi
@@ -51,7 +53,7 @@ echo
 
 echo "# linux"
 if [ ! "$skipLinux" -eq "1" ] ; then
-    $flutter_active build linux --release --dart-define=BUILD_TIMESTAMP="$build_timestamp"
+    $flutter_active build linux --release # --dart-define=BUILD_TIMESTAMP="$build_timestamp"
 else
     echo "Skipped."
 fi
@@ -59,7 +61,7 @@ echo
 
 if [[ ! "$skipSplit" -eq "1" || "$mode" == "split" ]] ; then
     echo "# apk (--split-per-abi)"
-    $flutter_active build apk --release --dart-define=BUILD_TIMESTAMP="$build_timestamp" --split-per-abi
+    $flutter_active build apk --release --split-per-abi # --dart-define=BUILD_TIMESTAMP="$build_timestamp"
     echo
 fi
 
@@ -71,6 +73,7 @@ echo
 
 echo "# Calculating $checksum checksums..."
 if [ ! "$skipChecksums" -eq "1" ] ; then
+    echo "Repo: $cwd" >> $build_all_log
     for f in $apk_output_path/*.apk ; do
         $checksum $f | tee -a $build_all_log
     done
