@@ -1,3 +1,12 @@
+[![GitHub Release](https://img.shields.io/github/v/release/RealNoitasinagro/epoch?logo=github)](https://github.com/RealNoitasinagro/epoch/releases/latest)
+[![F-Droid](https://img.shields.io/f-droid/v/io.github.RealEarthling.epoch?logo=fdroid)](https://f-droid.org/packages/io.github.RealEarthling.epoch/)
+[![Reproducible Build](https://img.shields.io/badge/reproducible%20build-yes-brightgreen?logo=android)](https://f-droid.org/docs/Reproducible_Builds/)
+[![GPLv3+](https://img.shields.io/badge/license-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![Android](https://img.shields.io/badge/platform-Android-green?logo=android)](https://f-droid.org/packages/io.github.RealEarthling.epoch/)
+[![Flutter](https://img.shields.io/badge/built%20with-Flutter-blue?logo=flutter)](https://flutter.dev)
+
+---
+
 # Epoch
 
 > *A time display app for nerds and amateur astronomers.*
@@ -22,8 +31,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
 
 ### Configurable display
-- Fully customisable tabs (*Watchlist*) — any values from any category, in any order, 
-  plus custom tab labels
+- Fully customisable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Drag-and-drop reordering, swipe to remove
@@ -54,6 +62,8 @@ Epoch shows you 16 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 It is built for people who are curious about how time actually works.
 
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
+
 ---
 
 ## Contributing
@@ -64,5 +74,7 @@ Found a bug or have a feature request?
 ---
 
 ## License
+
+[![GPLv3+](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html.en) © 2026 RealEarthling
