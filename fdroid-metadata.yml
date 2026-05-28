@@ -10,8 +10,6 @@ AutoName: Epoch
 
 RepoType: git
 Repo: https://github.com/RealNoitasinagro/epoch
-Binaries: 
-  https://github.com/RealNoitasinagro/epoch/releases/download/v%v/app-arm64-v8a-release.apk
 
 Builds:
   - versionName: 1.0.0
