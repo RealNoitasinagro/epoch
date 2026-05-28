@@ -77,6 +77,8 @@ if [ ! "$skipChecksums" -eq "1" ] ; then
     for f in $apk_output_path/*.apk ; do
         $checksum $f | tee -a $build_all_log
     done
+    echo | tee -a $build_all_log
+    ls -l $apk_output_path | tee -a $build_all_log
 else
     echo "Skipped."
 fi
