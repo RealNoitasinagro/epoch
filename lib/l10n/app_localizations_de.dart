@@ -155,7 +155,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoModifiedJulianDate =>
-      'Modifiziertes Julianisches Datum = JD − 2.400.000,5. Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.';
+      'Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Häufig in der Satellitentechnik und Pulsarastronomie verwendet.';
 
   @override
   String get infoSwatchBeats =>

@@ -347,7 +347,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date = JD − 2,400,000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
+  /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
   String get infoModifiedJulianDate;
 
   /// No description provided for @infoSwatchBeats.

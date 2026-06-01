@@ -154,7 +154,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoModifiedJulianDate =>
-      'Modified Julian Date = JD − 2,400,000.5. Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
+      'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
 
   @override
   String get infoSwatchBeats =>
