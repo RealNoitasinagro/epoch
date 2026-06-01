@@ -116,7 +116,7 @@ class TimeUtils {
     final y = utc.year;
     final mo = utc.month;
     final d = utc.day +
-        (utc.hour + utc.minute / 60.0 + utc.second / 3600.0) / 24.0;
+        (utc.hour + utc.minute / 60.0 + utc.second / 3600.0 - 12.0) / 24.0;
     final a = ((14 - mo) / 12).floor();
     final yy = y + 4800 - a;
     final mm = mo + 12 * a - 3;
