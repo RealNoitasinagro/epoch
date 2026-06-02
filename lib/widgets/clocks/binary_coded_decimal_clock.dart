@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
-import '../time_utils.dart';
+import '../../l10n/app_localizations.dart';
+import '../../time_utils.dart';
 
 // BCD-style: two columns per unit (tens digit, units digit).
-class BcdBinaryClock extends StatelessWidget {
+class BinaryCodedDecimalClock extends StatelessWidget {
   final DateTime now;
   final AppLocalizations l10n;
-  const BcdBinaryClock({super.key, required this.now, required this.l10n});
+  const BinaryCodedDecimalClock({super.key, required this.now, required this.l10n});
 
   @override
   Widget build(BuildContext context) {

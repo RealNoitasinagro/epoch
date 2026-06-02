@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
-import '../models/time_entry.dart';
+import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_entry_row.dart';
@@ -36,7 +36,7 @@ class CuriositiesTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionBinaryClock),
         const SizedBox(height: 8),
         TimeEntryRow(
-          entry: const TimeEntry(
+          entry: const TimeValue(
               type: ValueType.binaryClockColumns, zone: ZoneLocal()),
           now: now,
           locale: locale,
@@ -44,7 +44,7 @@ class CuriositiesTab extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         TimeEntryRow(
-          entry: const TimeEntry(
+          entry: const TimeValue(
               type: ValueType.binaryClockBcd, zone: ZoneLocal()),
           now: now,
           infoLink: l10n.infoLinkBinaryClockBcd,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/time_entry.dart';
+import '../models/time_value.dart';
 import 'configurable_tab.dart';
 
 // Civil tab: configurable but restricted to civil value types.
@@ -16,8 +16,8 @@ class CivilTab extends StatelessWidget {
   final DateTime now;
   final bool thousandsSep;
   final bool hourFormat24;
-  final List<TimeEntry> entries;
-  final ValueChanged<List<TimeEntry>> onEntriesChanged;
+  final List<TimeValue> entries;
+  final ValueChanged<List<TimeValue>> onEntriesChanged;
 
   const CivilTab({
     super.key,

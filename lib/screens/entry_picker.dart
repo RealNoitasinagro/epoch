@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../models/time_entry.dart';
+import '../models/time_value.dart';
 import '../l10n/app_localizations.dart';
 import 'timezone_search_screen.dart';
 
 // Displays a two-step dialog: value type → timezone (if zone-dependent).
 // [allowedTypes] restricts which types are shown; null means all types.
-Future<TimeEntry?> showEntryPicker(
+Future<TimeValue?> showEntryPicker(
     BuildContext context, {
       List<ValueType>? allowedTypes,
-      List<TimeEntry> existingEntries = const [],
+      List<TimeValue> existingEntries = const [],
     }) {
-  return showDialog<TimeEntry>(
+  return showDialog<TimeValue>(
     context: context,
     builder: (ctx) => _EntryPicker(
       allowedTypes: allowedTypes,
@@ -21,7 +21,7 @@ Future<TimeEntry?> showEntryPicker(
 
 class _EntryPicker extends StatefulWidget {
   final List<ValueType>? allowedTypes;
-  final List<TimeEntry> existingEntries;
+  final List<TimeValue> existingEntries;
 
   const _EntryPicker({
     this.allowedTypes,
@@ -69,7 +69,7 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   void _selectType(ValueType t) {
     if (t.isZoneIndependent) {
-      Navigator.pop(context, TimeEntry(type: t, zone: const ZoneUtc()));
+      Navigator.pop(context, TimeValue(type: t, zone: const ZoneUtc()));
     } else {
       setState(() {
         _type = t;
@@ -86,7 +86,7 @@ class _EntryPickerState extends State<_EntryPicker> {
   }
 
   void _confirm(ZoneSpec zone) {
-    Navigator.pop(context, TimeEntry(type: _type!, zone: zone));
+    Navigator.pop(context, TimeValue(type: _type!, zone: zone));
   }
 
   @override

@@ -40,12 +40,12 @@ class ZoneNamed extends ZoneSpec {
 }
 
 // A single displayable entry: type + zone + optional custom label.
-class TimeEntry {
+class TimeValue {
   final ValueType type;
   final ZoneSpec zone;
   final String? customLabel;
 
-  const TimeEntry({
+  const TimeValue({
     required this.type,
     required this.zone,
     this.customLabel,
@@ -66,7 +66,7 @@ class TimeEntry {
   String toPrefsString() =>
       customLabel != null ? '$key|$customLabel' : key;
 
-  static TimeEntry? fromPrefsString(String s) {
+  static TimeValue? fromPrefsString(String s) {
     // Split off optional custom label.
     final pipeIdx = s.indexOf('|');
     final keyPart   = pipeIdx >= 0 ? s.substring(0, pipeIdx) : s;
@@ -88,12 +88,12 @@ class TimeEntry {
     } else {
       return null;
     }
-    return TimeEntry(type: type, zone: zone, customLabel: labelPart);
+    return TimeValue(type: type, zone: zone, customLabel: labelPart);
   }
 
   // Returns a copy with a different custom label (null to clear).
-  TimeEntry withLabel(String? label) =>
-      TimeEntry(type: type, zone: zone, customLabel: label);
+  TimeValue withLabel(String? label) =>
+      TimeValue(type: type, zone: zone, customLabel: label);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => type.isZoneIndependent;
@@ -131,7 +131,7 @@ class TimeEntry {
   };
 
   // Localized info text.
-  String localizedInfo(AppLocalizations l10n) => switch (type) {
+  String localizedInfoText(AppLocalizations l10n) => switch (type) {
     ValueType.date               => l10n.infoDate,
     ValueType.time               => l10n.infoTime,
     ValueType.dateTime           => l10n.infoDateTime,
@@ -289,12 +289,12 @@ class TimeEntry {
 
 // Default entries for the Civil tab.
 const defaultCivilEntries = [
-  TimeEntry(type: ValueType.date,       zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,       zone: ZoneLocal()),
-  TimeEntry(type: ValueType.daySecond,  zone: ZoneLocal()),
-  TimeEntry(type: ValueType.dayPercent, zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,       zone: ZoneUtc()),
-  TimeEntry(type: ValueType.daySecond,  zone: ZoneUtc()),
+  TimeValue(type: ValueType.date,       zone: ZoneLocal()),
+  TimeValue(type: ValueType.time,       zone: ZoneLocal()),
+  TimeValue(type: ValueType.daySecond,  zone: ZoneLocal()),
+  TimeValue(type: ValueType.dayPercent, zone: ZoneLocal()),
+  TimeValue(type: ValueType.time,       zone: ZoneUtc()),
+  TimeValue(type: ValueType.daySecond,  zone: ZoneUtc()),
 ];
 
 extension ValueTypeProps on ValueType {

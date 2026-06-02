@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'time_entry.dart';
+import 'time_value.dart';
 
 const _kCustomTabsKey = 'custom_tabs';
 const int maxCustomTabs = 3;
@@ -7,7 +7,7 @@ const int maxCustomTabs = 3;
 class CustomTabData {
   final String id;
   String name;
-  List<TimeEntry> entries;
+  List<TimeValue> entries;
 
   CustomTabData({
     required this.id,
@@ -28,8 +28,8 @@ class CustomTabData {
     final name = parts[1];
     final entries = parts
         .sublist(2)
-        .map(TimeEntry.fromPrefsString)
-        .whereType<TimeEntry>()
+        .map(TimeValue.fromPrefsString)
+        .whereType<TimeValue>()
         .toList();
     return CustomTabData(id: id, name: name, entries: entries);
   }

@@ -9,7 +9,7 @@ import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
-import 'models/time_entry.dart';
+import 'models/time_value.dart';
 import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/curiosities_tab.dart';
@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TimeEntry> _civilEntries = [];
+  List<TimeValue> _civilEntries = [];
   List<CustomTabData> _customTabs = [];
   bool _loaded = false;
   bool _isFullscreen = false;
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
-  void _onCivilChanged(List<TimeEntry> entries) {
+  void _onCivilChanged(List<TimeValue> entries) {
     setState(() => _civilEntries = entries);
     saveCivilEntries(entries);
   }
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TimeEntry> entries) {
+  void _onCustomTabEntriesChanged(String id, List<TimeValue> entries) {
     final tab = _customTabs.firstWhere((t) => t.id == id);
     tab.entries = entries;
     saveCustomTabs(_customTabs);

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
-import '../models/time_entry.dart';
+import '../models/time_value.dart';
 import '../l10n/app_localizations.dart';
 import '../time_utils.dart';
 import 'time_string_row.dart';
 import 'value_tile.dart';
-import 'binary_columns_clock.dart';
-import 'binary_coded_decimal_clock.dart';
+import 'clocks/binary_columns_clock.dart';
+import 'clocks/binary_coded_decimal_clock.dart';
 
 // Renders a TimeEntry as a display row – text value or graphical widget.
 // Used by ConfigurableTab and CuriositiesTab.
 class TimeEntryRow extends StatelessWidget {
-  final TimeEntry entry;
+  final TimeValue entry;
   final DateTime now;
   final String locale;
   final bool hourFormat24;
@@ -40,7 +40,7 @@ class TimeEntryRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(entry.localizedInfo(l10n)),
+            Text(entry.localizedInfoText(l10n)),
             if (link != null) ...[
               const SizedBox(height: 12),
               InkWell(
@@ -90,8 +90,8 @@ class TimeEntryRow extends StatelessWidget {
         height: ValueTile.graphicTileHeight,
         content: GraphicValueContent(
           clock: entry.type == ValueType.binaryClockColumns
-              ? ColumnBinaryClock(now: zonedNow, l10n: l10n)
-              : BcdBinaryClock(now: zonedNow, l10n: l10n),
+              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
+              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
         ),
         actionSlots: [
           IconButton(
@@ -116,7 +116,7 @@ class TimeEntryRow extends StatelessWidget {
         thousandsSep: thousandsSep,
         localIanaZone: localIanaZone,
       ),
-      info: entry.localizedInfo(l10n),
+      info: entry.localizedInfoText(l10n),
       infoLink: infoLink ?? entry.localizedInfoLink(l10n),
       useThousands: entry.useThousands && thousandsSep,
     );
