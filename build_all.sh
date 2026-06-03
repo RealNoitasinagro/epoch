@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# typical uses:
+# $GH_Epoch: apk, web, linux, most, (all)
+# $GL_Epoch: all, (abisplit)
+
 set -e
 
 cwd=$(pwd)
@@ -12,17 +16,17 @@ case $cwd in
         export PUB_CACHE=$GL_Epoch/.pub-cache
     ;;
     *)
-        echo "Invalid directory!!";
+        echo "Invalid directory! (Run from the right location, and/or check env variables.)";
         exit 1
 esac
 
-what=$1  # apk, web, linux, abisplit, most, all, fdroid
+what=$1  # apk, web, linux, abisplit, most, all
 mode=${2:-release};
 dryRun=${DRY_RUN:-0}
 
 if [[ ! ( "$what" == "apk" || "$what" == "web" || "$what" == "linux" || "$what" == "abisplit" ||
-          "$what" == "most" || "$what" == "all" || "$what" == "fdroid" ) ]] ; then
-    echo "Invalid variant '$what' (must be 'apk', 'web', 'linux', 'abisplit', 'most', 'all' or 'fdroid')"
+          "$what" == "most" || "$what" == "all" ) ]] ; then
+    echo "Invalid variant '$what' (must be 'apk', 'web', 'linux', 'abisplit', 'most' or 'all')"
     exit 1
 fi
 
@@ -62,7 +66,7 @@ case "$what" in
         skipLinux=0
         skipSplit=1
     ;;
-    *)  # all or fdroid
+    *)  # all
         skipApk=0
         skipWeb=0
         skipLinux=0
@@ -73,15 +77,19 @@ esac
 
 # +++ CONFIGURATION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 skipChecksums=0
-skipCopy=1
+skipCopy=0
 useLogging=1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
 flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
 flutter_version=`$flutter_active --version`
 
+target_platform_android_arm='app-armeabi-v7a-release.apk'
+target_platform_android_arm64='app-arm64-v8a-release.apk'
+target_platform_android_x64='app-x86_64-release.apk'
+target_platform_android_all='app-release.apk'
 apk_output_path='build/app/outputs/flutter-apk'
-destination_path='/media/linux/'
+destination_path='/media/linux'
 checksum='/usr/bin/sha256sum'
 build_timestamp=$(date -u '+%Y%m%d_%H%M%S_%Z')
 dir_logs='.logs'
@@ -92,13 +100,12 @@ build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
 function run_flutter {
     local _variant=$1
     local flutter_command="$flutter_active build $_variant --$mode"
-    if [ "$what" != "fdroid" ] ; then
+    if [ "$cwd" == "$GH_Epoch" ] ; then  # no build timestamps in $GL_Epoch
         flutter_command="$flutter_command --dart-define=BUILD_TIMESTAMP=$build_timestamp"
     fi
 
-    if [ "$dryRun" -eq "1" ] ; then
-        echo "$flutter_command"  # dry-run
-    else
+    echo "# $flutter_command" | tee -a $build_all_log
+    if [ ! "$dryRun" -eq "1" ] ; then
         $flutter_command
     fi
 }
@@ -151,7 +158,7 @@ fi
 echo
 
 echo "+++ All builds done. +++"
-echo
+echo | tee -a $build_all_log
 
 echo "# Calculating $checksum checksums..."
 if [ ! "$skipChecksums" -eq "1" ] ; then
@@ -175,7 +182,7 @@ if [ ! "$skipCopy" -eq "1" ] ; then
 fi
 
 if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
-      ( "$cwd" != "$GL_Epoch" && "$what" == "fdroid" && "$dryRun" -eq "0" ) ]] ; then
+      ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
     tee -a $build_all_log << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Output *.apk files were not built properly for a release, do NOT upload to GitHub!!"
@@ -186,7 +193,7 @@ if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
 EOF
 fi
 
-if [[ "$cwd" == "$GL_Epoch" && "$what" == "fdroid" && "$mode" == "release" &&
+if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
     tee -a $build_all_log << EOF
 ***** INFO *****************************************************************************************
@@ -194,6 +201,11 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "fdroid" && "$mode" == "release" &&
 ****************************************************************************************************
 
 EOF
+    rm -v -f $destination_path/*.apk
+    cp -v $apk_output_path/${target_platform_android_arm} $destination_path
+    cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
+    cp -v $apk_output_path/${target_platform_android_x64} $destination_path
+    cp -v $apk_output_path/${target_platform_android_all} $destination_path
 fi
 
 if [ ! "$useLogging" -eq "1" ] ; then
