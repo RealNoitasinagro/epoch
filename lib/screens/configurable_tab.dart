@@ -213,7 +213,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           TimeUtils.inZone(widget.now.toUtc(), z),
     };
 
-    final split = ValueDisplay.split(displayValue);
+    final split = StringValueDisplay.splitZoneOffset(displayValue);
 
     return Dismissible(
       key: ValueKey(entry.key),

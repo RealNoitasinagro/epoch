@@ -84,7 +84,7 @@ class TimeStringRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final display = _displayValue(context);
-    final split = ValueDisplay.split(display);
+    final split = StringValueDisplay.splitZoneOffset(display);
 
     return ValueTile(
       label: label,
@@ -111,13 +111,13 @@ class TimeStringRow extends StatelessWidget {
 // Three-layer tile: outer tile (solid bg) > inner text field (darker bg) > text.
 // Label sits inside the tile above the text field.
 // Action buttons sit inside the tile, vertically centered to the text field.
-class ValueDisplay extends StatelessWidget {
+class StringValueDisplay extends StatelessWidget {
   final String label;
   final String line1;
   final String line2;
   final List<Widget> actions;
 
-  const ValueDisplay({
+  const StringValueDisplay({
     super.key,
     required this.label,
     required this.line1,
@@ -125,14 +125,14 @@ class ValueDisplay extends StatelessWidget {
     this.actions = const [],
   });
 
-  static ({String line1, String line2}) split(String value) {
+  static ({String line1, String line2}) splitZoneOffset(String value) {
     final match = RegExp(
       r'\b\w+\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (
-    line1: value.substring(0, match.start).trim(),
-    line2: match.group(0)!,
+      line1: value.substring(0, match.start).trim(),
+      line2: match.group(0)!,
     );
   }
 
