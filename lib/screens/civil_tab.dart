@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
 import 'configurable_tab.dart';
-
-// Civil tab: configurable but restricted to civil value types.
-// All zone-dependent civil types are allowed; zone selection is unrestricted.
-const _civilTypes = [
-  ValueType.date,
-  ValueType.time,
-  ValueType.dateTime,
-  ValueType.daySecond,
-  ValueType.dayPercent,
-];
 
 class CivilTab extends StatelessWidget {
   final DateTime now;
@@ -36,7 +27,7 @@ class CivilTab extends StatelessWidget {
       onEntriesChanged: onEntriesChanged,
       thousandsSep: thousandsSep,
       hourFormat24: hourFormat24,
-      allowedTypes: _civilTypes,
+      allowedTypes: civilTypes,
     );
   }
 }

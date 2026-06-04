@@ -45,7 +45,8 @@ class TimeUtils {
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
-  static String formatDate(String locale, DateTime dt) => DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+  static String formatDate(String locale, DateTime dt) =>
+      DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
 
   /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
   static String formatTime12h(int hh, String mm, String ss, String? tzSuffix) {
@@ -189,5 +190,23 @@ class TimeUtils {
     return !hourFormat24
         ? formatTime12h(hh, '$mm', '$ss', null)
         : '$hh:$mm:$ss';
+  }
+
+  /// Returns a double formatted to a given number of decimal digits.
+  static String formatDecimal(
+      double value, String locale, int decimals, {
+        bool thousandsSep = true,
+      }) {
+    final fmt = thousandsSep
+        ? NumberFormat.decimalPatternDigits(
+        locale: locale, decimalDigits: decimals)
+        : NumberFormat.decimalPatternDigits(
+        locale: locale, decimalDigits: decimals)
+      ..minimumFractionDigits = decimals;
+    if (!thousandsSep) {
+      return value.toStringAsFixed(decimals);
+    }
+    return NumberFormat.decimalPatternDigits(
+        locale: locale, decimalDigits: decimals).format(value);
   }
 }

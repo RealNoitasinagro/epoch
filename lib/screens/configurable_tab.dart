@@ -2,11 +2,13 @@ import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
+import '../time_value_formatter.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
 import '../widgets/clocks/binary_columns_clock.dart';
-import '../widgets/time_entry_row.dart';
+import '../widgets/time_graphical_row.dart';
 import '../widgets/value_tile.dart';
 import 'entry_picker.dart';
 
@@ -146,12 +148,18 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
-    return TimeEntryRow(
+    if (entry.type.isGraphical) {
+      return TimeGraphicalRow(
+        key: ValueKey(entry.key),
+        timeValue: entry,
+        now: widget.now,
+      );
+    }
+    return TimeStringRow(
       key: ValueKey(entry.key),
-      entry: entry,
+      timeValue: entry,
       now: widget.now,
       locale: locale,
-      //infoLink: entry.localizedInfoLink(l10n),
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
     );
@@ -188,32 +196,27 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
-    String localIanaZone = EpochApp.of(context).localIanaZone;
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final isGraphical = entry.type.isGraphical;
 
-    bool isGraphical =
-      entry.type == ValueType.binaryClockColumns ||
-      entry.type == ValueType.binaryClockBcd
-      ? true
-      : false;
-    final displayValue =
-      isGraphical
-      ? '[${l10n.binaryClockPlaceholder}]'
-      : entry.computeValue(
-        widget.now,
-        locale,
-        hourFormat24: widget.hourFormat24,
-        thousandsSep: widget.thousandsSep,
-        localIanaZone: localIanaZone,
-      );
+    final displayValue = isGraphical
+        ? '[${l10n.binaryClockPlaceholder}]'
+        : TimeValueFormatter.compute(
+      entry,
+      widget.now,
+      locale,
+      hourFormat24: widget.hourFormat24,
+      thousandsSep: widget.thousandsSep,
+      localIanaZone: localIanaZone,
+    );
 
-    final DateTime zonedNow = switch (entry.zone) {
+    final zonedNow = switch (entry.zone) {
       ZoneLocal()                  => widget.now,
       ZoneUtc()                    => widget.now.toUtc(),
-      ZoneNamed(ianaZone: final z) =>
-          TimeUtils.inZone(widget.now.toUtc(), z),
+      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
     };
 
-    final split = StringValueDisplay.splitZoneOffset(displayValue);
+    final split = TimeStringRow.splitZoneOffset(displayValue);
 
     return Dismissible(
       key: ValueKey(entry.key),

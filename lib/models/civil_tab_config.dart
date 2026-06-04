@@ -3,6 +3,16 @@ import 'time_value.dart';
 
 const _kCivilTabKey = 'civil_tab_entries';
 
+// Civil tab: configurable but restricted to civil value types.
+// All zone-dependent civil types are allowed; zone selection is unrestricted.
+const civilTypes = [
+  ValueType.date,
+  ValueType.time,
+  ValueType.dateTime,
+  ValueType.daySecond,
+  ValueType.dayPercent,
+];
+
 // Default entries for the Civil tab.
 const defaultCivilEntries = [
   TimeValue(type: ValueType.date,       zone: ZoneLocal()),

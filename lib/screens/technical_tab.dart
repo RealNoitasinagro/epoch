@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
-import '../time_utils.dart';
+import '../models/time_value.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_string_row.dart';
 
@@ -13,10 +13,7 @@ class TechnicalTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final utcNow = now.toUtc();
-    final unix = TimeUtils.unixTimestamp(utcNow);
-    final gps = TimeUtils.gpsTime(utcNow);
-    final tai = TimeUtils.taiSeconds(utcNow);
+    final locale = Localizations.localeOf(context).toString();
 
     return ListView(
       padding: const EdgeInsets.all(24.0),
@@ -24,31 +21,29 @@ class TechnicalTab extends StatelessWidget {
         SectionHeader(label: l10n.sectionEpoch),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.valueTypeUnixSeconds,
-          value: unix.toString(),
-          useThousands: thousandsSep,
-          info: l10n.infoUnixSeconds,
-          infoLink: l10n.infoLinkUnixSeconds,
+          timeValue: const TimeValue(
+              type: ValueType.unixSeconds, zone: ZoneUtc()),
+          now: now,
+          locale: locale,
+          thousandsSep: thousandsSep,
         ),
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionAtomic),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.valueTypeTai,
-          value: tai.toString(),
-          useThousands: thousandsSep,
-          info: l10n.infoTai,
-          infoLink: l10n.infoLinkTai,
+          timeValue: const TimeValue(type: ValueType.tai, zone: ZoneUtc()),
+          now: now,
+          locale: locale,
+          thousandsSep: thousandsSep,
         ),
         const Divider(height: 40),
         SectionHeader(label: l10n.sectionGps),
         const SizedBox(height: 8),
         TimeStringRow(
-          label: l10n.valueTypeGps,
-          value: gps.toString(),
-          useThousands: thousandsSep,
-          info: l10n.infoGps,
-          infoLink: l10n.infoLinkGps,
+          timeValue: const TimeValue(type: ValueType.gps, zone: ZoneUtc()),
+          now: now,
+          locale: locale,
+          thousandsSep: thousandsSep,
         ),
       ],
     );
