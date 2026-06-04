@@ -1,8 +1,7 @@
 Categories:
   - Clock
-  - Science & Education
-  - Time
 License: GPL-3.0-or-later
+AuthorName: RealEarthling
 SourceCode: https://github.com/RealNoitasinagro/epoch
 IssueTracker: https://github.com/RealNoitasinagro/epoch/issues
 
@@ -28,7 +27,7 @@ Builds:
       - flutterVersion=$(grep Flutter .flutter-version | cut -d ' ' -f 2)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
@@ -51,7 +50,7 @@ Builds:
       - flutterVersion=$(grep Flutter .flutter-version | cut -d ' ' -f 2)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
@@ -74,7 +73,7 @@ Builds:
       - flutterVersion=$(grep Flutter .flutter-version | cut -d ' ' -f 2)
       - git -C $$flutter$$ checkout -f $flutterVersion
       - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter pub get --enforce-lockfile
     scandelete:
       - .pub-cache
     build:
