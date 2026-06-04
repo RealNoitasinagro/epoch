@@ -161,7 +161,7 @@ echo "+++ All builds done. +++"
 echo | tee -a $build_all_log
 
 echo "# Calculating $checksum checksums..."
-if [ ! "$skipChecksums" -eq "1" ] ; then
+if [[ ! "$skipChecksums" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
     for f in $apk_output_path/*.apk ; do
         $checksum $f | tee -a $build_all_log
     done
@@ -174,9 +174,9 @@ echo "# Listing output files..."
 ls -l $apk_output_path | tee -a $build_all_log
 echo | tee -a $build_all_log
 
-if [ ! "$skipCopy" -eq "1" ] ; then
+if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
   echo "# Copying output files..."
-  # overwrite is fine (mostly), but only if all builds succeed
+  # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
   cp -v $apk_output_path/*.apk $destination_path
   echo
 fi

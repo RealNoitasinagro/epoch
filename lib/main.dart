@@ -77,12 +77,12 @@ class EpochApp extends StatefulWidget {
 }
 
 class _EpochAppState extends State<EpochApp> {
-  AppThemeMode _themeMode  = AppThemeMode.system;
-  bool _thousandsSep       = true;
-  bool _hourFormat24       = true;
+  AppThemeMode _themeMode  = kDefaultThemeMode;
+  bool _thousandsSep       = kDefaultThousands;
+  bool _hourFormat24       = kDefaultHour24;
   bool _settingsLoaded     = false;
-  Locale _locale           = const Locale('en');
-  String _localIanaZone    = 'UTC'; // fallback until loaded
+  Locale _locale           = kDefaultLocale;
+  String _localIanaZone    = 'UTC';
 
   @override
   void initState() {
@@ -94,7 +94,7 @@ class _EpochAppState extends State<EpochApp> {
     final theme     = await loadThemeMode();
     final thousands = await loadThousandsSep();
     final hour24    = await loadHourFormat24();
-    final locale    = await loadLocale() ?? const Locale('en');
+    final locale    = await loadLocale() ?? kDefaultLocale;
 
     String localZone = 'UTC';
     try {

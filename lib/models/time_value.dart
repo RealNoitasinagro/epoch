@@ -287,15 +287,7 @@ class TimeValue {
   };
 }
 
-// Default entries for the Civil tab.
-const defaultCivilEntries = [
-  TimeValue(type: ValueType.date,       zone: ZoneLocal()),
-  TimeValue(type: ValueType.time,       zone: ZoneLocal()),
-  TimeValue(type: ValueType.daySecond,  zone: ZoneLocal()),
-  TimeValue(type: ValueType.dayPercent, zone: ZoneLocal()),
-  TimeValue(type: ValueType.time,       zone: ZoneUtc()),
-  TimeValue(type: ValueType.daySecond,  zone: ZoneUtc()),
-];
+
 
 extension ValueTypeProps on ValueType {
   bool get isZoneIndependent => switch (this) {

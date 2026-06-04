@@ -3,6 +3,16 @@ import 'time_value.dart';
 
 const _kCivilTabKey = 'civil_tab_entries';
 
+// Default entries for the Civil tab.
+const defaultCivilEntries = [
+  TimeValue(type: ValueType.date,       zone: ZoneLocal()),
+  TimeValue(type: ValueType.time,       zone: ZoneLocal()),
+  TimeValue(type: ValueType.daySecond,  zone: ZoneLocal()),
+  TimeValue(type: ValueType.dayPercent, zone: ZoneLocal()),
+  TimeValue(type: ValueType.time,       zone: ZoneUtc()),
+  TimeValue(type: ValueType.daySecond,  zone: ZoneUtc()),
+];
+
 Future<List<TimeValue>> loadCivilEntries() async {
   final prefs = await SharedPreferences.getInstance();
   final stored = prefs.getStringList(_kCivilTabKey);
