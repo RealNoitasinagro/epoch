@@ -201,7 +201,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     final displayValue = isGraphical
         ? '[${l10n.binaryClockPlaceholder}]'
-        : TimeValueFormatter.compute(
+        : TimeValueFormatter.format(
       entry,
       widget.now,
       locale,

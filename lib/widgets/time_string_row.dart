@@ -51,7 +51,7 @@ class TimeStringRow extends TimeValueRow {
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
-    final computed = TimeValueFormatter.compute(
+    final computed = TimeValueFormatter.format(
       timeValue,
       now,
       locale,

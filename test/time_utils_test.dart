@@ -1,3 +1,4 @@
+import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/time_utils.dart';
 
@@ -115,36 +116,36 @@ void main() {
 
   group('TimeUtils.hoursToHms', () {
     test('0.0 hours = 00:00:00', () {
-      expect(TimeUtils.hoursToHms(0.0), equals('00:00:00'));
+      expect(TimeValueFormatter.hoursToHms(0.0), equals('00:00:00'));
     });
 
     test('12.5 hours = 12:30:00', () {
-      expect(TimeUtils.hoursToHms(12.5), equals('12:30:00'));
+      expect(TimeValueFormatter.hoursToHms(12.5), equals('12:30:00'));
     });
 
     test('23.9997... hours rounds correctly', () {
-      expect(TimeUtils.hoursToHms(23.0), equals('23:00:00'));
+      expect(TimeValueFormatter.hoursToHms(23.0), equals('23:00:00'));
     });
   });
 
   group('TimeUtils.formatTime12h', () {
     test('midnight = 12:00:00 AM', () {
-      expect(TimeUtils.formatTime12h(0, '00', '00', null),
+      expect(TimeValueFormatter.formatTime12h(0, '00', '00', null),
           equals('12:00:00 AM'));
     });
 
     test('noon = 12:00:00 PM', () {
-      expect(TimeUtils.formatTime12h(12, '00', '00', null),
+      expect(TimeValueFormatter.formatTime12h(12, '00', '00', null),
           equals('12:00:00 PM'));
     });
 
     test('13:30:00 = 01:30:00 PM', () {
-      expect(TimeUtils.formatTime12h(13, '30', '00', null),
+      expect(TimeValueFormatter.formatTime12h(13, '30', '00', null),
           equals('01:30:00 PM'));
     });
 
     test('with timezone suffix', () {
-      expect(TimeUtils.formatTime12h(9, '00', '00', 'UTC'),
+      expect(TimeValueFormatter.formatTime12h(9, '00', '00', 'UTC'),
           equals('09:00:00 AM UTC'));
     });
   });

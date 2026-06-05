@@ -5,14 +5,15 @@ import 'time_utils.dart';
 
 class TimeValueFormatter {
   /// Computes the display string for a given TimeValue at a given moment.
-  static String compute(
+  static String format(
       TimeValue value,
       DateTime now,
       String locale, {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         String localIanaZone = 'UTC',
-      }) {
+      }
+  ) {
     final utcNow = now.toUtc();
 
     // Zone-independent values.
@@ -33,13 +34,13 @@ class TimeValueFormatter {
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
       case ValueType.gmst:
-        return TimeUtils.hoursToHms(TimeUtils.gmst(utcNow));
+        return hoursToHms(TimeUtils.gmst(utcNow));
       case ValueType.julianDate:
-        return TimeUtils.formatDecimal(
+        return formatDecimal(
             TimeUtils.julianDate(utcNow), locale, 5,
             thousandsSep: thousandsSep);
       case ValueType.modifiedJulianDate:
-        return TimeUtils.formatDecimal(
+        return formatDecimal(
             TimeUtils.modifiedJulianDate(utcNow), locale, 5,
             thousandsSep: thousandsSep);
       case ValueType.swatchBeats:
@@ -84,16 +85,16 @@ class TimeValueFormatter {
 
     switch (value.type) {
       case ValueType.date:
-        return TimeUtils.formatDate(locale, dt);
+        return formatDate(locale, dt);
       case ValueType.time:
         if (!hourFormat24) {
-          return TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix);
+          return formatTime12h(dt.hour, mm, ss, tzSuffix);
         }
         return '$hh:$mm:$ss $tzSuffix';
       case ValueType.dateTime:
-        final dateStr = TimeUtils.formatDate(locale, dt);
+        final dateStr = formatDate(locale, dt);
         if (!hourFormat24) {
-          return '$dateStr ${TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix)}';
+          return '$dateStr ${formatTime12h(dt.hour, mm, ss, tzSuffix)}';
         }
         return '$dateStr $hh:$mm:$ss $tzSuffix';
       case ValueType.daySecond:
@@ -102,7 +103,7 @@ class TimeValueFormatter {
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
       case ValueType.dayPercent:
-        return TimeUtils.formatDecimal(
+        return formatDecimal(
             TimeUtils.dayPercent(dt), locale, 3,
             thousandsSep: false); // percent never needs thousands sep
       case ValueType.binaryClockString:
@@ -112,5 +113,44 @@ class TimeValueFormatter {
       default:
         return '';
     }
+  }
+
+  /// Formats a fractional hour value as HH:MM:SS.
+  static String hoursToHms(double hours) {
+    final total = (hours * 3600).round();
+    final h = (total ~/ 3600) % 24;
+    final m = (total % 3600) ~/ 60;
+    final s = total % 60;
+    return '${h.toString().padLeft(2, '0')}:'
+        '${m.toString().padLeft(2, '0')}:'
+        '${s.toString().padLeft(2, '0')}';
+  }
+
+  /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
+  static String formatDate(String locale, DateTime dt) =>
+      DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+
+  /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
+  static String formatTime12h(int hh, String mm, String ss, String? tzSuffix) {
+    final hour12 = hh % 12 == 0 ? 12 : hh % 12;
+    final period = hh < 12 ? 'AM' : 'PM';
+    final h12 = hour12.toString().padLeft(2, '0');
+    String timeFormat12h = '$h12:$mm:$ss $period';
+    if (tzSuffix != null) {
+      timeFormat12h = '$timeFormat12h $tzSuffix';
+    }
+    return timeFormat12h;
+  }
+
+  /// Returns a double formatted to a given number of decimal digits.
+  static String formatDecimal(
+      double value, String locale, int decimals,
+      { bool thousandsSep = true, }
+      ) {
+    final fmt = NumberFormat.decimalPatternDigits(
+        locale: locale, decimalDigits: decimals);
+    fmt.minimumFractionDigits = decimals;
+    if (!thousandsSep) fmt.turnOffGrouping();
+    return fmt.format(value);
   }
 }
