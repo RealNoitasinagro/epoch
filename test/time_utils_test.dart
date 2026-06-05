@@ -114,7 +114,7 @@ void main() {
     });
   });
 
-  group('TimeUtils.hoursToHms', () {
+  group('TimeValueFormatter.hoursToHms', () {
     test('0.0 hours = 00:00:00', () {
       expect(TimeValueFormatter.hoursToHms(0.0), equals('00:00:00'));
     });
@@ -123,12 +123,12 @@ void main() {
       expect(TimeValueFormatter.hoursToHms(12.5), equals('12:30:00'));
     });
 
-    test('23.9997... hours rounds correctly', () {
+    test('23.0 hours = 23:00:00', () {
       expect(TimeValueFormatter.hoursToHms(23.0), equals('23:00:00'));
     });
   });
 
-  group('TimeUtils.formatTime12h', () {
+  group('TimeValueFormatter.formatTime12h', () {
     test('midnight = 12:00:00 AM', () {
       expect(TimeValueFormatter.formatTime12h(0, '00', '00', null),
           equals('12:00:00 AM'));
@@ -170,6 +170,33 @@ void main() {
           TimeUtils.utcOffsetString(
               const Duration(hours: 5, minutes: 30)),
           equals('UTC+05:30'));
+    });
+  });
+
+  group('TimeValueFormatter.formatDecimal', () {
+    test('decimal with thousands separator EN', () {
+      expect(TimeValueFormatter.formatDecimal(2461196.382, 'en', 3),
+          equals('2,461,196.382'));
+    });
+    test('decimal with thousands separator DE', () {
+      expect(TimeValueFormatter.formatDecimal(2461196.382, 'de', 3),
+          equals('2.461.196,382'));
+    });
+    test('decimal without thousands separator EN', () {
+      expect(
+          TimeValueFormatter.formatDecimal(2461196.382, 'en', 3,
+              thousandsSep: false),
+          equals('2461196.382'));
+    });
+    test('decimal without thousands separator DE uses comma', () {
+      expect(
+          TimeValueFormatter.formatDecimal(61195.879, 'de', 3,
+              thousandsSep: false),
+          equals('61195,879'));
+    });
+    test('small decimal no thousands needed', () {
+      expect(TimeValueFormatter.formatDecimal(96.348, 'en', 3),
+          equals('96.348'));
     });
   });
 }
