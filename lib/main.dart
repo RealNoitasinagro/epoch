@@ -9,7 +9,7 @@ import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
-import 'models/time_entry.dart';
+import 'models/time_value.dart';
 import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/curiosities_tab.dart';
@@ -21,9 +21,10 @@ void main() {
   runApp(const EpochApp());
 }
 
-const fontFamilyValues = 'Courier New';
-const _nightRed        = Color(0xFFCC1010);
-const _nightRedDim     = Color(0xFF7A0000);
+const fontFamilyCourierNew = 'Courier New';
+const fontFamilyMonospace = 'monospace';
+const _nightRed = Color(0xFFCC1010);
+const _nightRedDim = Color(0xFF7A0000);
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -49,7 +50,7 @@ ThemeData _nightTheme() => ThemeData(
   ),
   iconTheme: const IconThemeData(color: _nightRed),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyValues),
+    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyCourierNew),
     bodyMedium: TextStyle(color: _nightRed),
     bodySmall: TextStyle(color: _nightRedDim),
     labelSmall: TextStyle(color: _nightRedDim),
@@ -77,12 +78,12 @@ class EpochApp extends StatefulWidget {
 }
 
 class _EpochAppState extends State<EpochApp> {
-  AppThemeMode _themeMode  = AppThemeMode.system;
-  bool _thousandsSep       = true;
-  bool _hourFormat24       = true;
+  AppThemeMode _themeMode  = kDefaultThemeMode;
+  bool _thousandsSep       = kDefaultThousands;
+  bool _hourFormat24       = kDefaultHour24;
   bool _settingsLoaded     = false;
-  Locale _locale           = const Locale('en');
-  String _localIanaZone    = 'UTC'; // fallback until loaded
+  Locale _locale           = kDefaultLocale;
+  String _localIanaZone    = 'UTC';
 
   @override
   void initState() {
@@ -94,7 +95,7 @@ class _EpochAppState extends State<EpochApp> {
     final theme     = await loadThemeMode();
     final thousands = await loadThousandsSep();
     final hour24    = await loadHourFormat24();
-    final locale    = await loadLocale() ?? const Locale('en');
+    final locale    = await loadLocale() ?? kDefaultLocale;
 
     String localZone = 'UTC';
     try {
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TimeEntry> _civilEntries = [];
+  List<TimeValue> _civilEntries = [];
   List<CustomTabData> _customTabs = [];
   bool _loaded = false;
   bool _isFullscreen = false;
@@ -238,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
-  void _onCivilChanged(List<TimeEntry> entries) {
+  void _onCivilChanged(List<TimeValue> entries) {
     setState(() => _civilEntries = entries);
     saveCivilEntries(entries);
   }
@@ -297,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TimeEntry> entries) {
+  void _onCustomTabEntriesChanged(String id, List<TimeValue> entries) {
     final tab = _customTabs.firstWhere((t) => t.id == id);
     tab.entries = entries;
     saveCustomTabs(_customTabs);
@@ -430,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen>
             onEntriesChanged: _onCivilChanged,
           ),
           TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
-          AstronomicalTab(now: _now),
+          AstronomicalTab(now: _now, thousandsSep: app.thousandsSep),
           CuriositiesTab(now: _now, hourFormat24: app.hourFormat24),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
@@ -452,7 +453,7 @@ class _HomeScreenState extends State<HomeScreen>
         title: const Text('Build info'),
         content: Text(
           kBuildTimestamp,
-          style: const TextStyle(fontFamily: 'monospace'),
+          style: const TextStyle(fontFamily: fontFamilyMonospace),
         ),
         actions: [
           TextButton(

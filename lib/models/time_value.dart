@@ -1,8 +1,4 @@
-import 'package:intl/intl.dart';
-import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
-import '../time_utils.dart';
-
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -40,12 +36,12 @@ class ZoneNamed extends ZoneSpec {
 }
 
 // A single displayable entry: type + zone + optional custom label.
-class TimeEntry {
+class TimeValue {
   final ValueType type;
   final ZoneSpec zone;
   final String? customLabel;
 
-  const TimeEntry({
+  const TimeValue({
     required this.type,
     required this.zone,
     this.customLabel,
@@ -66,7 +62,7 @@ class TimeEntry {
   String toPrefsString() =>
       customLabel != null ? '$key|$customLabel' : key;
 
-  static TimeEntry? fromPrefsString(String s) {
+  static TimeValue? fromPrefsString(String s) {
     // Split off optional custom label.
     final pipeIdx = s.indexOf('|');
     final keyPart   = pipeIdx >= 0 ? s.substring(0, pipeIdx) : s;
@@ -88,12 +84,12 @@ class TimeEntry {
     } else {
       return null;
     }
-    return TimeEntry(type: type, zone: zone, customLabel: labelPart);
+    return TimeValue(type: type, zone: zone, customLabel: labelPart);
   }
 
   // Returns a copy with a different custom label (null to clear).
-  TimeEntry withLabel(String? label) =>
-      TimeEntry(type: type, zone: zone, customLabel: label);
+  TimeValue withLabel(String? label) =>
+      TimeValue(type: type, zone: zone, customLabel: label);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => type.isZoneIndependent;
@@ -131,7 +127,7 @@ class TimeEntry {
   };
 
   // Localized info text.
-  String localizedInfo(AppLocalizations l10n) => switch (type) {
+  String localizedInfoText(AppLocalizations l10n) => switch (type) {
     ValueType.date               => l10n.infoDate,
     ValueType.time               => l10n.infoTime,
     ValueType.dateTime           => l10n.infoDateTime,
@@ -165,137 +161,7 @@ class TimeEntry {
     ValueType.doomsdayClock      => l10n.infoLinkDoomsdayClock,
     _                            => null,
   };
-
-  // Computes the display value string.
-  String computeValue(
-      DateTime now,
-      String locale, {
-        bool hourFormat24 = true,
-        bool thousandsSep = true,
-        String localIanaZone = 'UTC', // used for ZoneLocal to get proper abbr
-      }) {
-    final utcNow = now.toUtc();
-
-    // Zone-independent values.
-    switch (type) {
-      case ValueType.unixSeconds:
-        final v = TimeUtils.unixTimestamp(utcNow);
-        return thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(v)
-            : v.toString();
-      case ValueType.tai:
-        final v = TimeUtils.taiSeconds(utcNow);
-        return thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(v)
-            : v.toString();
-      case ValueType.gps:
-        final v = TimeUtils.gpsTime(utcNow);
-        return thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(v)
-            : v.toString();
-      case ValueType.gmst:
-        return TimeUtils.hoursToHms(TimeUtils.gmst(utcNow));
-      case ValueType.julianDate:
-        return NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 5)
-            .format(TimeUtils.julianDate(utcNow));
-      case ValueType.modifiedJulianDate:
-        return NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 5)
-            .format(TimeUtils.modifiedJulianDate(utcNow));
-      case ValueType.swatchBeats:
-        return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
-      case ValueType.doomsdayClock:
-        return TimeUtils.doomsDayClockString(hourFormat24);
-      default:
-        break;
-    }
-
-    // Zone-dependent values.
-    final DateTime dt;
-    String tzLabel;
-    final Duration offset;
-
-    switch (zone) {
-      case ZoneLocal():
-        dt = now;
-        // Use the IANA zone to get the correct abbreviation on all platforms,
-        // including web where now.timeZoneName may be fully localized.
-        try {
-          final tzLocation = tz.getLocation(localIanaZone);
-          final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
-          tzLabel = tzDt.timeZone.abbreviation;
-        } catch (_) {
-          tzLabel = now.timeZoneName; // fallback
-        }
-        offset = now.timeZoneOffset;
-      case ZoneUtc():
-        dt = utcNow;
-        tzLabel = 'UTC';
-        offset = Duration.zero;
-      case ZoneNamed(ianaZone: final z):
-        final tzDt = TimeUtils.inZone(utcNow, z);
-        dt = tzDt;
-        tzLabel = tzDt.timeZone.abbreviation;
-        offset = tzDt.timeZoneOffset;
-    }
-
-    final hh = dt.hour.toString().padLeft(2, '0');
-    final mm = dt.minute.toString().padLeft(2, '0');
-    final ss = dt.second.toString().padLeft(2, '0');
-    final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
-
-    switch (type) {
-      case ValueType.date:
-        return TimeUtils.formatDate(locale, dt);
-      case ValueType.time:
-        if (!hourFormat24) {
-          String hourFormat12 = TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix);
-          return hourFormat12;
-        }
-        return '$hh:$mm:$ss $tzSuffix';
-      case ValueType.dateTime:
-        final dateStr = TimeUtils.formatDate(locale, dt);
-        if (!hourFormat24) {
-          String hourFormat12 = TimeUtils.formatTime12h(dt.hour, mm, ss, tzSuffix);
-          return '$dateStr $hourFormat12';
-        }
-        return '$dateStr $hh:$mm:$ss $tzSuffix';
-      case ValueType.daySecond:
-        final v = TimeUtils.daySecond(dt);
-        return thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(v)
-            : v.toString();
-      case ValueType.dayPercent:
-        return NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 3)
-            .format(TimeUtils.dayPercent(dt));
-      case ValueType.binaryClockString:
-        return TimeUtils.binaryTimeString(dt);
-      case ValueType.binaryClockColumns:
-      case ValueType.binaryClockBcd:
-      default:
-        return '';
-    }
-  }
-
-  bool get useThousands => switch (type) {
-    ValueType.daySecond          => true,
-    ValueType.unixSeconds        => true,
-    ValueType.tai                => true,
-    ValueType.gps                => true,
-    ValueType.julianDate         => true, // working even without this?
-    ValueType.modifiedJulianDate => true, // working even without this?
-    _                            => false,
-  };
 }
-
-// Default entries for the Civil tab.
-const defaultCivilEntries = [
-  TimeEntry(type: ValueType.date,       zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,       zone: ZoneLocal()),
-  TimeEntry(type: ValueType.daySecond,  zone: ZoneLocal()),
-  TimeEntry(type: ValueType.dayPercent, zone: ZoneLocal()),
-  TimeEntry(type: ValueType.time,       zone: ZoneUtc()),
-  TimeEntry(type: ValueType.daySecond,  zone: ZoneUtc()),
-];
 
 extension ValueTypeProps on ValueType {
   bool get isZoneIndependent => switch (this) {
@@ -316,4 +182,8 @@ extension ValueTypeProps on ValueType {
     ValueType.binaryClockBcd     => false,
     ValueType.doomsdayClock      => true,
   };
+
+  bool get isGraphical =>
+      this == ValueType.binaryClockColumns ||
+      this == ValueType.binaryClockBcd;
 }

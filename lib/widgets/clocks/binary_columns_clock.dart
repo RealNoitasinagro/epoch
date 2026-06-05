@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
-import '../time_utils.dart';
+import '../../l10n/app_localizations.dart';
+import '../../time_utils.dart';
 
 // One column per unit (H, M, S), top-aligned, most significant bit at top.
-class ColumnBinaryClock extends StatelessWidget {
+class BinaryColumnsClock extends StatelessWidget {
   final DateTime now;
   final AppLocalizations l10n;
-  const ColumnBinaryClock({super.key, required this.now, required this.l10n});
+  const BinaryColumnsClock({super.key, required this.now, required this.l10n});
 
   @override
   Widget build(BuildContext context) {

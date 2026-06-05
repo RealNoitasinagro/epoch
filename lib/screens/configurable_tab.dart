@@ -2,11 +2,13 @@ import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
-import '../models/time_entry.dart';
+import '../models/civil_tab_config.dart';
+import '../models/time_value.dart';
 import '../time_utils.dart';
-import '../widgets/binary_coded_decimal_clock.dart';
-import '../widgets/binary_columns_clock.dart';
-import '../widgets/time_entry_row.dart';
+import '../time_value_formatter.dart';
+import '../widgets/clocks/binary_coded_decimal_clock.dart';
+import '../widgets/clocks/binary_columns_clock.dart';
+import '../widgets/time_graphical_row.dart';
 import '../widgets/value_tile.dart';
 import 'entry_picker.dart';
 
@@ -14,11 +16,11 @@ import 'entry_picker.dart';
 // [entries] and [onEntriesChanged] are managed by the parent.
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
-  final List<TimeEntry> entries;
+  final List<TimeValue> entries;
   final bool thousandsSep;
   final bool hourFormat24;
   final int maxEntries;
-  final ValueChanged<List<TimeEntry>> onEntriesChanged;
+  final ValueChanged<List<TimeValue>> onEntriesChanged;
   final List<ValueType>? allowedTypes; // null = all types allowed
 
   const ConfigurableTab({
@@ -142,16 +144,22 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildDisplayRow(
       BuildContext context,
-      TimeEntry entry,
+      TimeValue entry,
       AppLocalizations l10n,
       String locale,
       ) {
-    return TimeEntryRow(
+    if (entry.type.isGraphical) {
+      return TimeGraphicalRow(
+        key: ValueKey(entry.key),
+        timeValue: entry,
+        now: widget.now,
+      );
+    }
+    return TimeStringRow(
       key: ValueKey(entry.key),
-      entry: entry,
+      timeValue: entry,
       now: widget.now,
       locale: locale,
-      //infoLink: entry.localizedInfoLink(l10n),
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
     );
@@ -165,7 +173,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       itemCount: widget.entries.length,
       onReorderItem: (oldIndex, newIndex) {
         if (newIndex > oldIndex) newIndex--;
-        final updated = List<TimeEntry>.of(widget.entries);
+        final updated = List<TimeValue>.of(widget.entries);
         final item = updated.removeAt(oldIndex);
         updated.insert(newIndex, item);
         widget.onEntriesChanged(updated);
@@ -183,37 +191,32 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildEditRow(
       BuildContext context,
-      TimeEntry entry,
+      TimeValue entry,
       int index,
       AppLocalizations l10n,
       String locale,
       ) {
-    String localIanaZone = EpochApp.of(context).localIanaZone;
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final isGraphical = entry.type.isGraphical;
 
-    bool isGraphical =
-      entry.type == ValueType.binaryClockColumns ||
-      entry.type == ValueType.binaryClockBcd
-      ? true
-      : false;
-    final displayValue =
-      isGraphical
-      ? '[${l10n.binaryClockPlaceholder}]'
-      : entry.computeValue(
-        widget.now,
-        locale,
-        hourFormat24: widget.hourFormat24,
-        thousandsSep: widget.thousandsSep,
-        localIanaZone: localIanaZone,
-      );
+    final displayValue = isGraphical
+        ? '[${l10n.binaryClockPlaceholder}]'
+        : TimeValueFormatter.format(
+      entry,
+      widget.now,
+      locale,
+      hourFormat24: widget.hourFormat24,
+      thousandsSep: widget.thousandsSep,
+      localIanaZone: localIanaZone,
+    );
 
-    final DateTime zonedNow = switch (entry.zone) {
+    final zonedNow = switch (entry.zone) {
       ZoneLocal()                  => widget.now,
       ZoneUtc()                    => widget.now.toUtc(),
-      ZoneNamed(ianaZone: final z) =>
-          TimeUtils.inZone(widget.now.toUtc(), z),
+      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
     };
 
-    final split = ValueDisplay.split(displayValue);
+    final split = TimeStringRow.splitZoneOffset(displayValue);
 
     return Dismissible(
       key: ValueKey(entry.key),
@@ -225,7 +228,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
       onDismissed: (_) {
-        final updated = List<TimeEntry>.of(widget.entries);
+        final updated = List<TimeValue>.of(widget.entries);
         updated.removeAt(index);
         _checked.remove(entry.key);
         widget.onEntriesChanged(updated);
@@ -236,8 +239,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         content: isGraphical
             ? GraphicValueContent(
           clock: entry.type == ValueType.binaryClockColumns
-              ? ColumnBinaryClock(now: zonedNow, l10n: l10n)
-              : BcdBinaryClock(now: zonedNow, l10n: l10n),
+              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
+              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
         )
             : TextValueContent(line1: split.line1, line2: split.line2),
         actionSlots: [
@@ -273,7 +276,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _editLabel(
       BuildContext context,
-      TimeEntry entry,
+      TimeValue entry,
       AppLocalizations l10n,
       ) async {
     // Pre-fill with custom label if set, otherwise official label.
@@ -315,7 +318,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     // Note: controller.dispose() intentionally omitted – Linux assertion.
     if (result == null) return;
 
-    final updated = List<TimeEntry>.of(widget.entries);
+    final updated = List<TimeValue>.of(widget.entries);
     final idx = updated.indexWhere((e) => e.key == entry.key);
     if (idx == -1) return;
 

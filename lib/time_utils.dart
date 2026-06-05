@@ -1,3 +1,4 @@
+import 'package:epoch/time_value_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -44,21 +45,6 @@ class TimeUtils {
     return dt.second / 60 * 100;
   }
 
-  /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
-  static String formatDate(String locale, DateTime dt) => DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
-
-  /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
-  static String formatTime12h(int hh, String mm, String ss, String? tzSuffix) {
-    final hour12 = hh % 12 == 0 ? 12 : hh % 12;
-    final period = hh < 12 ? 'AM' : 'PM';
-    final h12 = hour12.toString().padLeft(2, '0');
-    String timeFormat12h = '$h12:$mm:$ss $period';
-    if (tzSuffix != null) {
-      timeFormat12h = '$timeFormat12h $tzSuffix';
-    }
-    return timeFormat12h;
-  }
-
   /// Unix timestamp in seconds.
   static int unixTimestamp(DateTime utc) =>
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
@@ -98,17 +84,6 @@ class TimeUtils {
     // Normalize to 0–24h.
     final hours = (gmstSec / 3600.0) % 24.0;
     return hours < 0 ? hours + 24.0 : hours;
-  }
-
-  /// Formats a fractional hour value as HH:MM:SS.
-  static String hoursToHms(double hours) {
-    final total = (hours * 3600).round();
-    final h = (total ~/ 3600) % 24;
-    final m = (total % 3600) ~/ 60;
-    final s = total % 60;
-    return '${h.toString().padLeft(2, '0')}:'
-        '${m.toString().padLeft(2, '0')}:'
-        '${s.toString().padLeft(2, '0')}';
   }
 
   /// Julian Date for a given UTC DateTime.
@@ -187,7 +162,7 @@ class TimeUtils {
     int ss = 35;
 
     return !hourFormat24
-        ? formatTime12h(hh, '$mm', '$ss', null)
+        ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
         : '$hh:$mm:$ss';
   }
 }

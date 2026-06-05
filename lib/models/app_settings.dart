@@ -6,6 +6,10 @@ const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
 const _kLocaleKey = 'locale';
 const _kActiveTabKey = 'active_tab';
+const kDefaultLocale    = Locale('en');
+const kDefaultThemeMode = AppThemeMode.system;
+const kDefaultThousands = true;
+const kDefaultHour24    = true;
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
@@ -17,7 +21,7 @@ Future<AppThemeMode> loadThemeMode() async {
     'light' => AppThemeMode.light,
     'dark'  => AppThemeMode.dark,
     'night' => AppThemeMode.night,
-    _       => AppThemeMode.system,
+    _       => kDefaultThemeMode,
   };
 }
 
