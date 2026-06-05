@@ -1,5 +1,4 @@
 import 'package:epoch/time_value_formatter.dart';
-import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class TimeUtils {

@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'time_value.dart';
 
 const _kCustomTabsKey = 'custom_tabs';
-const int maxCustomTabs = 3;
+const int maxCustomTabs = 4;
 
 class CustomTabData {
   final String id;
