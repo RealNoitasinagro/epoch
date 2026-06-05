@@ -194,15 +194,9 @@ class TimeUtils {
 
   /// Returns a double formatted to a given number of decimal digits.
   static String formatDecimal(
-      double value, String locale, int decimals, {
-        bool thousandsSep = true,
-      }) {
-    final fmt = thousandsSep
-        ? NumberFormat.decimalPatternDigits(
-        locale: locale, decimalDigits: decimals)
-        : NumberFormat.decimalPatternDigits(
-        locale: locale, decimalDigits: decimals)
-      ..minimumFractionDigits = decimals;
+        double value, String locale, int decimals,
+        { bool thousandsSep = true, }
+      ) {
     if (!thousandsSep) {
       return value.toStringAsFixed(decimals);
     }

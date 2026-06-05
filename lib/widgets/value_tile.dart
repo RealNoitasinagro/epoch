@@ -88,7 +88,7 @@ class TextValueContent extends StatelessWidget {
           Text(
             line1,
             style: textTheme.bodyLarge?.copyWith(
-              fontFamily: fontFamilyValues,
+              fontFamily: fontFamilyCourierNew,
               fontWeight: FontWeight.w500,
               height: 1.2,
             ),
@@ -100,7 +100,7 @@ class TextValueContent extends StatelessWidget {
             Text(
               line2,
               style: textTheme.bodySmall?.copyWith(
-                fontFamily: fontFamilyValues,
+                fontFamily: fontFamilyCourierNew,
                 color: colorScheme.onSurface.withAlpha(170),
                 height: 1.2,
               ),

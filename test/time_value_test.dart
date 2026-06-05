@@ -1,9 +1,8 @@
-// test/time_entry_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/models/time_value.dart';
 
 void main() {
-  group('TimeEntry.key', () {
+  group('TimeValue.key', () {
     test('local zone key', () {
       const e = TimeValue(type: ValueType.time, zone: ZoneLocal());
       expect(e.key, equals('time/local'));
@@ -21,7 +20,7 @@ void main() {
     });
   });
 
-  group('TimeEntry serialization', () {
+  group('TimeValue serialization', () {
     test('roundtrip without label', () {
       const e = TimeValue(type: ValueType.time, zone: ZoneLocal());
       final s = e.toPrefsString();
@@ -46,7 +45,7 @@ void main() {
     });
   });
 
-  group('TimeEntry.isZoneIndependent', () {
+  group('TimeValue.isZoneIndependent', () {
     test('unixSeconds is zone-independent', () {
       const e = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
       expect(e.isZoneIndependent, isTrue);

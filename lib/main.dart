@@ -21,9 +21,10 @@ void main() {
   runApp(const EpochApp());
 }
 
-const fontFamilyValues = 'Courier New';
-const _nightRed        = Color(0xFFCC1010);
-const _nightRedDim     = Color(0xFF7A0000);
+const fontFamilyCourierNew = 'Courier New';
+const fontFamilyMonospace = 'monospace';
+const _nightRed = Color(0xFFCC1010);
+const _nightRedDim = Color(0xFF7A0000);
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -49,7 +50,7 @@ ThemeData _nightTheme() => ThemeData(
   ),
   iconTheme: const IconThemeData(color: _nightRed),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyValues),
+    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyCourierNew),
     bodyMedium: TextStyle(color: _nightRed),
     bodySmall: TextStyle(color: _nightRedDim),
     labelSmall: TextStyle(color: _nightRedDim),
@@ -452,7 +453,7 @@ class _HomeScreenState extends State<HomeScreen>
         title: const Text('Build info'),
         content: Text(
           kBuildTimestamp,
-          style: const TextStyle(fontFamily: 'monospace'),
+          style: const TextStyle(fontFamily: fontFamilyMonospace),
         ),
         actions: [
           TextButton(

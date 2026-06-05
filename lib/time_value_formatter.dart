@@ -113,19 +113,4 @@ class TimeValueFormatter {
         return '';
     }
   }
-
-  /// For clipboard: always raw value without locale formatting.
-  static String computeRaw(TimeValue value, DateTime now) {
-    final utcNow = now.toUtc();
-    return switch (value.type) {
-      ValueType.unixSeconds        => TimeUtils.unixTimestamp(utcNow).toString(),
-      ValueType.tai                => TimeUtils.taiSeconds(utcNow).toString(),
-      ValueType.gps                => TimeUtils.gpsTime(utcNow).toString(),
-      ValueType.julianDate         =>
-          TimeUtils.julianDate(utcNow).toStringAsFixed(5),
-      ValueType.modifiedJulianDate =>
-          TimeUtils.modifiedJulianDate(utcNow).toStringAsFixed(5),
-      _                            => '', // zone-dependent: use compute()
-    };
-  }
 }
