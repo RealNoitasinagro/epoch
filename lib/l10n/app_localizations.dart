@@ -614,6 +614,12 @@ abstract class AppLocalizations {
   /// **'Technical'**
   String get tabTechnical;
 
+  /// No description provided for @tabValueCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{no values} =1{1 value} other{{count} values}}'**
+  String tabValueCount(num count);
+
   /// No description provided for @tabWatchlist.
   ///
   /// In en, this message translates to:

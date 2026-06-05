@@ -295,6 +295,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tabTechnical => 'Technisch';
 
   @override
+  String tabValueCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString Werte',
+      one: '1 Wert',
+      zero: 'keine Werte',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get tabWatchlist => 'Watchlist';
 
   @override

@@ -3,6 +3,7 @@
 ## [Unreleased] (1.0.0 -> 1.1.0)
 
 ### Added
+- value count for each tab
 
 ### Changed
 - up tp 4 custom tabs rather than 3

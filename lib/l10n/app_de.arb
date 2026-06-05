@@ -14,6 +14,14 @@
       }
     }
   },
+  "@tabValueCount": {
+    "placeholders": {
+      "count": {
+        "format": "compact",
+        "type": "num"
+      }
+    }
+  },
   "aboutDescription": "Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.",
   "aboutLegalese": "© 2026 RealEarthling",
   "aboutThisValue": "Über diesen Wert",
@@ -100,6 +108,7 @@
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
   "tabTechnical": "Technisch",
+  "tabValueCount": "{count, plural, =0{keine Werte} =1{1 Wert} other{{count} Werte}}",
   "tabWatchlist": "Watchlist",
   "timezoneNoResults": "Keine passende Zeitzone gefunden.",
   "timezoneSearchHint": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",

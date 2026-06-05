@@ -14,6 +14,14 @@
       }
     }
   },
+  "@tabValueCount": {
+    "placeholders": {
+      "count": {
+        "format": "compact",
+        "type": "num"
+      }
+    }
+  },
   "aboutDescription": "A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.",
   "aboutLegalese": "© 2026 RealEarthling",
   "aboutThisValue": "About this value",
@@ -100,6 +108,7 @@
   "tabCivil": "Civil",
   "tabCuriosities": "Curiosities",
   "tabTechnical": "Technical",
+  "tabValueCount": "{count, plural, =0{no values} =1{1 value} other{{count} values}}",
   "tabWatchlist": "Watchlist",
   "timezoneNoResults": "No matching timezone found.",
   "timezoneSearchHint": "City, country, zone or offset (e.g. UTC+5:30)",
