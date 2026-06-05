@@ -172,7 +172,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       itemCount: widget.entries.length,
       onReorderItem: (oldIndex, newIndex) {
-        if (newIndex > oldIndex) newIndex--;
         final updated = List<TimeValue>.of(widget.entries);
         final item = updated.removeAt(oldIndex);
         updated.insert(newIndex, item);
