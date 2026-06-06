@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
@@ -15,6 +16,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late AppThemeMode _themeMode;
   late bool _thousandsSep;
   late bool _hourFormat24;
+  late bool _dateWithDetails;
   Locale? _locale;
 
   static const _fallbackVersion = '1.0.0';
@@ -27,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _themeMode = app.themeMode;
     _thousandsSep = app.thousandsSep;
     _hourFormat24 = app.hourFormat24;
+    _dateWithDetails = app.dateWithDetails;
     _locale = app.locale;
   }
 
@@ -135,11 +138,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               app.setThousandsSep(val);
             },
           ),
+          SwitchListTile(
+            secondary: const Icon(Icons.calendar_today),
+            title: Text(l10n.settingsDateWithDetails),
+            subtitle: Text(l10n.settingsDateWithDetailsSub),
+            value: _dateWithDetails,
+            onChanged: (val) {
+              setState(() => _dateWithDetails = val);
+              app.setDateWithDetails(val);
+            },
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l10n.settingsAbout),
             onTap: () => _showAbout(context, l10n),
+          ),
+          ListTile(
+            leading: const Icon(Icons.new_releases_outlined),
+            title: Text(l10n.settingsWhatsNew),
+            onTap: () async {
+              final uri = Uri.parse(
+                  'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            },
           ),
         ],
       ),

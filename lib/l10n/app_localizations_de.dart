@@ -48,6 +48,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get copyToClipboard => 'In Zwischenablage kopieren';
 
   @override
+  String dateSubtitle(int week, int day) {
+    return 'Kalenderwoche $week · Tag des Jahres $day';
+  }
+
+  @override
   String get deleteTab => 'Tab löschen';
 
   @override
@@ -253,6 +258,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAbout => 'Über die App';
 
   @override
+  String get settingsDateWithDetails => 'Erweitertes Datum';
+
+  @override
+  String get settingsDateWithDetailsSub =>
+      'Ein = mit Kalenderwoche und Tag des Jahres';
+
+  @override
   String get settingsHourFormat => '24-Stunden-Format';
 
   @override
@@ -281,6 +293,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
+
+  @override
+  String get settingsWhatsNew => 'Was ist neu';
 
   @override
   String get tabAstronomical => 'Astronomisch';

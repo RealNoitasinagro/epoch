@@ -7,6 +7,7 @@ class CivilTab extends StatelessWidget {
   final DateTime now;
   final bool thousandsSep;
   final bool hourFormat24;
+  final bool showDateDetails;
   final List<TimeValue> entries;
   final ValueChanged<List<TimeValue>> onEntriesChanged;
 
@@ -17,6 +18,7 @@ class CivilTab extends StatelessWidget {
     required this.onEntriesChanged,
     this.thousandsSep = true,
     this.hourFormat24 = true,
+    this.showDateDetails = true,
   });
 
   @override
@@ -27,6 +29,7 @@ class CivilTab extends StatelessWidget {
       onEntriesChanged: onEntriesChanged,
       thousandsSep: thousandsSep,
       hourFormat24: hourFormat24,
+      showDateDetails: showDateDetails,
       allowedTypes: civilTypes,
     );
   }

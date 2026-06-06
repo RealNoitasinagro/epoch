@@ -7,6 +7,16 @@
       }
     }
   },
+  "@dateSubtitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
   "@maxValuesReached": {
     "placeholders": {
       "count": {
@@ -34,6 +44,7 @@
   "cancel": "Cancel",
   "copiedToClipboard": "Copied: {label}",
   "copyToClipboard": "Copy to clipboard",
+  "dateSubtitle": "Calendar week {week} · Day of the year {day}",
   "deleteTab": "Delete tab",
   "deselect": "Deselect",
   "deselectAll": "Deselect all",
@@ -94,6 +105,8 @@
   "selectValueType": "Select value type",
   "settings": "Settings",
   "settingsAbout": "About",
+  "settingsDateWithDetails": "Expanded Date",
+  "settingsDateWithDetailsSub": "On = with calender week and day of the year",
   "settingsHourFormat": "24-hour format",
   "settingsHourFormatSub": "Off = 12-hour with AM/PM",
   "settingsLanguage": "Language",
@@ -104,6 +117,7 @@
   "settingsThemeSystem": "System",
   "settingsThousandsSep": "Thousands separator",
   "settingsThousandsSepSub": "e.g. 1,746,000 instead of 1746000",
+  "settingsWhatsNew": "What's New",
   "tabAstronomical": "Astronomical",
   "tabCivil": "Civil",
   "tabCuriosities": "Curiosities",

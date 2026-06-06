@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../models/time_value.dart';
+import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
@@ -10,6 +12,7 @@ class TimeStringRow extends TimeValueRow {
   final String locale;
   final bool hourFormat24;
   final bool thousandsSep;
+  final bool showDateDetails;
 
   const TimeStringRow({
     super.key,
@@ -18,6 +21,7 @@ class TimeStringRow extends TimeValueRow {
     required this.locale,
     this.hourFormat24 = true,
     this.thousandsSep = true,
+    this.showDateDetails = true,
     super.infoLinkOverride,
   });
 
@@ -51,7 +55,7 @@ class TimeStringRow extends TimeValueRow {
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
-    final computed = TimeValueFormatter.format(
+    final formattedValue = TimeValueFormatter.format(
       timeValue,
       now,
       locale,
@@ -59,12 +63,25 @@ class TimeStringRow extends TimeValueRow {
       thousandsSep: thousandsSep,
       localIanaZone: localIanaZone,
     );
-    final split = splitZoneOffset(computed);
+
+    String? subtitle;
+    if (timeValue.type == ValueType.date && showDateDetails) {
+      final dt = switch (timeValue.zone) {
+        ZoneLocal()                  => now,
+        ZoneUtc()                    => now.toUtc(),
+        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
+      };
+      final week = TimeUtils.isoWeekNumber(dt);
+      final day  = TimeUtils.dayOfYear(dt);
+      subtitle = l10n.dateSubtitle(week, day);
+    }
+    final split = splitZoneOffset(formattedValue);
+    final line2 = subtitle ?? split.line2;
 
     return ValueTile(
       label: timeValue.localizedLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
-      content: TextValueContent(line1: split.line1, line2: split.line2),
+      content: TextValueContent(line1: split.line1, line2: line2),
       actionSlots: [
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
@@ -76,7 +93,7 @@ class TimeStringRow extends TimeValueRow {
           icon: const Icon(Icons.copy, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.copyToClipboard,
-          onPressed: () => _copyToClipboard(context, l10n, computed),
+          onPressed: () => _copyToClipboard(context, l10n, formattedValue),
         ),
         null,
       ],

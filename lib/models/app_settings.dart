@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _kThemeModeKey = 'theme_mode';
 const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
+const _kDateWithDetails = 'date_cw_doy';
 const _kLocaleKey = 'locale';
 const _kActiveTabKey = 'active_tab';
 const kDefaultLocale    = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
-const kDefaultThousands = true;
-const kDefaultHour24    = true;
+const kDefaultThousandsSep = true;
+const kDefaultHourFormat24 = true;
+const kDefaultDateWithDetails = true;
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
@@ -54,6 +56,16 @@ Future<bool> loadHourFormat24() async {
 Future<void> saveHourFormat24(bool use24) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool(_kHourFormatKey, use24);
+}
+
+Future<bool> loadDateWithDetails() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kDateWithDetails) ?? true;
+}
+
+Future<void> saveDateWithDetails(bool showDetails) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kDateWithDetails, showDetails);
 }
 
 Future<Locale?> loadLocale() async {

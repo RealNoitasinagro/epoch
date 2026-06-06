@@ -7,6 +7,16 @@
       }
     }
   },
+  "@dateSubtitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
   "@maxValuesReached": {
     "placeholders": {
       "count": {
@@ -34,6 +44,7 @@
   "cancel": "Abbrechen",
   "copiedToClipboard": "Kopiert: {label}",
   "copyToClipboard": "In Zwischenablage kopieren",
+  "dateSubtitle": "Kalenderwoche {week} · Tag des Jahres {day}",
   "deleteTab": "Tab löschen",
   "deselect": "Abwählen",
   "deselectAll": "Alle abwählen",
@@ -94,6 +105,8 @@
   "selectValueType": "Werttyp auswählen",
   "settings": "Einstellungen",
   "settingsAbout": "Über die App",
+  "settingsDateWithDetails": "Erweitertes Datum",
+  "settingsDateWithDetailsSub": "Ein = mit Kalenderwoche und Tag des Jahres",
   "settingsHourFormat": "24-Stunden-Format",
   "settingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
   "settingsLanguage": "Sprache",
@@ -104,6 +117,7 @@
   "settingsThemeSystem": "System",
   "settingsThousandsSep": "Tausendertrennzeichen",
   "settingsThousandsSepSub": "z. B. 1.746.000 statt 1746000",
+  "settingsWhatsNew": "Was ist neu",
   "tabAstronomical": "Astronomisch",
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",

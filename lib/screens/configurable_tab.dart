@@ -20,6 +20,7 @@ class ConfigurableTab extends StatefulWidget {
   final List<TimeValue> entries;
   final bool thousandsSep;
   final bool hourFormat24;
+  final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TimeValue>> onEntriesChanged;
   final List<ValueType>? allowedTypes; // null = all types allowed
@@ -31,6 +32,7 @@ class ConfigurableTab extends StatefulWidget {
     required this.onEntriesChanged,
     this.thousandsSep = true,
     this.hourFormat24 = true,
+    this.showDateDetails = true,
     this.maxEntries = 20,
     this.allowedTypes,
   });
@@ -165,6 +167,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       locale: locale,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
+      showDateDetails: widget.showDateDetails,
     );
   }
 
@@ -214,13 +217,25 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       localIanaZone: localIanaZone,
     );
 
+    String? editSubtitle;
+    if (entry.type == ValueType.date && widget.showDateDetails) {
+      final dt = switch (entry.zone) {
+        ZoneLocal()                  => widget.now,
+        ZoneUtc()                    => widget.now.toUtc(),
+        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
+      };
+      editSubtitle = l10n.dateSubtitle(
+          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
+    }
+
+    final split = TimeStringRow.splitZoneOffset(displayValue);
+    final line2 = editSubtitle ?? split.line2;
+
     final zonedNow = switch (entry.zone) {
       ZoneLocal()                  => widget.now,
       ZoneUtc()                    => widget.now.toUtc(),
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
     };
-
-    final split = TimeStringRow.splitZoneOffset(displayValue);
 
     return Dismissible(
       key: ValueKey(entry.key),

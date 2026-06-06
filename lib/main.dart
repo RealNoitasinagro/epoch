@@ -79,8 +79,9 @@ class EpochApp extends StatefulWidget {
 
 class _EpochAppState extends State<EpochApp> {
   AppThemeMode _themeMode  = kDefaultThemeMode;
-  bool _thousandsSep       = kDefaultThousands;
-  bool _hourFormat24       = kDefaultHour24;
+  bool _thousandsSep       = kDefaultThousandsSep;
+  bool _hourFormat24       = kDefaultHourFormat24;
+  bool _dateWithDetails    = kDefaultDateWithDetails;
   bool _settingsLoaded     = false;
   Locale _locale           = kDefaultLocale;
   String _localIanaZone    = 'UTC';
@@ -92,10 +93,11 @@ class _EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadSettings() async {
-    final theme     = await loadThemeMode();
-    final thousands = await loadThousandsSep();
-    final hour24    = await loadHourFormat24();
-    final locale    = await loadLocale() ?? kDefaultLocale;
+    final theme           = await loadThemeMode();
+    final thousands       = await loadThousandsSep();
+    final hour24          = await loadHourFormat24();
+    final dateWithDetails = await loadDateWithDetails();
+    final locale          = await loadLocale() ?? kDefaultLocale;
 
     String localZone = 'UTC';
     try {
@@ -106,12 +108,13 @@ class _EpochAppState extends State<EpochApp> {
     }
     
     setState(() {
-      _themeMode    = theme;
-      _thousandsSep = thousands;
-      _hourFormat24 = hour24;
-      _locale       = locale;
-      _localIanaZone = localZone;
-      _settingsLoaded = true;
+      _themeMode       = theme;
+      _thousandsSep    = thousands;
+      _hourFormat24    = hour24;
+      _dateWithDetails = dateWithDetails;
+      _locale          = locale;
+      _localIanaZone   = localZone;
+      _settingsLoaded  = true;
     });
   }
 
@@ -130,6 +133,11 @@ class _EpochAppState extends State<EpochApp> {
     saveHourFormat24(v);
   }
 
+  void setDateWithDetails(bool v) {
+    setState(() => _dateWithDetails = v);
+    saveDateWithDetails(v);
+  }
+
   void setLocale(Locale l) {
     setState(() => _locale = l);
     saveLocale(l.languageCode);
@@ -140,6 +148,7 @@ class _EpochAppState extends State<EpochApp> {
   AppThemeMode get themeMode  => _themeMode;
   bool get thousandsSep       => _thousandsSep;
   bool get hourFormat24       => _hourFormat24;
+  bool get dateWithDetails    => _dateWithDetails;
   Locale? get locale          => _locale;
   bool get isNightMode        => _themeMode == AppThemeMode.night;
 
@@ -428,6 +437,7 @@ class _HomeScreenState extends State<HomeScreen>
             entries: _civilEntries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
+            showDateDetails: app.dateWithDetails,
             onEntriesChanged: _onCivilChanged,
           ),
           TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
@@ -438,6 +448,7 @@ class _HomeScreenState extends State<HomeScreen>
             entries: tab.entries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
+            showDateDetails: app.dateWithDetails,
             onEntriesChanged: (e) =>
                 _onCustomTabEntriesChanged(tab.id, e),
           )),

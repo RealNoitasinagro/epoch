@@ -164,4 +164,13 @@ class TimeUtils {
         ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
         : '$hh:$mm:$ss';
   }
+
+  static int dayOfYear(DateTime dt) =>
+      dt.difference(DateTime(dt.year, 1, 1)).inDays + 1;
+
+  static int isoWeekNumber(DateTime dt) {
+    final doy = dayOfYear(dt);
+    final dow = dt.weekday;
+    return ((doy - dow + 10) / 7).floor();
+  }
 }

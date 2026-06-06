@@ -170,6 +170,12 @@ abstract class AppLocalizations {
   /// **'Copy to clipboard'**
   String get copyToClipboard;
 
+  /// No description provided for @dateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar week {week} · Day of the year {day}'**
+  String dateSubtitle(int week, int day);
+
   /// No description provided for @deleteTab.
   ///
   /// In en, this message translates to:
@@ -530,6 +536,18 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsDateWithDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Expanded Date'**
+  String get settingsDateWithDetails;
+
+  /// No description provided for @settingsDateWithDetailsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'On = with calender week and day of the year'**
+  String get settingsDateWithDetailsSub;
+
   /// No description provided for @settingsHourFormat.
   ///
   /// In en, this message translates to:
@@ -589,6 +607,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
+
+  /// No description provided for @settingsWhatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get settingsWhatsNew;
 
   /// No description provided for @tabAstronomical.
   ///
