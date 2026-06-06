@@ -1,6 +1,7 @@
 // Universal tile with fixed height, three-layer structure.
 // Handles text values, graphical clocks, and edit mode uniformly.
 import 'package:flutter/material.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 
 class ValueTile extends StatelessWidget {
@@ -10,6 +11,7 @@ class ValueTile extends StatelessWidget {
   static const double textTileHeight    = 88.0;
   static const double graphicTileHeight = 200.0; // fits 6 bit rows
   final double? height; // null = textTileHeight
+  final bool showZoneIndicator;
 
   const ValueTile({
     super.key,
@@ -17,6 +19,7 @@ class ValueTile extends StatelessWidget {
     required this.content,
     required this.actionSlots,
     this.height,
+    this.showZoneIndicator = true,
   });
 
   @override
@@ -31,7 +34,9 @@ class ValueTile extends StatelessWidget {
         color: tileBg,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.fromLTRB(10, 6, 4, 6),
+      padding: const EdgeInsets.fromLTRB(
+          kTabHorizontalPadding, kTabVerticalPadding,
+          kTabHorizontalPadding, kTabVerticalPadding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -40,12 +45,21 @@ class ValueTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  label,
-                  style: textTheme.labelSmall?.copyWith(
-                    letterSpacing: 1.5,
-                    color: colorScheme.onSurface.withAlpha(150),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      label,
+                      style: textTheme.labelSmall?.copyWith(
+                        letterSpacing: 1.5,
+                        color: colorScheme.onSurface.withAlpha(150),
+                      ),
+                    ),
+                    if (showZoneIndicator) ...[
+                      const SizedBox(width: 4),
+                      Icon(Icons.language, size: 10,
+                          color: colorScheme.onSurface.withAlpha(150)),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Expanded(child: content),

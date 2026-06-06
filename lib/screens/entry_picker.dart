@@ -42,6 +42,7 @@ enum _Step { valueType, zone }
 class _EntryPickerState extends State<_EntryPicker> {
   _Step _step = _Step.valueType;
   ValueType? _type;
+  final bool showZoneIndicator = true;
 
   bool _isAllowed(ValueType t) =>
       widget.allowedTypes == null || widget.allowedTypes!.contains(t);
@@ -120,16 +121,11 @@ class _EntryPickerState extends State<_EntryPicker> {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
-              child: Text(
-                _typeLabelFor(t, l10n),
-                style: disabled
-                    ? TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withAlpha(80),
-                )
-                    : null,
+              child: _typeLabel(
+                  context,
+                  _typeLabelFor(t, l10n),
+                  disabled,
+                  !t.isZoneIndependent
               ),
             );
           }),
@@ -141,16 +137,11 @@ class _EntryPickerState extends State<_EntryPicker> {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
-              child: Text(
-                _typeLabelFor(t, l10n),
-                style: disabled
-                    ? TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withAlpha(80),
-                )
-                    : null,
+              child: _typeLabel(
+                  context,
+                  _typeLabelFor(t, l10n),
+                  disabled,
+                  !t.isZoneIndependent
               ),
             );
           }),
@@ -162,16 +153,11 @@ class _EntryPickerState extends State<_EntryPicker> {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
-              child: Text(
-                _typeLabelFor(t, l10n),
-                style: disabled
-                    ? TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withAlpha(80),
-                )
-                    : null,
+              child: _typeLabel(
+                  context,
+                  _typeLabelFor(t, l10n),
+                  disabled,
+                  !t.isZoneIndependent
               ),
             );
           }),
@@ -183,16 +169,11 @@ class _EntryPickerState extends State<_EntryPicker> {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
-              child: Text(
-                _typeLabelFor(t, l10n),
-                style: disabled
-                    ? TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withAlpha(80),
-                )
-                    : null,
+              child: _typeLabel(
+                  context,
+                  _typeLabelFor(t, l10n),
+                  disabled,
+                  !t.isZoneIndependent
               ),
             );
           }),
@@ -205,6 +186,23 @@ class _EntryPickerState extends State<_EntryPicker> {
             child: Text(l10n.cancel),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _typeLabel(BuildContext context, String label, bool disabled, bool zoneDependent) {
+    final color = disabled
+        ? Theme.of(context).colorScheme.onSurface.withAlpha(80)
+        : null;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label, style: color != null ? TextStyle(color: color) : null),
+        if (zoneDependent) ...[
+          const SizedBox(width: 4),
+          Icon(Icons.language, size: 10,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
+        ],
       ],
     );
   }

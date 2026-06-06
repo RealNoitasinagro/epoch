@@ -63,6 +63,7 @@ class TimeStringRow extends TimeValueRow {
 
     return ValueTile(
       label: timeValue.localizedLabel(l10n),
+      showZoneIndicator: !timeValue.isZoneIndependent,
       content: TextValueContent(line1: split.line1, line2: split.line2),
       actionSlots: [
         IconButton(

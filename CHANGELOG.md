@@ -4,6 +4,7 @@
 
 ### Added
 - value count for each tab
+- visual marker for timezone-dependant values
 
 ### Changed
 - up tp 4 custom tabs rather than 3

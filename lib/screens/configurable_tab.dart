@@ -239,6 +239,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       },
       child: ValueTile(
         label: entry.localizedLabel(l10n),
+        showZoneIndicator: !entry.isZoneIndependent,
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(
