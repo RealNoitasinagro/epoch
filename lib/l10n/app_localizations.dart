@@ -464,12 +464,6 @@ abstract class AppLocalizations {
   /// **'Doomsday Clock'**
   String get sectionDoomsdayClock;
 
-  /// No description provided for @sectionEpoch.
-  ///
-  /// In en, this message translates to:
-  /// **'Unix Epoch'**
-  String get sectionEpoch;
-
   /// No description provided for @sectionGps.
   ///
   /// In en, this message translates to:
@@ -493,6 +487,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sidereal Time'**
   String get sectionSidereal;
+
+  /// No description provided for @sectionUnix.
+  ///
+  /// In en, this message translates to:
+  /// **'Unix Epoch'**
+  String get sectionUnix;
 
   /// No description provided for @selectAll.
   ///

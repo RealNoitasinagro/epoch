@@ -219,9 +219,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionDoomsdayClock => 'Doomsday Clock';
 
   @override
-  String get sectionEpoch => 'Unix Epoch';
-
-  @override
   String get sectionGps => 'Global Positioning System';
 
   @override
@@ -232,6 +229,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionSidereal => 'Sidereal Time';
+
+  @override
+  String get sectionUnix => 'Unix Epoch';
 
   @override
   String get selectAll => 'Select all';

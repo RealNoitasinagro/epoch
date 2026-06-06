@@ -1,6 +1,7 @@
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
@@ -132,7 +133,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Widget _buildDisplayList(AppLocalizations l10n, String locale) {
     return ListView.separated(
       controller: _scrollController,
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+      padding: const EdgeInsets.fromLTRB(
+          kTabHorizontalPadding, kTabVerticalPadding,
+          kTabHorizontalPadding, 80),
       itemCount: widget.entries.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
@@ -169,7 +172,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     return ReorderableListView.builder(
       scrollController: _scrollController,
       buildDefaultDragHandles: false, // we provide our own via ReorderableDragStartListener
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(
+          kTabHorizontalPadding, kTabVerticalPadding,
+          kTabHorizontalPadding, 80),
       itemCount: widget.entries.length,
       onReorderItem: (oldIndex, newIndex) {
         final updated = List<TimeValue>.of(widget.entries);
@@ -337,6 +342,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           editMode: _editMode,
           allChecked: _allChecked,
           anyChecked: _checked.isNotEmpty,
+          entryCount: widget.entries.length,
           onToggleEditMode: _toggleEditMode,
           onToggleMasterCheck: _toggleMasterCheck,
           onDeleteChecked: _removeChecked,
@@ -375,6 +381,7 @@ class _EditToolbar extends StatelessWidget {
   final bool editMode;
   final bool allChecked;
   final bool anyChecked;
+  final int entryCount;
   final VoidCallback onToggleEditMode;
   final VoidCallback onToggleMasterCheck;
   final VoidCallback onDeleteChecked;
@@ -384,6 +391,7 @@ class _EditToolbar extends StatelessWidget {
     required this.editMode,
     required this.allChecked,
     required this.anyChecked,
+    required this.entryCount,
     required this.onToggleEditMode,
     required this.onToggleMasterCheck,
     required this.onDeleteChecked,
@@ -394,9 +402,17 @@ class _EditToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+      padding: const EdgeInsets.fromLTRB(
+          kTabHorizontalPadding, kTabVerticalPadding,
+          kTabHorizontalPadding, kTabVerticalPadding),
       child: Row(
         children: [
+          Text(
+            l10n.tabValueCount(entryCount),
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            ),
+          ),
           const Spacer(),
           if (editMode && anyChecked)
             IconButton(

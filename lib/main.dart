@@ -262,26 +262,6 @@ class _HomeScreenState extends State<HomeScreen>
     setState(() {});
   }
 
-  int _activeTabEntryCount() {
-    final idx = _tabController?.index ?? 0;
-    switch (idx) {
-      case 0:
-        return _civilEntries.length;  // Civil
-      case 1:
-        return 3;  // Technical
-      case 2:
-        return 3;  // Astronomical
-      case 3:
-        return 5;  // Curiosities
-      default:  // >= 4
-        return _customTabs[idx - 4].entries.length;  // Custom Tabs
-    }
-  }
-
-  String _entryCountLabel(int count, AppLocalizations l10n) {
-    return l10n.tabValueCount(count);
-  }
-
   void _onTabChanged() {
     if (!mounted) return;
     if (_tabController!.indexIsChanging) return;
@@ -404,19 +384,7 @@ class _HomeScreenState extends State<HomeScreen>
         title: GestureDetector(
           onDoubleTap: _toggleFullscreen,
           onLongPress: () => _showBuildInfo(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(l10n.appName),
-              Text(
-                _entryCountLabel(_activeTabEntryCount(), l10n),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-                ),
-              ),
-            ],
-          ),
+          child: Text(l10n.appName),
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
