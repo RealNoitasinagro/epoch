@@ -1,5 +1,13 @@
 import 'package:epoch/models/time_value.dart';
 
+const curiosityTypes = [
+  ValueType.binaryClockString,
+  ValueType.binaryClockColumns,
+  ValueType.binaryClockBcd,
+  ValueType.swatchBeats,
+  ValueType.doomsdayClock
+];
+
 const curiositiesEntries = [
   TimeValue(type: ValueType.swatchBeats, zone: ZoneUtc()),
   TimeValue(type: ValueType.binaryClockColumns, zone: ZoneLocal()),

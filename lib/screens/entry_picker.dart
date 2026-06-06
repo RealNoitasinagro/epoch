@@ -1,4 +1,9 @@
+import 'package:epoch/models/astronomical_tab_config.dart';
+import 'package:epoch/models/civil_tab_config.dart';
+import 'package:epoch/models/curiosities_tab_config.dart';
+import 'package:epoch/models/technical_tab_config.dart';
 import 'package:flutter/material.dart';
+import '../layout_constants.dart';
 import '../models/time_value.dart';
 import '../l10n/app_localizations.dart';
 import 'timezone_search_screen.dart';
@@ -101,40 +106,17 @@ class _EntryPickerState extends State<_EntryPicker> {
     final l10n = AppLocalizations.of(context)!;
 
     // Groups: only show a group if at least one type in it is allowed.
-    final civilTypes = [
-      ValueType.date,
-      ValueType.time,
-      ValueType.dateTime,
-      ValueType.daySecond,
-      ValueType.dayPercent,
-    ].where(_isAllowed).toList();
-
-    final technicalTypes = [
-      ValueType.unixSeconds,
-      ValueType.tai,
-      ValueType.gps,
-    ].where(_isAllowed).toList();
-
-    final astronomicalTypes = [
-      ValueType.gmst,
-      ValueType.julianDate,
-      ValueType.modifiedJulianDate,
-    ].where(_isAllowed).toList();
-
-    final curiosityTypes = [
-      ValueType.binaryClockString,
-      ValueType.binaryClockColumns,
-      ValueType.binaryClockBcd,
-      ValueType.swatchBeats,
-      ValueType.doomsdayClock
-    ].where(_isAllowed).toList();
+    final civilTypesAllowed = civilTypes.where(_isAllowed).toList();
+    final technicalTypesAllowed = technicalTypes.where(_isAllowed).toList();
+    final astronomicalTypesAllowed = astronomicalTypes.where(_isAllowed).toList();
+    final curiosityTypesAllowed = curiosityTypes.where(_isAllowed).toList();
 
     return SimpleDialog(
       title: Text(l10n.selectValueType),
       children: [
-        if (civilTypes.isNotEmpty) ...[
+        if (civilTypesAllowed.isNotEmpty) ...[
           _sectionLabel(context, l10n.tabCivil),
-          ...civilTypes.map((t) {
+          ...civilTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
@@ -152,10 +134,10 @@ class _EntryPickerState extends State<_EntryPicker> {
             );
           }),
         ],
-        if (technicalTypes.isNotEmpty) ...[
+        if (technicalTypesAllowed.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabTechnical),
-          ...technicalTypes.map((t) {
+          ...technicalTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
@@ -173,10 +155,10 @@ class _EntryPickerState extends State<_EntryPicker> {
             );
           }),
         ],
-        if (astronomicalTypes.isNotEmpty) ...[
+        if (astronomicalTypesAllowed.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabAstronomical),
-          ...astronomicalTypes.map((t) {
+          ...astronomicalTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
@@ -194,10 +176,10 @@ class _EntryPickerState extends State<_EntryPicker> {
             );
           }),
         ],
-        if (curiosityTypes.isNotEmpty) ...[
+        if (curiosityTypesAllowed.isNotEmpty) ...[
           const Divider(),
           _sectionLabel(context, l10n.tabCuriosities),
-          ...curiosityTypes.map((t) {
+          ...curiosityTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
               onPressed: disabled ? null : () => _selectType(t),
@@ -230,7 +212,9 @@ class _EntryPickerState extends State<_EntryPicker> {
   Widget _buildZoneStep() {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      titlePadding: const EdgeInsets.fromLTRB(8, 16, 24, 0),
+      titlePadding: const EdgeInsets.fromLTRB(
+          kTabHorizontalPadding, kTabVerticalPadding,
+          kTabHorizontalPadding, kTabVerticalPadding),
       title: EntryPickerDialogTitle(
         superLabel: _typeLabelFor(_type!, l10n),
         title: l10n.selectTimezone,
@@ -276,7 +260,9 @@ class _EntryPickerState extends State<_EntryPicker> {
   }
 
   Widget _sectionLabel(BuildContext context, String text) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
+    padding: const EdgeInsets.fromLTRB(
+        kTabHorizontalPadding, kTabVerticalPadding,
+        kTabHorizontalPadding, kTabVerticalPadding),
     child: Text(
       text.toUpperCase(),
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
