@@ -206,12 +206,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final isGraphical = entry.type.isGraphical;
 
+    final zonedNow = switch (entry.zone) {
+      ZoneLocal()                  => widget.now,
+      ZoneUtc()                    => widget.now.toUtc(),
+      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
+    };
+
     final displayValue = isGraphical
         ? '[${l10n.binaryClockPlaceholder}]'
         : TimeValueFormatter.format(
-      entry,
-      widget.now,
-      locale,
+      entry, widget.now, locale,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       localIanaZone: localIanaZone,
@@ -219,23 +223,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     String? editSubtitle;
     if (entry.type == ValueType.date && widget.showDateDetails) {
-      final dt = switch (entry.zone) {
-        ZoneLocal()                  => widget.now,
-        ZoneUtc()                    => widget.now.toUtc(),
-        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
-      };
       editSubtitle = l10n.dateSubtitle(
-          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
+          TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
     }
 
     final split = TimeStringRow.splitZoneOffset(displayValue);
     final line2 = editSubtitle ?? split.line2;
-
-    final zonedNow = switch (entry.zone) {
-      ZoneLocal()                  => widget.now,
-      ZoneUtc()                    => widget.now.toUtc(),
-      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
-    };
 
     return Dismissible(
       key: ValueKey(entry.key),

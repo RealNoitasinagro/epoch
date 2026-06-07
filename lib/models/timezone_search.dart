@@ -167,6 +167,8 @@ List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
 
 // ── Database ──────────────────────────────────────────────────────────────────
 
+// For details, cf. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
 const List<TzEntry> tzDatabase = [
 
   // ── Europe ───────────────────────────────────────────────────────────
@@ -204,6 +206,11 @@ const List<TzEntry> tzDatabase = [
     terms: [..._tCet,
       'berlin', 'germany', 'deutschland', 'hamburg', 'munich', 'münchen',
       'frankfurt', 'cologne', 'köln', 'düsseldorf',
+      'stockholm', 'sweden', 'schweden', 'sverige',
+      'gothenburg', 'göteborg',
+      'oslo', 'norway', 'norwegen', 'norge', 'bergen',
+      'copenhagen', 'kopenhagen', 'denmark', 'dänemark', 'danmark',
+      'longyearbyen', 'svalbard', 'spitsbergen', 'spitzbergen',
     ],
   ),
   TzEntry(
@@ -237,13 +244,6 @@ const List<TzEntry> tzDatabase = [
     abbrWinter: 'CET', abbrSummer: 'CEST',
     terms: [..._tCet,
       'brussels', 'brüssel', 'bruxelles', 'belgium', 'belgien', 'belgique',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Europe/Amsterdam',
-    offsetWinter: '+01:00', offsetSummer: '+02:00',
-    abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: [..._tCet,
       'amsterdam', 'netherlands', 'niederlande', 'holland', 'rotterdam',
     ],
   ),
@@ -290,31 +290,6 @@ const List<TzEntry> tzDatabase = [
     ],
   ),
   TzEntry(
-    ianaZone: 'Europe/Stockholm',
-    offsetWinter: '+01:00', offsetSummer: '+02:00',
-    abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: [..._tCet,
-      'stockholm', 'sweden', 'schweden', 'sverige',
-      'gothenburg', 'göteborg',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Europe/Oslo',
-    offsetWinter: '+01:00', offsetSummer: '+02:00',
-    abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: [..._tCet,
-      'oslo', 'norway', 'norwegen', 'norge', 'bergen',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Europe/Copenhagen',
-    offsetWinter: '+01:00', offsetSummer: '+02:00',
-    abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: [..._tCet,
-      'copenhagen', 'kopenhagen', 'denmark', 'dänemark', 'danmark',
-    ],
-  ),
-  TzEntry(
     ianaZone: 'Europe/Helsinki',
     offsetWinter: '+02:00', offsetSummer: '+03:00',
     abbrWinter: 'EET', abbrSummer: 'EEST',
@@ -339,7 +314,7 @@ const List<TzEntry> tzDatabase = [
     ],
   ),
   TzEntry(
-    ianaZone: 'Europe/Kiev',
+    ianaZone: 'Europe/Kyiv',
     offsetWinter: '+02:00', offsetSummer: '+03:00',
     abbrWinter: 'EET', abbrSummer: 'EEST',
     terms: [..._tEet,
@@ -411,6 +386,7 @@ const List<TzEntry> tzDatabase = [
     abbrWinter: 'GMT', abbrSummer: 'GMT',
     terms: [..._tGmt,
       'abidjan', 'ivory coast', 'elfenbeinküste', 'cote divoire',
+      'reykjavik', 'iceland', 'island',
     ],
   ),
   TzEntry(
@@ -656,13 +632,6 @@ const List<TzEntry> tzDatabase = [
     terms: [
       'sgt', 'singapore time',
       'singapore', 'singapur',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Asia/Kuala_Lumpur',
-    offsetWinter: '+08:00', offsetSummer: '+08:00',
-    abbrWinter: 'MYT', abbrSummer: 'MYT',
-    terms: [
       'myt', 'malaysia time',
       'kuala lumpur', 'malaysia',
     ],
@@ -779,6 +748,7 @@ const List<TzEntry> tzDatabase = [
     terms: [
       'nzst', 'nzdt', 'new zealand standard time',
       'auckland', 'new zealand', 'neuseeland', 'wellington',
+      'mcmurdo', 'antarctica', 'antarktis', 'south pole', 'südpol',
     ],
   ),
   TzEntry(
@@ -836,12 +806,12 @@ const List<TzEntry> tzDatabase = [
     ],
   ),
   TzEntry(
-    ianaZone: 'Pacific/Midway',
+    ianaZone: 'Pacific/Pago_Pago',  // was: Pacific/Midway
     offsetWinter: '-11:00', offsetSummer: '-11:00',
     abbrWinter: 'SST', abbrSummer: 'SST',
     terms: [
       'sst', 'samoa standard time',
-      'midway', 'samoa', 'american samoa',
+      'midway', 'pago pago', 'samoa', 'american samoa',
     ],
   ),
   TzEntry(
@@ -883,14 +853,6 @@ const List<TzEntry> tzDatabase = [
     ],
   ),
   TzEntry(
-    ianaZone: 'Atlantic/Reykjavik',
-    offsetWinter: '+00:00', offsetSummer: '+00:00',
-    abbrWinter: 'GMT', abbrSummer: 'GMT',
-    terms: [..._tGmt,
-      'reykjavik', 'iceland', 'island',
-    ],
-  ),
-  TzEntry(
     ianaZone: 'Atlantic/South_Georgia',
     offsetWinter: '-02:00', offsetSummer: '-02:00',
     abbrWinter: 'GST', abbrSummer: 'GST',
@@ -906,23 +868,6 @@ const List<TzEntry> tzDatabase = [
     terms: [..._tWet,
       'canary', 'kanaren', 'tenerife', 'teneriffa', 'gran canaria',
       'lanzarote', 'fuerteventura',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Arctic/Longyearbyen',
-    offsetWinter: '+01:00', offsetSummer: '+02:00',
-    abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: [..._tCet,
-      'longyearbyen', 'svalbard', 'spitsbergen', 'spitzbergen',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Antarctica/McMurdo',
-    offsetWinter: '+12:00', offsetSummer: '+13:00',
-    abbrWinter: 'NZST', abbrSummer: 'NZDT',
-    terms: [
-      'nzst', 'nzdt',
-      'mcmurdo', 'antarctica', 'antarktis', 'south pole', 'südpol',
     ],
   ),
   TzEntry(

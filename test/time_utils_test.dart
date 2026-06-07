@@ -1,6 +1,8 @@
 import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/time_utils.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tzd;
 
 void main() {
   group('TimeUtils.unixTimestamp', () {
@@ -197,6 +199,490 @@ void main() {
     test('small decimal no thousands needed', () {
       expect(TimeValueFormatter.formatDecimal(96.348, 'en', 3),
           equals('96.348'));
+    });
+  });
+
+  group('IANA timezone names', () {
+    tzd.initializeTimeZones();
+
+    test('Europe/London', () {
+      String ianaZone = 'Europe/London';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Dublin', () {
+      String ianaZone = 'Europe/Dublin';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Lisbon', () {
+      String ianaZone = 'Europe/Lisbon';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Berlin', () {
+      String ianaZone = 'Europe/Berlin';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Vienna', () {
+      String ianaZone = 'Europe/Vienna';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Zurich', () {
+      String ianaZone = 'Europe/Zurich';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Paris', () {
+      String ianaZone = 'Europe/Paris';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Brussels', () {
+      String ianaZone = 'Europe/Brussels';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Madrid', () {
+      String ianaZone = 'Europe/Madrid';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Rome', () {
+      String ianaZone = 'Europe/Rome';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Prague', () {
+      String ianaZone = 'Europe/Prague';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Warsaw', () {
+      String ianaZone = 'Europe/Warsaw';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Budapest', () {
+      String ianaZone = 'Europe/Budapest';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Helsinki', () {
+      String ianaZone = 'Europe/Helsinki';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Athens', () {
+      String ianaZone = 'Europe/Athens';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Bucharest', () {
+      String ianaZone = 'Europe/Bucharest';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Kyiv', () {
+      String ianaZone = 'Europe/Kyiv';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Istanbul', () {
+      String ianaZone = 'Europe/Istanbul';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Europe/Moscow', () {
+      String ianaZone = 'Europe/Moscow';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Casablanca', () {
+      String ianaZone = 'Africa/Casablanca';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Cairo', () {
+      String ianaZone = 'Africa/Cairo';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Johannesburg', () {
+      String ianaZone = 'Africa/Johannesburg';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Nairobi', () {
+      String ianaZone = 'Africa/Nairobi';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Lagos', () {
+      String ianaZone = 'Africa/Lagos';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Abidjan', () {
+      String ianaZone = 'Africa/Abidjan';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Africa/Tunis', () {
+      String ianaZone = 'Africa/Tunis';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/New_York', () {
+      String ianaZone = 'America/New_York';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Chicago', () {
+      String ianaZone = 'America/Chicago';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Denver', () {
+      String ianaZone = 'America/Denver';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Los_Angeles', () {
+      String ianaZone = 'America/Los_Angeles';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Anchorage', () {
+      String ianaZone = 'America/Anchorage';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Toronto', () {
+      String ianaZone = 'America/Toronto';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Vancouver', () {
+      String ianaZone = 'America/Vancouver';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Halifax', () {
+      String ianaZone = 'America/Halifax';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/St_Johns', () {
+      String ianaZone = 'America/St_Johns';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Mexico_City', () {
+      String ianaZone = 'America/Mexico_City';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Bogota', () {
+      String ianaZone = 'America/Bogota';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Sao_Paulo', () {
+      String ianaZone = 'America/Sao_Paulo';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('America/Argentina/Buenos_Aires', () {
+      String ianaZone = 'America/Argentina/Buenos_Aires';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Dubai', () {
+      String ianaZone = 'Asia/Dubai';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Tehran', () {
+      String ianaZone = 'Asia/Tehran';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Karachi', () {
+      String ianaZone = 'Asia/Karachi';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Kolkata', () {
+      String ianaZone = 'Asia/Kolkata';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Colombo', () {
+      String ianaZone = 'Asia/Colombo';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Kathmandu', () {
+      String ianaZone = 'Asia/Kathmandu';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Dhaka', () {
+      String ianaZone = 'Asia/Dhaka';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Yangon', () {
+      String ianaZone = 'Asia/Yangon';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Bangkok', () {
+      String ianaZone = 'Asia/Bangkok';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Jakarta', () {
+      String ianaZone = 'Asia/Jakarta';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Shanghai', () {
+      String ianaZone = 'Asia/Shanghai';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Hong_Kong', () {
+      String ianaZone = 'Asia/Hong_Kong';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Singapore', () {
+      String ianaZone = 'Asia/Singapore';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Taipei', () {
+      String ianaZone = 'Asia/Taipei';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Manila', () {
+      String ianaZone = 'Asia/Manila';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Seoul', () {
+      String ianaZone = 'Asia/Seoul';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Tokyo', () {
+      String ianaZone = 'Asia/Tokyo';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Baghdad', () {
+      String ianaZone = 'Asia/Baghdad';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Perth', () {
+      String ianaZone = 'Australia/Perth';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Darwin', () {
+      String ianaZone = 'Australia/Darwin';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Brisbane', () {
+      String ianaZone = 'Australia/Brisbane';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Adelaide', () {
+      String ianaZone = 'Australia/Adelaide';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Sydney', () {
+      String ianaZone = 'Australia/Sydney';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Hobart', () {
+      String ianaZone = 'Australia/Hobart';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Australia/Lord_Howe', () {
+      String ianaZone = 'Australia/Lord_Howe';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Auckland', () {
+      String ianaZone = 'Pacific/Auckland';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Honolulu', () {
+      String ianaZone = 'Pacific/Honolulu';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Fiji', () {
+      String ianaZone = 'Pacific/Fiji';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Guam', () {
+      String ianaZone = 'Pacific/Guam';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Tongatapu', () {
+      String ianaZone = 'Pacific/Tongatapu';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Tahiti', () {
+      String ianaZone = 'Pacific/Tahiti';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Marquesas', () {
+      String ianaZone = 'Pacific/Marquesas';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Pago_Pago', () {
+      String ianaZone = 'Pacific/Pago_Pago';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Norfolk', () {
+      String ianaZone = 'Pacific/Norfolk';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Pacific/Port_Moresby', () {
+      String ianaZone = 'Pacific/Port_Moresby';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Atlantic/Azores', () {
+      String ianaZone = 'Atlantic/Azores';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Atlantic/Cape_Verde', () {
+      String ianaZone = 'Atlantic/Cape_Verde';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Atlantic/South_Georgia', () {
+      String ianaZone = 'Atlantic/South_Georgia';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Atlantic/Canary', () {
+      String ianaZone = 'Atlantic/Canary';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Antarctica/Troll', () {
+      String ianaZone = 'Antarctica/Troll';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Antarctica/Palmer', () {
+      String ianaZone = 'Antarctica/Palmer';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
     });
   });
 }

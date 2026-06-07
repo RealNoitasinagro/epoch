@@ -5,8 +5,13 @@ import 'package:week_number/iso.dart';
 class TimeUtils {
   /// Returns TZDateTime for a given IANA time zone.
   static tz.TZDateTime inZone(DateTime utc, String ianaZone) {
-    final location = tz.getLocation(ianaZone);
-    return tz.TZDateTime.from(utc, location);
+    try {
+      final location = tz.getLocation(ianaZone);
+      return tz.TZDateTime.from(utc, location);
+    } catch (_) {
+      // Fallback for outdated/unknown zones:
+      return tz.TZDateTime.from(utc, tz.UTC);
+    }
   }
 
   /// Abbreviated time zone from TZDateTime, e. g. "CEST", "EST".

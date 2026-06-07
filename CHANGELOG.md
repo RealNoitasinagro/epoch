@@ -14,6 +14,7 @@
 ### Fixed
 - JulianDate (was off by 0.5 days)
 - value tile reordering (tile dragged to the end of the list jumped back to last but one position)
+- crashes for outdated timezone names
 
 ### Deprecated
 
