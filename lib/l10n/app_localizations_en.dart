@@ -147,6 +147,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
+  String get infoLinkModifiedJulianDate2000 =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://en.wikipedia.org/wiki/Swatch_Internet_Time';
 
@@ -160,6 +164,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoModifiedJulianDate =>
       'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.';
+
+  @override
+  String get infoModifiedJulianDate2000 =>
+      'Modified Julian Date = JD - 2,451,544.5 (2000-01-01 00:00:00 UTC).';
 
   @override
   String get infoSwatchBeats =>
@@ -370,6 +378,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeModifiedJulianDate => 'Modified Julian Date';
+
+  @override
+  String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';

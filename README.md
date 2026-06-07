@@ -27,7 +27,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Time systems
 - **Civil** – date, time, day second, day percent for any timezone
 - **Technical** – Unix time, TAI, GPS time
-- **Astronomical** – GMST, Julian Date, Modified Julian Date
+- **Astronomical** – GMST, Julian Date, Modified Julian Date (MJD), MJD2000
 - **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
 
 ### Configurable display
@@ -44,6 +44,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
 - 12 / 24-hour format toggle
 - Thousands separator toggle
+- Expanded date toggle
 - Available in English and German
 - Local sidereal time (LMST) and Android widgets coming soon
 - Not yet: conversions between time systems
@@ -58,7 +59,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 16 different time values simultaneously, lets you pick exactly
+Epoch shows you 17 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 It is built for people who are curious about how time actually works.
 

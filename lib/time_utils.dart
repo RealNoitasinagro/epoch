@@ -113,6 +113,10 @@ class TimeUtils {
   static double modifiedJulianDate(DateTime utc) =>
       julianDate(utc.toUtc()) - 2400000.5;
 
+  /// Modified Julian Date 2000: JD − 2451544.5
+  static double modifiedJulianDate2000(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2451544.5;
+
   /// Swatch Internet Time (.beat): 1 day = 1000 beats, based on UTC+1.
   static double swatchBeats(DateTime utc) {
     final bmt = utc.toUtc().add(const Duration(hours: 1));

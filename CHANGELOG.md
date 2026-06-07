@@ -8,6 +8,7 @@
 - visual marker for timezone-dependant values
 - "What's New" under Settings (references CHANGELOG.md on GitHub main branch, = this file)
 - option to expand the date value type with ISO calendar week and day of the year
+- value type: Modified Julian Date 2000
 
 ### Changed
 - up tp 4 custom tabs rather than 3

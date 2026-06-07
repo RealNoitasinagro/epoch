@@ -43,6 +43,10 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.modifiedJulianDate(utcNow), locale, 5,
             thousandsSep: thousandsSep);
+      case ValueType.modifiedJulianDate2000:
+        return formatDecimal(
+            TimeUtils.modifiedJulianDate2000(utcNow), locale, 5,
+            thousandsSep: thousandsSep);
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
       case ValueType.doomsdayClock:

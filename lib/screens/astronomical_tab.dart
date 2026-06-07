@@ -55,6 +55,14 @@ class AstronomicalTab extends StatelessWidget {
                 locale: locale,
                 thousandsSep: thousandsSep,
               ),
+              const SizedBox(height: 12),
+              TimeStringRow(
+                timeValue: const TimeValue(
+                    type: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
+                now: now,
+                locale: locale,
+                thousandsSep: thousandsSep,
+              )
             ],
           )
         ),

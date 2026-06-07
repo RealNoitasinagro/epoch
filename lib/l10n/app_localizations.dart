@@ -332,6 +332,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
   String get infoLinkModifiedJulianDate;
 
+  /// No description provided for @infoLinkModifiedJulianDate2000.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkModifiedJulianDate2000;
+
   /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -355,6 +361,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
   String get infoModifiedJulianDate;
+
+  /// No description provided for @infoModifiedJulianDate2000.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified Julian Date = JD - 2,451,544.5 (2000-01-01 00:00:00 UTC).'**
+  String get infoModifiedJulianDate2000;
 
   /// No description provided for @infoSwatchBeats.
   ///
@@ -733,6 +745,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date'**
   String get valueTypeModifiedJulianDate;
+
+  /// No description provided for @valueTypeModifiedJulianDate2000.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified Julian Date 2000'**
+  String get valueTypeModifiedJulianDate2000;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///
