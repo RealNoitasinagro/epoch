@@ -602,6 +602,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  week_number:
+    dependency: "direct main"
+    description:
+      name: week_number
+      sha256: "4479f6c9bed5240e66d4e14150023edbaee39394797bb1a087cc48f06b1dd96f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   win32:
     dependency: transitive
     description:

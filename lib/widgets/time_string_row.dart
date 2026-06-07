@@ -77,6 +77,9 @@ class TimeStringRow extends TimeValueRow {
     }
     final split = splitZoneOffset(formattedValue);
     final line2 = subtitle ?? split.line2;
+    final clipboardValue = subtitle != null
+        ? '$formattedValue\n$subtitle'
+        : formattedValue;
 
     return ValueTile(
       label: timeValue.localizedLabel(l10n),
@@ -93,7 +96,7 @@ class TimeStringRow extends TimeValueRow {
           icon: const Icon(Icons.copy, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.copyToClipboard,
-          onPressed: () => _copyToClipboard(context, l10n, formattedValue),
+          onPressed: () => _copyToClipboard(context, l10n, clipboardValue),
         ),
         null,
       ],

@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @dateSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Calendar week {week} · Day of the year {day}'**
+  /// **'week {week} · day {day}'**
   String dateSubtitle(int week, int day);
 
   /// No description provided for @deleteTab.
@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'On = with calender week and day of the year'**
+  /// **'On = with ISO calender week, day of the year'**
   String get settingsDateWithDetailsSub;
 
   /// No description provided for @settingsHourFormat.

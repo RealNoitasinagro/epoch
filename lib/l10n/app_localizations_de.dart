@@ -49,7 +49,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String dateSubtitle(int week, int day) {
-    return 'Kalenderwoche $week · Tag des Jahres $day';
+    return 'Woche $week · Tag $day';
   }
 
   @override
@@ -262,7 +262,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsDateWithDetailsSub =>
-      'Ein = mit Kalenderwoche und Tag des Jahres';
+      'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
 
   @override
   String get settingsHourFormat => '24-Stunden-Format';

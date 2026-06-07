@@ -262,7 +262,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
               : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
         )
-            : TextValueContent(line1: split.line1, line2: split.line2),
+            : TextValueContent(line1: split.line1, line2: line2),
         actionSlots: [
           IconButton(
             icon: const Icon(Icons.edit, size: 20),

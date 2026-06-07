@@ -49,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dateSubtitle(int week, int day) {
-    return 'Calendar week $week · Day of the year $day';
+    return 'week $week · day $day';
   }
 
   @override
@@ -261,7 +261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsDateWithDetailsSub =>
-      'On = with calender week and day of the year';
+      'On = with ISO calender week, day of the year';
 
   @override
   String get settingsHourFormat => '24-hour format';

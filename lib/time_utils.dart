@@ -1,5 +1,6 @@
 import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:week_number/iso.dart';
 
 class TimeUtils {
   /// Returns TZDateTime for a given IANA time zone.
@@ -165,12 +166,7 @@ class TimeUtils {
         : '$hh:$mm:$ss';
   }
 
-  static int dayOfYear(DateTime dt) =>
-      dt.difference(DateTime(dt.year, 1, 1)).inDays + 1;
+  static int dayOfYear(DateTime dt) => dt.ordinalDate;
 
-  static int isoWeekNumber(DateTime dt) {
-    final doy = dayOfYear(dt);
-    final dow = dt.weekday;
-    return ((doy - dow + 10) / 7).floor();
-  }
+  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
 }
