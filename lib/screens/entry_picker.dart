@@ -111,12 +111,20 @@ class _EntryPickerState extends State<_EntryPicker> {
     final technicalTypesAllowed = technicalTypes.where(_isAllowed).toList();
     final astronomicalTypesAllowed = astronomicalTypes.where(_isAllowed).toList();
     final curiosityTypesAllowed = curiosityTypes.where(_isAllowed).toList();
+    final totalAllowed = civilTypesAllowed.length
+        + technicalTypesAllowed.length
+        + astronomicalTypesAllowed.length
+        + curiosityTypesAllowed.length;
 
     return SimpleDialog(
-      title: Text(l10n.selectValueType),
+      title: Text(l10n.selectValueType + " (${totalAllowed})"),
       children: [
         if (civilTypesAllowed.isNotEmpty) ...[
-          _sectionLabel(context, l10n.tabCivil),
+          _sectionLabel(
+              context,
+              l10n.tabCivil,
+              civilTypesAllowed.length
+          ),
           ...civilTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
@@ -132,7 +140,11 @@ class _EntryPickerState extends State<_EntryPicker> {
         ],
         if (technicalTypesAllowed.isNotEmpty) ...[
           const Divider(),
-          _sectionLabel(context, l10n.tabTechnical),
+          _sectionLabel(
+              context,
+              l10n.tabTechnical,
+              technicalTypesAllowed.length
+          ),
           ...technicalTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
@@ -148,7 +160,11 @@ class _EntryPickerState extends State<_EntryPicker> {
         ],
         if (astronomicalTypesAllowed.isNotEmpty) ...[
           const Divider(),
-          _sectionLabel(context, l10n.tabAstronomical),
+          _sectionLabel(
+              context,
+              l10n.tabAstronomical,
+              astronomicalTypesAllowed.length
+          ),
           ...astronomicalTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
@@ -164,7 +180,11 @@ class _EntryPickerState extends State<_EntryPicker> {
         ],
         if (curiosityTypesAllowed.isNotEmpty) ...[
           const Divider(),
-          _sectionLabel(context, l10n.tabCuriosities),
+          _sectionLabel(
+              context,
+              l10n.tabCuriosities,
+              curiosityTypesAllowed.length
+          ),
           ...curiosityTypesAllowed.map((t) {
             final disabled = _isDisabled(t);
             return SimpleDialogOption(
@@ -257,12 +277,12 @@ class _EntryPickerState extends State<_EntryPicker> {
     );
   }
 
-  Widget _sectionLabel(BuildContext context, String text) => Padding(
+  Widget _sectionLabel(BuildContext context, String text, int count) => Padding(
     padding: const EdgeInsets.fromLTRB(
         kTabHorizontalPadding, kTabVerticalPadding,
         kTabHorizontalPadding, kTabVerticalPadding),
     child: Text(
-      text.toUpperCase(),
+      text.toUpperCase() + " (${count})",
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
         color: Theme.of(context).colorScheme.primary,
         letterSpacing: 1.5,
