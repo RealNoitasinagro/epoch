@@ -20,7 +20,7 @@ abstract class TimeValueRow extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(timeValue.localizedLabel(l10n)),
+        title: Text(timeValue.localizedDisplayLabel(l10n)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

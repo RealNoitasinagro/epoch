@@ -54,26 +54,6 @@ class _EntryPickerState extends State<_EntryPicker> {
     return widget.existingEntries.any((e) => e.type == t);
   }
 
-  String _typeLabelFor(ValueType t, AppLocalizations l10n) => switch (t) {
-    ValueType.date                   => l10n.valueTypeDate,
-    ValueType.time                   => l10n.valueTypeTime,
-    ValueType.dateTime               => l10n.valueTypeDateTime,
-    ValueType.daySecond              => l10n.valueTypeDaySecond,
-    ValueType.dayPercent             => l10n.valueTypeDayPercent,
-    ValueType.binaryClockString      => l10n.valueTypeBinaryClockString,
-    ValueType.binaryClockColumns     => l10n.valueTypeBinaryClockColumns,
-    ValueType.binaryClockBcd         => l10n.valueTypeBinaryClockBcd,
-    ValueType.unixSeconds            => l10n.valueTypeUnixSeconds,
-    ValueType.tai                    => l10n.valueTypeTai,
-    ValueType.gps                    => l10n.valueTypeGps,
-    ValueType.gmst                   => l10n.valueTypeGmst,
-    ValueType.julianDate             => l10n.valueTypeJulianDate,
-    ValueType.modifiedJulianDate     => l10n.valueTypeModifiedJulianDate,
-    ValueType.modifiedJulianDate2000 => l10n.valueTypeModifiedJulianDate2000,
-    ValueType.swatchBeats            => l10n.valueTypeSwatchBeats,
-    ValueType.doomsdayClock          => l10n.valueTypeDoomsdayClock,
-  };
-
   void _selectType(ValueType t) {
     if (t.isZoneIndependent) {
       Navigator.pop(context, TimeValue(type: t, zone: const ZoneUtc()));
@@ -126,15 +106,15 @@ class _EntryPickerState extends State<_EntryPicker> {
               l10n.tabCivil,
               civilTypesAllowed.length
           ),
-          ...civilTypesAllowed.map((t) {
-            final disabled = _isDisabled(t);
+          ...civilTypesAllowed.map((type) {
+            final disabled = _isDisabled(type);
             return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(t),
+              onPressed: disabled ? null : () => _selectType(type),
               child: _typeLabel(
                   context,
-                  _typeLabelFor(t, l10n),
+                  TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !t.isZoneIndependent
+                  !type.isZoneIndependent
               ),
             );
           }),
@@ -146,15 +126,15 @@ class _EntryPickerState extends State<_EntryPicker> {
               l10n.tabTechnical,
               technicalTypesAllowed.length
           ),
-          ...technicalTypesAllowed.map((t) {
-            final disabled = _isDisabled(t);
+          ...technicalTypesAllowed.map((type) {
+            final disabled = _isDisabled(type);
             return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(t),
+              onPressed: disabled ? null : () => _selectType(type),
               child: _typeLabel(
                   context,
-                  _typeLabelFor(t, l10n),
+                  TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !t.isZoneIndependent
+                  !type.isZoneIndependent
               ),
             );
           }),
@@ -166,15 +146,15 @@ class _EntryPickerState extends State<_EntryPicker> {
               l10n.tabAstronomical,
               astronomicalTypesAllowed.length
           ),
-          ...astronomicalTypesAllowed.map((t) {
-            final disabled = _isDisabled(t);
+          ...astronomicalTypesAllowed.map((type) {
+            final disabled = _isDisabled(type);
             return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(t),
+              onPressed: disabled ? null : () => _selectType(type),
               child: _typeLabel(
                   context,
-                  _typeLabelFor(t, l10n),
+                  TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !t.isZoneIndependent
+                  !type.isZoneIndependent
               ),
             );
           }),
@@ -186,15 +166,15 @@ class _EntryPickerState extends State<_EntryPicker> {
               l10n.tabCuriosities,
               curiosityTypesAllowed.length
           ),
-          ...curiosityTypesAllowed.map((t) {
-            final disabled = _isDisabled(t);
+          ...curiosityTypesAllowed.map((type) {
+            final disabled = _isDisabled(type);
             return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(t),
+              onPressed: disabled ? null : () => _selectType(type),
               child: _typeLabel(
                   context,
-                  _typeLabelFor(t, l10n),
+                  TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !t.isZoneIndependent
+                  !type.isZoneIndependent
               ),
             );
           }),
@@ -235,7 +215,7 @@ class _EntryPickerState extends State<_EntryPicker> {
           kTabHorizontalPadding, kTabVerticalPadding,
           kTabHorizontalPadding, kTabVerticalPadding),
       title: EntryPickerDialogTitle(
-        superLabel: _typeLabelFor(_type!, l10n),
+        superLabel: TimeValue.localizedTypeLabel(_type!, l10n),
         title: l10n.selectTimezone,
         onBack: _goBack,
       ),

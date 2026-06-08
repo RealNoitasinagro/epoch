@@ -8,7 +8,8 @@ class TimeValueFormatter {
   static String format(
       TimeValue value,
       DateTime now,
-      String locale, {
+      String locale,
+      {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         String localIanaZone = 'UTC',

@@ -31,7 +31,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
 
 ### Configurable display
-- Fully customisable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
+- Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Drag-and-drop reordering, swipe to remove

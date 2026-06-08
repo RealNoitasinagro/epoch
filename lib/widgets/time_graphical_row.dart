@@ -21,7 +21,7 @@ class TimeGraphicalRow extends TimeValueRow {
     final zonedNow = _resolveZone(now, timeValue.zone);
 
     return ValueTile(
-      label: timeValue.localizedLabel(l10n),
+      label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       height: ValueTile.graphicTileHeight,
       content: GraphicValueContent(

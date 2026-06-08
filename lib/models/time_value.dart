@@ -89,26 +89,26 @@ class TimeValue {
   }
 
   // Returns a copy with a different custom label (null to clear).
-  TimeValue withLabel(String? label) =>
+  TimeValue withCustomLabel(String? label) =>
       TimeValue(type: type, zone: zone, customLabel: label);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => type.isZoneIndependent;
 
   // Localized display label shown in the UI.
-  String localizedLabel(AppLocalizations l10n) {
+  String localizedDisplayLabel(AppLocalizations l10n) {
     if (customLabel != null) return customLabel!;
-    final typeLabel = _typeLabel(l10n);
-    if (isZoneIndependent) return typeLabel;
+    final _localizedTypeLabel = localizedTypeLabel(type, l10n);
+    if (isZoneIndependent) return _localizedTypeLabel;
     final zoneLabel = switch (zone) {
       ZoneLocal()                  => l10n.labelLocal.toLowerCase(),
       ZoneUtc()                    => l10n.zoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
-    return '$typeLabel ($zoneLabel)';
+    return '$_localizedTypeLabel ($zoneLabel)';
   }
 
-  String _typeLabel(AppLocalizations l10n) => switch (type) {
+  static String localizedTypeLabel(ValueType type, AppLocalizations l10n) => switch (type) {
     ValueType.date                   => l10n.valueTypeDate,
     ValueType.time                   => l10n.valueTypeTime,
     ValueType.dateTime               => l10n.valueTypeDateTime,

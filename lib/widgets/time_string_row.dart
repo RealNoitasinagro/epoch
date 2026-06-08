@@ -39,7 +39,7 @@ class TimeStringRow extends TimeValueRow {
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
       String displayValue) {
     // Clipboard gets the formatted display value for consistency.
-    final label = timeValue.localizedLabel(l10n);
+    final label = timeValue.localizedDisplayLabel(l10n);
     Clipboard.setData(ClipboardData(text: '$label: $displayValue'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -82,7 +82,7 @@ class TimeStringRow extends TimeValueRow {
         : formattedValue;
 
     return ValueTile(
-      label: timeValue.localizedLabel(l10n),
+      label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       content: TextValueContent(line1: split.line1, line2: line2),
       actionSlots: [

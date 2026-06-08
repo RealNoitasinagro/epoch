@@ -246,7 +246,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         widget.onEntriesChanged(updated);
       },
       child: ValueTile(
-        label: entry.localizedLabel(l10n),
+        label: entry.localizedDisplayLabel(l10n),
         showZoneIndicator: !entry.isZoneIndependent,
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
@@ -294,7 +294,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ) async {
     // Pre-fill with custom label if set, otherwise official label.
     final controller = TextEditingController(
-      text: entry.customLabel ?? entry.localizedLabel(l10n),
+      text: entry.customLabel ?? entry.localizedDisplayLabel(l10n),
     );
     final result = await showDialog<String>(
       context: context,
@@ -306,7 +306,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           decoration: InputDecoration(
             labelText: l10n.newLabelName,
             // Show official label as hint so user knows the default.
-            hintText: entry.localizedLabel(l10n),
+            hintText: entry.localizedDisplayLabel(l10n),
           ),
           onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
         ),
@@ -336,7 +336,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (idx == -1) return;
 
     // Empty string = clear custom label, restore official label.
-    updated[idx] = entry.withLabel(result.isEmpty ? null : result);
+    updated[idx] = entry.withCustomLabel(result.isEmpty ? null : result);
     widget.onEntriesChanged(updated);
   }
 

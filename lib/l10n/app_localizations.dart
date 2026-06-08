@@ -359,13 +359,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Commonly used in satellite operations and pulsar astronomy.'**
+  /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
   String get infoModifiedJulianDate;
 
   /// No description provided for @infoModifiedJulianDate2000.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date = JD - 2,451,544.5 (2000-01-01 00:00:00 UTC).'**
+  /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoModifiedJulianDate2000;
 
   /// No description provided for @infoSwatchBeats.
