@@ -143,6 +143,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkJulianDate => 'https://en.wikipedia.org/wiki/Julian_day';
 
   @override
+  String get infoLinkLmst => 'https://en.wikipedia.org/wiki/Sidereal_time';
+
+  @override
   String get infoLinkModifiedJulianDate =>
       'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
@@ -160,6 +163,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
+
+  @override
+  String get infoLmst =>
+      'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.';
 
   @override
   String get infoModifiedJulianDate =>
@@ -198,6 +205,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelUtc => 'UTC';
+
+  @override
+  String get lmstDetermineLocation => 'Determine';
+
+  @override
+  String get lmstLocationDenied => 'Location permission denied';
+
+  @override
+  String get lmstLocationNotYetDetermined => 'Not yet determined';
+
+  @override
+  String get lmstLongitudeLabel => 'Longitude (negative = West)';
+
+  @override
+  String get lmstModeLocation => 'Use approximate location';
+
+  @override
+  String get lmstModeLocationSub => 'One-time, without GPS, no tracking';
+
+  @override
+  String get lmstModeManual => 'Manual longitude';
+
+  @override
+  String get lmstModeManualSub => 'Enter your longitude in decimal degrees';
+
+  @override
+  String get lmstModeOff => 'Do not show';
 
   @override
   String maxValuesReached(int count) {
@@ -279,6 +313,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLmst => 'LOCAL SIDEREAL TIME';
 
   @override
   String get settingsTheme => 'Theme';
@@ -375,6 +412,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeJulianDate => 'Julian Date';
+
+  @override
+  String get valueTypeLmst => 'LMST';
 
   @override
   String get valueTypeModifiedJulianDate => 'Modified Julian Date';

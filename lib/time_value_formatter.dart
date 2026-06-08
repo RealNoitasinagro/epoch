@@ -13,6 +13,7 @@ class TimeValueFormatter {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         String localIanaZone = 'UTC',
+        double? longitude,
       }
   ) {
     final utcNow = now.toUtc();
@@ -36,6 +37,9 @@ class TimeValueFormatter {
             : v.toString();
       case ValueType.gmst:
         return hoursToHms(TimeUtils.gmst(utcNow));
+      case ValueType.lmst:
+        final lon = longitude ?? 0.0;
+        return TimeValueFormatter.hoursToHms(TimeUtils.lmst(utcNow, lon));
       case ValueType.julianDate:
         return formatDecimal(
             TimeUtils.julianDate(utcNow), locale, 5,
@@ -129,6 +133,17 @@ class TimeValueFormatter {
     return '${h.toString().padLeft(2, '0')}:'
         '${m.toString().padLeft(2, '0')}:'
         '${s.toString().padLeft(2, '0')}';
+  }
+
+  /// Formats HH:MM:SS back to decimal hours, or null if there is an error.
+  static double? hmsToHours(String hms) {
+    final parts = hms.split(':');
+    if (parts.length != 3) return null;
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    final s = int.tryParse(parts[2]);
+    if (h == null || m == null || s == null) return null;
+    return h + m / 60.0 + s / 3600.0;
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".

@@ -91,6 +91,14 @@ class TimeUtils {
     return hours < 0 ? hours + 24.0 : hours;
   }
 
+  /// Local Mean Sidereal Time (LMST) for a given longitude (in deg).
+  static double lmst(DateTime utc, double longitudeDeg) {
+    final gmstHours = gmst(utc);
+    // LMST = GMST + longitude/15
+    final lmstHours = (gmstHours + longitudeDeg / 15.0) % 24.0;
+    return lmstHours < 0 ? lmstHours + 24.0 : lmstHours;
+  }
+
   /// Julian Date for a given UTC DateTime.
   static double julianDate(DateTime utc) {
     final y = utc.year;

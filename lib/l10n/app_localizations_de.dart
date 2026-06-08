@@ -144,6 +144,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Julianisches_Datum';
 
   @override
+  String get infoLinkLmst => 'https://de.wikipedia.org/wiki/Sternzeit';
+
+  @override
   String get infoLinkModifiedJulianDate =>
       'https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum';
 
@@ -161,6 +164,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
+
+  @override
+  String get infoLmst =>
+      'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.';
 
   @override
   String get infoModifiedJulianDate =>
@@ -199,6 +206,33 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelUtc => 'UTC';
+
+  @override
+  String get lmstDetermineLocation => 'Bestimmen';
+
+  @override
+  String get lmstLocationDenied => 'Standortberechtigung verweigert';
+
+  @override
+  String get lmstLocationNotYetDetermined => 'Noch nicht bestimmt';
+
+  @override
+  String get lmstLongitudeLabel => 'Längengrad (negativ = West)';
+
+  @override
+  String get lmstModeLocation => 'Ungefähren Standort verwenden';
+
+  @override
+  String get lmstModeLocationSub => 'Einmalig, ohne GPS, kein Tracking';
+
+  @override
+  String get lmstModeManual => 'Längengrad manuell eingeben';
+
+  @override
+  String get lmstModeManualSub => 'Längengrad in Dezimalgrad eingeben';
+
+  @override
+  String get lmstModeOff => 'Nicht anzeigen';
 
   @override
   String maxValuesReached(int count) {
@@ -280,6 +314,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLanguage => 'Sprache';
+
+  @override
+  String get settingsLmst => 'LOKALE STERNZEIT';
 
   @override
   String get settingsTheme => 'Design';
@@ -376,6 +413,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeJulianDate => 'Julianisches Datum';
+
+  @override
+  String get valueTypeLmst => 'LMST';
 
   @override
   String get valueTypeModifiedJulianDate => 'Modifiziertes Julianisches Datum';
