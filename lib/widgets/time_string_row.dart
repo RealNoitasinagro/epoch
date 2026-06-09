@@ -13,6 +13,7 @@ class TimeStringRow extends TimeValueRow {
   final bool hourFormat24;
   final bool thousandsSep;
   final bool showDateDetails;
+  final double? longitude;
 
   const TimeStringRow({
     super.key,
@@ -22,6 +23,7 @@ class TimeStringRow extends TimeValueRow {
     this.hourFormat24 = true,
     this.thousandsSep = true,
     this.showDateDetails = true,
+    this.longitude,
     super.infoLinkOverride,
   });
 
@@ -62,6 +64,7 @@ class TimeStringRow extends TimeValueRow {
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
       localIanaZone: localIanaZone,
+      longitude: longitude,
     );
 
     String? subtitle;
@@ -74,7 +77,15 @@ class TimeStringRow extends TimeValueRow {
       final week = TimeUtils.isoWeekNumber(dt);
       final day  = TimeUtils.dayOfYear(dt);
       subtitle = l10n.dateSubtitle(week, day);
+    } else if (timeValue.type == ValueType.gmst ||
+        timeValue.type == ValueType.lmst) {
+      // hours → degree: 1h = 15°
+      final hours = TimeValueFormatter.hmsToHours(formattedValue);
+      if (hours != null) {
+        subtitle = '${(hours * 15.0).toStringAsFixed(4)}°';
+      }
     }
+
     final split = splitZoneOffset(formattedValue);
     final line2 = subtitle ?? split.line2;
     final clipboardValue = subtitle != null

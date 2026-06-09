@@ -153,6 +153,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
+    final longitude = EpochApp.of(context).lmstLongitude;
+
     if (entry.type.isGraphical) {
       return TimeGraphicalRow(
         key: ValueKey(entry.key),
@@ -168,6 +170,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       showDateDetails: widget.showDateDetails,
+      longitude: longitude,
     );
   }
 
@@ -205,6 +208,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final isGraphical = entry.type.isGraphical;
+    final longitude = EpochApp.of(context).lmstLongitude;
 
     final zonedNow = switch (entry.zone) {
       ZoneLocal()                  => widget.now,
@@ -219,6 +223,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       localIanaZone: localIanaZone,
+      longitude: longitude,
     );
 
     String? editSubtitle;
