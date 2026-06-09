@@ -95,7 +95,7 @@
   "lmstModeLocation": "Ungefähren Standort verwenden",
   "lmstModeLocationSub": "Einmalig, ohne GPS, kein Tracking",
   "lmstModeManual": "Längengrad manuell eingeben",
-  "lmstModeManualSub": "Längengrad in Dezimalgrad eingeben",
+  "lmstModeManualSub": "Längengrad in Dezimalgrad (DDD,DDDD) eingeben",
   "lmstModeOff": "Nicht anzeigen",
   "maxValuesReached": "Maximal {count} Werte erlaubt.",
   "newLabelName": "Bezeichnung",

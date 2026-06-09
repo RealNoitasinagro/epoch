@@ -228,7 +228,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lmstModeManual => 'Manual longitude';
 
   @override
-  String get lmstModeManualSub => 'Enter your longitude in decimal degrees';
+  String get lmstModeManualSub =>
+      'Enter your longitude in decimal degrees (DDD.DDDD)';
 
   @override
   String get lmstModeOff => 'Do not show';

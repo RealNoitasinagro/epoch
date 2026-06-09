@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
+import '../time_value_formatter.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -240,7 +241,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             decoration: InputDecoration(
                               labelText: l10n.lmstLongitudeLabel,
                               suffixText: '°',
-                              hintText: '8.6821',
+                              hintText: TimeValueFormatter.formatDecimal(
+                                  8.6821,
+                                  _locale.toString(),
+                                  4,
+                                  thousandsSep: false
+                              ),
                               isDense: true,
                             ),
                             controller: _longitudeController,
@@ -274,8 +280,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           else if (_lmstLongitude != null)
-                            Text('${_lmstLongitude!.toStringAsFixed(4)}°',
-                                style: Theme.of(context).textTheme.bodyMedium)
+                            Text(
+                              TimeValueFormatter.formatDecimal(
+                                  _lmstLongitude!,
+                                  _locale.toString(),
+                                  4,
+                                  thousandsSep: false
+                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                            )
                           else
                             Text(l10n.lmstLocationNotYetDetermined,
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(

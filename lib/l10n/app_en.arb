@@ -95,7 +95,7 @@
   "lmstModeLocation": "Use approximate location",
   "lmstModeLocationSub": "One-time, without GPS, no tracking",
   "lmstModeManual": "Manual longitude",
-  "lmstModeManualSub": "Enter your longitude in decimal degrees",
+  "lmstModeManualSub": "Enter your longitude in decimal degrees (DDD.DDDD)",
   "lmstModeOff": "Do not show",
   "maxValuesReached": "Maximum of {count} values reached.",
   "newLabelName": "Label",

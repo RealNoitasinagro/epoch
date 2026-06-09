@@ -479,7 +479,7 @@ abstract class AppLocalizations {
   /// No description provided for @lmstModeManualSub.
   ///
   /// In en, this message translates to:
-  /// **'Enter your longitude in decimal degrees'**
+  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
   String get lmstModeManualSub;
 
   /// No description provided for @lmstModeOff.

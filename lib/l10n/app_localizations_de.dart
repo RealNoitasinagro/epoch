@@ -229,7 +229,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get lmstModeManual => 'Längengrad manuell eingeben';
 
   @override
-  String get lmstModeManualSub => 'Längengrad in Dezimalgrad eingeben';
+  String get lmstModeManualSub =>
+      'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
 
   @override
   String get lmstModeOff => 'Nicht anzeigen';

@@ -177,9 +177,10 @@ class TimeValueFormatter {
 
   /// Adds longitude to the LMST label.
   static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue, double? longitude ) {
+    String _locale = l10n.localeName;
     if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
     final dir = longitude >= 0 ? 'E' : 'W';
-    final deg = longitude.abs().toStringAsFixed(2);
+    final deg = formatDecimal(longitude.abs(), _locale, 2, thousandsSep: false);
     return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
   }
 }
