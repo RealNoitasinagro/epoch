@@ -62,7 +62,7 @@ class TimeUtils {
   }
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS- time does not have leap seconds, currently 18s ahead of UTC.
+  /// GPS time does not have leap seconds, currently 18s ahead of UTC.
   /// Last check for accuracy of hardcoded values: 2026-05-20.
   static int gpsTime(DateTime utc) {
     const leapSeconds = 18;

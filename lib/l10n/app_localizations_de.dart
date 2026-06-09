@@ -108,7 +108,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoGmst =>
-      'Greenwich Mean Sidereal Time (GMST) – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
 
   @override
   String get infoGps =>
@@ -167,7 +167,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoLmst =>
-      'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.';
+      'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.';
 
   @override
   String get infoModifiedJulianDate =>
@@ -175,7 +175,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnung mit kleineren Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
   String get infoSwatchBeats =>

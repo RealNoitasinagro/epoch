@@ -251,7 +251,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             controller: _longitudeController,
                             onSubmitted: (v) {
-                              final lon = double.tryParse(v);
+                              final normalized = v.replaceAll(',', '.');
+                              final lon = double.tryParse(normalized);
                               if (lon != null && lon >= -180 && lon <= 180) {
                                 setState(() => _lmstLongitude = lon);
                                 app.setLmstLongitude(lon);
@@ -264,12 +265,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 if (!_isDesktop) ...[
                   RadioListTile<LmstMode>(
-                    value: LmstMode.gps,
+                    value: LmstMode.locationAccess,
                     title: Text(l10n.lmstModeLocation),
                     subtitle: Text(l10n.lmstModeLocationSub),
                     secondary: const Icon(Icons.my_location),
                   ),
-                  if (_lmstMode == LmstMode.gps)
+                  if (_lmstMode == LmstMode.locationAccess)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
                       child: Row(

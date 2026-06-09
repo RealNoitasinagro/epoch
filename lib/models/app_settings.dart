@@ -6,8 +6,8 @@ const _kThemeModeKey = 'theme_mode';
 const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
 const _kDateWithDetails = 'date_cw_doy';
-const _kLmstModeKey = 'lmst_mode';       // 'off', 'manual', 'gps'
-const _kLmstLongitudeKey = 'lmst_lon';   // double
+const _kLmstModeKey = 'lmst_mode';
+const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
 
 const kDefaultLocale = Locale('en');
@@ -20,7 +20,7 @@ const kDefaultLmstMode = LmstMode.off;
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
 
-enum LmstMode { off, manual, gps }
+enum LmstMode { off, manual, locationAccess }
 
 Future<Locale?> loadLocale() async {
   final prefs = await SharedPreferences.getInstance();
@@ -95,7 +95,7 @@ Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.getString(_kLmstModeKey)) {
     'manual' => LmstMode.manual,
-    'gps'    => LmstMode.gps,
+    'gps'    => LmstMode.locationAccess,
     _        => LmstMode.off,
   };
 }

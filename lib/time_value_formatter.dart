@@ -39,8 +39,8 @@ class TimeValueFormatter {
       case ValueType.gmst:
         return hoursToHms(TimeUtils.gmst(utcNow));
       case ValueType.lmst:
-        final lon = longitude ?? 0.0;
-        return TimeValueFormatter.hoursToHms(TimeUtils.lmst(utcNow, lon));
+        if (longitude == null) return '--:--:--';
+        return TimeValueFormatter.hoursToHms(TimeUtils.lmst(utcNow, longitude));
       case ValueType.julianDate:
         return formatDecimal(
             TimeUtils.julianDate(utcNow), locale, 5,
