@@ -475,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
-            entries: tab.entries,
+            timeValues: tab.entries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
             showDateDetails: app.dateWithDetails,

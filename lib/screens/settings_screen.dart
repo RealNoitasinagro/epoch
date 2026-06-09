@@ -23,6 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
   bool _locationLoading = false;
+  final _longitudeController = TextEditingController();
 
   static const _fallbackVersion = '1.0.0';
 
@@ -43,6 +44,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _locale = app.locale;
     _lmstMode = app.lmstMode;
     _lmstLongitude = app.lmstLongitude;
+    _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+  }
+
+  @override
+  void dispose() {
+    _longitudeController.dispose();
+    super.dispose();
   }
 
   Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
@@ -87,7 +95,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
       final pos = await Geolocator.getCurrentPosition(
         locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.low,  // COARSE reicht
+          accuracy: LocationAccuracy.low,  // COARSE is sufficient
         ),
       );
       final lon = double.parse(pos.longitude.toStringAsFixed(4));
@@ -236,9 +244,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         hintText: '8.6821',
                         isDense: true,
                       ),
-                      controller: TextEditingController(
-                        text: _lmstLongitude?.toStringAsFixed(4) ?? '',
-                      ),
+                      controller: _longitudeController,
                       onSubmitted: (v) {
                         final lon = double.tryParse(v);
                         if (lon != null && lon >= -180 && lon <= 180) {
@@ -251,7 +257,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-          if (!_isDesktop) ...[  // GPS nur auf Android/iOS
+          if (!_isDesktop) ...[  // GPS only on mobile
             RadioListTile<LmstMode>(
               secondary: const Icon(Icons.my_location),
               title: Text(l10n.lmstModeLocation),

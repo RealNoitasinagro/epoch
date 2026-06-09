@@ -82,7 +82,9 @@ class TimeStringRow extends TimeValueRow {
       // hours → degree: 1h = 15°
       final hours = TimeValueFormatter.hmsToHours(formattedValue);
       if (hours != null) {
-        subtitle = '${(hours * 15.0).toStringAsFixed(4)}°';
+        subtitle = TimeValueFormatter.formatDecimal(
+            hours * 15.0, locale, 4, thousandsSep: false);
+        subtitle = '$subtitle°';
       }
     }
 
@@ -93,7 +95,9 @@ class TimeStringRow extends TimeValueRow {
         : formattedValue;
 
     return ValueTile(
-      label: timeValue.localizedDisplayLabel(l10n),
+      label: timeValue.type == ValueType.lmst
+          ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
+          : timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       content: TextValueContent(line1: split.line1, line2: line2),
       actionSlots: [

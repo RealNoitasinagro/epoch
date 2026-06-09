@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'l10n/app_localizations.dart';
 import 'models/time_value.dart';
 import 'time_utils.dart';
 
@@ -172,5 +173,13 @@ class TimeValueFormatter {
     fmt.minimumFractionDigits = decimals;
     if (!thousandsSep) fmt.turnOffGrouping();
     return fmt.format(value);
+  }
+
+  /// Adds longitude to the LMST label.
+  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue, double? longitude ) {
+    if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
+    final dir = longitude >= 0 ? 'E' : 'W';
+    final deg = longitude.abs().toStringAsFixed(2);
+    return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
   }
 }
