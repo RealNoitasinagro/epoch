@@ -208,95 +208,92 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-          RadioListTile<LmstMode>(
-            secondary: const Icon(Icons.visibility_off_outlined),
-            title: Text(l10n.lmstModeOff),
-            value: LmstMode.off,
+          RadioGroup<LmstMode>(
             groupValue: _lmstMode,
             onChanged: (v) {
-              setState(() => _lmstMode = v!);
-              app.setLmstMode(v!);
+              if (v == null) return;
+              setState(() => _lmstMode = v);
+              app.setLmstMode(v);
             },
-          ),
-          RadioListTile<LmstMode>(
-            secondary: const Icon(Icons.edit_location_outlined),
-            title: Text(l10n.lmstModeManual),
-            subtitle: Text(l10n.lmstModeManualSub),
-            value: LmstMode.manual,
-            groupValue: _lmstMode,
-            onChanged: (v) {
-              setState(() => _lmstMode = v!);
-              app.setLmstMode(v!);
-            },
-          ),
-          if (_lmstMode == LmstMode.manual)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                      decoration: InputDecoration(
-                        labelText: l10n.lmstLongitudeLabel,
-                        suffixText: '°',
-                        hintText: '8.6821',
-                        isDense: true,
-                      ),
-                      controller: _longitudeController,
-                      onSubmitted: (v) {
-                        final lon = double.tryParse(v);
-                        if (lon != null && lon >= -180 && lon <= 180) {
-                          setState(() => _lmstLongitude = lon);
-                          app.setLmstLongitude(lon);
-                        }
-                      },
+            child: Column(
+              children: [
+                RadioListTile(
+                  value: LmstMode.off,
+                  title: Text(l10n.lmstModeOff),
+                  secondary: const Icon(Icons.visibility_off_outlined),
+                ),
+                RadioListTile(
+                  value: LmstMode.manual,
+                  title: Text(l10n.lmstModeManual),
+                  subtitle: Text(l10n.lmstModeManualSub),
+                  secondary: const Icon(Icons.edit_location_outlined),
+                ),
+                if (_lmstMode == LmstMode.manual)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
+                            decoration: InputDecoration(
+                              labelText: l10n.lmstLongitudeLabel,
+                              suffixText: '°',
+                              hintText: '8.6821',
+                              isDense: true,
+                            ),
+                            controller: _longitudeController,
+                            onSubmitted: (v) {
+                              final lon = double.tryParse(v);
+                              if (lon != null && lon >= -180 && lon <= 180) {
+                                setState(() => _lmstLongitude = lon);
+                                app.setLmstLongitude(lon);
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          if (!_isDesktop) ...[  // GPS only on mobile
-            RadioListTile<LmstMode>(
-              secondary: const Icon(Icons.my_location),
-              title: Text(l10n.lmstModeLocation),
-              subtitle: Text(l10n.lmstModeLocationSub),
-              value: LmstMode.gps,
-              groupValue: _lmstMode,
-              onChanged: (v) {
-                setState(() => _lmstMode = v!);
-                app.setLmstMode(v!);
-              },
-            ),
-            if (_lmstMode == LmstMode.gps)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-                child: Row(
-                  children: [
-                    if (_locationLoading)
-                      const SizedBox(
-                        width: 20, height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    else if (_lmstLongitude != null)
-                      Text('${_lmstLongitude!.toStringAsFixed(4)}°',
-                          style: Theme.of(context).textTheme.bodyMedium)
-                    else
-                      Text(l10n.lmstLocationNotYetDetermined,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
-                    const SizedBox(width: 12),
-                    TextButton.icon(
-                      icon: const Icon(Icons.refresh, size: 16),
-                      label: Text(l10n.lmstDetermineLocation),
-                      onPressed: _locationLoading ? null
-                          : () => _determineLocation(context),
+                if (!_isDesktop) ...[
+                  RadioListTile<LmstMode>(
+                    value: LmstMode.gps,
+                    title: Text(l10n.lmstModeLocation),
+                    subtitle: Text(l10n.lmstModeLocationSub),
+                    secondary: const Icon(Icons.my_location),
+                  ),
+                  if (_lmstMode == LmstMode.gps)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                      child: Row(
+                        children: [
+                          if (_locationLoading)
+                            const SizedBox(
+                              width: 20, height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else if (_lmstLongitude != null)
+                            Text('${_lmstLongitude!.toStringAsFixed(4)}°',
+                                style: Theme.of(context).textTheme.bodyMedium)
+                          else
+                            Text(l10n.lmstLocationNotYetDetermined,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
+                          const SizedBox(width: 12),
+                          TextButton.icon(
+                            icon: const Icon(Icons.refresh, size: 16),
+                            label: Text(l10n.lmstDetermineLocation),
+                            onPressed: _locationLoading ? null
+                                : () => _determineLocation(context),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-          ],
+                ],
+              ],
+            )
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
