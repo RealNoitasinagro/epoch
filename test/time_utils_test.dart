@@ -1,3 +1,4 @@
+import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/time_utils.dart';
@@ -683,6 +684,88 @@ void main() {
       String ianaZone = 'Antarctica/Palmer';
       var loc = tz.getLocation(ianaZone);
       expect(loc.name, equals(ianaZone));
+    });
+  });
+
+  group('IANA timezone names deprecated', () {
+    test('Stockholm', () {
+      String ianaZone = 'Europe/Berlin';
+      var searchTerm = 'stockholm';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Oslo', () {
+      String ianaZone = 'Europe/Berlin';
+      var searchTerm = 'oslo';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Copenhagen', () {
+      String ianaZone = 'Europe/Berlin';
+      var searchTerm = 'copenhagen';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Longyearbyen', () {
+      String ianaZone = 'Europe/Berlin';
+      var searchTerm = 'longyearbyen';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Amsterdam', () {
+      String ianaZone = 'Europe/Brussels';
+      var searchTerm = 'amsterdam';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Reykjavik', () {
+      String ianaZone = 'Africa/Abidjan';
+      var searchTerm = 'reykjavik';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Kuala Lumpur', () {
+      String ianaZone = 'Asia/Singapore';
+      var searchTerm = 'kuala lumpur';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Midway', () {
+      String ianaZone = 'Pacific/Pago_Pago';
+      var searchTerm = 'midway';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('McMurdo', () {
+      String ianaZone = 'Pacific/Auckland';
+      var searchTerm = 'mcmurdo';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
+    });
+
+    test('Kiev', () {
+      String ianaZone = 'Europe/Kyiv';
+      var searchTerm = 'kiev';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, equals(1));
+      expect(loc[0].ianaZone, equals(ianaZone));
     });
   });
 }
