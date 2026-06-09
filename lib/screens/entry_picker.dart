@@ -4,6 +4,7 @@ import 'package:epoch/models/curiosities_tab_config.dart';
 import 'package:epoch/models/technical_tab_config.dart';
 import 'package:flutter/material.dart';
 import '../layout_constants.dart';
+import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../l10n/app_localizations.dart';
 import 'timezone_search_screen.dart';
@@ -14,12 +15,16 @@ Future<TimeValue?> showEntryPicker(
     BuildContext context, {
       List<ValueType>? allowedTypes,
       List<TimeValue> existingEntries = const [],
+      LmstMode lmstMode = LmstMode.off,
+      double? lmstLongitude,
     }) {
   return showDialog<TimeValue>(
     context: context,
     builder: (ctx) => _EntryPicker(
       allowedTypes: allowedTypes,
       existingEntries: existingEntries,
+      lmstMode: lmstMode,
+      lmstLongitude: lmstLongitude,
     ),
   );
 }
@@ -27,10 +32,14 @@ Future<TimeValue?> showEntryPicker(
 class _EntryPicker extends StatefulWidget {
   final List<ValueType>? allowedTypes;
   final List<TimeValue> existingEntries;
+  final LmstMode lmstMode;
+  final double? lmstLongitude;
 
   const _EntryPicker({
     this.allowedTypes,
     this.existingEntries = const [],
+    required this.lmstMode,
+    this.lmstLongitude,
   });
 
   @override
@@ -50,6 +59,12 @@ class _EntryPickerState extends State<_EntryPicker> {
   // Zone-independent types can only appear once.
   // Zone-dependent types can always be added (different zones allowed).
   bool _isDisabled(ValueType t) {
+    if (t == ValueType.lmst) {
+      // Grey out when LMST is turned off or longitude not configured
+      final lmstMode = widget.lmstMode;
+      if (lmstMode == LmstMode.off) return true;
+      if (widget.lmstLongitude == null) return true;
+    }
     if (!t.isZoneIndependent) return false;
     return widget.existingEntries.any((e) => e.type == t);
   }

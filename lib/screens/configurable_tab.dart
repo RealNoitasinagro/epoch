@@ -114,10 +114,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       return;
     }
 
+    final app = EpochApp.of(context);
     final result = await showEntryPicker(
       context,
       allowedTypes: widget.allowedTypes,
       existingEntries: widget.timeValues,
+      lmstMode: app.lmstMode,
+      lmstLongitude: app.lmstLongitude,
     );
     if (result == null) return;
 
