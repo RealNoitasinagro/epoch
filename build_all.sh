@@ -86,7 +86,7 @@ flutter_version=`$flutter_active --version`
 
 target_platform_android_arm='app-armeabi-v7a-release.apk'
 target_platform_android_arm64='app-arm64-v8a-release.apk'
-target_platform_android_x64='app-x86_64-release.apk'
+target_platform_android_x86_64='app-x86_64-release.apk'
 target_platform_android_all='app-release.apk'
 apk_output_path='build/app/outputs/flutter-apk'
 destination_path='/media/linux'
@@ -204,7 +204,7 @@ EOF
     rm -v -f $destination_path/*.apk
     cp -v $apk_output_path/${target_platform_android_arm} $destination_path
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
-    cp -v $apk_output_path/${target_platform_android_x64} $destination_path
+    cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
     cp -v $apk_output_path/${target_platform_android_all} $destination_path
 fi
 
