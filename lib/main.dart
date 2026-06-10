@@ -370,7 +370,25 @@ class _HomeScreenState extends State<HomeScreen>
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
-    );
+    ).then((_) {
+      // Nach dem Schließen von Settings: LMST bereinigen wenn nötig
+      if (EpochApp.of(context).lmstMode == LmstMode.off) {
+        _removeLmstFromAllTabs();
+      }
+    });
+  }
+
+  void _removeLmstFromAllTabs() {
+    for (final tab in _customTabs) {
+      final newEntries = tab.entries
+          .where((e) => e.type != ValueType.lmst)
+          .toList();
+      if (newEntries.length != tab.entries.length) {
+        tab.entries = newEntries;
+      }
+    }
+    saveCustomTabs(_customTabs);
+    setState(() {});
   }
 
   // ── Build ────────────────────────────────────────────────────────────

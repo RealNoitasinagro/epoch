@@ -229,20 +229,20 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       longitude: longitude,
     );
 
-    String? editSubtitle;
+    String? subtitle;
     if (timeValue.type == ValueType.date && widget.showDateDetails) {
-      editSubtitle = l10n.dateSubtitle(
+      subtitle = l10n.dateSubtitle(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
     } else if (timeValue.type == ValueType.gmst || timeValue.type == ValueType.lmst) {
       final hours = TimeValueFormatter.hmsToHours(displayValue);
       if (hours != null) {
         final deg = TimeValueFormatter.formatDecimal(
             hours * 15.0, locale, 4, thousandsSep: false);
-        editSubtitle = '$deg°';
+        subtitle = '$deg°';
       }
     }
     final split = TimeStringRow.splitZoneOffset(displayValue);
-    final line2 = editSubtitle ?? split.line2;
+    final line2 = subtitle ?? split.line2;
 
     return Dismissible(
       key: ValueKey(timeValue.key),
