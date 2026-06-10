@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
@@ -23,7 +22,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Locale? _locale;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
-  bool _locationLoading = false;
   final _longitudeController = TextEditingController();
 
   static const _fallbackVersion = '1.0.0';
@@ -76,35 +74,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Text(l10n.aboutDescription),
       ],
     );
-  }
-
-  Future<void> _determineLocation(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    setState(() => _locationLoading = true);
-    try {
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.lmstLocationDenied)),
-        );
-        return;
-      }
-      final pos = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.low,  // COARSE is sufficient
-        ),
-      );
-      final lon = double.parse(pos.longitude.toStringAsFixed(4));
-      setState(() => _lmstLongitude = lon);
-      EpochApp.of(context).setLmstLongitude(lon);
-    } finally {
-      setState(() => _locationLoading = false);
-    }
   }
 
   @override
@@ -263,48 +232,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     ),
                   ),
-                if (!_isDesktop) ...[
-                  RadioListTile<LmstMode>(
-                    value: LmstMode.locationAccess,
-                    title: Text(l10n.lmstModeLocation),
-                    subtitle: Text(l10n.lmstModeLocationSub),
-                    secondary: const Icon(Icons.my_location),
-                  ),
-                  if (_lmstMode == LmstMode.locationAccess)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-                      child: Row(
-                        children: [
-                          if (_locationLoading)
-                            const SizedBox(
-                              width: 20, height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          else if (_lmstLongitude != null)
-                            Text(
-                              TimeValueFormatter.formatDecimal(
-                                  _lmstLongitude!,
-                                  _locale.toString(),
-                                  4,
-                                  thousandsSep: false
-                              ),
-                              style: Theme.of(context).textTheme.bodyMedium
-                            )
-                          else
-                            Text(l10n.lmstLocationNotYetDetermined,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
-                          const SizedBox(width: 12),
-                          TextButton.icon(
-                            icon: const Icon(Icons.refresh, size: 16),
-                            label: Text(l10n.lmstDetermineLocation),
-                            onPressed: _locationLoading ? null
-                                : () => _determineLocation(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
               ],
             )
           ),
