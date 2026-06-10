@@ -1,0 +1,11 @@
+- Value count per tab
+- timezone indicator on values
+- expanded date with ISO week and day of year
+- MJD2000
+- Local Mean Sidereal Time (LMST)
+- "What's New" in Settings
+
+Fixed:
+- Julian Date offset
+- tile reordering
+- crashes for outdated timezone names

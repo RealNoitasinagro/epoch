@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased] (1.0.0 -> 1.1.0)
+## [Unreleased]
+
+## [1.1.0] - 2026-06-10
 
 ### Added
 - value count for each tab
@@ -19,6 +21,5 @@
 - value tile reordering (tile dragged to the end of the list jumped back to last but one position)
 - crashes for outdated timezone names
 
-### Deprecated
 
-### Removed
+## [1.0.0] - 2026-05-21

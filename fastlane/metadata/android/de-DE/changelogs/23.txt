@@ -1,0 +1,11 @@
+- Wertanzahl pro Tab
+- Zeitzonenmarkierung bei Werten
+- erweitertes Datum mit ISO-Kalenderwoche und Tag des Jahres
+- MJD2000
+- Lokale Mittlere Sternzeit (LMST)
+- "Was ist neu" in den Einstellungen
+
+Behoben:
+- Julianisches-Datum-Offset
+- Kachel-Sortierung
+- Abstürze bei veralteten Zeitzonennamen
