@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'l10n/app_localizations.dart';
 import 'models/time_value.dart';
 import 'time_utils.dart';
 
@@ -13,6 +14,7 @@ class TimeValueFormatter {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         String localIanaZone = 'UTC',
+        double? longitude,
       }
   ) {
     final utcNow = now.toUtc();
@@ -36,6 +38,9 @@ class TimeValueFormatter {
             : v.toString();
       case ValueType.gmst:
         return hoursToHms(TimeUtils.gmst(utcNow));
+      case ValueType.lmst:
+        if (longitude == null) return '--:--:--';
+        return TimeValueFormatter.hoursToHms(TimeUtils.lmst(utcNow, longitude));
       case ValueType.julianDate:
         return formatDecimal(
             TimeUtils.julianDate(utcNow), locale, 5,
@@ -131,6 +136,17 @@ class TimeValueFormatter {
         '${s.toString().padLeft(2, '0')}';
   }
 
+  /// Formats HH:MM:SS back to decimal hours, or null if there is an error.
+  static double? hmsToHours(String hms) {
+    final parts = hms.split(':');
+    if (parts.length != 3) return null;
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    final s = int.tryParse(parts[2]);
+    if (h == null || m == null || s == null) return null;
+    return h + m / 60.0 + s / 3600.0;
+  }
+
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
   static String formatDate(String locale, DateTime dt) =>
       DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
@@ -157,5 +173,14 @@ class TimeValueFormatter {
     fmt.minimumFractionDigits = decimals;
     if (!thousandsSep) fmt.turnOffGrouping();
     return fmt.format(value);
+  }
+
+  /// Adds longitude to the LMST label.
+  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue, double? longitude ) {
+    String _locale = l10n.localeName;
+    if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
+    final dir = longitude >= 0 ? 'E' : 'W';
+    final deg = formatDecimal(longitude.abs(), _locale, 2, thousandsSep: false);
+    return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
   }
 }

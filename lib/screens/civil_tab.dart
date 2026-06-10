@@ -25,7 +25,7 @@ class CivilTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConfigurableTab(
       now: now,
-      entries: entries,
+      timeValues: entries,
       onEntriesChanged: onEntriesChanged,
       thousandsSep: thousandsSep,
       hourFormat24: hourFormat24,

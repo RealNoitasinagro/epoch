@@ -13,6 +13,7 @@ class TimeStringRow extends TimeValueRow {
   final bool hourFormat24;
   final bool thousandsSep;
   final bool showDateDetails;
+  final double? longitude;
 
   const TimeStringRow({
     super.key,
@@ -22,6 +23,7 @@ class TimeStringRow extends TimeValueRow {
     this.hourFormat24 = true,
     this.thousandsSep = true,
     this.showDateDetails = true,
+    this.longitude,
     super.infoLinkOverride,
   });
 
@@ -39,7 +41,7 @@ class TimeStringRow extends TimeValueRow {
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
       String displayValue) {
     // Clipboard gets the formatted display value for consistency.
-    final label = timeValue.localizedDisplayLabel(l10n);
+    final label = _computeLabel(l10n);
     Clipboard.setData(ClipboardData(text: '$label: $displayValue'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -48,6 +50,38 @@ class TimeStringRow extends TimeValueRow {
         behavior: SnackBarBehavior.floating,
       ),
     );
+  }
+
+  String? _computeSubtitle(AppLocalizations l10n) {
+    if (timeValue.type == ValueType.date && showDateDetails) {
+      final dt = switch (timeValue.zone) {
+        ZoneLocal()                  => now,
+        ZoneUtc()                    => now.toUtc(),
+        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
+      };
+      return l10n.dateSubtitle(
+          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
+    }
+    if (timeValue.type == ValueType.gmst ||
+        timeValue.type == ValueType.lmst) {
+      final computed = TimeValueFormatter.format(
+        timeValue, now, locale,
+        longitude: longitude,
+      );
+      final hours = TimeValueFormatter.hmsToHours(computed);
+      if (hours != null) {
+        final deg = TimeValueFormatter.formatDecimal(
+            hours * 15.0, locale, 4, thousandsSep: false);
+        return '$deg°';
+      }
+    }
+    return null;
+  }
+
+  String _computeLabel(AppLocalizations l10n) {
+    return timeValue.type == ValueType.lmst
+        ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
+        : timeValue.localizedDisplayLabel(l10n);
   }
 
   @override
@@ -62,27 +96,19 @@ class TimeStringRow extends TimeValueRow {
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
       localIanaZone: localIanaZone,
+      longitude: longitude,
     );
 
-    String? subtitle;
-    if (timeValue.type == ValueType.date && showDateDetails) {
-      final dt = switch (timeValue.zone) {
-        ZoneLocal()                  => now,
-        ZoneUtc()                    => now.toUtc(),
-        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-      };
-      final week = TimeUtils.isoWeekNumber(dt);
-      final day  = TimeUtils.dayOfYear(dt);
-      subtitle = l10n.dateSubtitle(week, day);
-    }
+    String? subtitle = _computeSubtitle(l10n);
     final split = splitZoneOffset(formattedValue);
     final line2 = subtitle ?? split.line2;
     final clipboardValue = subtitle != null
         ? '$formattedValue\n$subtitle'
         : formattedValue;
+    String label = _computeLabel(l10n);
 
     return ValueTile(
-      label: timeValue.localizedDisplayLabel(l10n),
+      label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
       content: TextValueContent(line1: split.line1, line2: line2),
       actionSlots: [

@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
+import '../time_value_formatter.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,8 +21,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _hourFormat24;
   late bool _dateWithDetails;
   Locale? _locale;
+  late LmstMode _lmstMode;
+  late double? _lmstLongitude;
+  bool _locationLoading = false;
+  final _longitudeController = TextEditingController();
 
   static const _fallbackVersion = '1.0.0';
+
+  bool get _isDesktop =>
+      defaultTargetPlatform == TargetPlatform.linux ||
+      defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.macOS;
 
   @override
   void didChangeDependencies() {
@@ -31,6 +43,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _hourFormat24 = app.hourFormat24;
     _dateWithDetails = app.dateWithDetails;
     _locale = app.locale;
+    _lmstMode = app.lmstMode;
+    _lmstLongitude = app.lmstLongitude;
+    _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+  }
+
+  @override
+  void dispose() {
+    _longitudeController.dispose();
+    super.dispose();
   }
 
   Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
@@ -55,6 +76,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Text(l10n.aboutDescription),
       ],
     );
+  }
+
+  Future<void> _determineLocation(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _locationLoading = true);
+    try {
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.lmstLocationDenied)),
+        );
+        return;
+      }
+      final pos = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.low,  // COARSE is sufficient
+        ),
+      );
+      final lon = double.parse(pos.longitude.toStringAsFixed(4));
+      setState(() => _lmstLongitude = lon);
+      EpochApp.of(context).setLmstLongitude(lon);
+    } finally {
+      setState(() => _locationLoading = false);
+    }
   }
 
   @override
@@ -147,6 +197,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => _dateWithDetails = val);
               app.setDateWithDetails(val);
             },
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: Text(
+              l10n.settingsLmst,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                letterSpacing: 1.5,
+              ),
+            ),
+          ),
+          RadioGroup<LmstMode>(
+            groupValue: _lmstMode,
+            onChanged: (v) {
+              if (v == null) return;
+              setState(() => _lmstMode = v);
+              app.setLmstMode(v);
+            },
+            child: Column(
+              children: [
+                RadioListTile(
+                  value: LmstMode.off,
+                  title: Text(l10n.lmstModeOff),
+                  secondary: const Icon(Icons.visibility_off_outlined),
+                ),
+                RadioListTile(
+                  value: LmstMode.manual,
+                  title: Text(l10n.lmstModeManual),
+                  subtitle: Text(l10n.lmstModeManualSub),
+                  secondary: const Icon(Icons.edit_location_outlined),
+                ),
+                if (_lmstMode == LmstMode.manual)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
+                            decoration: InputDecoration(
+                              labelText: l10n.lmstLongitudeLabel,
+                              suffixText: '°',
+                              hintText: TimeValueFormatter.formatDecimal(
+                                  8.6821,
+                                  _locale.toString(),
+                                  4,
+                                  thousandsSep: false
+                              ),
+                              isDense: true,
+                            ),
+                            controller: _longitudeController,
+                            onSubmitted: (v) {
+                              final normalized = v.replaceAll(',', '.');
+                              final lon = double.tryParse(normalized);
+                              if (lon != null && lon >= -180 && lon <= 180) {
+                                setState(() => _lmstLongitude = lon);
+                                app.setLmstLongitude(lon);
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (!_isDesktop) ...[
+                  RadioListTile<LmstMode>(
+                    value: LmstMode.locationAccess,
+                    title: Text(l10n.lmstModeLocation),
+                    subtitle: Text(l10n.lmstModeLocationSub),
+                    secondary: const Icon(Icons.my_location),
+                  ),
+                  if (_lmstMode == LmstMode.locationAccess)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                      child: Row(
+                        children: [
+                          if (_locationLoading)
+                            const SizedBox(
+                              width: 20, height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else if (_lmstLongitude != null)
+                            Text(
+                              TimeValueFormatter.formatDecimal(
+                                  _lmstLongitude!,
+                                  _locale.toString(),
+                                  4,
+                                  thousandsSep: false
+                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                            )
+                          else
+                            Text(l10n.lmstLocationNotYetDetermined,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
+                          const SizedBox(width: 12),
+                          TextButton.icon(
+                            icon: const Icon(Icons.refresh, size: 16),
+                            label: Text(l10n.lmstDetermineLocation),
+                            onPressed: _locationLoading ? null
+                                : () => _determineLocation(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ],
+            )
           ),
           const Divider(),
           ListTile(

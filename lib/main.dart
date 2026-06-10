@@ -85,6 +85,8 @@ class _EpochAppState extends State<EpochApp> {
   bool _settingsLoaded     = false;
   Locale _locale           = kDefaultLocale;
   String _localIanaZone    = 'UTC';
+  LmstMode _lmstMode       = kDefaultLmstMode;
+  double? _lmstLongitude;
 
   @override
   void initState() {
@@ -98,6 +100,8 @@ class _EpochAppState extends State<EpochApp> {
     final hour24          = await loadHourFormat24();
     final dateWithDetails = await loadDateWithDetails();
     final locale          = await loadLocale() ?? kDefaultLocale;
+    final lmstMode = await loadLmstMode();
+    final lmstLon  = await loadLmstLongitude();
 
     String localZone = 'UTC';
     try {
@@ -115,6 +119,8 @@ class _EpochAppState extends State<EpochApp> {
       _locale          = locale;
       _localIanaZone   = localZone;
       _settingsLoaded  = true;
+      _lmstMode        = lmstMode;
+      _lmstLongitude   = lmstLon;
     });
   }
 
@@ -143,14 +149,26 @@ class _EpochAppState extends State<EpochApp> {
     saveLocale(l.languageCode);
   }
 
+  void setLmstMode(LmstMode mode) {
+    setState(() => _lmstMode = mode);
+    saveLmstMode(mode);
+  }
+
+  void setLmstLongitude(double? lon) {
+    setState(() => _lmstLongitude = lon);
+    if (lon != null) saveLmstLongitude(lon);
+  }
+
   String get localIanaZone => _localIanaZone;
   
   AppThemeMode get themeMode  => _themeMode;
+  bool get isNightMode        => _themeMode == AppThemeMode.night;
   bool get thousandsSep       => _thousandsSep;
   bool get hourFormat24       => _hourFormat24;
   bool get dateWithDetails    => _dateWithDetails;
   Locale? get locale          => _locale;
-  bool get isNightMode        => _themeMode == AppThemeMode.night;
+  LmstMode get lmstMode       => _lmstMode;
+  double?  get lmstLongitude  => _lmstLongitude;
 
   ThemeMode get _flutterThemeMode => switch (_themeMode) {
     AppThemeMode.light  => ThemeMode.light,
@@ -352,7 +370,25 @@ class _HomeScreenState extends State<HomeScreen>
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
-    );
+    ).then((_) {
+      // Nach dem Schließen von Settings: LMST bereinigen wenn nötig
+      if (EpochApp.of(context).lmstMode == LmstMode.off) {
+        _removeLmstFromAllTabs();
+      }
+    });
+  }
+
+  void _removeLmstFromAllTabs() {
+    for (final tab in _customTabs) {
+      final newEntries = tab.entries
+          .where((e) => e.type != ValueType.lmst)
+          .toList();
+      if (newEntries.length != tab.entries.length) {
+        tab.entries = newEntries;
+      }
+    }
+    saveCustomTabs(_customTabs);
+    setState(() {});
   }
 
   // ── Build ────────────────────────────────────────────────────────────
@@ -440,12 +476,24 @@ class _HomeScreenState extends State<HomeScreen>
             showDateDetails: app.dateWithDetails,
             onEntriesChanged: _onCivilChanged,
           ),
-          TechnicalTab(now: _now, thousandsSep: app.thousandsSep),
-          AstronomicalTab(now: _now, thousandsSep: app.thousandsSep),
-          CuriositiesTab(now: _now, hourFormat24: app.hourFormat24),
+          TechnicalTab(
+              now: _now,
+              thousandsSep: app.thousandsSep
+          ),
+          AstronomicalTab(
+              now: _now,
+              thousandsSep: app.thousandsSep,
+              lmstMode: app.lmstMode,
+              lmstLongitude: app.lmstLongitude,
+          ),
+          CuriositiesTab(
+              now: _now,
+              hourFormat24:
+              app.hourFormat24
+          ),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
-            entries: tab.entries,
+            timeValues: tab.entries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
             showDateDetails: app.dateWithDetails,

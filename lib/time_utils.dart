@@ -62,7 +62,7 @@ class TimeUtils {
   }
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS- time does not have leap seconds, currently 18s ahead of UTC.
+  /// GPS time does not have leap seconds, currently 18s ahead of UTC.
   /// Last check for accuracy of hardcoded values: 2026-05-20.
   static int gpsTime(DateTime utc) {
     const leapSeconds = 18;
@@ -89,6 +89,14 @@ class TimeUtils {
     // Normalize to 0–24h.
     final hours = (gmstSec / 3600.0) % 24.0;
     return hours < 0 ? hours + 24.0 : hours;
+  }
+
+  /// Local Mean Sidereal Time (LMST) for a given longitude (in deg).
+  static double lmst(DateTime utc, double longitudeDeg) {
+    final gmstHours = gmst(utc);
+    // LMST = GMST + longitude/15
+    final lmstHours = (gmstHours + longitudeDeg / 15.0) % 24.0;
+    return lmstHours < 0 ? lmstHours + 24.0 : lmstHours;
   }
 
   /// Julian Date for a given UTC DateTime.

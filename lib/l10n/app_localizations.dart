@@ -326,6 +326,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Julian_day'**
   String get infoLinkJulianDate;
 
+  /// No description provided for @infoLinkLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Sidereal_time'**
+  String get infoLinkLmst;
+
   /// No description provided for @infoLinkModifiedJulianDate.
   ///
   /// In en, this message translates to:
@@ -355,6 +361,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'https://en.wikipedia.org/wiki/Unix_time'**
   String get infoLinkUnixSeconds;
+
+  /// No description provided for @infoLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.'**
+  String get infoLmst;
 
   /// No description provided for @infoModifiedJulianDate.
   ///
@@ -421,6 +433,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'UTC'**
   String get labelUtc;
+
+  /// No description provided for @lmstDetermineLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Determine'**
+  String get lmstDetermineLocation;
+
+  /// No description provided for @lmstLocationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied'**
+  String get lmstLocationDenied;
+
+  /// No description provided for @lmstLocationNotYetDetermined.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet determined'**
+  String get lmstLocationNotYetDetermined;
+
+  /// No description provided for @lmstLongitudeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude (negative = West)'**
+  String get lmstLongitudeLabel;
+
+  /// No description provided for @lmstModeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use approximate location'**
+  String get lmstModeLocation;
+
+  /// No description provided for @lmstModeLocationSub.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time, without GPS, no tracking'**
+  String get lmstModeLocationSub;
+
+  /// No description provided for @lmstModeManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual longitude'**
+  String get lmstModeManual;
+
+  /// No description provided for @lmstModeManualSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
+  String get lmstModeManualSub;
+
+  /// No description provided for @lmstModeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not show'**
+  String get lmstModeOff;
 
   /// No description provided for @maxValuesReached.
   ///
@@ -577,6 +643,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get settingsLanguage;
+
+  /// No description provided for @settingsLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'LOCAL SIDEREAL TIME'**
+  String get settingsLmst;
 
   /// No description provided for @settingsTheme.
   ///
@@ -739,6 +811,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Julian Date'**
   String get valueTypeJulianDate;
+
+  /// No description provided for @valueTypeLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'LMST'**
+  String get valueTypeLmst;
 
   /// No description provided for @valueTypeModifiedJulianDate.
   ///

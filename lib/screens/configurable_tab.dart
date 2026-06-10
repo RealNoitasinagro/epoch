@@ -17,7 +17,7 @@ import 'entry_picker.dart';
 // [entries] and [onEntriesChanged] are managed by the parent.
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
-  final List<TimeValue> entries;
+  final List<TimeValue> timeValues;
   final bool thousandsSep;
   final bool hourFormat24;
   final bool showDateDetails;
@@ -28,7 +28,7 @@ class ConfigurableTab extends StatefulWidget {
   const ConfigurableTab({
     super.key,
     required this.now,
-    required this.entries,
+    required this.timeValues,
     required this.onEntriesChanged,
     this.thousandsSep = true,
     this.hourFormat24 = true,
@@ -76,21 +76,21 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   }
 
   bool get _allChecked =>
-      widget.entries.isNotEmpty &&
-          widget.entries.every((e) => _checked.contains(e.key));
+      widget.timeValues.isNotEmpty &&
+          widget.timeValues.every((e) => _checked.contains(e.key));
 
   void _toggleMasterCheck() {
     setState(() {
       if (_allChecked) {
         _checked.clear();
       } else {
-        _checked.addAll(widget.entries.map((e) => e.key));
+        _checked.addAll(widget.timeValues.map((e) => e.key));
       }
     });
   }
 
   void _removeChecked() {
-    final updated = widget.entries
+    final updated = widget.timeValues
         .where((e) => !_checked.contains(e.key))
         .toList();
     _checked.clear();
@@ -106,7 +106,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _showAddDialog() async {
     final l10n = AppLocalizations.of(context)!;
-    if (widget.entries.length >= widget.maxEntries) {
+    if (widget.timeValues.length >= widget.maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(l10n.maxValuesReached(widget.maxEntries)),
         behavior: SnackBarBehavior.floating,
@@ -114,14 +114,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       return;
     }
 
+    final app = EpochApp.of(context);
     final result = await showEntryPicker(
       context,
       allowedTypes: widget.allowedTypes,
-      existingEntries: widget.entries,
+      existingEntries: widget.timeValues,
+      lmstMode: app.lmstMode,
+      lmstLongitude: app.lmstLongitude,
     );
     if (result == null) return;
 
-    if (widget.entries.any((e) => e.key == result.key)) {
+    if (widget.timeValues.any((e) => e.key == result.key)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(l10n.alreadyDisplayed),
@@ -129,7 +132,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ));
       return;
     }
-    widget.onEntriesChanged([...widget.entries, result]);
+    widget.onEntriesChanged([...widget.timeValues, result]);
   }
 
   Widget _buildDisplayList(AppLocalizations l10n, String locale) {
@@ -138,36 +141,39 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       padding: const EdgeInsets.fromLTRB(
           kTabHorizontalPadding, kTabVerticalPadding,
           kTabHorizontalPadding, 80),
-      itemCount: widget.entries.length,
+      itemCount: widget.timeValues.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final entry = widget.entries[index];
-        return _buildDisplayRow(context, entry, l10n, locale);
+        final timeValue = widget.timeValues[index];
+        return _buildDisplayRow(context, timeValue, l10n, locale);
       },
     );
   }
 
   Widget _buildDisplayRow(
       BuildContext context,
-      TimeValue entry,
+      TimeValue timeValue,
       AppLocalizations l10n,
       String locale,
       ) {
-    if (entry.type.isGraphical) {
+    final longitude = EpochApp.of(context).lmstLongitude;
+
+    if (timeValue.type.isGraphical) {
       return TimeGraphicalRow(
-        key: ValueKey(entry.key),
-        timeValue: entry,
+        key: ValueKey(timeValue.key),
+        timeValue: timeValue,
         now: widget.now,
       );
     }
     return TimeStringRow(
-      key: ValueKey(entry.key),
-      timeValue: entry,
+      key: ValueKey(timeValue.key),
+      timeValue: timeValue,
       now: widget.now,
       locale: locale,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       showDateDetails: widget.showDateDetails,
+      longitude: longitude,
     );
   }
 
@@ -178,19 +184,19 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       padding: const EdgeInsets.fromLTRB(
           kTabHorizontalPadding, kTabVerticalPadding,
           kTabHorizontalPadding, 80),
-      itemCount: widget.entries.length,
+      itemCount: widget.timeValues.length,
       onReorderItem: (oldIndex, newIndex) {
-        final updated = List<TimeValue>.of(widget.entries);
+        final updated = List<TimeValue>.of(widget.timeValues);
         final item = updated.removeAt(oldIndex);
         updated.insert(newIndex, item);
         widget.onEntriesChanged(updated);
       },
       itemBuilder: (context, index) {
-        final entry = widget.entries[index];
+        final timeValue = widget.timeValues[index];
         return Padding(
-          key: ValueKey(entry.key),
+          key: ValueKey(timeValue.key),
           padding: const EdgeInsets.only(bottom: 12),
-          child: _buildEditRow(context, entry, index, l10n, locale),
+          child: _buildEditRow(context, timeValue, index, l10n, locale),
         );
       },
     );
@@ -198,15 +204,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _buildEditRow(
       BuildContext context,
-      TimeValue entry,
+      TimeValue timeValue,
       int index,
       AppLocalizations l10n,
       String locale,
       ) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final isGraphical = entry.type.isGraphical;
+    final isGraphical = timeValue.type.isGraphical;
+    final longitude = EpochApp.of(context).lmstLongitude;
 
-    final zonedNow = switch (entry.zone) {
+    final zonedNow = switch (timeValue.zone) {
       ZoneLocal()                  => widget.now,
       ZoneUtc()                    => widget.now.toUtc(),
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
@@ -215,23 +222,30 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final displayValue = isGraphical
         ? '[${l10n.binaryClockPlaceholder}]'
         : TimeValueFormatter.format(
-      entry, widget.now, locale,
+      timeValue, widget.now, locale,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       localIanaZone: localIanaZone,
+      longitude: longitude,
     );
 
-    String? editSubtitle;
-    if (entry.type == ValueType.date && widget.showDateDetails) {
-      editSubtitle = l10n.dateSubtitle(
+    String? subtitle;
+    if (timeValue.type == ValueType.date && widget.showDateDetails) {
+      subtitle = l10n.dateSubtitle(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
+    } else if (timeValue.type == ValueType.gmst || timeValue.type == ValueType.lmst) {
+      final hours = TimeValueFormatter.hmsToHours(displayValue);
+      if (hours != null) {
+        final deg = TimeValueFormatter.formatDecimal(
+            hours * 15.0, locale, 4, thousandsSep: false);
+        subtitle = '$deg°';
+      }
     }
-
     final split = TimeStringRow.splitZoneOffset(displayValue);
-    final line2 = editSubtitle ?? split.line2;
+    final line2 = subtitle ?? split.line2;
 
     return Dismissible(
-      key: ValueKey(entry.key),
+      key: ValueKey(timeValue.key),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
@@ -240,18 +254,20 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
       onDismissed: (_) {
-        final updated = List<TimeValue>.of(widget.entries);
+        final updated = List<TimeValue>.of(widget.timeValues);
         updated.removeAt(index);
-        _checked.remove(entry.key);
+        _checked.remove(timeValue.key);
         widget.onEntriesChanged(updated);
       },
       child: ValueTile(
-        label: entry.localizedDisplayLabel(l10n),
-        showZoneIndicator: !entry.isZoneIndependent,
+        label: timeValue.type == ValueType.lmst
+            ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
+            : timeValue.localizedDisplayLabel(l10n),
+        showZoneIndicator: !timeValue.isZoneIndependent,
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(
-          clock: entry.type == ValueType.binaryClockColumns
+          clock: timeValue.type == ValueType.binaryClockColumns
               ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
               : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
         )
@@ -261,7 +277,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             icon: const Icon(Icons.edit, size: 20),
             color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
             tooltip: l10n.editLabel,
-            onPressed: () => _editLabel(context, entry, l10n),
+            onPressed: () => _editLabel(context, timeValue, l10n),
           ),
           ReorderableDragStartListener(
             index: index,
@@ -271,14 +287,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => setState(() {
-              if (_checked.contains(entry.key)) {
-                _checked.remove(entry.key);
+              if (_checked.contains(timeValue.key)) {
+                _checked.remove(timeValue.key);
               } else {
-                _checked.add(entry.key);
+                _checked.add(timeValue.key);
               }
             }),
             child: Checkbox(
-              value: _checked.contains(entry.key),
+              value: _checked.contains(timeValue.key),
               onChanged: null,
             ),
           ),
@@ -289,12 +305,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _editLabel(
       BuildContext context,
-      TimeValue entry,
+      TimeValue timeValue,
       AppLocalizations l10n,
       ) async {
     // Pre-fill with custom label if set, otherwise official label.
     final controller = TextEditingController(
-      text: entry.customLabel ?? entry.localizedDisplayLabel(l10n),
+      text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n),
     );
     final result = await showDialog<String>(
       context: context,
@@ -306,7 +322,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           decoration: InputDecoration(
             labelText: l10n.newLabelName,
             // Show official label as hint so user knows the default.
-            hintText: entry.localizedDisplayLabel(l10n),
+            hintText: timeValue.localizedDisplayLabel(l10n),
           ),
           onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
         ),
@@ -331,12 +347,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     // Note: controller.dispose() intentionally omitted – Linux assertion.
     if (result == null) return;
 
-    final updated = List<TimeValue>.of(widget.entries);
-    final idx = updated.indexWhere((e) => e.key == entry.key);
+    final updated = List<TimeValue>.of(widget.timeValues);
+    final idx = updated.indexWhere((e) => e.key == timeValue.key);
     if (idx == -1) return;
 
     // Empty string = clear custom label, restore official label.
-    updated[idx] = entry.withCustomLabel(result.isEmpty ? null : result);
+    updated[idx] = timeValue.withCustomLabel(result.isEmpty ? null : result);
     widget.onEntriesChanged(updated);
   }
 
@@ -351,7 +367,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           editMode: _editMode,
           allChecked: _allChecked,
           anyChecked: _checked.isNotEmpty,
-          entryCount: widget.entries.length,
+          timeValueCount: widget.timeValues.length,
           onToggleEditMode: _toggleEditMode,
           onToggleMasterCheck: _toggleMasterCheck,
           onDeleteChecked: _removeChecked,
@@ -359,7 +375,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         ),
         Expanded(
           child:
-            widget.entries.isEmpty && !_editMode
+            widget.timeValues.isEmpty && !_editMode
               ? const _EmptyTabHint()
                 : _editMode
                   ? _buildEditList(l10n, locale)
@@ -390,7 +406,7 @@ class _EditToolbar extends StatelessWidget {
   final bool editMode;
   final bool allChecked;
   final bool anyChecked;
-  final int entryCount;
+  final int timeValueCount;
   final VoidCallback onToggleEditMode;
   final VoidCallback onToggleMasterCheck;
   final VoidCallback onDeleteChecked;
@@ -400,7 +416,7 @@ class _EditToolbar extends StatelessWidget {
     required this.editMode,
     required this.allChecked,
     required this.anyChecked,
-    required this.entryCount,
+    required this.timeValueCount,
     required this.onToggleEditMode,
     required this.onToggleMasterCheck,
     required this.onDeleteChecked,
@@ -417,7 +433,7 @@ class _EditToolbar extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            l10n.tabValueCount(entryCount),
+            l10n.tabValueCount(timeValueCount),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
             ),

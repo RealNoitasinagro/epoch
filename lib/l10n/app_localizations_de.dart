@@ -108,7 +108,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoGmst =>
-      'Greenwich Mean Sidereal Time (GMST) – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
 
   @override
   String get infoGps =>
@@ -144,6 +144,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Julianisches_Datum';
 
   @override
+  String get infoLinkLmst => 'https://de.wikipedia.org/wiki/Sternzeit';
+
+  @override
   String get infoLinkModifiedJulianDate =>
       'https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum';
 
@@ -163,12 +166,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
+  String get infoLmst =>
+      'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.';
+
+  @override
   String get infoModifiedJulianDate =>
       'Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
 
   @override
   String get infoModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnung mit kleineren Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
   String get infoSwatchBeats =>
@@ -199,6 +206,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelUtc => 'UTC';
+
+  @override
+  String get lmstDetermineLocation => 'Bestimmen';
+
+  @override
+  String get lmstLocationDenied => 'Standortberechtigung verweigert';
+
+  @override
+  String get lmstLocationNotYetDetermined => 'Noch nicht bestimmt';
+
+  @override
+  String get lmstLongitudeLabel => 'Längengrad (negativ = West)';
+
+  @override
+  String get lmstModeLocation => 'Ungefähren Standort verwenden';
+
+  @override
+  String get lmstModeLocationSub => 'Einmalig, ohne GPS, kein Tracking';
+
+  @override
+  String get lmstModeManual => 'Längengrad manuell eingeben';
+
+  @override
+  String get lmstModeManualSub =>
+      'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
+
+  @override
+  String get lmstModeOff => 'Nicht anzeigen';
 
   @override
   String maxValuesReached(int count) {
@@ -280,6 +315,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLanguage => 'Sprache';
+
+  @override
+  String get settingsLmst => 'LOKALE STERNZEIT';
 
   @override
   String get settingsTheme => 'Design';
@@ -376,6 +414,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeJulianDate => 'Julianisches Datum';
+
+  @override
+  String get valueTypeLmst => 'LMST';
 
   @override
   String get valueTypeModifiedJulianDate => 'Modifiziertes Julianisches Datum';

@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const _kLocaleKey = 'locale';
 const _kThemeModeKey = 'theme_mode';
 const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
 const _kDateWithDetails = 'date_cw_doy';
-const _kLocaleKey = 'locale';
+const _kLmstModeKey = 'lmst_mode';
+const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
-const kDefaultLocale    = Locale('en');
+
+const kDefaultLocale = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
 const kDefaultThousandsSep = true;
 const kDefaultHourFormat24 = true;
 const kDefaultDateWithDetails = true;
+const kDefaultLmstMode = LmstMode.off;
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
+
+enum LmstMode { off, manual, locationAccess }
+
+Future<Locale?> loadLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  final code = prefs.getString(_kLocaleKey);
+  if (code == null) return null;
+  return Locale(code);
+}
+
+Future<void> saveLocale(String languageCode) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kLocaleKey, languageCode);
+}
+
+Future<void> clearLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove(_kLocaleKey);
+}
 
 Future<AppThemeMode> loadThemeMode() async {
   final prefs = await SharedPreferences.getInstance();
@@ -68,21 +91,28 @@ Future<void> saveDateWithDetails(bool showDetails) async {
   await prefs.setBool(_kDateWithDetails, showDetails);
 }
 
-Future<Locale?> loadLocale() async {
+Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
-  final code = prefs.getString(_kLocaleKey);
-  if (code == null) return null;
-  return Locale(code);
+  return switch (prefs.getString(_kLmstModeKey)) {
+    'manual' => LmstMode.manual,
+    'gps'    => LmstMode.locationAccess,
+    _        => LmstMode.off,
+  };
 }
 
-Future<void> saveLocale(String languageCode) async {
+Future<void> saveLmstMode(LmstMode mode) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(_kLocaleKey, languageCode);
+  await prefs.setString(_kLmstModeKey, mode.name);
 }
 
-Future<void> clearLocale() async {
+Future<double?> loadLmstLongitude() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.remove(_kLocaleKey);
+  return prefs.getDouble(_kLmstLongitudeKey);
+}
+
+Future<void> saveLmstLongitude(double lon) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble(_kLmstLongitudeKey, lon);
 }
 
 Future<int> loadActiveTab() async {
