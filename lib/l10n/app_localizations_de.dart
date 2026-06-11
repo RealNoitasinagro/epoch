@@ -75,50 +75,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.';
 
   @override
-  String get infoBinaryClockBcd =>
-      'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
-
-  @override
-  String get infoBinaryClockColumns =>
-      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
-
-  @override
-  String get infoBinaryClockString =>
-      'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
-
-  @override
-  String get infoDate =>
-      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
-
-  @override
-  String get infoDateTime =>
-      'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
-
-  @override
-  String get infoDayPercent =>
-      'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
-
-  @override
-  String get infoDaySecond =>
-      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
-
-  @override
-  String get infoDoomsdayClock =>
-      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
-
-  @override
-  String get infoGmst =>
-      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
-
-  @override
-  String get infoGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
-
-  @override
-  String get infoJulianDate =>
-      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
-
-  @override
   String get infoLinkBinaryClockBcd =>
       'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
 
@@ -166,30 +122,74 @@ class AppLocalizationsDe extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
-  String get infoLmst =>
+  String get infoTextBinaryClockBcd =>
+      'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
+
+  @override
+  String get infoTextBinaryClockColumns =>
+      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
+
+  @override
+  String get infoTextBinaryClockString =>
+      'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+
+  @override
+  String get infoTextDate =>
+      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
+
+  @override
+  String get infoTextDateTime =>
+      'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
+
+  @override
+  String get infoTextDayPercent =>
+      'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
+  String get infoTextDaySecond =>
+      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
+  String get infoTextDoomsdayClock =>
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
+
+  @override
+  String get infoTextGmst =>
+      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+
+  @override
+  String get infoTextGps =>
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+
+  @override
+  String get infoTextJulianDate =>
+      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+
+  @override
+  String get infoTextLmst =>
       'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.';
 
   @override
-  String get infoModifiedJulianDate =>
+  String get infoTextModifiedJulianDate =>
       'Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
 
   @override
-  String get infoModifiedJulianDate2000 =>
+  String get infoTextModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
-  String get infoSwatchBeats =>
+  String get infoTextSwatchBeats =>
       'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
 
   @override
-  String get infoTai =>
+  String get infoTextTai =>
       'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
-  String get infoTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
+  String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
 
   @override
-  String get infoUnixSeconds =>
+  String get infoTextUnixSeconds =>
       'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
 
   @override
@@ -256,7 +256,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get renameTab => 'Tab umbenennen';
 
   @override
-  String get resetToDefaults => 'Auf Standard zurücksetzen';
+  String get resetToDefaults => 'Zurücksetzen';
 
   @override
   String get sectionAtomic => 'Atomuhr';

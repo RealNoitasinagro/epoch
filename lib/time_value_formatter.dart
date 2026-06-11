@@ -21,6 +21,7 @@ class TimeValueFormatter {
 
     // Zone-independent values.
     switch (value.type) {
+      // Technical
       case ValueType.unixSeconds:
         final v = TimeUtils.unixTimestamp(utcNow);
         return thousandsSep
@@ -36,6 +37,7 @@ class TimeValueFormatter {
         return thousandsSep
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
+      // Astronomical
       case ValueType.gmst:
         return hoursToHms(TimeUtils.gmst(utcNow));
       case ValueType.lmst:
@@ -53,6 +55,7 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.modifiedJulianDate2000(utcNow), locale, 5,
             thousandsSep: thousandsSep);
+      // Curiosities
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
       case ValueType.doomsdayClock:
@@ -94,6 +97,7 @@ class TimeValueFormatter {
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
     switch (value.type) {
+      // Civil
       case ValueType.date:
         return formatDate(locale, dt);
       case ValueType.time:
@@ -116,6 +120,7 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.dayPercent(dt), locale, 3,
             thousandsSep: false); // percent never needs thousands sep
+      // Curiosities
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
       case ValueType.binaryClockColumns:

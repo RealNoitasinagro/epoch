@@ -76,6 +76,7 @@ esac
 
 
 # +++ CONFIGURATION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+skipAnalyze=0
 skipChecksums=0
 skipCopy=0
 useLogging=1
@@ -120,10 +121,18 @@ Flutter: $flutter_active
 $flutter_version
 Logfile: $build_all_log
 Repo: $cwd
-skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
+skipAnalyze: $skipAnalyze | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
 EOF
+
+echo "# analyze"
+if [ ! "$skipAnalyze" -eq "1" ] ; then
+    $flutter_active analyze
+else
+    echo "Skipped."
+fi
+echo
 
 echo "# apk"
 if [ ! "$skipApk" -eq "1" ] ; then

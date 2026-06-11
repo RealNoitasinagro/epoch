@@ -218,72 +218,6 @@ abstract class AppLocalizations {
   /// **'Configurable tab.\nUse the edit mode to add values.'**
   String get emptyTabHint;
 
-  /// No description provided for @infoBinaryClockBcd.
-  ///
-  /// In en, this message translates to:
-  /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
-  String get infoBinaryClockBcd;
-
-  /// No description provided for @infoBinaryClockColumns.
-  ///
-  /// In en, this message translates to:
-  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
-  String get infoBinaryClockColumns;
-
-  /// No description provided for @infoBinaryClockString.
-  ///
-  /// In en, this message translates to:
-  /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
-  String get infoBinaryClockString;
-
-  /// No description provided for @infoDate.
-  ///
-  /// In en, this message translates to:
-  /// **'The current calendar date in the selected timezone.'**
-  String get infoDate;
-
-  /// No description provided for @infoDateTime.
-  ///
-  /// In en, this message translates to:
-  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
-  String get infoDateTime;
-
-  /// No description provided for @infoDayPercent.
-  ///
-  /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
-  String get infoDayPercent;
-
-  /// No description provided for @infoDaySecond.
-  ///
-  /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
-  String get infoDaySecond;
-
-  /// No description provided for @infoDoomsdayClock.
-  ///
-  /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
-  String get infoDoomsdayClock;
-
-  /// No description provided for @infoGmst.
-  ///
-  /// In en, this message translates to:
-  /// **'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
-  String get infoGmst;
-
-  /// No description provided for @infoGps.
-  ///
-  /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
-  String get infoGps;
-
-  /// No description provided for @infoJulianDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
-  String get infoJulianDate;
-
   /// No description provided for @infoLinkBinaryClockBcd.
   ///
   /// In en, this message translates to:
@@ -362,47 +296,113 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Unix_time'**
   String get infoLinkUnixSeconds;
 
-  /// No description provided for @infoLmst.
+  /// No description provided for @infoTextBinaryClockBcd.
+  ///
+  /// In en, this message translates to:
+  /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
+  String get infoTextBinaryClockBcd;
+
+  /// No description provided for @infoTextBinaryClockColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  String get infoTextBinaryClockColumns;
+
+  /// No description provided for @infoTextBinaryClockString.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
+  String get infoTextBinaryClockString;
+
+  /// No description provided for @infoTextDate.
+  ///
+  /// In en, this message translates to:
+  /// **'The current calendar date in the selected timezone.'**
+  String get infoTextDate;
+
+  /// No description provided for @infoTextDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
+  String get infoTextDateTime;
+
+  /// No description provided for @infoTextDayPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
+  String get infoTextDayPercent;
+
+  /// No description provided for @infoTextDaySecond.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  String get infoTextDaySecond;
+
+  /// No description provided for @infoTextDoomsdayClock.
+  ///
+  /// In en, this message translates to:
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
+  String get infoTextDoomsdayClock;
+
+  /// No description provided for @infoTextGmst.
+  ///
+  /// In en, this message translates to:
+  /// **'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
+  String get infoTextGmst;
+
+  /// No description provided for @infoTextGps.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  String get infoTextGps;
+
+  /// No description provided for @infoTextJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  String get infoTextJulianDate;
+
+  /// No description provided for @infoTextLmst.
   ///
   /// In en, this message translates to:
   /// **'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.'**
-  String get infoLmst;
+  String get infoTextLmst;
 
-  /// No description provided for @infoModifiedJulianDate.
+  /// No description provided for @infoTextModifiedJulianDate.
   ///
   /// In en, this message translates to:
   /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
-  String get infoModifiedJulianDate;
+  String get infoTextModifiedJulianDate;
 
-  /// No description provided for @infoModifiedJulianDate2000.
+  /// No description provided for @infoTextModifiedJulianDate2000.
   ///
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
-  String get infoModifiedJulianDate2000;
+  String get infoTextModifiedJulianDate2000;
 
-  /// No description provided for @infoSwatchBeats.
+  /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
   /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
-  String get infoSwatchBeats;
+  String get infoTextSwatchBeats;
 
-  /// No description provided for @infoTai.
+  /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
   /// **'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
-  String get infoTai;
+  String get infoTextTai;
 
-  /// No description provided for @infoTime.
+  /// No description provided for @infoTextTime.
   ///
   /// In en, this message translates to:
   /// **'The current time in the selected timezone.'**
-  String get infoTime;
+  String get infoTextTime;
 
-  /// No description provided for @infoUnixSeconds.
+  /// No description provided for @infoTextUnixSeconds.
   ///
   /// In en, this message translates to:
   /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
-  String get infoUnixSeconds;
+  String get infoTextUnixSeconds;
 
   /// No description provided for @labelHours.
   ///

@@ -75,49 +75,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configurable tab.\nUse the edit mode to add values.';
 
   @override
-  String get infoBinaryClockBcd =>
-      'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
-
-  @override
-  String get infoBinaryClockColumns =>
-      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
-
-  @override
-  String get infoBinaryClockString =>
-      'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
-
-  @override
-  String get infoDate => 'The current calendar date in the selected timezone.';
-
-  @override
-  String get infoDateTime =>
-      'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
-
-  @override
-  String get infoDayPercent =>
-      'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
-
-  @override
-  String get infoDaySecond =>
-      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
-
-  @override
-  String get infoDoomsdayClock =>
-      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
-
-  @override
-  String get infoGmst =>
-      'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.';
-
-  @override
-  String get infoGps =>
-      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
-
-  @override
-  String get infoJulianDate =>
-      'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.';
-
-  @override
   String get infoLinkBinaryClockBcd =>
       'https://en.wikipedia.org/wiki/Binary_clock';
 
@@ -165,30 +122,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
 
   @override
-  String get infoLmst =>
+  String get infoTextBinaryClockBcd =>
+      'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
+
+  @override
+  String get infoTextBinaryClockColumns =>
+      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
+
+  @override
+  String get infoTextBinaryClockString =>
+      'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
+
+  @override
+  String get infoTextDate =>
+      'The current calendar date in the selected timezone.';
+
+  @override
+  String get infoTextDateTime =>
+      'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
+
+  @override
+  String get infoTextDayPercent =>
+      'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
+
+  @override
+  String get infoTextDaySecond =>
+      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
+
+  @override
+  String get infoTextDoomsdayClock =>
+      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
+
+  @override
+  String get infoTextGmst =>
+      'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.';
+
+  @override
+  String get infoTextGps =>
+      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
+
+  @override
+  String get infoTextJulianDate =>
+      'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.';
+
+  @override
+  String get infoTextLmst =>
       'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.';
 
   @override
-  String get infoModifiedJulianDate =>
+  String get infoTextModifiedJulianDate =>
       'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.';
 
   @override
-  String get infoModifiedJulianDate2000 =>
+  String get infoTextModifiedJulianDate2000 =>
       'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
 
   @override
-  String get infoSwatchBeats =>
+  String get infoTextSwatchBeats =>
       'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).';
 
   @override
-  String get infoTai =>
+  String get infoTextTai =>
       'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
 
   @override
-  String get infoTime => 'The current time in the selected timezone.';
+  String get infoTextTime => 'The current time in the selected timezone.';
 
   @override
-  String get infoUnixSeconds =>
+  String get infoTextUnixSeconds =>
       'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.';
 
   @override
