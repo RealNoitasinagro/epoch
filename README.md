@@ -52,8 +52,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Privacy & permissions
 - **No ads. No notifications. No tracking. No analytics. No network requests.**
 - All settings stored locally on your device
-- No permissions required -- for LMST, you can specify longitude manually, 
-or temporarily grant ACCESS_COARSE_LOCATION permission (one-time setup step)
+- No permissions required
 
 ---
 

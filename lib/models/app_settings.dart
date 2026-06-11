@@ -95,7 +95,7 @@ Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.getString(_kLmstModeKey)) {
     'manual' => LmstMode.manual,
-    'gps'    => LmstMode.locationAccess,
+    'gps'    => LmstMode.manual,  // fallback for 1.1.ß
     _        => LmstMode.off,
   };
 }

@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-06-11
+
+### Removed
+- geolocator -- longitude config for LMST only manual for now
+
 ## [1.1.0] - 2026-06-10
 
 ### Added

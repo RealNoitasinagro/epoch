@@ -185,9 +185,9 @@ if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
     tee -a $build_all_log << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ Output *.apk files were not built properly for a release, do NOT upload to GitHub!!"
++ Output *.apk files were not built properly for a release, do NOT upload to GitHub!!
 + variants: $what | mode: $mode
-+ CWD: $cwd | Releases: $GL_Epoch"
++ CWD: $cwd | Releases: $GL_Epoch
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 EOF

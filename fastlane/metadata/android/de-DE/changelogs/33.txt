@@ -9,3 +9,6 @@ Behoben:
 - Julianisches-Datum-Offset
 - Kachel-Sortierung
 - Abstürze bei veralteten Zeitzonennamen
+
+Geändert:
+- Längengrad-Konfiguration für LMST vorerst nur manuell
