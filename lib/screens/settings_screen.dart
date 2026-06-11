@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,11 +24,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _longitudeController = TextEditingController();
 
   static const _fallbackVersion = '1.0.0';
-
-  bool get _isDesktop =>
-      defaultTargetPlatform == TargetPlatform.linux ||
-      defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.macOS;
 
   @override
   void didChangeDependencies() {
