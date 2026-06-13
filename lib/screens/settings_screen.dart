@@ -62,10 +62,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       applicationName: l10n.appName,
       applicationVersion: '$version (build $build)',
-      applicationLegalese: l10n.aboutLegalese,
+      applicationLegalese: l10n.dialogueAboutLegalese,
       children: [
         SizedBox(height: 16),
-        Text(l10n.aboutDescription),
+        Text(l10n.dialogueAbout),
       ],
     );
   }
@@ -76,13 +76,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.settings),
+        title: Text(l10n.pageSettings),
       ),
       body: ListView(
         children: [
           ListTile(
             leading: const Icon(Icons.language),
-            title: Text(l10n.settingsLanguage),
+            title: Text(l10n.pageSettingsLanguage),
             trailing: DropdownButton<String>(
               value: _locale?.languageCode ?? 'en',
               underline: const SizedBox.shrink(),
@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.brightness_6),
-            title: Text(l10n.settingsTheme),
+            title: Text(l10n.pageSettingsTheme),
             trailing: DropdownButton<AppThemeMode>(
               value: _themeMode,
               underline: const SizedBox.shrink(),
@@ -109,19 +109,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               items: [
                 DropdownMenuItem(
                   value: AppThemeMode.system,
-                  child: Text(l10n.settingsThemeSystem),
+                  child: Text(l10n.pageSettingsThemeSystem),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.light,
-                  child: Text(l10n.settingsThemeLight),
+                  child: Text(l10n.pageSettingsThemeLight),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.dark,
-                  child: Text(l10n.settingsThemeDark),
+                  child: Text(l10n.pageSettingsThemeDark),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.night,
-                  child: Text(l10n.settingsThemeNight),
+                  child: Text(l10n.pageSettingsThemeNight),
                 ),
               ],
               onChanged: (mode) {
@@ -133,8 +133,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.schedule),
-            title: Text(l10n.settingsHourFormat),
-            subtitle: Text(l10n.settingsHourFormatSub),
+            title: Text(l10n.pageSettingsHourFormat),
+            subtitle: Text(l10n.pageSettingsHourFormatSub),
             value: _hourFormat24,
             onChanged: (val) {
               setState(() => _hourFormat24 = val);
@@ -143,8 +143,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
-            title: Text(l10n.settingsThousandsSep),
-            subtitle: Text(l10n.settingsThousandsSepSub),
+            title: Text(l10n.pageSettingsThousandsSep),
+            subtitle: Text(l10n.pageSettingsThousandsSepSub),
             value: _thousandsSep,
             onChanged: (val) {
               setState(() => _thousandsSep = val);
@@ -153,8 +153,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.calendar_today),
-            title: Text(l10n.settingsDateWithDetails),
-            subtitle: Text(l10n.settingsDateWithDetailsSub),
+            title: Text(l10n.pageSettingsDateWithDetails),
+            subtitle: Text(l10n.pageSettingsDateWithDetailsSub),
             value: _dateWithDetails,
             onChanged: (val) {
               setState(() => _dateWithDetails = val);
@@ -165,10 +165,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(
-              l10n.settingsLmst,
+              l10n.pageSettingsLmst.toUpperCase(),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                letterSpacing: 1.5,
+                letterSpacing: 2,
               ),
             ),
           ),
@@ -183,13 +183,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 RadioListTile(
                   value: LmstMode.off,
-                  title: Text(l10n.lmstModeOff),
+                  title: Text(l10n.settingLmstOff),
                   secondary: const Icon(Icons.visibility_off_outlined),
                 ),
                 RadioListTile(
                   value: LmstMode.manual,
-                  title: Text(l10n.lmstModeManual),
-                  subtitle: Text(l10n.lmstModeManualSub),
+                  title: Text(l10n.settingLmstLongitudeManual),
+                  subtitle: Text(l10n.settingLmstLongitudeManualSub),
                   secondary: const Icon(Icons.edit_location_outlined),
                 ),
                 if (_lmstMode == LmstMode.manual)
@@ -202,7 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             keyboardType: const TextInputType.numberWithOptions(
                                 signed: true, decimal: true),
                             decoration: InputDecoration(
-                              labelText: l10n.lmstLongitudeLabel,
+                              labelText: l10n.labelLongitude,
                               suffixText: '°',
                               hintText: TimeValueFormatter.formatDecimal(
                                   8.6821,
@@ -232,12 +232,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: Text(l10n.settingsAbout),
+            title: Text(l10n.pageSettingsAbout),
             onTap: () => _showAbout(context, l10n),
           ),
           ListTile(
             leading: const Icon(Icons.new_releases_outlined),
-            title: Text(l10n.settingsWhatsNew),
+            title: Text(l10n.pageSettingsWhatsNew),
             onTap: () async {
               final uri = Uri.parse(
                   'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');

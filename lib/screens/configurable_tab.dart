@@ -108,7 +108,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final l10n = AppLocalizations.of(context)!;
     if (widget.timeValues.length >= widget.maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(l10n.maxValuesReached(widget.maxEntries)),
+        content: Text(l10n.messageMaxValues(widget.maxEntries)),
         behavior: SnackBarBehavior.floating,
       ));
       return;
@@ -127,7 +127,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (widget.timeValues.any((e) => e.key == result.key)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(l10n.alreadyDisplayed),
+        content: Text(l10n.messageAlreadyDisplayed),
         behavior: SnackBarBehavior.floating,
       ));
       return;
@@ -220,7 +220,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
 
     final displayValue = isGraphical
-        ? '[${l10n.binaryClockPlaceholder}]'
+        ? '[${l10n.dataBinaryClocksPlaceholder}]'
         : TimeValueFormatter.format(
       timeValue, widget.now, locale,
       hourFormat24: widget.hourFormat24,
@@ -231,7 +231,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     String? subtitle;
     if (timeValue.type == ValueType.date && widget.showDateDetails) {
-      subtitle = l10n.dateSubtitle(
+      subtitle = l10n.dataDateSub(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
     } else if (timeValue.type == ValueType.gmst || timeValue.type == ValueType.lmst) {
       final hours = TimeValueFormatter.hmsToHours(displayValue);
@@ -276,7 +276,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
             color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-            tooltip: l10n.editLabel,
+            tooltip: l10n.hintEditLabel,
             onPressed: () => _editLabel(context, timeValue, l10n),
           ),
           ReorderableDragStartListener(
@@ -293,9 +293,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 _checked.add(timeValue.key);
               }
             }),
-            child: Checkbox(
-              value: _checked.contains(timeValue.key),
-              onChanged: null,
+            child: Tooltip(
+              message: _checked.contains(timeValue.key)
+                  ? l10n.hintDeselect
+                  : l10n.hintSelect,
+              child: Checkbox(
+                value: _checked.contains(timeValue.key),
+                tristate: false,
+                onChanged: null,
+              ),
             ),
           ),
         ],
@@ -315,12 +321,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(l10n.editLabel),
+        title: Text(l10n.hintEditLabel),
         content: TextField(
           controller: controller,
           autofocus: true,
           decoration: InputDecoration(
-            labelText: l10n.newLabelName,
+            labelText: l10n.labelNewLabel,
             // Show official label as hint so user knows the default.
             hintText: timeValue.localizedDisplayLabel(l10n),
           ),
@@ -330,11 +336,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           // Clear custom label button.
           TextButton(
             onPressed: () => Navigator.pop(ctx, ''),
-            child: Text(l10n.resetToDefaults),
+            child: Text(l10n.hintResetToDefaults),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel),
+            child: Text(l10n.actionCancel),
           ),
           TextButton(
             onPressed: () =>
@@ -388,7 +394,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
-                  tooltip: l10n.addValue,
+                  tooltip: l10n.hintAddValue,
                   onPressed: _showAddDialog,
                   child: const Icon(Icons.add),
                 ),
@@ -433,7 +439,7 @@ class _EditToolbar extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            l10n.tabValueCount(timeValueCount),
+            l10n.dataTabValueCount(timeValueCount),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
             ),
@@ -443,23 +449,23 @@ class _EditToolbar extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.delete_outline),
               color: Colors.redAccent,
-              tooltip: l10n.removeSelected,
+              tooltip: l10n.hintRemoveSelected,
               onPressed: onDeleteChecked,
             ),
           if (editMode)
             IconButton(
               icon: const Icon(Icons.restart_alt),
-              tooltip: l10n.resetToDefaults,
+              tooltip: l10n.hintResetToDefaults,
               onPressed: onResetDefaults,
             ),
           IconButton(
             icon: Icon(editMode ? Icons.check : Icons.edit),
-            tooltip: editMode ? l10n.doneEditing : l10n.editLayout,
+            tooltip: editMode ? l10n.hintDoneEditing : l10n.hintEditLayout,
             onPressed: onToggleEditMode,
           ),
           if (editMode)
             Tooltip(
-              message: allChecked ? l10n.deselectAll : l10n.selectAll,
+              message: allChecked ? l10n.hintDeselectAll : l10n.hintSelectAll,
               child: Checkbox(
                 value: allChecked,
                 tristate: false,
@@ -482,7 +488,7 @@ class _EmptyTabHint extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Text(
-          l10n.emptyTabHint,
+          l10n.messageEmptyTab,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurface.withAlpha(120),

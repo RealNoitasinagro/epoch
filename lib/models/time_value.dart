@@ -103,7 +103,7 @@ class TimeValue {
     if (isZoneIndependent) return _localizedTypeLabel;
     final zoneLabel = switch (zone) {
       ZoneLocal()                  => l10n.labelLocal.toLowerCase(),
-      ZoneUtc()                    => l10n.zoneUtc,
+      ZoneUtc()                    => l10n.actionZoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
     return '$_localizedTypeLabel ($zoneLabel)';

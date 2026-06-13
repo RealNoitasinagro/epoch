@@ -45,7 +45,7 @@ class TimeStringRow extends TimeValueRow {
     Clipboard.setData(ClipboardData(text: '$label: $displayValue'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n.copiedToClipboard(label)),
+        content: Text(l10n.messageCopiedToClipboard(label)),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
@@ -59,7 +59,7 @@ class TimeStringRow extends TimeValueRow {
         ZoneUtc()                    => now.toUtc(),
         ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
       };
-      return l10n.dateSubtitle(
+      return l10n.dataDateSub(
           TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
     }
     if (timeValue.type == ValueType.gmst ||
@@ -115,13 +115,13 @@ class TimeStringRow extends TimeValueRow {
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.aboutThisValue,
+          tooltip: l10n.hintAboutThisValue,
           onPressed: () => showInfo(context, l10n),
         ),
         IconButton(
           icon: const Icon(Icons.copy, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.copyToClipboard,
+          tooltip: l10n.hintCopyToClipboard,
           onPressed: () => _copyToClipboard(context, l10n, clipboardValue),
         ),
         null,

@@ -41,7 +41,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.selectTimezone),
+        title: Text(l10n.hintSelectTimezone),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: Padding(
@@ -50,7 +50,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
               controller: _controller,
               autofocus: true,
               decoration: InputDecoration(
-                hintText: l10n.timezoneSearchHint,
+                hintText: l10n.hintTimezoneSearch,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _controller.text.isNotEmpty
                     ? IconButton(
@@ -73,7 +73,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
         ),
       ),
       body: _results.isEmpty
-          ? Center(child: Text(l10n.timezoneNoResults))
+          ? Center(child: Text(l10n.messageNoTimezone))
           : ListView.builder(
         itemCount: _results.length,
         itemBuilder: (context, index) {

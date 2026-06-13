@@ -1,13 +1,6 @@
 {
   "@@locale": "de",
-  "@copiedToClipboard": {
-    "placeholders": {
-      "label": {
-        "type": "String"
-      }
-    }
-  },
-  "@dateSubtitle": {
+  "@dataDateSub": {
     "placeholders": {
       "week": {
         "type": "int"
@@ -17,14 +10,7 @@
       }
     }
   },
-  "@maxValuesReached": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@tabValueCount": {
+  "@dataTabValueCount": {
     "placeholders": {
       "count": {
         "format": "compact",
@@ -32,26 +18,49 @@
       }
     }
   },
-  "aboutDescription": "Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.",
-  "aboutLegalese": "© 2026 RealEarthling",
-  "aboutThisValue": "Über diesen Wert",
-  "addTab": "Tab hinzufügen",
-  "addValue": "Wert hinzufügen",
-  "alreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
+  "@messageCopiedToClipboard": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@messageMaxValues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionCancel": "Abbrechen",
+  "actionDeleteTab": "Tab löschen",
+  "actionRenameTab": "Tab umbenennen",
+  "actionZoneLocal": "Lokal (Systemzeitzone)",
+  "actionZoneNamed": "Andere\u2026",
+  "actionZoneUtc": "UTC",
   "appName": "Epoch",
-  "back": "Zurück",
-  "binaryClockPlaceholder": "Graphische Binäruhr",
-  "cancel": "Abbrechen",
-  "copiedToClipboard": "Kopiert: {label}",
-  "copyToClipboard": "In Zwischenablage kopieren",
-  "dateSubtitle": "Woche {week} · Tag {day}",
-  "deleteTab": "Tab löschen",
-  "deselect": "Abwählen",
-  "deselectAll": "Alle abwählen",
-  "doneEditing": "Fertig",
-  "editLabel": "Bezeichnung bearbeiten",
-  "editLayout": "Layout bearbeiten",
-  "emptyTabHint": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
+  "dataBinaryClocksPlaceholder": "Graphische Binäruhr",
+  "dataDateSub": "Woche {week} · Tag {day}",
+  "dataTabValueCount": "{count, plural, =0{keine Werte} =1{1 Wert} other{{count} Werte}}",
+  "dialogueAbout": "Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.",
+  "dialogueAboutLegalese": "© 2026 RealEarthling",
+  "hintAboutThisValue": "Über diesen Wert",
+  "hintAddTab": "Tab hinzufügen",
+  "hintAddValue": "Wert hinzufügen",
+  "hintBack": "Zurück",
+  "hintCopyToClipboard": "In Zwischenablage kopieren",
+  "hintDeselect": "Abwählen",
+  "hintDeselectAll": "Alle abwählen",
+  "hintDoneEditing": "Fertig",
+  "hintEditLabel": "Bezeichnung bearbeiten",
+  "hintEditLayout": "Layout bearbeiten",
+  "hintRemoveSelected": "Markierte entfernen",
+  "hintResetToDefaults": "Zurücksetzen",
+  "hintSelect": "Auswählen",
+  "hintSelectAll": "Alle auswählen",
+  "hintSelectTimezone": "Zeitzone auswählen",
+  "hintSelectValueType": "Werttyp auswählen",
+  "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
   "infoLinkBinaryClockColumns": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
   "infoLinkBinaryClockString": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -85,25 +94,32 @@
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
   "labelHours": "Std",
   "labelLocal": "Lokal",
+  "labelLongitude": "Längengrad (negativ = West)",
   "labelMinutes": "Min",
+  "labelNewLabel": "Bezeichnung",
+  "labelNewTabName": "Tab-Name",
   "labelSeconds": "Sek",
-  "labelUtc": "UTC",
-  "lmstDetermineLocation": "Bestimmen",
-  "lmstLocationDenied": "Standortberechtigung verweigert",
-  "lmstLocationNotYetDetermined": "Noch nicht bestimmt",
-  "lmstLongitudeLabel": "Längengrad (negativ = West)",
-  "lmstModeLocation": "Ungefähren Standort verwenden",
-  "lmstModeLocationSub": "Einmalig, ohne GPS, kein Tracking",
-  "lmstModeManual": "Längengrad manuell eingeben",
-  "lmstModeManualSub": "Längengrad in Dezimalgrad (DDD,DDDD) eingeben",
-  "lmstModeOff": "Nicht anzeigen",
-  "maxValuesReached": "Maximal {count} Werte erlaubt.",
-  "newLabelName": "Bezeichnung",
-  "newTabName": "Tab-Name",
-  "noDescription": "Noch keine Beschreibung verfügbar.",
-  "removeSelected": "Markierte entfernen",
-  "renameTab": "Tab umbenennen",
-  "resetToDefaults": "Zurücksetzen",
+  "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
+  "messageCopiedToClipboard": "Kopiert: {label}",
+  "messageEmptyTab": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
+  "messageMaxValues": "Maximal {count} Werte erlaubt.",
+  "messageNoTimezone": "Keine passende Zeitzone gefunden.",
+  "pageSettings": "Einstellungen",
+  "pageSettingsAbout": "Über die App",
+  "pageSettingsDateWithDetails": "Erweitertes Datum",
+  "pageSettingsDateWithDetailsSub": "Ein = mit ISO-Kalenderwoche, Tag des Jahres",
+  "pageSettingsHourFormat": "24-Stunden-Format",
+  "pageSettingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
+  "pageSettingsLanguage": "Sprache",
+  "pageSettingsLmst": "Lokale Sternzeit",
+  "pageSettingsTheme": "Design",
+  "pageSettingsThemeDark": "Dunkel",
+  "pageSettingsThemeLight": "Hell",
+  "pageSettingsThemeNight": "Nacht (Rot)",
+  "pageSettingsThemeSystem": "System",
+  "pageSettingsThousandsSep": "Tausendertrennzeichen",
+  "pageSettingsThousandsSepSub": "z. B. 1.746.000 statt 1746000",
+  "pageSettingsWhatsNew": "Was ist neu",
   "sectionAtomic": "Atomuhr",
   "sectionBinaryClock": "Binäruhr",
   "sectionDoomsdayClock": "Weltuntergangsuhr",
@@ -112,34 +128,15 @@
   "sectionJulian": "Julianisches Datum",
   "sectionSidereal": "Sternzeit",
   "sectionUnix": "Unix-Epoche",
-  "selectAll": "Alle auswählen",
-  "selectForRemoval": "Zum Entfernen markieren",
-  "selectTimezone": "Zeitzone auswählen",
-  "selectValueType": "Werttyp auswählen",
-  "settings": "Einstellungen",
-  "settingsAbout": "Über die App",
-  "settingsDateWithDetails": "Erweitertes Datum",
-  "settingsDateWithDetailsSub": "Ein = mit ISO-Kalenderwoche, Tag des Jahres",
-  "settingsHourFormat": "24-Stunden-Format",
-  "settingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
-  "settingsLanguage": "Sprache",
-  "settingsLmst": "LOKALE STERNZEIT",
-  "settingsTheme": "Design",
-  "settingsThemeDark": "Dunkel",
-  "settingsThemeLight": "Hell",
-  "settingsThemeNight": "Nacht (Rot)",
-  "settingsThemeSystem": "System",
-  "settingsThousandsSep": "Tausendertrennzeichen",
-  "settingsThousandsSepSub": "z. B. 1.746.000 statt 1746000",
-  "settingsWhatsNew": "Was ist neu",
+  "settingLmstLongitudeAuto": "Ungefähren Standort verwenden",
+  "settingLmstLongitudeAutoSub": "Einmalig, ohne GPS, kein Tracking",
+  "settingLmstLongitudeManual": "Längengrad manuell eingeben",
+  "settingLmstLongitudeManualSub": "Längengrad in Dezimalgrad (DDD,DDDD) eingeben",
+  "settingLmstOff": "Nicht anzeigen",
   "tabAstronomical": "Astronomisch",
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
   "tabTechnical": "Technisch",
-  "tabValueCount": "{count, plural, =0{keine Werte} =1{1 Wert} other{{count} Werte}}",
-  "tabWatchlist": "Watchlist",
-  "timezoneNoResults": "Keine passende Zeitzone gefunden.",
-  "timezoneSearchHint": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",
   "valueTypeBinaryClockColumns": "Binäruhr (Spalten)",
   "valueTypeBinaryClockString": "Binärzeit (String)",
@@ -157,8 +154,5 @@
   "valueTypeSwatchBeats": "Swatch-Internetzeit",
   "valueTypeTai": "TAI (s)",
   "valueTypeTime": "Uhrzeit",
-  "valueTypeUnixSeconds": "Unix-Zeit (s)",
-  "zoneLocal": "Lokal (Systemzeitzone)",
-  "zoneOther": "Andere\u2026",
-  "zoneUtc": "UTC"
+  "valueTypeUnixSeconds": "Unix-Zeit (s)"
 }

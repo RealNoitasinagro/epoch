@@ -33,7 +33,7 @@ class TimeGraphicalRow extends TimeValueRow {
         IconButton(
           icon: const Icon(Icons.info_outline, size: 20),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.aboutThisValue,
+          tooltip: l10n.hintAboutThisValue,
           onPressed: () => showInfo(context, l10n),
         ),
         null,

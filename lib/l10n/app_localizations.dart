@@ -98,41 +98,41 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
-  /// No description provided for @aboutDescription.
+  /// No description provided for @actionCancel.
   ///
   /// In en, this message translates to:
-  /// **'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.'**
-  String get aboutDescription;
+  /// **'Cancel'**
+  String get actionCancel;
 
-  /// No description provided for @aboutLegalese.
+  /// No description provided for @actionDeleteTab.
   ///
   /// In en, this message translates to:
-  /// **'© 2026 RealEarthling'**
-  String get aboutLegalese;
+  /// **'Delete tab'**
+  String get actionDeleteTab;
 
-  /// No description provided for @aboutThisValue.
+  /// No description provided for @actionRenameTab.
   ///
   /// In en, this message translates to:
-  /// **'About this value'**
-  String get aboutThisValue;
+  /// **'Rename tab'**
+  String get actionRenameTab;
 
-  /// No description provided for @addTab.
+  /// No description provided for @actionZoneLocal.
   ///
   /// In en, this message translates to:
-  /// **'Add tab'**
-  String get addTab;
+  /// **'Local (system timezone)'**
+  String get actionZoneLocal;
 
-  /// No description provided for @addValue.
+  /// No description provided for @actionZoneNamed.
   ///
   /// In en, this message translates to:
-  /// **'Add value'**
-  String get addValue;
+  /// **'Other…'**
+  String get actionZoneNamed;
 
-  /// No description provided for @alreadyDisplayed.
+  /// No description provided for @actionZoneUtc.
   ///
   /// In en, this message translates to:
-  /// **'This value is already displayed.'**
-  String get alreadyDisplayed;
+  /// **'UTC'**
+  String get actionZoneUtc;
 
   /// No description provided for @appName.
   ///
@@ -140,83 +140,137 @@ abstract class AppLocalizations {
   /// **'Epoch'**
   String get appName;
 
-  /// No description provided for @back.
-  ///
-  /// In en, this message translates to:
-  /// **'Back'**
-  String get back;
-
-  /// No description provided for @binaryClockPlaceholder.
+  /// No description provided for @dataBinaryClocksPlaceholder.
   ///
   /// In en, this message translates to:
   /// **'Graphical binary clock'**
-  String get binaryClockPlaceholder;
+  String get dataBinaryClocksPlaceholder;
 
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// No description provided for @copiedToClipboard.
-  ///
-  /// In en, this message translates to:
-  /// **'Copied: {label}'**
-  String copiedToClipboard(String label);
-
-  /// No description provided for @copyToClipboard.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy to clipboard'**
-  String get copyToClipboard;
-
-  /// No description provided for @dateSubtitle.
+  /// No description provided for @dataDateSub.
   ///
   /// In en, this message translates to:
   /// **'week {week} · day {day}'**
-  String dateSubtitle(int week, int day);
+  String dataDateSub(int week, int day);
 
-  /// No description provided for @deleteTab.
+  /// No description provided for @dataTabValueCount.
   ///
   /// In en, this message translates to:
-  /// **'Delete tab'**
-  String get deleteTab;
+  /// **'{count, plural, =0{no values} =1{1 value} other{{count} values}}'**
+  String dataTabValueCount(num count);
 
-  /// No description provided for @deselect.
+  /// No description provided for @dialogueAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.'**
+  String get dialogueAbout;
+
+  /// No description provided for @dialogueAboutLegalese.
+  ///
+  /// In en, this message translates to:
+  /// **'© 2026 RealEarthling'**
+  String get dialogueAboutLegalese;
+
+  /// No description provided for @hintAboutThisValue.
+  ///
+  /// In en, this message translates to:
+  /// **'About this value'**
+  String get hintAboutThisValue;
+
+  /// No description provided for @hintAddTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tab'**
+  String get hintAddTab;
+
+  /// No description provided for @hintAddValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Add value'**
+  String get hintAddValue;
+
+  /// No description provided for @hintBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get hintBack;
+
+  /// No description provided for @hintCopyToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy to clipboard'**
+  String get hintCopyToClipboard;
+
+  /// No description provided for @hintDeselect.
   ///
   /// In en, this message translates to:
   /// **'Deselect'**
-  String get deselect;
+  String get hintDeselect;
 
-  /// No description provided for @deselectAll.
+  /// No description provided for @hintDeselectAll.
   ///
   /// In en, this message translates to:
   /// **'Deselect all'**
-  String get deselectAll;
+  String get hintDeselectAll;
 
-  /// No description provided for @doneEditing.
+  /// No description provided for @hintDoneEditing.
   ///
   /// In en, this message translates to:
   /// **'Done editing'**
-  String get doneEditing;
+  String get hintDoneEditing;
 
-  /// No description provided for @editLabel.
+  /// No description provided for @hintEditLabel.
   ///
   /// In en, this message translates to:
   /// **'Edit label'**
-  String get editLabel;
+  String get hintEditLabel;
 
-  /// No description provided for @editLayout.
+  /// No description provided for @hintEditLayout.
   ///
   /// In en, this message translates to:
   /// **'Edit layout'**
-  String get editLayout;
+  String get hintEditLayout;
 
-  /// No description provided for @emptyTabHint.
+  /// No description provided for @hintRemoveSelected.
   ///
   /// In en, this message translates to:
-  /// **'Configurable tab.\nUse the edit mode to add values.'**
-  String get emptyTabHint;
+  /// **'Remove hintSelected'**
+  String get hintRemoveSelected;
+
+  /// No description provided for @hintResetToDefaults.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to defaults'**
+  String get hintResetToDefaults;
+
+  /// No description provided for @hintSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get hintSelect;
+
+  /// No description provided for @hintSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get hintSelectAll;
+
+  /// No description provided for @hintSelectTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Select timezone'**
+  String get hintSelectTimezone;
+
+  /// No description provided for @hintSelectValueType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select value type'**
+  String get hintSelectValueType;
+
+  /// No description provided for @hintTimezoneSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'City, country, zone or offset (e.g. UTC+5:30)'**
+  String get hintTimezoneSearch;
 
   /// No description provided for @infoLinkBinaryClockBcd.
   ///
@@ -317,25 +371,25 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDate.
   ///
   /// In en, this message translates to:
-  /// **'The current calendar date in the selected timezone.'**
+  /// **'The current calendar date in the hintSelected timezone.'**
   String get infoTextDate;
 
   /// No description provided for @infoTextDateTime.
   ///
   /// In en, this message translates to:
-  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
+  /// **'The current date and time in the hintSelected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
 
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
+  /// **'Percentage of the day elapsed in the hintSelected timezone. Resets to 0 at midnight.'**
   String get infoTextDayPercent;
 
   /// No description provided for @infoTextDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  /// **'Seconds elapsed since midnight in the hintSelected timezone. Resets to 0 at midnight.'**
   String get infoTextDaySecond;
 
   /// No description provided for @infoTextDoomsdayClock.
@@ -395,7 +449,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone.'**
+  /// **'The current time in the hintSelected timezone.'**
   String get infoTextTime;
 
   /// No description provided for @infoTextUnixSeconds.
@@ -416,11 +470,29 @@ abstract class AppLocalizations {
   /// **'Local'**
   String get labelLocal;
 
+  /// No description provided for @labelLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude (negative = West)'**
+  String get labelLongitude;
+
   /// No description provided for @labelMinutes.
   ///
   /// In en, this message translates to:
   /// **'MM'**
   String get labelMinutes;
+
+  /// No description provided for @labelNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get labelNewLabel;
+
+  /// No description provided for @labelNewTabName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab name'**
+  String get labelNewTabName;
 
   /// No description provided for @labelSeconds.
   ///
@@ -428,107 +500,131 @@ abstract class AppLocalizations {
   /// **'SS'**
   String get labelSeconds;
 
-  /// No description provided for @labelUtc.
+  /// No description provided for @messageAlreadyDisplayed.
   ///
   /// In en, this message translates to:
-  /// **'UTC'**
-  String get labelUtc;
+  /// **'This value is already displayed.'**
+  String get messageAlreadyDisplayed;
 
-  /// No description provided for @lmstDetermineLocation.
+  /// No description provided for @messageCopiedToClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Determine'**
-  String get lmstDetermineLocation;
+  /// **'Copied: {label}'**
+  String messageCopiedToClipboard(String label);
 
-  /// No description provided for @lmstLocationDenied.
+  /// No description provided for @messageEmptyTab.
   ///
   /// In en, this message translates to:
-  /// **'Location permission denied'**
-  String get lmstLocationDenied;
+  /// **'Configurable tab.\nUse the edit mode to add values.'**
+  String get messageEmptyTab;
 
-  /// No description provided for @lmstLocationNotYetDetermined.
-  ///
-  /// In en, this message translates to:
-  /// **'Not yet determined'**
-  String get lmstLocationNotYetDetermined;
-
-  /// No description provided for @lmstLongitudeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude (negative = West)'**
-  String get lmstLongitudeLabel;
-
-  /// No description provided for @lmstModeLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Use approximate location'**
-  String get lmstModeLocation;
-
-  /// No description provided for @lmstModeLocationSub.
-  ///
-  /// In en, this message translates to:
-  /// **'One-time, without GPS, no tracking'**
-  String get lmstModeLocationSub;
-
-  /// No description provided for @lmstModeManual.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual longitude'**
-  String get lmstModeManual;
-
-  /// No description provided for @lmstModeManualSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
-  String get lmstModeManualSub;
-
-  /// No description provided for @lmstModeOff.
-  ///
-  /// In en, this message translates to:
-  /// **'Do not show'**
-  String get lmstModeOff;
-
-  /// No description provided for @maxValuesReached.
+  /// No description provided for @messageMaxValues.
   ///
   /// In en, this message translates to:
   /// **'Maximum of {count} values reached.'**
-  String maxValuesReached(int count);
+  String messageMaxValues(int count);
 
-  /// No description provided for @newLabelName.
+  /// No description provided for @messageNoTimezone.
   ///
   /// In en, this message translates to:
-  /// **'Label'**
-  String get newLabelName;
+  /// **'No matching timezone found.'**
+  String get messageNoTimezone;
 
-  /// No description provided for @newTabName.
+  /// No description provided for @pageSettings.
   ///
   /// In en, this message translates to:
-  /// **'Tab name'**
-  String get newTabName;
+  /// **'Settings'**
+  String get pageSettings;
 
-  /// No description provided for @noDescription.
+  /// No description provided for @pageSettingsAbout.
   ///
   /// In en, this message translates to:
-  /// **'No description available yet.'**
-  String get noDescription;
+  /// **'About'**
+  String get pageSettingsAbout;
 
-  /// No description provided for @removeSelected.
+  /// No description provided for @pageSettingsDateWithDetails.
   ///
   /// In en, this message translates to:
-  /// **'Remove selected'**
-  String get removeSelected;
+  /// **'Expanded Date'**
+  String get pageSettingsDateWithDetails;
 
-  /// No description provided for @renameTab.
+  /// No description provided for @pageSettingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'Rename tab'**
-  String get renameTab;
+  /// **'On = with ISO calender week, day of the year'**
+  String get pageSettingsDateWithDetailsSub;
 
-  /// No description provided for @resetToDefaults.
+  /// No description provided for @pageSettingsHourFormat.
   ///
   /// In en, this message translates to:
-  /// **'Reset to defaults'**
-  String get resetToDefaults;
+  /// **'24-hour format'**
+  String get pageSettingsHourFormat;
+
+  /// No description provided for @pageSettingsHourFormatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Off = 12-hour with AM/PM'**
+  String get pageSettingsHourFormatSub;
+
+  /// No description provided for @pageSettingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get pageSettingsLanguage;
+
+  /// No description provided for @pageSettingsLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'Local sidereal time'**
+  String get pageSettingsLmst;
+
+  /// No description provided for @pageSettingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get pageSettingsTheme;
+
+  /// No description provided for @pageSettingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get pageSettingsThemeDark;
+
+  /// No description provided for @pageSettingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get pageSettingsThemeLight;
+
+  /// No description provided for @pageSettingsThemeNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night (red)'**
+  String get pageSettingsThemeNight;
+
+  /// No description provided for @pageSettingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get pageSettingsThemeSystem;
+
+  /// No description provided for @pageSettingsThousandsSep.
+  ///
+  /// In en, this message translates to:
+  /// **'Thousands separator'**
+  String get pageSettingsThousandsSep;
+
+  /// No description provided for @pageSettingsThousandsSepSub.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1,746,000 instead of 1746000'**
+  String get pageSettingsThousandsSepSub;
+
+  /// No description provided for @pageSettingsWhatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get pageSettingsWhatsNew;
 
   /// No description provided for @sectionAtomic.
   ///
@@ -578,125 +674,35 @@ abstract class AppLocalizations {
   /// **'Unix Epoch'**
   String get sectionUnix;
 
-  /// No description provided for @selectAll.
+  /// No description provided for @settingLmstLongitudeAuto.
   ///
   /// In en, this message translates to:
-  /// **'Select all'**
-  String get selectAll;
+  /// **'Use approximate location'**
+  String get settingLmstLongitudeAuto;
 
-  /// No description provided for @selectForRemoval.
+  /// No description provided for @settingLmstLongitudeAutoSub.
   ///
   /// In en, this message translates to:
-  /// **'Select for removal'**
-  String get selectForRemoval;
+  /// **'One-time, without GPS, no tracking'**
+  String get settingLmstLongitudeAutoSub;
 
-  /// No description provided for @selectTimezone.
+  /// No description provided for @settingLmstLongitudeManual.
   ///
   /// In en, this message translates to:
-  /// **'Select timezone'**
-  String get selectTimezone;
+  /// **'Manual longitude'**
+  String get settingLmstLongitudeManual;
 
-  /// No description provided for @selectValueType.
+  /// No description provided for @settingLmstLongitudeManualSub.
   ///
   /// In en, this message translates to:
-  /// **'Select value type'**
-  String get selectValueType;
+  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
+  String get settingLmstLongitudeManualSub;
 
-  /// No description provided for @settings.
+  /// No description provided for @settingLmstOff.
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// No description provided for @settingsAbout.
-  ///
-  /// In en, this message translates to:
-  /// **'About'**
-  String get settingsAbout;
-
-  /// No description provided for @settingsDateWithDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'Expanded Date'**
-  String get settingsDateWithDetails;
-
-  /// No description provided for @settingsDateWithDetailsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
-  String get settingsDateWithDetailsSub;
-
-  /// No description provided for @settingsHourFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'24-hour format'**
-  String get settingsHourFormat;
-
-  /// No description provided for @settingsHourFormatSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Off = 12-hour with AM/PM'**
-  String get settingsHourFormatSub;
-
-  /// No description provided for @settingsLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get settingsLanguage;
-
-  /// No description provided for @settingsLmst.
-  ///
-  /// In en, this message translates to:
-  /// **'LOCAL SIDEREAL TIME'**
-  String get settingsLmst;
-
-  /// No description provided for @settingsTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme'**
-  String get settingsTheme;
-
-  /// No description provided for @settingsThemeDark.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark'**
-  String get settingsThemeDark;
-
-  /// No description provided for @settingsThemeLight.
-  ///
-  /// In en, this message translates to:
-  /// **'Light'**
-  String get settingsThemeLight;
-
-  /// No description provided for @settingsThemeNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Night (red)'**
-  String get settingsThemeNight;
-
-  /// No description provided for @settingsThemeSystem.
-  ///
-  /// In en, this message translates to:
-  /// **'System'**
-  String get settingsThemeSystem;
-
-  /// No description provided for @settingsThousandsSep.
-  ///
-  /// In en, this message translates to:
-  /// **'Thousands separator'**
-  String get settingsThousandsSep;
-
-  /// No description provided for @settingsThousandsSepSub.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. 1,746,000 instead of 1746000'**
-  String get settingsThousandsSepSub;
-
-  /// No description provided for @settingsWhatsNew.
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s New'**
-  String get settingsWhatsNew;
+  /// **'Do not show'**
+  String get settingLmstOff;
 
   /// No description provided for @tabAstronomical.
   ///
@@ -721,30 +727,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Technical'**
   String get tabTechnical;
-
-  /// No description provided for @tabValueCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{no values} =1{1 value} other{{count} values}}'**
-  String tabValueCount(num count);
-
-  /// No description provided for @tabWatchlist.
-  ///
-  /// In en, this message translates to:
-  /// **'Watchlist'**
-  String get tabWatchlist;
-
-  /// No description provided for @timezoneNoResults.
-  ///
-  /// In en, this message translates to:
-  /// **'No matching timezone found.'**
-  String get timezoneNoResults;
-
-  /// No description provided for @timezoneSearchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'City, country, zone or offset (e.g. UTC+5:30)'**
-  String get timezoneSearchHint;
 
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
@@ -853,24 +835,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unix time (s)'**
   String get valueTypeUnixSeconds;
-
-  /// No description provided for @zoneLocal.
-  ///
-  /// In en, this message translates to:
-  /// **'Local (system timezone)'**
-  String get zoneLocal;
-
-  /// No description provided for @zoneOther.
-  ///
-  /// In en, this message translates to:
-  /// **'Other…'**
-  String get zoneOther;
-
-  /// No description provided for @zoneUtc.
-  ///
-  /// In en, this message translates to:
-  /// **'UTC'**
-  String get zoneUtc;
 }
 
 class _AppLocalizationsDelegate

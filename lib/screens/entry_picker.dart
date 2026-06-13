@@ -113,7 +113,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         + curiosityTypesAllowed.length;
 
     return SimpleDialog(
-      title: Text(l10n.selectValueType + " (${totalAllowed})"),
+      title: Text(l10n.hintSelectValueType + " (${totalAllowed})"),
       children: [
         if (civilTypesAllowed.isNotEmpty) ...[
           _sectionLabel(
@@ -199,7 +199,7 @@ class _EntryPickerState extends State<_EntryPicker> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
+            child: Text(l10n.actionCancel),
           ),
         ),
       ],
@@ -231,7 +231,7 @@ class _EntryPickerState extends State<_EntryPicker> {
           kTabHorizontalPadding, kTabVerticalPadding),
       title: EntryPickerDialogTitle(
         superLabel: TimeValue.localizedTypeLabel(_type!, l10n),
-        title: l10n.selectTimezone,
+        title: l10n.hintSelectTimezone,
         onBack: _goBack,
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 8),
@@ -241,15 +241,15 @@ class _EntryPickerState extends State<_EntryPicker> {
           shrinkWrap: true,
           children: [
             ListTile(
-              title: Text(l10n.zoneLocal),
+              title: Text(l10n.actionZoneLocal),
               onTap: () => _confirm(const ZoneLocal()),
             ),
             ListTile(
-              title: Text(l10n.zoneUtc),
+              title: Text(l10n.actionZoneUtc),
               onTap: () => _confirm(const ZoneUtc()),
             ),
             ListTile(
-              title: Text(l10n.zoneOther),
+              title: Text(l10n.actionZoneNamed),
               trailing: const Icon(Icons.search),
               onTap: () async {
                 final zone = await Navigator.push<String>(
@@ -267,7 +267,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel),
+          child: Text(l10n.actionCancel),
         ),
       ],
     );
@@ -308,7 +308,7 @@ class EntryPickerDialogTitle extends StatelessWidget {
       children: [
         IconButton(
           icon: const Icon(Icons.arrow_back),
-          tooltip: l10n.back,
+          tooltip: l10n.hintBack,
           onPressed: onBack,
         ),
         const SizedBox(width: 4),

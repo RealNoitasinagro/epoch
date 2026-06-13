@@ -339,17 +339,17 @@ class _HomeScreenState extends State<HomeScreen>
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(l10n.renameTab),
+        title: Text(l10n.actionRenameTab),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: InputDecoration(labelText: l10n.newTabName),
+          decoration: InputDecoration(labelText: l10n.labelNewTabName),
           onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel),
+            child: Text(l10n.actionCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
@@ -436,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen>
           if (_customTabs.length < maxCustomTabs)
             IconButton(
               icon: const Icon(Icons.add),
-              tooltip: l10n.addTab,
+              tooltip: l10n.hintAddTab,
               onPressed: () {
                 final l10n = AppLocalizations.of(context)!;
                 _addCustomTab(l10n);
@@ -444,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           IconButton(
             icon: const Icon(Icons.menu),
-            tooltip: l10n.settings,
+            tooltip: l10n.pageSettings,
             onPressed: () => _openSettings(context),
           ),
         ],
@@ -547,7 +547,7 @@ class _CustomTab extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.edit),
-              title: Text(l10n.renameTab),
+              title: Text(l10n.actionRenameTab),
               onTap: () {
                 Navigator.pop(ctx);
                 onRename();
@@ -556,7 +556,7 @@ class _CustomTab extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.close,
                   color: Colors.redAccent),
-              title: Text(l10n.deleteTab,
+              title: Text(l10n.actionDeleteTab,
                   style: const TextStyle(color: Colors.redAccent)),
               onTap: () {
                 Navigator.pop(ctx);

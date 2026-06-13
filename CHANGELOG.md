@@ -22,6 +22,7 @@
 
 ### Changed
 - up tp 4 custom tabs rather than 3
+- GMST (and LMST) expressed in time units/hours as well as angular units/degrees
 
 ### Fixed
 - JulianDate (was off by 0.5 days)

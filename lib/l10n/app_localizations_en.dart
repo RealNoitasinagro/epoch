@@ -9,70 +9,109 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get aboutDescription =>
-      'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.';
+  String get actionCancel => 'Cancel';
 
   @override
-  String get aboutLegalese => '© 2026 RealEarthling';
+  String get actionDeleteTab => 'Delete tab';
 
   @override
-  String get aboutThisValue => 'About this value';
+  String get actionRenameTab => 'Rename tab';
 
   @override
-  String get addTab => 'Add tab';
+  String get actionZoneLocal => 'Local (system timezone)';
 
   @override
-  String get addValue => 'Add value';
+  String get actionZoneNamed => 'Other…';
 
   @override
-  String get alreadyDisplayed => 'This value is already displayed.';
+  String get actionZoneUtc => 'UTC';
 
   @override
   String get appName => 'Epoch';
 
   @override
-  String get back => 'Back';
+  String get dataBinaryClocksPlaceholder => 'Graphical binary clock';
 
   @override
-  String get binaryClockPlaceholder => 'Graphical binary clock';
-
-  @override
-  String get cancel => 'Cancel';
-
-  @override
-  String copiedToClipboard(String label) {
-    return 'Copied: $label';
-  }
-
-  @override
-  String get copyToClipboard => 'Copy to clipboard';
-
-  @override
-  String dateSubtitle(int week, int day) {
+  String dataDateSub(int week, int day) {
     return 'week $week · day $day';
   }
 
   @override
-  String get deleteTab => 'Delete tab';
+  String dataTabValueCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString values',
+      one: '1 value',
+      zero: 'no values',
+    );
+    return '$_temp0';
+  }
 
   @override
-  String get deselect => 'Deselect';
+  String get dialogueAbout =>
+      'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.';
 
   @override
-  String get deselectAll => 'Deselect all';
+  String get dialogueAboutLegalese => '© 2026 RealEarthling';
 
   @override
-  String get doneEditing => 'Done editing';
+  String get hintAboutThisValue => 'About this value';
 
   @override
-  String get editLabel => 'Edit label';
+  String get hintAddTab => 'Add tab';
 
   @override
-  String get editLayout => 'Edit layout';
+  String get hintAddValue => 'Add value';
 
   @override
-  String get emptyTabHint =>
-      'Configurable tab.\nUse the edit mode to add values.';
+  String get hintBack => 'Back';
+
+  @override
+  String get hintCopyToClipboard => 'Copy to clipboard';
+
+  @override
+  String get hintDeselect => 'Deselect';
+
+  @override
+  String get hintDeselectAll => 'Deselect all';
+
+  @override
+  String get hintDoneEditing => 'Done editing';
+
+  @override
+  String get hintEditLabel => 'Edit label';
+
+  @override
+  String get hintEditLayout => 'Edit layout';
+
+  @override
+  String get hintRemoveSelected => 'Remove hintSelected';
+
+  @override
+  String get hintResetToDefaults => 'Reset to defaults';
+
+  @override
+  String get hintSelect => 'Select';
+
+  @override
+  String get hintSelectAll => 'Select all';
+
+  @override
+  String get hintSelectTimezone => 'Select timezone';
+
+  @override
+  String get hintSelectValueType => 'Select value type';
+
+  @override
+  String get hintTimezoneSearch =>
+      'City, country, zone or offset (e.g. UTC+5:30)';
 
   @override
   String get infoLinkBinaryClockBcd =>
@@ -135,19 +174,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextDate =>
-      'The current calendar date in the selected timezone.';
+      'The current calendar date in the hintSelected timezone.';
 
   @override
   String get infoTextDateTime =>
-      'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
+      'The current date and time in the hintSelected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
   String get infoTextDayPercent =>
-      'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
+      'Percentage of the day elapsed in the hintSelected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoTextDaySecond =>
-      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
+      'Seconds elapsed since midnight in the hintSelected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoTextDoomsdayClock =>
@@ -186,7 +225,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
 
   @override
-  String get infoTextTime => 'The current time in the selected timezone.';
+  String get infoTextTime => 'The current time in the hintSelected timezone.';
 
   @override
   String get infoTextUnixSeconds =>
@@ -199,64 +238,88 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLocal => 'Local';
 
   @override
+  String get labelLongitude => 'Longitude (negative = West)';
+
+  @override
   String get labelMinutes => 'MM';
+
+  @override
+  String get labelNewLabel => 'Label';
+
+  @override
+  String get labelNewTabName => 'Tab name';
 
   @override
   String get labelSeconds => 'SS';
 
   @override
-  String get labelUtc => 'UTC';
+  String get messageAlreadyDisplayed => 'This value is already displayed.';
 
   @override
-  String get lmstDetermineLocation => 'Determine';
+  String messageCopiedToClipboard(String label) {
+    return 'Copied: $label';
+  }
 
   @override
-  String get lmstLocationDenied => 'Location permission denied';
+  String get messageEmptyTab =>
+      'Configurable tab.\nUse the edit mode to add values.';
 
   @override
-  String get lmstLocationNotYetDetermined => 'Not yet determined';
-
-  @override
-  String get lmstLongitudeLabel => 'Longitude (negative = West)';
-
-  @override
-  String get lmstModeLocation => 'Use approximate location';
-
-  @override
-  String get lmstModeLocationSub => 'One-time, without GPS, no tracking';
-
-  @override
-  String get lmstModeManual => 'Manual longitude';
-
-  @override
-  String get lmstModeManualSub =>
-      'Enter your longitude in decimal degrees (DDD.DDDD)';
-
-  @override
-  String get lmstModeOff => 'Do not show';
-
-  @override
-  String maxValuesReached(int count) {
+  String messageMaxValues(int count) {
     return 'Maximum of $count values reached.';
   }
 
   @override
-  String get newLabelName => 'Label';
+  String get messageNoTimezone => 'No matching timezone found.';
 
   @override
-  String get newTabName => 'Tab name';
+  String get pageSettings => 'Settings';
 
   @override
-  String get noDescription => 'No description available yet.';
+  String get pageSettingsAbout => 'About';
 
   @override
-  String get removeSelected => 'Remove selected';
+  String get pageSettingsDateWithDetails => 'Expanded Date';
 
   @override
-  String get renameTab => 'Rename tab';
+  String get pageSettingsDateWithDetailsSub =>
+      'On = with ISO calender week, day of the year';
 
   @override
-  String get resetToDefaults => 'Reset to defaults';
+  String get pageSettingsHourFormat => '24-hour format';
+
+  @override
+  String get pageSettingsHourFormatSub => 'Off = 12-hour with AM/PM';
+
+  @override
+  String get pageSettingsLanguage => 'Language';
+
+  @override
+  String get pageSettingsLmst => 'Local sidereal time';
+
+  @override
+  String get pageSettingsTheme => 'Theme';
+
+  @override
+  String get pageSettingsThemeDark => 'Dark';
+
+  @override
+  String get pageSettingsThemeLight => 'Light';
+
+  @override
+  String get pageSettingsThemeNight => 'Night (red)';
+
+  @override
+  String get pageSettingsThemeSystem => 'System';
+
+  @override
+  String get pageSettingsThousandsSep => 'Thousands separator';
+
+  @override
+  String get pageSettingsThousandsSepSub => 'e.g. 1,746,000 instead of 1746000';
+
+  @override
+  String get pageSettingsWhatsNew => 'What\'s New';
 
   @override
   String get sectionAtomic => 'Atomic Clock';
@@ -283,65 +346,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionUnix => 'Unix Epoch';
 
   @override
-  String get selectAll => 'Select all';
+  String get settingLmstLongitudeAuto => 'Use approximate location';
 
   @override
-  String get selectForRemoval => 'Select for removal';
+  String get settingLmstLongitudeAutoSub =>
+      'One-time, without GPS, no tracking';
 
   @override
-  String get selectTimezone => 'Select timezone';
+  String get settingLmstLongitudeManual => 'Manual longitude';
 
   @override
-  String get selectValueType => 'Select value type';
+  String get settingLmstLongitudeManualSub =>
+      'Enter your longitude in decimal degrees (DDD.DDDD)';
 
   @override
-  String get settings => 'Settings';
-
-  @override
-  String get settingsAbout => 'About';
-
-  @override
-  String get settingsDateWithDetails => 'Expanded Date';
-
-  @override
-  String get settingsDateWithDetailsSub =>
-      'On = with ISO calender week, day of the year';
-
-  @override
-  String get settingsHourFormat => '24-hour format';
-
-  @override
-  String get settingsHourFormatSub => 'Off = 12-hour with AM/PM';
-
-  @override
-  String get settingsLanguage => 'Language';
-
-  @override
-  String get settingsLmst => 'LOCAL SIDEREAL TIME';
-
-  @override
-  String get settingsTheme => 'Theme';
-
-  @override
-  String get settingsThemeDark => 'Dark';
-
-  @override
-  String get settingsThemeLight => 'Light';
-
-  @override
-  String get settingsThemeNight => 'Night (red)';
-
-  @override
-  String get settingsThemeSystem => 'System';
-
-  @override
-  String get settingsThousandsSep => 'Thousands separator';
-
-  @override
-  String get settingsThousandsSepSub => 'e.g. 1,746,000 instead of 1746000';
-
-  @override
-  String get settingsWhatsNew => 'What\'s New';
+  String get settingLmstOff => 'Do not show';
 
   @override
   String get tabAstronomical => 'Astronomical';
@@ -354,33 +373,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technical';
-
-  @override
-  String tabValueCount(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString values',
-      one: '1 value',
-      zero: 'no values',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get tabWatchlist => 'Watchlist';
-
-  @override
-  String get timezoneNoResults => 'No matching timezone found.';
-
-  @override
-  String get timezoneSearchHint =>
-      'City, country, zone or offset (e.g. UTC+5:30)';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
@@ -435,13 +427,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeUnixSeconds => 'Unix time (s)';
-
-  @override
-  String get zoneLocal => 'Local (system timezone)';
-
-  @override
-  String get zoneOther => 'Other…';
-
-  @override
-  String get zoneUtc => 'UTC';
 }
