@@ -82,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           ListTile(
             leading: const Icon(Icons.language),
-            title: Text(l10n.pageSettingsLanguage),
+            title: Text(l10n.settingsLanguage),
             trailing: DropdownButton<String>(
               value: _locale?.languageCode ?? 'en',
               underline: const SizedBox.shrink(),
@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.brightness_6),
-            title: Text(l10n.pageSettingsTheme),
+            title: Text(l10n.settingsTheme),
             trailing: DropdownButton<AppThemeMode>(
               value: _themeMode,
               underline: const SizedBox.shrink(),
@@ -109,19 +109,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               items: [
                 DropdownMenuItem(
                   value: AppThemeMode.system,
-                  child: Text(l10n.pageSettingsThemeSystem),
+                  child: Text(l10n.settingsThemeSystem),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.light,
-                  child: Text(l10n.pageSettingsThemeLight),
+                  child: Text(l10n.settingsThemeLight),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.dark,
-                  child: Text(l10n.pageSettingsThemeDark),
+                  child: Text(l10n.settingsThemeDark),
                 ),
                 DropdownMenuItem(
                   value: AppThemeMode.night,
-                  child: Text(l10n.pageSettingsThemeNight),
+                  child: Text(l10n.settingsThemeNight),
                 ),
               ],
               onChanged: (mode) {
@@ -133,8 +133,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.schedule),
-            title: Text(l10n.pageSettingsHourFormat),
-            subtitle: Text(l10n.pageSettingsHourFormatSub),
+            title: Text(l10n.settingsHourFormat),
+            subtitle: Text(l10n.settingsHourFormatSub),
             value: _hourFormat24,
             onChanged: (val) {
               setState(() => _hourFormat24 = val);
@@ -143,8 +143,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
-            title: Text(l10n.pageSettingsThousandsSep),
-            subtitle: Text(l10n.pageSettingsThousandsSepSub),
+            title: Text(l10n.settingsThousandsSep),
+            subtitle: Text(l10n.settingsThousandsSepSub),
             value: _thousandsSep,
             onChanged: (val) {
               setState(() => _thousandsSep = val);
@@ -153,8 +153,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           SwitchListTile(
             secondary: const Icon(Icons.calendar_today),
-            title: Text(l10n.pageSettingsDateWithDetails),
-            subtitle: Text(l10n.pageSettingsDateWithDetailsSub),
+            title: Text(l10n.settingsDateWithDetails),
+            subtitle: Text(l10n.settingsDateWithDetailsSub),
             value: _dateWithDetails,
             onChanged: (val) {
               setState(() => _dateWithDetails = val);
@@ -165,7 +165,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(
-              l10n.pageSettingsLmst.toUpperCase(),
+              l10n.settingsLmst.toUpperCase(),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
                 letterSpacing: 2,
@@ -183,13 +183,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 RadioListTile(
                   value: LmstMode.off,
-                  title: Text(l10n.settingLmstOff),
+                  title: Text(l10n.settingsLmstOff),
                   secondary: const Icon(Icons.visibility_off_outlined),
                 ),
                 RadioListTile(
                   value: LmstMode.manual,
-                  title: Text(l10n.settingLmstLongitudeManual),
-                  subtitle: Text(l10n.settingLmstLongitudeManualSub),
+                  title: Text(l10n.settingsLmstLongitudeManual),
+                  subtitle: Text(l10n.settingsLmstLongitudeManualSub),
                   secondary: const Icon(Icons.edit_location_outlined),
                 ),
                 if (_lmstMode == LmstMode.manual)
@@ -232,12 +232,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: Text(l10n.pageSettingsAbout),
+            title: Text(l10n.settingsAbout),
             onTap: () => _showAbout(context, l10n),
           ),
           ListTile(
             leading: const Icon(Icons.new_releases_outlined),
-            title: Text(l10n.pageSettingsWhatsNew),
+            title: Text(l10n.settingsWhatsNew),
             onTap: () async {
               final uri = Uri.parse(
                   'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');

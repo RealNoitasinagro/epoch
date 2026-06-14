@@ -536,96 +536,6 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get pageSettings;
 
-  /// No description provided for @pageSettingsAbout.
-  ///
-  /// In en, this message translates to:
-  /// **'About'**
-  String get pageSettingsAbout;
-
-  /// No description provided for @pageSettingsDateWithDetails.
-  ///
-  /// In en, this message translates to:
-  /// **'Expanded Date'**
-  String get pageSettingsDateWithDetails;
-
-  /// No description provided for @pageSettingsDateWithDetailsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
-  String get pageSettingsDateWithDetailsSub;
-
-  /// No description provided for @pageSettingsHourFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'24-hour format'**
-  String get pageSettingsHourFormat;
-
-  /// No description provided for @pageSettingsHourFormatSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Off = 12-hour with AM/PM'**
-  String get pageSettingsHourFormatSub;
-
-  /// No description provided for @pageSettingsLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get pageSettingsLanguage;
-
-  /// No description provided for @pageSettingsLmst.
-  ///
-  /// In en, this message translates to:
-  /// **'Local sidereal time'**
-  String get pageSettingsLmst;
-
-  /// No description provided for @pageSettingsTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme'**
-  String get pageSettingsTheme;
-
-  /// No description provided for @pageSettingsThemeDark.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark'**
-  String get pageSettingsThemeDark;
-
-  /// No description provided for @pageSettingsThemeLight.
-  ///
-  /// In en, this message translates to:
-  /// **'Light'**
-  String get pageSettingsThemeLight;
-
-  /// No description provided for @pageSettingsThemeNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Night (red)'**
-  String get pageSettingsThemeNight;
-
-  /// No description provided for @pageSettingsThemeSystem.
-  ///
-  /// In en, this message translates to:
-  /// **'System'**
-  String get pageSettingsThemeSystem;
-
-  /// No description provided for @pageSettingsThousandsSep.
-  ///
-  /// In en, this message translates to:
-  /// **'Thousands separator'**
-  String get pageSettingsThousandsSep;
-
-  /// No description provided for @pageSettingsThousandsSepSub.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. 1,746,000 instead of 1746000'**
-  String get pageSettingsThousandsSepSub;
-
-  /// No description provided for @pageSettingsWhatsNew.
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s New'**
-  String get pageSettingsWhatsNew;
-
   /// No description provided for @sectionAtomic.
   ///
   /// In en, this message translates to:
@@ -674,35 +584,125 @@ abstract class AppLocalizations {
   /// **'Unix Epoch'**
   String get sectionUnix;
 
-  /// No description provided for @settingLmstLongitudeAuto.
+  /// No description provided for @settingsLmstLongitudeAuto.
   ///
   /// In en, this message translates to:
   /// **'Use approximate location'**
-  String get settingLmstLongitudeAuto;
+  String get settingsLmstLongitudeAuto;
 
-  /// No description provided for @settingLmstLongitudeAutoSub.
+  /// No description provided for @settingsLmstLongitudeAutoSub.
   ///
   /// In en, this message translates to:
   /// **'One-time, without GPS, no tracking'**
-  String get settingLmstLongitudeAutoSub;
+  String get settingsLmstLongitudeAutoSub;
 
-  /// No description provided for @settingLmstLongitudeManual.
+  /// No description provided for @settingsLmstLongitudeManual.
   ///
   /// In en, this message translates to:
   /// **'Manual longitude'**
-  String get settingLmstLongitudeManual;
+  String get settingsLmstLongitudeManual;
 
-  /// No description provided for @settingLmstLongitudeManualSub.
+  /// No description provided for @settingsLmstLongitudeManualSub.
   ///
   /// In en, this message translates to:
   /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
-  String get settingLmstLongitudeManualSub;
+  String get settingsLmstLongitudeManualSub;
 
-  /// No description provided for @settingLmstOff.
+  /// No description provided for @settingsLmstOff.
   ///
   /// In en, this message translates to:
   /// **'Do not show'**
-  String get settingLmstOff;
+  String get settingsLmstOff;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAbout;
+
+  /// No description provided for @settingsDateWithDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Expanded Date'**
+  String get settingsDateWithDetails;
+
+  /// No description provided for @settingsDateWithDetailsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'On = with ISO calender week, day of the year'**
+  String get settingsDateWithDetailsSub;
+
+  /// No description provided for @settingsHourFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour format'**
+  String get settingsHourFormat;
+
+  /// No description provided for @settingsHourFormatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Off = 12-hour with AM/PM'**
+  String get settingsHourFormatSub;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsLmst.
+  ///
+  /// In en, this message translates to:
+  /// **'Local sidereal time'**
+  String get settingsLmst;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// No description provided for @settingsThemeNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night (red)'**
+  String get settingsThemeNight;
+
+  /// No description provided for @settingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// No description provided for @settingsThousandsSep.
+  ///
+  /// In en, this message translates to:
+  /// **'Thousands separator'**
+  String get settingsThousandsSep;
+
+  /// No description provided for @settingsThousandsSepSub.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1,746,000 instead of 1746000'**
+  String get settingsThousandsSepSub;
+
+  /// No description provided for @settingsWhatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get settingsWhatsNew;
 
   /// No description provided for @tabAstronomical.
   ///

@@ -51,7 +51,7 @@ void main() {
         expect(l10n.appName, 'Epoch');
         expect(l10n.tabCivil, 'Civil');
         expect(l10n.tabTechnical, 'Technical');
-        expect(l10n.pageSettingsTheme, 'Theme');
+        expect(l10n.settingsTheme, 'Theme');
       });
 
   testWidgets('DE localization keys resolve',
@@ -60,6 +60,6 @@ void main() {
         expect(l10n.appName, 'Epoch');
         expect(l10n.tabCivil, 'Bürgerlich');
         expect(l10n.tabTechnical, 'Technisch');
-        expect(l10n.pageSettingsTheme, 'Design');
+        expect(l10n.settingsTheme, 'Design');
       });
 }

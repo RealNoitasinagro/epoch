@@ -276,52 +276,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageSettings => 'Settings';
 
   @override
-  String get pageSettingsAbout => 'About';
-
-  @override
-  String get pageSettingsDateWithDetails => 'Expanded Date';
-
-  @override
-  String get pageSettingsDateWithDetailsSub =>
-      'On = with ISO calender week, day of the year';
-
-  @override
-  String get pageSettingsHourFormat => '24-hour format';
-
-  @override
-  String get pageSettingsHourFormatSub => 'Off = 12-hour with AM/PM';
-
-  @override
-  String get pageSettingsLanguage => 'Language';
-
-  @override
-  String get pageSettingsLmst => 'Local sidereal time';
-
-  @override
-  String get pageSettingsTheme => 'Theme';
-
-  @override
-  String get pageSettingsThemeDark => 'Dark';
-
-  @override
-  String get pageSettingsThemeLight => 'Light';
-
-  @override
-  String get pageSettingsThemeNight => 'Night (red)';
-
-  @override
-  String get pageSettingsThemeSystem => 'System';
-
-  @override
-  String get pageSettingsThousandsSep => 'Thousands separator';
-
-  @override
-  String get pageSettingsThousandsSepSub => 'e.g. 1,746,000 instead of 1746000';
-
-  @override
-  String get pageSettingsWhatsNew => 'What\'s New';
-
-  @override
   String get sectionAtomic => 'Atomic Clock';
 
   @override
@@ -346,21 +300,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionUnix => 'Unix Epoch';
 
   @override
-  String get settingLmstLongitudeAuto => 'Use approximate location';
+  String get settingsLmstLongitudeAuto => 'Use approximate location';
 
   @override
-  String get settingLmstLongitudeAutoSub =>
+  String get settingsLmstLongitudeAutoSub =>
       'One-time, without GPS, no tracking';
 
   @override
-  String get settingLmstLongitudeManual => 'Manual longitude';
+  String get settingsLmstLongitudeManual => 'Manual longitude';
 
   @override
-  String get settingLmstLongitudeManualSub =>
+  String get settingsLmstLongitudeManualSub =>
       'Enter your longitude in decimal degrees (DDD.DDDD)';
 
   @override
-  String get settingLmstOff => 'Do not show';
+  String get settingsLmstOff => 'Do not show';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String get settingsDateWithDetails => 'Expanded Date';
+
+  @override
+  String get settingsDateWithDetailsSub =>
+      'On = with ISO calender week, day of the year';
+
+  @override
+  String get settingsHourFormat => '24-hour format';
+
+  @override
+  String get settingsHourFormatSub => 'Off = 12-hour with AM/PM';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLmst => 'Local sidereal time';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get settingsThemeDark => 'Dark';
+
+  @override
+  String get settingsThemeLight => 'Light';
+
+  @override
+  String get settingsThemeNight => 'Night (red)';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThousandsSep => 'Thousands separator';
+
+  @override
+  String get settingsThousandsSepSub => 'e.g. 1,746,000 instead of 1746000';
+
+  @override
+  String get settingsWhatsNew => 'What\'s New';
 
   @override
   String get tabAstronomical => 'Astronomical';

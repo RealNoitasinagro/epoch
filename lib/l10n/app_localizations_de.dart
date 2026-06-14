@@ -276,52 +276,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageSettings => 'Einstellungen';
 
   @override
-  String get pageSettingsAbout => 'Über die App';
-
-  @override
-  String get pageSettingsDateWithDetails => 'Erweitertes Datum';
-
-  @override
-  String get pageSettingsDateWithDetailsSub =>
-      'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
-
-  @override
-  String get pageSettingsHourFormat => '24-Stunden-Format';
-
-  @override
-  String get pageSettingsHourFormatSub => 'Aus = 12-Stunden mit AM/PM';
-
-  @override
-  String get pageSettingsLanguage => 'Sprache';
-
-  @override
-  String get pageSettingsLmst => 'Lokale Sternzeit';
-
-  @override
-  String get pageSettingsTheme => 'Design';
-
-  @override
-  String get pageSettingsThemeDark => 'Dunkel';
-
-  @override
-  String get pageSettingsThemeLight => 'Hell';
-
-  @override
-  String get pageSettingsThemeNight => 'Nacht (Rot)';
-
-  @override
-  String get pageSettingsThemeSystem => 'System';
-
-  @override
-  String get pageSettingsThousandsSep => 'Tausendertrennzeichen';
-
-  @override
-  String get pageSettingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
-
-  @override
-  String get pageSettingsWhatsNew => 'Was ist neu';
-
-  @override
   String get sectionAtomic => 'Atomuhr';
 
   @override
@@ -346,20 +300,67 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionUnix => 'Unix-Epoche';
 
   @override
-  String get settingLmstLongitudeAuto => 'Ungefähren Standort verwenden';
+  String get settingsLmstLongitudeAuto => 'Ungefähren Standort verwenden';
 
   @override
-  String get settingLmstLongitudeAutoSub => 'Einmalig, ohne GPS, kein Tracking';
+  String get settingsLmstLongitudeAutoSub =>
+      'Einmalig, ohne GPS, kein Tracking';
 
   @override
-  String get settingLmstLongitudeManual => 'Längengrad manuell eingeben';
+  String get settingsLmstLongitudeManual => 'Längengrad manuell eingeben';
 
   @override
-  String get settingLmstLongitudeManualSub =>
+  String get settingsLmstLongitudeManualSub =>
       'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
 
   @override
-  String get settingLmstOff => 'Nicht anzeigen';
+  String get settingsLmstOff => 'Nicht anzeigen';
+
+  @override
+  String get settingsAbout => 'Über die App';
+
+  @override
+  String get settingsDateWithDetails => 'Erweitertes Datum';
+
+  @override
+  String get settingsDateWithDetailsSub =>
+      'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
+
+  @override
+  String get settingsHourFormat => '24-Stunden-Format';
+
+  @override
+  String get settingsHourFormatSub => 'Aus = 12-Stunden mit AM/PM';
+
+  @override
+  String get settingsLanguage => 'Sprache';
+
+  @override
+  String get settingsLmst => 'Lokale Sternzeit';
+
+  @override
+  String get settingsTheme => 'Design';
+
+  @override
+  String get settingsThemeDark => 'Dunkel';
+
+  @override
+  String get settingsThemeLight => 'Hell';
+
+  @override
+  String get settingsThemeNight => 'Nacht (Rot)';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThousandsSep => 'Tausendertrennzeichen';
+
+  @override
+  String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
+
+  @override
+  String get settingsWhatsNew => 'Was ist neu';
 
   @override
   String get tabAstronomical => 'Astronomisch';
