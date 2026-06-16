@@ -300,23 +300,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionUnix => 'Unix-Epoche';
 
   @override
-  String get settingsLmstLongitudeAuto => 'Ungefähren Standort verwenden';
-
-  @override
-  String get settingsLmstLongitudeAutoSub =>
-      'Einmalig, ohne GPS, kein Tracking';
-
-  @override
-  String get settingsLmstLongitudeManual => 'Längengrad manuell eingeben';
-
-  @override
-  String get settingsLmstLongitudeManualSub =>
-      'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
-
-  @override
-  String get settingsLmstOff => 'Nicht anzeigen';
-
-  @override
   String get settingsAbout => 'Über die App';
 
   @override
@@ -337,6 +320,23 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLmst => 'Lokale Sternzeit';
+
+  @override
+  String get settingsLmstLongitudeAuto => 'Ungefähren Standort verwenden';
+
+  @override
+  String get settingsLmstLongitudeAutoSub =>
+      'Einmalig, ohne GPS, kein Tracking';
+
+  @override
+  String get settingsLmstLongitudeManual => 'Längengrad manuell eingeben';
+
+  @override
+  String get settingsLmstLongitudeManualSub =>
+      'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
+
+  @override
+  String get settingsLmstOff => 'Nicht anzeigen';
 
   @override
   String get settingsTheme => 'Design';

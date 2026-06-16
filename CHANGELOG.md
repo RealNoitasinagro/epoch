@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- replaced font for better readability of time values
+
 
 ## [1.1.1] - 2026-06-11
 

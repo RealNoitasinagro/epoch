@@ -300,23 +300,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionUnix => 'Unix Epoch';
 
   @override
-  String get settingsLmstLongitudeAuto => 'Use approximate location';
-
-  @override
-  String get settingsLmstLongitudeAutoSub =>
-      'One-time, without GPS, no tracking';
-
-  @override
-  String get settingsLmstLongitudeManual => 'Manual longitude';
-
-  @override
-  String get settingsLmstLongitudeManualSub =>
-      'Enter your longitude in decimal degrees (DDD.DDDD)';
-
-  @override
-  String get settingsLmstOff => 'Do not show';
-
-  @override
   String get settingsAbout => 'About';
 
   @override
@@ -337,6 +320,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLmst => 'Local sidereal time';
+
+  @override
+  String get settingsLmstLongitudeAuto => 'Use approximate location';
+
+  @override
+  String get settingsLmstLongitudeAutoSub =>
+      'One-time, without GPS, no tracking';
+
+  @override
+  String get settingsLmstLongitudeManual => 'Manual longitude';
+
+  @override
+  String get settingsLmstLongitudeManualSub =>
+      'Enter your longitude in decimal degrees (DDD.DDDD)';
+
+  @override
+  String get settingsLmstOff => 'Do not show';
 
   @override
   String get settingsTheme => 'Theme';

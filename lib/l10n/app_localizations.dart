@@ -584,36 +584,6 @@ abstract class AppLocalizations {
   /// **'Unix Epoch'**
   String get sectionUnix;
 
-  /// No description provided for @settingsLmstLongitudeAuto.
-  ///
-  /// In en, this message translates to:
-  /// **'Use approximate location'**
-  String get settingsLmstLongitudeAuto;
-
-  /// No description provided for @settingsLmstLongitudeAutoSub.
-  ///
-  /// In en, this message translates to:
-  /// **'One-time, without GPS, no tracking'**
-  String get settingsLmstLongitudeAutoSub;
-
-  /// No description provided for @settingsLmstLongitudeManual.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual longitude'**
-  String get settingsLmstLongitudeManual;
-
-  /// No description provided for @settingsLmstLongitudeManualSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
-  String get settingsLmstLongitudeManualSub;
-
-  /// No description provided for @settingsLmstOff.
-  ///
-  /// In en, this message translates to:
-  /// **'Do not show'**
-  String get settingsLmstOff;
-
   /// No description provided for @settingsAbout.
   ///
   /// In en, this message translates to:
@@ -655,6 +625,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Local sidereal time'**
   String get settingsLmst;
+
+  /// No description provided for @settingsLmstLongitudeAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Use approximate location'**
+  String get settingsLmstLongitudeAuto;
+
+  /// No description provided for @settingsLmstLongitudeAutoSub.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time, without GPS, no tracking'**
+  String get settingsLmstLongitudeAutoSub;
+
+  /// No description provided for @settingsLmstLongitudeManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual longitude'**
+  String get settingsLmstLongitudeManual;
+
+  /// No description provided for @settingsLmstLongitudeManualSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
+  String get settingsLmstLongitudeManualSub;
+
+  /// No description provided for @settingsLmstOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not show'**
+  String get settingsLmstOff;
 
   /// No description provided for @settingsTheme.
   ///
