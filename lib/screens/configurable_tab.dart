@@ -6,7 +6,6 @@ import '../main.dart';
 import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
-import '../time_value_formatter.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
 import '../widgets/clocks/binary_columns_clock.dart';
 import '../widgets/time_graphical_row.dart';
@@ -145,35 +144,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final timeValue = widget.timeValues[index];
-        return _buildDisplayRow(context, timeValue, l10n, locale);
+        return _buildRow(context, timeValue, null, l10n, locale); // null = view mode
       },
-    );
-  }
-
-  Widget _buildDisplayRow(
-      BuildContext context,
-      TimeValue timeValue,
-      AppLocalizations l10n,
-      String locale,
-      ) {
-    final longitude = EpochApp.of(context).lmstLongitude;
-
-    if (timeValue.type.isGraphical) {
-      return TimeGraphicalRow(
-        key: ValueKey(timeValue.key),
-        timeValue: timeValue,
-        now: widget.now,
-      );
-    }
-    return TimeStringRow(
-      key: ValueKey(timeValue.key),
-      timeValue: timeValue,
-      now: widget.now,
-      locale: locale,
-      hourFormat24: widget.hourFormat24,
-      thousandsSep: widget.thousandsSep,
-      showDateDetails: widget.showDateDetails,
-      longitude: longitude,
     );
   }
 
@@ -196,73 +168,65 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         return Padding(
           key: ValueKey(timeValue.key),
           padding: const EdgeInsets.only(bottom: 12),
-          child: _buildEditRow(context, timeValue, index, l10n, locale),
+          child: _buildRow(context, timeValue, index, l10n, locale),
         );
       },
     );
   }
 
-  Widget _buildEditRow(
+  Widget _buildRow(
       BuildContext context,
       TimeValue timeValue,
-      int index,
+      int? editIndex,  // null = view mode
       AppLocalizations l10n,
       String locale,
       ) {
-    final localIanaZone = EpochApp.of(context).localIanaZone;
     final isGraphical = timeValue.type.isGraphical;
     final longitude = EpochApp.of(context).lmstLongitude;
 
+    // View mode: delegate to Row widgets (they handle info/copy themselves)
+    if (editIndex == null) {
+      if (isGraphical) {
+        return TimeGraphicalRow(
+          key: ValueKey(timeValue.key),
+          timeValue: timeValue,
+          now: widget.now,
+        );
+      }
+      return TimeStringRow(
+        key: ValueKey(timeValue.key),
+        timeValue: timeValue,
+        now: widget.now,
+        locale: locale,
+        hourFormat24: widget.hourFormat24,
+        thousandsSep: widget.thousandsSep,
+        showDateDetails: widget.showDateDetails,
+        longitude: longitude,
+      );
+    }
+
+    // Edit mode: build ValueTile directly with edit action slots
     final zonedNow = switch (timeValue.zone) {
       ZoneLocal()                  => widget.now,
       ZoneUtc()                    => widget.now.toUtc(),
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
     };
-
-    final displayValue = isGraphical
-        ? '[${l10n.dataBinaryClocksPlaceholder}]'
-        : TimeValueFormatter.format(
-      timeValue, widget.now, locale,
-      hourFormat24: widget.hourFormat24,
-      thousandsSep: widget.thousandsSep,
-      localIanaZone: localIanaZone,
-      longitude: longitude,
-    );
-
-    String? subtitle;
-    if (timeValue.type == ValueType.date && widget.showDateDetails) {
-      subtitle = l10n.dataDateSub(
-          TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
-    } else if (timeValue.type == ValueType.gmst || timeValue.type == ValueType.lmst) {
-      final hours = TimeValueFormatter.hmsToHours(displayValue);
-      if (hours != null) {
-        final deg = TimeValueFormatter.formatDecimal(
-            hours * 15.0, locale, 4, thousandsSep: false);
-        subtitle = '$deg°';
-      }
-    }
-    final split = TimeStringRow.splitZoneOffset(displayValue);
-    final line2 = subtitle ?? split.line2;
+    final display = TimeStringRow.computeDisplay(
+        timeValue, zonedNow, locale, l10n, longitude: longitude);
+    final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
 
     return Dismissible(
       key: ValueKey(timeValue.key),
       direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 16),
-        color: Colors.redAccent.withAlpha(200),
-        child: const Icon(Icons.delete_outline, color: Colors.white),
-      ),
+      background: _dismissBackground(),
       onDismissed: (_) {
         final updated = List<TimeValue>.of(widget.timeValues);
-        updated.removeAt(index);
+        updated.removeAt(editIndex);
         _checked.remove(timeValue.key);
         widget.onEntriesChanged(updated);
       },
       child: ValueTile(
-        label: timeValue.type == ValueType.lmst
-            ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
-            : timeValue.localizedDisplayLabel(l10n),
+        label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
@@ -271,42 +235,54 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
               : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
         )
-            : TextValueContent(line1: split.line1, line2: line2),
-        actionSlots: [
-          IconButton(
-            icon: const Icon(Icons.edit, size: 20),
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-            tooltip: l10n.hintEditLabel,
-            onPressed: () => _editLabel(context, timeValue, l10n),
-          ),
-          ReorderableDragStartListener(
-            index: index,
-            child: Icon(Icons.drag_handle, size: 20,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => setState(() {
-              if (_checked.contains(timeValue.key)) {
-                _checked.remove(timeValue.key);
-              } else {
-                _checked.add(timeValue.key);
-              }
-            }),
-            child: Tooltip(
-              message: _checked.contains(timeValue.key)
-                  ? l10n.hintDeselect
-                  : l10n.hintSelect,
-              child: Checkbox(
-                value: _checked.contains(timeValue.key),
-                tristate: false,
-                onChanged: null,
-              ),
-            ),
-          ),
-        ],
+            : TextValueContent(line1: display.line1, line2: display.line2),
+        actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
       ),
     );
+  }
+
+  Widget _dismissBackground() => Container(
+    alignment: Alignment.centerRight,
+    padding: const EdgeInsets.only(right: 16),
+    color: Colors.redAccent.withAlpha(200),
+    child: const Icon(Icons.delete_outline, color: Colors.white),
+  );
+
+  List<Widget?> _editActionSlots(
+      BuildContext context, TimeValue timeValue,
+      int index, AppLocalizations l10n) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.edit, size: 20),
+        color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+        tooltip: l10n.hintEditLabel,
+        onPressed: () => _editLabel(context, timeValue, l10n),
+      ),
+      ReorderableDragStartListener(
+        index: index,
+        child: Icon(Icons.drag_handle, size: 20,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
+      ),
+      GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => setState(() {
+          if (_checked.contains(timeValue.key)) {
+            _checked.remove(timeValue.key);
+          } else {
+            _checked.add(timeValue.key);
+          }
+        }),
+        child: Tooltip(
+          message: _checked.contains(timeValue.key)
+              ? l10n.hintDeselect : l10n.hintSelect,
+          child: Checkbox(
+            value: _checked.contains(timeValue.key),
+            tristate: false,
+            onChanged: null,
+          ),
+        ),
+      ),
+    ];
   }
 
   Future<void> _editLabel(
