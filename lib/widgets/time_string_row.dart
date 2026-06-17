@@ -33,9 +33,40 @@ class TimeStringRow extends TimeValueRow {
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (
-    line1: value.substring(0, match.start).trim(),
-    line2: match.group(0)!,
+      line1: value.substring(0, match.start).trim(),
+      line2: match.group(0)!,
     );
+  }
+
+  String _computeLabel(AppLocalizations l10n) {
+    return timeValue.type == ValueType.lmst
+        ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
+        : timeValue.localizedDisplayLabel(l10n);
+  }
+
+  String? _computeSubtitle(AppLocalizations l10n) {
+    if (timeValue.type == ValueType.date && showDateDetails) {
+      final dt = switch (timeValue.zone) {
+        ZoneLocal()                  => now,
+        ZoneUtc()                    => now.toUtc(),
+        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
+      };
+      return l10n.dataDateSub(
+          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
+    }
+    if (timeValue.type == ValueType.gmst || timeValue.type == ValueType.lmst) {
+      final formattedValue = TimeValueFormatter.format(
+        timeValue, now, locale,
+        longitude: longitude,
+      );
+      final hours = TimeValueFormatter.hmsToHours(formattedValue);
+      if (hours != null) {
+        final deg = TimeValueFormatter.formatDecimal(
+            hours * 15.0, locale, 4, thousandsSep: false);
+        return '$deg°';
+      }
+    }
+    return null;
   }
 
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
@@ -50,38 +81,6 @@ class TimeStringRow extends TimeValueRow {
         behavior: SnackBarBehavior.floating,
       ),
     );
-  }
-
-  String? _computeSubtitle(AppLocalizations l10n) {
-    if (timeValue.type == ValueType.date && showDateDetails) {
-      final dt = switch (timeValue.zone) {
-        ZoneLocal()                  => now,
-        ZoneUtc()                    => now.toUtc(),
-        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-      };
-      return l10n.dataDateSub(
-          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
-    }
-    if (timeValue.type == ValueType.gmst ||
-        timeValue.type == ValueType.lmst) {
-      final computed = TimeValueFormatter.format(
-        timeValue, now, locale,
-        longitude: longitude,
-      );
-      final hours = TimeValueFormatter.hmsToHours(computed);
-      if (hours != null) {
-        final deg = TimeValueFormatter.formatDecimal(
-            hours * 15.0, locale, 4, thousandsSep: false);
-        return '$deg°';
-      }
-    }
-    return null;
-  }
-
-  String _computeLabel(AppLocalizations l10n) {
-    return timeValue.type == ValueType.lmst
-        ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
-        : timeValue.localizedDisplayLabel(l10n);
   }
 
   @override

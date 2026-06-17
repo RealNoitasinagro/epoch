@@ -92,7 +92,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditLayout => 'Edit layout';
 
   @override
-  String get hintRemoveSelected => 'Remove hintSelected';
+  String get hintRemoveSelected => 'Remove selected';
 
   @override
   String get hintResetToDefaults => 'Reset to defaults';

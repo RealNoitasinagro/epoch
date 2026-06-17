@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintRemoveSelected.
   ///
   /// In en, this message translates to:
-  /// **'Remove hintSelected'**
+  /// **'Remove selected'**
   String get hintRemoveSelected;
 
   /// No description provided for @hintResetToDefaults.
