@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
@@ -53,11 +54,11 @@ class TimeStringRow extends TimeValueRow {
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
     };
 
-    if (timeValue.type == ValueType.date && showDateDetails) {
+    if (timeValue.valueType == ValueType.date && showDateDetails) {
       subtitle = l10n.dataDateSub(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
-    } else if (timeValue.type == ValueType.gmst ||
-        timeValue.type == ValueType.lmst) {
+    } else if (timeValue.valueType == ValueType.gmst ||
+        timeValue.valueType == ValueType.lmst) {
       final hours = TimeValueFormatter.hmsToHours(formattedValue);
       if (hours != null) {
         final deg = TimeValueFormatter.formatDecimal(
@@ -86,7 +87,7 @@ class TimeStringRow extends TimeValueRow {
 
   static String computeLabel(AppLocalizations l10n,
       TimeValue timeValue, double? longitude) {
-    return timeValue.type == ValueType.lmst
+    return timeValue.valueType == ValueType.lmst
         ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
         : timeValue.localizedDisplayLabel(l10n);
   }
@@ -125,13 +126,13 @@ class TimeStringRow extends TimeValueRow {
       content: TextValueContent(line1: display.line1, line2: display.line2),
       actionSlots: [
         IconButton(
-          icon: const Icon(Icons.info_outline, size: 20),
+          icon: const Icon(Icons.info_outline, size: kIconSizeDefault),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.hintAboutThisValue,
           onPressed: () => showInfo(context, l10n),
         ),
         IconButton(
-          icon: const Icon(Icons.copy, size: 20),
+          icon: const Icon(Icons.copy, size: kIconSizeDefault),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.hintCopyToClipboard,
           onPressed: () => _copyToClipboard(context, l10n, label, clipboardValue),

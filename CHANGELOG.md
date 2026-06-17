@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- custom section headers and dividers
+
 ### Changed
 - replaced font for better readability of time values
 

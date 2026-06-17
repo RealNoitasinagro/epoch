@@ -7,25 +7,25 @@ import 'package:epoch/models/time_value.dart';
 void main() {
   group('TimeValue.key', () {
     test('local zone key', () {
-      const e = TimeValue(type: ValueType.time, zone: ZoneLocal());
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       expect(e.key, equals('time/local'));
     });
 
     test('utc zone key', () {
-      const e = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
+      const e = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
       expect(e.key, equals('unixSeconds/utc'));
     });
 
     test('named zone key', () {
       const e = TimeValue(
-          type: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
+          valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       expect(e.key, equals('time/named:Europe/Berlin'));
     });
   });
 
   group('TimeValue serialization', () {
     test('roundtrip without label', () {
-      const e = TimeValue(type: ValueType.time, zone: ZoneLocal());
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       final s = e.toPrefsString();
       final e2 = TimeValue.fromPrefsString(s);
       expect(e2, isNotNull);
@@ -35,7 +35,7 @@ void main() {
 
     test('roundtrip with label', () {
       const e = TimeValue(
-          type: ValueType.time,
+          valueType: ValueType.time,
           zone: ZoneLocal(),
           customLabel: 'My Time');
       final s = e.toPrefsString();
@@ -50,12 +50,12 @@ void main() {
 
   group('TimeValue.isZoneIndependent', () {
     test('unixSeconds is zone-independent', () {
-      const e = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
+      const e = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
       expect(e.isZoneIndependent, isTrue);
     });
 
     test('time is zone-dependent', () {
-      const e = TimeValue(type: ValueType.time, zone: ZoneLocal());
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       expect(e.isZoneIndependent, isFalse);
     });
   });
@@ -142,20 +142,20 @@ void main() {
     final l10n = lookupAppLocalizations(const Locale('en'));
 
     test('null longitude returns base label', () {
-      const tv = TimeValue(type: ValueType.lmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, null);
       expect(result, equals('LMST'));
     });
 
     test('positive longitude shows E', () {
-      const tv = TimeValue(type: ValueType.lmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, 8.68);
       expect(result, contains('E'));
       expect(result, contains('8.68'));
     });
 
     test('negative longitude shows W', () {
-      const tv = TimeValue(type: ValueType.lmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, -74.0);
       expect(result, contains('W'));
       expect(result, contains('74'));

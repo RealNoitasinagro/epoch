@@ -56,7 +56,7 @@ class ValueTile extends StatelessWidget {
                     ),
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(Icons.language, size: 10,
+                      Icon(Icons.language, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
                     ],
                   ],

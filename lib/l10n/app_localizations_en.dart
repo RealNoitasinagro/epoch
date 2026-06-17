@@ -65,6 +65,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintAboutThisValue => 'About this value';
 
   @override
+  String get hintAddDivider => 'Add divider';
+
+  @override
+  String get hintAddSectionHeader => 'Add section header';
+
+  @override
   String get hintAddTab => 'Add tab';
 
   @override
@@ -90,6 +96,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintEditLayout => 'Edit layout';
+
+  @override
+  String get hintEditSectionHeader => 'Edit section header';
 
   @override
   String get hintRemoveSelected => 'Remove selected';
@@ -245,6 +254,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelNewLabel => 'Label';
+
+  @override
+  String get labelNewSectionName => 'Section name';
 
   @override
   String get labelNewTabName => 'Tab name';

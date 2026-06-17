@@ -176,6 +176,18 @@ abstract class AppLocalizations {
   /// **'About this value'**
   String get hintAboutThisValue;
 
+  /// No description provided for @hintAddDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'Add divider'**
+  String get hintAddDivider;
+
+  /// No description provided for @hintAddSectionHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Add section header'**
+  String get hintAddSectionHeader;
+
   /// No description provided for @hintAddTab.
   ///
   /// In en, this message translates to:
@@ -229,6 +241,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit layout'**
   String get hintEditLayout;
+
+  /// No description provided for @hintEditSectionHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit section header'**
+  String get hintEditSectionHeader;
 
   /// No description provided for @hintRemoveSelected.
   ///
@@ -487,6 +505,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Label'**
   String get labelNewLabel;
+
+  /// No description provided for @labelNewSectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Section name'**
+  String get labelNewSectionName;
 
   /// No description provided for @labelNewTabName.
   ///

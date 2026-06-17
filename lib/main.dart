@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -218,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TimeValue> _civilEntries = [];
+  List<TabEntry> _civilEntries = [];
   List<CustomTabData> _customTabs = [];
   bool _loaded = false;
   bool _isFullscreen = false;
@@ -265,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
-  void _onCivilChanged(List<TimeValue> entries) {
+  void _onCivilChanged(List<TabEntry> entries) {
     setState(() => _civilEntries = entries);
     saveCivilEntries(entries);
   }
@@ -297,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen>
   void _addCustomTab(AppLocalizations l10n) {
     if (_customTabs.length >= maxCustomTabs) return;
     final tab = CustomTabData(
-      id:      generateTabId(),
+      id:      generateId(),
       name:    defaultTabName(_customTabs.length),
       entries: [],
     );
@@ -324,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TimeValue> entries) {
+  void _onCustomTabEntriesChanged(String id, List<TabEntry> entries) {
     final tab = _customTabs.firstWhere((t) => t.id == id);
     tab.entries = entries;
     saveCustomTabs(_customTabs);
@@ -380,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen>
   void _removeLmstFromAllTabs() {
     for (final tab in _customTabs) {
       final newEntries = tab.entries
-          .where((e) => e.type != ValueType.lmst)
+          .where((e) => e.valueType != ValueType.lmst)
           .toList();
       if (newEntries.length != tab.entries.length) {
         tab.entries = newEntries;
@@ -492,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
-            timeValues: tab.entries,
+            entries: tab.entries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
             showDateDetails: app.dateWithDetails,

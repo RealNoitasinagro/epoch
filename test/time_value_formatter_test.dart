@@ -12,20 +12,20 @@ void main() {
     // Technical
 
     test('unixSeconds formats correctly', () {
-      const tv = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, equals('1,000,000,000'));
     });
 
     test('unixSeconds without thousands separator', () {
-      const tv = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           thousandsSep: false);
       expect(result, equals('1000000000'));
     });
 
     test('unixSeconds DE locale uses period as thousands separator', () {
-      const tv = TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'de');
       expect(result, equals('1.000.000.000'));
     });
@@ -33,19 +33,19 @@ void main() {
     // Astronomical
 
     test('gmst returns HH:MM:SS format', () {
-      const tv = TimeValue(type: ValueType.gmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, matches(RegExp(r'^\d{2}:\d{2}:\d{2}$')));
     });
 
     test('lmst returns placeholder without longitude', () {
-      const tv = TimeValue(type: ValueType.lmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, equals('--:--:--'));
     });
 
     test('lmst with longitude returns HH:MM:SS', () {
-      const tv = TimeValue(type: ValueType.lmst, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           longitude: 8.68);
       final parts = result.split(':');
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('julianDate has 5 decimal places', () {
-      const tv = TimeValue(type: ValueType.julianDate, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           thousandsSep: false);
       final parts = result.split('.');
@@ -65,7 +65,7 @@ void main() {
     // Curiosities
 
     test('swatchBeats format starts with @', () {
-      const tv = TimeValue(type: ValueType.swatchBeats, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, startsWith('@'));
       final beats = int.tryParse(result.substring(1));
@@ -81,7 +81,7 @@ void main() {
     // Civil
 
     test('time local returns HH:MM:SS with timezone suffix', () {
-      const tv = TimeValue(type: ValueType.time, zone: ZoneLocal());
+      const tv = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       final result = TimeValueFormatter.format(tv, t, 'en',
           localIanaZone: 'Europe/Berlin');
       expect(result, contains(':'));
@@ -89,20 +89,20 @@ void main() {
     });
 
     test('time UTC returns UTC suffix', () {
-      const tv = TimeValue(type: ValueType.time, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, contains('UTC'));
     });
 
     test('time 12h format contains AM or PM', () {
-      const tv = TimeValue(type: ValueType.time, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           hourFormat24: false);
       expect(result, anyOf(contains('AM'), contains('PM')));
     });
 
     test('daySecond is between 0 and 86399', () {
-      const tv = TimeValue(type: ValueType.daySecond, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.daySecond, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           thousandsSep: false);
       final v = int.tryParse(result);
@@ -112,7 +112,7 @@ void main() {
     });
 
     test('dayPercent is between 0.000 and 99.999', () {
-      const tv = TimeValue(type: ValueType.dayPercent, zone: ZoneUtc());
+      const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       final v = double.tryParse(result);
       expect(v, isNotNull);
@@ -121,14 +121,14 @@ void main() {
     });
 
     test('binaryClockString matches pattern', () {
-      const tv = TimeValue(type: ValueType.binaryClockString, zone: ZoneLocal());
+      const tv = TimeValue(valueType: ValueType.binaryClockString, zone: ZoneLocal());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, matches(RegExp(r'^\d{5}:\d{6}:\d{6}$')));
     });
 
     test('named timezone formats correctly', () {
       const tv = TimeValue(
-          type: ValueType.time,
+          valueType: ValueType.time,
           zone: ZoneNamed('Asia/Tokyo'));
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, contains('JST'));

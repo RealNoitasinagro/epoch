@@ -9,9 +9,9 @@ const astronomicalTypes = [
 ];
 
 const astronomicalEntries = [
-  TimeValue(type: ValueType.gmst, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.gmst, zone: ZoneUtc()),
   // LMST will be displayed dynamically depending on longitude availability
-  TimeValue(type: ValueType.julianDate, zone: ZoneUtc()),
-  TimeValue(type: ValueType.modifiedJulianDate, zone: ZoneUtc()),
-  TimeValue(type: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.modifiedJulianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
 ];

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
 import '../time_value_formatter.dart';
+import '../widgets/section_header.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -161,16 +163,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               app.setDateWithDetails(val);
             },
           ),
-          const Divider(),
+          const Divider(height: kDividerHeight),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Text(
-              l10n.settingsLmst.toUpperCase(),
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                letterSpacing: 2,
-              ),
+            padding: const EdgeInsets.fromLTRB(
+                kTabHorizontalPadding, 0,
+                kTabHorizontalPadding, 0,
             ),
+            child: SectionHeader(label: l10n.settingsLmst),
           ),
           RadioGroup<LmstMode>(
             groupValue: _lmstMode,
@@ -229,7 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             )
           ),
-          const Divider(),
+          const Divider(height: kDividerHeight),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l10n.settingsAbout),

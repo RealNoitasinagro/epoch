@@ -65,6 +65,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintAboutThisValue => 'Über diesen Wert';
 
   @override
+  String get hintAddDivider => 'Trennlinie einfügen';
+
+  @override
+  String get hintAddSectionHeader => 'Abschnittsüberschrift einfügen';
+
+  @override
   String get hintAddTab => 'Tab hinzufügen';
 
   @override
@@ -90,6 +96,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hintEditLayout => 'Layout bearbeiten';
+
+  @override
+  String get hintEditSectionHeader => 'Abschnittsüberschrift bearbeiten';
 
   @override
   String get hintRemoveSelected => 'Markierte entfernen';
@@ -245,6 +254,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelNewLabel => 'Bezeichnung';
+
+  @override
+  String get labelNewSectionName => 'Abschnittsname';
 
   @override
   String get labelNewTabName => 'Tab-Name';

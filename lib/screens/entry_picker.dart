@@ -1,6 +1,7 @@
 import 'package:epoch/models/astronomical_tab_config.dart';
 import 'package:epoch/models/civil_tab_config.dart';
 import 'package:epoch/models/curiosities_tab_config.dart';
+import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/models/technical_tab_config.dart';
 import 'package:flutter/material.dart';
 import '../layout_constants.dart';
@@ -11,14 +12,14 @@ import 'timezone_search_screen.dart';
 
 // Displays a two-step dialog: value type → timezone (if zone-dependent).
 // [allowedTypes] restricts which types are shown; null means all types.
-Future<TimeValue?> showEntryPicker(
+Future<TabEntry?> showEntryPicker(
     BuildContext context, {
       List<ValueType>? allowedTypes,
-      List<TimeValue> existingEntries = const [],
+      List<TabEntry> existingEntries = const [],
       LmstMode lmstMode = LmstMode.off,
       double? lmstLongitude,
     }) {
-  return showDialog<TimeValue>(
+  return showDialog<TabEntry>(
     context: context,
     builder: (ctx) => _EntryPicker(
       allowedTypes: allowedTypes,
@@ -31,7 +32,7 @@ Future<TimeValue?> showEntryPicker(
 
 class _EntryPicker extends StatefulWidget {
   final List<ValueType>? allowedTypes;
-  final List<TimeValue> existingEntries;
+  final List<TabEntry> existingEntries;
   final LmstMode lmstMode;
   final double? lmstLongitude;
 
@@ -66,12 +67,12 @@ class _EntryPickerState extends State<_EntryPicker> {
       if (widget.lmstLongitude == null) return true;
     }
     if (!t.isZoneIndependent) return false;
-    return widget.existingEntries.any((e) => e.type == t);
+    return widget.existingEntries.any((e) => e.valueType == t);
   }
 
   void _selectType(ValueType t) {
     if (t.isZoneIndependent) {
-      Navigator.pop(context, TimeValue(type: t, zone: const ZoneUtc()));
+      Navigator.pop(context, TimeValue(valueType: t, zone: const ZoneUtc()));
     } else {
       setState(() {
         _type = t;
@@ -88,7 +89,7 @@ class _EntryPickerState extends State<_EntryPicker> {
   }
 
   void _confirm(ZoneSpec zone) {
-    Navigator.pop(context, TimeValue(type: _type!, zone: zone));
+    Navigator.pop(context, TimeValue(valueType: _type!, zone: zone));
   }
 
   @override
@@ -195,6 +196,30 @@ class _EntryPickerState extends State<_EntryPicker> {
           }),
         ],
         const Divider(),
+        SimpleDialogOption(
+          onPressed: () =>
+              Navigator.pop(context, TabDivider.generateDividerId()),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.horizontal_rule, size: 16),
+              const SizedBox(width: 8),
+              Text(l10n.hintAddDivider),
+            ],
+          ),
+        ),
+        SimpleDialogOption(
+          onPressed: () => _addSection(context, l10n),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.title, size: 16),
+              const SizedBox(width: 8),
+              Text(l10n.hintAddSectionHeader),
+            ],
+          ),
+        ),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: TextButton(
@@ -216,7 +241,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         Text(label, style: color != null ? TextStyle(color: color) : null),
         if (zoneDependent) ...[
           const SizedBox(width: 4),
-          Icon(Icons.language, size: 10,
+          Icon(Icons.language, size: kIconSizeDefault,
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
         ],
       ],
@@ -285,6 +310,38 @@ class _EntryPickerState extends State<_EntryPicker> {
       ),
     ),
   );
+
+  Future<void> _addSection(
+      BuildContext context, AppLocalizations l10n) async {
+    final controller = TextEditingController();
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.hintAddSectionHeader),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(
+            labelText: l10n.labelNewSectionName,
+          ),
+          onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    if (result == null || result.isEmpty) return;
+    if (!context.mounted) return;
+    Navigator.pop(context, TabSection.generateSectionId(result));
+  }
 }
 
 // Shared dialog title widget, also used by timezone_search_screen.

@@ -20,7 +20,7 @@ class TimeValueFormatter {
     final utcNow = now.toUtc();
 
     // Zone-independent values.
-    switch (value.type) {
+    switch (value.valueType) {
       // Technical
       case ValueType.unixSeconds:
         final v = TimeUtils.unixTimestamp(utcNow);
@@ -96,7 +96,7 @@ class TimeValueFormatter {
     final ss = dt.second.toString().padLeft(2, '0');
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
-    switch (value.type) {
+    switch (value.valueType) {
       // Civil
       case ValueType.date:
         return formatDate(locale, dt);

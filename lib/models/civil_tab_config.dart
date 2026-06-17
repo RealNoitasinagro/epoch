@@ -1,3 +1,4 @@
+import 'package:epoch/models/tab_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'time_value.dart';
 
@@ -15,25 +16,25 @@ const civilTypes = [
 
 // Default entries for the Civil tab.
 const defaultCivilEntries = [
-  TimeValue(type: ValueType.date,       zone: ZoneLocal()),
-  TimeValue(type: ValueType.time,       zone: ZoneLocal()),
-  TimeValue(type: ValueType.daySecond,  zone: ZoneLocal()),
-  TimeValue(type: ValueType.dayPercent, zone: ZoneLocal()),
-  TimeValue(type: ValueType.time,       zone: ZoneUtc()),
-  TimeValue(type: ValueType.daySecond,  zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.date,       zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.time,       zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.daySecond,  zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.dayPercent, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.time,       zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.daySecond,  zone: ZoneUtc()),
 ];
 
-Future<List<TimeValue>> loadCivilEntries() async {
+Future<List<TabEntry>> loadCivilEntries() async {
   final prefs = await SharedPreferences.getInstance();
   final stored = prefs.getStringList(_kCivilTabKey);
   if (stored == null) return List.of(defaultCivilEntries);
   return stored
-      .map(TimeValue.fromPrefsString)
-      .whereType<TimeValue>()
+      .map(TabEntry.fromPrefsString)
+      .whereType<TabEntry>()
       .toList();
 }
 
-Future<void> saveCivilEntries(List<TimeValue> entries) async {
+Future<void> saveCivilEntries(List<TabEntry> entries) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setStringList(
     _kCivilTabKey,

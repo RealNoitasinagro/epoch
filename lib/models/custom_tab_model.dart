@@ -1,5 +1,5 @@
+import 'package:epoch/models/tab_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'time_value.dart';
 
 const _kCustomTabsKey = 'custom_tabs';
 const int maxCustomTabs = 4;
@@ -7,7 +7,7 @@ const int maxCustomTabs = 4;
 class CustomTabData {
   final String id;
   String name;
-  List<TimeValue> entries;
+  List<TabEntry> entries;
 
   CustomTabData({
     required this.id,
@@ -28,8 +28,8 @@ class CustomTabData {
     final name = parts[1];
     final entries = parts
         .sublist(2)
-        .map(TimeValue.fromPrefsString)
-        .whereType<TimeValue>()
+        .map(TabEntry.fromPrefsString)
+        .whereType<TabEntry>()
         .toList();
     return CustomTabData(id: id, name: name, entries: entries);
   }
@@ -58,5 +58,5 @@ String defaultTabName(int existingCount) =>
     'Watchlist ${existingCount + 1}';
 
 // Generates a simple unique ID.
-String generateTabId() =>
+String generateId() =>
     DateTime.now().millisecondsSinceEpoch.toString();
