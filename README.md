@@ -20,7 +20,6 @@ in time (as in *Unix epoch* or *astronomical epoch*). The letters
 also happen to spell out **E**legant **p**resentation **o**f
 **ch**ronometers — though the word came first.
 
----
 
 ## Features
 
@@ -36,6 +35,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
+- Custom section headers and dividers
 - Copy any value to clipboard with one tap
 
 ### Design
@@ -54,7 +54,6 @@ also happen to spell out **E**legant **p**resentation **o**f
 - All settings stored locally on your device
 - No permissions required
 
----
 
 ## What makes Epoch different?
 
@@ -63,7 +62,44 @@ Epoch shows you 18 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 It is built for people who are curious about how time actually works.
 
+---
+
+## Platforms
+
+| Platform | Status          | Distribution                                                                                                                                   |
+|----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| Android  | ✅ Supported     | [F-Droid](https://f-droid.org/packages/io.github.RealEarthling.epoch/) · [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases) |
+| Linux    | ✅ Supported     | [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases)                                                                          |
+| Web      | ✅ Supported     | [GitHub Pages](https://RealNoitasinagro.github.io/epoch)                                                                                       |
+| iOS      | ❌ Not supported |                                                                                                                                                |
+| macOS    | ❌ Not supported |                                                                                                                                                |
+| Windows  | ❌ Not supported |                                                                                                                                                |
+
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
+
+### Linux
+
+Build and run the *Linux app* from source (requires **[Flutter](https://flutter.dev)**):
+```bash
+git clone https://github.com/RealNoitasinagro/epoch.git
+cd epoch
+
+flutter build linux --release
+flutter run -d linux
+```
+
+Alternatively the *web app*:
+```
+flutter build web --release
+flutter run -d chrome
+```
+OR
+```
+flutter build web --release
+cd build/web
+python -m http.server 8000
+```
+You can then open http://0.0.0.0:8000/ or http://127.0.0.1:8000/ with a browser.
 
 ---
 
@@ -72,7 +108,6 @@ It is built for people who are curious about how time actually works.
 Found a bug or have a feature request?
 [Open an issue](https://github.com/RealNoitasinagro/epoch/issues) — feedback is welcome.
 
----
 
 ## License
 
