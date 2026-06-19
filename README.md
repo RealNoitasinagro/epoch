@@ -67,11 +67,9 @@ It is built for people who are curious about how time actually works.
 
 Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 
-<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1">
-<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="en 2">
-<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="en 3">
-<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="en 4">
-<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
+
+<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1"> <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="en 2"> <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="en 3">
+<img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="en 4"> <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
 
 ---
 
