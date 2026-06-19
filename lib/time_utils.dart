@@ -3,6 +3,10 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 
 class TimeUtils {
+  static int dayOfYear(DateTime dt) => dt.ordinalDate;
+
+  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
+
   /// Returns TZDateTime for a given IANA time zone.
   static tz.TZDateTime inZone(DateTime utc, String ianaZone) {
     try {
@@ -164,11 +168,8 @@ class TimeUtils {
 
   /// Binary clock string representation, e.g. "10:110000:10111".
   static String binaryTimeString(DateTime dt) {
-    String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
-    final h = toBin(dt.hour, 5);
-    final m = toBin(dt.minute, 6);
-    final s = toBin(dt.second, 6);
-    return '$h:$m:$s';
+    final bin = binaryTime(dt);
+    return [bin.hours, bin.minutes, bin.seconds].join(':');
   }
 
   /// Returns the current Doomsday Clock time as of Jan 2026.
@@ -182,8 +183,4 @@ class TimeUtils {
         ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
         : '$hh:$mm:$ss';
   }
-
-  static int dayOfYear(DateTime dt) => dt.ordinalDate;
-
-  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
 }

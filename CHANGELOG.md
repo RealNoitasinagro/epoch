@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Added
+- custom section headers and dividers
+
+### Changed
+- replaced font for better readability of time values
+
+
+## [1.1.1] - 2026-06-11
+
+### Removed
+- geolocator -- longitude config for LMST only manual for now
+
+
 ## [1.1.0] - 2026-06-10
 
 ### Added
@@ -15,6 +28,7 @@
 
 ### Changed
 - up tp 4 custom tabs rather than 3
+- GMST (and LMST) expressed in time units/hours as well as angular units/degrees
 
 ### Fixed
 - JulianDate (was off by 0.5 days)

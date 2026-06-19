@@ -56,7 +56,7 @@ class ValueTile extends StatelessWidget {
                     ),
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(Icons.language, size: 10,
+                      Icon(Icons.language, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
                     ],
                   ],
@@ -102,7 +102,7 @@ class TextValueContent extends StatelessWidget {
           Text(
             line1,
             style: textTheme.bodyLarge?.copyWith(
-              fontFamily: fontFamilyCourierNew,
+              fontFamily: fontFamilyDefault,
               fontWeight: FontWeight.w500,
               height: 1.2,
             ),
@@ -113,8 +113,8 @@ class TextValueContent extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               line2,
-              style: textTheme.bodySmall?.copyWith(
-                fontFamily: fontFamilyCourierNew,
+              style: textTheme.bodyMedium?.copyWith(
+                fontFamily: fontFamilyDefault,
                 color: colorScheme.onSurface.withAlpha(170),
                 height: 1.2,
               ),

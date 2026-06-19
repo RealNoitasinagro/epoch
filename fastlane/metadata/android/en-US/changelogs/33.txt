@@ -9,3 +9,6 @@ Fixed:
 - Julian Date offset
 - tile reordering
 - crashes for outdated timezone names
+
+Changed:
+- longitude config for LMST only manual for now

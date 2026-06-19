@@ -1,6 +1,6 @@
+import 'package:epoch/models/tab_entry.dart';
 import 'package:flutter/material.dart';
 import '../models/civil_tab_config.dart';
-import '../models/time_value.dart';
 import 'configurable_tab.dart';
 
 class CivilTab extends StatelessWidget {
@@ -8,8 +8,8 @@ class CivilTab extends StatelessWidget {
   final bool thousandsSep;
   final bool hourFormat24;
   final bool showDateDetails;
-  final List<TimeValue> entries;
-  final ValueChanged<List<TimeValue>> onEntriesChanged;
+  final List<TabEntry> entries;
+  final ValueChanged<List<TabEntry>> onEntriesChanged;
 
   const CivilTab({
     super.key,
@@ -25,7 +25,7 @@ class CivilTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConfigurableTab(
       now: now,
-      timeValues: entries,
+      entries: entries,
       onEntriesChanged: onEntriesChanged,
       thousandsSep: thousandsSep,
       hourFormat24: hourFormat24,

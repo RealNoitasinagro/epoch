@@ -2,6 +2,7 @@ import 'package:epoch/widgets/time_value_row.dart';
 import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import 'clocks/binary_coded_decimal_clock.dart';
@@ -25,15 +26,15 @@ class TimeGraphicalRow extends TimeValueRow {
       showZoneIndicator: !timeValue.isZoneIndependent,
       height: ValueTile.graphicTileHeight,
       content: GraphicValueContent(
-        clock: timeValue.type == ValueType.binaryClockColumns
+        clock: timeValue.valueType == ValueType.binaryClockColumns
             ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
             : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
       ),
       actionSlots: [
         IconButton(
-          icon: const Icon(Icons.info_outline, size: 20),
+          icon: const Icon(Icons.info_outline, size: kIconSizeDefault),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.aboutThisValue,
+          tooltip: l10n.hintAboutThisValue,
           onPressed: () => showInfo(context, l10n),
         ),
         null,

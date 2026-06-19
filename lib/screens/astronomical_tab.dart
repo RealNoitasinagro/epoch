@@ -41,47 +41,47 @@ class AstronomicalTab extends StatelessWidget {
                 kTabHorizontalPadding, kTabVerticalPadding),
             children: [
               SectionHeader(label: l10n.sectionSidereal),
-              const SizedBox(height: 8),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.gmst, zone: ZoneUtc()),
+                    valueType: ValueType.gmst, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
                 thousandsSep: thousandsSep,
               ),
               if (_showLmst) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: kEntrySpacing),
                 TimeStringRow(
                   timeValue: const TimeValue(
-                      type: ValueType.lmst, zone: ZoneUtc()),
+                      valueType: ValueType.lmst, zone: ZoneUtc()),
                   now: now,
                   locale: locale,
                   thousandsSep: thousandsSep,
                   longitude: lmstLongitude,
                 ),
               ],
-              const Divider(height: 40),
+              const Divider(height: kDividerHeight),
               SectionHeader(label: l10n.sectionJulian),
-              const SizedBox(height: 8),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.julianDate, zone: ZoneUtc()),
+                    valueType: ValueType.julianDate, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
                 thousandsSep: thousandsSep,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.modifiedJulianDate, zone: ZoneUtc()),
+                    valueType: ValueType.modifiedJulianDate, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
                 thousandsSep: thousandsSep,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
+                    valueType: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
                 thousandsSep: thousandsSep,

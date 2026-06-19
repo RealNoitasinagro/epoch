@@ -76,6 +76,8 @@ esac
 
 
 # +++ CONFIGURATION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+skipAnalyze=0
+skipTest=0
 skipChecksums=0
 skipCopy=0
 useLogging=1
@@ -97,7 +99,7 @@ build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-function run_flutter {
+function run_flutter_build {
     local _variant=$1
     local flutter_command="$flutter_active build $_variant --$mode"
     if [ "$cwd" == "$GH_Epoch" ] ; then  # no build timestamps in $GL_Epoch
@@ -120,14 +122,34 @@ Flutter: $flutter_active
 $flutter_version
 Logfile: $build_all_log
 Repo: $cwd
-skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
+skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
 EOF
 
+echo "# analyze"
+if [ ! "$skipAnalyze" -eq "1" ] ; then
+    flutter_command="$flutter_active analyze"
+    echo "# $flutter_command" | tee -a $build_all_log
+    $flutter_command
+else
+    echo "Skipped."
+fi
+echo
+
+echo "# test"
+if [ ! "$skipTest" -eq "1" ] ; then
+    flutter_command="$flutter_active test"
+    echo "# $flutter_command" | tee -a $build_all_log
+    $flutter_command
+else
+    echo "Skipped."
+fi
+echo
+
 echo "# apk"
 if [ ! "$skipApk" -eq "1" ] ; then
-    run_flutter 'apk'
+    run_flutter_build 'apk'
 else
     echo "Skipped."
 fi
@@ -135,7 +157,7 @@ echo
 
 echo "# web"
 if [ ! "$skipWeb" -eq "1" ] ; then
-    run_flutter 'web'
+    run_flutter_build 'web'
 else
     echo "Skipped."
 fi
@@ -143,7 +165,7 @@ echo
 
 echo "# linux"
 if [ ! "$skipLinux" -eq "1" ] ; then
-    run_flutter 'linux'
+    run_flutter_build 'linux'
 else
     echo "Skipped."
 fi
@@ -151,7 +173,7 @@ echo
 
 echo "# apk (--split-per-abi)"
 if [ ! "$skipSplit" -eq "1" ] ; then
-    run_flutter 'apk --split-per-abi'
+    run_flutter_build 'apk --split-per-abi'
 else
     echo "Skipped."
 fi
@@ -185,9 +207,9 @@ if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
     tee -a $build_all_log << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ Output *.apk files were not built properly for a release, do NOT upload to GitHub!!"
++ Output *.apk files were not built properly for a release, do NOT upload to GitHub!!
 + variants: $what | mode: $mode
-+ CWD: $cwd | Releases: $GL_Epoch"
++ CWD: $cwd | Releases: $GL_Epoch
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 EOF

@@ -1,3 +1,5 @@
+import 'package:epoch/models/tab_entry.dart';
+
 import '../l10n/app_localizations.dart';
 
 // All displayable value types across all tabs.
@@ -38,13 +40,13 @@ class ZoneNamed extends ZoneSpec {
 }
 
 // A single displayable entry: type + zone + optional custom label.
-class TimeValue {
-  final ValueType type;
+class TimeValue implements TabEntry {
+  final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
 
   const TimeValue({
-    required this.type,
+    required this.valueType,
     required this.zone,
     this.customLabel,
   });
@@ -57,7 +59,7 @@ class TimeValue {
       ZoneUtc()                    => 'utc',
       ZoneNamed(ianaZone: final s) => 'named:$s',
     };
-    return '${type.name}/$z';
+    return '${valueType.name}/$z';
   }
 
   // Serialisation: key + optional custom label separated by '|'.
@@ -86,24 +88,24 @@ class TimeValue {
     } else {
       return null;
     }
-    return TimeValue(type: type, zone: zone, customLabel: labelPart);
+    return TimeValue(valueType: type, zone: zone, customLabel: labelPart);
   }
 
   // Returns a copy with a different custom label (null to clear).
   TimeValue withCustomLabel(String? label) =>
-      TimeValue(type: type, zone: zone, customLabel: label);
+      TimeValue(valueType: valueType, zone: zone, customLabel: label);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
-  bool get isZoneIndependent => type.isZoneIndependent;
+  bool get isZoneIndependent => valueType.isZoneIndependent;
 
   // Localized display label shown in the UI.
   String localizedDisplayLabel(AppLocalizations l10n) {
     if (customLabel != null) return customLabel!;
-    final _localizedTypeLabel = localizedTypeLabel(type, l10n);
+    final _localizedTypeLabel = localizedTypeLabel(valueType, l10n);
     if (isZoneIndependent) return _localizedTypeLabel;
     final zoneLabel = switch (zone) {
       ZoneLocal()                  => l10n.labelLocal.toLowerCase(),
-      ZoneUtc()                    => l10n.zoneUtc,
+      ZoneUtc()                    => l10n.actionZoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
     return '$_localizedTypeLabel ($zoneLabel)';
@@ -131,29 +133,29 @@ class TimeValue {
   };
 
   // Localized info text.
-  String localizedInfoText(AppLocalizations l10n) => switch (type) {
-    ValueType.date                   => l10n.infoDate,
-    ValueType.time                   => l10n.infoTime,
-    ValueType.dateTime               => l10n.infoDateTime,
-    ValueType.daySecond              => l10n.infoDaySecond,
-    ValueType.dayPercent             => l10n.infoDayPercent,
-    ValueType.unixSeconds            => l10n.infoUnixSeconds,
-    ValueType.tai                    => l10n.infoTai,
-    ValueType.gps                    => l10n.infoGps,
-    ValueType.gmst                   => l10n.infoGmst,
-    ValueType.lmst                   => l10n.infoLmst,
-    ValueType.julianDate             => l10n.infoJulianDate,
-    ValueType.modifiedJulianDate     => l10n.infoModifiedJulianDate,
-    ValueType.modifiedJulianDate2000 => l10n.infoModifiedJulianDate2000,
-    ValueType.swatchBeats            => l10n.infoSwatchBeats,
-    ValueType.binaryClockColumns     => l10n.infoBinaryClockColumns,
-    ValueType.binaryClockBcd         => l10n.infoBinaryClockBcd,
-    ValueType.binaryClockString      => l10n.infoBinaryClockString,
-    ValueType.doomsdayClock          => l10n.infoDoomsdayClock,
+  String localizedInfoText(AppLocalizations l10n) => switch (valueType) {
+    ValueType.date                   => l10n.infoTextDate,
+    ValueType.time                   => l10n.infoTextTime,
+    ValueType.dateTime               => l10n.infoTextDateTime,
+    ValueType.daySecond              => l10n.infoTextDaySecond,
+    ValueType.dayPercent             => l10n.infoTextDayPercent,
+    ValueType.unixSeconds            => l10n.infoTextUnixSeconds,
+    ValueType.tai                    => l10n.infoTextTai,
+    ValueType.gps                    => l10n.infoTextGps,
+    ValueType.gmst                   => l10n.infoTextGmst,
+    ValueType.lmst                   => l10n.infoTextLmst,
+    ValueType.julianDate             => l10n.infoTextJulianDate,
+    ValueType.modifiedJulianDate     => l10n.infoTextModifiedJulianDate,
+    ValueType.modifiedJulianDate2000 => l10n.infoTextModifiedJulianDate2000,
+    ValueType.swatchBeats            => l10n.infoTextSwatchBeats,
+    ValueType.binaryClockColumns     => l10n.infoTextBinaryClockColumns,
+    ValueType.binaryClockBcd         => l10n.infoTextBinaryClockBcd,
+    ValueType.binaryClockString      => l10n.infoTextBinaryClockString,
+    ValueType.doomsdayClock          => l10n.infoTextDoomsdayClock,
   };
 
   // Returns a URL for further reading, or null if none defined.
-  String? localizedInfoLink(AppLocalizations l10n) => switch (type) {
+  String? localizedInfoLink(AppLocalizations l10n) => switch (valueType) {
     ValueType.unixSeconds            => l10n.infoLinkUnixSeconds,
     ValueType.tai                    => l10n.infoLinkTai,
     ValueType.gps                    => l10n.infoLinkGps,
