@@ -67,6 +67,9 @@ It is built for people who are curious about how time actually works.
 
 Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 
+<details>
+<summary>"Click to expand"</summary>
+
 <p>
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="en 2">
@@ -78,6 +81,8 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
 </p>
 
+</details>
+
 ---
 
 ## Platforms
@@ -86,7 +91,7 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 |----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | Android  | ✅ Supported     | [F-Droid](https://f-droid.org/packages/io.github.RealEarthling.epoch/) · [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases) |
 | Linux    | ✅ Supported     | [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases)                                                                          |
-| Web      | ✅ Supported     | [GitHub Pages](https://RealNoitasinagro.github.io/epoch)                                                                                       |
+| Web      | ✅ Supported     | [GitHub Pages](https://RealNoitasinagro.github.io/epoch) (possibly newer than latest release)                                                  |
 | iOS      | ❌ Not supported |                                                                                                                                                |
 | macOS    | ❌ Not supported |                                                                                                                                                |
 | Windows  | ❌ Not supported |                                                                                                                                                |
