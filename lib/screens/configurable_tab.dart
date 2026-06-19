@@ -266,19 +266,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       controller: _scrollController,
       padding: const EdgeInsets.fromLTRB(
           kTabHorizontalPadding, kTabVerticalPadding,
-          kTabHorizontalPadding, 40),
+          kTabHorizontalPadding, 80),
       itemCount: widget.entries.length,
-      separatorBuilder: (_, index) {
-        final curr = widget.entries[index];
-        final next = widget.entries[index + 1];
-        if (next is TabDivider || curr is TabDivider) {
-          return const SizedBox.shrink();
-        }
-        return const SizedBox(height: kEntrySpacing);
-      },
+      separatorBuilder: (_, __) => const SizedBox.shrink(),
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
-        return _buildTabEntry(context, entry, null, l10n, locale); // null = view mode
+        final bottomPadding = _getItemPadding(index, widget.entries);
+        return Padding(
+          key: ValueKey(entry.key),
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: _buildTabEntry(context, entry, null, l10n, locale),
+        );
       },
     );
   }
@@ -299,14 +297,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       },
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
-        final isLast = index == widget.entries.length - 1;
-        final nextIsSpecial = !isLast &&
-            (widget.entries[index + 1] is TabDivider);
-        final currIsSpecial = entry is TabDivider;
-        final bottomPadding = (currIsSpecial || nextIsSpecial)
-            ? 0.0
-            : kEntrySpacing;
-
+        final bottomPadding = _getItemPadding(index, widget.entries);
         return Padding(
           key: ValueKey(entry.key),
           padding: EdgeInsets.only(bottom: bottomPadding),
@@ -314,6 +305,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         );
       },
     );
+  }
+
+  double _getItemPadding(int index, List<TabEntry> entries) {
+    if (index >= entries.length - 1) return 0.0;
+    final currentEntry = entries[index];
+    final nextEntry = entries[index + 1];
+    if (currentEntry is TabDivider || nextEntry is TabDivider) return 0.0;
+    return kEntrySpacing;
   }
 
   Widget _buildTabEntry(
@@ -350,14 +349,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           child: Row(
             children: [
               const Expanded(
-                child: Divider(),
+                child: Divider(height: 0),
               ),
               const SizedBox(width: 8),
               const SizedBox(width: 40),
               ReorderableDragStartListener(
                 index: editIndex,
                 child: SizedBox(
-                  width: 40, height: 40,
+                  width: 40, height: kDividerHeight,
                   child: Icon(Icons.drag_handle, size: kIconSizeDefault,
                       color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
                 ),
@@ -374,9 +373,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       BuildContext context, TabSection s, int? editIndex,
       AppLocalizations l10n) {
     if (editIndex == null) {
-      return Padding(
-        padding: const EdgeInsets.only(top: kEntrySpacing),
-        child: SectionHeader(label: s.label),
+      return SizedBox(
+        height: kSectionHeaderHeight,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: SectionHeader(label: s.label),
+        ),
       );
     }
     return Dismissible(
@@ -385,29 +387,28 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       background: _dismissBackground(),
       onDismissed: (_) => _removeEntry(s, editIndex),
       child: SizedBox(
-        height: 48,
+        height: kSectionHeaderHeight,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0),
+              0, 0, kTabHorizontalPadding, 0
+          ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: SectionHeader(label: s.label),
-              ),
-              SizedBox(
-                width: 40, height: 40,
+              Expanded(child: SectionHeader(label: s.label)),
+              SizedBox(width: 40, height: kSectionHeaderHeight,
                 child: IconButton(
+                  padding: EdgeInsets.zero,
                   icon: Icon(Icons.edit, size: kIconSizeDefault,
                       color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
-                  tooltip: l10n.hintEditLabel,
+                  tooltip: l10n.hintEditSectionHeader,
                   onPressed: () => _editSectionLabel(context, s, l10n),
                 ),
               ),
               ReorderableDragStartListener(
                 index: editIndex,
                 child: SizedBox(
-                  width: 40, height: 40,
+                  width: 40, height: kSectionHeaderHeight,
                   child: Icon(Icons.drag_handle, size: kIconSizeDefault,
                       color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
                 ),
