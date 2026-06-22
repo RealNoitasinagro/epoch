@@ -4,9 +4,14 @@
 
 ### Added
 - custom section headers and dividers
+- options to force standard or summer time for zoned time values all the year round
+- visual markers for always-on/always-off DST time value and DST is active/not active
 
 ### Changed
 - replaced font for better readability of time values
+
+
+---
 
 
 ## [1.1.1] - 2026-06-11

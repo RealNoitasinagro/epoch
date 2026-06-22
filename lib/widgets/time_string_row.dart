@@ -123,6 +123,12 @@ class TimeStringRow extends TimeValueRow {
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
+      showPinnedIndicator: timeValue.dstMode != TimezoneDisplayMode.auto,
+      dstActiveIndicator: switch (timeValue.dstMode) {
+        TimezoneDisplayMode.auto          => null,
+        TimezoneDisplayMode.forceDst      => kIconForceDst,
+        TimezoneDisplayMode.forceStandard => kIconForceStandard,
+      },
       content: TextValueContent(line1: display.line1, line2: display.line2),
       actionSlots: [
         IconButton(

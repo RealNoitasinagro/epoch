@@ -21,7 +21,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionZoneLocal => 'Lokal (Systemzeitzone)';
 
   @override
-  String get actionZoneNamed => 'Andere…';
+  String get actionZoneNamed => 'Benannte Zeitzone';
 
   @override
   String get actionZoneUtc => 'UTC';
@@ -92,13 +92,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintDoneEditing => 'Fertig';
 
   @override
-  String get hintEditLabel => 'Bezeichnung bearbeiten';
-
-  @override
   String get hintEditLayout => 'Layout bearbeiten';
 
   @override
   String get hintEditSectionHeader => 'Abschnittsüberschrift bearbeiten';
+
+  @override
+  String get hintEditTimeValue => 'Zeitwert bearbeiten';
 
   @override
   String get hintRemoveSelected => 'Markierte entfernen';
@@ -320,6 +320,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsDateWithDetailsSub =>
       'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
+
+  @override
+  String get settingsDstAlwaysOff => 'Immer Normalzeit';
+
+  @override
+  String get settingsDstAlwaysOn => 'Immer Sommerzeit';
+
+  @override
+  String get settingsDstAuto => 'Automatisch';
+
+  @override
+  String get settingsDstMode => 'Sommerzeit';
 
   @override
   String get settingsHourFormat => '24-Stunden-Format';

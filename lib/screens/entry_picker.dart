@@ -241,7 +241,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         Text(label, style: color != null ? TextStyle(color: color) : null),
         if (zoneDependent) ...[
           const SizedBox(width: 4),
-          Icon(Icons.language, size: kIconSizeDefault,
+          Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
         ],
       ],

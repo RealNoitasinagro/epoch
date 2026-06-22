@@ -125,7 +125,7 @@ abstract class AppLocalizations {
   /// No description provided for @actionZoneNamed.
   ///
   /// In en, this message translates to:
-  /// **'Other…'**
+  /// **'Named time zone'**
   String get actionZoneNamed;
 
   /// No description provided for @actionZoneUtc.
@@ -230,12 +230,6 @@ abstract class AppLocalizations {
   /// **'Done editing'**
   String get hintDoneEditing;
 
-  /// No description provided for @hintEditLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit label'**
-  String get hintEditLabel;
-
   /// No description provided for @hintEditLayout.
   ///
   /// In en, this message translates to:
@@ -247,6 +241,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit section header'**
   String get hintEditSectionHeader;
+
+  /// No description provided for @hintEditTimeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit time value'**
+  String get hintEditTimeValue;
 
   /// No description provided for @hintRemoveSelected.
   ///
@@ -625,6 +625,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On = with ISO calender week, day of the year'**
   String get settingsDateWithDetailsSub;
+
+  /// No description provided for @settingsDstAlwaysOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Always standard time'**
+  String get settingsDstAlwaysOff;
+
+  /// No description provided for @settingsDstAlwaysOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Always summer time'**
+  String get settingsDstAlwaysOn;
+
+  /// No description provided for @settingsDstAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get settingsDstAuto;
+
+  /// No description provided for @settingsDstMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Daylight saving time (DST)'**
+  String get settingsDstMode;
 
   /// No description provided for @settingsHourFormat.
   ///
