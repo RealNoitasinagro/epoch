@@ -83,9 +83,9 @@ class TimeValueFormatter {
         offset = now.timeZoneOffset;
       case ZoneNamed(ianaZone: final zone):
         final tzDt = TimeUtils.inZone(utcNow, zone);
-        if (timeValue.dstMode != TimezoneDisplayMode.auto) {
+        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
           final info = TimeUtils.daylightOrStandardOffset(
-              zone, timeValue.dstMode == TimezoneDisplayMode.forceDst);
+              zone, timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
           if (info != null) {
             tzLabel = info.abbreviation;
             offset = info.offset;

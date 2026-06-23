@@ -202,7 +202,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     final controller = TextEditingController(
         text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n));
-    var selectedMode = timeValue.dstMode;
+    var selectedMode = timeValue.timezoneDisplayMode;
 
     final result = await showDialog<
         ({String? label, TimezoneDisplayMode mode, bool reset})
@@ -289,7 +289,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final updated = List<TabEntry>.of(widget.entries);
     final idx = updated.indexWhere((e) => e.key == timeValue.key);
     if (idx == -1) return;
-    updated[idx] = timeValue.withCustomLabel(newLabel).withDstMode(newMode);
+    updated[idx] = timeValue.withCustomLabel(newLabel).withTimezoneDisplayMode(newMode);
     widget.onEntriesChanged(updated);
   }
 
@@ -566,8 +566,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.dstMode != TimezoneDisplayMode.auto,
-        dstActiveIndicator: switch (timeValue.dstMode) {
+        showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+        dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
           TimezoneDisplayMode.auto          => null,
           TimezoneDisplayMode.forceDst      => kIconForceDst,
           TimezoneDisplayMode.forceStandard => kIconForceStandard,

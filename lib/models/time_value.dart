@@ -46,13 +46,13 @@ class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
-  final TimezoneDisplayMode dstMode;
+  final TimezoneDisplayMode timezoneDisplayMode;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
-    this.dstMode = TimezoneDisplayMode.auto,
+    this.timezoneDisplayMode = TimezoneDisplayMode.auto,
   });
 
   // Unique key for deduplication within a tab.
@@ -70,17 +70,17 @@ class TimeValue implements TabEntry {
   @override
   String toPrefsString() {
     final base = customLabel != null ? '$key|$customLabel' : key;
-    if (dstMode == TimezoneDisplayMode.auto) return base;
-    return '$base|dst:${dstMode.name}';
+    if (timezoneDisplayMode == TimezoneDisplayMode.auto) return base;
+    return '$base|dst:${timezoneDisplayMode.name}';
   }
 
   static TimeValue? fromPrefsString(String s) {
-    TimezoneDisplayMode dstMode = TimezoneDisplayMode.auto;
+    TimezoneDisplayMode timezoneDisplayMode = TimezoneDisplayMode.auto;
     var workStr = s;
     final dstIdx = workStr.lastIndexOf('|dst:');
     if (dstIdx >= 0) {
       final dstStr = workStr.substring(dstIdx + 5);
-      dstMode = TimezoneDisplayMode.values
+      timezoneDisplayMode = TimezoneDisplayMode.values
           .where((m) => m.name == dstStr)
           .firstOrNull ?? TimezoneDisplayMode.auto;
       workStr = workStr.substring(0, dstIdx);
@@ -104,7 +104,7 @@ class TimeValue implements TabEntry {
     return TimeValue(
       valueType: valueType, zone: zone,
       customLabel: labelPart,
-      dstMode: dstMode,
+      timezoneDisplayMode: timezoneDisplayMode,
     );
   }
 
@@ -112,9 +112,9 @@ class TimeValue implements TabEntry {
   TimeValue withCustomLabel(String? label) =>
       TimeValue(valueType: valueType, zone: zone, customLabel: label);
 
-  TimeValue withDstMode(TimezoneDisplayMode mode) =>
+  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
       TimeValue(valueType: valueType, zone: zone, customLabel: customLabel,
-          dstMode: mode);
+          timezoneDisplayMode: mode);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;

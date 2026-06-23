@@ -5,7 +5,7 @@
 ### Added
 - custom section headers and dividers
 - options to force standard or summer time for zoned time values all the year round
-- visual markers for always-on/always-off DST time value and DST is active/not active
+- visual markers for summer time is active/inactive and always-on/always-off summer time
 
 ### Changed
 - replaced font for better readability of time values
