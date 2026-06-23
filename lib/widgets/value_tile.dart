@@ -12,6 +12,8 @@ class ValueTile extends StatelessWidget {
   static const double graphicTileHeight = 200.0; // fits 6 bit rows
   final double? height; // null = textTileHeight
   final bool showZoneIndicator;
+  final IconData? dstActiveIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
+  final bool showPinnedIndicator;  // timezoneDisplayMode != auto
 
   const ValueTile({
     super.key,
@@ -20,6 +22,8 @@ class ValueTile extends StatelessWidget {
     required this.actionSlots,
     this.height,
     this.showZoneIndicator = true,
+    this.dstActiveIndicator,
+    this.showPinnedIndicator = false,
   });
 
   @override
@@ -56,7 +60,17 @@ class ValueTile extends StatelessWidget {
                     ),
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(Icons.language, size: kIconSizeLabel,
+                      Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150)),
+                    ],
+                    if (dstActiveIndicator != null) ...[
+                      const SizedBox(width: 4),
+                      Icon(dstActiveIndicator, size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150)),
+                    ],
+                    if (showPinnedIndicator) ...[
+                      const SizedBox(width: 4),
+                      Icon(kIconPinnedIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
                     ],
                   ],

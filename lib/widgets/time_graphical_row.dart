@@ -24,6 +24,12 @@ class TimeGraphicalRow extends TimeValueRow {
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
+      showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+      dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
+        TimezoneDisplayMode.auto          => null,
+        TimezoneDisplayMode.forceDst      => kIconForceDst,
+        TimezoneDisplayMode.forceStandard => kIconForceStandard,
+      },
       height: ValueTile.graphicTileHeight,
       content: GraphicValueContent(
         clock: timeValue.valueType == ValueType.binaryClockColumns

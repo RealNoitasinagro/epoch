@@ -28,6 +28,8 @@ enum ValueType {
   doomsdayClock
 }
 
+enum TimezoneDisplayMode { auto, forceDst, forceStandard }
+
 // Zone specification.
 sealed class ZoneSpec {
   const ZoneSpec();
@@ -44,11 +46,13 @@ class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
+  final TimezoneDisplayMode timezoneDisplayMode;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
+    this.timezoneDisplayMode = TimezoneDisplayMode.auto,
   });
 
   // Unique key for deduplication within a tab.
@@ -62,38 +66,55 @@ class TimeValue implements TabEntry {
     return '${valueType.name}/$z';
   }
 
-  // Serialisation: key + optional custom label separated by '|'.
-  String toPrefsString() =>
-      customLabel != null ? '$key|$customLabel' : key;
+  // Serialisation
+  @override
+  String toPrefsString() {
+    final base = customLabel != null ? '$key|$customLabel' : key;
+    if (timezoneDisplayMode == TimezoneDisplayMode.auto) return base;
+    return '$base|dst:${timezoneDisplayMode.name}';
+  }
 
   static TimeValue? fromPrefsString(String s) {
-    // Split off optional custom label.
-    final pipeIdx = s.indexOf('|');
-    final keyPart   = pipeIdx >= 0 ? s.substring(0, pipeIdx) : s;
-    final labelPart = pipeIdx >= 0 ? s.substring(pipeIdx + 1) : null;
+    TimezoneDisplayMode timezoneDisplayMode = TimezoneDisplayMode.auto;
+    var workStr = s;
+    final dstIdx = workStr.lastIndexOf('|dst:');
+    if (dstIdx >= 0) {
+      final dstStr = workStr.substring(dstIdx + 5);
+      timezoneDisplayMode = TimezoneDisplayMode.values
+          .where((m) => m.name == dstStr)
+          .firstOrNull ?? TimezoneDisplayMode.auto;
+      workStr = workStr.substring(0, dstIdx);
+    }
+
+    final pipeIdx = workStr.indexOf('|');
+    final keyPart   = pipeIdx >= 0 ? workStr.substring(0, pipeIdx) : workStr;
+    final labelPart = pipeIdx >= 0 ? workStr.substring(pipeIdx + 1) : null;
 
     final parts = keyPart.split('/');
     if (parts.length < 2) return null;
-    final type = ValueType.values.where((e) => e.name == parts[0]).firstOrNull;
-    if (type == null) return null;
-
+    final valueType = ValueType.values.where((e) => e.name == parts[0]).firstOrNull;
+    if (valueType == null) return null;
     final zoneStr = parts.sublist(1).join('/');
     final ZoneSpec zone;
-    if (zoneStr == 'local') {
-      zone = const ZoneLocal();
-    } else if (zoneStr == 'utc') {
-      zone = const ZoneUtc();
-    } else if (zoneStr.startsWith('named:')) {
-      zone = ZoneNamed(zoneStr.substring(6));
-    } else {
-      return null;
-    }
-    return TimeValue(valueType: type, zone: zone, customLabel: labelPart);
+    if (zoneStr == 'local') zone = const ZoneLocal();
+    else if (zoneStr == 'utc') zone = const ZoneUtc();
+    else if (zoneStr.startsWith('named:')) zone = ZoneNamed(zoneStr.substring(6));
+    else return null;
+
+    return TimeValue(
+      valueType: valueType, zone: zone,
+      customLabel: labelPart,
+      timezoneDisplayMode: timezoneDisplayMode,
+    );
   }
 
   // Returns a copy with a different custom label (null to clear).
   TimeValue withCustomLabel(String? label) =>
       TimeValue(valueType: valueType, zone: zone, customLabel: label);
+
+  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
+      TimeValue(valueType: valueType, zone: zone, customLabel: customLabel,
+          timezoneDisplayMode: mode);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;

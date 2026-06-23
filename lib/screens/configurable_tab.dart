@@ -190,23 +190,107 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   }
 
   Future<void> _editLabel(
-      BuildContext context, TimeValue tv, AppLocalizations l10n) async {
-    await _showLabelDialog(
-      context, l10n,
-      title: l10n.hintEditLabel,
-      labelText: l10n.labelNewLabel,
-      initialText: tv.customLabel ?? tv.localizedDisplayLabel(l10n),
-      hintText: tv.localizedDisplayLabel(l10n),
-      resetLabel: l10n.hintResetToDefaults,
-      onResult: (result) {
-        if (result == null) return;
-        final updated = List<TabEntry>.of(widget.entries);
-        final idx = updated.indexWhere((e) => e.key == tv.key);
-        if (idx == -1) return;
-        updated[idx] = tv.withCustomLabel(result.isEmpty ? null : result);
-        widget.onEntriesChanged(updated);
-      },
+      BuildContext context, TimeValue timeValue, AppLocalizations l10n) async {
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => 'UTC',
+    };
+    final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
+    final isZoneDependent = !timeValue.isZoneIndependent;
+
+    final controller = TextEditingController(
+        text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n));
+    var selectedMode = timeValue.timezoneDisplayMode;
+
+    final result = await showDialog<
+        ({String? label, TimezoneDisplayMode mode, bool reset})
+    >(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) => AlertDialog(
+          title: Text(l10n.hintEditTimeValue),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: controller,
+                autofocus: !hasDst,
+                decoration: InputDecoration(
+                  labelText: l10n.labelNewLabel,
+                  hintText: timeValue.localizedDisplayLabel(l10n),
+                ),
+              ),
+              if (isZoneDependent && hasDst && timeValue.zone is ZoneNamed) ...[
+                const SizedBox(height: 16),
+                Text(l10n.settingsDstMode,
+                    style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(ctx).colorScheme.primary,
+                      letterSpacing: 1.5,
+                    )),
+                const SizedBox(height: 4),
+                RadioGroup<TimezoneDisplayMode>(
+                  groupValue: selectedMode,
+                  onChanged: (v) => setDialogState(() => selectedMode = v!),
+                  child: Column(
+                    children: [
+                      RadioListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(l10n.settingsDstAuto),
+                        value: TimezoneDisplayMode.auto,
+                      ),
+                      RadioListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(l10n.settingsDstAlwaysOn),
+                        value: TimezoneDisplayMode.forceDst,
+                      ),
+                      RadioListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(l10n.settingsDstAlwaysOff),
+                        value: TimezoneDisplayMode.forceStandard,
+                      ),
+                    ]
+                  )
+                ),
+              ],
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(
+                  ctx,
+                  (label: null, mode: TimezoneDisplayMode.auto, reset: true)
+              ),
+              child: Text(l10n.hintResetToDefaults),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(l10n.actionCancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(
+                  ctx,
+                  (label: controller.text.trim(), mode: selectedMode, reset: false)
+              ),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
     );
+    if (result == null) return;
+    final newLabel = result.reset ? null : (result.label!.isEmpty ? null : result.label);
+    final newMode = result.reset ? TimezoneDisplayMode.auto : result.mode;
+    final updated = List<TabEntry>.of(widget.entries);
+    final idx = updated.indexWhere((e) => e.key == timeValue.key);
+    if (idx == -1) return;
+    updated[idx] = timeValue.withCustomLabel(newLabel).withTimezoneDisplayMode(newMode);
+    widget.onEntriesChanged(updated);
   }
 
   Future<void> _editSectionLabel(
@@ -482,6 +566,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
+        showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+        dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
+          TimezoneDisplayMode.auto          => null,
+          TimezoneDisplayMode.forceDst      => kIconForceDst,
+          TimezoneDisplayMode.forceStandard => kIconForceStandard,
+        },
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(
@@ -509,7 +599,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       IconButton(
         icon: const Icon(Icons.edit, size: kIconSizeDefault),
         color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-        tooltip: l10n.hintEditLabel,
+        tooltip: l10n.hintEditTimeValue,
         onPressed: () => _editLabel(context, timeValue, l10n),
       ),
       ReorderableDragStartListener(
