@@ -353,11 +353,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Einmalig, ohne GPS, kein Tracking';
 
   @override
+  String get settingsLmstLongitudeDenied => 'Standortberechtigung verweigert';
+
+  @override
+  String get settingsLmstLongitudeDetermineLocation => 'Bestimmen';
+
+  @override
   String get settingsLmstLongitudeManual => 'Längengrad manuell eingeben';
 
   @override
   String get settingsLmstLongitudeManualSub =>
       'Längengrad in Dezimalgrad (DDD,DDDD) eingeben';
+
+  @override
+  String get settingsLmstLongitudeNotYetDetermined => 'Noch nicht bestimmt';
 
   @override
   String get settingsLmstOff => 'Nicht anzeigen';

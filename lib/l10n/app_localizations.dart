@@ -686,6 +686,18 @@ abstract class AppLocalizations {
   /// **'One-time, without GPS, no tracking'**
   String get settingsLmstLongitudeAutoSub;
 
+  /// No description provided for @settingsLmstLongitudeDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied'**
+  String get settingsLmstLongitudeDenied;
+
+  /// No description provided for @settingsLmstLongitudeDetermineLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Determine'**
+  String get settingsLmstLongitudeDetermineLocation;
+
   /// No description provided for @settingsLmstLongitudeManual.
   ///
   /// In en, this message translates to:
@@ -697,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
   String get settingsLmstLongitudeManualSub;
+
+  /// No description provided for @settingsLmstLongitudeNotYetDetermined.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet determined'**
+  String get settingsLmstLongitudeNotYetDetermined;
 
   /// No description provided for @settingsLmstOff.
   ///
