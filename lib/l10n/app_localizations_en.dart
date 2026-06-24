@@ -353,11 +353,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'One-time, without GPS, no tracking';
 
   @override
+  String get settingsLmstLongitudeDenied => 'Location permission denied';
+
+  @override
+  String get settingsLmstLongitudeDetermineLocation => 'Determine';
+
+  @override
   String get settingsLmstLongitudeManual => 'Manual longitude';
 
   @override
   String get settingsLmstLongitudeManualSub =>
       'Enter your longitude in decimal degrees (DDD.DDDD)';
+
+  @override
+  String get settingsLmstLongitudeNotYetDetermined => 'Not yet determined';
 
   @override
   String get settingsLmstOff => 'Do not show';
