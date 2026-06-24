@@ -515,6 +515,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final isGraphical = timeValue.valueType.isGraphical;
     final longitude = EpochApp.of(context).lmstLongitude;
     final localIanaZone = EpochApp.of(context).localIanaZone;
+    final dstActive = timeValue.isDstCurrentlyActive(
+        widget.now.toUtc(), localIanaZone);
+    IconData? dstStatusIndicator = timeValue.getDstStatusIndicator(dstActive);
 
     // View mode: delegate to Row widgets (they handle info/copy themselves)
     if (editIndex == null) {
@@ -567,11 +570,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
         showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
-        dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
-          TimezoneDisplayMode.auto          => null,
-          TimezoneDisplayMode.forceDst      => kIconForceDst,
-          TimezoneDisplayMode.forceStandard => kIconForceStandard,
-        },
+        dstStatusIndicator: dstStatusIndicator,
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(

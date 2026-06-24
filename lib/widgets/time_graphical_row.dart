@@ -3,6 +3,7 @@ import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
+import '../main.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import 'clocks/binary_coded_decimal_clock.dart';
@@ -20,16 +21,15 @@ class TimeGraphicalRow extends TimeValueRow {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final zonedNow = _resolveZone(now, timeValue.zone);
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final dstActive = timeValue.isDstCurrentlyActive(now.toUtc(), localIanaZone);
+    IconData? dstStatusIndicator = timeValue.getDstStatusIndicator(dstActive);
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
-      dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
-        TimezoneDisplayMode.auto          => null,
-        TimezoneDisplayMode.forceDst      => kIconForceDst,
-        TimezoneDisplayMode.forceStandard => kIconForceStandard,
-      },
+      dstStatusIndicator: dstStatusIndicator,
       height: ValueTile.graphicTileHeight,
       content: GraphicValueContent(
         clock: timeValue.valueType == ValueType.binaryClockColumns

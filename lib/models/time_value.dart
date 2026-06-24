@@ -1,6 +1,9 @@
 import 'package:epoch/models/tab_entry.dart';
-
+import 'package:epoch/models/timezone_search.dart';
+import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
+import '../time_utils.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -102,7 +105,8 @@ class TimeValue implements TabEntry {
     else return null;
 
     return TimeValue(
-      valueType: valueType, zone: zone,
+      valueType: valueType,
+      zone: zone,
       customLabel: labelPart,
       timezoneDisplayMode: timezoneDisplayMode,
     );
@@ -118,6 +122,45 @@ class TimeValue implements TabEntry {
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
+
+  // Returns whether DST is currently active for this value's zone,
+  // or null if the zone has no DST or is zone-independent.
+  // Used to show a summer/winter time indicator icon.
+  bool? isDstCurrentlyActive(DateTime nowUtc, String localIanaZone) {
+    if (isZoneIndependent) return null;
+    final ianaZone = switch (zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneUtc()                    => '',  // UTC never has DST
+      ZoneNamed(ianaZone: final z) => z,
+    };
+    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
+    if (entry == null || !entry.hasDst) return null;
+    // Use the timezone package to check the actual current DST status:
+    try {
+      final tzDt = TimeUtils.inZone(nowUtc, ianaZone);
+      return tzDt.timeZone.isDst;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  IconData? getDstStatusIndicator(bool? dstActive) {
+    IconData? dstStatusIndicator;
+    if (timezoneDisplayMode == TimezoneDisplayMode.forceDst) {
+      dstStatusIndicator = kIconDstActive;
+    }
+    else if (timezoneDisplayMode == TimezoneDisplayMode.forceStandard) {
+      dstStatusIndicator = kIconDstInactive;
+    }
+    else {
+      dstStatusIndicator = switch (dstActive) {
+        true  => kIconDstActive,
+        false => kIconDstInactive,
+        null  => null,
+      };
+    }
+    return dstStatusIndicator;
+  }
 
   // Localized display label shown in the UI.
   String localizedDisplayLabel(AppLocalizations l10n) {

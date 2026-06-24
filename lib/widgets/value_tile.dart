@@ -12,7 +12,7 @@ class ValueTile extends StatelessWidget {
   static const double graphicTileHeight = 200.0; // fits 6 bit rows
   final double? height; // null = textTileHeight
   final bool showZoneIndicator;
-  final IconData? dstActiveIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
+  final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
   final bool showPinnedIndicator;  // timezoneDisplayMode != auto
 
   const ValueTile({
@@ -22,7 +22,7 @@ class ValueTile extends StatelessWidget {
     required this.actionSlots,
     this.height,
     this.showZoneIndicator = true,
-    this.dstActiveIndicator,
+    this.dstStatusIndicator,
     this.showPinnedIndicator = false,
   });
 
@@ -30,12 +30,12 @@ class ValueTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final tileBg  = colorScheme.onSurface.withAlpha(12);
+    final tileBackground = colorScheme.onSurface.withAlpha(12);
 
     return Container(
       height: height ?? textTileHeight,
       decoration: BoxDecoration(
-        color: tileBg,
+        color: tileBackground,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.fromLTRB(
@@ -63,9 +63,9 @@ class ValueTile extends StatelessWidget {
                       Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
                     ],
-                    if (dstActiveIndicator != null) ...[
+                    if (dstStatusIndicator != null) ...[
                       const SizedBox(width: 4),
-                      Icon(dstActiveIndicator, size: kIconSizeLabel,
+                      Icon(dstStatusIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
                     ],
                     if (showPinnedIndicator) ...[

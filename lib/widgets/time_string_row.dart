@@ -108,6 +108,8 @@ class TimeStringRow extends TimeValueRow {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
+    final dstActive = timeValue.isDstCurrentlyActive(now.toUtc(), localIanaZone);
+    IconData? dstStatusIndicator = timeValue.getDstStatusIndicator(dstActive);
 
     final display = computeDisplay(
       timeValue, now, locale, l10n,
@@ -124,11 +126,7 @@ class TimeStringRow extends TimeValueRow {
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
-      dstActiveIndicator: switch (timeValue.timezoneDisplayMode) {
-        TimezoneDisplayMode.auto          => null,
-        TimezoneDisplayMode.forceDst      => kIconForceDst,
-        TimezoneDisplayMode.forceStandard => kIconForceStandard,
-      },
+      dstStatusIndicator: dstStatusIndicator,
       content: TextValueContent(line1: display.line1, line2: display.line2),
       actionSlots: [
         IconButton(

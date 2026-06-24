@@ -10,5 +10,5 @@ const double kIconSizeLabel        = 14.0;
 
 const IconData kIconTimeZoneIndicator = Icons.language;
 const IconData kIconPinnedIndicator   = Icons.push_pin;
-const IconData kIconForceDst          = Icons.hourglass_top;    // Icons.sunny;
-const IconData kIconForceStandard     = Icons.hourglass_bottom; // Icons.dark_mode;
+const IconData kIconDstActive         = Icons.hourglass_top;    // Icons.sunny;
+const IconData kIconDstInactive       = Icons.hourglass_bottom; // Icons.dark_mode;
