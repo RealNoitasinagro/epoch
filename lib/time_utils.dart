@@ -1,7 +1,6 @@
 import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
-
 import 'models/time_value.dart';
 import 'models/timezone_search.dart';
 
@@ -47,10 +46,10 @@ class TimeUtils {
     final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
     if (entry == null || !entry.hasDst) return null;
     String offset = dst ? entry.offsetSummer : entry.offsetWinter;
-    String abbrevivation = dst ? entry.abbrSummer : entry.abbrWinter;
+    String abbreviation = dst ? entry.abbrSummer : entry.abbrWinter;
     return (
       offset: _parseOffset(offset),
-      abbreviation: abbrevivation,
+      abbreviation: abbreviation,
     );
   }
 

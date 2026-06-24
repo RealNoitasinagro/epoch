@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
+import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
 
@@ -80,34 +80,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<void> _determineLocation(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    setState(() => _locationLoading = true);
-    try {
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.settingsLmstLongitudeDenied)),
-        );
-        return;
-      }
-      final pos = await Geolocator.getCurrentPosition(
-        locationSettings: AndroidSettings(
-          accuracy: LocationAccuracy.low,  // COARSE is sufficient
-          forceLocationManager: true,
+  Future<void> _determineLocation() async {
+    final longitude = await LocationService.getLastKnownLongitude();
+    if (longitude == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Location unavailable – enter longitude manually'),
+          behavior: SnackBarBehavior.floating,
         ),
       );
-      final lon = double.parse(pos.longitude.toStringAsFixed(4));
-      setState(() => _lmstLongitude = lon);
-      EpochApp.of(context).setLmstLongitude(lon);
-    } finally {
-      setState(() => _locationLoading = false);
+      return;
     }
+    setState(() => _lmstLongitude = longitude);
+    EpochApp.of(context).setLmstLongitude(longitude);
+    _longitudeController.text = longitude.toStringAsFixed(4);
   }
 
   @override
@@ -299,7 +286,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: const Icon(Icons.refresh, size: 16),
                             label: Text(l10n.settingsLmstLongitudeDetermineLocation),
                             onPressed: _locationLoading ? null
-                                : () => _determineLocation(context),
+                                : () => _determineLocation(),
                           ),
                         ],
                       ),
