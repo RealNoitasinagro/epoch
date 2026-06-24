@@ -2,6 +2,7 @@ import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 
+import 'models/time_value.dart';
 import 'models/timezone_search.dart';
 
 class TimeUtils {
@@ -61,6 +62,30 @@ class TimeUtils {
       hours: sign * int.parse(parts[0]),
       minutes: sign * int.parse(parts[1]),
     );
+  }
+
+  /// Converts a UTC DateTime to local time for the given TimeValue,
+  /// respecting its timezoneDisplayMode (auto/forceDst/forceStandard).
+  static DateTime resolveLocalTime(
+      TimeValue timeValue,
+      DateTime utcNow,
+      String localIanaZone) {
+    switch (timeValue.zone) {
+      case ZoneLocal():
+        return DateTime.now();  // always auto for local
+      case ZoneUtc():
+        return utcNow;
+      case ZoneNamed(ianaZone: final zone):
+        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
+          final info = TimeUtils.daylightOrStandardOffset(
+              zone,
+              timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
+          if (info != null) {
+            return utcNow.add(info.offset);
+          }
+        }
+        return TimeUtils.inZone(utcNow, zone);
+    }
   }
 
   /// Day second (seconds since midnight) for a DateTime.

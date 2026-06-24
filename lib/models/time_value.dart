@@ -28,7 +28,7 @@ enum ValueType {
   binaryClockString,
   binaryClockColumns,
   binaryClockBcd,
-  doomsdayClock
+  doomsdayClock,
 }
 
 enum TimezoneDisplayMode { auto, forceDst, forceStandard }
@@ -37,8 +37,15 @@ enum TimezoneDisplayMode { auto, forceDst, forceStandard }
 sealed class ZoneSpec {
   const ZoneSpec();
 }
-class ZoneLocal extends ZoneSpec { const ZoneLocal(); }
-class ZoneUtc   extends ZoneSpec { const ZoneUtc(); }
+
+class ZoneLocal extends ZoneSpec {
+  const ZoneLocal();
+}
+
+class ZoneUtc extends ZoneSpec {
+  const ZoneUtc();
+}
+
 class ZoneNamed extends ZoneSpec {
   final String ianaZone;
   const ZoneNamed(this.ianaZone);
@@ -62,8 +69,8 @@ class TimeValue implements TabEntry {
   // Custom label does not affect the key – same type+zone = duplicate.
   String get key {
     final z = switch (zone) {
-      ZoneLocal()                  => 'local',
-      ZoneUtc()                    => 'utc',
+      ZoneLocal() => 'local',
+      ZoneUtc() => 'utc',
       ZoneNamed(ianaZone: final s) => 'named:$s',
     };
     return '${valueType.name}/$z';
@@ -83,26 +90,34 @@ class TimeValue implements TabEntry {
     final dstIdx = workStr.lastIndexOf('|dst:');
     if (dstIdx >= 0) {
       final dstStr = workStr.substring(dstIdx + 5);
-      timezoneDisplayMode = TimezoneDisplayMode.values
-          .where((m) => m.name == dstStr)
-          .firstOrNull ?? TimezoneDisplayMode.auto;
+      timezoneDisplayMode =
+          TimezoneDisplayMode.values
+              .where((m) => m.name == dstStr)
+              .firstOrNull ??
+          TimezoneDisplayMode.auto;
       workStr = workStr.substring(0, dstIdx);
     }
 
     final pipeIdx = workStr.indexOf('|');
-    final keyPart   = pipeIdx >= 0 ? workStr.substring(0, pipeIdx) : workStr;
+    final keyPart = pipeIdx >= 0 ? workStr.substring(0, pipeIdx) : workStr;
     final labelPart = pipeIdx >= 0 ? workStr.substring(pipeIdx + 1) : null;
 
     final parts = keyPart.split('/');
     if (parts.length < 2) return null;
-    final valueType = ValueType.values.where((e) => e.name == parts[0]).firstOrNull;
+    final valueType = ValueType.values
+        .where((e) => e.name == parts[0])
+        .firstOrNull;
     if (valueType == null) return null;
     final zoneStr = parts.sublist(1).join('/');
     final ZoneSpec zone;
-    if (zoneStr == 'local') zone = const ZoneLocal();
-    else if (zoneStr == 'utc') zone = const ZoneUtc();
-    else if (zoneStr.startsWith('named:')) zone = ZoneNamed(zoneStr.substring(6));
-    else return null;
+    if (zoneStr == 'local')
+      zone = const ZoneLocal();
+    else if (zoneStr == 'utc')
+      zone = const ZoneUtc();
+    else if (zoneStr.startsWith('named:'))
+      zone = ZoneNamed(zoneStr.substring(6));
+    else
+      return null;
 
     return TimeValue(
       valueType: valueType,
@@ -116,9 +131,12 @@ class TimeValue implements TabEntry {
   TimeValue withCustomLabel(String? label) =>
       TimeValue(valueType: valueType, zone: zone, customLabel: label);
 
-  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
-      TimeValue(valueType: valueType, zone: zone, customLabel: customLabel,
-          timezoneDisplayMode: mode);
+  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: customLabel,
+    timezoneDisplayMode: mode,
+  );
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
@@ -129,8 +147,8 @@ class TimeValue implements TabEntry {
   bool? isDstCurrentlyActive(DateTime nowUtc, String localIanaZone) {
     if (isZoneIndependent) return null;
     final ianaZone = switch (zone) {
-      ZoneLocal()                  => localIanaZone,
-      ZoneUtc()                    => '',  // UTC never has DST
+      ZoneLocal() => localIanaZone,
+      ZoneUtc() => '', // UTC never has DST
       ZoneNamed(ianaZone: final z) => z,
     };
     final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
@@ -144,22 +162,19 @@ class TimeValue implements TabEntry {
     }
   }
 
-  IconData? getDstStatusIndicator(bool? dstActive) {
-    IconData? dstStatusIndicator;
+  IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
     if (timezoneDisplayMode == TimezoneDisplayMode.forceDst) {
-      dstStatusIndicator = kIconDstActive;
+      return kIconDstActive;
     }
-    else if (timezoneDisplayMode == TimezoneDisplayMode.forceStandard) {
-      dstStatusIndicator = kIconDstInactive;
+    if (timezoneDisplayMode == TimezoneDisplayMode.forceStandard) {
+      return kIconDstInactive;
     }
-    else {
-      dstStatusIndicator = switch (dstActive) {
-        true  => kIconDstActive,
-        false => kIconDstInactive,
-        null  => null,
-      };
-    }
-    return dstStatusIndicator;
+    // auto: determine actual current DST status:
+    return switch (isDstCurrentlyActive(nowUtc, localIanaZone)) {
+      true  => kIconDstActive,
+      false => kIconDstInactive,
+      null  => null,
+    };
   }
 
   // Localized display label shown in the UI.
@@ -168,98 +183,99 @@ class TimeValue implements TabEntry {
     final _localizedTypeLabel = localizedTypeLabel(valueType, l10n);
     if (isZoneIndependent) return _localizedTypeLabel;
     final zoneLabel = switch (zone) {
-      ZoneLocal()                  => l10n.labelLocal.toLowerCase(),
-      ZoneUtc()                    => l10n.actionZoneUtc,
+      ZoneLocal() => l10n.labelLocal.toLowerCase(),
+      ZoneUtc() => l10n.actionZoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
     return '$_localizedTypeLabel ($zoneLabel)';
   }
 
-  static String localizedTypeLabel(ValueType type, AppLocalizations l10n) => switch (type) {
-    ValueType.date                   => l10n.valueTypeDate,
-    ValueType.time                   => l10n.valueTypeTime,
-    ValueType.dateTime               => l10n.valueTypeDateTime,
-    ValueType.daySecond              => l10n.valueTypeDaySecond,
-    ValueType.dayPercent             => l10n.valueTypeDayPercent,
-    ValueType.unixSeconds            => l10n.valueTypeUnixSeconds,
-    ValueType.tai                    => l10n.valueTypeTai,
-    ValueType.gps                    => l10n.valueTypeGps,
-    ValueType.gmst                   => l10n.valueTypeGmst,
-    ValueType.lmst                   => l10n.valueTypeLmst,
-    ValueType.julianDate             => l10n.valueTypeJulianDate,
-    ValueType.modifiedJulianDate     => l10n.valueTypeModifiedJulianDate,
-    ValueType.modifiedJulianDate2000 => l10n.valueTypeModifiedJulianDate2000,
-    ValueType.swatchBeats            => l10n.valueTypeSwatchBeats,
-    ValueType.binaryClockColumns     => l10n.valueTypeBinaryClockColumns,
-    ValueType.binaryClockBcd         => l10n.valueTypeBinaryClockBcd,
-    ValueType.binaryClockString      => l10n.valueTypeBinaryClockString,
-    ValueType.doomsdayClock          => l10n.valueTypeDoomsdayClock
-  };
+  static String localizedTypeLabel(ValueType type, AppLocalizations l10n) =>
+      switch (type) {
+        ValueType.date => l10n.valueTypeDate,
+        ValueType.time => l10n.valueTypeTime,
+        ValueType.dateTime => l10n.valueTypeDateTime,
+        ValueType.daySecond => l10n.valueTypeDaySecond,
+        ValueType.dayPercent => l10n.valueTypeDayPercent,
+        ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
+        ValueType.tai => l10n.valueTypeTai,
+        ValueType.gps => l10n.valueTypeGps,
+        ValueType.gmst => l10n.valueTypeGmst,
+        ValueType.lmst => l10n.valueTypeLmst,
+        ValueType.julianDate => l10n.valueTypeJulianDate,
+        ValueType.modifiedJulianDate => l10n.valueTypeModifiedJulianDate,
+        ValueType.modifiedJulianDate2000 =>
+          l10n.valueTypeModifiedJulianDate2000,
+        ValueType.swatchBeats => l10n.valueTypeSwatchBeats,
+        ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+        ValueType.binaryClockBcd => l10n.valueTypeBinaryClockBcd,
+        ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
+        ValueType.doomsdayClock => l10n.valueTypeDoomsdayClock,
+      };
 
   // Localized info text.
   String localizedInfoText(AppLocalizations l10n) => switch (valueType) {
-    ValueType.date                   => l10n.infoTextDate,
-    ValueType.time                   => l10n.infoTextTime,
-    ValueType.dateTime               => l10n.infoTextDateTime,
-    ValueType.daySecond              => l10n.infoTextDaySecond,
-    ValueType.dayPercent             => l10n.infoTextDayPercent,
-    ValueType.unixSeconds            => l10n.infoTextUnixSeconds,
-    ValueType.tai                    => l10n.infoTextTai,
-    ValueType.gps                    => l10n.infoTextGps,
-    ValueType.gmst                   => l10n.infoTextGmst,
-    ValueType.lmst                   => l10n.infoTextLmst,
-    ValueType.julianDate             => l10n.infoTextJulianDate,
-    ValueType.modifiedJulianDate     => l10n.infoTextModifiedJulianDate,
+    ValueType.date => l10n.infoTextDate,
+    ValueType.time => l10n.infoTextTime,
+    ValueType.dateTime => l10n.infoTextDateTime,
+    ValueType.daySecond => l10n.infoTextDaySecond,
+    ValueType.dayPercent => l10n.infoTextDayPercent,
+    ValueType.unixSeconds => l10n.infoTextUnixSeconds,
+    ValueType.tai => l10n.infoTextTai,
+    ValueType.gps => l10n.infoTextGps,
+    ValueType.gmst => l10n.infoTextGmst,
+    ValueType.lmst => l10n.infoTextLmst,
+    ValueType.julianDate => l10n.infoTextJulianDate,
+    ValueType.modifiedJulianDate => l10n.infoTextModifiedJulianDate,
     ValueType.modifiedJulianDate2000 => l10n.infoTextModifiedJulianDate2000,
-    ValueType.swatchBeats            => l10n.infoTextSwatchBeats,
-    ValueType.binaryClockColumns     => l10n.infoTextBinaryClockColumns,
-    ValueType.binaryClockBcd         => l10n.infoTextBinaryClockBcd,
-    ValueType.binaryClockString      => l10n.infoTextBinaryClockString,
-    ValueType.doomsdayClock          => l10n.infoTextDoomsdayClock,
+    ValueType.swatchBeats => l10n.infoTextSwatchBeats,
+    ValueType.binaryClockColumns => l10n.infoTextBinaryClockColumns,
+    ValueType.binaryClockBcd => l10n.infoTextBinaryClockBcd,
+    ValueType.binaryClockString => l10n.infoTextBinaryClockString,
+    ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
   };
 
   // Returns a URL for further reading, or null if none defined.
   String? localizedInfoLink(AppLocalizations l10n) => switch (valueType) {
-    ValueType.unixSeconds            => l10n.infoLinkUnixSeconds,
-    ValueType.tai                    => l10n.infoLinkTai,
-    ValueType.gps                    => l10n.infoLinkGps,
-    ValueType.gmst                   => l10n.infoLinkGmst,
-    ValueType.lmst                   => l10n.infoLinkLmst,
-    ValueType.julianDate             => l10n.infoLinkJulianDate,
-    ValueType.modifiedJulianDate     => l10n.infoLinkModifiedJulianDate,
+    ValueType.unixSeconds => l10n.infoLinkUnixSeconds,
+    ValueType.tai => l10n.infoLinkTai,
+    ValueType.gps => l10n.infoLinkGps,
+    ValueType.gmst => l10n.infoLinkGmst,
+    ValueType.lmst => l10n.infoLinkLmst,
+    ValueType.julianDate => l10n.infoLinkJulianDate,
+    ValueType.modifiedJulianDate => l10n.infoLinkModifiedJulianDate,
     ValueType.modifiedJulianDate2000 => l10n.infoLinkModifiedJulianDate2000,
-    ValueType.swatchBeats            => l10n.infoLinkSwatchBeats,
-    ValueType.binaryClockColumns     => l10n.infoLinkBinaryClockColumns,
-    ValueType.binaryClockBcd         => l10n.infoLinkBinaryClockBcd,
-    ValueType.binaryClockString      => l10n.infoLinkBinaryClockString,
-    ValueType.doomsdayClock          => l10n.infoLinkDoomsdayClock,
-    _                                => null,
+    ValueType.swatchBeats => l10n.infoLinkSwatchBeats,
+    ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
+    ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
+    ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
+    ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
+    _ => null,
   };
 }
 
 extension ValueTypeProps on ValueType {
   bool get isZoneIndependent => switch (this) {
-    ValueType.date                   => false,
-    ValueType.time                   => false,
-    ValueType.dateTime               => false,
-    ValueType.daySecond              => false,
-    ValueType.dayPercent             => false,
-    ValueType.unixSeconds            => true,
-    ValueType.tai                    => true,
-    ValueType.gps                    => true,
-    ValueType.gmst                   => true,
-    ValueType.lmst                   => true,
-    ValueType.julianDate             => true,
-    ValueType.modifiedJulianDate     => true,
+    ValueType.date => false,
+    ValueType.time => false,
+    ValueType.dateTime => false,
+    ValueType.daySecond => false,
+    ValueType.dayPercent => false,
+    ValueType.unixSeconds => true,
+    ValueType.tai => true,
+    ValueType.gps => true,
+    ValueType.gmst => true,
+    ValueType.lmst => true,
+    ValueType.julianDate => true,
+    ValueType.modifiedJulianDate => true,
     ValueType.modifiedJulianDate2000 => true,
-    ValueType.swatchBeats            => true,
-    ValueType.binaryClockString      => false,
-    ValueType.binaryClockColumns     => false,
-    ValueType.binaryClockBcd         => false,
-    ValueType.doomsdayClock          => true,
+    ValueType.swatchBeats => true,
+    ValueType.binaryClockString => false,
+    ValueType.binaryClockColumns => false,
+    ValueType.binaryClockBcd => false,
+    ValueType.doomsdayClock => true,
   };
 
   bool get isGraphical =>
-      this == ValueType.binaryClockColumns ||
-      this == ValueType.binaryClockBcd;
+      this == ValueType.binaryClockColumns || this == ValueType.binaryClockBcd;
 }

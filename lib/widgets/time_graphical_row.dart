@@ -20,16 +20,15 @@ class TimeGraphicalRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final zonedNow = _resolveZone(now, timeValue.zone);
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final dstActive = timeValue.isDstCurrentlyActive(now.toUtc(), localIanaZone);
-    IconData? dstStatusIndicator = timeValue.getDstStatusIndicator(dstActive);
+    final zonedNow = TimeUtils.resolveLocalTime(
+        timeValue, now.toUtc(), localIanaZone);
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
-      dstStatusIndicator: dstStatusIndicator,
+      dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       height: ValueTile.graphicTileHeight,
       content: GraphicValueContent(
         clock: timeValue.valueType == ValueType.binaryClockColumns
@@ -48,10 +47,4 @@ class TimeGraphicalRow extends TimeValueRow {
       ],
     );
   }
-
-  DateTime _resolveZone(DateTime now, ZoneSpec zone) => switch (zone) {
-    ZoneLocal()                  => now,
-    ZoneUtc()                    => now.toUtc(),
-    ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-  };
 }

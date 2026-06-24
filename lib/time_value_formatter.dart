@@ -64,6 +64,7 @@ class TimeValueFormatter {
         break;
     }
 
+    // Zone-dependent values.
     String tzLabel;
     DateTime dt;
     final Duration offset;

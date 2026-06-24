@@ -515,9 +515,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final isGraphical = timeValue.valueType.isGraphical;
     final longitude = EpochApp.of(context).lmstLongitude;
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final dstActive = timeValue.isDstCurrentlyActive(
-        widget.now.toUtc(), localIanaZone);
-    IconData? dstStatusIndicator = timeValue.getDstStatusIndicator(dstActive);
 
     // View mode: delegate to Row widgets (they handle info/copy themselves)
     if (editIndex == null) {
@@ -541,11 +538,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     }
 
     // Edit mode: build ValueTile directly with edit action slots
-    final zonedNow = switch (timeValue.zone) {
-      ZoneLocal()                  => widget.now,
-      ZoneUtc()                    => widget.now.toUtc(),
-      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(widget.now.toUtc(), z),
-    };
+    final zonedNow = TimeUtils.resolveLocalTime(
+        timeValue, widget.now.toUtc(), localIanaZone);
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
       hourFormat24: widget.hourFormat24,
@@ -570,7 +564,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
         showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
-        dstStatusIndicator: dstStatusIndicator,
+        dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(
