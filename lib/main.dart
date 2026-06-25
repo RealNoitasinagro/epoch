@@ -371,7 +371,6 @@ class _HomeScreenState extends State<HomeScreen>
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
     ).then((_) {
-      // Nach dem Schließen von Settings: LMST bereinigen wenn nötig
       if (EpochApp.of(context).lmstMode == LmstMode.off) {
         _removeLmstFromAllTabs();
       }

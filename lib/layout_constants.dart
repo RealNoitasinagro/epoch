@@ -8,7 +8,7 @@ const double kSectionHeaderHeight  = 24.0;
 const double kIconSizeDefault      = 20.0;
 const double kIconSizeLabel        = 14.0;
 
-const IconData kIconTimeZoneIndicator = Icons.language;
-const IconData kIconPinnedIndicator   = Icons.push_pin;
-const IconData kIconDstActive         = Icons.hourglass_top;    // Icons.sunny;
-const IconData kIconDstInactive       = Icons.hourglass_bottom; // Icons.dark_mode;
+const IconData kIconTimeZoneIndicator = Icons.language_sharp;
+const IconData kIconPinnedIndicator   = Icons.push_pin_sharp;
+const IconData kIconDstActive         = Icons.more_time_sharp;
+const IconData kIconDstInactive       = Icons.update_disabled_sharp;

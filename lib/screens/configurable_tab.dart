@@ -56,7 +56,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   void _toggleEditMode() {
     if (_editMode) {
-      // leaving edit moce: clean trailing entries
+      // leaving edit mode: clean trailing entries
       final cleaned = _cleanTrailing(widget.entries.toList());
       if (cleaned.length != widget.entries.length) {
         widget.onEntriesChanged(cleaned);
