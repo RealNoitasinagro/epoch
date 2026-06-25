@@ -1,6 +1,7 @@
+@file:Suppress("PackageName")
+
 package io.github.RealEarthling.epoch
 
-import android.content.Context
 import android.location.Location
 import android.location.LocationManager
 import io.flutter.embedding.android.FlutterActivity
@@ -34,7 +35,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun getLastKnownLocation(): Location? {
-        val manager = getSystemService(Context.LOCATION_SERVICE)
+        val manager = getSystemService(LOCATION_SERVICE)
                 as? LocationManager ?: return null
         val providers = listOf(
             LocationManager.NETWORK_PROVIDER,

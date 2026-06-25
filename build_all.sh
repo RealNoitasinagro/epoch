@@ -8,12 +8,12 @@ set -e
 
 cwd=$(pwd)
 
-case $cwd in
-    $GH_Epoch)
+case "$cwd" in
+    "$GH_Epoch")
         unset PUB_CACHE  # just in case...
     ;;
-    $GL_Epoch)
-        export PUB_CACHE=$GL_Epoch/.pub-cache
+    "$GL_Epoch")
+        export PUB_CACHE="$GL_Epoch"/.pub-cache
     ;;
     *)
         echo "Invalid directory! (Run from the right location, and/or check env variables.)";
@@ -84,7 +84,7 @@ useLogging=1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
 flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
-flutter_version=`$flutter_active --version`
+flutter_version=$($flutter_active --version)
 
 target_platform_android_arm='app-armeabi-v7a-release.apk'
 target_platform_android_arm64='app-arm64-v8a-release.apk'
@@ -106,7 +106,7 @@ function run_flutter_build {
         flutter_command="$flutter_command --dart-define=BUILD_TIMESTAMP=$build_timestamp"
     fi
 
-    echo "# $flutter_command" | tee -a $build_all_log
+    echo "# $flutter_command" | tee -a "$build_all_log"
     if [ ! "$dryRun" -eq "1" ] ; then
         $flutter_command
     fi
@@ -115,7 +115,7 @@ function run_flutter_build {
 
 mkdir -p $dir_logs
 
-tee $build_all_log << EOF
+tee "$build_all_log" << EOF
 ----
 [$build_timestamp] Building $what... (mode = $mode, dryRun = $dryRun)
 Flutter: $flutter_active
@@ -130,7 +130,7 @@ EOF
 echo "# analyze"
 if [ ! "$skipAnalyze" -eq "1" ] ; then
     flutter_command="$flutter_active analyze"
-    echo "# $flutter_command" | tee -a $build_all_log
+    echo "# $flutter_command" | tee -a "$build_all_log"
     $flutter_command
 else
     echo "Skipped."
@@ -140,7 +140,7 @@ echo
 echo "# test"
 if [ ! "$skipTest" -eq "1" ] ; then
     flutter_command="$flutter_active test"
-    echo "# $flutter_command" | tee -a $build_all_log
+    echo "# $flutter_command" | tee -a "$build_all_log"
     $flutter_command
 else
     echo "Skipped."
@@ -180,21 +180,22 @@ fi
 echo
 
 echo "+++ All builds done. +++"
-echo | tee -a $build_all_log
+echo | tee -a "$build_all_log"
 
 echo "# Calculating $checksum checksums..."
 if [[ ! "$skipChecksums" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
-    for f in $apk_output_path/*.apk ; do
-        $checksum $f | tee -a $build_all_log
+    for f in "$apk_output_path"/*.apk ; do
+        $checksum "$f" | tee -a "$build_all_log"
     done
 else
     echo "Skipped."
 fi
-echo | tee -a $build_all_log
+echo | tee -a "$build_all_log"
 
 echo "# Listing output files..."
-ls -l $apk_output_path | tee -a $build_all_log
-echo | tee -a $build_all_log
+# shellcheck disable=SC2012
+ls -l "$apk_output_path" | tee -a "$build_all_log"
+echo | tee -a "$build_all_log"
 
 if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
   echo "# Copying output files..."
@@ -205,7 +206,7 @@ fi
 
 if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
-    tee -a $build_all_log << EOF
+    tee -a "$build_all_log" << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Output *.apk files were not built properly for a release, do NOT upload to GitHub!!
 + variants: $what | mode: $mode
@@ -217,7 +218,7 @@ fi
 
 if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
-    tee -a $build_all_log << EOF
+    tee -a "$build_all_log" << EOF
 ***** INFO *****************************************************************************************
 * Output *.apk files should be good to release, for GitHub and F-Droid.
 ****************************************************************************************************
@@ -231,7 +232,7 @@ EOF
 fi
 
 if [ ! "$useLogging" -eq "1" ] ; then
-    rm -v -f $build_all_log
+    rm -v -f "$build_all_log"
     echo
 fi
 
