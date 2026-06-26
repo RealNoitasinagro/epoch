@@ -6,6 +6,7 @@
 - custom section headers and dividers
 - options to force standard or summer time for zoned time values all the year round
 - visual markers for summer time is active/inactive and always-on/always-off summer time
+- automatic longitude detection introduced in 1.1.0 is back (now without geolocator)
 
 ### Changed
 - replaced font for better readability of time values

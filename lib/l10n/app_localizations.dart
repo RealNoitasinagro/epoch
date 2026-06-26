@@ -686,12 +686,6 @@ abstract class AppLocalizations {
   /// **'One-time, without GPS, no tracking'**
   String get settingsLmstLongitudeAutoSub;
 
-  /// No description provided for @settingsLmstLongitudeDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Location permission denied'**
-  String get settingsLmstLongitudeDenied;
-
   /// No description provided for @settingsLmstLongitudeDetermineLocation.
   ///
   /// In en, this message translates to:
@@ -707,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsLmstLongitudeManualSub.
   ///
   /// In en, this message translates to:
-  /// **'Enter your longitude in decimal degrees (DDD.DDDD)'**
+  /// **'Enter longitude in decimal degrees (DDD.DDDD)'**
   String get settingsLmstLongitudeManualSub;
 
   /// No description provided for @settingsLmstLongitudeNotYetDetermined.
@@ -715,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not yet determined'**
   String get settingsLmstLongitudeNotYetDetermined;
+
+  /// No description provided for @settingsLmstLongitudeUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable – enable location access and grant permission to Epoch temporarily, or enter longitude manually'**
+  String get settingsLmstLongitudeUnavailable;
 
   /// No description provided for @settingsLmstOff.
   ///

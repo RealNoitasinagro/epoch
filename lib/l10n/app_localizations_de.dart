@@ -353,9 +353,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Einmalig, ohne GPS, kein Tracking';
 
   @override
-  String get settingsLmstLongitudeDenied => 'Standortberechtigung verweigert';
-
-  @override
   String get settingsLmstLongitudeDetermineLocation => 'Bestimmen';
 
   @override
@@ -367,6 +364,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLmstLongitudeNotYetDetermined => 'Noch nicht bestimmt';
+
+  @override
+  String get settingsLmstLongitudeUnavailable =>
+      'Standort nicht verfügbar – Standortzugriff aktivieren und Epoch temporär die Berechtigung erteilen, oder Längengrad manuell eingeben';
 
   @override
   String get settingsLmstOff => 'Nicht anzeigen';

@@ -353,9 +353,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'One-time, without GPS, no tracking';
 
   @override
-  String get settingsLmstLongitudeDenied => 'Location permission denied';
-
-  @override
   String get settingsLmstLongitudeDetermineLocation => 'Determine';
 
   @override
@@ -363,10 +360,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLmstLongitudeManualSub =>
-      'Enter your longitude in decimal degrees (DDD.DDDD)';
+      'Enter longitude in decimal degrees (DDD.DDDD)';
 
   @override
   String get settingsLmstLongitudeNotYetDetermined => 'Not yet determined';
+
+  @override
+  String get settingsLmstLongitudeUnavailable =>
+      'Location unavailable – enable location access and grant permission to Epoch temporarily, or enter longitude manually';
 
   @override
   String get settingsLmstOff => 'Do not show';

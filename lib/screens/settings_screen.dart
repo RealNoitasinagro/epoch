@@ -81,13 +81,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _determineLocation() async {
+    final l10n = AppLocalizations.of(context)!;
     final longitude = await LocationService.getLastKnownLongitude();
     if (longitude == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Location unavailable – enter longitude manually'),
+        SnackBar(
+          content: Text(l10n.settingsLmstLongitudeUnavailable),
           behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 8),
         ),
       );
       return;
