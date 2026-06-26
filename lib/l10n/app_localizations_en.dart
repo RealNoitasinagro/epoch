@@ -92,6 +92,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintDoneEditing => 'Done editing';
 
   @override
+  String get hintDstStatusIndicatorActive =>
+      'Value shows summer/daylight-saving time (DST)';
+
+  @override
+  String get hintDstStatusIndicatorInactive =>
+      'Value shows standard time (DST inactive)';
+
+  @override
   String get hintEditLayout => 'Edit layout';
 
   @override
@@ -99,6 +107,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintEditTimeValue => 'Edit time value';
+
+  @override
+  String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override
   String get hintRemoveSelected => 'Remove selected';
@@ -121,6 +132,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hintTimezoneSearch =>
       'City, country, zone or offset (e.g. UTC+5:30)';
+
+  @override
+  String get hintZoneIndicator => 'Timezone-dependent value';
 
   @override
   String get infoLinkBinaryClockBcd =>

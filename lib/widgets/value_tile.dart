@@ -1,6 +1,7 @@
 // Universal tile with fixed height, three-layer structure.
 // Handles text values, graphical clocks, and edit mode uniformly.
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 
@@ -31,6 +32,7 @@ class ValueTile extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     final tileBackground = colorScheme.onSurface.withAlpha(12);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       height: height ?? textTileHeight,
@@ -60,18 +62,29 @@ class ValueTile extends StatelessWidget {
                     ),
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
+                      Tooltip(
+                        child: Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
+                        message: l10n.hintZoneIndicator,
+                      ),
                     ],
                     if (dstStatusIndicator != null) ...[
                       const SizedBox(width: 4),
-                      Icon(dstStatusIndicator, size: kIconSizeLabel,
+                      Tooltip(
+                        child: Icon(dstStatusIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
+                        message: dstStatusIndicator == kIconDstActive
+                            ? l10n.hintDstStatusIndicatorActive
+                            : l10n.hintDstStatusIndicatorInactive,
+                      ),
                     ],
                     if (showPinnedIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(kIconPinnedIndicator, size: kIconSizeLabel,
+                      Tooltip(
+                        child: Icon(kIconPinnedIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
+                        message: l10n.hintPinnedIndicator,
+                      ),
                     ],
                   ],
                 ),

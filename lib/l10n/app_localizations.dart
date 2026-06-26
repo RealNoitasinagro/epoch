@@ -230,6 +230,18 @@ abstract class AppLocalizations {
   /// **'Done editing'**
   String get hintDoneEditing;
 
+  /// No description provided for @hintDstStatusIndicatorActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Value shows summer/daylight-saving time (DST)'**
+  String get hintDstStatusIndicatorActive;
+
+  /// No description provided for @hintDstStatusIndicatorInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Value shows standard time (DST inactive)'**
+  String get hintDstStatusIndicatorInactive;
+
   /// No description provided for @hintEditLayout.
   ///
   /// In en, this message translates to:
@@ -247,6 +259,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit time value'**
   String get hintEditTimeValue;
+
+  /// No description provided for @hintPinnedIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic clock change disabled'**
+  String get hintPinnedIndicator;
 
   /// No description provided for @hintRemoveSelected.
   ///
@@ -289,6 +307,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'City, country, zone or offset (e.g. UTC+5:30)'**
   String get hintTimezoneSearch;
+
+  /// No description provided for @hintZoneIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Timezone-dependent value'**
+  String get hintZoneIndicator;
 
   /// No description provided for @infoLinkBinaryClockBcd.
   ///
