@@ -30,9 +30,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Epoch';
 
   @override
-  String get dataBinaryClocksPlaceholder => 'Graphical binary clock';
-
-  @override
   String dataDateSub(int week, int day) {
     return 'week $week · day $day';
   }
@@ -405,7 +402,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThousandsSep => 'Thousands separator';
 
   @override
-  String get settingsThousandsSepSub => 'e.g. 1,746,000 instead of 1746000';
+  String get settingsThousandsSepSub => 'e. g. 1,746,000 instead of 1746000';
 
   @override
   String get settingsWhatsNew => 'What\'s New';

@@ -140,12 +140,6 @@ abstract class AppLocalizations {
   /// **'Epoch'**
   String get appName;
 
-  /// No description provided for @dataBinaryClocksPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Graphical binary clock'**
-  String get dataBinaryClocksPlaceholder;
-
   /// No description provided for @dataDateSub.
   ///
   /// In en, this message translates to:
@@ -785,7 +779,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsThousandsSepSub.
   ///
   /// In en, this message translates to:
-  /// **'e.g. 1,746,000 instead of 1746000'**
+  /// **'e. g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
 
   /// No description provided for @settingsWhatsNew.

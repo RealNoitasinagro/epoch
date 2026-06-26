@@ -30,9 +30,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get appName => 'Epoch';
 
   @override
-  String get dataBinaryClocksPlaceholder => 'Graphische Binäruhr';
-
-  @override
   String dataDateSub(int week, int day) {
     return 'Woche $week · Tag $day';
   }
