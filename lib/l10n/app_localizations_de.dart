@@ -295,6 +295,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageNoTimezone => 'Keine passende Zeitzone gefunden.';
 
   @override
+  String get messageSettingsExported => 'Einstellungen exportiert';
+
+  @override
+  String get messageSettingsImportFailed =>
+      'Import fehlgeschlagen – ungültige Datei';
+
+  @override
+  String get messageSettingsImported => 'Einstellungen importiert';
+
+  @override
+  String get messageSettingsReset => 'Einstellungen zurückgesetzt';
+
+  @override
   String get pageSettings => 'Einstellungen';
 
   @override
@@ -381,6 +394,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLmstOff => 'Nicht anzeigen';
+
+  @override
+  String get settingsPreferencesExport => 'Einstellungen exportieren';
+
+  @override
+  String get settingsPreferencesImport => 'Einstellungen importieren';
+
+  @override
+  String get settingsPreferencesReset => 'Einstellungen zurücksetzen';
+
+  @override
+  String get settingsPreferencesResetBackupTitle =>
+      'Backup vor dem Zurücksetzen speichern';
 
   @override
   String get settingsTheme => 'Design';

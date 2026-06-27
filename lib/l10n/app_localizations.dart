@@ -572,6 +572,30 @@ abstract class AppLocalizations {
   /// **'No matching timezone found.'**
   String get messageNoTimezone;
 
+  /// No description provided for @messageSettingsExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings exported'**
+  String get messageSettingsExported;
+
+  /// No description provided for @messageSettingsImportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed – invalid file'**
+  String get messageSettingsImportFailed;
+
+  /// No description provided for @messageSettingsImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings imported'**
+  String get messageSettingsImported;
+
+  /// No description provided for @messageSettingsReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings reset to defaults'**
+  String get messageSettingsReset;
+
   /// No description provided for @pageSettings.
   ///
   /// In en, this message translates to:
@@ -739,6 +763,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do not show'**
   String get settingsLmstOff;
+
+  /// No description provided for @settingsPreferencesExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export preferences'**
+  String get settingsPreferencesExport;
+
+  /// No description provided for @settingsPreferencesImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import preferences'**
+  String get settingsPreferencesImport;
+
+  /// No description provided for @settingsPreferencesReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset preferences'**
+  String get settingsPreferencesReset;
+
+  /// No description provided for @settingsPreferencesResetBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save backup before reset'**
+  String get settingsPreferencesResetBackupTitle;
 
   /// No description provided for @settingsTheme.
   ///

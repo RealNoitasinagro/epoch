@@ -217,7 +217,8 @@ EOF
 fi
 
 if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
-      "$dryRun" -eq "0" && "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
+      "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
+      "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
     tee -a "$build_all_log" << EOF
 ***** INFO *****************************************************************************************
 * Output *.apk files should be good to release, for GitHub and F-Droid.

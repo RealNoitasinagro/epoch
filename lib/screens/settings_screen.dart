@@ -6,6 +6,7 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
+import '../models/settings_io.dart';
 import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
@@ -88,8 +89,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.settingsLmstLongitudeUnavailable),
+          duration: const Duration(seconds: 8),
           behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 8),
         ),
       );
       return;
@@ -312,6 +313,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               await launchUrl(uri, mode: LaunchMode.externalApplication);
             },
           ),
+          const Divider(height: kDividerHeight),
+          ListTile(
+            leading: const Icon(Icons.download),
+            title: Text(l10n.settingsPreferencesExport),
+            onTap: () async => await exportSettings(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: Text(l10n.settingsPreferencesImport),
+            onTap: () async => await importSettings(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.restart_alt),
+            title: Text(l10n.settingsPreferencesReset),
+            onTap: () async => await resetSettings(context),
+          )
         ],
       ),
     );

@@ -88,20 +88,27 @@ class _EpochAppState extends State<EpochApp> {
   LmstMode _lmstMode       = kDefaultLmstMode;
   double? _lmstLongitude;
 
+  Key _homeKey = UniqueKey();
+
   @override
   void initState() {
     super.initState();
-    _loadSettings();
+    _loadPreferences();
   }
 
-  Future<void> _loadSettings() async {
+  Future<void> reloadPreferences() async {
+    await _loadPreferences();
+    if (mounted) setState(() => _homeKey = UniqueKey());
+  }
+
+  Future<void> _loadPreferences() async {
     final theme           = await loadThemeMode();
     final thousands       = await loadThousandsSep();
     final hour24          = await loadHourFormat24();
     final dateWithDetails = await loadDateWithDetails();
     final locale          = await loadLocale() ?? kDefaultLocale;
-    final lmstMode = await loadLmstMode();
-    final lmstLon  = await loadLmstLongitude();
+    final lmstMode        = await loadLmstMode();
+    final lmstLon         = await loadLmstLongitude();
 
     String localZone = 'UTC';
     try {
@@ -202,7 +209,7 @@ class _EpochAppState extends State<EpochApp> {
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen(),
+      home: HomeScreen(key: _homeKey),
     );
   }
 }
@@ -245,11 +252,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _loadData() async {
     final civil      = await loadCivilEntries();
-    final custom     = await loadCustomTabs();
+    final customTabs = await loadCustomTabs();
     final activeTab  = await loadActiveTab();
     setState(() {
       _civilEntries = civil;
-      _customTabs   = custom;
+      _customTabs   = customTabs;
       _loaded       = true;
     });
     _updateTabController(initialIndex: activeTab);
@@ -371,6 +378,7 @@ class _HomeScreenState extends State<HomeScreen>
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
     ).then((_) {
+      if (!mounted) return;
       if (EpochApp.of(context).lmstMode == LmstMode.off) {
         _removeLmstFromAllTabs();
       }

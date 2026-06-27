@@ -277,5 +277,6 @@ extension ValueTypeProps on ValueType {
   };
 
   bool get isGraphical =>
-      this == ValueType.binaryClockColumns || this == ValueType.binaryClockBcd;
+      this == ValueType.binaryClockColumns ||
+      this == ValueType.binaryClockBcd;
 }
