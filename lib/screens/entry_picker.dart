@@ -130,7 +130,8 @@ class _EntryPickerState extends State<_EntryPicker> {
                   context,
                   TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !type.isZoneIndependent
+                  !type.isZoneIndependent,
+                  type.isGraphical,
               ),
             );
           }),
@@ -150,7 +151,8 @@ class _EntryPickerState extends State<_EntryPicker> {
                   context,
                   TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !type.isZoneIndependent
+                  !type.isZoneIndependent,
+                  type.isGraphical,
               ),
             );
           }),
@@ -170,7 +172,8 @@ class _EntryPickerState extends State<_EntryPicker> {
                   context,
                   TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !type.isZoneIndependent
+                  !type.isZoneIndependent,
+                  type.isGraphical,
               ),
             );
           }),
@@ -190,7 +193,8 @@ class _EntryPickerState extends State<_EntryPicker> {
                   context,
                   TimeValue.localizedTypeLabel(type, l10n),
                   disabled,
-                  !type.isZoneIndependent
+                  !type.isZoneIndependent,
+                  type.isGraphical,
               ),
             );
           }),
@@ -231,14 +235,17 @@ class _EntryPickerState extends State<_EntryPicker> {
     );
   }
 
-  Widget _typeLabel(BuildContext context, String label, bool disabled, bool zoneDependent) {
+  Widget _typeLabel(BuildContext context, String label,
+      bool disabled, bool zoneDependent, bool isGraphical) {
     final color = disabled
         ? Theme.of(context).colorScheme.onSurface.withAlpha(80)
         : null;
+    final fontStyle = isGraphical ? FontStyle.italic : FontStyle.normal;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: color != null ? TextStyle(color: color) : null),
+        Text(label, style: TextStyle(color: color, fontStyle: fontStyle)),
         if (zoneDependent) ...[
           const SizedBox(width: 4),
           Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
