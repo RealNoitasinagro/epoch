@@ -407,25 +407,25 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDate.
   ///
   /// In en, this message translates to:
-  /// **'The current calendar date in the hintSelected timezone.'**
+  /// **'The current calendar date in the selected timezone.'**
   String get infoTextDate;
 
   /// No description provided for @infoTextDateTime.
   ///
   /// In en, this message translates to:
-  /// **'The current date and time in the hintSelected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
+  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
 
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the hintSelected timezone. Resets to 0 at midnight.'**
+  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
   String get infoTextDayPercent;
 
   /// No description provided for @infoTextDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the hintSelected timezone. Resets to 0 at midnight.'**
+  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
   String get infoTextDaySecond;
 
   /// No description provided for @infoTextDoomsdayClock.
@@ -485,7 +485,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the hintSelected timezone.'**
+  /// **'The current time in the selected timezone.'**
   String get infoTextTime;
 
   /// No description provided for @infoTextUnixSeconds.

@@ -194,19 +194,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextDate =>
-      'The current calendar date in the hintSelected timezone.';
+      'The current calendar date in the selected timezone.';
 
   @override
   String get infoTextDateTime =>
-      'The current date and time in the hintSelected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
+      'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
   String get infoTextDayPercent =>
-      'Percentage of the day elapsed in the hintSelected timezone. Resets to 0 at midnight.';
+      'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoTextDaySecond =>
-      'Seconds elapsed since midnight in the hintSelected timezone. Resets to 0 at midnight.';
+      'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
 
   @override
   String get infoTextDoomsdayClock =>
@@ -245,7 +245,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
 
   @override
-  String get infoTextTime => 'The current time in the hintSelected timezone.';
+  String get infoTextTime => 'The current time in the selected timezone.';
 
   @override
   String get infoTextUnixSeconds =>

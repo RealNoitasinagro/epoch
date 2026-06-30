@@ -68,7 +68,7 @@ It is built for people who are curious about how time actually works.
 Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 
 <details>
-<summary>"Click to expand"</summary>
+<summary>Click to expand</summary>
 
 <p>
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1">
