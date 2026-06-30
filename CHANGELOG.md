@@ -8,9 +8,14 @@
 - custom section headers and dividers
 - visual markers for summer time is active/inactive and always-on/always-off summer time
 - tooltips for all visual markers
+- export/import/reset all settings and preferences (useful to play with different configs)
 
 ### Changed
 - replaced font for better readability of time values
+- time value selection shows graphical value types in italics
+
+### Fixed
+- missing timezones UTC-12, UTC+8:45, UTC+12:45, UTC+13:45, UTC+14
 
 
 ---

@@ -3435,13 +3435,13 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('UTC+8:30', () {
+    test('UTC+8:30 unused', () {  // https://en.wikipedia.org/wiki/UTC%2B08:30
       var searchTerm = 'UTC+8:30';
       final loc = searchByOffset(searchTerm, tzDatabase);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));  // no longer in use!
     });
 
-    test('UTC+8:45', () {
+    test('UTC+8:45 unofficial', () {  // https://en.wikipedia.org/wiki/UTC%2B08:45
       var searchTerm = 'UTC+8:45';
       final loc = searchByOffset(searchTerm, tzDatabase);
       expect(loc.length, greaterThan(0));
@@ -3470,5 +3470,5 @@ void main() {
       final loc = searchByOffset(searchTerm, tzDatabase);
       expect(loc.length, greaterThan(0));
     });
-  }, skip: skip);
+  }, skip: false);
 }

@@ -832,6 +832,38 @@ const List<TzEntry> tzDatabase = [
       'port moresby', 'papua', 'new guinea', 'neuguinea',
     ],
   ),
+  TzEntry(
+    ianaZone: 'Anywhere on Earth',
+    offsetWinter: '-12:00', offsetSummer: '-12:00',
+    abbrWinter: 'AoE', abbrSummer: 'AoE',
+    terms: [
+      'baker island',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Kiritimati',
+    offsetWinter: '+14:00', offsetSummer: '+14:00',
+    abbrWinter: 'LINT', abbrSummer: 'LINT',
+    terms: [
+      'line islands time', 'kiribati'
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Chatham',
+    offsetWinter: '+12:45', offsetSummer: '+13:45',
+    abbrWinter: 'CHAST', abbrSummer: 'CHADT',
+    terms: [
+      'chatham standard time', 'chatham daylight time',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Australia/Eucla',
+    offsetWinter: '+08:45', offsetSummer: '+08:45',
+    abbrWinter: 'CWT', abbrSummer: 'CWT',
+    terms: [
+      'central western time'
+    ],
+  ),
 
   // ── Atlantic / Arctic / Antarctica ───────────────────────────────────
   TzEntry(
