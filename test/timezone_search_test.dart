@@ -1216,6 +1216,228 @@ void main() {
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
+
+    test('+00', () {
+      var searchTerm = '+00';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-00', () {
+      var searchTerm = '-00';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+01', () {
+      var searchTerm = '+01';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-01', () {
+      var searchTerm = '-01';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+02', () {
+      var searchTerm = '+02';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-02', () {
+      var searchTerm = '-02';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+03', () {
+      var searchTerm = '+03';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-03', () {
+      var searchTerm = '-03';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0330', () {
+      var searchTerm = '+0330';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+04', () {
+      var searchTerm = '+04';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-04', () {
+      var searchTerm = '-04';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0430', () {
+      var searchTerm = '+0430';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+05', () {
+      var searchTerm = '+05';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-05', () {
+      var searchTerm = '-05';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0530', () {
+      var searchTerm = '+0530';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0545', () {
+      var searchTerm = '+0545';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+06', () {
+      var searchTerm = '+06';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-06', () {
+      var searchTerm = '-06';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0630', () {
+      var searchTerm = '+0630';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+07', () {
+      var searchTerm = '+07';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-07', () {
+      var searchTerm = '-07';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+08', () {
+      var searchTerm = '+08';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-08', () {
+      var searchTerm = '-08';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+0845', () {
+      var searchTerm = '+0845';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+09', () {
+      var searchTerm = '+09';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-09', () {
+      var searchTerm = '-09';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-0930', () {
+      var searchTerm = '-0930';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+10', () {
+      var searchTerm = '+10';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-10', () {
+      var searchTerm = '-10';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+1030', () {
+      var searchTerm = '+1030';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+11', () {
+      var searchTerm = '+11';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-11', () {
+      var searchTerm = '-11';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+12', () {
+      var searchTerm = '+12';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('-12', () {
+      var searchTerm = '-12';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+1245', () {
+      var searchTerm = '+1245';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+13', () {
+      var searchTerm = '+13';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('+14', () {
+      var searchTerm = '+14';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
   }, skip: skip);
 
   group('timezone search names', () {

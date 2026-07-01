@@ -76,7 +76,7 @@ class TimeStringRow extends TimeValueRow {
 
   static ({String line1, String line2}) splitZoneOffset(String value) {
     final match = RegExp(
-      r'\b\w+\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
+      r'(?:[+-]\d{2}(?:\d{2})?|\w+)\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (

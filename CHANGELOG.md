@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+### Fixed
+- numeric timezone abbreviations (e. g. "+0845") were ripped apart
 
 ---
 
