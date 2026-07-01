@@ -235,6 +235,7 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
     cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
     cp -v $apk_output_path/${target_platform_android_all} $destination_path
+    echo
 
     tee -a "$build_all_log" << EOF
 ***** INFO *****************************************************************************************
