@@ -76,6 +76,7 @@ esac
 
 
 # +++ CONFIGURATION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+skipClean=1
 skipAnalyze=0
 skipTest=0
 skipChecksums=0
@@ -122,10 +123,20 @@ Flutter: $flutter_active
 $flutter_version
 Logfile: $build_all_log
 Repo: $cwd
-skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
+skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
 EOF
+
+echo "# clean"
+if [[ ! "$skipClean" -eq "1" || "$cwd" == "$GL_Epoch" ]] ; then
+    flutter_command="$flutter_active clean"
+    echo "# $flutter_command" | tee -a "$build_all_log"
+    $flutter_command
+else
+    echo "Skipped."
+fi
+echo
 
 echo "# analyze"
 if [ ! "$skipAnalyze" -eq "1" ] ; then
@@ -219,17 +230,18 @@ fi
 if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
       "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
+    rm -v -f $destination_path/*.apk
+    cp -v $apk_output_path/${target_platform_android_arm} $destination_path
+    cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
+    cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
+    cp -v $apk_output_path/${target_platform_android_all} $destination_path
+
     tee -a "$build_all_log" << EOF
 ***** INFO *****************************************************************************************
 * Output *.apk files should be good to release, for GitHub and F-Droid.
 ****************************************************************************************************
 
 EOF
-    rm -v -f $destination_path/*.apk
-    cp -v $apk_output_path/${target_platform_android_arm} $destination_path
-    cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
-    cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
-    cp -v $apk_output_path/${target_platform_android_all} $destination_path
 fi
 
 if [ ! "$useLogging" -eq "1" ] ; then

@@ -33,6 +33,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
+- Optionally force standard or summer time for zoned time values all year round
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
@@ -45,6 +46,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - 12 / 24-hour format toggle
 - Thousands separator toggle
 - Expanded date toggle
+- Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
 - Android widgets coming soon
 - Not yet: conversions between time systems
@@ -52,7 +54,8 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Privacy & permissions
 - **No ads. No notifications. No tracking. No analytics. No network requests.**
 - All settings stored locally on your device
-- No permissions required
+- No permissions required -- for LMST, you can specify longitude manually,
+  or temporarily grant ACCESS_COARSE_LOCATION permission (one-time setup step)
 
 
 ## What makes Epoch different?
@@ -68,17 +71,33 @@ It is built for people who are curious about how time actually works.
 Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 
 <details>
-<summary>Click to expand</summary>
+<summary>Click to expand (English)</summary>
 
 <p>
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="en 2">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="en 3">
 </p>
-
 <p>
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="en 4">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="en 6">
+</p>
+
+</details>
+
+<details>
+<summary>Click to expand (German)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/1.png" width="200" alt="en 1">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/2.png" width="200" alt="en 2">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/3.png" width="200" alt="en 3">
+</p>
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/4.png" width="200" alt="en 4">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/5.png" width="200" alt="en 5">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/6.png" width="200" alt="en 6">
 </p>
 
 </details>

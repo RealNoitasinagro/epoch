@@ -1,0 +1,7 @@
+- Pin any timezone to always show summer or standard time, regardless of the current date
+- visual indicators for summer time/DST status (active/inactive) and pinned display mode
+- section headers and dividers for configurable tabs
+- automatic longitude detection for local sidereal time (LMST) is back
+- Export and import your settings as a file – useful for backups and sharing configurations
+- font improved for better readability
+- a few missing timezones added

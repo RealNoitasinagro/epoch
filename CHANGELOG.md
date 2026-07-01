@@ -2,23 +2,26 @@
 
 ## [Unreleased]
 
+
+---
+
+
+## [1.2.0] - 2026-07-01
+
 ### Added
-- options to force standard or summer time for zoned time values all the year round
-- automatic longitude detection introduced in 1.1.0 is back (now without geolocator)
-- custom section headers and dividers
-- visual markers for summer time is active/inactive and always-on/always-off summer time
-- tooltips for all visual markers
-- export/import/reset all settings and preferences (useful to play with different configs)
+- options to force standard or summer time for zoned time values all year round
+- multiple display mode variants of the same timezone on one tab (e.g. Berlin auto + Berlin always-standard)
+- visual indicators for summer time/DST status (active/inactive) and pinned display mode 
+- automatic longitude detection for LMST (restored without Google Play Services dependency)
+- custom section headers and dividers on configurable tabs
+- export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 
 ### Changed
-- replaced font for better readability of time values
-- time value selection shows graphical value types in italics
+- better legibility of time values: font replaced with JetBrains Mono, subtitle text size increased  
+- graphical value types shown in italics in the value type picker
 
 ### Fixed
 - missing timezones UTC-12, UTC+8:45, UTC+12:45, UTC+13:45, UTC+14
-
-
----
 
 
 ## [1.1.1] - 2026-06-11
