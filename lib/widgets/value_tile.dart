@@ -1,6 +1,7 @@
 // Universal tile with fixed height, three-layer structure.
 // Handles text values, graphical clocks, and edit mode uniformly.
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 
@@ -12,6 +13,8 @@ class ValueTile extends StatelessWidget {
   static const double graphicTileHeight = 200.0; // fits 6 bit rows
   final double? height; // null = textTileHeight
   final bool showZoneIndicator;
+  final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
+  final bool showPinnedIndicator;  // timezoneDisplayMode != auto
 
   const ValueTile({
     super.key,
@@ -20,18 +23,21 @@ class ValueTile extends StatelessWidget {
     required this.actionSlots,
     this.height,
     this.showZoneIndicator = true,
+    this.dstStatusIndicator,
+    this.showPinnedIndicator = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final tileBg  = colorScheme.onSurface.withAlpha(12);
+    final tileBackground = colorScheme.onSurface.withAlpha(12);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       height: height ?? textTileHeight,
       decoration: BoxDecoration(
-        color: tileBg,
+        color: tileBackground,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.fromLTRB(
@@ -56,8 +62,29 @@ class ValueTile extends StatelessWidget {
                     ),
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
-                      Icon(Icons.language, size: 10,
+                      Tooltip(
+                        child: Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
                           color: colorScheme.onSurface.withAlpha(150)),
+                        message: l10n.hintZoneIndicator,
+                      ),
+                    ],
+                    if (dstStatusIndicator != null) ...[
+                      const SizedBox(width: 4),
+                      Tooltip(
+                        child: Icon(dstStatusIndicator, size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150)),
+                        message: dstStatusIndicator == kIconDstActive
+                            ? l10n.hintDstStatusIndicatorActive
+                            : l10n.hintDstStatusIndicatorInactive,
+                      ),
+                    ],
+                    if (showPinnedIndicator) ...[
+                      const SizedBox(width: 4),
+                      Tooltip(
+                        child: Icon(kIconPinnedIndicator, size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150)),
+                        message: l10n.hintPinnedIndicator,
+                      ),
                     ],
                   ],
                 ),
@@ -102,7 +129,7 @@ class TextValueContent extends StatelessWidget {
           Text(
             line1,
             style: textTheme.bodyLarge?.copyWith(
-              fontFamily: fontFamilyCourierNew,
+              fontFamily: fontFamilyDefault,
               fontWeight: FontWeight.w500,
               height: 1.2,
             ),
@@ -113,8 +140,8 @@ class TextValueContent extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               line2,
-              style: textTheme.bodySmall?.copyWith(
-                fontFamily: fontFamilyCourierNew,
+              style: textTheme.bodyMedium?.copyWith(
+                fontFamily: fontFamilyDefault,
                 color: colorScheme.onSurface.withAlpha(170),
                 height: 1.2,
               ),

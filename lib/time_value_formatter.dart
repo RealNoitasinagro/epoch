@@ -7,7 +7,7 @@ import 'time_utils.dart';
 class TimeValueFormatter {
   /// Computes the display string for a given TimeValue at a given moment.
   static String format(
-      TimeValue value,
+      TimeValue timeValue,
       DateTime now,
       String locale,
       {
@@ -20,7 +20,8 @@ class TimeValueFormatter {
     final utcNow = now.toUtc();
 
     // Zone-independent values.
-    switch (value.type) {
+    switch (timeValue.valueType) {
+      // Technical
       case ValueType.unixSeconds:
         final v = TimeUtils.unixTimestamp(utcNow);
         return thousandsSep
@@ -36,6 +37,7 @@ class TimeValueFormatter {
         return thousandsSep
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
+      // Astronomical
       case ValueType.gmst:
         return hoursToHms(TimeUtils.gmst(utcNow));
       case ValueType.lmst:
@@ -53,6 +55,7 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.modifiedJulianDate2000(utcNow), locale, 5,
             thousandsSep: thousandsSep);
+      // Curiosities
       case ValueType.swatchBeats:
         return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
       case ValueType.doomsdayClock:
@@ -62,27 +65,35 @@ class TimeValueFormatter {
     }
 
     // Zone-dependent values.
-    final DateTime dt;
     String tzLabel;
+    DateTime dt;
     final Duration offset;
 
-    switch (value.zone) {
+    switch (timeValue.zone) {
+      case ZoneUtc():
+        dt = utcNow;
+        tzLabel = 'UTC';
+        offset = Duration.zero;
       case ZoneLocal():
         dt = now;
         try {
           final tzLocation = tz.getLocation(localIanaZone);
           final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
           tzLabel = tzDt.timeZone.abbreviation;
-        } catch (_) {
-          tzLabel = now.timeZoneName;
-        }
+        } catch (_) { tzLabel = now.timeZoneName; }
         offset = now.timeZoneOffset;
-      case ZoneUtc():
-        dt = utcNow;
-        tzLabel = 'UTC';
-        offset = Duration.zero;
-      case ZoneNamed(ianaZone: final z):
-        final tzDt = TimeUtils.inZone(utcNow, z);
+      case ZoneNamed(ianaZone: final zone):
+        final tzDt = TimeUtils.inZone(utcNow, zone);
+        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
+          final info = TimeUtils.daylightOrStandardOffset(
+              zone, timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
+          if (info != null) {
+            tzLabel = info.abbreviation;
+            offset = info.offset;
+            dt = utcNow.add(offset);
+            break;
+          }
+        }
         dt = tzDt;
         tzLabel = tzDt.timeZone.abbreviation;
         offset = tzDt.timeZoneOffset;
@@ -93,7 +104,8 @@ class TimeValueFormatter {
     final ss = dt.second.toString().padLeft(2, '0');
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
-    switch (value.type) {
+    switch (timeValue.valueType) {
+      // Civil
       case ValueType.date:
         return formatDate(locale, dt);
       case ValueType.time:
@@ -116,6 +128,7 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.dayPercent(dt), locale, 3,
             thousandsSep: false); // percent never needs thousands sep
+      // Curiosities
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
       case ValueType.binaryClockColumns:

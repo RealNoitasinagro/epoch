@@ -1,8 +1,14 @@
 import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
+import 'models/time_value.dart';
+import 'models/timezone_search.dart';
 
 class TimeUtils {
+  static int dayOfYear(DateTime dt) => dt.ordinalDate;
+
+  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
+
   /// Returns TZDateTime for a given IANA time zone.
   static tz.TZDateTime inZone(DateTime utc, String ianaZone) {
     try {
@@ -23,6 +29,62 @@ class TimeUtils {
     final h = offset.inHours.abs().toString().padLeft(2, '0');
     final m = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
     return 'UTC$sign$h:$m';
+  }
+
+  /// Returns true/false for a given time zone independently of current date.
+  static bool hasDaylightSavingTime(String ianaZone) {
+    final entry = tzDatabase
+        .where((e) => e.ianaZone == ianaZone)
+        .firstOrNull;
+    if (entry != null) return entry.hasDst;
+    return false;
+  }
+
+  /// Returns the summer or winter/standard offset for a given IANA time zone.
+  static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
+      String ianaZone, bool dst) {
+    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
+    if (entry == null || !entry.hasDst) return null;
+    String offset = dst ? entry.offsetSummer : entry.offsetWinter;
+    String abbreviation = dst ? entry.abbrSummer : entry.abbrWinter;
+    return (
+      offset: _parseOffset(offset),
+      abbreviation: abbreviation,
+    );
+  }
+
+  static Duration _parseOffset(String s) {
+    // Format: "+02:00" or "-05:00"
+    final sign = s.startsWith('-') ? -1 : 1;
+    final parts = s.substring(1).split(':');
+    return Duration(
+      hours: sign * int.parse(parts[0]),
+      minutes: sign * int.parse(parts[1]),
+    );
+  }
+
+  /// Converts a UTC DateTime to local time for the given TimeValue,
+  /// respecting its timezoneDisplayMode (auto/forceDst/forceStandard).
+  static DateTime resolveLocalTime(
+      TimeValue timeValue,
+      DateTime utcNow,
+      String localIanaZone) {
+    switch (timeValue.zone) {
+      case ZoneLocal():
+        return DateTime.now();  // always auto for local
+      case ZoneUtc():
+        return utcNow;
+      case ZoneNamed(ianaZone: final zone):
+        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
+          final info = TimeUtils.daylightOrStandardOffset(
+              zone,
+              timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
+          if (info != null) {
+            return utcNow.add(info.offset);
+          }
+        }
+        return TimeUtils.inZone(utcNow, zone);
+    }
   }
 
   /// Day second (seconds since midnight) for a DateTime.
@@ -164,11 +226,8 @@ class TimeUtils {
 
   /// Binary clock string representation, e.g. "10:110000:10111".
   static String binaryTimeString(DateTime dt) {
-    String toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
-    final h = toBin(dt.hour, 5);
-    final m = toBin(dt.minute, 6);
-    final s = toBin(dt.second, 6);
-    return '$h:$m:$s';
+    final bin = binaryTime(dt);
+    return [bin.hours, bin.minutes, bin.seconds].join(':');
   }
 
   /// Returns the current Doomsday Clock time as of Jan 2026.
@@ -182,8 +241,4 @@ class TimeUtils {
         ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
         : '$hh:$mm:$ss';
   }
-
-  static int dayOfYear(DateTime dt) => dt.ordinalDate;
-
-  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
 }

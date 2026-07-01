@@ -1,0 +1,7 @@
+- Zeitzonen können dauerhaft auf Sommer-/Normalzeit fixiert werden, unabhängig vom Datum
+- Symbole für Sommerzeit (in)aktiv und fixierte Sommer-/Normalzeit
+- Abschnittsüberschriften und Trennlinien für konfigurierbare Tabs
+- Längengrad-Erkennung für lokale Sternzeit (LMST) ist zurück
+- Einstellungen exportieren und importieren – praktisch für Backups und zum Ausprobieren verschiedener Konfigurationen
+- Schrift für bessere Lesbarkeit verbessert
+- fehlende Zeitzonen ergänzt

@@ -30,40 +30,40 @@ class CuriositiesTab extends StatelessWidget {
                 kTabHorizontalPadding, kTabVerticalPadding),
             children: [
               SectionHeader(label: l10n.sectionInternet),
-              const SizedBox(height: 8),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.swatchBeats, zone: ZoneUtc()),
+                    valueType: ValueType.swatchBeats, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
               ),
-              const Divider(height: 40),
+              const Divider(height: kDividerHeight),
               SectionHeader(label: l10n.sectionBinaryClock),
-              const SizedBox(height: 8),
+              const SizedBox(height: kEntrySpacing),
               TimeGraphicalRow(
                 timeValue: const TimeValue(
-                    type: ValueType.binaryClockColumns, zone: ZoneLocal()),
+                    valueType: ValueType.binaryClockColumns, zone: ZoneLocal()),
                 now: now,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: kEntrySpacing),
               TimeGraphicalRow(
                 timeValue: const TimeValue(
-                    type: ValueType.binaryClockBcd, zone: ZoneLocal()),
+                    valueType: ValueType.binaryClockBcd, zone: ZoneLocal()),
                 now: now,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.binaryClockString, zone: ZoneLocal()),
+                    valueType: ValueType.binaryClockString, zone: ZoneLocal()),
                 now: now,
                 locale: locale,
               ),
-              const Divider(height: 40),
+              const Divider(height: kDividerHeight),
               SectionHeader(label: l10n.sectionDoomsdayClock),
-              const SizedBox(height: 8),
+              const SizedBox(height: kEntrySpacing),
               TimeStringRow(
                 timeValue: const TimeValue(
-                    type: ValueType.doomsdayClock, zone: ZoneUtc()),
+                    valueType: ValueType.doomsdayClock, zone: ZoneUtc()),
                 now: now,
                 locale: locale,
                 hourFormat24: hourFormat24,

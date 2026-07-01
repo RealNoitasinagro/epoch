@@ -94,9 +94,9 @@ Future<void> saveDateWithDetails(bool showDetails) async {
 Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.getString(_kLmstModeKey)) {
-    'manual' => LmstMode.manual,
-    'gps'    => LmstMode.manual,  // fallback for 1.1.ß
-    _        => LmstMode.off,
+    'manual'         => LmstMode.manual,
+    'locationAccess' => LmstMode.locationAccess,
+    _                => LmstMode.off,
   };
 }
 

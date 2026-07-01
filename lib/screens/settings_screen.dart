@@ -1,10 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
+import '../models/settings_io.dart';
+import '../services/location_service.dart';
 import '../time_value_formatter.dart';
+import '../widgets/section_header.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -21,9 +26,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Locale? _locale;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
+  bool _locationLoading = false;
   final _longitudeController = TextEditingController();
 
   static const _fallbackVersion = '1.0.0';
+
+  bool get _isDesktop =>
+      defaultTargetPlatform == TargetPlatform.linux ||
+      defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.macOS;
 
   @override
   void didChangeDependencies() {
@@ -62,12 +73,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       applicationName: l10n.appName,
       applicationVersion: '$version (build $build)',
-      applicationLegalese: l10n.aboutLegalese,
+      applicationLegalese: l10n.dialogueAboutLegalese,
       children: [
         SizedBox(height: 16),
-        Text(l10n.aboutDescription),
+        Text(l10n.dialogueAbout),
       ],
     );
+  }
+
+  Future<void> _determineLocation() async {
+    final l10n = AppLocalizations.of(context)!;
+    final longitude = await LocationService.getLastKnownLongitude();
+    if (longitude == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.settingsLmstLongitudeUnavailable),
+          duration: const Duration(seconds: 8),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+    setState(() => _lmstLongitude = longitude);
+    EpochApp.of(context).setLmstLongitude(longitude);
+    _longitudeController.text = longitude.toStringAsFixed(4);
   }
 
   @override
@@ -76,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.settings),
+        title: Text(l10n.pageSettings),
       ),
       body: ListView(
         children: [
@@ -161,16 +191,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               app.setDateWithDetails(val);
             },
           ),
-          const Divider(),
+          const Divider(height: kDividerHeight),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Text(
-              l10n.settingsLmst,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                letterSpacing: 1.5,
-              ),
+            padding: const EdgeInsets.fromLTRB(
+                kTabHorizontalPadding, 0,
+                kTabHorizontalPadding, 0,
             ),
+            child: SectionHeader(label: l10n.settingsLmst),
           ),
           RadioGroup<LmstMode>(
             groupValue: _lmstMode,
@@ -183,13 +210,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 RadioListTile(
                   value: LmstMode.off,
-                  title: Text(l10n.lmstModeOff),
+                  title: Text(l10n.settingsLmstOff),
                   secondary: const Icon(Icons.visibility_off_outlined),
                 ),
                 RadioListTile(
                   value: LmstMode.manual,
-                  title: Text(l10n.lmstModeManual),
-                  subtitle: Text(l10n.lmstModeManualSub),
+                  title: Text(l10n.settingsLmstLongitudeManual),
+                  subtitle: Text(l10n.settingsLmstLongitudeManualSub),
                   secondary: const Icon(Icons.edit_location_outlined),
                 ),
                 if (_lmstMode == LmstMode.manual)
@@ -202,7 +229,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             keyboardType: const TextInputType.numberWithOptions(
                                 signed: true, decimal: true),
                             decoration: InputDecoration(
-                              labelText: l10n.lmstLongitudeLabel,
+                              labelText: l10n.labelLongitude,
                               suffixText: '°',
                               hintText: TimeValueFormatter.formatDecimal(
                                   8.6821,
@@ -226,10 +253,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     ),
                   ),
+                if (!_isDesktop) ...[
+                  RadioListTile<LmstMode>(
+                    value: LmstMode.locationAccess,
+                    title: Text(l10n.settingsLmstLongitudeAuto),
+                    subtitle: Text(l10n.settingsLmstLongitudeAutoSub),
+                    secondary: const Icon(Icons.my_location),
+                  ),
+                  if (_lmstMode == LmstMode.locationAccess)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                      child: Row(
+                        children: [
+                          if (_locationLoading)
+                            const SizedBox(
+                              width: 20, height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else if (_lmstLongitude != null)
+                            Text(
+                                TimeValueFormatter.formatDecimal(
+                                    _lmstLongitude!,
+                                    _locale.toString(),
+                                    4,
+                                    thousandsSep: false
+                                ),
+                                style: Theme.of(context).textTheme.bodyMedium
+                            )
+                          else
+                            Text(l10n.settingsLmstLongitudeNotYetDetermined,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
+                          const SizedBox(width: 12),
+                          TextButton.icon(
+                            icon: const Icon(Icons.refresh, size: 16),
+                            label: Text(l10n.settingsLmstLongitudeDetermineLocation),
+                            onPressed: _locationLoading ? null
+                                : () => _determineLocation(),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ],
             )
           ),
-          const Divider(),
+          const Divider(height: kDividerHeight),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l10n.settingsAbout),
@@ -244,6 +313,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               await launchUrl(uri, mode: LaunchMode.externalApplication);
             },
           ),
+          const Divider(height: kDividerHeight),
+          ListTile(
+            leading: const Icon(Icons.download),
+            title: Text(l10n.settingsPreferencesExport),
+            onTap: () async => await exportSettings(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: Text(l10n.settingsPreferencesImport),
+            onTap: () async => await importSettings(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.restart_alt),
+            title: Text(l10n.settingsPreferencesReset),
+            onTap: () async => await resetSettings(context),
+          )
         ],
       ),
     );

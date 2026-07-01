@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
@@ -27,61 +28,80 @@ class TimeStringRow extends TimeValueRow {
     super.infoLinkOverride,
   });
 
+  static ({String line1, String line2}) computeDisplay(
+      TimeValue timeValue,
+      DateTime now,
+      String locale,
+      AppLocalizations l10n, {
+        bool hourFormat24 = true,
+        bool thousandsSep = true,
+        String localIanaZone = 'UTC',
+        double? longitude,
+        bool showDateDetails = true,
+      }) {
+    final formattedValue = TimeValueFormatter.format(
+      timeValue, now, locale,
+      hourFormat24: hourFormat24,
+      thousandsSep: thousandsSep,
+      localIanaZone: localIanaZone,
+      longitude: longitude,
+    );
+
+    String? subtitle;
+    final zonedNow = switch (timeValue.zone) {
+      ZoneLocal()                  => now,
+      ZoneUtc()                    => now.toUtc(),
+      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
+    };
+
+    if (timeValue.valueType == ValueType.date && showDateDetails) {
+      subtitle = l10n.dataDateSub(
+          TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
+    } else if (timeValue.valueType == ValueType.gmst ||
+        timeValue.valueType == ValueType.lmst) {
+      final hours = TimeValueFormatter.hmsToHours(formattedValue);
+      if (hours != null) {
+        final deg = TimeValueFormatter.formatDecimal(
+            hours * 15.0, locale, 4, thousandsSep: false);
+        subtitle = '$deg°';
+      }
+    }
+
+    final split = splitZoneOffset(formattedValue);
+    return (
+      line1: split.line1,
+      line2: subtitle ?? split.line2,
+    );
+  }
+
   static ({String line1, String line2}) splitZoneOffset(String value) {
     final match = RegExp(
       r'\b\w+\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (
-    line1: value.substring(0, match.start).trim(),
-    line2: match.group(0)!,
+      line1: value.substring(0, match.start).trim(),
+      line2: match.group(0)!,
     );
   }
 
+  static String computeLabel(AppLocalizations l10n,
+      TimeValue timeValue, double? longitude) {
+    return timeValue.valueType == ValueType.lmst
+        ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
+        : timeValue.localizedDisplayLabel(l10n);
+  }
+
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
-      String displayValue) {
-    // Clipboard gets the formatted display value for consistency.
-    final label = _computeLabel(l10n);
+      String label, String displayValue) {
     Clipboard.setData(ClipboardData(text: '$label: $displayValue'));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n.copiedToClipboard(label)),
+        content: Text(l10n.messageCopiedToClipboard(label)),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
     );
-  }
-
-  String? _computeSubtitle(AppLocalizations l10n) {
-    if (timeValue.type == ValueType.date && showDateDetails) {
-      final dt = switch (timeValue.zone) {
-        ZoneLocal()                  => now,
-        ZoneUtc()                    => now.toUtc(),
-        ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-      };
-      return l10n.dateSubtitle(
-          TimeUtils.isoWeekNumber(dt), TimeUtils.dayOfYear(dt));
-    }
-    if (timeValue.type == ValueType.gmst ||
-        timeValue.type == ValueType.lmst) {
-      final computed = TimeValueFormatter.format(
-        timeValue, now, locale,
-        longitude: longitude,
-      );
-      final hours = TimeValueFormatter.hmsToHours(computed);
-      if (hours != null) {
-        final deg = TimeValueFormatter.formatDecimal(
-            hours * 15.0, locale, 4, thousandsSep: false);
-        return '$deg°';
-      }
-    }
-    return null;
-  }
-
-  String _computeLabel(AppLocalizations l10n) {
-    return timeValue.type == ValueType.lmst
-        ? TimeValueFormatter.lmstLabelWithLon(l10n, timeValue, longitude)
-        : timeValue.localizedDisplayLabel(l10n);
   }
 
   @override
@@ -89,40 +109,35 @@ class TimeStringRow extends TimeValueRow {
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
-    final formattedValue = TimeValueFormatter.format(
-      timeValue,
-      now,
-      locale,
+    final display = computeDisplay(
+      timeValue, now, locale, l10n,
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
       localIanaZone: localIanaZone,
       longitude: longitude,
+      showDateDetails: showDateDetails,
     );
-
-    String? subtitle = _computeSubtitle(l10n);
-    final split = splitZoneOffset(formattedValue);
-    final line2 = subtitle ?? split.line2;
-    final clipboardValue = subtitle != null
-        ? '$formattedValue\n$subtitle'
-        : formattedValue;
-    String label = _computeLabel(l10n);
+    String label = computeLabel(l10n, timeValue, longitude);
+    String clipboardValue = display.line1 + '\n' + display.line2;
 
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
-      content: TextValueContent(line1: split.line1, line2: line2),
+      showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+      dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
+      content: TextValueContent(line1: display.line1, line2: display.line2),
       actionSlots: [
         IconButton(
-          icon: const Icon(Icons.info_outline, size: 20),
+          icon: const Icon(Icons.info_outline, size: kIconSizeDefault),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.aboutThisValue,
+          tooltip: l10n.hintAboutThisValue,
           onPressed: () => showInfo(context, l10n),
         ),
         IconButton(
-          icon: const Icon(Icons.copy, size: 20),
+          icon: const Icon(Icons.copy, size: kIconSizeDefault),
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          tooltip: l10n.copyToClipboard,
-          onPressed: () => _copyToClipboard(context, l10n, clipboardValue),
+          tooltip: l10n.hintCopyToClipboard,
+          onPressed: () => _copyToClipboard(context, l10n, label, clipboardValue),
         ),
         null,
       ],

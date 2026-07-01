@@ -1,13 +1,6 @@
 {
   "@@locale": "de",
-  "@copiedToClipboard": {
-    "placeholders": {
-      "label": {
-        "type": "String"
-      }
-    }
-  },
-  "@dateSubtitle": {
+  "@dataDateSub": {
     "placeholders": {
       "week": {
         "type": "int"
@@ -17,14 +10,7 @@
       }
     }
   },
-  "@maxValuesReached": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "@tabValueCount": {
+  "@dataTabValueCount": {
     "placeholders": {
       "count": {
         "format": "compact",
@@ -32,37 +18,55 @@
       }
     }
   },
-  "aboutDescription": "Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.",
-  "aboutLegalese": "© 2026 RealEarthling",
-  "aboutThisValue": "Über diesen Wert",
-  "addTab": "Tab hinzufügen",
-  "addValue": "Wert hinzufügen",
-  "alreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
+  "@messageCopiedToClipboard": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@messageMaxValues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionCancel": "Abbrechen",
+  "actionDeleteTab": "Tab löschen",
+  "actionRenameTab": "Tab umbenennen",
+  "actionZoneLocal": "Lokal (Systemzeitzone)",
+  "actionZoneNamed": "Benannte Zeitzone",
+  "actionZoneUtc": "UTC",
   "appName": "Epoch",
-  "back": "Zurück",
-  "binaryClockPlaceholder": "Graphische Binäruhr",
-  "cancel": "Abbrechen",
-  "copiedToClipboard": "Kopiert: {label}",
-  "copyToClipboard": "In Zwischenablage kopieren",
-  "dateSubtitle": "Woche {week} · Tag {day}",
-  "deleteTab": "Tab löschen",
-  "deselect": "Abwählen",
-  "deselectAll": "Alle abwählen",
-  "doneEditing": "Fertig",
-  "editLabel": "Bezeichnung bearbeiten",
-  "editLayout": "Layout bearbeiten",
-  "emptyTabHint": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
-  "infoBinaryClockBcd": "Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.",
-  "infoBinaryClockColumns": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.",
-  "infoBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.",
-  "infoDate": "Das aktuelle Kalenderdatum in der gewählten Zeitzone.",
-  "infoDateTime": "Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.",
-  "infoDayPercent": "Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
-  "infoDaySecond": "Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
-  "infoDoomsdayClock": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).",
-  "infoGmst": "Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
-  "infoGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
-  "infoJulianDate": "Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.",
+  "dataDateSub": "Woche {week} · Tag {day}",
+  "dataTabValueCount": "{count, plural, =0{keine Werte} =1{1 Wert} other{{count} Werte}}",
+  "dialogueAbout": "Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.",
+  "dialogueAboutLegalese": "© 2026 RealEarthling",
+  "hintAboutThisValue": "Über diesen Wert",
+  "hintAddDivider": "Trennlinie einfügen",
+  "hintAddSectionHeader": "Abschnittsüberschrift einfügen",
+  "hintAddTab": "Tab hinzufügen",
+  "hintAddValue": "Wert hinzufügen",
+  "hintBack": "Zurück",
+  "hintCopyToClipboard": "In Zwischenablage kopieren",
+  "hintDeselect": "Abwählen",
+  "hintDeselectAll": "Alle abwählen",
+  "hintDoneEditing": "Fertig",
+  "hintDstStatusIndicatorActive": "Wert zeigt Sommerzeit",
+  "hintDstStatusIndicatorInactive": "Wert zeigt Zonenzeit/Standardzeit",
+  "hintEditLayout": "Layout bearbeiten",
+  "hintEditSectionHeader": "Abschnittsüberschrift bearbeiten",
+  "hintEditTimeValue": "Zeitwert bearbeiten",
+  "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
+  "hintRemoveSelected": "Markierte entfernen",
+  "hintResetToDefaults": "Zurücksetzen",
+  "hintSelect": "Auswählen",
+  "hintSelectAll": "Alle auswählen",
+  "hintSelectTimezone": "Zeitzone auswählen",
+  "hintSelectValueType": "Werttyp auswählen",
+  "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
+  "hintZoneIndicator": "Zeitzonen-abhängiger Wert",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
   "infoLinkBinaryClockColumns": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
   "infoLinkBinaryClockString": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -76,34 +80,42 @@
   "infoLinkSwatchBeats": "https://de.wikipedia.org/wiki/Swatch-Internetzeit",
   "infoLinkTai": "https://de.wikipedia.org/wiki/Internationale_Atomzeit",
   "infoLinkUnixSeconds": "https://de.wikipedia.org/wiki/Unixzeit",
-  "infoLmst": "Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.",
-  "infoModifiedJulianDate": "Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.",
-  "infoModifiedJulianDate2000": "Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.",
-  "infoSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
-  "infoTai": "Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
-  "infoTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
-  "infoUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
+  "infoTextBinaryClockBcd": "Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.",
+  "infoTextBinaryClockColumns": "Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.",
+  "infoTextBinaryClockString": "Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.",
+  "infoTextDate": "Das aktuelle Kalenderdatum in der gewählten Zeitzone.",
+  "infoTextDateTime": "Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.",
+  "infoTextDayPercent": "Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
+  "infoTextDaySecond": "Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
+  "infoTextDoomsdayClock": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).",
+  "infoTextGmst": "Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
+  "infoTextGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
+  "infoTextJulianDate": "Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.",
+  "infoTextLmst": "Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.",
+  "infoTextModifiedJulianDate": "Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.",
+  "infoTextModifiedJulianDate2000": "Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.",
+  "infoTextSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
+  "infoTextTai": "Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
+  "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
+  "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
   "labelHours": "Std",
   "labelLocal": "Lokal",
+  "labelLongitude": "Längengrad (negativ = West)",
   "labelMinutes": "Min",
+  "labelNewLabel": "Bezeichnung",
+  "labelNewSectionName": "Abschnittsname",
+  "labelNewTabName": "Tab-Name",
   "labelSeconds": "Sek",
-  "labelUtc": "UTC",
-  "lmstDetermineLocation": "Bestimmen",
-  "lmstLocationDenied": "Standortberechtigung verweigert",
-  "lmstLocationNotYetDetermined": "Noch nicht bestimmt",
-  "lmstLongitudeLabel": "Längengrad (negativ = West)",
-  "lmstModeLocation": "Ungefähren Standort verwenden",
-  "lmstModeLocationSub": "Einmalig, ohne GPS, kein Tracking",
-  "lmstModeManual": "Längengrad manuell eingeben",
-  "lmstModeManualSub": "Längengrad in Dezimalgrad (DDD,DDDD) eingeben",
-  "lmstModeOff": "Nicht anzeigen",
-  "maxValuesReached": "Maximal {count} Werte erlaubt.",
-  "newLabelName": "Bezeichnung",
-  "newTabName": "Tab-Name",
-  "noDescription": "Noch keine Beschreibung verfügbar.",
-  "removeSelected": "Markierte entfernen",
-  "renameTab": "Tab umbenennen",
-  "resetToDefaults": "Auf Standard zurücksetzen",
+  "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
+  "messageCopiedToClipboard": "Kopiert: {label}",
+  "messageEmptyTab": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
+  "messageMaxValues": "Maximal {count} Werte erlaubt.",
+  "messageNoTimezone": "Keine passende Zeitzone gefunden.",
+  "messageSettingsExported": "Einstellungen exportiert",
+  "messageSettingsImportFailed": "Import fehlgeschlagen – ungültige Datei",
+  "messageSettingsImported": "Einstellungen importiert",
+  "messageSettingsReset": "Einstellungen zurückgesetzt",
+  "pageSettings": "Einstellungen",
   "sectionAtomic": "Atomuhr",
   "sectionBinaryClock": "Binäruhr",
   "sectionDoomsdayClock": "Weltuntergangsuhr",
@@ -112,18 +124,29 @@
   "sectionJulian": "Julianisches Datum",
   "sectionSidereal": "Sternzeit",
   "sectionUnix": "Unix-Epoche",
-  "selectAll": "Alle auswählen",
-  "selectForRemoval": "Zum Entfernen markieren",
-  "selectTimezone": "Zeitzone auswählen",
-  "selectValueType": "Werttyp auswählen",
-  "settings": "Einstellungen",
   "settingsAbout": "Über die App",
   "settingsDateWithDetails": "Erweitertes Datum",
   "settingsDateWithDetailsSub": "Ein = mit ISO-Kalenderwoche, Tag des Jahres",
+  "settingsDstAlwaysOff": "Immer Normalzeit",
+  "settingsDstAlwaysOn": "Immer Sommerzeit",
+  "settingsDstAuto": "Automatisch",
+  "settingsDstMode": "Sommerzeit",
   "settingsHourFormat": "24-Stunden-Format",
   "settingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
   "settingsLanguage": "Sprache",
-  "settingsLmst": "LOKALE STERNZEIT",
+  "settingsLmst": "Lokale Sternzeit",
+  "settingsLmstLongitudeAuto": "Ungefähren Standort verwenden",
+  "settingsLmstLongitudeAutoSub": "Einmalig, ohne GPS, kein Tracking",
+  "settingsLmstLongitudeDetermineLocation": "Bestimmen",
+  "settingsLmstLongitudeManual": "Längengrad manuell eingeben",
+  "settingsLmstLongitudeManualSub": "Längengrad in Dezimalgrad (DDD,DDDD) eingeben",
+  "settingsLmstLongitudeNotYetDetermined": "Noch nicht bestimmt",
+  "settingsLmstLongitudeUnavailable": "Standort nicht verfügbar – Standortzugriff aktivieren und Epoch temporär die Berechtigung erteilen, oder Längengrad manuell eingeben",
+  "settingsLmstOff": "Nicht anzeigen",
+  "settingsPreferencesExport": "Einstellungen exportieren",
+  "settingsPreferencesImport": "Einstellungen importieren",
+  "settingsPreferencesReset": "Einstellungen zurücksetzen",
+  "settingsPreferencesResetBackupTitle": "Backup vor dem Zurücksetzen speichern",
   "settingsTheme": "Design",
   "settingsThemeDark": "Dunkel",
   "settingsThemeLight": "Hell",
@@ -136,10 +159,6 @@
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
   "tabTechnical": "Technisch",
-  "tabValueCount": "{count, plural, =0{keine Werte} =1{1 Wert} other{{count} Werte}}",
-  "tabWatchlist": "Watchlist",
-  "timezoneNoResults": "Keine passende Zeitzone gefunden.",
-  "timezoneSearchHint": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",
   "valueTypeBinaryClockColumns": "Binäruhr (Spalten)",
   "valueTypeBinaryClockString": "Binärzeit (String)",
@@ -157,8 +176,5 @@
   "valueTypeSwatchBeats": "Swatch-Internetzeit",
   "valueTypeTai": "TAI (s)",
   "valueTypeTime": "Uhrzeit",
-  "valueTypeUnixSeconds": "Unix-Zeit (s)",
-  "zoneLocal": "Lokal (Systemzeitzone)",
-  "zoneOther": "Andere\u2026",
-  "zoneUtc": "UTC"
+  "valueTypeUnixSeconds": "Unix-Zeit (s)"
 }

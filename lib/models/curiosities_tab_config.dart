@@ -9,9 +9,9 @@ const curiosityTypes = [
 ];
 
 const curiositiesEntries = [
-  TimeValue(type: ValueType.swatchBeats, zone: ZoneUtc()),
-  TimeValue(type: ValueType.binaryClockColumns, zone: ZoneLocal()),
-  TimeValue(type: ValueType.binaryClockBcd, zone: ZoneLocal()),
-  TimeValue(type: ValueType.binaryClockString, zone: ZoneLocal()),
-  TimeValue(type: ValueType.doomsdayClock, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.binaryClockColumns, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.binaryClockBcd, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.binaryClockString, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.doomsdayClock, zone: ZoneUtc()),
 ];

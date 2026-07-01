@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +22,7 @@ void main() {
   runApp(const EpochApp());
 }
 
-const fontFamilyCourierNew = 'Courier New';
-const fontFamilyMonospace = 'monospace';
+const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
 const _nightRed = Color(0xFFCC1010);
 const _nightRedDim = Color(0xFF7A0000);
 
@@ -50,7 +50,7 @@ ThemeData _nightTheme() => ThemeData(
   ),
   iconTheme: const IconThemeData(color: _nightRed),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyCourierNew),
+    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyDefault),
     bodyMedium: TextStyle(color: _nightRed),
     bodySmall: TextStyle(color: _nightRedDim),
     labelSmall: TextStyle(color: _nightRedDim),
@@ -88,20 +88,27 @@ class _EpochAppState extends State<EpochApp> {
   LmstMode _lmstMode       = kDefaultLmstMode;
   double? _lmstLongitude;
 
+  Key _homeKey = UniqueKey();
+
   @override
   void initState() {
     super.initState();
-    _loadSettings();
+    _loadPreferences();
   }
 
-  Future<void> _loadSettings() async {
+  Future<void> reloadPreferences() async {
+    await _loadPreferences();
+    if (mounted) setState(() => _homeKey = UniqueKey());
+  }
+
+  Future<void> _loadPreferences() async {
     final theme           = await loadThemeMode();
     final thousands       = await loadThousandsSep();
     final hour24          = await loadHourFormat24();
     final dateWithDetails = await loadDateWithDetails();
     final locale          = await loadLocale() ?? kDefaultLocale;
-    final lmstMode = await loadLmstMode();
-    final lmstLon  = await loadLmstLongitude();
+    final lmstMode        = await loadLmstMode();
+    final lmstLon         = await loadLmstLongitude();
 
     String localZone = 'UTC';
     try {
@@ -202,7 +209,7 @@ class _EpochAppState extends State<EpochApp> {
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen(),
+      home: HomeScreen(key: _homeKey),
     );
   }
 }
@@ -219,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TimeValue> _civilEntries = [];
+  List<TabEntry> _civilEntries = [];
   List<CustomTabData> _customTabs = [];
   bool _loaded = false;
   bool _isFullscreen = false;
@@ -245,11 +252,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _loadData() async {
     final civil      = await loadCivilEntries();
-    final custom     = await loadCustomTabs();
+    final customTabs = await loadCustomTabs();
     final activeTab  = await loadActiveTab();
     setState(() {
       _civilEntries = civil;
-      _customTabs   = custom;
+      _customTabs   = customTabs;
       _loaded       = true;
     });
     _updateTabController(initialIndex: activeTab);
@@ -266,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   // ── Civil tab callbacks ──────────────────────────────────────────────
 
-  void _onCivilChanged(List<TimeValue> entries) {
+  void _onCivilChanged(List<TabEntry> entries) {
     setState(() => _civilEntries = entries);
     saveCivilEntries(entries);
   }
@@ -298,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen>
   void _addCustomTab(AppLocalizations l10n) {
     if (_customTabs.length >= maxCustomTabs) return;
     final tab = CustomTabData(
-      id:      generateTabId(),
+      id:      generateId(),
       name:    defaultTabName(_customTabs.length),
       entries: [],
     );
@@ -325,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TimeValue> entries) {
+  void _onCustomTabEntriesChanged(String id, List<TabEntry> entries) {
     final tab = _customTabs.firstWhere((t) => t.id == id);
     tab.entries = entries;
     saveCustomTabs(_customTabs);
@@ -339,17 +346,17 @@ class _HomeScreenState extends State<HomeScreen>
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(l10n.renameTab),
+        title: Text(l10n.actionRenameTab),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: InputDecoration(labelText: l10n.newTabName),
+          decoration: InputDecoration(labelText: l10n.labelNewTabName),
           onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel),
+            child: Text(l10n.actionCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
@@ -371,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen>
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
     ).then((_) {
-      // Nach dem Schließen von Settings: LMST bereinigen wenn nötig
+      if (!mounted) return;
       if (EpochApp.of(context).lmstMode == LmstMode.off) {
         _removeLmstFromAllTabs();
       }
@@ -381,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen>
   void _removeLmstFromAllTabs() {
     for (final tab in _customTabs) {
       final newEntries = tab.entries
-          .where((e) => e.type != ValueType.lmst)
+          .where((e) => e.valueType != ValueType.lmst)
           .toList();
       if (newEntries.length != tab.entries.length) {
         tab.entries = newEntries;
@@ -436,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen>
           if (_customTabs.length < maxCustomTabs)
             IconButton(
               icon: const Icon(Icons.add),
-              tooltip: l10n.addTab,
+              tooltip: l10n.hintAddTab,
               onPressed: () {
                 final l10n = AppLocalizations.of(context)!;
                 _addCustomTab(l10n);
@@ -444,7 +451,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           IconButton(
             icon: const Icon(Icons.menu),
-            tooltip: l10n.settings,
+            tooltip: l10n.pageSettings,
             onPressed: () => _openSettings(context),
           ),
         ],
@@ -493,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           ..._customTabs.map((tab) => ConfigurableTab(
             now: _now,
-            timeValues: tab.entries,
+            entries: tab.entries,
             thousandsSep: app.thousandsSep,
             hourFormat24: app.hourFormat24,
             showDateDetails: app.dateWithDetails,
@@ -512,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen>
         title: const Text('Build info'),
         content: Text(
           kBuildTimestamp,
-          style: const TextStyle(fontFamily: fontFamilyMonospace),
+          style: const TextStyle(fontFamily: fontFamilyDefault),
         ),
         actions: [
           TextButton(
@@ -547,7 +554,7 @@ class _CustomTab extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.edit),
-              title: Text(l10n.renameTab),
+              title: Text(l10n.actionRenameTab),
               onTap: () {
                 Navigator.pop(ctx);
                 onRename();
@@ -556,7 +563,7 @@ class _CustomTab extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.close,
                   color: Colors.redAccent),
-              title: Text(l10n.deleteTab,
+              title: Text(l10n.actionDeleteTab,
                   style: const TextStyle(color: Colors.redAccent)),
               onTap: () {
                 Navigator.pop(ctx);

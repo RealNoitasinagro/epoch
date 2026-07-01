@@ -11,9 +11,9 @@ class SectionHeader extends StatelessWidget {
     return Text(
       label.toUpperCase(),
       style: textTheme.labelMedium?.copyWith(
-        letterSpacing: 2.0,
         color: Theme.of(context).colorScheme.primary,
         fontWeight: FontWeight.bold,
+        letterSpacing: 2.0,
       ),
     );
   }

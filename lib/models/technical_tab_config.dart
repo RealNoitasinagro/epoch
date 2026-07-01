@@ -7,7 +7,7 @@ const technicalTypes = [
 ];
 
 const technicalEntries = [
-  TimeValue(type: ValueType.unixSeconds, zone: ZoneUtc()),
-  TimeValue(type: ValueType.tai, zone: ZoneUtc()),
-  TimeValue(type: ValueType.gps, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.tai, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.gps, zone: ZoneUtc()),
 ];

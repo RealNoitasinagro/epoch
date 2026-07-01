@@ -16,7 +16,7 @@ class TabValueCount extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            l10n.tabValueCount(count),
+            l10n.dataTabValueCount(count),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
             ),
