@@ -23,20 +23,8 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ACT', () {
-      var searchTerm = 'ACT';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
     test('ACWST', () {
       var searchTerm = 'ACWST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('ADT', () {
-      var searchTerm = 'ADT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -95,18 +83,6 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('AMST', () {
-      var searchTerm = 'AMST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('AMT', () {
-      var searchTerm = 'AMT';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
     test('AMT', () {
       var searchTerm = 'AMT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -139,12 +115,6 @@ void main() {
 
     test('ART', () {
       var searchTerm = 'ART';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('AST', () {
-      var searchTerm = 'AST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -227,18 +197,6 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('BST', () {
-      var searchTerm = 'BST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('BST', () {
-      var searchTerm = 'BST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
     test('BTT', () {
       var searchTerm = 'BTT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -259,12 +217,6 @@ void main() {
 
     test('CCT', () {
       var searchTerm = 'CCT';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('CDT', () {
-      var searchTerm = 'CDT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -355,18 +307,6 @@ void main() {
 
     test('COT', () {
       var searchTerm = 'COT';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('CST', () {
-      var searchTerm = 'CST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('CST', () {
-      var searchTerm = 'CST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -551,12 +491,6 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('GST', () {
-      var searchTerm = 'GST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
     test('GYT', () {
       var searchTerm = 'GYT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -565,12 +499,6 @@ void main() {
 
     test('HDT', () {
       var searchTerm = 'HDT';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('HST', () {
-      var searchTerm = 'HST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -589,6 +517,12 @@ void main() {
 
     test('HOVT', () {
       var searchTerm = 'HOVT';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('HST', () {
+      var searchTerm = 'HST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -631,18 +565,6 @@ void main() {
 
     test('IRST', () {
       var searchTerm = 'IRST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('IST', () {
-      var searchTerm = 'IST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('IST', () {
-      var searchTerm = 'IST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -959,12 +881,6 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('PST', () {
-      var searchTerm = 'PST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
     test('PT', () {
       var searchTerm = 'PT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -979,12 +895,6 @@ void main() {
 
     test('PYST', () {
       var searchTerm = 'PYST';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('PYT', () {
-      var searchTerm = 'PYT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -1261,12 +1171,6 @@ void main() {
 
     test('WITA', () {
       var searchTerm = 'WITA';
-      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
-    });
-
-    test('WST', () {
-      var searchTerm = 'WST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });

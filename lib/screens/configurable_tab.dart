@@ -190,7 +190,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   }
 
   Future<void> _editLabel(
-      BuildContext context, TimeValue timeValue, AppLocalizations l10n) async {
+      BuildContext context, TimeValue timeValue, AppLocalizations l10n, int index
+    ) async {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final ianaZone = switch (timeValue.zone) {
       ZoneLocal()                  => localIanaZone,
@@ -199,6 +200,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
+
+    // Modes already used by other TimeValues with the same key (same type/zone):
+    final existingModes = widget.entries
+        .whereType<TimeValue>()
+        .where((e) => e.sameZoneAndType(timeValue) &&
+        e.timezoneDisplayMode != timeValue.timezoneDisplayMode)
+        .map((e) => e.timezoneDisplayMode)
+        .toSet();
 
     final controller = TextEditingController(
         text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n));
@@ -233,26 +242,47 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 const SizedBox(height: 4),
                 RadioGroup<TimezoneDisplayMode>(
                   groupValue: selectedMode,
-                  onChanged: (v) => setDialogState(() => selectedMode = v!),
+                  onChanged: (v) {
+                    if (v == null || existingModes.contains(v)) return;
+                    setDialogState(() => selectedMode = v);
+                  },
                   child: Column(
                     children: [
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
-                        title: Text(l10n.settingsDstAuto),
+                        title: Text(l10n.settingsDstAuto,
+                          style: existingModes.contains(TimezoneDisplayMode.auto)
+                              ? TextStyle(color: Theme.of(ctx)
+                              .colorScheme.onSurface.withAlpha(80))
+                              : null,
+                        ),
                         value: TimezoneDisplayMode.auto,
+                        enabled: !existingModes.contains(TimezoneDisplayMode.auto),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
-                        title: Text(l10n.settingsDstAlwaysOn),
+                        title: Text(l10n.settingsDstAlwaysOn,
+                          style: existingModes.contains(TimezoneDisplayMode.forceDst)
+                              ? TextStyle(color: Theme.of(ctx)
+                              .colorScheme.onSurface.withAlpha(80))
+                              : null,
+                        ),
                         value: TimezoneDisplayMode.forceDst,
+                        enabled: !existingModes.contains(TimezoneDisplayMode.forceDst),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
-                        title: Text(l10n.settingsDstAlwaysOff),
+                        title: Text(l10n.settingsDstAlwaysOff,
+                          style: existingModes.contains(TimezoneDisplayMode.forceStandard)
+                              ? TextStyle(color: Theme.of(ctx)
+                              .colorScheme.onSurface.withAlpha(80))
+                              : null,
+                        ),
                         value: TimezoneDisplayMode.forceStandard,
+                        enabled: !existingModes.contains(TimezoneDisplayMode.forceStandard),
                       ),
                     ]
                   )
@@ -284,12 +314,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       ),
     );
     if (result == null) return;
-    final newLabel = result.reset ? null : (result.label!.isEmpty ? null : result.label);
+    final newLabel = result.reset
+        ? null
+        : (result.label == timeValue.localizedDisplayLabel(l10n) ||
+        result.label!.isEmpty)
+        ? null
+        : result.label;
     final newMode = result.reset ? TimezoneDisplayMode.auto : result.mode;
     final updated = List<TabEntry>.of(widget.entries);
-    final idx = updated.indexWhere((e) => e.key == timeValue.key);
-    if (idx == -1) return;
-    updated[idx] = timeValue.withCustomLabel(newLabel).withTimezoneDisplayMode(newMode);
+    updated[index] = timeValue
+        .withCustomLabel(newLabel)
+        .withTimezoneDisplayMode(newMode);
     widget.onEntriesChanged(updated);
   }
 
@@ -304,9 +339,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       onResult: (result) {
         if (result == null || result.isEmpty) return;
         final updated = List<TabEntry>.of(widget.entries);
-        final idx = updated.indexWhere((e) => e.key == s.key);
-        if (idx == -1) return;
-        updated[idx] = s.withLabel(result);
+        final index = updated.indexWhere((e) => e.key == s.key);
+        if (index == -1) return;
+        updated[index] = s.withLabel(result);
         widget.onEntriesChanged(updated);
       },
     );
@@ -593,7 +628,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         icon: const Icon(Icons.edit, size: kIconSizeDefault),
         color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
         tooltip: l10n.hintEditTimeValue,
-        onPressed: () => _editLabel(context, timeValue, l10n),
+        onPressed: () => _editLabel(context, timeValue, l10n, index),
       ),
       ReorderableDragStartListener(
         index: index,

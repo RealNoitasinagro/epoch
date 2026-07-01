@@ -325,13 +325,77 @@ void main() {
       expect(tv2.customLabel, equals(tv.customLabel));
     });
 
-    test('key is unchanged after withTimezoneDisplayMode', () {
+    test('key changes when timezoneDisplayMode changes', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
       final tv2 = tv.withTimezoneDisplayMode(TimezoneDisplayMode.forceStandard);
-      expect(tv2.key, equals(tv.key));
+      expect(tv2.key, isNot(equals(tv.key)));
+      expect(tv2.key, equals('time/named:Europe/Berlin/std'));
+    });
+
+    test('key for forceDst has /dst suffix', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+      );
+      expect(tv.key, equals('time/named:Europe/Berlin/dst'));
+    });
+
+    test('key for forceStandard has /std suffix', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+      );
+      expect(tv.key, equals('time/named:Europe/Berlin/std'));
+    });
+
+    test('sameZoneAndType is true regardless of timezoneDisplayMode', () {
+      const tvAuto = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        timezoneDisplayMode: TimezoneDisplayMode.auto,
+      );
+      const tvDst = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+      );
+      const tvStd = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+      );
+      expect(tvAuto.sameZoneAndType(tvDst), isTrue);
+      expect(tvAuto.sameZoneAndType(tvStd), isTrue);
+      expect(tvDst.sameZoneAndType(tvStd), isTrue);
+    });
+
+    test('sameZoneAndType is false for different zones', () {
+      const tvBerlin = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
+      const tvVienna = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Vienna'),
+      );
+      expect(tvBerlin.sameZoneAndType(tvVienna), isFalse);
+    });
+
+    test('sameZoneAndType is false for different valueType', () {
+      const tvTime = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
+      const tvDateTime = TimeValue(
+        valueType: ValueType.dateTime,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
+      expect(tvTime.sameZoneAndType(tvDateTime), isFalse);
     });
   });
 }

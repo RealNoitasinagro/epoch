@@ -66,20 +66,29 @@ class TimeValue implements TabEntry {
   });
 
   // Unique key for deduplication within a tab.
-  // Custom label does not affect the key – same type+zone = duplicate.
-  String get key {
+  // Custom label does not affect the key.
+  String get _baseKey {
     final z = switch (zone) {
-      ZoneLocal() => 'local',
-      ZoneUtc() => 'utc',
+      ZoneLocal()                  => 'local',
+      ZoneUtc()                    => 'utc',
       ZoneNamed(ianaZone: final s) => 'named:$s',
     };
     return '${valueType.name}/$z';
   }
 
+  @override
+  String get key => switch (timezoneDisplayMode) {
+    TimezoneDisplayMode.auto          => _baseKey,
+    TimezoneDisplayMode.forceDst      => '${_baseKey}/dst',
+    TimezoneDisplayMode.forceStandard => '${_baseKey}/std',
+  };
+
+  bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
+
   // Serialisation
   @override
   String toPrefsString() {
-    final base = customLabel != null ? '$key|$customLabel' : key;
+    final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
     if (timezoneDisplayMode == TimezoneDisplayMode.auto) return base;
     return '$base|dst:${timezoneDisplayMode.name}';
   }
@@ -94,7 +103,7 @@ class TimeValue implements TabEntry {
           TimezoneDisplayMode.values
               .where((m) => m.name == dstStr)
               .firstOrNull ??
-          TimezoneDisplayMode.auto;
+              TimezoneDisplayMode.auto;
       workStr = workStr.substring(0, dstIdx);
     }
 
@@ -129,14 +138,19 @@ class TimeValue implements TabEntry {
 
   // Returns a copy with a different custom label (null to clear).
   TimeValue withCustomLabel(String? label) =>
-      TimeValue(valueType: valueType, zone: zone, customLabel: label);
+      TimeValue(
+        valueType: valueType,
+        zone: zone,
+        customLabel: label
+      );
 
-  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) => TimeValue(
-    valueType: valueType,
-    zone: zone,
-    customLabel: customLabel,
-    timezoneDisplayMode: mode,
-  );
+  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
+      TimeValue(
+        valueType: valueType,
+        zone: zone,
+        customLabel: customLabel,
+        timezoneDisplayMode: mode,
+      );
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
