@@ -108,7 +108,7 @@ class _EpochAppState extends State<EpochApp> {
     final dateWithDetails = await loadDateWithDetails();
     final locale          = await loadLocale() ?? kDefaultLocale;
     final lmstMode        = await loadLmstMode();
-    final lmstLon         = await loadLmstLongitude();
+    final lmstLongitude   = await loadLmstLongitude();
 
     String localZone = 'UTC';
     try {
@@ -119,15 +119,15 @@ class _EpochAppState extends State<EpochApp> {
     }
     
     setState(() {
-      _themeMode       = theme;
-      _thousandsSep    = thousands;
-      _hourFormat24    = hour24;
-      _dateWithDetails = dateWithDetails;
       _locale          = locale;
+      _themeMode       = theme;
+      _hourFormat24    = hour24;
+      _thousandsSep    = thousands;
+      _dateWithDetails = dateWithDetails;
       _localIanaZone   = localZone;
-      _settingsLoaded  = true;
       _lmstMode        = lmstMode;
-      _lmstLongitude   = lmstLon;
+      _lmstLongitude   = lmstLongitude;
+      _settingsLoaded  = true;
     });
   }
 

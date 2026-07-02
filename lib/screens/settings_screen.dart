@@ -39,16 +39,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Read current values from app state – runs after context is available.
     final app = EpochApp.of(context);
-    _themeMode = app.themeMode;
-    _thousandsSep = app.thousandsSep;
-    _hourFormat24 = app.hourFormat24;
-    _dateWithDetails = app.dateWithDetails;
-    _locale = app.locale;
-    _lmstMode = app.lmstMode;
-    _lmstLongitude = app.lmstLongitude;
-    _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+    setState(() {
+      _locale = app.locale;
+      _themeMode = app.themeMode;
+      _hourFormat24 = app.hourFormat24;
+      _thousandsSep = app.thousandsSep;
+      _dateWithDetails = app.dateWithDetails;
+      _lmstMode = app.lmstMode;
+      _lmstLongitude = app.lmstLongitude;
+      _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+    });
   }
 
   @override

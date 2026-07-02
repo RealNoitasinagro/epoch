@@ -63,7 +63,19 @@ also happen to spell out **E**legant **p**resentation **o**f
 Most clock apps show you one or two time formats.
 Epoch shows you 18 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
-It is built for people who are curious about how time actually works.
+
+**Epoch is for you if you...**
+- are curious about different time systems in use around the world
+- want to compare local times across many timezones at a glance
+- enjoy unusual time representations like Swatch Internet Time, day seconds, or binary clocks
+- do amateur astronomy and want a single app for sidereal time, Julian Date, and LMST —
+  without blue light ruining your dark adaptation
+- keep an eye on the Doomsday Clock
+- just want to know what Unix time it is right now
+
+Epoch is built around flexibility:
+rather than making choices for you, it gives you the building blocks
+to assemble exactly the time display you need — and nothing you don't.
 
 
 ## Screenshots
