@@ -4,6 +4,8 @@
 
 ### Fixed
 - numeric timezone abbreviations (e. g. "+0845") were ripped apart
+- slight button misalignment (visible on Android only) for dividers and section headers
+
 
 ---
 

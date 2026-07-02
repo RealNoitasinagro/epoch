@@ -123,22 +123,28 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _entryCheckbox(BuildContext context, TabEntry entry) {
     final l10n = AppLocalizations.of(context)!;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => setState(() {
-        if (_checked.contains(entry.key)) {
-          _checked.remove(entry.key);
-        } else {
-          _checked.add(entry.key);
-        }
-      }),
-      child: Tooltip(
-        message: _checked.contains(entry.key)
-            ? l10n.hintDeselect : l10n.hintSelect,
-        child: Checkbox(
-          value: _checked.contains(entry.key),
-          tristate: false,
-          onChanged: null,
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => setState(() {
+          if (_checked.contains(entry.key)) {
+            _checked.remove(entry.key);
+          } else {
+            _checked.add(entry.key);
+          }
+        }),
+        child: Tooltip(
+          message: _checked.contains(entry.key)
+              ? l10n.hintDeselect : l10n.hintSelect,
+          child: Checkbox(
+            value: _checked.contains(entry.key),
+            tristate: false,
+            // onChanged: null disables the checkbox's own tap handling;
+            // taps are handled by the GestureDetector above for a larger hit area.
+            onChanged: null,
+          ),
         ),
       ),
     );
