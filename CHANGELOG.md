@@ -4,6 +4,7 @@
 
 ### Fixed
 - numeric timezone abbreviations (e. g. "+0845") were ripped apart
+- slider buttons in Settings not always showing correct state immediately after reset
 - slight button misalignment (visible on Android only) for dividers and section headers
 
 
