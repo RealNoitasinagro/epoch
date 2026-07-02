@@ -42,12 +42,6 @@ const tCst = [
   'zentrale normalzeit', 'zentrale sommerzeit',
 ];
 
-const tMst = [
-  'mst', 'mdt',
-  'mountain', 'mountain standard time', 'mountain daylight time',
-  'bergzeit', 'mountain-normalzeit',
-];
-
 const tPst = [
   'pst', 'pdt',
   'pacific', 'pacific standard time', 'pacific daylight time',
@@ -68,34 +62,4 @@ const tChinaStd = [
 const tIst = [
   'ist',
   'india standard time', 'indische standardzeit',
-];
-
-const tJst = [
-  'jst',
-  'japan standard time', 'japanische standardzeit',
-];
-
-const tKst = [
-  'kst',
-  'korea standard time', 'koreanische standardzeit',
-];
-
-const tSast = [
-  'sast',
-  'south africa standard time', 'südafrikanische standardzeit',
-];
-
-const tEat = [
-  'eat',
-  'east africa time', 'ostafrikanische zeit',
-];
-
-const tWat = [
-  'wat',
-  'west africa time', 'westafrikanische zeit',
-];
-
-const tGst = [
-  'gst',
-  'gulf standard time', 'Golfzeit',
 ];

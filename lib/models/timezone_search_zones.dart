@@ -7,13 +7,12 @@ import 'package:epoch/models/timezone_search_terms.dart';
 
 const List<TzEntry> tzDatabase = [          // 84 entries in total
   ...tzEntries_Africa,                      //  7 entries
-  ...tzEntries_Asia,                        // 18 entries
   ...tzEntries_Americas,                    // 13 entries
+  ...tzEntries_Asia,                        // 18 entries
   ...tzEntries_Atlantic_Arctic_Antarctica,  //  6 entries
   ...tzEntries_Australia_Pacific,           // 21 entries
   ...tzEntries_Europe,                      // 19 entries
 ];
-
 
 // ── Africa ───────────────────────────────────────────────────────────
 const List<TzEntry> tzEntries_Africa = [
@@ -37,24 +36,30 @@ const List<TzEntry> tzEntries_Africa = [
     ianaZone: 'Africa/Johannesburg',
     offsetWinter: '+02:00', offsetSummer: '+02:00',
     abbrWinter: 'SAST', abbrSummer: 'SAST',
-    terms: [...tSast,
+    terms: [
       'johannesburg', 'south africa', 'südafrika', 'cape town', 'kapstadt',
+      'sast',
+      'south africa standard time', 'südafrikanische standardzeit',
     ],
   ),
   TzEntry(
     ianaZone: 'Africa/Nairobi',
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: 'EAT', abbrSummer: 'EAT',
-    terms: [...tEat,
+    terms: [
       'nairobi', 'kenya', 'kenia',
+      'eat',
+      'east africa time', 'ostafrikanische zeit',
     ],
   ),
   TzEntry(
     ianaZone: 'Africa/Lagos',
     offsetWinter: '+01:00', offsetSummer: '+01:00',
     abbrWinter: 'WAT', abbrSummer: 'WAT',
-    terms: [...tWat,
+    terms: [
       'lagos', 'nigeria', 'abuja',
+      'wat',
+      'west africa time', 'westafrikanische zeit',
     ],
   ),
   TzEntry(
@@ -76,15 +81,139 @@ const List<TzEntry> tzEntries_Africa = [
   ),
 ];
 
+// ── Americas ─────────────────────────────────────────────────────────
+const List<TzEntry> tzEntries_Americas = [
+  TzEntry(
+    ianaZone: 'America/New_York',
+    offsetWinter: '-05:00', offsetSummer: '-04:00',
+    abbrWinter: 'EST', abbrSummer: 'EDT',
+    terms: [...tEst,
+      'new york', 'usa east', 'ostküste usa',
+      'washington', 'boston', 'miami', 'atlanta', 'philadelphia',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Chicago',
+    offsetWinter: '-06:00', offsetSummer: '-05:00',
+    abbrWinter: 'CST', abbrSummer: 'CDT',
+    terms: [...tCst,
+      'chicago', 'houston', 'dallas', 'minneapolis',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Denver',
+    offsetWinter: '-07:00', offsetSummer: '-06:00',
+    abbrWinter: 'MST', abbrSummer: 'MDT',
+    terms: [
+      'denver', 'salt lake city', 'phoenix', 'colorado',
+      'mst', 'mdt',
+      'mountain', 'mountain standard time', 'mountain daylight time',
+      'bergzeit', 'mountain-normalzeit',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Los_Angeles',
+    offsetWinter: '-08:00', offsetSummer: '-07:00',
+    abbrWinter: 'PST', abbrSummer: 'PDT',
+    terms: [...tPst,
+      'los angeles', 'westküste usa', 'usa west',
+      'san francisco', 'seattle', 'las vegas', 'portland',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Anchorage',
+    offsetWinter: '-09:00', offsetSummer: '-08:00',
+    abbrWinter: 'AKST', abbrSummer: 'AKDT',
+    terms: [
+      'akst', 'akdt', 'alaska time', 'alaskazeit',
+      'anchorage', 'alaska', 'fairbanks',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Toronto',
+    offsetWinter: '-05:00', offsetSummer: '-04:00',
+    abbrWinter: 'EST', abbrSummer: 'EDT',
+    terms: [...tEst,
+      'toronto', 'ontario', 'canada east', 'kanada ost',
+      'ottawa', 'montreal',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Vancouver',
+    offsetWinter: '-08:00', offsetSummer: '-07:00',
+    abbrWinter: 'PST', abbrSummer: 'PDT',
+    terms: [...tPst,
+      'vancouver', 'british columbia', 'canada west', 'kanada west',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Halifax',
+    offsetWinter: '-04:00', offsetSummer: '-03:00',
+    abbrWinter: 'AST', abbrSummer: 'ADT',
+    terms: [
+      'ast', 'adt', 'atlantic standard time', 'atlantic daylight time',
+      'atlantische normalzeit',
+      'halifax', 'nova scotia', 'new brunswick', 'neubraunschweig',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/St_Johns',
+    offsetWinter: '-03:30', offsetSummer: '-02:30',
+    abbrWinter: 'NST', abbrSummer: 'NDT',
+    terms: [
+      'nst', 'ndt', 'newfoundland standard time', 'newfoundland time',
+      'st johns', 'saint johns', 'newfoundland', 'neufundland',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Mexico_City',
+    offsetWinter: '-06:00', offsetSummer: '-05:00',
+    abbrWinter: 'CST', abbrSummer: 'CDT',
+    terms: [...tCst,
+      'mexico city', 'mexiko', 'mexico', 'guadalajara',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Bogota',
+    offsetWinter: '-05:00', offsetSummer: '-05:00',
+    abbrWinter: 'COT', abbrSummer: 'COT',
+    terms: [
+      'cot', 'colombia time', 'kolumbianische zeit',
+      'bogota', 'colombia', 'kolumbien',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Sao_Paulo',
+    offsetWinter: '-03:00', offsetSummer: '-03:00',
+    abbrWinter: 'BRT', abbrSummer: 'BRT',
+    terms: [
+      'brt', 'brasilia time', 'brasilianische zeit',
+      'sao paulo', 'são paulo', 'brazil', 'brasilien', 'brasil',
+      'rio de janeiro', 'brasilia', 'brasília',
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'America/Argentina/Buenos_Aires',
+    offsetWinter: '-03:00', offsetSummer: '-03:00',
+    abbrWinter: 'ART', abbrSummer: 'ART',
+    terms: [
+      'art', 'argentina time', 'argentinische zeit',
+      'buenos aires', 'argentina', 'argentinien',
+    ],
+  ),
+];
+
 // ── Asia ─────────────────────────────────────────────────────────────
 const List<TzEntry> tzEntries_Asia = [
   TzEntry(
     ianaZone: 'Asia/Dubai',
     offsetWinter: '+04:00', offsetSummer: '+04:00',
     abbrWinter: 'GST', abbrSummer: 'GST',
-    terms: [...tGst,
+    terms: [
       'dubai', 'uae', 'vae', 'united arab emirates',
       'vereinigte arabische emirate', 'abu dhabi', 'sharjah',
+      'gst',
+      'gulf standard time', 'Golfzeit',
     ],
   ),
   TzEntry(
@@ -219,16 +348,20 @@ const List<TzEntry> tzEntries_Asia = [
     ianaZone: 'Asia/Seoul',
     offsetWinter: '+09:00', offsetSummer: '+09:00',
     abbrWinter: 'KST', abbrSummer: 'KST',
-    terms: [...tKst,
+    terms: [
       'seoul', 'korea', 'south korea', 'südkorea', 'busan',
+      'kst',
+      'korea standard time', 'koreanische standardzeit',
     ],
   ),
   TzEntry(
     ianaZone: 'Asia/Tokyo',
     offsetWinter: '+09:00', offsetSummer: '+09:00',
     abbrWinter: 'JST', abbrSummer: 'JST',
-    terms: [...tJst,
+    terms: [
       'tokyo', 'tokio', 'japan', 'osaka', 'kyoto',
+      'jst',
+      'japan standard time', 'japanische standardzeit',
     ],
   ),
   TzEntry(
@@ -238,125 +371,6 @@ const List<TzEntry> tzEntries_Asia = [
     terms: [
       'ast', 'arabia standard time', 'arabische standardzeit',
       'baghdad', 'bagdad', 'iraq', 'irak',
-    ],
-  ),
-];
-
-// ── Americas ─────────────────────────────────────────────────────────
-const List<TzEntry> tzEntries_Americas = [
-  TzEntry(
-    ianaZone: 'America/New_York',
-    offsetWinter: '-05:00', offsetSummer: '-04:00',
-    abbrWinter: 'EST', abbrSummer: 'EDT',
-    terms: [...tEst,
-      'new york', 'usa east', 'ostküste usa',
-      'washington', 'boston', 'miami', 'atlanta', 'philadelphia',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Chicago',
-    offsetWinter: '-06:00', offsetSummer: '-05:00',
-    abbrWinter: 'CST', abbrSummer: 'CDT',
-    terms: [...tCst,
-      'chicago', 'houston', 'dallas', 'minneapolis',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Denver',
-    offsetWinter: '-07:00', offsetSummer: '-06:00',
-    abbrWinter: 'MST', abbrSummer: 'MDT',
-    terms: [...tMst,
-      'denver', 'salt lake city', 'phoenix', 'colorado',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Los_Angeles',
-    offsetWinter: '-08:00', offsetSummer: '-07:00',
-    abbrWinter: 'PST', abbrSummer: 'PDT',
-    terms: [...tPst,
-      'los angeles', 'westküste usa', 'usa west',
-      'san francisco', 'seattle', 'las vegas', 'portland',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Anchorage',
-    offsetWinter: '-09:00', offsetSummer: '-08:00',
-    abbrWinter: 'AKST', abbrSummer: 'AKDT',
-    terms: [
-      'akst', 'akdt', 'alaska time', 'alaskazeit',
-      'anchorage', 'alaska', 'fairbanks',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Toronto',
-    offsetWinter: '-05:00', offsetSummer: '-04:00',
-    abbrWinter: 'EST', abbrSummer: 'EDT',
-    terms: [...tEst,
-      'toronto', 'ontario', 'canada east', 'kanada ost',
-      'ottawa', 'montreal',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Vancouver',
-    offsetWinter: '-08:00', offsetSummer: '-07:00',
-    abbrWinter: 'PST', abbrSummer: 'PDT',
-    terms: [...tPst,
-      'vancouver', 'british columbia', 'canada west', 'kanada west',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Halifax',
-    offsetWinter: '-04:00', offsetSummer: '-03:00',
-    abbrWinter: 'AST', abbrSummer: 'ADT',
-    terms: [
-      'ast', 'adt', 'atlantic standard time', 'atlantic daylight time',
-      'atlantische normalzeit',
-      'halifax', 'nova scotia', 'new brunswick', 'neubraunschweig',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/St_Johns',
-    offsetWinter: '-03:30', offsetSummer: '-02:30',
-    abbrWinter: 'NST', abbrSummer: 'NDT',
-    terms: [
-      'nst', 'ndt', 'newfoundland standard time', 'newfoundland time',
-      'st johns', 'saint johns', 'newfoundland', 'neufundland',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Mexico_City',
-    offsetWinter: '-06:00', offsetSummer: '-05:00',
-    abbrWinter: 'CST', abbrSummer: 'CDT',
-    terms: [...tCst,
-      'mexico city', 'mexiko', 'mexico', 'guadalajara',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Bogota',
-    offsetWinter: '-05:00', offsetSummer: '-05:00',
-    abbrWinter: 'COT', abbrSummer: 'COT',
-    terms: [
-      'cot', 'colombia time', 'kolumbianische zeit',
-      'bogota', 'colombia', 'kolumbien',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Sao_Paulo',
-    offsetWinter: '-03:00', offsetSummer: '-03:00',
-    abbrWinter: 'BRT', abbrSummer: 'BRT',
-    terms: [
-      'brt', 'brasilia time', 'brasilianische zeit',
-      'sao paulo', 'são paulo', 'brazil', 'brasilien', 'brasil',
-      'rio de janeiro', 'brasilia', 'brasília',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'America/Argentina/Buenos_Aires',
-    offsetWinter: '-03:00', offsetSummer: '-03:00',
-    abbrWinter: 'ART', abbrSummer: 'ART',
-    terms: [
-      'art', 'argentina time', 'argentinische zeit',
-      'buenos aires', 'argentina', 'argentinien',
     ],
   ),
 ];
