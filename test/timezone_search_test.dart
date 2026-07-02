@@ -1,4 +1,5 @@
 import 'package:epoch/models/timezone_search.dart';
+import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
