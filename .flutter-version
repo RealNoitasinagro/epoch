@@ -1,4 +1,6 @@
-Flutter 3.44.2 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision c9a6c48423 (vor 8 Tagen) • 2026-06-10 15:52:41 -0700
-Engine • hash 04efd7c093d4e9281d5526ebcad6ecc60ba8badf (revision 77e2e94772) (7 days ago) • 2026-06-10 19:59:06.000Z
+Flutter 3.44.4 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision ad70ec4617 (vor 8 Tagen) • 2026-06-24 11:07:06 -0700
+Engine • hash 700aebeca4c0e610f109a3979ee3e71b69d666bc (revision a10d8ac38d) (8 days ago) • 2026-06-23 23:09:55.000Z
 Tools • Dart 3.12.2 • DevTools 2.57.0
+
+pinned: 2026-07-02 15:16:17 CEST
