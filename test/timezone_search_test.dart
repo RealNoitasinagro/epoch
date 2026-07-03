@@ -3598,4 +3598,1626 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
   }, skip: false);
+
+  group('timezone search capitals and megacities', () {
+    test("Abidjan", () {
+      var searchTerm = "Abidjan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Abu Dhabi", () {
+      var searchTerm = "Abu Dhabi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Abuja", () {
+      var searchTerm = "Abuja";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Accra", () {
+      var searchTerm = "Accra";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Adamstown", () {
+      var searchTerm = "Adamstown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Addis Ababa", () {
+      var searchTerm = "Addis Ababa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ahmedabad", () {
+      var searchTerm = "Ahmedabad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Alexandria", () {
+      var searchTerm = "Alexandria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Algiers", () {
+      var searchTerm = "Algiers";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Alofi", () {
+      var searchTerm = "Alofi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Amman", () {
+      var searchTerm = "Amman";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Amsterdam", () {
+      var searchTerm = "Amsterdam";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Andorra La Vella", () {
+      var searchTerm = "Andorra La Vella";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ankara", () {
+      var searchTerm = "Ankara";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Antananarivo", () {
+      var searchTerm = "Antananarivo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Apia", () {
+      var searchTerm = "Apia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ashgabat", () {
+      var searchTerm = "Ashgabat";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Asmara", () {
+      var searchTerm = "Asmara";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Astana", () {
+      var searchTerm = "Astana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Asuncion", () {
+      var searchTerm = "Asuncion";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Asunción", () {
+      var searchTerm = "Asunción";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Athens", () {
+      var searchTerm = "Athens";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Avarua", () {
+      var searchTerm = "Avarua";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Baghdad", () {
+      var searchTerm = "Baghdad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Baku", () {
+      var searchTerm = "Baku";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bamako", () {
+      var searchTerm = "Bamako";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bandar Seri Begawan", () {
+      var searchTerm = "Bandar Seri Begawan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bangalore", () {
+      var searchTerm = "Bangalore";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bangkok", () {
+      var searchTerm = "Bangkok";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bangui", () {
+      var searchTerm = "Bangui";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Banjul", () {
+      var searchTerm = "Banjul";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Basseterre", () {
+      var searchTerm = "Basseterre";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Beijing", () {
+      var searchTerm = "Beijing";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Beirut", () {
+      var searchTerm = "Beirut";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belgrade", () {
+      var searchTerm = "Belgrade";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belmopan", () {
+      var searchTerm = "Belmopan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Berlin", () {
+      var searchTerm = "Berlin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bijie", () {
+      var searchTerm = "Bijie";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bishkek", () {
+      var searchTerm = "Bishkek";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bissau", () {
+      var searchTerm = "Bissau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bogota", () {
+      var searchTerm = "Bogota";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brades", () {
+      var searchTerm = "Brades";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brasilia", () {
+      var searchTerm = "Brasilia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bratislava", () {
+      var searchTerm = "Bratislava";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brazzaville", () {
+      var searchTerm = "Brazzaville";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bridgetown", () {
+      var searchTerm = "Bridgetown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brussels", () {
+      var searchTerm = "Brussels";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bucharest", () {
+      var searchTerm = "Bucharest";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Budapest", () {
+      var searchTerm = "Budapest";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Buenos Aires", () {
+      var searchTerm = "Buenos Aires";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cairo", () {
+      var searchTerm = "Cairo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Canberra", () {
+      var searchTerm = "Canberra";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Caracas", () {
+      var searchTerm = "Caracas";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Castries", () {
+      var searchTerm = "Castries";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Changchun", () {
+      var searchTerm = "Changchun";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Changde", () {
+      var searchTerm = "Changde";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Changsha", () {
+      var searchTerm = "Changsha";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Changzhou", () {
+      var searchTerm = "Changzhou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chengchow", () {
+      var searchTerm = "Chengchow";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chengdu", () {
+      var searchTerm = "Chengdu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chennai", () {
+      var searchTerm = "Chennai";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chongqing", () {
+      var searchTerm = "Chongqing";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ciudad de la Paz", () {
+      var searchTerm = "Ciudad de la Paz";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cockburn Town", () {
+      var searchTerm = "Cockburn Town";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Conakry", () {
+      var searchTerm = "Conakry";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Copenhagen", () {
+      var searchTerm = "Copenhagen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dakar", () {
+      var searchTerm = "Dakar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dalian", () {
+      var searchTerm = "Dalian";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dar es Salaam", () {
+      var searchTerm = "Dar es Salaam";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Delhi", () {
+      var searchTerm = "Delhi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dhaka", () {
+      var searchTerm = "Dhaka";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Djibouti", () {
+      var searchTerm = "Djibouti";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Doha", () {
+      var searchTerm = "Doha";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dongguan", () {
+      var searchTerm = "Dongguan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Douglas", () {
+      var searchTerm = "Douglas";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dublin", () {
+      var searchTerm = "Dublin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Foshan", () {
+      var searchTerm = "Foshan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Freetown", () {
+      var searchTerm = "Freetown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Funafuti", () {
+      var searchTerm = "Funafuti";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Fuzhou", () {
+      var searchTerm = "Fuzhou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gaborone", () {
+      var searchTerm = "Gaborone";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Georgetown", () {
+      var searchTerm = "Georgetown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("George Town", () {
+      var searchTerm = "George Town";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gibraltar", () {
+      var searchTerm = "Gibraltar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gitega", () {
+      var searchTerm = "Gitega";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guangzhou", () {
+      var searchTerm = "Guangzhou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guatemala City", () {
+      var searchTerm = "Guatemala City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guiyang", () {
+      var searchTerm = "Guiyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hamilton", () {
+      var searchTerm = "Hamilton";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hangzhou", () {
+      var searchTerm = "Hangzhou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hanoi", () {
+      var searchTerm = "Hanoi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Harare", () {
+      var searchTerm = "Harare";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Harbin", () {
+      var searchTerm = "Harbin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Havana", () {
+      var searchTerm = "Havana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hefei", () {
+      var searchTerm = "Hefei";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Helsinki", () {
+      var searchTerm = "Helsinki";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Heze", () {
+      var searchTerm = "Heze";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ho Chi Minh City", () {
+      var searchTerm = "Ho Chi Minh City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hong Kong", () {
+      var searchTerm = "Hong Kong";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Honiara", () {
+      var searchTerm = "Honiara";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hyderabad", () {
+      var searchTerm = "Hyderabad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Islamabad", () {
+      var searchTerm = "Islamabad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Istanbul", () {
+      var searchTerm = "Istanbul";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jakarta", () {
+      var searchTerm = "Jakarta";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jamestown", () {
+      var searchTerm = "Jamestown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jerusalem", () {
+      var searchTerm = "Jerusalem";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jieyang", () {
+      var searchTerm = "Jieyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jinan", () {
+      var searchTerm = "Jinan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kabul", () {
+      var searchTerm = "Kabul";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kampala", () {
+      var searchTerm = "Kampala";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Karachi", () {
+      var searchTerm = "Karachi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kathmandu", () {
+      var searchTerm = "Kathmandu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Khartoum", () {
+      var searchTerm = "Khartoum";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kigali", () {
+      var searchTerm = "Kigali";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kingston", () {
+      var searchTerm = "Kingston";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kingstown", () {
+      var searchTerm = "Kingstown";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kinshasa", () {
+      var searchTerm = "Kinshasa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kolkata", () {
+      var searchTerm = "Kolkata";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kuala Lumpur", () {
+      var searchTerm = "Kuala Lumpur";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kunming", () {
+      var searchTerm = "Kunming";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kuwait City", () {
+      var searchTerm = "Kuwait City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kyiv", () {
+      var searchTerm = "Kyiv";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lagos", () {
+      var searchTerm = "Lagos";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lahore", () {
+      var searchTerm = "Lahore";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Libreville", () {
+      var searchTerm = "Libreville";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lilongwe", () {
+      var searchTerm = "Lilongwe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lima", () {
+      var searchTerm = "Lima";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Linyi", () {
+      var searchTerm = "Linyi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lisbon", () {
+      var searchTerm = "Lisbon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ljubljana", () {
+      var searchTerm = "Ljubljana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lomé", () {
+      var searchTerm = "Lomé";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("London", () {
+      var searchTerm = "London";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Luanda", () {
+      var searchTerm = "Luanda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Luoyang", () {
+      var searchTerm = "Luoyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lusaka", () {
+      var searchTerm = "Lusaka";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Luxembourg", () {
+      var searchTerm = "Luxembourg";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Majuro", () {
+      var searchTerm = "Majuro";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Male", () {
+      var searchTerm = "Male";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malé", () {
+      var searchTerm = "Malé";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Managua", () {
+      var searchTerm = "Managua";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Manama", () {
+      var searchTerm = "Manama";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Manila", () {
+      var searchTerm = "Manila";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Maputo", () {
+      var searchTerm = "Maputo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Maseru", () {
+      var searchTerm = "Maseru";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mbabane", () {
+      var searchTerm = "Mbabane";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mexico City", () {
+      var searchTerm = "Mexico City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Minsk", () {
+      var searchTerm = "Minsk";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Monaco", () {
+      var searchTerm = "Monaco";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Monrovia", () {
+      var searchTerm = "Monrovia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Montevideo", () {
+      var searchTerm = "Montevideo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Moroni", () {
+      var searchTerm = "Moroni";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Moscow", () {
+      var searchTerm = "Moscow";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mumbai", () {
+      var searchTerm = "Mumbai";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Muscat", () {
+      var searchTerm = "Muscat";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nairobi", () {
+      var searchTerm = "Nairobi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nampula", () {
+      var searchTerm = "Nampula";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nanchang", () {
+      var searchTerm = "Nanchang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nanking", () {
+      var searchTerm = "Nanking";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nanning", () {
+      var searchTerm = "Nanning";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nassau", () {
+      var searchTerm = "Nassau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Naypyidaw", () {
+      var searchTerm = "Naypyidaw";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nay Pyi Taw", () {
+      var searchTerm = "Nay Pyi Taw";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("N'Djamena", () {
+      var searchTerm = "N'Djamena";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("New Delhi", () {
+      var searchTerm = "New Delhi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("New York City", () {
+      var searchTerm = "New York City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Niamey", () {
+      var searchTerm = "Niamey";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nicosia", () {
+      var searchTerm = "Nicosia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nouakchott", () {
+      var searchTerm = "Nouakchott";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nuku'alofa", () {
+      var searchTerm = "Nuku'alofa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nuuk", () {
+      var searchTerm = "Nuuk";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Oranjestad", () {
+      var searchTerm = "Oranjestad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Oslo", () {
+      var searchTerm = "Oslo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ottawa", () {
+      var searchTerm = "Ottawa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ouagadougou", () {
+      var searchTerm = "Ouagadougou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Panama City", () {
+      var searchTerm = "Panama City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Paramaribo", () {
+      var searchTerm = "Paramaribo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Paris", () {
+      var searchTerm = "Paris";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Phnom Penh", () {
+      var searchTerm = "Phnom Penh";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Podgorica", () {
+      var searchTerm = "Podgorica";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port-au-Prince", () {
+      var searchTerm = "Port-au-Prince";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port Louis", () {
+      var searchTerm = "Port Louis";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port Moresby", () {
+      var searchTerm = "Port Moresby";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port of Spain", () {
+      var searchTerm = "Port of Spain";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port-of-Spain", () {
+      var searchTerm = "Port-of-Spain";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Porto Novo", () {
+      var searchTerm = "Porto Novo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Porto-Novo", () {
+      var searchTerm = "Porto-Novo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port Vila", () {
+      var searchTerm = "Port Vila";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Port-Vila", () {
+      var searchTerm = "Port-Vila";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Prague", () {
+      var searchTerm = "Prague";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Pristina", () {
+      var searchTerm = "Pristina";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Pyongyang", () {
+      var searchTerm = "Pyongyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Qingdao", () {
+      var searchTerm = "Qingdao";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Quito", () {
+      var searchTerm = "Quito";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Rabat", () {
+      var searchTerm = "Rabat";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Reykjavik", () {
+      var searchTerm = "Reykjavik";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Reykjavík", () {
+      var searchTerm = "Reykjavík";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Riga", () {
+      var searchTerm = "Riga";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Rio de Janeiro", () {
+      var searchTerm = "Rio de Janeiro";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Riyadh", () {
+      var searchTerm = "Riyadh";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Road Town", () {
+      var searchTerm = "Road Town";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Rome", () {
+      var searchTerm = "Rome";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Roseau", () {
+      var searchTerm = "Roseau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint-Denis", () {
+      var searchTerm = "Saint-Denis";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint George's", () {
+      var searchTerm = "Saint George's";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint John's", () {
+      var searchTerm = "Saint John's";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Petersburg", () {
+      var searchTerm = "Saint Petersburg";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sana", () {
+      var searchTerm = "Sana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sanaa", () {
+      var searchTerm = "Sanaa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San Jose", () {
+      var searchTerm = "San Jose";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San José", () {
+      var searchTerm = "San José";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San Juan", () {
+      var searchTerm = "San Juan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San Marino", () {
+      var searchTerm = "San Marino";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San Salvador", () {
+      var searchTerm = "San Salvador";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Santiago", () {
+      var searchTerm = "Santiago";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Santo Domingo", () {
+      var searchTerm = "Santo Domingo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("São Paulo", () {
+      var searchTerm = "São Paulo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("São Tomé", () {
+      var searchTerm = "São Tomé";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Seoul", () {
+      var searchTerm = "Seoul";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shanghai", () {
+      var searchTerm = "Shanghai";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shangqiu", () {
+      var searchTerm = "Shangqiu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shantou", () {
+      var searchTerm = "Shantou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shenyang", () {
+      var searchTerm = "Shenyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shenzhen", () {
+      var searchTerm = "Shenzhen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Shijiazhuang", () {
+      var searchTerm = "Shijiazhuang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Singapore", () {
+      var searchTerm = "Singapore";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Skopje", () {
+      var searchTerm = "Skopje";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sofia", () {
+      var searchTerm = "Sofia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Stanley", () {
+      var searchTerm = "Stanley";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sucre", () {
+      var searchTerm = "Sucre";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Suva", () {
+      var searchTerm = "Suva";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Suzhou", () {
+      var searchTerm = "Suzhou";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tai'an", () {
+      var searchTerm = "Tai'an";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Taiyuan", () {
+      var searchTerm = "Taiyuan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tallinn", () {
+      var searchTerm = "Tallinn";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tangshan", () {
+      var searchTerm = "Tangshan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tarawa", () {
+      var searchTerm = "Tarawa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tashkent", () {
+      var searchTerm = "Tashkent";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tbilisi", () {
+      var searchTerm = "Tbilisi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tegucigalpa", () {
+      var searchTerm = "Tegucigalpa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tehran", () {
+      var searchTerm = "Tehran";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Thimphu", () {
+      var searchTerm = "Thimphu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tianjin", () {
+      var searchTerm = "Tianjin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tirana", () {
+      var searchTerm = "Tirana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tokyo", () {
+      var searchTerm = "Tokyo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tripoli", () {
+      var searchTerm = "Tripoli";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tunis", () {
+      var searchTerm = "Tunis";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ulaanbaatar", () {
+      var searchTerm = "Ulaanbaatar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vaduz", () {
+      var searchTerm = "Vaduz";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Valletta", () {
+      var searchTerm = "Valletta";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vatican City", () {
+      var searchTerm = "Vatican City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Victoria", () {
+      var searchTerm = "Victoria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vienna", () {
+      var searchTerm = "Vienna";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vientiane", () {
+      var searchTerm = "Vientiane";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vilnius", () {
+      var searchTerm = "Vilnius";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Warsaw", () {
+      var searchTerm = "Warsaw";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Weifang", () {
+      var searchTerm = "Weifang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Wellington", () {
+      var searchTerm = "Wellington";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Windhoek", () {
+      var searchTerm = "Windhoek";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Wuhan", () {
+      var searchTerm = "Wuhan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Wuxi", () {
+      var searchTerm = "Wuxi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Xiamen", () {
+      var searchTerm = "Xiamen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Xi'an", () {
+      var searchTerm = "Xi'an";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Xinyang", () {
+      var searchTerm = "Xinyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yantai", () {
+      var searchTerm = "Yantai";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yaounde", () {
+      var searchTerm = "Yaounde";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yaoundé", () {
+      var searchTerm = "Yaoundé";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yaren", () {
+      var searchTerm = "Yaren";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yerevan", () {
+      var searchTerm = "Yerevan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zagreb", () {
+      var searchTerm = "Zagreb";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zhanjiang", () {
+      var searchTerm = "Zhanjiang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+  }, skip: skip);
 }
