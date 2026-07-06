@@ -1,65 +1,66 @@
 // ── Shared term sets by zone group ───────────────────────────────────────────
 
-const tUtc = [
-  'utc', 'universal', 'coordinated', 'koordiniert',
-  'universal coordinated', 'koordinierte weltzeit', 'weltzeit',
+// Europe
+
+const tUTC = [  // not used atm
+  ...['coordinated universal time', 'universal time coordinated'],
+  ...['koordinierte weltzeit'],
 ];
 
-const tGmt = [
-  'gmt', 'greenwich', 'mean time', 'mittlere greenwich-zeit',
+const tGMT = [
+  ...['greenwich mean time'],
+  ...['mittlere greenwich-zeit'],
 ];
 
-const tCet = [
-  'cet', 'cest', 'mez', 'mesz', 'met',
-  'central european', 'mitteleuropäisch', 'mitteleuropäische',
-  'central european time', 'central european summer time',
-  'mitteleuropäische zeit', 'mitteleuropäische sommerzeit',
+const tCET_CEST = [
+  ...['central european time', 'central european summer time',
+    'middle european time', 'middle european summer time', 'met', 'mest',
+    'central european daylight time', 'central european daylight saving time', 'cedt'],
+  ...['mitteleuropäische zeit', 'mitteleuropäische sommerzeit', 'mez', 'mesz'],
 ];
 
-const tEet = [
-  'eet', 'eest', 'oz', 'oesz',
-  'eastern european', 'osteuropäisch',
-  'eastern european time', 'eastern european summer time',
-  'osteuropäische zeit', 'osteuropäische sommerzeit',
+const tEET_EEST = [
+  ...['eastern european time', 'eastern european summer time'],
+  ...['osteuropäische zeit', 'osteuropäische sommerzeit'],
 ];
 
-const tWet = [
-  'wet', 'west',
-  'western european', 'westeuropäisch',
-  'western european time', 'western european summer time',
-  'westeuropäische zeit', 'westeuropäische sommerzeit',
+const tWET_WEST = [
+  ...['western european time', 'western european summer time'],
+  ...['westeuropäische zeit', 'westeuropäische sommerzeit'],
 ];
 
-const tEst = [
-  'est', 'edt',
-  'eastern', 'eastern standard time', 'eastern daylight time',
-  'östliche normalzeit', 'östliche sommerzeit',
+
+// Americas
+
+const tEST_EDT = [
+  ...['eastern standard time', 'eastern daylight time'],
+  ...['östliche normalzeit', 'östliche sommerzeit'],
 ];
 
-const tCst = [
-  'cst', 'cdt',
-  'central', 'central standard time', 'central daylight time',
-  'zentrale normalzeit', 'zentrale sommerzeit',
+const tCST_CDT = [
+  ...['central standard time', 'central daylight time'],
+  ...['zentrale normalzeit', 'zentrale sommerzeit'],
 ];
 
-const tPst = [
-  'pst', 'pdt',
-  'pacific', 'pacific standard time', 'pacific daylight time',
-  'pazifische normalzeit', 'pazifische sommerzeit',
+const tPST_PDT = [
+  ...['pacific standard time', 'pacific daylight time'],
+  ...['pazifische normalzeit', 'pazifische sommerzeit'],
 ];
 
-const tAest = [
-  'aest', 'aedt',
-  'australian eastern', 'australische ostzeit',
-  'australian eastern standard time', 'australian eastern daylight time',
+
+// Other
+
+const tAEST_AEDT = [
+  ...['australian eastern standard time', 'australian eastern daylight time'],
+  ...['australische ostzeit'],
 ];
 
 const tChinaStd = [
-  'cst',
-  'china standard time', 'chinesische standardzeit',
+  ...['china standard time'],
+  ...['chinesische standardzeit'],
 ];
 
 const tIst = [
-  'ist',
-  'india standard time', 'indische standardzeit',
+  ...['india standard time'],
+  ...['indische standardzeit'],
 ];

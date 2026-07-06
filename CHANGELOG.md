@@ -44,7 +44,7 @@
 - "What's New" under Settings (references CHANGELOG.md on GitHub main branch, = this file)
 
 ### Changed
-- up tp 4 custom tabs rather than 3
+- up to 4 custom tabs rather than 3
 - GMST (and LMST) expressed in time units/hours as well as angular units/degrees
 
 ### Fixed
