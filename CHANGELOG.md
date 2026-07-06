@@ -4,6 +4,7 @@
 
 ### Fixed
 - numeric timezone abbreviations (e. g. "+0845") were ripped apart
+- Iran now observes standard time year-round
 
 ---
 

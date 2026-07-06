@@ -60,7 +60,7 @@ const tChinaStd = [
   ...['chinesische standardzeit'],
 ];
 
-const tIst = [
-  ...['india standard time'],
+const tIST = [
+  ...['indian standard time', 'india standard time'],
   ...['indische standardzeit'],
 ];
