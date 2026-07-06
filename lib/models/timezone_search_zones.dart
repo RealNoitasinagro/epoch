@@ -379,30 +379,30 @@ const List<TzEntry> tzEntries_Asia = [
 // ── Atlantic / Arctic / Antarctica ───────────────────────────────────
 const List<TzEntry> tzEntries_Atlantic_Arctic_Antarctica = [
   TzEntry(
+    ianaZone: 'Antarctica/Palmer',
+    offsetWinter: '-03:00', offsetSummer: '-03:00',
+    abbrWinter: 'CLT', abbrSummer: 'CLT',
+    terms: [
+      ...['antarctica', 'chile', 'magallanes and chilean antarctica'],
+      ...['antarktis'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Antarctica/Troll',
+    offsetWinter: '+00:00', offsetSummer: '+02:00',
+    abbrWinter: 'GMT', abbrSummer: 'CEST',
+    terms: [...tGMT, ...tCET_CEST,
+      ...['antarctica', 'norway'],
+      ...['antarktis', 'norwegen'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Atlantic/Azores',
     offsetWinter: '-01:00', offsetSummer: '+00:00',
     abbrWinter: 'AZOT', abbrSummer: 'AZOST',
     terms: [
-      'azot', 'azost', 'azores time',
-      'azores', 'azoren',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Atlantic/Cape_Verde',
-    offsetWinter: '-01:00', offsetSummer: '-01:00',
-    abbrWinter: 'CVT', abbrSummer: 'CVT',
-    terms: [
-      'cvt', 'cape verde time',
-      'cape verde', 'kap verde', 'cabo verde',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Atlantic/South_Georgia',
-    offsetWinter: '-02:00', offsetSummer: '-02:00',
-    abbrWinter: 'GST', abbrSummer: 'GST',
-    terms: [
-      'gst', 'south georgia time',
-      'south georgia', 'südgeorgien',
+      ...['azores standard time', 'azores summer time', 'azores daysaving time', 'azodt'],
+      ...['azoren-normalzeit'],
     ],
   ),
   TzEntry(
@@ -410,25 +410,26 @@ const List<TzEntry> tzEntries_Atlantic_Arctic_Antarctica = [
     offsetWinter: '+00:00', offsetSummer: '+01:00',
     abbrWinter: 'WET', abbrSummer: 'WEST',
     terms: [...tWET_WEST,
-      'canary', 'kanaren', 'tenerife', 'teneriffa', 'gran canaria',
-      'lanzarote', 'fuerteventura',
+      ...['fuerteventura', 'gran canaria', 'lanzarote', 'tenerife'],
+      ...['kanaren', 'teneriffa'],
     ],
   ),
   TzEntry(
-    ianaZone: 'Antarctica/Troll',
-    offsetWinter: '+00:00', offsetSummer: '+02:00',
-    abbrWinter: 'UTC', abbrSummer: 'CEST',
-    terms: [...tGMT, ...tCET_CEST,
-      'troll', 'antarctica', 'antarktis', 'norway', 'norwegen',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Antarctica/Palmer',
-    offsetWinter: '-03:00', offsetSummer: '-03:00',
-    abbrWinter: 'CLT', abbrSummer: 'CLT',
+    ianaZone: 'Atlantic/Cape_Verde',
+    offsetWinter: '-01:00', offsetSummer: '-01:00',
+    abbrWinter: 'CVT', abbrSummer: 'CVT',
     terms: [
-      'clt', 'chile time',
-      'palmer', 'antarctica', 'antarktis',
+      ...['cape verde time', 'cabo verde', 'praia'],
+      ...['kap verde'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Atlantic/South_Georgia',
+    offsetWinter: '-02:00', offsetSummer: '-02:00',
+    abbrWinter: 'GST', abbrSummer: 'GST',
+    terms: [
+      ...['south georgia time'],
+      ...['südgeorgien'],
     ],
   ),
 ];

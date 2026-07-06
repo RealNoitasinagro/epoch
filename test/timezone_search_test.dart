@@ -3672,6 +3672,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Andorra la Vella", () {
+      var searchTerm = "Andorra la Vella";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Andorra La Vella", () {
       var searchTerm = "Andorra La Vella";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -3792,6 +3798,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Basse-Terre", () {
+      var searchTerm = "Basse-Terre";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Beijing", () {
       var searchTerm = "Beijing";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -3818,6 +3830,12 @@ void main() {
 
     test("Berlin", () {
       var searchTerm = "Berlin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bern", () {
+      var searchTerm = "Bern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -3924,6 +3942,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Cayenne", () {
+      var searchTerm = "Cayenne";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Changchun", () {
       var searchTerm = "Changchun";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -3948,6 +3972,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Charlotte Amalie", () {
+      var searchTerm = "Charlotte Amalie";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Chengchow", () {
       var searchTerm = "Chengchow";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -3962,6 +3992,12 @@ void main() {
 
     test("Chennai", () {
       var searchTerm = "Chennai";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chisinau", () {
+      var searchTerm = "Chisinau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -3984,8 +4020,20 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Colombo", () {
+      var searchTerm = "Colombo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Conakry", () {
       var searchTerm = "Conakry";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Concelho de Macau", () {
+      var searchTerm = "Concelho de Macau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4008,6 +4056,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Damascus", () {
+      var searchTerm = "Damascus";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Dar es Salaam", () {
       var searchTerm = "Dar es Salaam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4026,8 +4080,20 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Djibouti", () {
-      var searchTerm = "Djibouti";
+    test("Dili", () {
+      var searchTerm = "Dili";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Djibouti City", () {
+      var searchTerm = "Djibouti City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dodoma", () {
+      var searchTerm = "Dodoma";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4052,6 +4118,30 @@ void main() {
 
     test("Dublin", () {
       var searchTerm = "Dublin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dushanbe", () {
+      var searchTerm = "Dushanbe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("El Aaiún", () {
+      var searchTerm = "El Aaiún";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Flying Fish Cove", () {
+      var searchTerm = "Flying Fish Cove";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Fort-de-France", () {
+      var searchTerm = "Fort-de-France";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4124,6 +4214,18 @@ void main() {
 
     test("Guiyang", () {
       var searchTerm = "Guiyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gustavia", () {
+      var searchTerm = "Gustavia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hagåtña", () {
+      var searchTerm = "Hagåtña";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4248,6 +4350,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Juba", () {
+      var searchTerm = "Juba";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Kabul", () {
       var searchTerm = "Kabul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4280,6 +4388,12 @@ void main() {
 
     test("Kigali", () {
       var searchTerm = "Kigali";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("King Edward Point", () {
+      var searchTerm = "King Edward Point";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4392,6 +4506,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Longyearbyen", () {
+      var searchTerm = "Longyearbyen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Luanda", () {
       var searchTerm = "Luanda";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4416,8 +4536,20 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Madrid", () {
+      var searchTerm = "Madrid";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Majuro", () {
       var searchTerm = "Majuro";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malabo", () {
+      var searchTerm = "Malabo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4430,6 +4562,12 @@ void main() {
 
     test("Malé", () {
       var searchTerm = "Malé";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mamoudzou", () {
+      var searchTerm = "Mamoudzou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4458,14 +4596,38 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Mariehamn", () {
+      var searchTerm = "Mariehamn";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Marigot", () {
+      var searchTerm = "Marigot";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Maseru", () {
       var searchTerm = "Maseru";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
 
+    test("Mata-Utu", () {
+      var searchTerm = "Mata-Utu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Mbabane", () {
       var searchTerm = "Mbabane";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Megacity", () {
+      var searchTerm = "Megacity";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4478,6 +4640,12 @@ void main() {
 
     test("Minsk", () {
       var searchTerm = "Minsk";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mogadishu", () {
+      var searchTerm = "Mogadishu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4608,6 +4776,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Nouméa", () {
+      var searchTerm = "Nouméa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Nuku'alofa", () {
       var searchTerm = "Nuku'alofa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4644,8 +4818,20 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Pago Pago", () {
+      var searchTerm = "Pago Pago";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Panama City", () {
       var searchTerm = "Panama City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Papeete", () {
+      var searchTerm = "Papeete";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4658,6 +4844,12 @@ void main() {
 
     test("Paris", () {
       var searchTerm = "Paris";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Philipsburg", () {
+      var searchTerm = "Philipsburg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4734,6 +4926,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Praia", () {
+      var searchTerm = "Praia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Pretoria", () {
+      var searchTerm = "Pretoria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Pristina", () {
       var searchTerm = "Pristina";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4760,6 +4964,12 @@ void main() {
 
     test("Rabat", () {
       var searchTerm = "Rabat";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ramallah", () {
+      var searchTerm = "Ramallah";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4824,14 +5034,38 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Saint Helier", () {
+      var searchTerm = "Saint Helier";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Saint John's", () {
       var searchTerm = "Saint John's";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
 
+    test("Saint Peter Port", () {
+      var searchTerm = "Saint Peter Port";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Saint Petersburg", () {
       var searchTerm = "Saint Petersburg";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint-Pierre", () {
+      var searchTerm = "Saint-Pierre";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saipan", () {
+      var searchTerm = "Saipan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -4902,6 +5136,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Sarajevo", () {
+      var searchTerm = "Sarajevo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Seoul", () {
       var searchTerm = "Seoul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4968,6 +5208,12 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Stockholm", () {
+      var searchTerm = "Stockholm";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Sucre", () {
       var searchTerm = "Sucre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -4988,6 +5234,12 @@ void main() {
 
     test("Tai'an", () {
       var searchTerm = "Tai'an";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Taipei", () {
+      var searchTerm = "Taipei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -5040,6 +5292,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Tel Aviv", () {
+      var searchTerm = "Tel Aviv";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("The Valley", () {
+      var searchTerm = "The Valley";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Thimphu", () {
       var searchTerm = "Thimphu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -5060,6 +5324,12 @@ void main() {
 
     test("Tokyo", () {
       var searchTerm = "Tokyo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tórshavn", () {
+      var searchTerm = "Tórshavn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -5130,6 +5400,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
+    test("Washington, D.C.", () {
+      var searchTerm = "Washington, D.C.";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Washington, DC", () {
+      var searchTerm = "Washington, DC";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
     test("Weifang", () {
       var searchTerm = "Weifang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
@@ -5138,6 +5420,18 @@ void main() {
 
     test("Wellington", () {
       var searchTerm = "Wellington";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("West Island", () {
+      var searchTerm = "West Island";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Willemstad", () {
+      var searchTerm = "Willemstad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
@@ -5174,6 +5468,12 @@ void main() {
 
     test("Xinyang", () {
       var searchTerm = "Xinyang";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yamoussoukro", () {
+      var searchTerm = "Yamoussoukro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, greaterThan(0));
     });
