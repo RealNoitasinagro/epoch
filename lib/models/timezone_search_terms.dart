@@ -21,12 +21,12 @@ const tCET_CEST = [
 
 const tEET_EEST = [
   ...['eastern european time', 'eastern european summer time'],
-  ...['osteuropäische zeit', 'osteuropäische sommerzeit'],
+  ...['osteuropäische zeit', 'osteuropäische sommerzeit', 'oez', 'oesz'],
 ];
 
 const tWET_WEST = [
   ...['western european time', 'western european summer time'],
-  ...['westeuropäische zeit', 'westeuropäische sommerzeit'],
+  ...['westeuropäische zeit', 'westeuropäische sommerzeit', 'wez', 'wesz'],
 ];
 
 
