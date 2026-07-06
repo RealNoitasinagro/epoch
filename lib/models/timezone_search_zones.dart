@@ -17,11 +17,12 @@ const List<TzEntry> tzDatabase = [          // 84 entries in total
 // ── Africa ───────────────────────────────────────────────────────────
 const List<TzEntry> tzEntries_Africa = [
   TzEntry(
-    ianaZone: 'Africa/Casablanca',
-    offsetWinter: '+01:00', offsetSummer: '+01:00',
-    abbrWinter: 'WET', abbrSummer: 'WET',
-    terms: [...tWET_WEST,
-      'casablanca', 'morocco', 'marokko', 'maroc', 'rabat',
+    ianaZone: 'Africa/Abidjan',
+    offsetWinter: '+00:00', offsetSummer: '+00:00',
+    abbrWinter: 'GMT', abbrSummer: 'GMT',
+    terms: [...tGMT,
+      ...['ivory coast', "côte d'ivoire", 'iceland', 'reykjavik', 'reykjavík'],
+      ...['elfenbeinküste', 'island'],
     ],
   ),
   TzEntry(
@@ -29,7 +30,17 @@ const List<TzEntry> tzEntries_Africa = [
     offsetWinter: '+02:00', offsetSummer: '+02:00',
     abbrWinter: 'EET', abbrSummer: 'EET',
     terms: [...tEET_EEST,
-      'cairo', 'kairo', 'egypt', 'ägypten', 'misr',
+      ...['egypt', 'misr'],
+      ...['ägypten', 'kairo'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Africa/Casablanca',
+    offsetWinter: '+01:00', offsetSummer: '+01:00',
+    abbrWinter: 'WET', abbrSummer: 'WET',
+    terms: [...tWET_WEST,
+      ...['morocco', 'maroc', 'rabat'],
+      ...['marokko'],
     ],
   ),
   TzEntry(
@@ -37,19 +48,8 @@ const List<TzEntry> tzEntries_Africa = [
     offsetWinter: '+02:00', offsetSummer: '+02:00',
     abbrWinter: 'SAST', abbrSummer: 'SAST',
     terms: [
-      'johannesburg', 'south africa', 'südafrika', 'cape town', 'kapstadt',
-      'sast',
-      'south africa standard time', 'südafrikanische standardzeit',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Africa/Nairobi',
-    offsetWinter: '+03:00', offsetSummer: '+03:00',
-    abbrWinter: 'EAT', abbrSummer: 'EAT',
-    terms: [
-      'nairobi', 'kenya', 'kenia',
-      'eat',
-      'east africa time', 'ostafrikanische zeit',
+      ...['south africa standard time', 'cape town'],
+      ...['südafrikanische standardzeit', 'kapstadt'],
     ],
   ),
   TzEntry(
@@ -57,26 +57,27 @@ const List<TzEntry> tzEntries_Africa = [
     offsetWinter: '+01:00', offsetSummer: '+01:00',
     abbrWinter: 'WAT', abbrSummer: 'WAT',
     terms: [
-      'lagos', 'nigeria', 'abuja',
-      'wat',
-      'west africa time', 'westafrikanische zeit',
+      ...['west africa time', 'nigeria', 'abuja'],
+      ...['westafrikanische zeit'],
     ],
   ),
   TzEntry(
-    ianaZone: 'Africa/Abidjan',
-    offsetWinter: '+00:00', offsetSummer: '+00:00',
-    abbrWinter: 'GMT', abbrSummer: 'GMT',
-    terms: [...tGMT,
-      'abidjan', 'ivory coast', 'elfenbeinküste', 'cote divoire',
-      'reykjavik', 'iceland', 'island',
+    ianaZone: 'Africa/Nairobi',
+    offsetWinter: '+03:00', offsetSummer: '+03:00',
+    abbrWinter: 'EAT', abbrSummer: 'EAT',
+    terms: [
+      ...['east africa time', 'kenya'],
+      ...['ostafrikanische zeit', 'kenia'],
     ],
   ),
+
   TzEntry(
     ianaZone: 'Africa/Tunis',
     offsetWinter: '+01:00', offsetSummer: '+01:00',
     abbrWinter: 'CET', abbrSummer: 'CET',
     terms: [...tCET_CEST,
-      'tunis', 'tunisia', 'tunesien',
+      ...['tunisia'],
+      ...['tunesien'],
     ],
   ),
 ];
