@@ -662,8 +662,10 @@ const List<TzEntry> tzEntries_Europe = [
     abbrWinter: 'CET', abbrSummer: 'CEST',
     terms: [...tCET_CEST,
       ...['belgium', 'belgique', 'bruxelles',
+        'luxembourg',
         'netherlands', 'holland', 'amsterdam', 'rotterdam'],
       ...['belgien', 'brüssel',
+        'luxemburg'
         'niederlande'],
     ],
   ),
