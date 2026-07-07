@@ -999,7 +999,7 @@ void main() {
     test('FJST', () {
       var searchTerm = 'FJST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('FJT', () {
@@ -2222,10 +2222,10 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Australian Western Daylight Time", () {
+    test("Australian Western Daylight Time unused", () {
       var searchTerm = "Australian Western Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));  // no longer in use!
     });
 
     test("Australian Western Standard Time", () {
@@ -2765,13 +2765,13 @@ void main() {
     test("Fiji Daylight Time", () {
       var searchTerm = "Fiji Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));  // no longer in use!
     });
 
     test("Fiji Summer Time", () {
       var searchTerm = "Fiji Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));  // no longer in use!
     });
 
     test("Fiji Time", () {

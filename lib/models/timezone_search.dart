@@ -32,13 +32,20 @@ class TzEntry {
   bool matches(String query) {
     final q = query.toLowerCase().trim();
     if (q.isEmpty) return true;
-    if (offsetWinter.contains(q) || offsetSummer.contains(q)) return true;
-    if (ianaZone.toLowerCase().contains(q) ||
-        ianaZone.toLowerCase().contains(q.replaceAll(' ', '_'))) {
+    if (offsetWinter.contains(q) ||
+        offsetSummer.contains(q) ||
+        offsetWinter.replaceAll(':', '').contains(q) ||
+        offsetSummer.replaceAll(':', '').contains(q)
+    ) {
       return true;
     }
     if (abbrWinter.toLowerCase().contains(q) ||
-        abbrSummer.toLowerCase().contains(q)) {
+        abbrSummer.toLowerCase().contains(q)
+    ) {
+      return true;
+    }
+    if (ianaZone.toLowerCase().contains(q) ||
+        ianaZone.toLowerCase().contains(q.replaceAll(' ', '_'))) {
       return true;
     }
     return terms.any((t) => t.contains(q));

@@ -134,7 +134,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-07:00', offsetSummer: '-06:00',
     abbrWinter: 'MST', abbrSummer: 'MDT',
     terms: [
-      ...['mountain standard time', 'mountain daylight time', 'phoenix', 'salt lake city'],
+      ...['mountain standard time', 'mountain daylight time', 'mountain time', 'phoenix', 'salt lake city'],
       ...['rocky-mountain-normalzeit', 'rocky-mountain-sommerzeit'],
     ],
   ),
@@ -415,8 +415,8 @@ const List<TzEntry> tzEntries_Atlantic_Arctic_Antarctica = [
     offsetWinter: '-01:00', offsetSummer: '+00:00',
     abbrWinter: 'AZOT', abbrSummer: 'AZOST',
     terms: [
-      ...['azores standard time', 'azores summer time', 'azores daysaving time', 'azodt'],
-      ...['azoren-normalzeit'],
+      ...['azores standard time', 'azores daylight time', 'azores summer time', 'azores daysaving time', 'azodt'],
+      ...['azoren-normalzeit', 'azoren-sommerzeit'],
     ],
   ),
   TzEntry(
@@ -451,29 +451,12 @@ const List<TzEntry> tzEntries_Atlantic_Arctic_Antarctica = [
 // ── Australia / Pacific ──────────────────────────────────────────────
 const List<TzEntry> tzEntries_Australia_Pacific = [
   TzEntry(
-    ianaZone: 'Australia/Perth',
-    offsetWinter: '+08:00', offsetSummer: '+08:00',
-    abbrWinter: 'AWST', abbrSummer: 'AWST',
+    ianaZone: 'Anywhere on Earth',
+    offsetWinter: '-12:00', offsetSummer: '-12:00',
+    abbrWinter: 'AoE', abbrSummer: 'AoE',
     terms: [
-      'awst', 'australian western standard time', 'australische westzeit',
-      'perth', 'western australia', 'westaustralien',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Australia/Darwin',
-    offsetWinter: '+09:30', offsetSummer: '+09:30',
-    abbrWinter: 'ACST', abbrSummer: 'ACST',
-    terms: [
-      'acst', 'australian central standard time',
-      'darwin', 'northern territory',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Australia/Brisbane',
-    offsetWinter: '+10:00', offsetSummer: '+10:00',
-    abbrWinter: 'AEST', abbrSummer: 'AEST',
-    terms: [...tAEST_AEDT,
-      'brisbane', 'queensland',
+      ...['baker island time', 'bit', 'international date line west', 'idlw'],
+      ...[],
     ],
   ),
   TzEntry(
@@ -481,149 +464,27 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+09:30', offsetSummer: '+10:30',
     abbrWinter: 'ACST', abbrSummer: 'ACDT',
     terms: [
-      'acst', 'acdt', 'australian central time',
-      'adelaide', 'south australia', 'südaustralien',
+      ...['australian central standard time', 'australian central daylight saving time',
+        'australian central time', 'australian central daylight time', 'south australia'],
+      ...['zentralaustralische normalzeit', 'zentralaustralische sommerzeit', 'südaustralien'],
     ],
   ),
   TzEntry(
-    ianaZone: 'Australia/Sydney',
-    offsetWinter: '+10:00', offsetSummer: '+11:00',
-    abbrWinter: 'AEST', abbrSummer: 'AEDT',
-    terms: [...tAEST_AEDT,
-      'sydney', 'new south wales', 'australia', 'australien',
-      'melbourne', 'victoria', 'canberra',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Australia/Hobart',
-    offsetWinter: '+10:00', offsetSummer: '+11:00',
-    abbrWinter: 'AEST', abbrSummer: 'AEDT',
-    terms: [...tAEST_AEDT,
-      'hobart', 'tasmania', 'tasmanien',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Australia/Lord_Howe',
-    offsetWinter: '+10:30', offsetSummer: '+11:00',
-    abbrWinter: 'LHST', abbrSummer: 'LHDT',
-    terms: [
-      'lhst', 'lhdt', 'lord howe time',
-      'lord howe',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Auckland',
-    offsetWinter: '+12:00', offsetSummer: '+13:00',
-    abbrWinter: 'NZST', abbrSummer: 'NZDT',
-    terms: [
-      'nzst', 'nzdt', 'new zealand standard time',
-      'auckland', 'new zealand', 'neuseeland', 'wellington',
-      'mcmurdo', 'antarctica', 'antarktis', 'south pole', 'südpol',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Honolulu',
-    offsetWinter: '-10:00', offsetSummer: '-10:00',
-    abbrWinter: 'HST', abbrSummer: 'HST',
-    terms: [
-      'hst', 'hawaii standard time', 'hawaii-normalzeit',
-      'honolulu', 'hawaii',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Fiji',
-    offsetWinter: '+12:00', offsetSummer: '+13:00',
-    abbrWinter: 'FJT', abbrSummer: 'FJST',
-    terms: [
-      'fjt', 'fjst', 'fiji time',
-      'fiji', 'fidschi',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Guam',
+    ianaZone: 'Australia/Brisbane',
     offsetWinter: '+10:00', offsetSummer: '+10:00',
-    abbrWinter: 'ChST', abbrSummer: 'ChST',
-    terms: [
-      'chst', 'chamorro standard time',
-      'guam', 'saipan',
+    abbrWinter: 'AEST', abbrSummer: 'AEST',
+    terms: [...tAEST_AEDT,
+      ...['queensland'],
+      ...[],
     ],
   ),
   TzEntry(
-    ianaZone: 'Pacific/Tongatapu',
-    offsetWinter: '+13:00', offsetSummer: '+13:00',
-    abbrWinter: 'TOT', abbrSummer: 'TOT',
+    ianaZone: 'Australia/Darwin',
+    offsetWinter: '+09:30', offsetSummer: '+09:30',
+    abbrWinter: 'ACST', abbrSummer: 'ACST',
     terms: [
-      'tot', 'tonga time',
-      'tongatapu', 'tonga',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Tahiti',
-    offsetWinter: '-10:00', offsetSummer: '-10:00',
-    abbrWinter: 'TAHT', abbrSummer: 'TAHT',
-    terms: [
-      'taht', 'tahiti time',
-      'tahiti', 'french polynesia', 'französisch-polynesien',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Marquesas',
-    offsetWinter: '-09:30', offsetSummer: '-09:30',
-    abbrWinter: 'MART', abbrSummer: 'MART',
-    terms: [
-      'mart', 'marquesas time',
-      'marquesas',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Pago_Pago',  // was: Pacific/Midway
-    offsetWinter: '-11:00', offsetSummer: '-11:00',
-    abbrWinter: 'SST', abbrSummer: 'SST',
-    terms: [
-      'sst', 'samoa standard time',
-      'midway', 'pago pago', 'samoa', 'american samoa',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Norfolk',
-    offsetWinter: '+11:00', offsetSummer: '+12:00',
-    abbrWinter: 'NFT', abbrSummer: 'NFDT',
-    terms: [
-      'nft', 'nfdt', 'norfolk time',
-      'norfolk',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Port_Moresby',
-    offsetWinter: '+10:00', offsetSummer: '+10:00',
-    abbrWinter: 'PGT', abbrSummer: 'PGT',
-    terms: [
-      'pgt', 'papua new guinea time',
-      'port moresby', 'papua', 'new guinea', 'neuguinea',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Anywhere on Earth',
-    offsetWinter: '-12:00', offsetSummer: '-12:00',
-    abbrWinter: 'AoE', abbrSummer: 'AoE',
-    terms: [
-      'baker island',
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Kiritimati',
-    offsetWinter: '+14:00', offsetSummer: '+14:00',
-    abbrWinter: 'LINT', abbrSummer: 'LINT',
-    terms: [
-      'line islands time', 'kiribati'
-    ],
-  ),
-  TzEntry(
-    ianaZone: 'Pacific/Chatham',
-    offsetWinter: '+12:45', offsetSummer: '+13:45',
-    abbrWinter: 'CHAST', abbrSummer: 'CHADT',
-    terms: [
-      'chatham standard time', 'chatham daylight time',
+      ...['australian central standard time', 'northern territory'],
+      ...['zentralaustralische normalzeit'],
     ],
   ),
   TzEntry(
@@ -631,7 +492,152 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+08:45', offsetSummer: '+08:45',
     abbrWinter: 'CWT', abbrSummer: 'CWT',
     terms: [
-      'central western time'
+      ...['australian central western standard time', 'acwst', 'central western time'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Australia/Hobart',
+    offsetWinter: '+10:00', offsetSummer: '+11:00',
+    abbrWinter: 'AEST', abbrSummer: 'AEDT',
+    terms: [...tAEST_AEDT,
+      ...['tasmania'],
+      ...['tasmanien'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Australia/Lord_Howe',
+    offsetWinter: '+10:30', offsetSummer: '+11:00',
+    abbrWinter: 'LHST', abbrSummer: 'LHDT',
+    terms: [
+      ...['lord howe standard time', 'lord howe daylight time', 'lord howe time'],
+      ...['lord-howe-normalzeit', 'lord-howe-sommerzeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Australia/Perth',
+    offsetWinter: '+08:00', offsetSummer: '+08:00',
+    abbrWinter: 'AWST', abbrSummer: 'AWST',
+    terms: [
+      ...['australian western standard time', 'western australia'],
+      ...['westaustralische normalzeit', 'australische westzeit', 'westaustralien'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Australia/Sydney',
+    offsetWinter: '+10:00', offsetSummer: '+11:00',
+    abbrWinter: 'AEST', abbrSummer: 'AEDT',
+    terms: [...tAEST_AEDT,
+      ...['australia', 'victoria', 'new south wales', 'melbourne', 'canberra'],
+      ...['australien'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Auckland',
+    offsetWinter: '+12:00', offsetSummer: '+13:00',
+    abbrWinter: 'NZST', abbrSummer: 'NZDT',
+    terms: [
+      ...['new zealand standard time', 'new zealand daylight time', 'wellington', 'christchurch' 'mcmurdo', 'south pole', 'antarctica'],
+      ...['neuseeland-normalzeit', 'neuseeland-sommerzeit', 'neuseeland', 'südpol', 'antarktis'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Chatham',
+    offsetWinter: '+12:45', offsetSummer: '+13:45',
+    abbrWinter: 'CHAST', abbrSummer: 'CHADT',
+    terms: [
+      ...['chatham standard time', 'chatham daylight time'],
+      ...['chatham-normalzeit', 'chatham-sommerzeit '],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Fiji',
+    offsetWinter: '+12:00', offsetSummer: '+12:00',
+    abbrWinter: 'FJT', abbrSummer: 'FJT',
+    terms: [
+      ...['fiji standard time', 'fiji time'],
+      ...['fidschi-normalzeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Guam',
+    offsetWinter: '+10:00', offsetSummer: '+10:00',
+    abbrWinter: 'ChST', abbrSummer: 'ChST',
+    terms: [
+      ...['chamorro standard time', 'hagåtña', 'hagatna', 'saipan'],
+      ...['chamorro-zeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Honolulu',
+    offsetWinter: '-10:00', offsetSummer: '-10:00',
+    abbrWinter: 'HST', abbrSummer: 'HST',
+    terms: [
+      ...['hawaii-aleutian standard time', 'hawaii standard time'],
+      ...['hawaii-normalzeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Kiritimati',
+    offsetWinter: '+14:00', offsetSummer: '+14:00',
+    abbrWinter: 'LINT', abbrSummer: 'LINT',
+    terms: [
+      ...['line islands time', 'kiribati'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Marquesas',
+    offsetWinter: '-09:30', offsetSummer: '-09:30',
+    abbrWinter: 'MART', abbrSummer: 'MART',
+    terms: [
+      ...['marquesas time'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Norfolk',
+    offsetWinter: '+11:00', offsetSummer: '+12:00',
+    abbrWinter: 'NFT', abbrSummer: 'NFDT',
+    terms: [
+      ...['norfolk time'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Pago_Pago',  // was: Pacific/Midway
+    offsetWinter: '-11:00', offsetSummer: '-11:00',
+    abbrWinter: 'SST', abbrSummer: 'SST',
+    terms: [
+      ...['samoa standard time', 'american samoa', 'midway'],
+      ...['samoa-normalzeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Port_Moresby',
+    offsetWinter: '+10:00', offsetSummer: '+10:00',
+    abbrWinter: 'PGT', abbrSummer: 'PGT',
+    terms: [
+      ...['papua new guinea standard time', 'papua new guinea time'],
+      ...['papua-neuguinea-zeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Tahiti',
+    offsetWinter: '-10:00', offsetSummer: '-10:00',
+    abbrWinter: 'TAHT', abbrSummer: 'TAHT',
+    terms: [
+      ...['tahiti time', 'french polynesia'],
+      ...['tahiti-zeit', 'französisch-polynesien'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Tongatapu',
+    offsetWinter: '+13:00', offsetSummer: '+13:00',
+    abbrWinter: 'TOT', abbrSummer: 'TOT',
+    terms: [
+      ...['tonga standard time', 'tonga time', "nuku'alofa"],
+      ...['tongaische normalzeit'],
     ],
   ),
 ];

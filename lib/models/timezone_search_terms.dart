@@ -52,7 +52,7 @@ const tPST_PDT = [
 
 const tAEST_AEDT = [
   ...['australian eastern standard time', 'australian eastern daylight time'],
-  ...['australische ostzeit'],
+  ...['ostaustralische normalzeit', 'ostaustralische sommerzeit', 'australische ostzeit'],
 ];
 
 const tChinaStd = [
