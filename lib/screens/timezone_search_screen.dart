@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/timezone_search.dart';
 import '../l10n/app_localizations.dart';
+import '../models/timezone_search_zones.dart';
 
 // Full-screen timezone search, returns selected IANA zone string or null.
 class TimezoneSearchScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
       return;
     }
     setState(() =>
-    _results = tzDatabase.where((e) => e.matches(q)).toList());
+      _results = tzDatabase.where((e) => e.matches(q)).toList());
   }
 
   @override

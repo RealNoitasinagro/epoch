@@ -1,5 +1,5 @@
 import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/models/timezone_search.dart';
+import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
