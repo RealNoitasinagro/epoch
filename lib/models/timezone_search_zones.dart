@@ -6,9 +6,9 @@ import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_terms.dart';
 
 const List<TzEntry> tzDatabase = [          // 84 entries in total
-  ...tzEntries_Africa,                      //  7 entries
+  ...tzEntries_Africa,                      //  8 entries
   ...tzEntries_Americas,                    // 13 entries
-  ...tzEntries_Asia,                        // 18 entries
+  ...tzEntries_Asia,                        // 19 entries
   ...tzEntries_Atlantic_Arctic_Antarctica,  //  6 entries
   ...tzEntries_Australia_Pacific,           // 21 entries
   ...tzEntries_Europe,                      // 19 entries
@@ -277,6 +277,15 @@ const List<TzEntry> tzEntries_Asia = [
     terms: [
       ...['western indonesian time', 'western indonesia time'],
       ...['westindonesische zeit', 'indonesien'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Kabul',
+    offsetWinter: '+04:30', offsetSummer: '+04:30',
+    abbrWinter: 'AFT', abbrSummer: 'AFT',
+    terms: [
+      ...['afghanistan time'],
+      ...['afghanistan-zeit'],
     ],
   ),
   TzEntry(
