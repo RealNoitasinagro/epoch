@@ -48,7 +48,7 @@ const List<TzEntry> tzEntries_Africa = [
     offsetWinter: '+02:00', offsetSummer: '+02:00',
     abbrWinter: 'SAST', abbrSummer: 'SAST',
     terms: [
-      ...['south africa standard time', 'cape town'],
+      ...['south african standard time', 'south africa standard time', 'cape town'],
       ...['südafrikanische zeit', 'kapstadt'],
     ],
   ),
@@ -75,7 +75,7 @@ const List<TzEntry> tzEntries_Africa = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: 'EAT', abbrSummer: 'EAT',
     terms: [
-      ...['east africa time', 'kenya'],
+      ...['eastern africa time', 'east africa time', 'kenya'],
       ...['ostafrikanische zeit', 'kenia'],
     ],
   ),
@@ -98,8 +98,8 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-09:00', offsetSummer: '-08:00',
     abbrWinter: 'AKST', abbrSummer: 'AKDT',
     terms: [
-      ...['alaska standard time', 'alaska daylight time', 'anchorage', 'fairbanks'],
-      ...[],
+      ...['alaska time', 'alaska standard time', 'alaska daylight time', 'alaska daylight saving time', 'anchorage', 'fairbanks'],
+      ...['alaska-zeit', 'alaska-normalzeit', 'alaska-sommerzeit'],
     ],
   ),
   TzEntry(
@@ -134,7 +134,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-07:00', offsetSummer: '-06:00',
     abbrWinter: 'MST', abbrSummer: 'MDT',
     terms: [
-      ...['mountain standard time', 'mountain daylight time', 'mountain time', 'phoenix', 'salt lake city'],
+      ...['mountain time', 'mountain standard time', 'mountain daylight time', 'mountain daylight saving time', 'phoenix', 'salt lake city'],
       ...['rocky-mountain-normalzeit', 'rocky-mountain-sommerzeit'],
     ],
   ),
@@ -143,8 +143,8 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-04:00', offsetSummer: '-03:00',
     abbrWinter: 'AST', abbrSummer: 'ADT',
     terms: [
-      ...['atlantic standard time', 'atlantic daylight time'],
-      ...['atlantik-normalzeit', 'atlantik-sommerzeit'],
+      ...['atlantic time', 'atlantic standard time', 'atlantic daylight time', 'atlantic daylight saving time', 'atlantic summer time'],
+      ...['atlantik-zeit', 'atlantik-normalzeit', 'atlantik-sommerzeit'],
     ],
   ),
   TzEntry(
@@ -170,7 +170,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-05:00', offsetSummer: '-04:00',
     abbrWinter: 'EST', abbrSummer: 'EDT',
     terms: [...tEST_EDT,
-      ...['usa east', 'atlanta', 'boston', 'miami', 'philadelphia', 'washington'],
+      ...['usa east', 'new york city', 'atlanta', 'boston', 'miami', 'philadelphia', 'washington, d.c.', 'washington dc', 'washington'],
       ...['ostküste usa'],
     ],
   ),
@@ -179,7 +179,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-03:00', offsetSummer: '-03:00',
     abbrWinter: 'BRT', abbrSummer: 'BRT',
     terms: [
-      ...['brasilia standard time', 'brasilia time', 'brazil', 'rio de janeiro', 'são paulo'],
+      ...['brasilia standard time', 'brasilia time', 'brazil time', 'brazilian time', 'rio de janeiro', 'são paulo'],
       ...['brasilianische zeit', 'brasilien'],
     ],
   ),
@@ -188,7 +188,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-03:30', offsetSummer: '-02:30',
     abbrWinter: 'NST', abbrSummer: 'NDT',
     terms: [
-      ...['newfoundland standard time', 'newfoundland daylight time', 'saint johns'],
+      ...['newfoundland standard time', 'newfoundland daylight time', "saint john's", "st. john's"],
       ...['neufundland-normalzeit', 'neufundland-sommerzeit'],
     ],
   ),
@@ -219,7 +219,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: 'AST', abbrSummer: 'AST',
     terms: [
-      ...['arabian standard time', 'arabia standard time', 'iraq'],
+      ...['arabian standard time', 'arabia standard time', 'arabic standard time', 'iraq'],
       ...['arabische normalzeit', 'irak', 'bagdad'],
     ],
   ),
@@ -275,7 +275,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+07:00', offsetSummer: '+07:00',
     abbrWinter: 'WIB', abbrSummer: 'WIB',
     terms: [
-      ...['western indonesian time', 'western indonesia time'],
+      ...['western indonesian time', 'western indonesia time', 'waktu indonesia barat'],
       ...['westindonesische zeit', 'indonesien'],
     ],
   ),
@@ -293,7 +293,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+05:00', offsetSummer: '+05:00',
     abbrWinter: 'PKT', abbrSummer: 'PKT',
     terms: [
-      ...['pakistan standard time', 'pakistan', 'islamabad', 'lahore'],
+      ...['pakistan time', 'pakistan standard time', 'pakistan', 'islamabad', 'lahore'],
       ...['pakistanische normalzeit'],
     ],
   ),
@@ -320,7 +320,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+08:00', offsetSummer: '+08:00',
     abbrWinter: 'PST', abbrSummer: 'PST',
     terms: [
-      ...['philippine standard time', 'philippines'],
+      ...['philippine time', 'philippine standard time', 'philippines'],
       ...['philippinische normalzeit', 'philippinen'],
     ],
   ),
@@ -329,7 +329,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+09:00', offsetSummer: '+09:00',
     abbrWinter: 'KST', abbrSummer: 'KST',
     terms: [
-       ...['korea standard time', 'south korea', 'busan'],
+       ...['korea time', 'korean standard time', 'korea standard time', 'south korea', 'busan'],
       ...['koreanische standardzeit', 'koreanische normalzeit', 'südkorea'],
     ],
   ),
@@ -344,7 +344,7 @@ const List<TzEntry> tzEntries_Asia = [
         "guangzhou", "guiyang", "hangzhou", "harbin", "hefei", "heze",
         "jieyang", "jinan", "kunming", "linyi", "luoyang", "nanchang",
         "nanking", "nanning", "qingdao", "shangqiu", "shantou", "shenyang",
-        "shenzhen", "shijiazhuang", "suzhou", "tai’an", "taiyuan", "tangshan",
+        "shenzhen", "shijiazhuang", "suzhou", "tai'an", "taiyuan", "tangshan",
         "tianjin", "weifang", "wuhan", "wuxi", "xiamen", "xi'an", "xinyang",
         "yantai", "zhanjiang"],
       ...['chinesische standardzeit', 'peking-zeit', 'peking'],
@@ -356,7 +356,7 @@ const List<TzEntry> tzEntries_Asia = [
     abbrWinter: 'SGT', abbrSummer: 'SGT',
     terms: [
       ...['singapore standard time', 'singapore time',
-      'malaysian standard time', 'malaysian time', 'mst', 'myt', 'malaysia', 'kuala lumpur'],
+        'malaysia time', 'malaysian time', 'malaysian standard time', 'mst', 'myt', 'malaysia', 'kuala lumpur'],
       ...['singapurische normalzeit', 'malaysische normalzeit', 'malaysische zeit', 'singapur'],
     ],
   ),
@@ -374,7 +374,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+03:30', offsetSummer: '+03:30',
     abbrWinter: 'IRST', abbrSummer: 'IRST',
     terms: [
-      ...['iran standard time', 'tehran'],
+      ...['iran time', 'iran standard time', 'tehran'],
       ...['iranische normalzeit', 'teheran'],
     ],
   ),
@@ -528,7 +528,7 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+08:00', offsetSummer: '+08:00',
     abbrWinter: 'AWST', abbrSummer: 'AWST',
     terms: [
-      ...['australian western standard time', 'western australia'],
+      ...['australian western standard time', 'western australia time'],
       ...['westaustralische normalzeit', 'australische westzeit', 'westaustralien'],
     ],
   ),
@@ -555,7 +555,8 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+12:45', offsetSummer: '+13:45',
     abbrWinter: 'CHAST', abbrSummer: 'CHADT',
     terms: [
-      ...['chatham standard time', 'chatham daylight time'],
+      ...['chatham standard time', 'chatham daylight time',
+        'chatham island standard time', 'chatham island daylight time'],
       ...['chatham-normalzeit', 'chatham-sommerzeit '],
     ],
   ),
@@ -609,7 +610,8 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+11:00', offsetSummer: '+12:00',
     abbrWinter: 'NFT', abbrSummer: 'NFDT',
     terms: [
-      ...['norfolk time'],
+      ...['norfolk time', 'norfolk island time',
+        'norfolk daylight time', 'norfolk island daylight time'],
       ...[],
     ],
   ),
@@ -713,7 +715,7 @@ const List<TzEntry> tzEntries_Europe = [
     offsetWinter: '+00:00', offsetSummer: '+01:00',
     abbrWinter: 'GMT', abbrSummer: 'IST',
     terms: [...tGMT,
-      ...['irish standard time', 'ireland'],
+      ...['irish standard time', 'irish summer time', 'ireland'],
       ...['irland'],
     ],
   ),
@@ -758,7 +760,8 @@ const List<TzEntry> tzEntries_Europe = [
     offsetWinter: '+00:00', offsetSummer: '+01:00',
     abbrWinter: 'GMT', abbrSummer: 'BST',
     terms: [...tGMT,
-      ...['british standard time', 'british summer time', 'great britain',
+      ...['british standard time', 'british daylight time',
+        'british daylight saving time', 'british summer time', 'great britain',
         'united kingdom', 'uk', 'england', 'scotland', 'wales'],
       ...['großbritannien', 'gb', 'vereinigtes königreich', 'schottland'],
     ],
@@ -777,7 +780,7 @@ const List<TzEntry> tzEntries_Europe = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: 'MSK', abbrSummer: 'MSK',
     terms: [
-      ...['moscow time', 'russia', 'saint petersberg', 'st petersburg'],
+      ...['moscow time', 'moscow standard time', 'russia', 'saint petersberg', 'st petersburg'],
       ...['moskauer zeit', 'russland', 'moskau', 'sankt petersburg'],
     ],
   ),
