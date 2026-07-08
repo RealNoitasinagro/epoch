@@ -94,6 +94,12 @@ void main() {
       expect(loc.name, equals(ianaZone));
     });
 
+    test('America/Lima', () {
+      String ianaZone = 'America/Lima';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
     test('America/Los_Angeles', () {
       String ianaZone = 'America/Los_Angeles';
       var loc = tz.getLocation(ianaZone);
@@ -186,6 +192,12 @@ void main() {
 
     test('Asia/Jakarta', () {
       String ianaZone = 'Asia/Jakarta';
+      var loc = tz.getLocation(ianaZone);
+      expect(loc.name, equals(ianaZone));
+    });
+
+    test('Asia/Jerusalem', () {
+      String ianaZone = 'Asia/Jerusalem';
       var loc = tz.getLocation(ianaZone);
       expect(loc.name, equals(ianaZone));
     });
