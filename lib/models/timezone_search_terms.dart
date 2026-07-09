@@ -35,19 +35,25 @@ const tWET_WEST = [
 
 const tEST_EDT = [
   ...['eastern time', 'eastern standard time', 'eastern daylight time',
-    'eastern daylight saving time', 'eastern daylight savings time'],
+    'eastern daylight saving time', 'eastern daylight savings time', 'ET',
+    'north american eastern standard time', 'NAEST',
+    'north american eastern daylight time', 'NAEDT'],
   ...['östliche normalzeit', 'östliche sommerzeit'],
 ];
 
 const tCST_CDT = [
   ...['central time', 'central standard time', 'central daylight time',
-    'central daylight saving time', 'central daylight savings time'],
+    'central daylight saving time', 'central daylight savings time', 'CT',
+    'north american central standard time', 'NACST',
+    'north american central daylight time', 'NACDT'],
   ...['zentrale normalzeit', 'zentrale sommerzeit'],
 ];
 
 const tPST_PDT = [
   ...['pacific time', 'pacific standard time', 'pacific daylight time',
-    'pacific daylight saving time', 'pacific daylight savings time'],
+    'pacific daylight saving time', 'pacific daylight savings time', 'PT',
+    'north american pacific standard time', 'NAPST',
+    'north american pacific daylight time', 'NAPDT'],
   ...['pazifische normalzeit', 'pazifische sommerzeit'],
 ];
 

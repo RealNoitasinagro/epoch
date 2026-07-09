@@ -30,25 +30,29 @@ class TzEntry {
       ianaZone.split('/').last.replaceAll('_', ' ');
 
   bool matches(String query) {
-    final q = query.toLowerCase().trim();
-    if (q.isEmpty) return true;
-    if (offsetWinter.contains(q) ||
-        offsetSummer.contains(q) ||
-        offsetWinter.replaceAll(':', '').contains(q) ||
-        offsetSummer.replaceAll(':', '').contains(q)
+    final query_orig = query.trim();
+    final query_lower = query.toLowerCase().trim();
+    if (query_lower.isEmpty) return true;
+    if (offsetWinter.contains(query_lower) ||
+        offsetSummer.contains(query_lower) ||
+        offsetWinter.replaceAll(':', '').contains(query_lower) ||
+        offsetSummer.replaceAll(':', '').contains(query_lower)
     ) {
       return true;
     }
-    if (abbrWinter.toLowerCase().contains(q) ||
-        abbrSummer.toLowerCase().contains(q)
-    ) {
+    if (abbrWinter == query_orig || abbrSummer == query_orig) {
       return true;
     }
-    if (ianaZone.toLowerCase().contains(q) ||
-        ianaZone.toLowerCase().contains(q.replaceAll(' ', '_'))) {
-      return true;
+    if (query_orig == query_orig.toUpperCase()) {
+      return terms.any((t) => t == query_orig);
     }
-    return terms.any((t) => t.contains(q));
+    else {
+      if (ianaZone.toLowerCase().contains(query_lower) ||
+          ianaZone.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
+        return true;
+      }
+      return terms.any((t) => t.startsWith(query_lower));
+    }
   }
 }
 
