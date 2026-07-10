@@ -70,14 +70,14 @@ ThemeData _nightTheme() => ThemeData(
 class EpochApp extends StatefulWidget {
   const EpochApp({super.key});
 
-  static _EpochAppState of(BuildContext context) =>
-      context.findAncestorStateOfType<_EpochAppState>()!;
+  static EpochAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<EpochAppState>()!;
 
   @override
-  State<EpochApp> createState() => _EpochAppState();
+  State<EpochApp> createState() => EpochAppState();
 }
 
-class _EpochAppState extends State<EpochApp> {
+class EpochAppState extends State<EpochApp> {
   AppThemeMode _themeMode  = kDefaultThemeMode;
   bool _thousandsSep       = kDefaultThousandsSep;
   bool _hourFormat24       = kDefaultHourFormat24;

@@ -254,6 +254,18 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to exit'**
+  String get hintFocusScreenExit;
+
+  /// No description provided for @hintFocusScreenOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to switch to focus screen'**
+  String get hintFocusScreenOpen;
+
   /// No description provided for @hintPinnedIndicator.
   ///
   /// In en, this message translates to:

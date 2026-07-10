@@ -58,6 +58,8 @@
   "hintEditLayout": "Edit layout",
   "hintEditSectionHeader": "Edit section header",
   "hintEditTimeValue": "Edit time value",
+  "hintFocusScreenExit": "Double-tap to exit",
+  "hintFocusScreenOpen": "Double-tap to switch to focus screen",
   "hintPinnedIndicator": "Automatic clock change disabled",
   "hintRemoveSelected": "Remove selected",
   "hintResetToDefaults": "Reset to defaults",

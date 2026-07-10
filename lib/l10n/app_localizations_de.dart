@@ -105,6 +105,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintEditTimeValue => 'Zeitwert bearbeiten';
 
   @override
+  String get hintFocusScreenExit => 'Doppelt antippen zum Verlassen';
+
+  @override
+  String get hintFocusScreenOpen =>
+      'Doppelt antippen zum Wechsel in den Fokus-Screen';
+
+  @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override

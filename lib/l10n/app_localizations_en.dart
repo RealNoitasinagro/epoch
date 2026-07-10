@@ -106,6 +106,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditTimeValue => 'Edit time value';
 
   @override
+  String get hintFocusScreenExit => 'Double-tap to exit';
+
+  @override
+  String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
+
+  @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override

@@ -4,6 +4,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
+import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
@@ -106,7 +107,9 @@ class TimeStringRow extends TimeValueRow {
 
   @override
   Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
+    //final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
     final display = computeDisplay(
@@ -125,7 +128,15 @@ class TimeStringRow extends TimeValueRow {
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
-      content: TextValueContent(line1: display.line1, line2: display.line2),
+      content: Tooltip(
+        message: l10n.hintFocusScreenOpen,
+        waitDuration: const Duration(milliseconds: 1000),
+        child:  TextValueContent(
+          line1: display.line1,
+          line2: display.line2,
+          onDoubleTap: () => _openFocusScreen(context, app, locale),
+        ),
+      ),
       actionSlots: [
         IconButton(
           icon: const Icon(Icons.info_outline, size: kIconSizeDefault),
@@ -141,6 +152,19 @@ class TimeStringRow extends TimeValueRow {
         ),
         null,
       ],
+    );
+  }
+
+  void _openFocusScreen(BuildContext context, EpochAppState app, String locale) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FocusScreen(
+          timeValue: timeValue,
+          locale: locale,
+        ),
+        fullscreenDialog: true,
+      ),
     );
   }
 }

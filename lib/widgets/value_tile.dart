@@ -103,11 +103,13 @@ class ValueTile extends StatelessWidget {
 class TextValueContent extends StatelessWidget {
   final String line1;
   final String line2;
+  final VoidCallback? onDoubleTap;
 
   const TextValueContent({
     super.key,
     required this.line1,
     this.line2 = '',
+    this.onDoubleTap,
   });
 
   @override
@@ -115,7 +117,7 @@ class TextValueContent extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    final container = Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -151,6 +153,12 @@ class TextValueContent extends StatelessWidget {
           ],
         ],
       ),
+    );
+
+    if (onDoubleTap == null) return container;
+    return GestureDetector(
+      onDoubleTap: onDoubleTap,
+      child: container,
     );
   }
 }

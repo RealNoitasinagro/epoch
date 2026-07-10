@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- 1-value always-on focus screen (with brightness adjust for Android)
+
 ### Changed
 - much improved timezone keyword search
 

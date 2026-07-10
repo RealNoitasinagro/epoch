@@ -58,6 +58,8 @@
   "hintEditLayout": "Layout bearbeiten",
   "hintEditSectionHeader": "Abschnittsüberschrift bearbeiten",
   "hintEditTimeValue": "Zeitwert bearbeiten",
+  "hintFocusScreenExit": "Doppelt antippen zum Verlassen",
+  "hintFocusScreenOpen": "Doppelt antippen zum Wechsel in den Fokus-Screen",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
   "hintRemoveSelected": "Markierte entfernen",
   "hintResetToDefaults": "Zurücksetzen",

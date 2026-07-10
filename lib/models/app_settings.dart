@@ -9,6 +9,7 @@ const _kDateWithDetails = 'date_cw_doy';
 const _kLmstModeKey = 'lmst_mode';
 const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
+const _kFocusBrightnessKey = 'focus_brightness';
 
 const kDefaultLocale = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
@@ -123,4 +124,14 @@ Future<int> loadActiveTab() async {
 Future<void> saveActiveTab(int index) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kActiveTabKey, index);
+}
+
+Future<double?> loadFocusBrightness() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble(_kFocusBrightnessKey);
+}
+
+Future<void> saveFocusBrightness(double brightness) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble(_kFocusBrightnessKey, brightness);
 }
