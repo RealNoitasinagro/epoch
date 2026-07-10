@@ -10,6 +10,7 @@ const _kLmstModeKey = 'lmst_mode';
 const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
 const _kFocusBrightnessKey = 'focus_brightness';
+const _kFocusColorKey = 'focus_color';
 
 const kDefaultLocale = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
@@ -17,6 +18,9 @@ const kDefaultThousandsSep = true;
 const kDefaultHourFormat24 = true;
 const kDefaultDateWithDetails = true;
 const kDefaultLmstMode = LmstMode.off;
+
+const kFocusDefaultColorLight = 0xFFFFFFFF;  // white
+const kFocusDefaultColorNight = 0xFFCC1010;  // night red (= _nightRed)
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
@@ -134,4 +138,16 @@ Future<double?> loadFocusBrightness() async {
 Future<void> saveFocusBrightness(double brightness) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setDouble(_kFocusBrightnessKey, brightness);
+}
+
+Future<Color> loadFocusColor(bool isNightMode) async {
+  final prefs = await SharedPreferences.getInstance();
+  final value = prefs.getInt(_kFocusColorKey);
+  if (value != null) return Color(value);
+  return Color(isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight);
+}
+
+Future<void> saveFocusColor(Color color) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt(_kFocusColorKey, color.toARGB32());
 }

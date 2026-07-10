@@ -12,6 +12,16 @@ import '../main.dart';
 import '../models/time_value.dart';
 import '../widgets/time_string_row.dart';
 
+// Farbpalette – als Konstante in focus_screen.dart:
+const _colorOptions = [
+  Color(0xFFFFFFFF),  // white
+  Color(0xFFCC1010),  // night red
+  Color(0xFF00FF41),  // matrix green
+  Color(0xFFFFB300),  // amber
+  Color(0xFF00E5FF),  // cyan
+  Color(0xFFB0B0B0),  // grey
+];
+
 class FocusScreen extends StatefulWidget {
   final TimeValue timeValue;
   final String locale;
@@ -29,6 +39,7 @@ class FocusScreen extends StatefulWidget {
 class _FocusScreenState extends State<FocusScreen> {
   late Timer _timer;
   late DateTime _now;
+  Color _textColor = Colors.white;
 
   // Brightness control:
   double? _brightness;
@@ -51,6 +62,8 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Future<void> _initBrightness() async {
+    final app = EpochApp.of(context);
+    final savedColor = await loadFocusColor(app.isNightMode);
     double initial;
     try {
       final saved = await loadFocusBrightness();
@@ -67,7 +80,10 @@ class _FocusScreenState extends State<FocusScreen> {
     } catch (_) {
       initial = 1.0;
     }
-    if (mounted) setState(() => _brightness = initial);
+    if (mounted) setState(() {
+      _brightness = initial;
+      _textColor = savedColor;
+    });
   }
 
   Future<void> _saveBrightness(double value) async {
@@ -148,7 +164,7 @@ class _FocusScreenState extends State<FocusScreen> {
                   child: Text(
                     value,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: _textColor,
                       fontFamily: fontFamilyDefault,
                       fontWeight: FontWeight.w500,
                       // Base size – FittedBox scales this to fill available space:
@@ -172,14 +188,43 @@ class _FocusScreenState extends State<FocusScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: _colorOptions.map((color) {
+                            final isSelected = _textColor == color;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() => _textColor = color);
+                                saveFocusColor(color);
+                                _scheduleControlsHide();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isSelected ? Colors.white : Colors.transparent,
+                                    width: 2.5,
+                                  ),
+                                  boxShadow: isSelected ? [
+                                    BoxShadow(color: color.withAlpha(180), blurRadius: 8),
+                                  ] : null,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                         // Brightness label:
-                        if (!kIsWeb && !Platform.isLinux)
-                        //if (!kIsWeb)
+                        //if (!kIsWeb && !Platform.isLinux)
+                        if (!kIsWeb)
                           if (_brightness != null) Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.brightness_low,
-                                  color: Colors.white54, size: kIconSizeDefault),
+                              Icon(Icons.brightness_low,
+                                  color: _textColor, size: kIconSizeDefault),
                               Expanded(
                                 child: Slider(
                                   value: _brightness!,
@@ -188,8 +233,8 @@ class _FocusScreenState extends State<FocusScreen> {
                                   divisions: 20,
                                   label: (_brightness! * 100).toInt().toString() + ' %',
                                   showValueIndicator: ShowValueIndicator.onDrag,
-                                  activeColor: Colors.white,
-                                  inactiveColor: Colors.white24,
+                                  activeColor: _textColor,
+                                  inactiveColor: Colors.white24, // ???
                                   onChanged: (v) {
                                     setState(() => _brightness = v);
                                     _saveBrightness(v);
@@ -197,8 +242,8 @@ class _FocusScreenState extends State<FocusScreen> {
                                   },
                                 ),
                               ),
-                              const Icon(Icons.brightness_high,
-                                  color: Colors.white54, size: kIconSizeDefault),
+                              Icon(Icons.brightness_high,
+                                  color: _textColor, size: kIconSizeDefault),
                             ],
                           ),
                         const SizedBox(height: 8),
@@ -206,7 +251,7 @@ class _FocusScreenState extends State<FocusScreen> {
                         Text(
                           l10n.hintFocusScreenExit,
                           style: TextStyle(
-                            color: Colors.white38,
+                            color: _textColor,
                             fontSize: 12,
                           ),
                         ),
