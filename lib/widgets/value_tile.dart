@@ -38,7 +38,7 @@ class ValueTile extends StatelessWidget {
       height: height ?? textTileHeight,
       decoration: BoxDecoration(
         color: tileBackground,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       padding: const EdgeInsets.fromLTRB(
           kTabHorizontalPadding, kTabVerticalPadding,
@@ -122,7 +122,7 @@ class TextValueContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: colorScheme.onSurface.withAlpha(30),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +175,7 @@ class GraphicValueContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface.withAlpha(30),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       child: FittedBox(
         alignment: Alignment.centerLeft,

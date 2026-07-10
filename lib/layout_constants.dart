@@ -7,6 +7,7 @@ const double kDividerHeight        = 40.0;
 const double kSectionHeaderHeight  = 24.0;
 const double kIconSizeDefault      = 20.0;
 const double kIconSizeLabel        = 14.0;
+const double kTileBorderRadius     = 6.0;
 
 const IconData kIconTimeZoneIndicator = Icons.language_sharp;
 const IconData kIconPinnedIndicator   = Icons.push_pin_sharp;

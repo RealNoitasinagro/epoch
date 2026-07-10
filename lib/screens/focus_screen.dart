@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import '../l10n/app_localizations.dart';
+import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
 import '../widgets/time_string_row.dart';
@@ -30,7 +31,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late DateTime _now;
 
   // Brightness control:
-  double _brightness = 1.0;
+  double? _brightness;
   bool _controlsVisible = true;
   Timer? _controlsHideTimer;
 
@@ -43,33 +44,30 @@ class _FocusScreenState extends State<FocusScreen> {
     _now = DateTime.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = DateTime.now()));
-    _initBrightness();
     WakelockPlus.enable();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     _scheduleControlsHide();
+    _initBrightness();
   }
 
   Future<void> _initBrightness() async {
+    double initial;
     try {
-      // Load persisted preference, fallback to current system brightness:
-      final prefs = await _loadFocusPrefs();
-      final savedBrightness = prefs['brightness'] as double?;
-      if (savedBrightness != null) {
-        _brightness = savedBrightness;
-        await ScreenBrightness().setApplicationScreenBrightness(_brightness);
+      final saved = await loadFocusBrightness();
+      if (saved != null) {
+        initial = saved;
+        if (!kIsWeb && !Platform.isLinux) {
+          await ScreenBrightness().setApplicationScreenBrightness(initial);
+        }
       } else {
-        _brightness = await ScreenBrightness().application;
+        initial = (!kIsWeb && !Platform.isLinux)
+            ? await ScreenBrightness().application
+            : 1.0;
       }
-      if (mounted) setState(() {});
-    } catch (_) {}
-  }
-
-  Future<Map<String, dynamic>> _loadFocusPrefs() async {
-    // Use SharedPreferences via EpochApp – keep it simple for now:
-    // brightness stored separately from main settings would need
-    // SharedPreferences import; handled in saveFocusPrefs below.
-    final double? focusBrightness = await loadFocusBrightness();
-    return { 'brightness': focusBrightness };
+    } catch (_) {
+      initial = 1.0;
+    }
+    if (mounted) setState(() => _brightness = initial);
   }
 
   Future<void> _saveBrightness(double value) async {
@@ -177,18 +175,19 @@ class _FocusScreenState extends State<FocusScreen> {
                         // Brightness label:
                         if (!kIsWeb && !Platform.isLinux)
                         //if (!kIsWeb)
-                          Row(
+                          if (_brightness != null) Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(Icons.brightness_low,
-                                  color: Colors.white54, size: 18),
+                                  color: Colors.white54, size: kIconSizeDefault),
                               Expanded(
                                 child: Slider(
-                                  value: _brightness,
-                                  min: 0.01,
-                                  // avoid full black
+                                  value: _brightness!,
+                                  min: 0.01,  // avoid full black
                                   max: 1.0,
                                   divisions: 20,
+                                  label: (_brightness! * 100).toInt().toString() + ' %',
+                                  showValueIndicator: ShowValueIndicator.onDrag,
                                   activeColor: Colors.white,
                                   inactiveColor: Colors.white24,
                                   onChanged: (v) {
@@ -199,7 +198,7 @@ class _FocusScreenState extends State<FocusScreen> {
                                 ),
                               ),
                               const Icon(Icons.brightness_high,
-                                  color: Colors.white54, size: 18),
+                                  color: Colors.white54, size: kIconSizeDefault),
                             ],
                           ),
                         const SizedBox(height: 8),
