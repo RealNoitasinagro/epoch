@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
+import '../screens/focus_screen.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;
@@ -47,6 +48,19 @@ abstract class TimeValueRow extends StatelessWidget {
             child: const Text('OK'),
           ),
         ],
+      ),
+    );
+  }
+
+  void openFocusScreen(BuildContext context, String locale) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FocusScreen(
+          timeValue: timeValue,
+          locale: locale,
+        ),
+        fullscreenDialog: true,
       ),
     );
   }

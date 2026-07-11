@@ -20,6 +20,7 @@ class TimeGraphicalRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final zonedNow = TimeUtils.resolveLocalTime(
         timeValue, now.toUtc(), localIanaZone);
@@ -34,6 +35,7 @@ class TimeGraphicalRow extends TimeValueRow {
         clock: timeValue.valueType == ValueType.binaryClockColumns
             ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
             : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+        onDoubleTap: () => openFocusScreen(context, locale),
       ),
       actionSlots: [
         IconButton(

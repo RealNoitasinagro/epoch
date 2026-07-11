@@ -154,7 +154,6 @@ class TextValueContent extends StatelessWidget {
         ],
       ),
     );
-
     if (onDoubleTap == null) return container;
     return GestureDetector(
       onDoubleTap: onDoubleTap,
@@ -165,12 +164,17 @@ class TextValueContent extends StatelessWidget {
 
 class GraphicValueContent extends StatelessWidget {
   final Widget clock;
+  final VoidCallback? onDoubleTap;
 
-  const GraphicValueContent({super.key, required this.clock});
+  const GraphicValueContent({
+    super.key,
+    required this.clock,
+    this.onDoubleTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final container = Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
@@ -182,6 +186,11 @@ class GraphicValueContent extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: clock,
       ),
+    );
+    if (onDoubleTap == null) return container;
+    return GestureDetector(
+      onDoubleTap: onDoubleTap,
+      child: container,
     );
   }
 }
