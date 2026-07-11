@@ -12,7 +12,6 @@ import '../main.dart';
 import '../models/time_value.dart';
 import '../widgets/time_string_row.dart';
 
-// Farbpalette – als Konstante in focus_screen.dart:
 const _colorOptions = [
   Color(0xFFFFFFFF),  // white
   Color(0xFFCC1010),  // night red
@@ -37,8 +36,9 @@ class FocusScreen extends StatefulWidget {
 }
 
 class _FocusScreenState extends State<FocusScreen> {
-  late Timer _timer;
+  late double _opacity;
   late DateTime _now;
+  late Timer _timer;
   Color _textColor = Colors.white;
 
   // Brightness control:
@@ -52,6 +52,7 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   void initState() {
     super.initState();
+    _opacity = 0.0;
     _now = DateTime.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = DateTime.now()));
@@ -83,13 +84,11 @@ class _FocusScreenState extends State<FocusScreen> {
     if (mounted) setState(() {
       _brightness = initial;
       _textColor = savedColor;
+      _opacity = 1.0;
     });
   }
 
   Future<void> _saveBrightness(double value) async {
-    // Persisted via SharedPreferences in app_settings.dart –
-    // add kFocusBrightnessKey there alongside other settings.
-    // For now handled inline via EpochApp:
     try {
       await ScreenBrightness().setApplicationScreenBrightness(value);
       await saveFocusBrightness(value);
@@ -147,121 +146,132 @@ class _FocusScreenState extends State<FocusScreen> {
     final value = _currentValue();
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: GestureDetector(
-        onDoubleTap: _exit,
-        onTap: _showControls,
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          children: [
-            // Main value display – fills entire screen:
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(
-                    value,
-                    style: TextStyle(
-                      color: _textColor,
-                      fontFamily: fontFamilyDefault,
-                      fontWeight: FontWeight.w500,
-                      // Base size – FittedBox scales this to fill available space:
-                      fontSize: 200,
-                    ),
-                    maxLines: 1,
-                  ),
-                ),
-              ),
-            ),
-
-            // Controls overlay – fades in/out:
-            AnimatedOpacity(
-              opacity: _controlsVisible ? 1.0 : 0.0,
-              duration: _controlsHideDuration,
-              child: SafeArea(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: _colorOptions.map((color) {
-                            final isSelected = _textColor == color;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() => _textColor = color);
-                                saveFocusColor(color);
-                                _scheduleControlsHide();
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                width: 28,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: isSelected ? Colors.white : Colors.transparent,
-                                    width: 2.5,
-                                  ),
-                                  boxShadow: isSelected ? [
-                                    BoxShadow(color: color.withAlpha(180), blurRadius: 8),
-                                  ] : null,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        // Brightness label:
-                        //if (!kIsWeb && !Platform.isLinux)
-                        if (!kIsWeb)
-                          if (_brightness != null) Row(
+    return AnimatedOpacity(
+      opacity: _opacity,
+      duration: const Duration(milliseconds: 500),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: GestureDetector(
+          onDoubleTap: _exit,
+          onTap: _showControls,
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            children: [
+              // Controls overlay (colors + brightness + hint) – fades in/out together:
+              AnimatedOpacity(
+                opacity: _controlsVisible ? 1.0 : 0.0,
+                duration: _controlsHideDuration,
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      // Color swatches – top center:
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            children: _colorOptions.map((color) {
+                              final isSelected = _textColor == color;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() => _textColor = color);
+                                  saveFocusColor(color);
+                                  _scheduleControlsHide();
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  width: 28,
+                                  height: 28,
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: isSelected ? Colors.white : Colors.transparent,
+                                      width: 2.5,
+                                    ),
+                                    boxShadow: isSelected ? [
+                                      BoxShadow(color: color.withAlpha(180), blurRadius: 8),
+                                    ] : null,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      // Brightness slider + exit hint – bottom center:
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.brightness_low,
-                                  color: _textColor, size: kIconSizeDefault),
-                              Expanded(
-                                child: Slider(
-                                  value: _brightness!,
-                                  min: 0.01,  // avoid full black
-                                  max: 1.0,
-                                  divisions: 20,
-                                  label: (_brightness! * 100).toInt().toString() + ' %',
-                                  showValueIndicator: ShowValueIndicator.onDrag,
-                                  activeColor: _textColor,
-                                  inactiveColor: Colors.white24, // ???
-                                  onChanged: (v) {
-                                    setState(() => _brightness = v);
-                                    _saveBrightness(v);
-                                    _scheduleControlsHide();
-                                  },
+                              if (!kIsWeb && _brightness != null) Row(
+                                children: [
+                                  Icon(Icons.brightness_low,
+                                      color: _textColor, size: kIconSizeDefault),
+                                  Expanded(
+                                    child: Slider(
+                                      value: _brightness!,
+                                      min: 0.01,
+                                      max: 1.0,
+                                      divisions: 20,
+                                      label: '${(_brightness! * 100).toInt()} %',
+                                      showValueIndicator: ShowValueIndicator.onDrag,
+                                      activeColor: _textColor,
+                                      inactiveColor: Colors.white24,
+                                      onChanged: (v) {
+                                        setState(() => _brightness = v);
+                                        _saveBrightness(v);
+                                        _scheduleControlsHide();
+                                      },
+                                    ),
+                                  ),
+                                  Icon(Icons.brightness_high,
+                                      color: _textColor, size: kIconSizeDefault),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.hintFocusScreenExit,
+                                style: TextStyle(
+                                  color: _textColor.withAlpha(150),
+                                  fontSize: 12,
                                 ),
                               ),
-                              Icon(Icons.brightness_high,
-                                  color: _textColor, size: kIconSizeDefault),
                             ],
                           ),
-                        const SizedBox(height: 8),
-                        // Exit hint:
-                        Text(
-                          l10n.hintFocusScreenExit,
-                          style: TextStyle(
-                            color: _textColor,
-                            fontSize: 12,
-                          ),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Main value display – fills entire screen:
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                        color: _textColor,
+                        fontFamily: fontFamilyDefault,
+                        fontWeight: FontWeight.w500,
+                        // Base size – FittedBox scales this to fill available space:
+                        fontSize: 200,
+                      ),
+                      maxLines: 1,
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
