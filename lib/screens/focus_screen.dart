@@ -42,6 +42,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late DateTime _now;
   late Timer _timer;
   Color _textColor = Colors.white;
+  bool _showLine2 = false;
 
   // Brightness control:
   double? _brightness;
@@ -50,6 +51,13 @@ class _FocusScreenState extends State<FocusScreen> {
 
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
+
+  bool get _showColorPicker =>
+      !widget.timeValue.valueType.isGraphical ||
+          (!kIsWeb && Platform.isAndroid);
+
+  bool get _showBrightnessSlider =>
+      !kIsWeb && Platform.isAndroid && _brightness != null;
 
   @override
   void initState() {
@@ -114,7 +122,7 @@ class _FocusScreenState extends State<FocusScreen> {
     Navigator.of(context).pop();
   }
 
-  String _currentValue() {
+  ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
     return TimeStringRow.computeDisplay(
       widget.timeValue,
@@ -125,8 +133,8 @@ class _FocusScreenState extends State<FocusScreen> {
       thousandsSep: app.thousandsSep,
       localIanaZone: app.localIanaZone,
       longitude: app.lmstLongitude,
-      showDateDetails: false,
-    ).line1;
+      showDateDetails: app.dateWithDetails,
+    );
   }
 
   @override
@@ -144,13 +152,12 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final bool showColorPicker = !widget.timeValue.valueType.isGraphical;
-
     if (_brightness != null) return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
+        onLongPress: _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
@@ -162,7 +169,7 @@ class _FocusScreenState extends State<FocusScreen> {
                 child: Stack(
                   children: [
                     // Color swatches – top center:
-                    if (showColorPicker) Align(
+                    if (_showColorPicker) Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
@@ -189,7 +196,8 @@ class _FocusScreenState extends State<FocusScreen> {
                                     width: 2.5,
                                   ),
                                   boxShadow: isSelected && _controlsVisible ? [
-                                    BoxShadow(color: color.withAlpha(255), blurRadius: 48),
+                                    BoxShadow(color: color.withAlpha(200),
+                                        blurRadius: 12, spreadRadius: 2),
                                   ] : null,
                                 ),
                               ),
@@ -206,7 +214,7 @@ class _FocusScreenState extends State<FocusScreen> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (!kIsWeb && _brightness != null) Row(
+                            if (_showBrightnessSlider) Row(
                               children: [
                                 Icon(Icons.brightness_low,
                                     color: _textColor, size: kIconSizeDefault),
@@ -278,17 +286,40 @@ class _FocusScreenState extends State<FocusScreen> {
       padding: const EdgeInsets.all(24.0),
       child: FittedBox(
         fit: BoxFit.contain,
-        child: Text(
-          _currentValue(),
-          style: TextStyle(
-            color: _textColor,
-            fontFamily: fontFamilyDefault,
-            fontWeight: FontWeight.w500,
-            fontSize: 200,
-          ),
-          maxLines: 1,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _currentDisplay().line1,
+              style: TextStyle(
+                color: _textColor,
+                fontFamily: fontFamilyDefault,
+                fontWeight: FontWeight.w500,
+                fontSize: 200,
+              ),
+              maxLines: 1,
+            ),
+            if (_showLine2 && _currentDisplay().line2.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                _currentDisplay().line2,
+                style: TextStyle(
+                  color: _textColor.withAlpha(180),
+                  fontFamily: fontFamilyDefault,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 80,  // kleinere Schrift für Zeile 2
+                ),
+                maxLines: 1,
+              ),
+            ],
+          ],
         ),
       ),
     );
+  }
+
+  void _toggleLine2() {
+    setState(() => _showLine2 = !_showLine2);
+    _showControls();
   }
 }
