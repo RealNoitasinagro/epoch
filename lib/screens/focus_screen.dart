@@ -52,9 +52,7 @@ class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
 
-  bool get _showColorPicker =>
-      !widget.timeValue.valueType.isGraphical ||
-          (!kIsWeb && Platform.isAndroid);
+  bool get _showColorPicker => true;
 
   bool get _showBrightnessSlider =>
       !kIsWeb && Platform.isAndroid && _brightness != null;
@@ -152,114 +150,122 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final display = _currentDisplay();
+    final hasLine2 = display.line2.isNotEmpty &&
+        !widget.timeValue.valueType.isGraphical;
     if (_brightness != null) return Scaffold(
       backgroundColor: Colors.black,
-      body: GestureDetector(
-        onDoubleTap: _exit,
-        onTap: _showControls,
-        onLongPress: _toggleLine2,
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          children: [
-            // Controls overlay (colors + brightness + hint) – fades in/out together:
-            AnimatedOpacity(
-              opacity: _controlsVisible ? 1.0 : 0.0,
-              duration: _controlsHideDuration,
-              child: SafeArea(
-                child: Stack(
-                  children: [
-                    // Color swatches – top center:
-                    if (_showColorPicker) Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: _colorOptions.map((color) {
-                            final isSelected = _textColor == color;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() => _textColor = color);
-                                saveFocusColor(color);
-                                _scheduleControlsHide();
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                width: 28,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                    color: isSelected ? Colors.white : Colors.transparent,
-                                    width: 2.5,
-                                  ),
-                                  boxShadow: isSelected && _controlsVisible ? [
-                                    BoxShadow(color: color.withAlpha(200),
-                                        blurRadius: 12, spreadRadius: 2),
-                                  ] : null,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                    // Brightness slider + exit hint – bottom center:
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (_showBrightnessSlider) Row(
-                              children: [
-                                Icon(Icons.brightness_low,
-                                    color: _textColor, size: kIconSizeDefault),
-                                Expanded(
-                                  child: Slider(
-                                    value: _brightness!,
-                                    min: 0.01,
-                                    max: 1.0,
-                                    divisions: 20,
-                                    label: '${(_brightness! * 100).toInt()} %',
-                                    showValueIndicator: ShowValueIndicator.onDrag,
-                                    activeColor: _textColor,
-                                    inactiveColor: Colors.white24,
-                                    onChanged: (v) {
-                                      setState(() => _brightness = v);
-                                      _saveBrightness(v);
-                                      _scheduleControlsHide();
-                                    },
+      body: Tooltip(
+        message: hasLine2 ? l10n.hintFocusScreenLineToggle : '',
+        waitDuration: const Duration(milliseconds: 1000),
+        showDuration: const Duration(seconds: 2),
+        child: GestureDetector(
+          onDoubleTap: _exit,
+          onTap: _showControls,
+          onLongPress: _toggleLine2,
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            children: [
+              // Controls overlay (colors + brightness + hint) – fades in/out together:
+              AnimatedOpacity(
+                opacity: _controlsVisible ? 1.0 : 0.0,
+                duration: _controlsHideDuration,
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      // Color swatches – top center:
+                      if (_showColorPicker) Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: _colorOptions.map((color) {
+                              final isSelected = _textColor == color;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() => _textColor = color);
+                                  saveFocusColor(color);
+                                  _scheduleControlsHide();
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  width: 28,
+                                  height: 28,
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: isSelected ? Colors.white : Colors.transparent,
+                                      width: 2.5,
+                                    ),
+                                    boxShadow: isSelected && _controlsVisible ? [
+                                      BoxShadow(color: color.withAlpha(200),
+                                          blurRadius: 12, spreadRadius: 2),
+                                    ] : null,
                                   ),
                                 ),
-                                Icon(Icons.brightness_high,
-                                    color: _textColor, size: kIconSizeDefault),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              l10n.hintFocusScreenExit,
-                              style: TextStyle(
-                                color: _textColor.withAlpha(150),
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      // Brightness slider + exit hint – bottom center:
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_showBrightnessSlider) Row(
+                                children: [
+                                  Icon(Icons.brightness_low,
+                                      color: _textColor, size: kIconSizeDefault),
+                                  Expanded(
+                                    child: Slider(
+                                      value: _brightness!,
+                                      min: 0.01,
+                                      max: 1.0,
+                                      divisions: 20,
+                                      label: '${(_brightness! * 100).toInt()} %',
+                                      showValueIndicator: ShowValueIndicator.onDrag,
+                                      activeColor: _textColor,
+                                      inactiveColor: Colors.white24,
+                                      onChanged: (v) {
+                                        setState(() => _brightness = v);
+                                        _saveBrightness(v);
+                                        _scheduleControlsHide();
+                                      },
+                                    ),
+                                  ),
+                                  Icon(Icons.brightness_high,
+                                      color: _textColor, size: kIconSizeDefault),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                l10n.hintFocusScreenExit,
+                                style: TextStyle(
+                                  color: _textColor.withAlpha(150),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // Main value display – fills entire screen:
-            Center(
-              child: _buildValueDisplay(),
-            ),
-          ],
+              // Main value display – fills entire screen:
+              Center(
+                child: _buildValueDisplay(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -275,8 +281,18 @@ class _FocusScreenState extends State<FocusScreen> {
           EpochApp.of(context).localIanaZone);
       final l10n = AppLocalizations.of(context)!;
       final clock = widget.timeValue.valueType == ValueType.binaryClockColumns
-          ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
-          : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n);
+          ? BinaryColumnsClock(
+              now: zonedNow,
+              l10n: l10n,
+              dotSize: kGraphicalBinaryClockDotSizeFocus,
+              showLabels: false
+             )
+          : BinaryCodedDecimalClock(
+              now: zonedNow,
+              l10n: l10n,
+              dotSize: kGraphicalBinaryClockDotSizeFocus,
+              showLabels: false
+          );
       return Padding(
         padding: const EdgeInsets.all(24.0),
         child: FittedBox(fit: BoxFit.contain, child: clock),

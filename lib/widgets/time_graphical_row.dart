@@ -31,11 +31,15 @@ class TimeGraphicalRow extends TimeValueRow {
       showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       height: ValueTile.graphicTileHeight,
-      content: GraphicValueContent(
-        clock: timeValue.valueType == ValueType.binaryClockColumns
-            ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
-            : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
-        onDoubleTap: () => openFocusScreen(context, locale),
+      content: Tooltip(
+        message: l10n.hintFocusScreenOpen,
+        waitDuration: const Duration(milliseconds: 1000),
+        child: GraphicValueContent(
+          clock: timeValue.valueType == ValueType.binaryClockColumns
+              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
+              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+          onDoubleTap: () => openFocusScreen(context, locale),
+        ),
       ),
       actionSlots: [
         IconButton(

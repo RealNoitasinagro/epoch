@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
+import '../../layout_constants.dart';
 import '../../time_utils.dart';
 
 // One column per unit (H, M, S), top-aligned, most significant bit at top.
 class BinaryColumnsClock extends StatelessWidget {
   final DateTime now;
   final AppLocalizations l10n;
-  const BinaryColumnsClock({super.key, required this.now, required this.l10n});
+  final double dotSize;
+  final bool showLabels;
+
+  const BinaryColumnsClock({
+    super.key,
+    required this.now,
+    required this.l10n,
+    this.dotSize = kGraphicalBinaryClockDotSizeDefault,
+    this.showLabels = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +31,7 @@ class BinaryColumnsClock extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
+          if (showLabels) Text(
             header,
             style: Theme.of(context)
                 .textTheme
@@ -34,8 +44,8 @@ class BinaryColumnsClock extends StatelessWidget {
           ...bits.split('').map((b) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: Container(
-              width: 22,
-              height: 22,
+              width: dotSize,
+              height: dotSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: b == '1' ? litColor : dimColor.withAlpha(60),
@@ -55,9 +65,9 @@ class BinaryColumnsClock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         bitColumn(bin.hours,   l10n.labelHours,   6),
-        const SizedBox(width: 16),
+        SizedBox(width: dotSize * 0.75),
         bitColumn(bin.minutes, l10n.labelMinutes, 6),
-        const SizedBox(width: 16),
+        SizedBox(width: dotSize * 0.75),
         bitColumn(bin.seconds, l10n.labelSeconds, 6),
       ],
     );

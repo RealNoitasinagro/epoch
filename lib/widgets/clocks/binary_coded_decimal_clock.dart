@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
+import '../../layout_constants.dart';
 import '../../time_utils.dart';
 
 // BCD-style: two columns per unit (tens digit, units digit).
 class BinaryCodedDecimalClock extends StatelessWidget {
   final DateTime now;
   final AppLocalizations l10n;
-  const BinaryCodedDecimalClock({super.key, required this.now, required this.l10n});
+  final double dotSize;
+  final bool showLabels;
+
+  const BinaryCodedDecimalClock({
+    super.key,
+    required this.now,
+    required this.l10n,
+    this.dotSize = kGraphicalBinaryClockDotSizeDefault,
+    this.showLabels = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +30,8 @@ class BinaryCodedDecimalClock extends StatelessWidget {
         children: bits.split('').map((b) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: Container(
-            width: 22,
-            height: 22,
+            width: dotSize,
+            height: dotSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: b == '1' ? litColor : dimColor.withAlpha(60),
@@ -54,7 +64,7 @@ class BinaryCodedDecimalClock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Group headers.
-        Row(
+        if (showLabels) Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(width: 50, child: groupLabel(l10n.labelHours)),
@@ -68,17 +78,17 @@ class BinaryCodedDecimalClock extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.end, // align bottoms
           children: [
-            bitColumn(bcd.hourTens,  2),
-            const SizedBox(width: 6),
+            bitColumn(bcd.hourTens, 2),
+            SizedBox(width: dotSize * 0.25),
             bitColumn(bcd.hourUnits, 4),
-            const SizedBox(width: 8),
-            bitColumn(bcd.minTens,   3),
-            const SizedBox(width: 6),
+            SizedBox(width: dotSize * 0.75),
+            bitColumn(bcd.minTens,  3),
+            SizedBox(width: dotSize * 0.25),
             bitColumn(bcd.minUnits,  4),
-            const SizedBox(width: 8),
-            bitColumn(bcd.secTens,   3),
-            const SizedBox(width: 6),
-            bitColumn(bcd.secUnits,  4),
+            SizedBox(width: dotSize * 0.75),
+            bitColumn(bcd.secTens,  3),
+            SizedBox(width: dotSize * 0.25),
+            bitColumn(bcd.secUnits, 4),
           ],
         ),
       ],
