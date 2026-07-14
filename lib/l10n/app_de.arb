@@ -59,6 +59,8 @@
   "hintEditSectionHeader": "Abschnittsüberschrift bearbeiten",
   "hintEditTimeValue": "Zeitwert bearbeiten",
   "hintFocusScreenExit": "Doppelt antippen zum Verlassen",
+  "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
+  "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
   "hintFocusScreenOpen": "Doppelt antippen zum Wechsel in den Fokus-Screen",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
   "hintRemoveSelected": "Markierte entfernen",

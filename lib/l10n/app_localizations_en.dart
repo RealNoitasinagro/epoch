@@ -109,6 +109,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenExit => 'Double-tap to exit';
 
   @override
+  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
+
+  @override
   String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override

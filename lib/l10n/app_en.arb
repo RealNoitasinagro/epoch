@@ -59,6 +59,8 @@
   "hintEditSectionHeader": "Edit section header",
   "hintEditTimeValue": "Edit time value",
   "hintFocusScreenExit": "Double-tap to exit",
+  "hintFocusScreenToggleToOneLine": "Hold for one line",
+  "hintFocusScreenToggleToTwoLines": "Hold for two lines",
   "hintFocusScreenOpen": "Double-tap to switch to focus screen",
   "hintPinnedIndicator": "Automatic clock change disabled",
   "hintRemoveSelected": "Remove selected",

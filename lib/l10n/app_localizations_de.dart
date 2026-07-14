@@ -108,6 +108,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintFocusScreenExit => 'Doppelt antippen zum Verlassen';
 
   @override
+  String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines =>
+      'Gedrückt halten für zwei Zeilen';
+
+  @override
   String get hintFocusScreenOpen =>
       'Doppelt antippen zum Wechsel in den Fokus-Screen';
 

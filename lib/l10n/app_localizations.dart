@@ -260,6 +260,18 @@ abstract class AppLocalizations {
   /// **'Double-tap to exit'**
   String get hintFocusScreenExit;
 
+  /// No description provided for @hintFocusScreenToggleToOneLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for one line'**
+  String get hintFocusScreenToggleToOneLine;
+
+  /// No description provided for @hintFocusScreenToggleToTwoLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for two lines'**
+  String get hintFocusScreenToggleToTwoLines;
+
   /// No description provided for @hintFocusScreenOpen.
   ///
   /// In en, this message translates to:
