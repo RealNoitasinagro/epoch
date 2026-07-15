@@ -594,7 +594,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final Widget clock;
 
     switch (timeValue.valueType) {
-      case ValueType.sevenSegmentTime:
+      case ValueType.sevenSegmentClock:
         clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
       case ValueType.binaryClockColumns:
         clock = BinaryColumnsClock(now: zonedNow, l10n: l10n);

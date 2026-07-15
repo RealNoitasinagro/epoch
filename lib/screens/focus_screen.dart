@@ -47,6 +47,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late Timer _timer;
   Color _textColor = Colors.white;
   bool _showLine2 = false;
+  bool _showSeconds = true;
 
   double? _brightness;
   bool _controlsVisible = true;
@@ -395,6 +396,8 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildValueDisplay(bool isLandscape) {
+    final app = EpochApp.of(context);
+
     // Horizontal padding: make room for side controls in landscape:
     final hPadding = isLandscape ? 80.0 : 24.0;
     final vPadding = 24.0;
@@ -407,33 +410,37 @@ class _FocusScreenState extends State<FocusScreen> {
       final Widget clock;
 
       switch (widget.timeValue.valueType) {
-        case ValueType.sevenSegmentTime:
+        case ValueType.sevenSegmentClock:
           clock = SevenSegmentClock(
-              now: zonedNow,
-              l10n: l10n,
-              //dotSize: kGraphicalBinaryClockDotSizeFocus,
-              //showLabels: false,
+            now: zonedNow,
+            l10n: l10n,
+            digitHeight: kGraphicalSegmentClockHeightFocus,
+            showSeconds: _showSeconds,
+            hourFormat24: app.hourFormat24,
+            color: _textColor,
           );
         case ValueType.binaryClockColumns:
           clock = BinaryColumnsClock(
-              now: zonedNow,
-              l10n: l10n,
-              dotSize: kGraphicalBinaryClockDotSizeFocus,
-              showLabels: false,
+            now: zonedNow,
+            l10n: l10n,
+            dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showLabels: false,
           );
         case ValueType.binaryClockBcd:
           clock = BinaryCodedDecimalClock(
-              now: zonedNow,
-              l10n: l10n,
-              dotSize: kGraphicalBinaryClockDotSizeFocus,
-              showLabels: false,
+            now: zonedNow,
+            l10n: l10n,
+            dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showLabels: false,
           );
         default:
           clock = SevenSegmentClock(
             now: zonedNow,
             l10n: l10n,
-            //dotSize: kGraphicalBinaryClockDotSizeFocus,
-            //showLabels: false,
+            digitHeight: kGraphicalSegmentClockHeightFocus,
+            showSeconds: _showSeconds,
+            hourFormat24: app.hourFormat24,
+            color: _textColor,
           );
       }
       return Padding(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import 'clocks/binary_coded_decimal_clock.dart';
@@ -20,23 +21,36 @@ class TimeGraphicalRow extends TimeValueRow {
 
   @override
   Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final zonedNow = TimeUtils.resolveLocalTime(
         timeValue, now.toUtc(), localIanaZone);
-    final Widget clock;
+    ;
 
-    switch (timeValue.valueType) {
-      case ValueType.sevenSegmentTime:
-        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
-      case ValueType.binaryClockColumns:
-        clock = BinaryColumnsClock(now: zonedNow, l10n: l10n);
-      case ValueType.binaryClockBcd:
-        clock = BinaryCodedDecimalClock(now: zonedNow, l10n: l10n);
-      default:
-        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
-    }
+    final segmentColor = switch (app.themeMode) {
+      AppThemeMode.light  => Colors.black,
+      AppThemeMode.dark   => Colors.white,
+      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
+          ? Colors.white : Colors.black,
+    };
+
+    final Widget clock = switch (timeValue.valueType) {
+      ValueType.sevenSegmentClock =>
+        SevenSegmentClock(
+            now: zonedNow,
+            l10n: l10n,
+            color: segmentColor,
+        ),
+      ValueType.binaryClockColumns =>
+        BinaryColumnsClock(now: zonedNow, l10n: l10n),
+      ValueType.binaryClockBcd =>
+        BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+      _ =>
+        SevenSegmentClock(now: zonedNow, l10n: l10n),
+    };
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),

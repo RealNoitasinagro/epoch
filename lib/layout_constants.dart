@@ -10,6 +10,8 @@ const double kIconSizeLabel                      = 14.0;
 const double kTileBorderRadius                   = 6.0;
 const double kGraphicalBinaryClockDotSizeDefault = 20.0;
 const double kGraphicalBinaryClockDotSizeFocus   = 80.0;
+const double kGraphicalSegmentClockHeightDefault = 72.0;
+const double kGraphicalSegmentClockHeightFocus   = 162.0;
 
 const IconData kIconTimeZoneIndicator = Icons.language_sharp;
 const IconData kIconPinnedIndicator   = Icons.push_pin_sharp;
