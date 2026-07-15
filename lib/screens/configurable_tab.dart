@@ -9,6 +9,7 @@ import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
 import '../widgets/clocks/binary_columns_clock.dart';
+import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
 import '../widgets/value_tile.dart';
@@ -590,6 +591,18 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       showDateDetails: widget.showDateDetails,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
+    final Widget clock;
+
+    switch (timeValue.valueType) {
+      case ValueType.sevenSegmentTime:
+        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
+      case ValueType.binaryClockColumns:
+        clock = BinaryColumnsClock(now: zonedNow, l10n: l10n);
+      case ValueType.binaryClockBcd:
+        clock = BinaryCodedDecimalClock(now: zonedNow, l10n: l10n);
+      default:
+        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
+    }
 
     return Dismissible(
       key: ValueKey(timeValue.key),
@@ -608,11 +621,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
-            ? GraphicValueContent(
-          clock: timeValue.valueType == ValueType.binaryClockColumns
-              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
-              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
-        )
+            ? GraphicValueContent(clock: clock)
             : TextValueContent(line1: display.line1, line2: display.line2),
         actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
       ),

@@ -108,15 +108,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintFocusScreenExit => 'Doppelt antippen zum Verlassen';
 
   @override
+  String get hintFocusScreenOpen =>
+      'Doppelt antippen zum Wechsel in den Fokus-Screen';
+
+  @override
   String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
 
   @override
   String get hintFocusScreenToggleToTwoLines =>
       'Gedrückt halten für zwei Zeilen';
-
-  @override
-  String get hintFocusScreenOpen =>
-      'Doppelt antippen zum Wechsel in den Fokus-Screen';
 
   @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
@@ -248,6 +248,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+
+  @override
+  String get infoTextSevenSegmentTime =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone im Radiowecker-Design.';
 
   @override
   String get infoTextSwatchBeats =>
@@ -500,6 +504,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get valueTypeModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000';
+
+  @override
+  String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch-Internetzeit';

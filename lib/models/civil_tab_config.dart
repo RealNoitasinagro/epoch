@@ -12,16 +12,18 @@ const civilTypes = [
   ValueType.dateTime,
   ValueType.daySecond,
   ValueType.dayPercent,
+  ValueType.sevenSegmentTime,
 ];
 
 // Default entries for the Civil tab.
 const defaultCivilEntries = [
-  TimeValue(valueType: ValueType.date,       zone: ZoneLocal()),
-  TimeValue(valueType: ValueType.time,       zone: ZoneLocal()),
-  TimeValue(valueType: ValueType.daySecond,  zone: ZoneLocal()),
-  TimeValue(valueType: ValueType.dayPercent, zone: ZoneLocal()),
-  TimeValue(valueType: ValueType.time,       zone: ZoneUtc()),
-  TimeValue(valueType: ValueType.daySecond,  zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.date,             zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.time,             zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.daySecond,        zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.dayPercent,       zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.time,             zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.daySecond,        zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.sevenSegmentTime, zone: ZoneLocal()),
 ];
 
 Future<List<TabEntry>> loadCivilEntries() async {

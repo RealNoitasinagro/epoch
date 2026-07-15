@@ -8,7 +8,7 @@ const double kSectionHeaderHeight                = 24.0;
 const double kIconSizeDefault                    = 20.0;
 const double kIconSizeLabel                      = 14.0;
 const double kTileBorderRadius                   = 6.0;
-const double kGraphicalBinaryClockDotSizeDefault = 22.0;
+const double kGraphicalBinaryClockDotSizeDefault = 20.0;
 const double kGraphicalBinaryClockDotSizeFocus   = 80.0;
 
 const IconData kIconTimeZoneIndicator = Icons.language_sharp;

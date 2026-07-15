@@ -40,7 +40,7 @@ class BinaryColumnsClock extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           // Empty spacers for alignment.
-          ...List.generate(padding, (_) => const SizedBox(height: 28)),
+          ...List.generate(padding, (_) => SizedBox(height: dotSize + 6)),
           ...bits.split('').map((b) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: Container(
@@ -64,7 +64,7 @@ class BinaryColumnsClock extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        bitColumn(bin.hours,   l10n.labelHours,   6),
+        bitColumn(bin.hours, l10n.labelHours,   6),
         SizedBox(width: dotSize * 0.75),
         bitColumn(bin.minutes, l10n.labelMinutes, 6),
         SizedBox(width: dotSize * 0.75),

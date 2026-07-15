@@ -13,6 +13,7 @@ enum ValueType {
   dateTime,
   daySecond,
   dayPercent,
+  sevenSegmentTime,
   // Technical
   unixSeconds,
   tai,
@@ -211,6 +212,7 @@ class TimeValue implements TabEntry {
         ValueType.dateTime => l10n.valueTypeDateTime,
         ValueType.daySecond => l10n.valueTypeDaySecond,
         ValueType.dayPercent => l10n.valueTypeDayPercent,
+        ValueType.sevenSegmentTime => l10n.valueTypeSevenSegmentTime,
         ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
         ValueType.tai => l10n.valueTypeTai,
         ValueType.gps => l10n.valueTypeGps,
@@ -234,6 +236,7 @@ class TimeValue implements TabEntry {
     ValueType.dateTime => l10n.infoTextDateTime,
     ValueType.daySecond => l10n.infoTextDaySecond,
     ValueType.dayPercent => l10n.infoTextDayPercent,
+    ValueType.sevenSegmentTime => l10n.infoTextSevenSegmentTime,
     ValueType.unixSeconds => l10n.infoTextUnixSeconds,
     ValueType.tai => l10n.infoTextTai,
     ValueType.gps => l10n.infoTextGps,
@@ -275,6 +278,7 @@ extension ValueTypeProps on ValueType {
     ValueType.dateTime => false,
     ValueType.daySecond => false,
     ValueType.dayPercent => false,
+    ValueType.sevenSegmentTime => false,
     ValueType.unixSeconds => true,
     ValueType.tai => true,
     ValueType.gps => true,
@@ -291,6 +295,7 @@ extension ValueTypeProps on ValueType {
   };
 
   bool get isGraphical =>
+      this == ValueType.sevenSegmentTime ||
       this == ValueType.binaryClockColumns ||
       this == ValueType.binaryClockBcd;
 }

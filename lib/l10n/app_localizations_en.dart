@@ -109,13 +109,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenExit => 'Double-tap to exit';
 
   @override
+  String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
+
+  @override
   String get hintFocusScreenToggleToOneLine => 'Hold for one line';
 
   @override
   String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
-
-  @override
-  String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
@@ -247,6 +247,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoTextModifiedJulianDate2000 =>
       'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
+
+  @override
+  String get infoTextSevenSegmentTime =>
+      'The current time in the selected timezone in alarm clock design.';
 
   @override
   String get infoTextSwatchBeats =>
@@ -496,6 +500,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
+
+  @override
+  String get valueTypeSevenSegmentTime => 'Seven-segment clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';

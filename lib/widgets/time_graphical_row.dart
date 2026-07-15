@@ -1,3 +1,4 @@
+import 'package:epoch/widgets/clocks/seven_segment_clock.dart';
 import 'package:epoch/widgets/time_value_row.dart';
 import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,18 @@ class TimeGraphicalRow extends TimeValueRow {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final zonedNow = TimeUtils.resolveLocalTime(
         timeValue, now.toUtc(), localIanaZone);
+    final Widget clock;
+
+    switch (timeValue.valueType) {
+      case ValueType.sevenSegmentTime:
+        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
+      case ValueType.binaryClockColumns:
+        clock = BinaryColumnsClock(now: zonedNow, l10n: l10n);
+      case ValueType.binaryClockBcd:
+        clock = BinaryCodedDecimalClock(now: zonedNow, l10n: l10n);
+      default:
+        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
+    }
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
@@ -35,9 +48,7 @@ class TimeGraphicalRow extends TimeValueRow {
         message: l10n.hintFocusScreenOpen,
         waitDuration: const Duration(milliseconds: 1000),
         child: GraphicValueContent(
-          clock: timeValue.valueType == ValueType.binaryClockColumns
-              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
-              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+          clock: clock,
           onDoubleTap: () => openFocusScreen(context, locale),
         ),
       ),

@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'Double-tap to exit'**
   String get hintFocusScreenExit;
 
+  /// No description provided for @hintFocusScreenOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to switch to focus screen'**
+  String get hintFocusScreenOpen;
+
   /// No description provided for @hintFocusScreenToggleToOneLine.
   ///
   /// In en, this message translates to:
@@ -271,12 +277,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold for two lines'**
   String get hintFocusScreenToggleToTwoLines;
-
-  /// No description provided for @hintFocusScreenOpen.
-  ///
-  /// In en, this message translates to:
-  /// **'Double-tap to switch to focus screen'**
-  String get hintFocusScreenOpen;
 
   /// No description provided for @hintPinnedIndicator.
   ///
@@ -493,6 +493,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
+
+  /// No description provided for @infoTextSevenSegmentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone in alarm clock design.'**
+  String get infoTextSevenSegmentTime;
 
   /// No description provided for @infoTextSwatchBeats.
   ///
@@ -967,6 +973,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000'**
   String get valueTypeModifiedJulianDate2000;
+
+  /// No description provided for @valueTypeSevenSegmentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seven-segment clock'**
+  String get valueTypeSevenSegmentTime;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///

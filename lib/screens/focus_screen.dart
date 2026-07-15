@@ -13,6 +13,7 @@ import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
 import '../widgets/clocks/binary_columns_clock.dart';
+import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/time_string_row.dart';
 
 const _colorOptions = [
@@ -403,15 +404,38 @@ class _FocusScreenState extends State<FocusScreen> {
           widget.timeValue, _now.toUtc(),
           EpochApp.of(context).localIanaZone);
       final l10n = AppLocalizations.of(context)!;
-      final clock = widget.timeValue.valueType == ValueType.binaryClockColumns
-          ? BinaryColumnsClock(
-          now: zonedNow, l10n: l10n,
-          dotSize: kGraphicalBinaryClockDotSizeFocus,
-          showLabels: false)
-          : BinaryCodedDecimalClock(
-          now: zonedNow, l10n: l10n,
-          dotSize: kGraphicalBinaryClockDotSizeFocus,
-          showLabels: false);
+      final Widget clock;
+
+      switch (widget.timeValue.valueType) {
+        case ValueType.sevenSegmentTime:
+          clock = SevenSegmentClock(
+              now: zonedNow,
+              l10n: l10n,
+              //dotSize: kGraphicalBinaryClockDotSizeFocus,
+              //showLabels: false,
+          );
+        case ValueType.binaryClockColumns:
+          clock = BinaryColumnsClock(
+              now: zonedNow,
+              l10n: l10n,
+              dotSize: kGraphicalBinaryClockDotSizeFocus,
+              showLabels: false,
+          );
+        case ValueType.binaryClockBcd:
+          clock = BinaryCodedDecimalClock(
+              now: zonedNow,
+              l10n: l10n,
+              dotSize: kGraphicalBinaryClockDotSizeFocus,
+              showLabels: false,
+          );
+        default:
+          clock = SevenSegmentClock(
+            now: zonedNow,
+            l10n: l10n,
+            //dotSize: kGraphicalBinaryClockDotSizeFocus,
+            //showLabels: false,
+          );
+      }
       return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: hPadding, vertical: vPadding),

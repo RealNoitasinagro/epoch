@@ -131,6 +131,7 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
+      case ValueType.sevenSegmentTime:
       case ValueType.binaryClockColumns:
       case ValueType.binaryClockBcd:
       default:
