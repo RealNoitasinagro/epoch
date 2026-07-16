@@ -42,7 +42,7 @@ class TimeGraphicalRow extends TimeValueRow {
           now: zonedNow,
           l10n: l10n,
           digitHeight: kGraphicalSegmentClockHeightDefault,
-          //showSeconds: _showSeconds,
+          showSeconds: timeValue.showSeconds,
           hourFormat24: app.hourFormat24,
           color: segmentColor,
         ),

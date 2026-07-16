@@ -208,6 +208,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
+    bool selectedShowSeconds = timeValue.showSeconds;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
     final existingModes = widget.entries
@@ -222,7 +223,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     var selectedMode = timeValue.timezoneDisplayMode;
 
     final result = await showDialog<
-        ({String? label, TimezoneDisplayMode mode, bool reset})
+      ({String? label, TimezoneDisplayMode mode, bool reset, bool showSeconds})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -262,7 +263,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                         title: Text(l10n.settingsDstAuto,
                           style: existingModes.contains(TimezoneDisplayMode.auto)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
                         value: TimezoneDisplayMode.auto,
@@ -274,7 +275,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                         title: Text(l10n.settingsDstAlwaysOn,
                           style: existingModes.contains(TimezoneDisplayMode.forceDst)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
                         value: TimezoneDisplayMode.forceDst,
@@ -286,7 +287,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                         title: Text(l10n.settingsDstAlwaysOff,
                           style: existingModes.contains(TimezoneDisplayMode.forceStandard)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
                         value: TimezoneDisplayMode.forceStandard,
@@ -296,24 +297,34 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   )
                 ),
               ],
+              if (timeValue.valueType == ValueType.sevenSegmentClock) ...[
+                const SizedBox(height: 12),
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  title: Text(l10n.labelShowSeconds),
+                  value: selectedShowSeconds,
+                  onChanged: (v) => setDialogState(() => selectedShowSeconds = v ?? true),
+                ),
+              ],
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(
-                  ctx,
-                  (label: null, mode: TimezoneDisplayMode.auto, reset: true)
+              onPressed: () => Navigator.pop(ctx,
+                  (label: null, mode: TimezoneDisplayMode.auto,
+                  reset: true, showSeconds: true)
               ),
               child: Text(l10n.hintResetToDefaults),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(ctx),
+              onPressed: () => Navigator.pop(ctx),  // null = cancel
               child: Text(l10n.actionCancel),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(
-                  ctx,
-                  (label: controller.text.trim(), mode: selectedMode, reset: false)
+              onPressed: () => Navigator.pop(ctx,
+                  (label: controller.text.trim(), mode: selectedMode,
+                  reset: false, showSeconds: selectedShowSeconds)
               ),
               child: const Text('OK'),
             ),
@@ -329,10 +340,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         ? null
         : result.label;
     final newMode = result.reset ? TimezoneDisplayMode.auto : result.mode;
+    final newShowSeconds = result.reset ? true : result.showSeconds;
+
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue
         .withCustomLabel(newLabel)
-        .withTimezoneDisplayMode(newMode);
+        .withTimezoneDisplayMode(newMode)
+        .withShowSeconds(newShowSeconds);
     widget.onEntriesChanged(updated);
   }
 
@@ -602,22 +616,25 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           ? Colors.white : Colors.black,
     };
 
-    final Widget clock = switch (timeValue.valueType) {
-      ValueType.sevenSegmentClock =>
-        SevenSegmentClock(
-          now: zonedNow,
-          l10n: l10n,
-          digitHeight: kGraphicalSegmentClockHeightDefault,
-          //showSeconds: _showSeconds,
-          hourFormat24: app.hourFormat24,
-          color: segmentColor,
-        ),
-      ValueType.binaryClockColumns =>
-        BinaryColumnsClock(now: zonedNow, l10n: l10n),
-      ValueType.binaryClockBcd =>
-        BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
-      _ => throw StateError(
-          'Unhandled graphical ValueType: ${timeValue.valueType}'),
+    late final Widget clock;
+    if (isGraphical) {
+      clock = switch (timeValue.valueType) {
+        ValueType.sevenSegmentClock =>
+            SevenSegmentClock(
+              now: zonedNow,
+              l10n: l10n,
+              digitHeight: kGraphicalSegmentClockHeightDefault,
+              showSeconds: timeValue.showSeconds,
+              hourFormat24: app.hourFormat24,
+              color: segmentColor,
+            ),
+        ValueType.binaryClockColumns =>
+            BinaryColumnsClock(now: zonedNow, l10n: l10n),
+        ValueType.binaryClockBcd =>
+            BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+        _ => throw StateError(
+            'Unhandled graphical ValueType: ${timeValue.valueType}'),
+      };
     };
 
     return Dismissible(

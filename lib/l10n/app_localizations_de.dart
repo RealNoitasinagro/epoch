@@ -112,19 +112,19 @@ class AppLocalizationsDe extends AppLocalizations {
       'Doppelt antippen zum Wechsel in den Fokus-Screen';
 
   @override
-  String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
-
-  @override
-  String get hintFocusScreenToggleToTwoLines =>
-      'Gedrückt halten für zwei Zeilen';
-
-  @override
   String get hintFocusScreenToggleSecondsOff =>
       'Gedrückt halten für Anzeige ohne Sekunden';
 
   @override
   String get hintFocusScreenToggleSecondsOn =>
       'Gedrückt halten für Anzeige mit Sekunden';
+
+  @override
+  String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines =>
+      'Gedrückt halten für zwei Zeilen';
 
   @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
@@ -299,6 +299,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelSeconds => 'Sek';
+
+  @override
+  String get labelShowSeconds => 'Sekunden anzeigen';
 
   @override
   String get messageAlreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';

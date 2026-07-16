@@ -58,13 +58,23 @@ class TimeValue implements TabEntry {
   final ZoneSpec zone;
   final String? customLabel;
   final TimezoneDisplayMode timezoneDisplayMode;
+  final bool showSeconds;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
     this.timezoneDisplayMode = TimezoneDisplayMode.auto,
+    this.showSeconds = true,
   });
+
+  TimeValue withShowSeconds(bool value) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: customLabel,
+    timezoneDisplayMode: timezoneDisplayMode,
+    showSeconds: value,
+  );
 
   // Unique key for deduplication within a tab.
   // Custom label does not affect the key.
@@ -90,8 +100,12 @@ class TimeValue implements TabEntry {
   @override
   String toPrefsString() {
     final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
-    if (timezoneDisplayMode == TimezoneDisplayMode.auto) return base;
-    return '$base|dst:${timezoneDisplayMode.name}';
+    var result = base;
+    if (timezoneDisplayMode != TimezoneDisplayMode.auto) {
+      result = '$result|dst:${timezoneDisplayMode.name}';
+    }
+    if (!showSeconds) result = '$result|nosec';
+    return result;
   }
 
   static TimeValue? fromPrefsString(String s) {
@@ -106,6 +120,11 @@ class TimeValue implements TabEntry {
               .firstOrNull ??
               TimezoneDisplayMode.auto;
       workStr = workStr.substring(0, dstIdx);
+    }
+    bool showSeconds = true;
+    if (workStr.endsWith('|nosec')) {
+      showSeconds = false;
+      workStr = workStr.substring(0, workStr.length - 6);
     }
 
     final pipeIdx = workStr.indexOf('|');
@@ -134,6 +153,7 @@ class TimeValue implements TabEntry {
       zone: zone,
       customLabel: labelPart,
       timezoneDisplayMode: timezoneDisplayMode,
+      showSeconds: showSeconds,
     );
   }
 

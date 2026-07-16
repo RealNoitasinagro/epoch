@@ -112,16 +112,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override
-  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
-
-  @override
-  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
-
-  @override
   String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
 
   @override
   String get hintFocusScreenToggleSecondsOn => 'Hold to display seconds';
+
+  @override
+  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
 
   @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
@@ -296,6 +296,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelSeconds => 'SS';
+
+  @override
+  String get labelShowSeconds => 'Show seconds';
 
   @override
   String get messageAlreadyDisplayed => 'This value is already displayed.';

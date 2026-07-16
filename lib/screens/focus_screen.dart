@@ -47,7 +47,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late Timer _timer;
   Color _textColor = Colors.white;
   bool _showLine2 = false;
-  bool _showSeconds = true;
+  late bool _showSeconds;
 
   double? _brightness;
   bool _controlsVisible = true;
@@ -64,6 +64,7 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   void initState() {
     super.initState();
+    _showSeconds = widget.timeValue.showSeconds;
     _now = DateTime.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = DateTime.now()));

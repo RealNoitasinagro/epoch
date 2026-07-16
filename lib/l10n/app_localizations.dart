@@ -266,18 +266,6 @@ abstract class AppLocalizations {
   /// **'Double-tap to switch to focus screen'**
   String get hintFocusScreenOpen;
 
-  /// No description provided for @hintFocusScreenToggleToOneLine.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for one line'**
-  String get hintFocusScreenToggleToOneLine;
-
-  /// No description provided for @hintFocusScreenToggleToTwoLines.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for two lines'**
-  String get hintFocusScreenToggleToTwoLines;
-
   /// No description provided for @hintFocusScreenToggleSecondsOff.
   ///
   /// In en, this message translates to:
@@ -289,6 +277,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold to display seconds'**
   String get hintFocusScreenToggleSecondsOn;
+
+  /// No description provided for @hintFocusScreenToggleToOneLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for one line'**
+  String get hintFocusScreenToggleToOneLine;
+
+  /// No description provided for @hintFocusScreenToggleToTwoLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for two lines'**
+  String get hintFocusScreenToggleToTwoLines;
 
   /// No description provided for @hintPinnedIndicator.
   ///
@@ -583,6 +583,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SS'**
   String get labelSeconds;
+
+  /// No description provided for @labelShowSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Show seconds'**
+  String get labelShowSeconds;
 
   /// No description provided for @messageAlreadyDisplayed.
   ///
