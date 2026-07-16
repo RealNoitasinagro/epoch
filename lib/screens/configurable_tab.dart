@@ -616,8 +616,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         BinaryColumnsClock(now: zonedNow, l10n: l10n),
       ValueType.binaryClockBcd =>
         BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
-      _ =>
-        SevenSegmentClock(now: zonedNow, l10n: l10n),
+      _ => throw StateError(
+          'Unhandled graphical ValueType: ${timeValue.valueType}'),
     };
 
     return Dismissible(

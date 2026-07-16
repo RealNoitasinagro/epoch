@@ -458,15 +458,8 @@ class _FocusScreenState extends State<FocusScreen> {
             dotSize: kGraphicalBinaryClockDotSizeFocus,
             showLabels: false,
           ),
-        _ =>
-          SevenSegmentClock(
-            now: zonedNow,
-            l10n: l10n,
-            digitHeight: kGraphicalSegmentClockHeightFocus,
-            showSeconds: _showSeconds,
-            hourFormat24: app.hourFormat24,
-            color: _textColor,
-          ),
+        _ => throw StateError(
+            'Unhandled graphical ValueType: ${widget.timeValue.valueType}'),
       };
       return Padding(
         padding: EdgeInsets.symmetric(

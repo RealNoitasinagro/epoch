@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -128,7 +130,7 @@ class _SevenSegmentPainter extends CustomPainter {
   });
 
   // Dim alpha for unlit segments – subtle but visible.
-  static const int _dimAlpha = 30;
+  static const int _dimAlpha = 55;
 
   Paint _paint(bool lit) => Paint()
     ..color = lit ? color : color.withAlpha(_dimAlpha)
@@ -160,6 +162,7 @@ class _SevenSegmentPainter extends CustomPainter {
     final segments = _digitSegments[digit]!;
     final sx = digitWidth  / 10;
     final sy = digitHeight / 18;
+    const i = 0.12;  // inset in SVG units – creates visible gap between segments
 
     // Helper to map SVG coordinates to canvas coordinates:
     Path p(List<List<num>> pts) {
@@ -172,20 +175,20 @@ class _SevenSegmentPainter extends CustomPainter {
       return path;
     }
 
-    // Segment a – top horizontal:
-    canvas.drawPath(p([[1,1],[2,0],[8,0],[9,1],[8,2],[2,2]]), _paint(segments[0]));
-    // Segment b – top-right vertical:
-    canvas.drawPath(p([[9,1],[10,2],[10,8],[9,9],[8,8],[8,2]]), _paint(segments[1]));
-    // Segment c – bottom-right vertical:
-    canvas.drawPath(p([[9,9],[10,10],[10,16],[9,17],[8,16],[8,10]]), _paint(segments[2]));
-    // Segment d – bottom horizontal:
-    canvas.drawPath(p([[9,17],[8,18],[2,18],[1,17],[2,16],[8,16]]), _paint(segments[3]));
-    // Segment e – bottom-left vertical:
-    canvas.drawPath(p([[1,17],[0,16],[0,10],[1,9],[2,10],[2,16]]), _paint(segments[4]));
-    // Segment f – top-left vertical:
-    canvas.drawPath(p([[1,9],[0,8],[0,2],[1,1],[2,2],[2,8]]), _paint(segments[5]));
-    // Segment g – middle horizontal:
-    canvas.drawPath(p([[1,9],[2,8],[8,8],[9,9],[8,10],[2,10]]), _paint(segments[6]));
+    // Segment a – top, inset bottom corners toward center:
+    canvas.drawPath(p([[1+i,1],[2,0],[8,0],[9-i,1],[8-i,2],[2+i,2]]), _paint(segments[0]));
+    // Segment b – top-right, inset left corners:
+    canvas.drawPath(p([[9-i,1],[10,2],[10,8],[9-i,9],[8,8-i],[8,2+i]]), _paint(segments[1]));
+    // Segment c – bottom-right, inset left corners:
+    canvas.drawPath(p([[9-i,9],[10,10],[10,16],[9-i,17],[8,16-i],[8,10+i]]), _paint(segments[2]));
+    // Segment d – bottom, inset top corners:
+    canvas.drawPath(p([[9-i,17],[8,18],[2,18],[1+i,17],[2+i,16],[8-i,16]]), _paint(segments[3]));
+    // Segment e – bottom-left, inset right corners:
+    canvas.drawPath(p([[1+i,17],[0,16],[0,10],[1+i,9],[2,10+i],[2,16-i]]), _paint(segments[4]));
+    // Segment f – top-left, inset right corners:
+    canvas.drawPath(p([[1+i,9],[0,8],[0,2],[1+i,1],[2,2+i],[2,8-i]]), _paint(segments[5]));
+    // Segment g – middle, inset all corners:
+    canvas.drawPath(p([[1+i,9],[2+i,8],[8-i,8],[9-i,9],[8-i,10],[2+i,10]]), _paint(segments[6]));
   }
 
   // Colon: two circles at 1/3 and 2/3 height, centered in colonWidth.
@@ -199,39 +202,39 @@ class _SevenSegmentPainter extends CustomPainter {
         Offset(cx, digitHeight * 2 / 3),  r, _paint(true));
   }
 
-  // AM/PM indicator: two small bars, lit = selected, dim = other.
-  // Positioned to the right of the last digit, vertically centered.
   void _drawAmPm(Canvas canvas, double ox) {
-    final barW  = amPmWidth  * 0.85;
-    final barH  = amPmHeight * 0.08;
-    final barX  = ox + (amPmWidth - barW) / 2;
-    final rr    = Radius.circular(barH / 2);
-    // Center the two bars in the digit height:
-    final centerY = digitHeight / 2;
-    final spacing = amPmHeight * 0.18;
+    final amStyle = ui.TextStyle(
+      color: isPm ? color.withAlpha(_dimAlpha) : color,
+      fontFamily: 'JetBrainsMono',
+      fontWeight: FontWeight.bold,
+      fontSize: digitHeight * 0.2,
+    );
+    final pmStyle = ui.TextStyle(
+      color: isPm ? color : color.withAlpha(_dimAlpha),
+      fontFamily: 'JetBrainsMono',
+      fontWeight: FontWeight.bold,
+      fontSize: digitHeight * 0.2,
+    );
 
-    // AM bar (upper):
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(barX, centerY - spacing - barH, barW, barH),
-        rr,
-      ),
-      _paint(!isPm),
-    );
-    // PM bar (lower):
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(barX, centerY + spacing, barW, barH),
-        rr,
-      ),
-      _paint(isPm),
-    );
+    void drawText(String text, ui.TextStyle style, double y) {
+      final pb = ui.ParagraphBuilder(ui.ParagraphStyle(
+        textAlign: TextAlign.center,
+      ))
+        ..pushStyle(style)
+        ..addText(text);
+      final paragraph = pb.build()
+        ..layout(ui.ParagraphConstraints(width: amPmWidth));
+      canvas.drawParagraph(paragraph, Offset(ox, y));
+    }
+
+    drawText('AM', amStyle, digitHeight * 0.25);
+    drawText('PM', pmStyle, digitHeight * 0.62);
   }
 
   @override
   bool shouldRepaint(_SevenSegmentPainter old) =>
-      old.digits != digits    ||
-          old.color  != color     ||
-          old.showAmPm != showAmPm ||
-          old.isPm   != isPm;
+      old.digits   != digits   ||
+      old.color    != color    ||
+      old.showAmPm != showAmPm ||
+      old.isPm     != isPm;
 }
