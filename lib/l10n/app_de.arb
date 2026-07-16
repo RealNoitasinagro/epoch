@@ -62,6 +62,8 @@
   "hintFocusScreenOpen": "Doppelt antippen zum Wechsel in den Fokus-Screen",
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
   "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
+  "hintFocusScreenToggleSecondsOff": "Gedrückt halten für Anzeige ohne Sekunden",
+  "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
   "hintRemoveSelected": "Markierte entfernen",
   "hintResetToDefaults": "Zurücksetzen",

@@ -27,7 +27,6 @@ class TimeGraphicalRow extends TimeValueRow {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final zonedNow = TimeUtils.resolveLocalTime(
         timeValue, now.toUtc(), localIanaZone);
-    ;
 
     final segmentColor = switch (app.themeMode) {
       AppThemeMode.light  => Colors.black,
@@ -40,9 +39,12 @@ class TimeGraphicalRow extends TimeValueRow {
     final Widget clock = switch (timeValue.valueType) {
       ValueType.sevenSegmentClock =>
         SevenSegmentClock(
-            now: zonedNow,
-            l10n: l10n,
-            color: segmentColor,
+          now: zonedNow,
+          l10n: l10n,
+          digitHeight: kGraphicalSegmentClockHeightDefault,
+          //showSeconds: _showSeconds,
+          hourFormat24: app.hourFormat24,
+          color: segmentColor,
         ),
       ValueType.binaryClockColumns =>
         BinaryColumnsClock(now: zonedNow, l10n: l10n),

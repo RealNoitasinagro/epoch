@@ -119,6 +119,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gedrückt halten für zwei Zeilen';
 
   @override
+  String get hintFocusScreenToggleSecondsOff =>
+      'Gedrückt halten für Anzeige ohne Sekunden';
+
+  @override
+  String get hintFocusScreenToggleSecondsOn =>
+      'Gedrückt halten für Anzeige mit Sekunden';
+
+  @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override

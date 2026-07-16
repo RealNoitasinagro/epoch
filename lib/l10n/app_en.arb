@@ -62,6 +62,8 @@
   "hintFocusScreenOpen": "Double-tap to switch to focus screen",
   "hintFocusScreenToggleToOneLine": "Hold for one line",
   "hintFocusScreenToggleToTwoLines": "Hold for two lines",
+  "hintFocusScreenToggleSecondsOff": "Hold to suppress seconds",
+  "hintFocusScreenToggleSecondsOn": "Hold to display seconds",
   "hintPinnedIndicator": "Automatic clock change disabled",
   "hintRemoveSelected": "Remove selected",
   "hintResetToDefaults": "Reset to defaults",

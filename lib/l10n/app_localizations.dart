@@ -278,6 +278,18 @@ abstract class AppLocalizations {
   /// **'Hold for two lines'**
   String get hintFocusScreenToggleToTwoLines;
 
+  /// No description provided for @hintFocusScreenToggleSecondsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to suppress seconds'**
+  String get hintFocusScreenToggleSecondsOff;
+
+  /// No description provided for @hintFocusScreenToggleSecondsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to display seconds'**
+  String get hintFocusScreenToggleSecondsOn;
+
   /// No description provided for @hintPinnedIndicator.
   ///
   /// In en, this message translates to:

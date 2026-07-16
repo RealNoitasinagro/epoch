@@ -157,7 +157,7 @@ class _SevenSegmentPainter extends CustomPainter {
   // SVG reference viewbox: x in [0,10], y in [0,18].
   // We scale: sx = digitWidth/10, sy = digitHeight/18.
   void _drawDigit(Canvas canvas, double ox, int digit) {
-    final segs = _digitSegments[digit]!;
+    final segments = _digitSegments[digit]!;
     final sx = digitWidth  / 10;
     final sy = digitHeight / 18;
 
@@ -173,19 +173,19 @@ class _SevenSegmentPainter extends CustomPainter {
     }
 
     // Segment a – top horizontal:
-    canvas.drawPath(p([[1,1],[2,0],[8,0],[9,1],[8,2],[2,2]]), _paint(segs[0]));
+    canvas.drawPath(p([[1,1],[2,0],[8,0],[9,1],[8,2],[2,2]]), _paint(segments[0]));
     // Segment b – top-right vertical:
-    canvas.drawPath(p([[9,1],[10,2],[10,8],[9,9],[8,8],[8,2]]), _paint(segs[1]));
+    canvas.drawPath(p([[9,1],[10,2],[10,8],[9,9],[8,8],[8,2]]), _paint(segments[1]));
     // Segment c – bottom-right vertical:
-    canvas.drawPath(p([[9,9],[10,10],[10,16],[9,17],[8,16],[8,10]]), _paint(segs[2]));
+    canvas.drawPath(p([[9,9],[10,10],[10,16],[9,17],[8,16],[8,10]]), _paint(segments[2]));
     // Segment d – bottom horizontal:
-    canvas.drawPath(p([[9,17],[8,18],[2,18],[1,17],[2,16],[8,16]]), _paint(segs[3]));
+    canvas.drawPath(p([[9,17],[8,18],[2,18],[1,17],[2,16],[8,16]]), _paint(segments[3]));
     // Segment e – bottom-left vertical:
-    canvas.drawPath(p([[1,17],[0,16],[0,10],[1,9],[2,10],[2,16]]), _paint(segs[4]));
+    canvas.drawPath(p([[1,17],[0,16],[0,10],[1,9],[2,10],[2,16]]), _paint(segments[4]));
     // Segment f – top-left vertical:
-    canvas.drawPath(p([[1,9],[0,8],[0,2],[1,1],[2,2],[2,8]]), _paint(segs[5]));
+    canvas.drawPath(p([[1,9],[0,8],[0,2],[1,1],[2,2],[2,8]]), _paint(segments[5]));
     // Segment g – middle horizontal:
-    canvas.drawPath(p([[1,9],[2,8],[8,8],[9,9],[8,10],[2,10]]), _paint(segs[6]));
+    canvas.drawPath(p([[1,9],[2,8],[8,8],[9,9],[8,10],[2,10]]), _paint(segments[6]));
   }
 
   // Colon: two circles at 1/3 and 2/3 height, centered in colonWidth.

@@ -118,6 +118,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
 
   @override
+  String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
+
+  @override
+  String get hintFocusScreenToggleSecondsOn => 'Hold to display seconds';
+
+  @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override

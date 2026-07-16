@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
@@ -554,6 +555,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
+    final app = EpochApp.of(context);
     final isGraphical = timeValue.valueType.isGraphical;
     final longitude = EpochApp.of(context).lmstLongitude;
     final localIanaZone = EpochApp.of(context).localIanaZone;
@@ -591,18 +593,32 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       showDateDetails: widget.showDateDetails,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
-    final Widget clock;
 
-    switch (timeValue.valueType) {
-      case ValueType.sevenSegmentClock:
-        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
-      case ValueType.binaryClockColumns:
-        clock = BinaryColumnsClock(now: zonedNow, l10n: l10n);
-      case ValueType.binaryClockBcd:
-        clock = BinaryCodedDecimalClock(now: zonedNow, l10n: l10n);
-      default:
-        clock = SevenSegmentClock(now: zonedNow, l10n: l10n);
-    }
+    final segmentColor = switch (app.themeMode) {
+      AppThemeMode.light  => Colors.black,
+      AppThemeMode.dark   => Colors.white,
+      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
+          ? Colors.white : Colors.black,
+    };
+
+    final Widget clock = switch (timeValue.valueType) {
+      ValueType.sevenSegmentClock =>
+        SevenSegmentClock(
+          now: zonedNow,
+          l10n: l10n,
+          digitHeight: kGraphicalSegmentClockHeightDefault,
+          //showSeconds: _showSeconds,
+          hourFormat24: app.hourFormat24,
+          color: segmentColor,
+        ),
+      ValueType.binaryClockColumns =>
+        BinaryColumnsClock(now: zonedNow, l10n: l10n),
+      ValueType.binaryClockBcd =>
+        BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+      _ =>
+        SevenSegmentClock(now: zonedNow, l10n: l10n),
+    };
 
     return Dismissible(
       key: ValueKey(timeValue.key),

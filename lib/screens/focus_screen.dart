@@ -129,6 +129,11 @@ class _FocusScreenState extends State<FocusScreen> {
     _showControls();
   }
 
+  void _toggleSeconds() {
+    setState(() => _showSeconds = !_showSeconds);
+    _showControls();
+  }
+
   ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
     return TimeStringRow.computeDisplay(
@@ -169,6 +174,8 @@ class _FocusScreenState extends State<FocusScreen> {
     final display = _currentDisplay();
     final hasLine2 = display.line2.isNotEmpty &&
         !widget.timeValue.valueType.isGraphical;
+    final handleSeconds = widget.timeValue.valueType
+        == ValueType.sevenSegmentClock;
 
     if (_brightness == null) return const Scaffold(backgroundColor: Colors.black);
 
@@ -177,7 +184,7 @@ class _FocusScreenState extends State<FocusScreen> {
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress: _toggleLine2,
+        onLongPress: handleSeconds ? _toggleSeconds : _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -203,9 +210,9 @@ class _FocusScreenState extends State<FocusScreen> {
                   duration: _controlsHideDuration,
                   child: isLandscape
                       ? _buildLandscapeControls(
-                      l10n, hasLine2, mediaPadding)
+                      l10n, hasLine2, handleSeconds, mediaPadding)
                       : _buildPortraitControls(
-                      l10n, hasLine2, mediaPadding),
+                      l10n, hasLine2, handleSeconds, mediaPadding),
                 ),
               ],
             );
@@ -216,7 +223,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, EdgeInsets mediaPadding) {
+      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -242,14 +249,18 @@ class _FocusScreenState extends State<FocusScreen> {
           left: 0,
           right: 0,
           bottom: mediaPadding.bottom + 12,
-          child: _exitHint(hasLine2: hasLine2, l10n: l10n),
+          child: _exitHint(
+              hasLine2: hasLine2,
+              handleSeconds: handleSeconds,
+              l10n: l10n
+          ),
         ),
       ],
     );
   }
 
   Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, EdgeInsets mediaPadding) {
+      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -276,7 +287,11 @@ class _FocusScreenState extends State<FocusScreen> {
           left: 0,
           right: 0,
           bottom: mediaPadding.bottom + 12,
-          child: _exitHint(hasLine2: hasLine2, l10n: l10n),
+          child: _exitHint(
+              hasLine2: hasLine2,
+              handleSeconds: handleSeconds,
+              l10n: l10n
+          ),
         ),
       ],
     );
@@ -382,12 +397,23 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  Widget _exitHint({required bool hasLine2, required AppLocalizations l10n}) {
-    final text = hasLine2
-        ? _showLine2
-        ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
-        : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}'
-        : l10n.hintFocusScreenExit;
+  Widget _exitHint(
+        {required bool hasLine2, required bool handleSeconds,
+         required AppLocalizations l10n}
+      ) {
+    final String text;
+    if (hasLine2 && !handleSeconds) {
+      text = _showLine2
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
+    } else if (handleSeconds && !hasLine2) {
+      text = !_showSeconds
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOff}';
+    } else {
+      text = l10n.hintFocusScreenExit;
+    }
+
     return Text(
       text,
       style: TextStyle(color: _textColor.withAlpha(150), fontSize: 12),
@@ -407,42 +433,41 @@ class _FocusScreenState extends State<FocusScreen> {
           widget.timeValue, _now.toUtc(),
           EpochApp.of(context).localIanaZone);
       final l10n = AppLocalizations.of(context)!;
-      final Widget clock;
 
-      switch (widget.timeValue.valueType) {
-        case ValueType.sevenSegmentClock:
-          clock = SevenSegmentClock(
+      final Widget clock = switch (widget.timeValue.valueType) {
+        ValueType.sevenSegmentClock =>
+          SevenSegmentClock(
             now: zonedNow,
             l10n: l10n,
             digitHeight: kGraphicalSegmentClockHeightFocus,
             showSeconds: _showSeconds,
             hourFormat24: app.hourFormat24,
             color: _textColor,
-          );
-        case ValueType.binaryClockColumns:
-          clock = BinaryColumnsClock(
+          ),
+        ValueType.binaryClockColumns =>
+          BinaryColumnsClock(
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
             showLabels: false,
-          );
-        case ValueType.binaryClockBcd:
-          clock = BinaryCodedDecimalClock(
+          ),
+        ValueType.binaryClockBcd =>
+          BinaryCodedDecimalClock(
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
             showLabels: false,
-          );
-        default:
-          clock = SevenSegmentClock(
+          ),
+        _ =>
+          SevenSegmentClock(
             now: zonedNow,
             l10n: l10n,
             digitHeight: kGraphicalSegmentClockHeightFocus,
             showSeconds: _showSeconds,
             hourFormat24: app.hourFormat24,
             color: _textColor,
-          );
-      }
+          ),
+      };
       return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: hPadding, vertical: vPadding),
