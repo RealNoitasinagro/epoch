@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/time_utils.dart';
+import 'package:timezone/data/latest.dart' as tzl;
+import 'package:timezone/timezone.dart' as tz;
 
 
 void main() {
@@ -255,5 +257,104 @@ void main() {
       expect(parts[1].length, equals(6)); // minutes: 6 bits
       expect(parts[2].length, equals(6)); // seconds: 6 bits
     });
+  });
+
+
+  // Other
+
+  group('TimeUtils.nextDstTransition', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('Berlin CEST -> CET 2026', () {
+      final transition = TimeUtils.nextDstTransition(
+          'Europe/Berlin', DateTime.utc(2026, 9, 30));
+      // Clocks go back: 3:00 CEST (UTC+2) = 1:00 UTC
+      expect(transition, equals(DateTime.utc(2026, 10, 25, 1, 0, 0)));
+    });
+
+    test('Berlin CET -> CEST 2027', () {
+      // After the October 2026 transition, next is spring 2027
+      final transition = TimeUtils.nextDstTransition(
+          'Europe/Berlin', DateTime.utc(2026, 10, 26));
+      // Clocks go forward: last Sunday March = 28.03.2027, 2:00 CET (UTC+1) = 1:00 UTC
+      expect(transition, equals(DateTime.utc(2027, 3, 28, 1, 0, 0)));
+    });
+
+    test('no transition for UTC', () {
+      expect(TimeUtils.nextDstTransition('UTC', DateTime.utc(2026, 1, 1)), isNull);
+    });
+
+    test('no transition for Tokyo', () {
+      expect(TimeUtils.nextDstTransition(
+          'Asia/Tokyo', DateTime.utc(2026, 1, 1)), isNull);
+    });
+
+    test('no transition found after last entry returns null', () {
+      // After 2037 there are no more entries in the timezone package:
+      expect(TimeUtils.nextDstTransition(
+          'Europe/Berlin', DateTime.utc(2038, 1, 1)), isNull);
+    });
+
+    test('transition found when exactly at afterUtc boundary', () {
+      // Should return next transition AFTER the given time, not at it:
+      final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
+      final result = TimeUtils.nextDstTransition(
+          'Europe/Berlin', transition);
+      // Should return 2027 spring transition, not 2026 itself:
+      expect(result, isNot(equals(transition)));
+      expect(result!.isAfter(transition), isTrue);
+    });
+
+    test('New York EDT -> EST 2026', () {
+      final next = TimeUtils.nextDstTransition(
+          'America/New_York', DateTime.utc(2026, 10, 1));
+      // First Sunday November 2026 = Nov 1, 02:00 EST = 07:00 UTC
+      expect(next, equals(DateTime.utc(2026, 11, 1, 6, 0, 0)));
+    });
+
+    test('Lord Howe Island transition detected', () {
+      // Lord Howe: +30min DST, transitions in April and October
+      final dt = DateTime.utc(2026, 9, 30);
+      final transition = TimeUtils.nextDstTransition('Australia/Lord_Howe', dt);
+      expect(transition, isNotNull);
+      // Should be in October (southern hemisphere spring)
+      expect(transition!.month, equals(10));
+    });
+
+    test('Lord Howe transition has 30min offset change', () {
+      final next = TimeUtils.nextDstTransition(
+          'Australia/Lord_Howe', DateTime.utc(2026, 3, 1));
+      expect(next, isNotNull);
+      // Verify the offset change is indeed 30 minutes:
+      final loc = tz.getLocation('Australia/Lord_Howe');
+      final before = tz.TZDateTime.from(
+          next!.subtract(const Duration(hours: 1)), loc).timeZone.offset;
+      final after = tz.TZDateTime.from(
+          next.add(const Duration(hours: 1)), loc).timeZone.offset;
+      expect((after - before).abs(), equals(Duration(minutes: 30)));
+    });
+
+    test('transition within 7 days is detected', () {
+      // One week before the October Berlin transition:
+      final before = DateTime.utc(2026, 10, 18);
+      final transition = TimeUtils.nextDstTransition('Europe/Berlin', before);
+      expect(transition, isNotNull);
+      final daysUntil = transition!.difference(before).inDays;
+      expect(daysUntil, lessThanOrEqualTo(7));
+      expect(daysUntil, greaterThan(0));
+    });
+
+    test('transition today has daysUntil = 0', () {
+      // Same day as transition, but before it:
+      final sameDay = DateTime.utc(2026, 10, 25, 0, 30);
+      final transition = TimeUtils.nextDstTransition('Europe/Berlin', sameDay);
+      expect(transition, isNotNull);
+      final daysUntil = transition!.difference(sameDay).inDays;
+      expect(daysUntil, equals(0));
+    });
+  });
+
+  group('TimeStringRow.computeDisplay', () {
+
   });
 }

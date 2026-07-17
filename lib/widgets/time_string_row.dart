@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -67,14 +68,47 @@ class TimeStringRow extends TimeValueRow {
       }
     }
 
-    final split = splitZoneOffset(formattedValue);
+    // DST transition warning – replaces normal line2 when transition is near:
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
+    if (subtitle == null && ianaZone != null &&
+        timeValue.timezoneDisplayMode == TimezoneDisplayMode.auto) {
+      final warning = _dstWarning(ianaZone, now.toUtc(), l10n);
+      if (warning != null) subtitle = warning;
+    }
+
+    final split = _splitZoneOffset(formattedValue);
     return (
       line1: split.line1,
       line2: subtitle ?? split.line2,
     );
   }
 
-  static ({String line1, String line2}) splitZoneOffset(String value) {
+  static String? _dstWarning(
+      String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
+    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return null;
+    final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
+    if (next == null) return null;
+    final daysUntil = next.difference(nowUtc).inDays;
+    if (daysUntil > 7) return null;
+
+    // Abbreviations before and after the transition:
+    final loc = tz.getLocation(ianaZone);
+    final abbrBefore = tz.TZDateTime.from(
+        next.subtract(const Duration(hours: 1)), loc).timeZone.abbreviation;
+    final abbrAfter = tz.TZDateTime.from(
+        next.add(const Duration(hours: 1)), loc).timeZone.abbreviation;
+    final arrow = '$abbrBefore → $abbrAfter';
+
+    if (daysUntil == 0) return '$arrow ${l10n.labelDstChangeToday}';
+    if (daysUntil == 1) return '$arrow ${l10n.labelDstChangeTomorrow}';
+    return '$arrow ${l10n.labelDstChangeInDays(daysUntil)}';
+  }
+
+  static ({String line1, String line2}) _splitZoneOffset(String value) {
     final match = RegExp(
       r'(?:[+-]\d{2}(?:\d{2})?|\w+)\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
     ).firstMatch(value);

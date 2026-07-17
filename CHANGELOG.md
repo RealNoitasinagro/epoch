@@ -5,6 +5,7 @@
 ### Added
 - 🆒 1-value always-on focus screen with font color choice (and brightness adjust for Android)
 - new value type sevenSegmentClock
+- 1-week clock change heads-up
 
 ### Changed
 - much improved timezone keyword search

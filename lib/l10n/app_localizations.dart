@@ -536,6 +536,24 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
   String get infoTextUnixSeconds;
 
+  /// No description provided for @labelDstChangeInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days} {days, plural, one{day} other{days}}'**
+  String labelDstChangeInDays(int days);
+
+  /// No description provided for @labelDstChangeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get labelDstChangeToday;
+
+  /// No description provided for @labelDstChangeTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'tomorrow'**
+  String get labelDstChangeTomorrow;
+
   /// No description provided for @labelHours.
   ///
   /// In en, this message translates to:

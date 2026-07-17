@@ -277,6 +277,23 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
 
   @override
+  String labelDstChangeInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Tagen',
+      one: 'Tag',
+    );
+    return 'in $days $_temp0';
+  }
+
+  @override
+  String get labelDstChangeToday => 'heute';
+
+  @override
+  String get labelDstChangeTomorrow => 'morgen';
+
+  @override
   String get labelHours => 'Std';
 
   @override

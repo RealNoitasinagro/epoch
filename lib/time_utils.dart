@@ -87,6 +87,18 @@ class TimeUtils {
     }
   }
 
+  /// Returns the DateTime of the next clock change for a ianaZone.
+  static DateTime? nextDstTransition(String ianaZone, DateTime afterUtc) {
+    try {
+      final loc = tz.getLocation(ianaZone);
+      final afterUtcMs = afterUtc.millisecondsSinceEpoch;
+      final idx = loc.transitionAt.indexWhere((t) => t > afterUtcMs);
+      if (idx < 0) return null;
+      return DateTime.fromMillisecondsSinceEpoch(
+          loc.transitionAt[idx], isUtc: true);
+    } catch (_) { return null; }
+  }
+
   /// Day second (seconds since midnight) for a DateTime.
   static int daySecond(DateTime dt) =>
       dt.hour * 3600 + dt.minute * 60 + dt.second;
