@@ -80,7 +80,7 @@ class TimeStringRow extends TimeValueRow {
       if (warning != null) subtitle = warning;
     }
 
-    final split = _splitZoneOffset(formattedValue);
+    final split = splitZoneOffset(formattedValue);
     return (
       line1: split.line1,
       line2: subtitle ?? split.line2,
@@ -108,7 +108,7 @@ class TimeStringRow extends TimeValueRow {
     return '$arrow ${l10n.labelDstChangeInDays(daysUntil)}';
   }
 
-  static ({String line1, String line2}) _splitZoneOffset(String value) {
+  static ({String line1, String line2}) splitZoneOffset(String value) {
     final match = RegExp(
       r'(?:[+-]\d{2}(?:\d{2})?|\w+)\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
     ).firstMatch(value);

@@ -1,3 +1,4 @@
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_value_formatter.dart';
@@ -105,7 +106,8 @@ void main() {
       const tv = TimeValue(valueType: ValueType.daySecond, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en',
           thousandsSep: false);
-      final v = int.tryParse(result);
+      var split = TimeStringRow.splitZoneOffset(result);
+      final v = int.tryParse(split.line1);
       expect(v, isNotNull);
       expect(v, greaterThanOrEqualTo(0));
       expect(v, lessThanOrEqualTo(86399));
@@ -114,7 +116,8 @@ void main() {
     test('dayPercent is between 0.000 and 99.999', () {
       const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
-      final v = double.tryParse(result);
+      var split = TimeStringRow.splitZoneOffset(result);
+      final v = double.tryParse(split.line1);
       expect(v, isNotNull);
       expect(v, greaterThanOrEqualTo(0.0));
       expect(v, lessThan(100.0));

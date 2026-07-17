@@ -4,11 +4,12 @@
 
 ### Added
 - 🆒 1-value always-on focus screen with font color choice (and brightness adjust for Android)
-- new value type sevenSegmentClock
+- new value type seven-segment clock
 - 1-week clock change heads-up
 
 ### Changed
 - much improved timezone keyword search
+- day second and day percent with UTC-offset line for consistency
 
 ### Fixed
 - numeric timezone abbreviations (e. g. "+0845") were ripped apart

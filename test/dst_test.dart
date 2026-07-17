@@ -1,3 +1,4 @@
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_utils.dart';
@@ -299,12 +300,14 @@ void main() {
         zone: ZoneNamed('Europe/Berlin'),
         timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
       );
-      final autoVal = int.parse(
-          TimeValueFormatter.format(tvAuto, summerUtc, 'en',
-              thousandsSep: false));
-      final stdVal = int.parse(
-          TimeValueFormatter.format(tvStd, summerUtc, 'en',
-              thousandsSep: false));
+      final autoValFormatted = TimeValueFormatter.format(tvAuto, summerUtc,
+          'en', thousandsSep: false);
+      var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
+      final autoVal = int.parse(splitAutoVal.line1);
+      final stdValFormatted = TimeValueFormatter.format(tvStd, summerUtc,
+          'en', thousandsSep: false);
+      var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
+      final stdVal = int.parse(splitStdVal.line1);
       expect(autoVal - stdVal, equals(3600));
     });
   });
