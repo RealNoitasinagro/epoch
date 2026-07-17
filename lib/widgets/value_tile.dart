@@ -14,7 +14,7 @@ class ValueTile extends StatelessWidget {
   final double? height; // null = textTileHeight
   final bool showZoneIndicator;
   final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
-  final bool showPinnedIndicator;  // timezoneDisplayMode != auto
+  final bool showPinnedIndicator;  // timezoneClockChangeMode != auto
 
   const ValueTile({
     super.key,

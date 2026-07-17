@@ -902,6 +902,36 @@ abstract class AppLocalizations {
   /// **'What\'s New'**
   String get settingsWhatsNew;
 
+  /// No description provided for @settingsZoneDisplayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone display'**
+  String get settingsZoneDisplayMode;
+
+  /// No description provided for @settingsZoneDisplayModeAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'Abbreviation (CEST)'**
+  String get settingsZoneDisplayModeAbbreviation;
+
+  /// No description provided for @settingsZoneDisplayModeFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Abbreviation and offset (CEST (UTC+02:00))'**
+  String get settingsZoneDisplayModeFull;
+
+  /// No description provided for @settingsZoneDisplayModeHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get settingsZoneDisplayModeHidden;
+
+  /// No description provided for @settingsZoneDisplayModeOffset.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset (UTC+02:00)'**
+  String get settingsZoneDisplayModeOffset;
+
   /// No description provided for @tabAstronomical.
   ///
   /// In en, this message translates to:

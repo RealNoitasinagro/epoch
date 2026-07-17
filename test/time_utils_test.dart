@@ -353,8 +353,4 @@ void main() {
       expect(daysUntil, equals(0));
     });
   });
-
-  group('TimeStringRow.computeDisplay', () {
-
-  });
 }

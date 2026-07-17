@@ -57,7 +57,7 @@ class TimeGraphicalRow extends TimeValueRow {
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       height: ValueTile.graphicTileHeight,
       content: Tooltip(

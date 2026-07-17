@@ -78,14 +78,15 @@ class EpochApp extends StatefulWidget {
 }
 
 class EpochAppState extends State<EpochApp> {
-  AppThemeMode _themeMode  = kDefaultThemeMode;
-  bool _thousandsSep       = kDefaultThousandsSep;
-  bool _hourFormat24       = kDefaultHourFormat24;
-  bool _dateWithDetails    = kDefaultDateWithDetails;
-  bool _settingsLoaded     = false;
-  Locale _locale           = kDefaultLocale;
-  String _localIanaZone    = 'UTC';
-  LmstMode _lmstMode       = kDefaultLmstMode;
+  bool _settingsLoaded             = false;
+  String _localIanaZone            = 'UTC';
+  Locale _locale                   = kDefaultLocale;
+  AppThemeMode _themeMode          = kDefaultThemeMode;
+  bool _hourFormat24               = kDefaultHourFormat24;
+  bool _thousandsSep               = kDefaultThousandsSep;
+  bool _dateWithDetails            = kDefaultDateWithDetails;
+  ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
+  LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
 
   Key _homeKey = UniqueKey();
@@ -102,11 +103,12 @@ class EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadPreferences() async {
-    final theme           = await loadThemeMode();
-    final thousands       = await loadThousandsSep();
-    final hour24          = await loadHourFormat24();
-    final dateWithDetails = await loadDateWithDetails();
     final locale          = await loadLocale() ?? kDefaultLocale;
+    final theme           = await loadThemeMode();
+    final hour24          = await loadHourFormat24();
+    final thousands       = await loadThousandsSep();
+    final dateWithDetails = await loadDateWithDetails();
+    final zoneDisplayMode = await loadZoneDisplayMode();
     final lmstMode        = await loadLmstMode();
     final lmstLongitude   = await loadLmstLongitude();
 
@@ -119,16 +121,22 @@ class EpochAppState extends State<EpochApp> {
     }
     
     setState(() {
+      _localIanaZone   = localZone;
       _locale          = locale;
       _themeMode       = theme;
       _hourFormat24    = hour24;
       _thousandsSep    = thousands;
       _dateWithDetails = dateWithDetails;
-      _localIanaZone   = localZone;
+      _zoneDisplayMode = zoneDisplayMode;
       _lmstMode        = lmstMode;
       _lmstLongitude   = lmstLongitude;
       _settingsLoaded  = true;
     });
+  }
+
+  void setLocale(Locale l) {
+    setState(() => _locale = l);
+    saveLocale(l.languageCode);
   }
 
   void setThemeMode(AppThemeMode mode) {
@@ -136,14 +144,14 @@ class EpochAppState extends State<EpochApp> {
     saveThemeMode(mode);
   }
 
-  void setThousandsSep(bool v) {
-    setState(() => _thousandsSep = v);
-    saveThousandsSep(v);
-  }
-
   void setHourFormat24(bool v) {
     setState(() => _hourFormat24 = v);
     saveHourFormat24(v);
+  }
+
+  void setThousandsSep(bool v) {
+    setState(() => _thousandsSep = v);
+    saveThousandsSep(v);
   }
 
   void setDateWithDetails(bool v) {
@@ -151,9 +159,9 @@ class EpochAppState extends State<EpochApp> {
     saveDateWithDetails(v);
   }
 
-  void setLocale(Locale l) {
-    setState(() => _locale = l);
-    saveLocale(l.languageCode);
+  void setZoneDisplayMode(ZoneDisplayMode mode) {
+    setState(() => _zoneDisplayMode = mode);
+    saveZoneDisplayMode(mode);
   }
 
   void setLmstMode(LmstMode mode) {
@@ -167,22 +175,21 @@ class EpochAppState extends State<EpochApp> {
   }
 
   String get localIanaZone => _localIanaZone;
-  
-  AppThemeMode get themeMode  => _themeMode;
-  bool get isNightMode        => _themeMode == AppThemeMode.night;
-  bool get thousandsSep       => _thousandsSep;
-  bool get hourFormat24       => _hourFormat24;
-  bool get dateWithDetails    => _dateWithDetails;
-  Locale? get locale          => _locale;
-  LmstMode get lmstMode       => _lmstMode;
-  double?  get lmstLongitude  => _lmstLongitude;
-
+  Locale? get locale                  => _locale;
+  AppThemeMode get themeMode          => _themeMode;
   ThemeMode get _flutterThemeMode => switch (_themeMode) {
     AppThemeMode.light  => ThemeMode.light,
     AppThemeMode.dark   => ThemeMode.dark,
     AppThemeMode.night  => ThemeMode.dark,
     AppThemeMode.system => ThemeMode.system,
   };
+  bool get isNightMode                => _themeMode == AppThemeMode.night;
+  bool get hourFormat24               => _hourFormat24;
+  bool get thousandsSep               => _thousandsSep;
+  bool get dateWithDetails            => _dateWithDetails;
+  ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
+  LmstMode get lmstMode               => _lmstMode;
+  double?  get lmstLongitude          => _lmstLongitude;
 
   @override
   Widget build(BuildContext context) {

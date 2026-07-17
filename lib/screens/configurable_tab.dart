@@ -21,8 +21,8 @@ import 'entry_picker.dart';
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
   final List<TabEntry> entries;
-  final bool thousandsSep;
   final bool hourFormat24;
+  final bool thousandsSep;
   final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TabEntry>> onEntriesChanged;
@@ -214,16 +214,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final existingModes = widget.entries
         .whereType<TimeValue>()
         .where((e) => e.sameZoneAndType(timeValue) &&
-        e.timezoneDisplayMode != timeValue.timezoneDisplayMode)
-        .map((e) => e.timezoneDisplayMode)
+        e.timezoneClockChangeMode != timeValue.timezoneClockChangeMode)
+        .map((e) => e.timezoneClockChangeMode)
         .toSet();
 
     final controller = TextEditingController(
         text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n));
-    var selectedMode = timeValue.timezoneDisplayMode;
+    var selectedMode = timeValue.timezoneClockChangeMode;
 
     final result = await showDialog<
-      ({String? label, TimezoneDisplayMode mode, bool reset, bool showSeconds})
+      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showSeconds})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -249,7 +249,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       letterSpacing: 1.5,
                     )),
                 const SizedBox(height: 4),
-                RadioGroup<TimezoneDisplayMode>(
+                RadioGroup<TimezoneClockChangeMode>(
                   groupValue: selectedMode,
                   onChanged: (v) {
                     if (v == null || existingModes.contains(v)) return;
@@ -261,37 +261,37 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAuto,
-                          style: existingModes.contains(TimezoneDisplayMode.auto)
+                          style: existingModes.contains(TimezoneClockChangeMode.auto)
                               ? TextStyle(color: Theme.of(ctx)
                                 .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.auto,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.auto),
+                        value: TimezoneClockChangeMode.auto,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.auto),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAlwaysOn,
-                          style: existingModes.contains(TimezoneDisplayMode.forceDst)
+                          style: existingModes.contains(TimezoneClockChangeMode.forceDst)
                               ? TextStyle(color: Theme.of(ctx)
                                 .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.forceDst,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.forceDst),
+                        value: TimezoneClockChangeMode.forceDst,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.forceDst),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAlwaysOff,
-                          style: existingModes.contains(TimezoneDisplayMode.forceStandard)
+                          style: existingModes.contains(TimezoneClockChangeMode.forceStandard)
                               ? TextStyle(color: Theme.of(ctx)
                                 .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.forceStandard,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.forceStandard),
+                        value: TimezoneClockChangeMode.forceStandard,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.forceStandard),
                       ),
                     ]
                   )
@@ -312,7 +312,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx,
-                  (label: null, mode: TimezoneDisplayMode.auto,
+                  (label: null, mode: TimezoneClockChangeMode.auto,
                   reset: true, showSeconds: true)
               ),
               child: Text(l10n.hintResetToDefaults),
@@ -339,13 +339,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         result.label!.isEmpty)
         ? null
         : result.label;
-    final newMode = result.reset ? TimezoneDisplayMode.auto : result.mode;
+    final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
     final newShowSeconds = result.reset ? true : result.showSeconds;
 
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue
         .withCustomLabel(newLabel)
-        .withTimezoneDisplayMode(newMode)
+        .withTimezoneClockChangeMode(newMode)
         .withShowSeconds(newShowSeconds);
     widget.onEntriesChanged(updated);
   }
@@ -600,11 +600,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         timeValue, widget.now.toUtc(), localIanaZone);
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
+      localIanaZone: localIanaZone,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
-      localIanaZone: localIanaZone,
-      longitude: longitude,
       showDateDetails: widget.showDateDetails,
+      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      longitude: longitude,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
 
@@ -650,7 +651,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+        showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical

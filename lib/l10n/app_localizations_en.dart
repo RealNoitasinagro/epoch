@@ -474,6 +474,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsWhatsNew => 'What\'s New';
 
   @override
+  String get settingsZoneDisplayMode => 'Time zone display';
+
+  @override
+  String get settingsZoneDisplayModeAbbreviation => 'Abbreviation (CEST)';
+
+  @override
+  String get settingsZoneDisplayModeFull =>
+      'Abbreviation and offset (CEST (UTC+02:00))';
+
+  @override
+  String get settingsZoneDisplayModeHidden => 'Hidden';
+
+  @override
+  String get settingsZoneDisplayModeOffset => 'Offset (UTC+02:00)';
+
+  @override
   String get tabAstronomical => 'Astronomical';
 
   @override

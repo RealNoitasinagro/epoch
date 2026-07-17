@@ -479,6 +479,22 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsWhatsNew => 'Was ist neu';
 
   @override
+  String get settingsZoneDisplayMode => 'Zeitzonenangabe';
+
+  @override
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel (MESZ)';
+
+  @override
+  String get settingsZoneDisplayModeFull =>
+      'Kürzel und Offset (MESZ (UTC+02:00))';
+
+  @override
+  String get settingsZoneDisplayModeHidden => 'Ausgeblendet';
+
+  @override
+  String get settingsZoneDisplayModeOffset => 'Offset (UTC+02:00)';
+
+  @override
   String get tabAstronomical => 'Astronomisch';
 
   @override

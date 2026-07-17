@@ -32,7 +32,7 @@ enum ValueType {
   doomsdayClock,
 }
 
-enum TimezoneDisplayMode { auto, forceDst, forceStandard }
+enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
 
 // Zone specification.
 sealed class ZoneSpec {
@@ -57,14 +57,14 @@ class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
-  final TimezoneDisplayMode timezoneDisplayMode;
+  final TimezoneClockChangeMode timezoneClockChangeMode;
   final bool showSeconds;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
-    this.timezoneDisplayMode = TimezoneDisplayMode.auto,
+    this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showSeconds = true,
   });
 
@@ -72,7 +72,7 @@ class TimeValue implements TabEntry {
     valueType: valueType,
     zone: zone,
     customLabel: customLabel,
-    timezoneDisplayMode: timezoneDisplayMode,
+    timezoneClockChangeMode: timezoneClockChangeMode,
     showSeconds: value,
   );
 
@@ -88,10 +88,10 @@ class TimeValue implements TabEntry {
   }
 
   @override
-  String get key => switch (timezoneDisplayMode) {
-    TimezoneDisplayMode.auto          => _baseKey,
-    TimezoneDisplayMode.forceDst      => '${_baseKey}/dst',
-    TimezoneDisplayMode.forceStandard => '${_baseKey}/std',
+  String get key => switch (timezoneClockChangeMode) {
+    TimezoneClockChangeMode.auto          => _baseKey,
+    TimezoneClockChangeMode.forceDst      => '${_baseKey}/dst',
+    TimezoneClockChangeMode.forceStandard => '${_baseKey}/std',
   };
 
   bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
@@ -101,24 +101,24 @@ class TimeValue implements TabEntry {
   String toPrefsString() {
     final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
     var result = base;
-    if (timezoneDisplayMode != TimezoneDisplayMode.auto) {
-      result = '$result|dst:${timezoneDisplayMode.name}';
+    if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
+      result = '$result|dst:${timezoneClockChangeMode.name}';
     }
     if (!showSeconds) result = '$result|nosec';
     return result;
   }
 
   static TimeValue? fromPrefsString(String s) {
-    TimezoneDisplayMode timezoneDisplayMode = TimezoneDisplayMode.auto;
+    TimezoneClockChangeMode timezoneClockChangeMode = TimezoneClockChangeMode.auto;
     var workStr = s;
     final dstIdx = workStr.lastIndexOf('|dst:');
     if (dstIdx >= 0) {
       final dstStr = workStr.substring(dstIdx + 5);
-      timezoneDisplayMode =
-          TimezoneDisplayMode.values
+      timezoneClockChangeMode =
+          TimezoneClockChangeMode.values
               .where((m) => m.name == dstStr)
               .firstOrNull ??
-              TimezoneDisplayMode.auto;
+              TimezoneClockChangeMode.auto;
       workStr = workStr.substring(0, dstIdx);
     }
     bool showSeconds = true;
@@ -152,7 +152,7 @@ class TimeValue implements TabEntry {
       valueType: valueType,
       zone: zone,
       customLabel: labelPart,
-      timezoneDisplayMode: timezoneDisplayMode,
+      timezoneClockChangeMode: timezoneClockChangeMode,
       showSeconds: showSeconds,
     );
   }
@@ -165,12 +165,12 @@ class TimeValue implements TabEntry {
         customLabel: label
       );
 
-  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
+  TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
       TimeValue(
         valueType: valueType,
         zone: zone,
         customLabel: customLabel,
-        timezoneDisplayMode: mode,
+        timezoneClockChangeMode: mode,
       );
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
@@ -198,10 +198,10 @@ class TimeValue implements TabEntry {
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
-    if (timezoneDisplayMode == TimezoneDisplayMode.forceDst) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceDst) {
       return kIconDstActive;
     }
-    if (timezoneDisplayMode == TimezoneDisplayMode.forceStandard) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceStandard) {
       return kIconDstInactive;
     }
     // auto: determine actual current DST status:

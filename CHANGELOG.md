@@ -6,6 +6,7 @@
 - 🆒 1-value always-on focus screen with font color choice (and brightness adjust for Android)
 - new value type seven-segment clock
 - 1-week clock change heads-up
+- global configuration option for the UTC-offset line of a zoned time value
 
 ### Changed
 - much improved timezone keyword search

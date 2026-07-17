@@ -19,11 +19,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late AppThemeMode _themeMode;
-  late bool _thousandsSep;
-  late bool _hourFormat24;
-  late bool _dateWithDetails;
   Locale? _locale;
+  late AppThemeMode _themeMode;
+  late bool _hourFormat24;
+  late bool _thousandsSep;
+  late bool _dateWithDetails;
+  late ZoneDisplayMode _zoneDisplayMode;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
   bool _locationLoading = false;
@@ -46,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _hourFormat24 = app.hourFormat24;
       _thousandsSep = app.thousandsSep;
       _dateWithDetails = app.dateWithDetails;
+      _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
@@ -191,6 +193,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => _dateWithDetails = val);
               app.setDateWithDetails(val);
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.do_not_touch),
+            title: Text(l10n.settingsZoneDisplayMode),
+            trailing: DropdownButton<ZoneDisplayMode>(
+              value: _zoneDisplayMode,
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: [
+                DropdownMenuItem(
+                  value: ZoneDisplayMode.full,
+                  child: Text(l10n.settingsZoneDisplayModeFull),
+                ),
+                DropdownMenuItem(
+                  value: ZoneDisplayMode.abbreviation,
+                  child: Text(l10n.settingsZoneDisplayModeAbbreviation),
+                ),
+                DropdownMenuItem(
+                  value: ZoneDisplayMode.offset,
+                  child: Text(l10n.settingsZoneDisplayModeOffset),
+                ),
+                DropdownMenuItem(
+                  value: ZoneDisplayMode.hidden,
+                  child: Text(l10n.settingsZoneDisplayModeHidden),
+                ),
+              ],
+              onChanged: (mode) {
+                if (mode == null) return;
+                setState(() => _zoneDisplayMode = mode);
+                app.setZoneDisplayMode(mode);
+              },
+            ),
           ),
           const Divider(height: kDividerHeight),
           Padding(

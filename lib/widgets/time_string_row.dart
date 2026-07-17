@@ -1,3 +1,4 @@
+import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -33,18 +34,21 @@ class TimeStringRow extends TimeValueRow {
       TimeValue timeValue,
       DateTime now,
       String locale,
-      AppLocalizations l10n, {
+      AppLocalizations l10n,
+      {
+        String localIanaZone = 'UTC',
         bool hourFormat24 = true,
         bool thousandsSep = true,
-        String localIanaZone = 'UTC',
-        double? longitude,
         bool showDateDetails = true,
-      }) {
+        ZoneDisplayMode zoneDisplayMode = ZoneDisplayMode.full,
+        double? longitude,
+      }
+    ) {
     final formattedValue = TimeValueFormatter.format(
       timeValue, now, locale,
+      localIanaZone: localIanaZone,
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
-      localIanaZone: localIanaZone,
       longitude: longitude,
     );
 
@@ -68,23 +72,60 @@ class TimeStringRow extends TimeValueRow {
       }
     }
 
-    // DST transition warning – replaces normal line2 when transition is near:
-    final ianaZone = switch (timeValue.zone) {
-      ZoneLocal()                  => localIanaZone,
-      ZoneNamed(ianaZone: final z) => z,
-      ZoneUtc()                    => null,
-    };
-    if (subtitle == null && ianaZone != null &&
-        timeValue.timezoneDisplayMode == TimezoneDisplayMode.auto) {
-      final warning = _dstWarning(ianaZone, now.toUtc(), l10n);
-      if (warning != null) subtitle = warning;
+    final split = splitZoneOffset(formattedValue);
+
+    // Determine zone-related line2:
+    String? zoneLine;
+    if (subtitle == null && split.line2.isNotEmpty) {
+      final ianaZone = switch (timeValue.zone) {
+        ZoneLocal()                  => localIanaZone,
+        ZoneNamed(ianaZone: final z) => z,
+        ZoneUtc()                    => null,
+      };
+
+      if (ianaZone != null &&
+          timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
+        // DST warning takes precedence over ZoneDisplayMode:
+        final warning = _dstWarning(ianaZone, now.toUtc(), l10n);
+        if (warning != null) {
+          zoneLine = warning;
+        }
+      }
+
+      // No warning – apply ZoneDisplayMode to the existing split.line2:
+      if (zoneLine == null) {
+        zoneLine = _applyZoneDisplayMode(split.line2, zoneDisplayMode);
+      }
     }
 
-    final split = splitZoneOffset(formattedValue);
     return (
       line1: split.line1,
-      line2: subtitle ?? split.line2,
+      line2: subtitle ?? zoneLine ?? split.line2,
     );
+  }
+
+  // Transforms "CEST (UTC+02:00)" according to ZoneDisplayMode.
+  // Input is always the full format from splitZoneOffset.
+  static String? _applyZoneDisplayMode(String fullZoneLine, ZoneDisplayMode mode) {
+    if (fullZoneLine.isEmpty) return null;
+    return switch (mode) {
+      ZoneDisplayMode.hidden => null,
+      ZoneDisplayMode.full   => fullZoneLine,
+      ZoneDisplayMode.abbreviation => _extractAbbreviation(fullZoneLine),
+      ZoneDisplayMode.offset       => _extractOffset(fullZoneLine),
+    };
+  }
+
+  // "CEST (UTC+02:00)" -> "CEST"
+  static String _extractAbbreviation(String zoneLine) {
+    final spaceIdx = zoneLine.indexOf(' ');
+    return spaceIdx > 0 ? zoneLine.substring(0, spaceIdx) : zoneLine;
+  }
+
+  // "CEST (UTC+02:00)" -> "UTC+02:00"
+  static String _extractOffset(String zoneLine) {
+    final match = RegExp(r'UTC[+−][0-9]{2}:[0-9]{2}').firstMatch(zoneLine);
+    return match?.group(0) ?? zoneLine;
   }
 
   static String? _dstWarning(
@@ -92,7 +133,11 @@ class TimeStringRow extends TimeValueRow {
     if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return null;
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
-    final daysUntil = next.difference(nowUtc).inDays;
+
+    // Use calendar days, not Duration.inDays, to avoid off-by-one:
+    final nowDate  = DateTime.utc(nowUtc.year, nowUtc.month, nowUtc.day);
+    final nextDate = DateTime.utc(next.year, next.month, next.day);
+    final daysUntil = nextDate.difference(nowDate).inDays;
     if (daysUntil > 7) return null;
 
     // Abbreviations before and after the transition:
@@ -145,11 +190,12 @@ class TimeStringRow extends TimeValueRow {
 
     final display = computeDisplay(
       timeValue, now, locale, l10n,
+      localIanaZone: localIanaZone,
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
-      localIanaZone: localIanaZone,
-      longitude: longitude,
       showDateDetails: showDateDetails,
+      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      longitude: longitude,
     );
     String label = computeLabel(l10n, timeValue, longitude);
     String clipboardValue = display.line1 + '\n' + display.line2;
@@ -157,7 +203,7 @@ class TimeStringRow extends TimeValueRow {
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,
