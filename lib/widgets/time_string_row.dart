@@ -100,32 +100,19 @@ class TimeStringRow extends TimeValueRow {
 
     return (
       line1: split.line1,
-      line2: subtitle ?? zoneLine ?? split.line2,
+      line2: subtitle ?? zoneLine ?? '',
     );
   }
 
-  // Transforms "CEST (UTC+02:00)" according to ZoneDisplayMode.
-  // Input is always the full format from splitZoneOffset.
-  static String? _applyZoneDisplayMode(String fullZoneLine, ZoneDisplayMode mode) {
-    if (fullZoneLine.isEmpty) return null;
-    return switch (mode) {
-      ZoneDisplayMode.hidden => null,
-      ZoneDisplayMode.full   => fullZoneLine,
-      ZoneDisplayMode.abbreviation => _extractAbbreviation(fullZoneLine),
-      ZoneDisplayMode.offset       => _extractOffset(fullZoneLine),
-    };
-  }
-
-  // "CEST (UTC+02:00)" -> "CEST"
-  static String _extractAbbreviation(String zoneLine) {
-    final spaceIdx = zoneLine.indexOf(' ');
-    return spaceIdx > 0 ? zoneLine.substring(0, spaceIdx) : zoneLine;
-  }
-
-  // "CEST (UTC+02:00)" -> "UTC+02:00"
-  static String _extractOffset(String zoneLine) {
-    final match = RegExp(r'UTC[+−][0-9]{2}:[0-9]{2}').firstMatch(zoneLine);
-    return match?.group(0) ?? zoneLine;
+  static ({String line1, String line2}) splitZoneOffset(String value) {
+    final match = RegExp(
+      r'(?:[+-]\d{2}(?:\d{2})?|\w+)\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
+    ).firstMatch(value);
+    if (match == null) return (line1: value, line2: '');
+    return (
+    line1: value.substring(0, match.start).trim(),
+    line2: match.group(0)!,
+    );
   }
 
   static String? _dstWarning(
@@ -134,9 +121,10 @@ class TimeStringRow extends TimeValueRow {
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
-    // Use calendar days, not Duration.inDays, to avoid off-by-one:
-    final nowDate  = DateTime.utc(nowUtc.year, nowUtc.month, nowUtc.day);
-    final nextDate = DateTime.utc(next.year, next.month, next.day);
+    final localNow  = nowUtc.toLocal();
+    final nowDate   = DateTime(localNow.year, localNow.month, localNow.day);
+    final localNext = next.toLocal();
+    final nextDate  = DateTime(localNext.year, localNext.month, localNext.day);
     final daysUntil = nextDate.difference(nowDate).inDays;
     if (daysUntil > 7) return null;
 
@@ -153,15 +141,43 @@ class TimeStringRow extends TimeValueRow {
     return '$arrow ${l10n.labelDstChangeInDays(daysUntil)}';
   }
 
-  static ({String line1, String line2}) splitZoneOffset(String value) {
-    final match = RegExp(
-      r'(?:[+-]\d{2}(?:\d{2})?|\w+)\s+\(UTC[+−][0-9]{2}:[0-9]{2}\)',
-    ).firstMatch(value);
-    if (match == null) return (line1: value, line2: '');
-    return (
-      line1: value.substring(0, match.start).trim(),
-      line2: match.group(0)!,
-    );
+  // Transforms "CEST (UTC+02:00)" according to ZoneDisplayMode.
+  // Input is always the full format from splitZoneOffset.
+  static String? _applyZoneDisplayMode(String fullZoneLine, ZoneDisplayMode mode) {
+    if (fullZoneLine.isEmpty) return null;
+    return switch (mode) {
+      ZoneDisplayMode.hidden       => null,
+      ZoneDisplayMode.full         => fullZoneLine,
+      ZoneDisplayMode.abbreviation => _extractAbbreviation(fullZoneLine),
+      ZoneDisplayMode.offsetLong   => _extractOffset(fullZoneLine, 'long'),
+      ZoneDisplayMode.offsetShort  => _extractOffset(fullZoneLine, 'short'),
+      ZoneDisplayMode.offsetMini   => _extractOffset(fullZoneLine, 'mini'),
+    };
+  }
+
+  // "CEST (UTC+02:00)" -> "CEST"
+  static String _extractAbbreviation(String zoneLine) {
+    final spaceIdx = zoneLine.indexOf(' ');
+    return spaceIdx > 0 ? zoneLine.substring(0, spaceIdx) : zoneLine;
+  }
+
+  // long: "CEST (UTC+02:00)" -> "UTC+02:00"
+  // short: "CEST (UTC+02:00)" -> "+02:00"
+  // mini: "CEST (UTC+02:00)" -> "+2"
+  static String _extractOffset(String zoneLine, String format) {
+    final match = RegExp(r'UTC([+−])([0-9]{2}):([0-9]{2})').firstMatch(zoneLine);
+    if (match == null) return zoneLine;
+    final sign    = match.group(1)!;
+    final hours   = int.parse(match.group(2)!);
+    final minutes = int.parse(match.group(3)!);
+    return switch (format) {
+      'long'  => 'UTC$sign${match.group(2)}:${match.group(3)}',
+      'short' => '$sign${match.group(2)}:${match.group(3)}',
+      'mini'  => minutes == 0
+          ? '$sign$hours'
+          : '$sign$hours:${match.group(3)}',
+      _       => zoneLine,
+    };
   }
 
   static String computeLabel(AppLocalizations l10n,

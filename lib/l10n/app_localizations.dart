@@ -725,7 +725,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
-  /// **'Expanded Date'**
+  /// **'Expanded date'**
   String get settingsDateWithDetails;
 
   /// No description provided for @settingsDateWithDetailsSub.
@@ -911,13 +911,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsZoneDisplayModeAbbreviation.
   ///
   /// In en, this message translates to:
-  /// **'Abbreviation (CEST)'**
+  /// **'Abbreviation\n  [CEST]'**
   String get settingsZoneDisplayModeAbbreviation;
 
   /// No description provided for @settingsZoneDisplayModeFull.
   ///
   /// In en, this message translates to:
-  /// **'Abbreviation and offset (CEST (UTC+02:00))'**
+  /// **'Abbreviation + offset\n  [CEST (UTC+02:00)]'**
   String get settingsZoneDisplayModeFull;
 
   /// No description provided for @settingsZoneDisplayModeHidden.
@@ -926,11 +926,29 @@ abstract class AppLocalizations {
   /// **'Hidden'**
   String get settingsZoneDisplayModeHidden;
 
-  /// No description provided for @settingsZoneDisplayModeOffset.
+  /// No description provided for @settingsZoneDisplayModeOffsetLong.
   ///
   /// In en, this message translates to:
-  /// **'Offset (UTC+02:00)'**
-  String get settingsZoneDisplayModeOffset;
+  /// **'Offset Long\n  [UTC+02:00]'**
+  String get settingsZoneDisplayModeOffsetLong;
+
+  /// No description provided for @settingsZoneDisplayModeOffsetMini.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset Mini\n  [+2]'**
+  String get settingsZoneDisplayModeOffsetMini;
+
+  /// No description provided for @settingsZoneDisplayModeOffsetShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset Short\n  [+02:00]'**
+  String get settingsZoneDisplayModeOffsetShort;
+
+  /// No description provided for @settingsZoneDisplayModeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'abbreviation, UTC-offset'**
+  String get settingsZoneDisplayModeSub;
 
   /// No description provided for @tabAstronomical.
   ///

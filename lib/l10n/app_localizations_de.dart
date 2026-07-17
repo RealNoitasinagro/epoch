@@ -482,17 +482,26 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsZoneDisplayMode => 'Zeitzonenangabe';
 
   @override
-  String get settingsZoneDisplayModeAbbreviation => 'Kürzel (MESZ)';
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [CEST]';
 
   @override
   String get settingsZoneDisplayModeFull =>
-      'Kürzel und Offset (MESZ (UTC+02:00))';
+      'Kürzel + Offset\n  [CEST (UTC+02:00)]';
 
   @override
   String get settingsZoneDisplayModeHidden => 'Ausgeblendet';
 
   @override
-  String get settingsZoneDisplayModeOffset => 'Offset (UTC+02:00)';
+  String get settingsZoneDisplayModeOffsetLong => 'Offset Lang\n  [UTC+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetMini => 'Offset Mini\n  [+2]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetShort => 'Offset Kurz\n  [+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeSub => 'Kürzel, UTC-Zeitabstand';
 
   @override
   String get tabAstronomical => 'Astronomisch';

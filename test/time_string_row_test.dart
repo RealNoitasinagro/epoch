@@ -93,7 +93,7 @@ void main() {
 
     test('DST warning shows "today" on transition day', () {
       // Same calendar day as Berlin CEST->CET transition (25.10.2026):
-      final sameDay = DateTime.utc(2026, 10, 25, 0, 30, 0);
+      final sameDay = DateTime.utc(2026, 10, 25, 0, 0, 0);
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(tv, sameDay, 'en', l10n);
@@ -101,7 +101,7 @@ void main() {
     });
 
     test('no DST warning 8 days before transition', () {
-      final eightDaysBefore = DateTime.utc(2026, 10, 17, 12, 0, 0);
+      final eightDaysBefore = DateTime.utc(2026, 10, 17, 0, 0, 0);
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
@@ -110,7 +110,7 @@ void main() {
       expect(result.line2, isNot(contains('→')));
     });
 
-    test('ZoneSuffixMode.abbreviation shows only abbreviation', () {
+    test('ZoneDisplayMode.abbreviation shows only abbreviation', () {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
@@ -119,13 +119,31 @@ void main() {
       expect(result.line2, equals('CEST'));
     });
 
-    test('ZoneSuffixMode.offset shows only offset', () {
+    test('ZoneDisplayMode.offsetLong shows only offsetLong', () {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
           tv, summerUtc, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.offset);
+          zoneDisplayMode: ZoneDisplayMode.offsetLong);
       expect(result.line2, equals('UTC+02:00'));
+    });
+
+    test('ZoneDisplayMode.offsetShort shows only offsetShort', () {
+      const tv = TimeValue(
+          valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
+      final result = TimeStringRow.computeDisplay(
+          tv, summerUtc, 'en', l10n,
+          zoneDisplayMode: ZoneDisplayMode.offsetShort);
+      expect(result.line2, equals('+02:00'));
+    });
+
+    test('ZoneDisplayMode.offsetShort shows only offsetMini', () {
+      const tv = TimeValue(
+          valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
+      final result = TimeStringRow.computeDisplay(
+          tv, summerUtc, 'en', l10n,
+          zoneDisplayMode: ZoneDisplayMode.offsetMini);
+      expect(result.line2, equals('+2'));
     });
 
     test('DST warning shown even with abbreviation mode', () {

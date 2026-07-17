@@ -195,35 +195,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.do_not_touch),
+            leading: const Icon(Icons.format_list_numbered),
             title: Text(l10n.settingsZoneDisplayMode),
-            trailing: DropdownButton<ZoneDisplayMode>(
-              value: _zoneDisplayMode,
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: [
-                DropdownMenuItem(
-                  value: ZoneDisplayMode.full,
-                  child: Text(l10n.settingsZoneDisplayModeFull),
-                ),
-                DropdownMenuItem(
-                  value: ZoneDisplayMode.abbreviation,
-                  child: Text(l10n.settingsZoneDisplayModeAbbreviation),
-                ),
-                DropdownMenuItem(
-                  value: ZoneDisplayMode.offset,
-                  child: Text(l10n.settingsZoneDisplayModeOffset),
-                ),
-                DropdownMenuItem(
-                  value: ZoneDisplayMode.hidden,
-                  child: Text(l10n.settingsZoneDisplayModeHidden),
-                ),
-              ],
-              onChanged: (mode) {
-                if (mode == null) return;
-                setState(() => _zoneDisplayMode = mode);
-                app.setZoneDisplayMode(mode);
-              },
+            subtitle: Text(l10n.settingsZoneDisplayModeSub),
+            trailing: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 184),
+              child: DropdownButton<ZoneDisplayMode>(
+                isExpanded: true,
+                value: _zoneDisplayMode,
+                underline: const SizedBox.shrink(),
+                iconEnabledColor: Theme.of(context).colorScheme.primary,
+                items: [
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.full,
+                    child: Text(l10n.settingsZoneDisplayModeFull),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.abbreviation,
+                    child: Text(l10n.settingsZoneDisplayModeAbbreviation),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetLong,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetLong),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetShort,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetShort),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetMini,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetMini),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.hidden,
+                    child: Text(l10n.settingsZoneDisplayModeHidden),
+                  ),
+                ],
+                onChanged: (mode) {
+                  if (mode == null) return;
+                  setState(() => _zoneDisplayMode = mode);
+                  app.setZoneDisplayMode(mode);
+                },
+              ),
             ),
           ),
           const Divider(height: kDividerHeight),

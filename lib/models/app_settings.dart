@@ -27,7 +27,14 @@ const kFocusDefaultColorNight = 0xFFCC1010;  // night red (= _nightRed)
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
 
-enum ZoneDisplayMode { hidden, abbreviation, offset, full }
+enum ZoneDisplayMode {
+  full,              // CEST (UTC+02:00)  – default
+  abbreviation,      // CEST
+  offsetLong,        // UTC+02:00
+  offsetShort,       // +02:00
+  offsetMini,        // +2
+  hidden,            // (empty)
+}
 
 enum LmstMode { off, manual, locationAccess }
 
@@ -94,10 +101,12 @@ Future<void> saveThousandsSep(bool enabled) async {
 Future<ZoneDisplayMode> loadZoneDisplayMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.getString(_kZoneDisplayModeKey)) {
-    'hidden'       => ZoneDisplayMode.hidden,
     'abbreviation' => ZoneDisplayMode.abbreviation,
-    'offset'       => ZoneDisplayMode.offset,
-    _              => kDefaultZoneDisplayMode,
+    'offsetLong'   => ZoneDisplayMode.offsetLong,
+    'offsetShort'  => ZoneDisplayMode.offsetShort,
+    'offsetMini'   => ZoneDisplayMode.offsetMini,
+    'hidden'       => ZoneDisplayMode.hidden,
+    _              => kDefaultZoneDisplayMode,  // full
   };
 }
 

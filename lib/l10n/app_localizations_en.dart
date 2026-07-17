@@ -380,7 +380,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
-  String get settingsDateWithDetails => 'Expanded Date';
+  String get settingsDateWithDetails => 'Expanded date';
 
   @override
   String get settingsDateWithDetailsSub =>
@@ -477,17 +477,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsZoneDisplayMode => 'Time zone display';
 
   @override
-  String get settingsZoneDisplayModeAbbreviation => 'Abbreviation (CEST)';
+  String get settingsZoneDisplayModeAbbreviation => 'Abbreviation\n  [CEST]';
 
   @override
   String get settingsZoneDisplayModeFull =>
-      'Abbreviation and offset (CEST (UTC+02:00))';
+      'Abbreviation + offset\n  [CEST (UTC+02:00)]';
 
   @override
   String get settingsZoneDisplayModeHidden => 'Hidden';
 
   @override
-  String get settingsZoneDisplayModeOffset => 'Offset (UTC+02:00)';
+  String get settingsZoneDisplayModeOffsetLong => 'Offset Long\n  [UTC+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetMini => 'Offset Mini\n  [+2]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetShort => 'Offset Short\n  [+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeSub => 'abbreviation, UTC-offset';
 
   @override
   String get tabAstronomical => 'Astronomical';
