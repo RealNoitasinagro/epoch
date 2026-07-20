@@ -2,14 +2,18 @@
 
 ## [Unreleased]
 
+---
+
+## [1.3.0] - 2026-07-20
+
 ### Added
-- 🆒 1-value always-on focus screen with font color choice (and brightness adjust for Android)
+- 🆒 1-value always-on focus screen with text color selection (and brightness adjust for Android)
 - new value type seven-segment clock
-- 1-week clock change heads-up
+- 7-day advance notice of DST transitions
 - global configuration option for the UTC-offset line of a zoned time value
 
 ### Changed
-- much improved timezone keyword search
+- much improved timezone keyword search, esp. coverage (e. g. support for megacities)
 - day second and day percent with UTC-offset line for consistency
 
 ### Fixed
@@ -17,9 +21,7 @@
 - slider buttons in Settings not always showing correct state immediately after reset
 - slight button misalignment (visible on Android only) for dividers and section headers
 
-
 ---
-
 
 ## [1.2.0] - 2026-07-01
 
@@ -38,12 +40,14 @@
 ### Fixed
 - missing timezones UTC-12, UTC+8:45, UTC+12:45, UTC+13:45, UTC+14
 
+---
 
 ## [1.1.1] - 2026-06-11
 
 ### Removed
 - geolocator -- longitude config for LMST only manual for now
 
+---
 
 ## [1.1.0] - 2026-06-10
 
@@ -65,5 +69,6 @@
 - value tile reordering (tile dragged to the end of the list jumped back to last but one position)
 - crashes for outdated timezone names
 
+---
 
 ## [1.0.0] - 2026-05-21

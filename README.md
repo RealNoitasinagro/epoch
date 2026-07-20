@@ -34,6 +34,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
+- 7-day advance clock change notice
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
@@ -43,9 +44,11 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Night mode with red-on-black display — preserves dark adaptation for stargazing
 - Light, dark, and system themes
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
+- Focus mode: double-tap any value for a full-screen, always-on display with adjustable brightness (Android) and color
 - 12 / 24-hour format toggle
 - Thousands separator toggle
 - Expanded date toggle
+- Timezone details (abbreviation and UTC offset) configurable
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
 - Android widgets coming soon
@@ -61,14 +64,14 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 18 different time values simultaneously, lets you pick exactly
+Epoch shows you 19 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
 - are curious about different time systems in use around the world
-- want to compare local times across many timezones at a glance
+- want to compare local times across many timezones at a glance (e. g. friends/colleagues abroad)
 - enjoy unusual time representations like Swatch Internet Time, day seconds, or binary clocks
-- do amateur astronomy and want a single app for sidereal time, Julian Date, and LMST —
+- do amateur astronomy and want a single app for sidereal time, LMST, and Julian Date —
   without blue light ruining your dark adaptation
 - keep an eye on the Doomsday Clock
 - just want to know what Unix time it is right now
@@ -95,6 +98,11 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="en 6">
 </p>
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="260" alt="en 7">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="260" alt="en 8">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="260" alt="en 9">
+</p>
 
 </details>
 
@@ -110,6 +118,11 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/4.png" width="200" alt="de 4">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/5.png" width="200" alt="de 5">
   <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/6.png" width="200" alt="de 6">
+</p>
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/7.png" width="260" alt="de 7">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/8.png" width="260" alt="de 8">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/9.png" width="260" alt="de 9">
 </p>
 
 </details>

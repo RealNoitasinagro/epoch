@@ -203,7 +203,7 @@ else
 fi
 echo | tee -a "$build_all_log"
 
-echo "# Listing output files..."
+echo "# Listing output files in $apk_output_path..."
 # shellcheck disable=SC2012
 ls -l "$apk_output_path" | tee -a "$build_all_log"
 echo | tee -a "$build_all_log"
