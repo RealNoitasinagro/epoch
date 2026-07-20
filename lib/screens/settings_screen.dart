@@ -19,11 +19,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late AppThemeMode _themeMode;
-  late bool _thousandsSep;
-  late bool _hourFormat24;
-  late bool _dateWithDetails;
   Locale? _locale;
+  late AppThemeMode _themeMode;
+  late bool _hourFormat24;
+  late bool _thousandsSep;
+  late bool _dateWithDetails;
+  late ZoneDisplayMode _zoneDisplayMode;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
   bool _locationLoading = false;
@@ -39,16 +40,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Read current values from app state – runs after context is available.
     final app = EpochApp.of(context);
-    _themeMode = app.themeMode;
-    _thousandsSep = app.thousandsSep;
-    _hourFormat24 = app.hourFormat24;
-    _dateWithDetails = app.dateWithDetails;
-    _locale = app.locale;
-    _lmstMode = app.lmstMode;
-    _lmstLongitude = app.lmstLongitude;
-    _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+    setState(() {
+      _locale = app.locale;
+      _themeMode = app.themeMode;
+      _hourFormat24 = app.hourFormat24;
+      _thousandsSep = app.thousandsSep;
+      _dateWithDetails = app.dateWithDetails;
+      _zoneDisplayMode = app.zoneDisplayMode;
+      _lmstMode = app.lmstMode;
+      _lmstLongitude = app.lmstLongitude;
+      _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+    });
   }
 
   @override
@@ -190,6 +193,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => _dateWithDetails = val);
               app.setDateWithDetails(val);
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.format_list_numbered),
+            title: Text(l10n.settingsZoneDisplayMode),
+            subtitle: Text(l10n.settingsZoneDisplayModeSub),
+            trailing: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 184),
+              child: DropdownButton<ZoneDisplayMode>(
+                isExpanded: true,
+                value: _zoneDisplayMode,
+                underline: const SizedBox.shrink(),
+                iconEnabledColor: Theme.of(context).colorScheme.primary,
+                items: [
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.full,
+                    child: Text(l10n.settingsZoneDisplayModeFull),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.abbreviation,
+                    child: Text(l10n.settingsZoneDisplayModeAbbreviation),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetLong,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetLong),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetShort,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetShort),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetMini,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetMini),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.hidden,
+                    child: Text(l10n.settingsZoneDisplayModeHidden),
+                  ),
+                ],
+                onChanged: (mode) {
+                  if (mode == null) return;
+                  setState(() => _zoneDisplayMode = mode);
+                  app.setZoneDisplayMode(mode);
+                },
+              ),
+            ),
           ),
           const Divider(height: kDividerHeight),
           Padding(

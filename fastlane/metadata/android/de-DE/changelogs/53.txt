@@ -1,0 +1,13 @@
+- Fokus-Modus: Doppeltippen auf einen Wert für Vollbild-Anzeige
+mit einstellbarer Helligkeit (Android) und Farbauswahl
+- Sieben-Segment-Uhr
+- 7-Tage-Vorwarnung für Zeitumstellungen
+- Konfiguration der UTC-Offset-Anzeige
+
+Geändert
+- Zeitzonensuche mit deutlich mehr Stichwörtern
+- Tagessekunde und Tagesprozent mit UTC-Offset
+
+Behoben
+- Numerische Zeitzonenkürzel wie +0845 wurden auf zwei Zeilen aufgeteilt
+- Schieberegler in Einstellungen zeigten nach Zurücksetzen manchmal falsche Werte

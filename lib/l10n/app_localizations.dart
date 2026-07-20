@@ -254,6 +254,42 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to exit'**
+  String get hintFocusScreenExit;
+
+  /// No description provided for @hintFocusScreenOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to switch to focus screen'**
+  String get hintFocusScreenOpen;
+
+  /// No description provided for @hintFocusScreenToggleSecondsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to suppress seconds'**
+  String get hintFocusScreenToggleSecondsOff;
+
+  /// No description provided for @hintFocusScreenToggleSecondsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to display seconds'**
+  String get hintFocusScreenToggleSecondsOn;
+
+  /// No description provided for @hintFocusScreenToggleToOneLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for one line'**
+  String get hintFocusScreenToggleToOneLine;
+
+  /// No description provided for @hintFocusScreenToggleToTwoLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for two lines'**
+  String get hintFocusScreenToggleToTwoLines;
+
   /// No description provided for @hintPinnedIndicator.
   ///
   /// In en, this message translates to:
@@ -470,6 +506,12 @@ abstract class AppLocalizations {
   /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
 
+  /// No description provided for @infoTextSevenSegmentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone in alarm clock design.'**
+  String get infoTextSevenSegmentTime;
+
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -493,6 +535,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
   String get infoTextUnixSeconds;
+
+  /// No description provided for @labelDstChangeInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days} {days, plural, one{day} other{days}}'**
+  String labelDstChangeInDays(int days);
+
+  /// No description provided for @labelDstChangeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get labelDstChangeToday;
+
+  /// No description provided for @labelDstChangeTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'tomorrow'**
+  String get labelDstChangeTomorrow;
 
   /// No description provided for @labelHours.
   ///
@@ -541,6 +601,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SS'**
   String get labelSeconds;
+
+  /// No description provided for @labelShowSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Show seconds'**
+  String get labelShowSeconds;
 
   /// No description provided for @messageAlreadyDisplayed.
   ///
@@ -659,7 +725,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
-  /// **'Expanded Date'**
+  /// **'Expanded date'**
   String get settingsDateWithDetails;
 
   /// No description provided for @settingsDateWithDetailsSub.
@@ -836,6 +902,54 @@ abstract class AppLocalizations {
   /// **'What\'s New'**
   String get settingsWhatsNew;
 
+  /// No description provided for @settingsZoneDisplayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone display'**
+  String get settingsZoneDisplayMode;
+
+  /// No description provided for @settingsZoneDisplayModeAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'Abbreviation\n  [CEST]'**
+  String get settingsZoneDisplayModeAbbreviation;
+
+  /// No description provided for @settingsZoneDisplayModeFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Abbreviation + offset\n  [CEST (UTC+02:00)]'**
+  String get settingsZoneDisplayModeFull;
+
+  /// No description provided for @settingsZoneDisplayModeHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get settingsZoneDisplayModeHidden;
+
+  /// No description provided for @settingsZoneDisplayModeOffsetLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset Long\n  [UTC+02:00]'**
+  String get settingsZoneDisplayModeOffsetLong;
+
+  /// No description provided for @settingsZoneDisplayModeOffsetMini.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset Mini\n  [+2]'**
+  String get settingsZoneDisplayModeOffsetMini;
+
+  /// No description provided for @settingsZoneDisplayModeOffsetShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Offset Short\n  [+02:00]'**
+  String get settingsZoneDisplayModeOffsetShort;
+
+  /// No description provided for @settingsZoneDisplayModeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'abbreviation, UTC-offset'**
+  String get settingsZoneDisplayModeSub;
+
   /// No description provided for @tabAstronomical.
   ///
   /// In en, this message translates to:
@@ -943,6 +1057,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000'**
   String get valueTypeModifiedJulianDate2000;
+
+  /// No description provided for @valueTypeSevenSegmentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seven-segment clock'**
+  String get valueTypeSevenSegmentTime;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///

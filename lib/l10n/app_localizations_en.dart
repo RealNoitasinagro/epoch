@@ -106,6 +106,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditTimeValue => 'Edit time value';
 
   @override
+  String get hintFocusScreenExit => 'Double-tap to exit';
+
+  @override
+  String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
+
+  @override
+  String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
+
+  @override
+  String get hintFocusScreenToggleSecondsOn => 'Hold to display seconds';
+
+  @override
+  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
+
+  @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override
@@ -237,6 +255,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
 
   @override
+  String get infoTextSevenSegmentTime =>
+      'The current time in the selected timezone in alarm clock design.';
+
+  @override
   String get infoTextSwatchBeats =>
       'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).';
 
@@ -250,6 +272,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoTextUnixSeconds =>
       'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.';
+
+  @override
+  String labelDstChangeInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return 'in $days $_temp0';
+  }
+
+  @override
+  String get labelDstChangeToday => 'today';
+
+  @override
+  String get labelDstChangeTomorrow => 'tomorrow';
 
   @override
   String get labelHours => 'HH';
@@ -274,6 +313,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelSeconds => 'SS';
+
+  @override
+  String get labelShowSeconds => 'Show seconds';
 
   @override
   String get messageAlreadyDisplayed => 'This value is already displayed.';
@@ -338,7 +380,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
-  String get settingsDateWithDetails => 'Expanded Date';
+  String get settingsDateWithDetails => 'Expanded date';
 
   @override
   String get settingsDateWithDetailsSub =>
@@ -432,6 +474,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsWhatsNew => 'What\'s New';
 
   @override
+  String get settingsZoneDisplayMode => 'Time zone display';
+
+  @override
+  String get settingsZoneDisplayModeAbbreviation => 'Abbreviation\n  [CEST]';
+
+  @override
+  String get settingsZoneDisplayModeFull =>
+      'Abbreviation + offset\n  [CEST (UTC+02:00)]';
+
+  @override
+  String get settingsZoneDisplayModeHidden => 'Hidden';
+
+  @override
+  String get settingsZoneDisplayModeOffsetLong => 'Offset Long\n  [UTC+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetMini => 'Offset Mini\n  [+2]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetShort => 'Offset Short\n  [+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeSub => 'abbreviation, UTC-offset';
+
+  @override
   String get tabAstronomical => 'Astronomical';
 
   @override
@@ -484,6 +551,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
+
+  @override
+  String get valueTypeSevenSegmentTime => 'Seven-segment clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';

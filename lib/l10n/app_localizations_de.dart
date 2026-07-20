@@ -105,6 +105,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintEditTimeValue => 'Zeitwert bearbeiten';
 
   @override
+  String get hintFocusScreenExit => 'Doppelt antippen zum Verlassen';
+
+  @override
+  String get hintFocusScreenOpen =>
+      'Doppelt antippen zum Wechsel in den Fokus-Screen';
+
+  @override
+  String get hintFocusScreenToggleSecondsOff =>
+      'Gedrückt halten für Anzeige ohne Sekunden';
+
+  @override
+  String get hintFocusScreenToggleSecondsOn =>
+      'Gedrückt halten für Anzeige mit Sekunden';
+
+  @override
+  String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
+
+  @override
+  String get hintFocusScreenToggleToTwoLines =>
+      'Gedrückt halten für zwei Zeilen';
+
+  @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override
@@ -236,6 +258,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
+  String get infoTextSevenSegmentTime =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone im Radiowecker-Design.';
+
+  @override
   String get infoTextSwatchBeats =>
       'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
 
@@ -249,6 +275,23 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextUnixSeconds =>
       'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
+
+  @override
+  String labelDstChangeInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Tagen',
+      one: 'Tag',
+    );
+    return 'in $days $_temp0';
+  }
+
+  @override
+  String get labelDstChangeToday => 'heute';
+
+  @override
+  String get labelDstChangeTomorrow => 'morgen';
 
   @override
   String get labelHours => 'Std';
@@ -273,6 +316,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelSeconds => 'Sek';
+
+  @override
+  String get labelShowSeconds => 'Sekunden anzeigen';
 
   @override
   String get messageAlreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';
@@ -433,6 +479,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsWhatsNew => 'Was ist neu';
 
   @override
+  String get settingsZoneDisplayMode => 'Zeitzonenangabe';
+
+  @override
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [CEST]';
+
+  @override
+  String get settingsZoneDisplayModeFull =>
+      'Kürzel + Offset\n  [CEST (UTC+02:00)]';
+
+  @override
+  String get settingsZoneDisplayModeHidden => 'Ausgeblendet';
+
+  @override
+  String get settingsZoneDisplayModeOffsetLong => 'Offset Lang\n  [UTC+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetMini => 'Offset Mini\n  [+2]';
+
+  @override
+  String get settingsZoneDisplayModeOffsetShort => 'Offset Kurz\n  [+02:00]';
+
+  @override
+  String get settingsZoneDisplayModeSub => 'Kürzel, UTC-Zeitabstand';
+
+  @override
   String get tabAstronomical => 'Astronomisch';
 
   @override
@@ -486,6 +557,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get valueTypeModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000';
+
+  @override
+  String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch-Internetzeit';

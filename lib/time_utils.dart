@@ -2,7 +2,7 @@ import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 import 'models/time_value.dart';
-import 'models/timezone_search.dart';
+import 'models/timezone_search_zones.dart';
 
 class TimeUtils {
   static int dayOfYear(DateTime dt) => dt.ordinalDate;
@@ -26,9 +26,9 @@ class TimeUtils {
   /// UTC offset as a formatted string, e. g. "UTC+02:00".
   static String utcOffsetString(Duration offset) {
     final sign = offset.isNegative ? '−' : '+';
-    final h = offset.inHours.abs().toString().padLeft(2, '0');
-    final m = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
-    return 'UTC$sign$h:$m';
+    final hh = offset.inHours.abs().toString().padLeft(2, '0');
+    final mm = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
+    return 'UTC$sign$hh:$mm';
   }
 
   /// Returns true/false for a given time zone independently of current date.
@@ -64,7 +64,7 @@ class TimeUtils {
   }
 
   /// Converts a UTC DateTime to local time for the given TimeValue,
-  /// respecting its timezoneDisplayMode (auto/forceDst/forceStandard).
+  /// respecting its timezoneClockChangeMode (auto/forceDst/forceStandard).
   static DateTime resolveLocalTime(
       TimeValue timeValue,
       DateTime utcNow,
@@ -75,16 +75,28 @@ class TimeUtils {
       case ZoneUtc():
         return utcNow;
       case ZoneNamed(ianaZone: final zone):
-        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
+        if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
           final info = TimeUtils.daylightOrStandardOffset(
               zone,
-              timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
+              timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.forceDst);
           if (info != null) {
             return utcNow.add(info.offset);
           }
         }
         return TimeUtils.inZone(utcNow, zone);
     }
+  }
+
+  /// Returns the DateTime of the next clock change for a ianaZone.
+  static DateTime? nextDstTransition(String ianaZone, DateTime afterUtc) {
+    try {
+      final loc = tz.getLocation(ianaZone);
+      final afterUtcMs = afterUtc.millisecondsSinceEpoch;
+      final idx = loc.transitionAt.indexWhere((t) => t > afterUtcMs);
+      if (idx < 0) return null;
+      return DateTime.fromMillisecondsSinceEpoch(
+          loc.transitionAt[idx], isUtc: true);
+    } catch (_) { return null; }
   }
 
   /// Day second (seconds since midnight) for a DateTime.

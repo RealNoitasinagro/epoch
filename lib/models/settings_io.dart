@@ -96,6 +96,11 @@ Future<void> resetSettings(BuildContext context) async {
   // reload
   if (!context.mounted) return;
   await EpochApp.of(context).reloadPreferences();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (context.mounted) {
+      (context as Element).markNeedsBuild();
+    }
+  });
 
   // report
   if (!context.mounted) return;

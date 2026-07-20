@@ -1,0 +1,13 @@
+- Focus screen: double-tap any value for a full-screen, always-on display
+ with adjustable brightness (Android) and color
+- Seven-segment clock
+- 7-day advance notice of upcoming DST transitions
+- Setting for how UTC offsets are displayed
+
+Changed
+- Timezone search with much better keyword coverage
+- Day second and day percent now show UTC offset too
+
+Fixed
+- Numeric timezone abbreviations like +0845 were split across two lines
+- Settings sliders sometimes showed wrong state after a reset

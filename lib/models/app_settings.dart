@@ -3,24 +3,41 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const _kLocaleKey = 'locale';
 const _kThemeModeKey = 'theme_mode';
-const _kThousandsSepKey = 'thousands_sep';
 const _kHourFormatKey = 'hour_format_24';
+const _kThousandsSepKey = 'thousands_sep';
 const _kDateWithDetails = 'date_cw_doy';
+const _kZoneDisplayModeKey = 'zone_display';
 const _kLmstModeKey = 'lmst_mode';
 const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
+const _kFocusBrightnessKey = 'focus_brightness';
+const _kFocusColorKey = 'focus_color';
 
 const kDefaultLocale = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
-const kDefaultThousandsSep = true;
 const kDefaultHourFormat24 = true;
+const kDefaultThousandsSep = true;
 const kDefaultDateWithDetails = true;
+const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
 const kDefaultLmstMode = LmstMode.off;
+const kDefaultFocusBrightness = 0.5;
+const kFocusDefaultColorLight = 0xFFFFFFFF;  // white
+const kFocusDefaultColorNight = 0xFFCC1010;  // night red (= _nightRed)
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
 
+enum ZoneDisplayMode {
+  full,              // CEST (UTC+02:00)  – default
+  abbreviation,      // CEST
+  offsetLong,        // UTC+02:00
+  offsetShort,       // +02:00
+  offsetMini,        // +2
+  hidden,            // (empty)
+}
+
 enum LmstMode { off, manual, locationAccess }
+
 
 Future<Locale?> loadLocale() async {
   final prefs = await SharedPreferences.getInstance();
@@ -61,19 +78,9 @@ Future<void> saveThemeMode(AppThemeMode mode) async {
   await prefs.setString(_kThemeModeKey, value);
 }
 
-Future<bool> loadThousandsSep() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kThousandsSepKey) ?? true;
-}
-
-Future<void> saveThousandsSep(bool enabled) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setBool(_kThousandsSepKey, enabled);
-}
-
 Future<bool> loadHourFormat24() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kHourFormatKey) ?? true;
+  return prefs.getBool(_kHourFormatKey) ?? kDefaultHourFormat24;
 }
 
 Future<void> saveHourFormat24(bool use24) async {
@@ -81,9 +88,36 @@ Future<void> saveHourFormat24(bool use24) async {
   await prefs.setBool(_kHourFormatKey, use24);
 }
 
+Future<bool> loadThousandsSep() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kThousandsSepKey) ?? kDefaultThousandsSep;
+}
+
+Future<void> saveThousandsSep(bool enabled) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kThousandsSepKey, enabled);
+}
+
+Future<ZoneDisplayMode> loadZoneDisplayMode() async {
+  final prefs = await SharedPreferences.getInstance();
+  return switch (prefs.getString(_kZoneDisplayModeKey)) {
+    'abbreviation' => ZoneDisplayMode.abbreviation,
+    'offsetLong'   => ZoneDisplayMode.offsetLong,
+    'offsetShort'  => ZoneDisplayMode.offsetShort,
+    'offsetMini'   => ZoneDisplayMode.offsetMini,
+    'hidden'       => ZoneDisplayMode.hidden,
+    _              => kDefaultZoneDisplayMode,  // full
+  };
+}
+
+Future<void> saveZoneDisplayMode(ZoneDisplayMode mode) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kZoneDisplayModeKey, mode.name);
+}
+
 Future<bool> loadDateWithDetails() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kDateWithDetails) ?? true;
+  return prefs.getBool(_kDateWithDetails) ?? kDefaultDateWithDetails;
 }
 
 Future<void> saveDateWithDetails(bool showDetails) async {
@@ -96,7 +130,7 @@ Future<LmstMode> loadLmstMode() async {
   return switch (prefs.getString(_kLmstModeKey)) {
     'manual'         => LmstMode.manual,
     'locationAccess' => LmstMode.locationAccess,
-    _                => LmstMode.off,
+    _                => kDefaultLmstMode,
   };
 }
 
@@ -123,4 +157,26 @@ Future<int> loadActiveTab() async {
 Future<void> saveActiveTab(int index) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kActiveTabKey, index);
+}
+
+Future<double?> loadFocusBrightness() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness;
+}
+
+Future<void> saveFocusBrightness(double brightness) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble(_kFocusBrightnessKey, brightness);
+}
+
+Future<Color> loadFocusColor(bool isNightMode) async {
+  final prefs = await SharedPreferences.getInstance();
+  final value = prefs.getInt(_kFocusColorKey);
+  if (value != null) return Color(value);
+  return Color(isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight);
+}
+
+Future<void> saveFocusColor(Color color) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt(_kFocusColorKey, color.toARGB32());
 }

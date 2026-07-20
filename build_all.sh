@@ -203,7 +203,7 @@ else
 fi
 echo | tee -a "$build_all_log"
 
-echo "# Listing output files..."
+echo "# Listing output files in $apk_output_path..."
 # shellcheck disable=SC2012
 ls -l "$apk_output_path" | tee -a "$build_all_log"
 echo | tee -a "$build_all_log"
@@ -235,6 +235,7 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
     cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
     cp -v $apk_output_path/${target_platform_android_all} $destination_path
+    echo
 
     tee -a "$build_all_log" << EOF
 ***** INFO *****************************************************************************************

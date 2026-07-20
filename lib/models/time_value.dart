@@ -1,5 +1,5 @@
 import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/models/timezone_search.dart';
+import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
@@ -13,6 +13,7 @@ enum ValueType {
   dateTime,
   daySecond,
   dayPercent,
+  sevenSegmentClock,
   // Technical
   unixSeconds,
   tai,
@@ -31,7 +32,7 @@ enum ValueType {
   doomsdayClock,
 }
 
-enum TimezoneDisplayMode { auto, forceDst, forceStandard }
+enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
 
 // Zone specification.
 sealed class ZoneSpec {
@@ -56,14 +57,24 @@ class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
-  final TimezoneDisplayMode timezoneDisplayMode;
+  final TimezoneClockChangeMode timezoneClockChangeMode;
+  final bool showSeconds;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
-    this.timezoneDisplayMode = TimezoneDisplayMode.auto,
+    this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
+    this.showSeconds = true,
   });
+
+  TimeValue withShowSeconds(bool value) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: customLabel,
+    timezoneClockChangeMode: timezoneClockChangeMode,
+    showSeconds: value,
+  );
 
   // Unique key for deduplication within a tab.
   // Custom label does not affect the key.
@@ -77,10 +88,10 @@ class TimeValue implements TabEntry {
   }
 
   @override
-  String get key => switch (timezoneDisplayMode) {
-    TimezoneDisplayMode.auto          => _baseKey,
-    TimezoneDisplayMode.forceDst      => '${_baseKey}/dst',
-    TimezoneDisplayMode.forceStandard => '${_baseKey}/std',
+  String get key => switch (timezoneClockChangeMode) {
+    TimezoneClockChangeMode.auto          => _baseKey,
+    TimezoneClockChangeMode.forceDst      => '${_baseKey}/dst',
+    TimezoneClockChangeMode.forceStandard => '${_baseKey}/std',
   };
 
   bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
@@ -89,22 +100,31 @@ class TimeValue implements TabEntry {
   @override
   String toPrefsString() {
     final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
-    if (timezoneDisplayMode == TimezoneDisplayMode.auto) return base;
-    return '$base|dst:${timezoneDisplayMode.name}';
+    var result = base;
+    if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
+      result = '$result|dst:${timezoneClockChangeMode.name}';
+    }
+    if (!showSeconds) result = '$result|nosec';
+    return result;
   }
 
   static TimeValue? fromPrefsString(String s) {
-    TimezoneDisplayMode timezoneDisplayMode = TimezoneDisplayMode.auto;
+    TimezoneClockChangeMode timezoneClockChangeMode = TimezoneClockChangeMode.auto;
     var workStr = s;
     final dstIdx = workStr.lastIndexOf('|dst:');
     if (dstIdx >= 0) {
       final dstStr = workStr.substring(dstIdx + 5);
-      timezoneDisplayMode =
-          TimezoneDisplayMode.values
+      timezoneClockChangeMode =
+          TimezoneClockChangeMode.values
               .where((m) => m.name == dstStr)
               .firstOrNull ??
-              TimezoneDisplayMode.auto;
+              TimezoneClockChangeMode.auto;
       workStr = workStr.substring(0, dstIdx);
+    }
+    bool showSeconds = true;
+    if (workStr.endsWith('|nosec')) {
+      showSeconds = false;
+      workStr = workStr.substring(0, workStr.length - 6);
     }
 
     final pipeIdx = workStr.indexOf('|');
@@ -132,7 +152,8 @@ class TimeValue implements TabEntry {
       valueType: valueType,
       zone: zone,
       customLabel: labelPart,
-      timezoneDisplayMode: timezoneDisplayMode,
+      timezoneClockChangeMode: timezoneClockChangeMode,
+      showSeconds: showSeconds,
     );
   }
 
@@ -144,12 +165,12 @@ class TimeValue implements TabEntry {
         customLabel: label
       );
 
-  TimeValue withTimezoneDisplayMode(TimezoneDisplayMode mode) =>
+  TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
       TimeValue(
         valueType: valueType,
         zone: zone,
         customLabel: customLabel,
-        timezoneDisplayMode: mode,
+        timezoneClockChangeMode: mode,
       );
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
@@ -177,10 +198,10 @@ class TimeValue implements TabEntry {
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
-    if (timezoneDisplayMode == TimezoneDisplayMode.forceDst) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceDst) {
       return kIconDstActive;
     }
-    if (timezoneDisplayMode == TimezoneDisplayMode.forceStandard) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceStandard) {
       return kIconDstInactive;
     }
     // auto: determine actual current DST status:
@@ -211,6 +232,7 @@ class TimeValue implements TabEntry {
         ValueType.dateTime => l10n.valueTypeDateTime,
         ValueType.daySecond => l10n.valueTypeDaySecond,
         ValueType.dayPercent => l10n.valueTypeDayPercent,
+        ValueType.sevenSegmentClock => l10n.valueTypeSevenSegmentTime,
         ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
         ValueType.tai => l10n.valueTypeTai,
         ValueType.gps => l10n.valueTypeGps,
@@ -234,6 +256,7 @@ class TimeValue implements TabEntry {
     ValueType.dateTime => l10n.infoTextDateTime,
     ValueType.daySecond => l10n.infoTextDaySecond,
     ValueType.dayPercent => l10n.infoTextDayPercent,
+    ValueType.sevenSegmentClock => l10n.infoTextSevenSegmentTime,
     ValueType.unixSeconds => l10n.infoTextUnixSeconds,
     ValueType.tai => l10n.infoTextTai,
     ValueType.gps => l10n.infoTextGps,
@@ -275,6 +298,7 @@ extension ValueTypeProps on ValueType {
     ValueType.dateTime => false,
     ValueType.daySecond => false,
     ValueType.dayPercent => false,
+    ValueType.sevenSegmentClock => false,
     ValueType.unixSeconds => true,
     ValueType.tai => true,
     ValueType.gps => true,
@@ -291,6 +315,7 @@ extension ValueTypeProps on ValueType {
   };
 
   bool get isGraphical =>
+      this == ValueType.sevenSegmentClock ||
       this == ValueType.binaryClockColumns ||
       this == ValueType.binaryClockBcd;
 }

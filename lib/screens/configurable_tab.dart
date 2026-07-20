@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/civil_tab_config.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
 import '../widgets/clocks/binary_columns_clock.dart';
+import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
 import '../widgets/value_tile.dart';
@@ -19,8 +21,8 @@ import 'entry_picker.dart';
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
   final List<TabEntry> entries;
-  final bool thousandsSep;
   final bool hourFormat24;
+  final bool thousandsSep;
   final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TabEntry>> onEntriesChanged;
@@ -123,22 +125,28 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Widget _entryCheckbox(BuildContext context, TabEntry entry) {
     final l10n = AppLocalizations.of(context)!;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => setState(() {
-        if (_checked.contains(entry.key)) {
-          _checked.remove(entry.key);
-        } else {
-          _checked.add(entry.key);
-        }
-      }),
-      child: Tooltip(
-        message: _checked.contains(entry.key)
-            ? l10n.hintDeselect : l10n.hintSelect,
-        child: Checkbox(
-          value: _checked.contains(entry.key),
-          tristate: false,
-          onChanged: null,
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => setState(() {
+          if (_checked.contains(entry.key)) {
+            _checked.remove(entry.key);
+          } else {
+            _checked.add(entry.key);
+          }
+        }),
+        child: Tooltip(
+          message: _checked.contains(entry.key)
+              ? l10n.hintDeselect : l10n.hintSelect,
+          child: Checkbox(
+            value: _checked.contains(entry.key),
+            tristate: false,
+            // onChanged: null disables the checkbox's own tap handling;
+            // taps are handled by the GestureDetector above for a larger hit area.
+            onChanged: null,
+          ),
         ),
       ),
     );
@@ -200,21 +208,22 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
+    bool selectedShowSeconds = timeValue.showSeconds;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
     final existingModes = widget.entries
         .whereType<TimeValue>()
         .where((e) => e.sameZoneAndType(timeValue) &&
-        e.timezoneDisplayMode != timeValue.timezoneDisplayMode)
-        .map((e) => e.timezoneDisplayMode)
+        e.timezoneClockChangeMode != timeValue.timezoneClockChangeMode)
+        .map((e) => e.timezoneClockChangeMode)
         .toSet();
 
     final controller = TextEditingController(
         text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n));
-    var selectedMode = timeValue.timezoneDisplayMode;
+    var selectedMode = timeValue.timezoneClockChangeMode;
 
     final result = await showDialog<
-        ({String? label, TimezoneDisplayMode mode, bool reset})
+      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showSeconds})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -240,7 +249,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       letterSpacing: 1.5,
                     )),
                 const SizedBox(height: 4),
-                RadioGroup<TimezoneDisplayMode>(
+                RadioGroup<TimezoneClockChangeMode>(
                   groupValue: selectedMode,
                   onChanged: (v) {
                     if (v == null || existingModes.contains(v)) return;
@@ -252,60 +261,70 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAuto,
-                          style: existingModes.contains(TimezoneDisplayMode.auto)
+                          style: existingModes.contains(TimezoneClockChangeMode.auto)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.auto,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.auto),
+                        value: TimezoneClockChangeMode.auto,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.auto),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAlwaysOn,
-                          style: existingModes.contains(TimezoneDisplayMode.forceDst)
+                          style: existingModes.contains(TimezoneClockChangeMode.forceDst)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.forceDst,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.forceDst),
+                        value: TimezoneClockChangeMode.forceDst,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.forceDst),
                       ),
                       RadioListTile(
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(l10n.settingsDstAlwaysOff,
-                          style: existingModes.contains(TimezoneDisplayMode.forceStandard)
+                          style: existingModes.contains(TimezoneClockChangeMode.forceStandard)
                               ? TextStyle(color: Theme.of(ctx)
-                              .colorScheme.onSurface.withAlpha(80))
+                                .colorScheme.onSurface.withAlpha(80))
                               : null,
                         ),
-                        value: TimezoneDisplayMode.forceStandard,
-                        enabled: !existingModes.contains(TimezoneDisplayMode.forceStandard),
+                        value: TimezoneClockChangeMode.forceStandard,
+                        enabled: !existingModes.contains(TimezoneClockChangeMode.forceStandard),
                       ),
                     ]
                   )
+                ),
+              ],
+              if (timeValue.valueType == ValueType.sevenSegmentClock) ...[
+                const SizedBox(height: 12),
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  title: Text(l10n.labelShowSeconds),
+                  value: selectedShowSeconds,
+                  onChanged: (v) => setDialogState(() => selectedShowSeconds = v ?? true),
                 ),
               ],
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(
-                  ctx,
-                  (label: null, mode: TimezoneDisplayMode.auto, reset: true)
+              onPressed: () => Navigator.pop(ctx,
+                  (label: null, mode: TimezoneClockChangeMode.auto,
+                  reset: true, showSeconds: true)
               ),
               child: Text(l10n.hintResetToDefaults),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(ctx),
+              onPressed: () => Navigator.pop(ctx),  // null = cancel
               child: Text(l10n.actionCancel),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(
-                  ctx,
-                  (label: controller.text.trim(), mode: selectedMode, reset: false)
+              onPressed: () => Navigator.pop(ctx,
+                  (label: controller.text.trim(), mode: selectedMode,
+                  reset: false, showSeconds: selectedShowSeconds)
               ),
               child: const Text('OK'),
             ),
@@ -320,11 +339,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         result.label!.isEmpty)
         ? null
         : result.label;
-    final newMode = result.reset ? TimezoneDisplayMode.auto : result.mode;
+    final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
+    final newShowSeconds = result.reset ? true : result.showSeconds;
+
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue
         .withCustomLabel(newLabel)
-        .withTimezoneDisplayMode(newMode);
+        .withTimezoneClockChangeMode(newMode)
+        .withShowSeconds(newShowSeconds);
     widget.onEntriesChanged(updated);
   }
 
@@ -547,6 +569,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       AppLocalizations l10n,
       String locale,
       ) {
+    final app = EpochApp.of(context);
     final isGraphical = timeValue.valueType.isGraphical;
     final longitude = EpochApp.of(context).lmstLongitude;
     final localIanaZone = EpochApp.of(context).localIanaZone;
@@ -577,13 +600,43 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         timeValue, widget.now.toUtc(), localIanaZone);
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
+      localIanaZone: localIanaZone,
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
-      localIanaZone: localIanaZone,
-      longitude: longitude,
       showDateDetails: widget.showDateDetails,
+      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      longitude: longitude,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
+
+    final segmentColor = switch (app.themeMode) {
+      AppThemeMode.light  => Colors.black,
+      AppThemeMode.dark   => Colors.white,
+      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
+          ? Colors.white : Colors.black,
+    };
+
+    late final Widget clock;
+    if (isGraphical) {
+      clock = switch (timeValue.valueType) {
+        ValueType.sevenSegmentClock =>
+            SevenSegmentClock(
+              now: zonedNow,
+              l10n: l10n,
+              digitHeight: kGraphicalSegmentClockHeightDefault,
+              showSeconds: timeValue.showSeconds,
+              hourFormat24: app.hourFormat24,
+              color: segmentColor,
+            ),
+        ValueType.binaryClockColumns =>
+            BinaryColumnsClock(now: zonedNow, l10n: l10n),
+        ValueType.binaryClockBcd =>
+            BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+        _ => throw StateError(
+            'Unhandled graphical ValueType: ${timeValue.valueType}'),
+      };
+    };
 
     return Dismissible(
       key: ValueKey(timeValue.key),
@@ -598,15 +651,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto,
+        showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
-            ? GraphicValueContent(
-          clock: timeValue.valueType == ValueType.binaryClockColumns
-              ? BinaryColumnsClock(now: zonedNow, l10n: l10n)
-              : BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
-        )
+            ? GraphicValueContent(clock: clock)
             : TextValueContent(line1: display.line1, line2: display.line2),
         actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
       ),

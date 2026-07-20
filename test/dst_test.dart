@@ -1,3 +1,4 @@
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_utils.dart';
@@ -7,68 +8,68 @@ import 'package:timezone/data/latest.dart' as tz;
 void main() {
   setUpAll(() => tz.initializeTimeZones());
 
-  // ── TimezoneDisplayMode serialization ────────────────────────────────────
+  // ── timezoneClockChangeMode serialization ────────────────────────────────────
 
-  group('TimeValue.timezoneDisplayMode serialization', () {
-    test('default timezoneDisplayMode is auto', () {
+  group('TimeValue.timezoneClockChangeMode serialization', () {
+    test('default timezoneClockChangeMode is auto', () {
       const tv = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
-      expect(tv.timezoneDisplayMode, equals(TimezoneDisplayMode.auto));
+      expect(tv.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
     });
 
-    test('auto timezoneDisplayMode roundtrips without suffix', () {
+    test('auto timezoneClockChangeMode roundtrips without suffix', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:'), isFalse);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneDisplayMode, equals(TimezoneDisplayMode.auto));
+      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
     });
 
     test('forceDst roundtrips correctly', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceDst'), isTrue);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneDisplayMode, equals(TimezoneDisplayMode.forceDst));
+      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceDst));
     });
 
     test('forceStandard roundtrips correctly', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceStandard'), isTrue);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneDisplayMode, equals(TimezoneDisplayMode.forceStandard));
+      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
     });
 
-    test('timezoneDisplayMode roundtrip preserves customLabel', () {
+    test('timezoneClockChangeMode roundtrip preserves customLabel', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
         customLabel: 'My Berlin Time',
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final s = tv.toPrefsString();
       final tv2 = TimeValue.fromPrefsString(s);
       expect(tv2?.customLabel, equals('My Berlin Time'));
-      expect(tv2?.timezoneDisplayMode, equals(TimezoneDisplayMode.forceStandard));
+      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
     });
 
     test('no duplicate dst suffix on repeated serialization', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       final s1 = tv.toPrefsString();
       final tv2 = TimeValue.fromPrefsString(s1)!;
@@ -81,13 +82,13 @@ void main() {
       // Backward compatibility: existing saved entries without dst suffix
       const legacy = 'time/named:Europe/Berlin';
       final tv = TimeValue.fromPrefsString(legacy);
-      expect(tv?.timezoneDisplayMode, equals(TimezoneDisplayMode.auto));
+      expect(tv?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
     });
 
     test('legacy prefs string with customLabel parses as auto', () {
       const legacy = 'time/named:Europe/Berlin|My Label';
       final tv = TimeValue.fromPrefsString(legacy);
-      expect(tv?.timezoneDisplayMode, equals(TimezoneDisplayMode.auto));
+      expect(tv?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
       expect(tv?.customLabel, equals('My Label'));
     });
   });
@@ -184,9 +185,9 @@ void main() {
     });
   });
 
-  // ── TimeValueFormatter with timezoneDisplayMode ──────────────────────────────────────
+  // ── TimeValueFormatter with timezoneClockChangeMode ──────────────────────────────────────
 
-  group('TimeValueFormatter.format with timezoneDisplayMode', () {
+  group('TimeValueFormatter.format with timezoneClockChangeMode', () {
     // June = DST active in Berlin (CEST = UTC+2)
     final summerUtc = DateTime.utc(2026, 6, 15, 12, 0, 0);
     // January = standard time in Berlin (CET = UTC+1)
@@ -196,7 +197,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('CEST'));
@@ -206,7 +207,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('CET'));
@@ -216,7 +217,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('CET'));
@@ -227,7 +228,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('CEST'));
@@ -238,7 +239,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('UTC+01:00'));
@@ -248,7 +249,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('UTC+02:00'));
@@ -258,12 +259,12 @@ void main() {
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       const tvStd = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final autoResult = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
       final stdResult = TimeValueFormatter.format(tvStd, summerUtc, 'en');
@@ -276,12 +277,12 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Asia/Tokyo'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Asia/Tokyo'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       final forced = TimeValueFormatter.format(tv, summerUtc, 'en');
       final auto = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
@@ -292,45 +293,47 @@ void main() {
       const tvAuto = TimeValue(
         valueType: ValueType.daySecond,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       const tvStd = TimeValue(
         valueType: ValueType.daySecond,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
-      final autoVal = int.parse(
-          TimeValueFormatter.format(tvAuto, summerUtc, 'en',
-              thousandsSep: false));
-      final stdVal = int.parse(
-          TimeValueFormatter.format(tvStd, summerUtc, 'en',
-              thousandsSep: false));
+      final autoValFormatted = TimeValueFormatter.format(tvAuto, summerUtc,
+          'en', thousandsSep: false);
+      var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
+      final autoVal = int.parse(splitAutoVal.line1);
+      final stdValFormatted = TimeValueFormatter.format(tvStd, summerUtc,
+          'en', thousandsSep: false);
+      var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
+      final stdVal = int.parse(splitStdVal.line1);
       expect(autoVal - stdVal, equals(3600));
     });
   });
 
   // ── withDstMode ──────────────────────────────────────────────────────────
 
-  group('TimeValue.timezoneDisplayMode', () {
-    test('creates new instance with updated timezoneDisplayMode', () {
+  group('TimeValue.timezoneClockChangeMode', () {
+    test('creates new instance with updated timezoneClockChangeMode', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
-      final tv2 = tv.withTimezoneDisplayMode(TimezoneDisplayMode.forceStandard);
-      expect(tv2.timezoneDisplayMode, equals(TimezoneDisplayMode.forceStandard));
+      final tv2 = tv.withTimezoneClockChangeMode(TimezoneClockChangeMode.forceStandard);
+      expect(tv2.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
       expect(tv2.valueType, equals(tv.valueType));
       expect(tv2.zone, equals(tv.zone));
       expect(tv2.customLabel, equals(tv.customLabel));
     });
 
-    test('key changes when timezoneDisplayMode changes', () {
+    test('key changes when timezoneClockChangeMode changes', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final tv2 = tv.withTimezoneDisplayMode(TimezoneDisplayMode.forceStandard);
+      final tv2 = tv.withTimezoneClockChangeMode(TimezoneClockChangeMode.forceStandard);
       expect(tv2.key, isNot(equals(tv.key)));
       expect(tv2.key, equals('time/named:Europe/Berlin/std'));
     });
@@ -339,7 +342,7 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       expect(tv.key, equals('time/named:Europe/Berlin/dst'));
     });
@@ -348,26 +351,26 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       expect(tv.key, equals('time/named:Europe/Berlin/std'));
     });
 
-    test('sameZoneAndType is true regardless of timezoneDisplayMode', () {
+    test('sameZoneAndType is true regardless of timezoneClockChangeMode', () {
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.auto,
+        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
       const tvDst = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceDst,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
       );
       const tvStd = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneDisplayMode: TimezoneDisplayMode.forceStandard,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       expect(tvAuto.sameZoneAndType(tvDst), isTrue);
       expect(tvAuto.sameZoneAndType(tvStd), isTrue);

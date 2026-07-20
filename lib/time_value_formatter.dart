@@ -84,9 +84,9 @@ class TimeValueFormatter {
         offset = now.timeZoneOffset;
       case ZoneNamed(ianaZone: final zone):
         final tzDt = TimeUtils.inZone(utcNow, zone);
-        if (timeValue.timezoneDisplayMode != TimezoneDisplayMode.auto) {
+        if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
           final info = TimeUtils.daylightOrStandardOffset(
-              zone, timeValue.timezoneDisplayMode == TimezoneDisplayMode.forceDst);
+              zone, timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.forceDst);
           if (info != null) {
             tzLabel = info.abbreviation;
             offset = info.offset;
@@ -120,17 +120,22 @@ class TimeValueFormatter {
         }
         return '$dateStr $hh:$mm:$ss $tzSuffix';
       case ValueType.daySecond:
-        final v = TimeUtils.daySecond(dt);
-        return thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(v)
-            : v.toString();
+        final value = TimeUtils.daySecond(dt);
+        String formattedValue = thousandsSep
+            ? NumberFormat.decimalPattern(locale).format(value)
+            : value.toString();
+        formattedValue += ' $tzSuffix';
+        return formattedValue;
       case ValueType.dayPercent:
-        return formatDecimal(
+        String formattedValue = formatDecimal(
             TimeUtils.dayPercent(dt), locale, 3,
             thousandsSep: false); // percent never needs thousands sep
+        formattedValue += ' $tzSuffix';
+        return formattedValue;
       // Curiosities
       case ValueType.binaryClockString:
         return TimeUtils.binaryTimeString(dt);
+      case ValueType.sevenSegmentClock:
       case ValueType.binaryClockColumns:
       case ValueType.binaryClockBcd:
       default:

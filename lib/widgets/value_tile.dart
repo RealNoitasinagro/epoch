@@ -10,11 +10,11 @@ class ValueTile extends StatelessWidget {
   final Widget content;      // text field or graphical clock
   final List<Widget?> actionSlots; // always 3 slots
   static const double textTileHeight    = 88.0;
-  static const double graphicTileHeight = 200.0; // fits 6 bit rows
+  static const double graphicTileHeight = 222.0; // fits 6 bit rows
   final double? height; // null = textTileHeight
   final bool showZoneIndicator;
   final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
-  final bool showPinnedIndicator;  // timezoneDisplayMode != auto
+  final bool showPinnedIndicator;  // timezoneClockChangeMode != auto
 
   const ValueTile({
     super.key,
@@ -38,7 +38,7 @@ class ValueTile extends StatelessWidget {
       height: height ?? textTileHeight,
       decoration: BoxDecoration(
         color: tileBackground,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       padding: const EdgeInsets.fromLTRB(
           kTabHorizontalPadding, kTabVerticalPadding,
@@ -103,11 +103,13 @@ class ValueTile extends StatelessWidget {
 class TextValueContent extends StatelessWidget {
   final String line1;
   final String line2;
+  final VoidCallback? onDoubleTap;
 
   const TextValueContent({
     super.key,
     required this.line1,
     this.line2 = '',
+    this.onDoubleTap,
   });
 
   @override
@@ -115,12 +117,12 @@ class TextValueContent extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    final container = Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: colorScheme.onSurface.withAlpha(30),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,28 +154,43 @@ class TextValueContent extends StatelessWidget {
         ],
       ),
     );
+    if (onDoubleTap == null) return container;
+    return GestureDetector(
+      onDoubleTap: onDoubleTap,
+      child: container,
+    );
   }
 }
 
 class GraphicValueContent extends StatelessWidget {
   final Widget clock;
+  final VoidCallback? onDoubleTap;
 
-  const GraphicValueContent({super.key, required this.clock});
+  const GraphicValueContent({
+    super.key,
+    required this.clock,
+    this.onDoubleTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final container = Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface.withAlpha(30),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       child: FittedBox(
         alignment: Alignment.centerLeft,
         fit: BoxFit.scaleDown,
         child: clock,
       ),
+    );
+    if (onDoubleTap == null) return container;
+    return GestureDetector(
+      onDoubleTap: onDoubleTap,
+      child: container,
     );
   }
 }
