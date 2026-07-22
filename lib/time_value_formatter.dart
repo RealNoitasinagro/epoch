@@ -98,10 +98,6 @@ class TimeValueFormatter {
         tzLabel = tzDt.timeZone.abbreviation;
         offset = tzDt.timeZoneOffset;
     }
-
-    final hh = dt.hour.toString().padLeft(2, '0');
-    final mm = dt.minute.toString().padLeft(2, '0');
-    final ss = dt.second.toString().padLeft(2, '0');
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
     switch (timeValue.valueType) {
@@ -109,16 +105,9 @@ class TimeValueFormatter {
       case ValueType.date:
         return formatDate(locale, dt);
       case ValueType.time:
-        if (!hourFormat24) {
-          return formatTime12h(dt.hour, mm, ss, tzSuffix);
-        }
-        return '$hh:$mm:$ss $tzSuffix';
+        return formatTime(hourFormat24, dt.hour, dt.minute, dt.second, tzSuffix);
       case ValueType.dateTime:
-        final dateStr = formatDate(locale, dt);
-        if (!hourFormat24) {
-          return '$dateStr ${formatTime12h(dt.hour, mm, ss, tzSuffix)}';
-        }
-        return '$dateStr $hh:$mm:$ss $tzSuffix';
+        return formatDateTime(hourFormat24, locale, dt, tzSuffix);
       case ValueType.daySecond:
         final value = TimeUtils.daySecond(dt);
         String formattedValue = thousandsSep
@@ -169,16 +158,23 @@ class TimeValueFormatter {
   static String formatDate(String locale, DateTime dt) =>
       DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
 
-  /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
-  static String formatTime12h(int hh, String mm, String ss, String? tzSuffix) {
-    final hour12 = hh % 12 == 0 ? 12 : hh % 12;
-    final period = hh < 12 ? 'AM' : 'PM';
-    final h12 = hour12.toString().padLeft(2, '0');
-    String timeFormat12h = '$h12:$mm:$ss $period';
-    if (tzSuffix != null) {
-      timeFormat12h = '$timeFormat12h $tzSuffix';
-    }
-    return timeFormat12h;
+  static String formatTime(bool hourFormat24, int hour, int minute, int second, String? tzSuffix) {
+    final period = hour < 12 ? 'AM' : 'PM';
+    hour = !hourFormat24 ? hour % 12 == 0 ? 12 : hour % 12 : hour;
+    final hh = hour.toString().padLeft(2, '0');
+    final mm = minute.toString().padLeft(2, '0');
+    final ss = second.toString().padLeft(2, '0');
+    String timeFormat = '$hh:$mm:$ss';
+    if (!hourFormat24) timeFormat += ' $period';
+    if (tzSuffix != null) timeFormat += ' $tzSuffix';
+    return timeFormat;
+  }
+
+  static String formatDateTime(bool hourFormat24, String locale, DateTime dt,
+      String? tzSuffix) {
+    String formattedDate = formatDate(locale, dt);
+    String formattedTime = formatTime(hourFormat24, dt.hour, dt.minute, dt.second, tzSuffix);
+    return "$formattedDate $formattedTime";
   }
 
   /// Returns a double formatted to a given number of decimal digits.

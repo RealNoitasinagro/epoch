@@ -1,8 +1,11 @@
+import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 import '../models/time_value.dart';
 import '../screens/focus_screen.dart';
+import '../time_utils.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;
@@ -17,6 +20,12 @@ abstract class TimeValueRow extends StatelessWidget {
   });
 
   void showInfo(BuildContext context, AppLocalizations l10n) {
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
     final link = infoLinkOverride ?? timeValue.localizedInfoLink(l10n);
     showDialog(
       context: context,
@@ -40,6 +49,8 @@ abstract class TimeValueRow extends StatelessWidget {
                 ),
               ),
             ],
+            if (ianaZone != null)
+              ..._buildDstTransitionsSection(ianaZone, ctx, l10n),
           ],
         ),
         actions: [
@@ -63,5 +74,67 @@ abstract class TimeValueRow extends StatelessWidget {
         fullscreenDialog: true,
       ),
     );
+  }
+
+  List<Widget> _buildDstTransitionsSection(
+      String ianaZone, BuildContext context, AppLocalizations l10n) {
+    final app = EpochApp.of(context);
+    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return [];
+    final transitions = TimeUtils.nextDstTransitions(
+        ianaZone, DateTime.now().toUtc(), count: 4);
+    if (transitions.isEmpty) return [];
+
+    final textTheme   = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    final locale      = l10n.localeName;
+
+    Widget transitionRow(DateTime utcTime) {
+      final zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
+      final localTime = utcTime.toLocal();  // time in device local time:
+
+      final zonedStr = TimeValueFormatter.formatDateTime(
+          app.hourFormat24, locale, zonedTime, null);
+      final localStr = TimeValueFormatter.formatDateTime(
+          app.hourFormat24, locale, localTime, null);
+      // Only show local time if it differs from zoned time (different day or hour):
+      final showLocal = zonedTime.day != localTime.day ||
+          zonedTime.hour != localTime.hour ||
+          zonedTime.month != localTime.month;
+
+      return Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(zonedStr,
+              style: textTheme.bodySmall?.copyWith(
+                fontFamily: fontFamilyDefault,
+              ),
+            ),
+            if (showLocal)
+              Text(
+                ' ' * 5 + '(= $localStr ${l10n.labelLocal.toLowerCase()})',
+                style: textTheme.bodySmall?.copyWith(
+                  fontFamily: fontFamilyDefault,
+                  color: colorScheme.onSurface.withAlpha(150),
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    return [
+      const SizedBox(height: 16),
+      Text(
+        l10n.labelNextClockChanges,
+        style: textTheme.labelMedium?.copyWith(
+          color: colorScheme.primary,
+          letterSpacing: 1.5,
+        ),
+      ),
+      const SizedBox(height: 6),
+      ...transitions.map(transitionRow),
+    ];
   }
 }

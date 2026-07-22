@@ -122,6 +122,7 @@
   "labelNewLabel": "Label",
   "labelNewSectionName": "Section name",
   "labelNewTabName": "Tab name",
+  "labelNextClockChanges": "Next clock changes",
   "labelSeconds": "SS",
   "labelShowSeconds": "Show seconds",
   "messageAlreadyDisplayed": "This value is already displayed.",

@@ -89,24 +89,26 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.formatTime12h', () {
+  group('TimeValueFormatter.formatTime 12h', () {
+    bool hourFormat24 = false;
+
     test('midnight = 12:00:00 AM', () {
-      expect(TimeValueFormatter.formatTime12h(0, '00', '00', null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, null),
           equals('12:00:00 AM'));
     });
 
     test('noon = 12:00:00 PM', () {
-      expect(TimeValueFormatter.formatTime12h(12, '00', '00', null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, null),
           equals('12:00:00 PM'));
     });
 
     test('13:30:00 = 01:30:00 PM', () {
-      expect(TimeValueFormatter.formatTime12h(13, '30', '00', null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, null),
           equals('01:30:00 PM'));
     });
 
     test('with timezone suffix', () {
-      expect(TimeValueFormatter.formatTime12h(9, '00', '00', 'UTC'),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, 'UTC'),
           equals('09:00:00 AM UTC'));
     });
   });

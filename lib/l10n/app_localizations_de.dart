@@ -315,6 +315,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelNewTabName => 'Tab-Name';
 
   @override
+  String get labelNextClockChanges => 'Nächste Zeitumstellungen';
+
+  @override
   String get labelSeconds => 'Sek';
 
   @override

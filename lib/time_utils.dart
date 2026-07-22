@@ -89,14 +89,23 @@ class TimeUtils {
 
   /// Returns the DateTime of the next clock change for a ianaZone.
   static DateTime? nextDstTransition(String ianaZone, DateTime afterUtc) {
+    return nextDstTransitions(ianaZone, afterUtc, count: 1).firstOrNull;
+  }
+
+  static List<DateTime> nextDstTransitions(String ianaZone,
+      DateTime afterUtc, {int count = 4}) {
     try {
       final loc = tz.getLocation(ianaZone);
       final afterUtcMs = afterUtc.millisecondsSinceEpoch;
-      final idx = loc.transitionAt.indexWhere((t) => t > afterUtcMs);
-      if (idx < 0) return null;
-      return DateTime.fromMillisecondsSinceEpoch(
-          loc.transitionAt[idx], isUtc: true);
-    } catch (_) { return null; }
+      final result = <DateTime>[];
+      for (final t in loc.transitionAt) {
+        if (t > afterUtcMs) {
+          result.add(DateTime.fromMillisecondsSinceEpoch(t, isUtc: true));
+          if (result.length >= count) break;
+        }
+      }
+      return result;
+    } catch (_) { return []; }
   }
 
   /// Day second (seconds since midnight) for a DateTime.
@@ -245,12 +254,7 @@ class TimeUtils {
   /// Returns the current Doomsday Clock time as of Jan 2026.
   /// Last check for accuracy of hardcoded values: 2026-05-20.
   static String doomsDayClockString(bool hourFormat24) {
-    int hh = 23;
-    int mm = 58;
-    int ss = 35;
-
-    return !hourFormat24
-        ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
-        : '$hh:$mm:$ss';
+    int hh = 23; int mm = 58; int ss = 35;
+    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, null);
   }
 }

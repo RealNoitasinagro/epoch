@@ -312,6 +312,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNewTabName => 'Tab name';
 
   @override
+  String get labelNextClockChanges => 'Next clock changes';
+
+  @override
   String get labelSeconds => 'SS';
 
   @override

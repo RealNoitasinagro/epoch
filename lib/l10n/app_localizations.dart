@@ -596,6 +596,12 @@ abstract class AppLocalizations {
   /// **'Tab name'**
   String get labelNewTabName;
 
+  /// No description provided for @labelNextClockChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Next clock changes'**
+  String get labelNextClockChanges;
+
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
