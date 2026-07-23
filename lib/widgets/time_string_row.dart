@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
+import '../models/timezone_abbr_localization.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
@@ -127,8 +128,10 @@ class TimeStringRow extends TimeValueRow {
     final daysUntil = nextDate.difference(nowDate).inDays;
     if (daysUntil > 7) return null;
 
-    final abbreviations = TimeUtils.dstTransitionAbbreviations(ianaZone, next);
-    final arrow = '${abbreviations.before} → ${abbreviations.after}';
+    final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, next);
+    final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
+    final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+    final arrow = '$before → $after';
 
     if (daysUntil == 0) return '$arrow ${l10n.labelDstChangeToday}';
     if (daysUntil == 1) return '$arrow ${l10n.labelDstChangeTomorrow}';

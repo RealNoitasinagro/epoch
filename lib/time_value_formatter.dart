@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'l10n/app_localizations.dart';
 import 'models/time_value.dart';
+import 'models/timezone_abbr_localization.dart';
 import 'time_utils.dart';
 
 class TimeValueFormatter {
@@ -79,7 +80,7 @@ class TimeValueFormatter {
         try {
           final tzLocation = tz.getLocation(localIanaZone);
           final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
-          tzLabel = tzDt.timeZone.abbreviation;
+          tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
         } catch (_) { tzLabel = now.timeZoneName; }
         offset = now.timeZoneOffset;
       case ZoneNamed(ianaZone: final zone):
@@ -88,14 +89,14 @@ class TimeValueFormatter {
           final info = TimeUtils.daylightOrStandardOffset(
               zone, timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.forceDst);
           if (info != null) {
-            tzLabel = info.abbreviation;
+            tzLabel = localizeTimezoneAbbr(info.abbreviation, locale);
             offset = info.offset;
             dt = utcNow.add(offset);
             break;
           }
         }
         dt = tzDt;
-        tzLabel = tzDt.timeZone.abbreviation;
+        tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
         offset = tzDt.timeZoneOffset;
     }
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';

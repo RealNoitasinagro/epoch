@@ -485,11 +485,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsZoneDisplayMode => 'Zeitzonenangabe';
 
   @override
-  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [CEST]';
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [MESZ]';
 
   @override
   String get settingsZoneDisplayModeFull =>
-      'Kürzel + Offset\n  [CEST (UTC+02:00)]';
+      'Kürzel + Offset\n  [MESZ (UTC+02:00)]';
 
   @override
   String get settingsZoneDisplayModeHidden => 'Ausgeblendet';

@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/time_value.dart';
+import '../models/timezone_abbr_localization.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 
@@ -104,13 +105,17 @@ abstract class TimeValueRow extends StatelessWidget {
           zonedTime.month != localTime.month;
 
       final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
-      final arrow = '${abbrs.before} → ${abbrs.after}';
+      final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
+      final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+      final arrow = '$before → $after';
       zonedStr = "$arrow  $zonedStr";
 
       final localAbbrAtTransition = () {
         try {
           final localLoc = tz.getLocation(app.localIanaZone);
-          return tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
+          final abbr = tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
+          final localizedAbbr = localizeTimezoneAbbr(abbr, l10n.localeName);
+          return localizedAbbr;
         } catch (_) {
           return '';
         }
