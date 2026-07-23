@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- display the next four clock changes for configured time values with DST in info
+
 ---
 
 ## [1.3.0] - 2026-07-20

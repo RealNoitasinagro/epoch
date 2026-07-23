@@ -1,5 +1,7 @@
 import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:timezone/src/date_time.dart';
+import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
@@ -89,10 +91,10 @@ abstract class TimeValueRow extends StatelessWidget {
     final locale      = l10n.localeName;
 
     Widget transitionRow(DateTime utcTime) {
-      final zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
-      final localTime = utcTime.toLocal();  // time in device local time:
+      final TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
+      final DateTime localTime = utcTime.toLocal();  // time in device local time
 
-      final zonedStr = TimeValueFormatter.formatDateTime(
+      var zonedStr = TimeValueFormatter.formatDateTime(
           app.hourFormat24, locale, zonedTime, null);
       final localStr = TimeValueFormatter.formatDateTime(
           app.hourFormat24, locale, localTime, null);
@@ -100,6 +102,19 @@ abstract class TimeValueRow extends StatelessWidget {
       final showLocal = zonedTime.day != localTime.day ||
           zonedTime.hour != localTime.hour ||
           zonedTime.month != localTime.month;
+
+      final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
+      final arrow = '${abbrs.before} → ${abbrs.after}';
+      zonedStr = "$arrow  $zonedStr";
+
+      final localAbbrAtTransition = () {
+        try {
+          final localLoc = tz.getLocation(app.localIanaZone);
+          return tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
+        } catch (_) {
+          return '';
+        }
+      }();
 
       return Padding(
         padding: const EdgeInsets.only(top: 4),
@@ -113,7 +128,9 @@ abstract class TimeValueRow extends StatelessWidget {
             ),
             if (showLocal)
               Text(
-                ' ' * 5 + '(= $localStr ${l10n.labelLocal.toLowerCase()})',
+                '(= ${l10n.labelLocal.toLowerCase()}:  ' +
+                    ' ' * (arrow.length - l10n.labelLocal.length - 4) +
+                    '$localStr $localAbbrAtTransition)',
                 style: textTheme.bodySmall?.copyWith(
                   fontFamily: fontFamilyDefault,
                   color: colorScheme.onSurface.withAlpha(150),

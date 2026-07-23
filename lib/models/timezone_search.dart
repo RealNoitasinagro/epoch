@@ -1,7 +1,7 @@
 // Curated timezone database with multilingual search terms.
 // Shared term sets avoid redundancy across entries with the same offset/zone.
 
-// ── Data class ────────────────────────────────────────────────────────────────
+// ── Data class ───────────────────────────────────────────────────────────────
 
 class TzEntry {
   final String ianaZone;

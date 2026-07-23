@@ -102,7 +102,7 @@ build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
 
 function run_flutter_build {
     local _variant=$1
-    local flutter_command="$flutter_active build $_variant --$mode"
+    local flutter_command="$flutter_active build $_variant --$mode --no-pub"
     if [ "$cwd" == "$GH_Epoch" ] ; then  # no build timestamps in $GL_Epoch
         flutter_command="$flutter_command --dart-define=BUILD_TIMESTAMP=$build_timestamp"
     fi
@@ -138,11 +138,21 @@ else
 fi
 echo
 
+echo "# pub get"
+flutter_command="$flutter_active pub get"
+echo "# $flutter_command" | tee -a "$build_all_log"
+if [ ! "$dryRun" -eq "1" ] ; then
+    $flutter_command
+fi
+echo
+
 echo "# analyze"
 if [ ! "$skipAnalyze" -eq "1" ] ; then
-    flutter_command="$flutter_active analyze"
+    flutter_command="$flutter_active analyze --no-pub"
     echo "# $flutter_command" | tee -a "$build_all_log"
-    $flutter_command
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
 else
     echo "Skipped."
 fi
@@ -150,9 +160,11 @@ echo
 
 echo "# test"
 if [ ! "$skipTest" -eq "1" ] ; then
-    flutter_command="$flutter_active test"
+    flutter_command="$flutter_active test --no-pub"
     echo "# $flutter_command" | tee -a "$build_all_log"
-    $flutter_command
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
 else
     echo "Skipped."
 fi
@@ -203,10 +215,12 @@ else
 fi
 echo | tee -a "$build_all_log"
 
-echo "# Listing output files in $apk_output_path..."
-# shellcheck disable=SC2012
-ls -l "$apk_output_path" | tee -a "$build_all_log"
-echo | tee -a "$build_all_log"
+if [[ ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
+    echo "# Listing output files in $apk_output_path..."
+    # shellcheck disable=SC2012
+    ls -l "$apk_output_path" | tee -a "$build_all_log"
+    echo | tee -a "$build_all_log"
+fi
 
 if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
   echo "# Copying output files..."

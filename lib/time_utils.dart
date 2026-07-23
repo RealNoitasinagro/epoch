@@ -92,6 +92,7 @@ class TimeUtils {
     return nextDstTransitions(ianaZone, afterUtc, count: 1).firstOrNull;
   }
 
+  /// Returns a list of DateTime for the next n clock changes for a ianaZone.
   static List<DateTime> nextDstTransitions(String ianaZone,
       DateTime afterUtc, {int count = 4}) {
     try {
@@ -107,6 +108,27 @@ class TimeUtils {
       return result;
     } catch (_) { return []; }
   }
+
+  /// Returns the timezone abbreviations immediately before and after
+  /// a DST transition, e.g. ('CEST', 'CET').
+  static ({String before, String after}) dstTransitionAbbreviations(
+      String ianaZone, DateTime transitionUtc) {
+    try {
+      final loc = tz.getLocation(ianaZone);
+      final before = tz.TZDateTime.from(
+          transitionUtc.subtract(const Duration(hours: 1)), loc)
+          .timeZone.abbreviation;
+      final after = tz.TZDateTime.from(
+          transitionUtc.add(const Duration(hours: 1)), loc)
+          .timeZone.abbreviation;
+      return (before: before, after: after);
+    } catch (_) {
+      return (before: '?', after: '?');
+    }
+  }
+
+
+  // ── Value Type functions ───────────────────────────────────────────────────
 
   /// Day second (seconds since midnight) for a DateTime.
   static int daySecond(DateTime dt) =>

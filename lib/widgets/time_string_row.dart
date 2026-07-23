@@ -1,7 +1,6 @@
 import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -128,13 +127,8 @@ class TimeStringRow extends TimeValueRow {
     final daysUntil = nextDate.difference(nowDate).inDays;
     if (daysUntil > 7) return null;
 
-    // Abbreviations before and after the transition:
-    final loc = tz.getLocation(ianaZone);
-    final abbrBefore = tz.TZDateTime.from(
-        next.subtract(const Duration(hours: 1)), loc).timeZone.abbreviation;
-    final abbrAfter = tz.TZDateTime.from(
-        next.add(const Duration(hours: 1)), loc).timeZone.abbreviation;
-    final arrow = '$abbrBefore → $abbrAfter';
+    final abbreviations = TimeUtils.dstTransitionAbbreviations(ianaZone, next);
+    final arrow = '${abbreviations.before} → ${abbreviations.after}';
 
     if (daysUntil == 0) return '$arrow ${l10n.labelDstChangeToday}';
     if (daysUntil == 1) return '$arrow ${l10n.labelDstChangeTomorrow}';
