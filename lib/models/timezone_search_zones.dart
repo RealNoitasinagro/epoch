@@ -515,7 +515,7 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '-12:00', offsetSummer: '-12:00',
     abbrWinter: 'AoE', abbrSummer: 'AoE',
     terms: [
-      ...['baker island time', 'bit', 'international date line west', 'idlw'],
+      ...['baker island time', 'BIT', 'international date line west', 'IDLW'],
       ...[],
     ],
   ),
@@ -568,9 +568,9 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
   TzEntry(
     ianaZone: 'Australia/Lord_Howe',
     offsetWinter: '+10:30', offsetSummer: '+11:00',
-    abbrWinter: 'LHST', abbrSummer: 'LHDT',
+    abbrWinter: '+1030', abbrSummer: '+11',
     terms: [
-      ...['lord howe standard time', 'lord howe daylight time', 'lord howe time'],
+      ...['lord howe standard time', 'lord howe daylight time', 'lord howe time', 'LHST', 'LHDT'],
       ...['lord-howe-normalzeit', 'lord-howe-sommerzeit'],
     ],
   ),
