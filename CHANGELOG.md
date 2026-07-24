@@ -6,7 +6,7 @@
 - display the next four clock changes for configured time values with DST in info
 
 ### Changed
-- a few common timezone abbreviations (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ) localized for German
+- a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
 
 ---
 
