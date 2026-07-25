@@ -7090,4 +7090,2239 @@ void main() {
       expect(loc.length, equals(1));
     });
   }, skip: skip);
+
+  group('timezone search countries', () {
+    test("Abkhazia", () {
+      var searchTerm = "Abkhazia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Afghanistan", () {
+      var searchTerm = "Afghanistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Åland", () {
+      var searchTerm = "Åland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Albania", () {
+      var searchTerm = "Albania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Algeria", () {
+      var searchTerm = "Algeria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("American Samoa", () {
+      var searchTerm = "American Samoa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Andorra", () {
+      var searchTerm = "Andorra";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Angola", () {
+      var searchTerm = "Angola";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Anguilla", () {
+      var searchTerm = "Anguilla";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Antarctica", () {
+      var searchTerm = "Antarctica";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Antigua and Barbuda", () {
+      var searchTerm = "Antigua and Barbuda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Argentina", () {
+      var searchTerm = "Argentina";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Armenia", () {
+      var searchTerm = "Armenia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Aruba", () {
+      var searchTerm = "Aruba";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Australia", () {
+      var searchTerm = "Australia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Austria", () {
+      var searchTerm = "Austria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Azerbaijan", () {
+      var searchTerm = "Azerbaijan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bahamas", () {
+      var searchTerm = "Bahamas";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+     test("Bahrain", () {
+      var searchTerm = "Bahrain";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bangladesh", () {
+      var searchTerm = "Bangladesh";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Barbados", () {
+      var searchTerm = "Barbados";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belarus", () {
+      var searchTerm = "Belarus";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belgium", () {
+      var searchTerm = "Belgium";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belize", () {
+      var searchTerm = "Belize";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Benin", () {
+      var searchTerm = "Benin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bermuda", () {
+      var searchTerm = "Bermuda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bhutan", () {
+      var searchTerm = "Bhutan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bolivia", () {
+      var searchTerm = "Bolivia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bosnia and Herzegovina", () {
+      var searchTerm = "Bosnia and Herzegovina";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Botswana", () {
+      var searchTerm = "Botswana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brazil", () {
+      var searchTerm = "Brazil";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("British Virgin Islands", () {
+      var searchTerm = "British Virgin Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brunei", () {
+      var searchTerm = "Brunei";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bulgaria", () {
+      var searchTerm = "Bulgaria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Burkina Faso", () {
+      var searchTerm = "Burkina Faso";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Burundi", () {
+      var searchTerm = "Burundi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cambodia", () {
+      var searchTerm = "Cambodia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cameroon", () {
+      var searchTerm = "Cameroon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Canada", () {
+      var searchTerm = "Canada";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cape Verde", () {
+      var searchTerm = "Cape Verde";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cayman Islands", () {
+      var searchTerm = "Cayman Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Central Africa", () {
+      var searchTerm = "Central Africa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Central African Republic", () {
+      var searchTerm = "Central African Republic";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chad", () {
+      var searchTerm = "Chad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Chile", () {
+      var searchTerm = "Chile";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("China", () {
+      var searchTerm = "China";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Christmas Island", () {
+      var searchTerm = "Christmas Island";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cocos Islands", () {
+      var searchTerm = "Cocos Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Colombia", () {
+      var searchTerm = "Colombia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Comoros", () {
+      var searchTerm = "Comoros";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Congo", () {
+      var searchTerm = "Congo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cook Islands", () {
+      var searchTerm = "Cook Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Costa Rica", () {
+      var searchTerm = "Costa Rica";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Croatia", () {
+      var searchTerm = "Croatia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cuba", () {
+      var searchTerm = "Cuba";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Curacao", () {
+      var searchTerm = "Curacao";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Cyprus", () {
+      var searchTerm = "Cyprus";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Czechia", () {
+      var searchTerm = "Czechia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Czech Republic", () {
+      var searchTerm = "Czech Republic";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Denmark", () {
+      var searchTerm = "Denmark";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Djibouti", () {
+      var searchTerm = "Djibouti";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dominica", () {
+      var searchTerm = "Dominica";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dominican Republic", () {
+      var searchTerm = "Dominican Republic";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("East Timor", () {
+      var searchTerm = "East Timor";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ecuador", () {
+      var searchTerm = "Ecuador";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Egypt", () {
+      var searchTerm = "Egypt";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("El Salvador", () {
+      var searchTerm = "El Salvador";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Equatorial Guinea", () {
+      var searchTerm = "Equatorial Guinea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Eritrea", () {
+      var searchTerm = "Eritrea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Estonia", () {
+      var searchTerm = "Estonia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Eswatini", () {
+      var searchTerm = "Eswatini";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ethiopia", () {
+      var searchTerm = "Ethiopia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Falkland Islands", () {
+      var searchTerm = "Falkland Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Faroe Islands", () {
+      var searchTerm = "Faroe Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Federated States of Micronesia", () {
+      var searchTerm = "Federated States of Micronesia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Fiji", () {
+      var searchTerm = "Fiji";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Finland", () {
+      var searchTerm = "Finland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("France", () {
+      var searchTerm = "France";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("French Guiana", () {
+      var searchTerm = "French Guiana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("French Polynesia", () {
+      var searchTerm = "French Polynesia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gabon", () {
+      var searchTerm = "Gabon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gambia", () {
+      var searchTerm = "Gambia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Georgia", () {
+      var searchTerm = "Georgia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Germany", () {
+      var searchTerm = "Germany";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ghana", () {
+      var searchTerm = "Ghana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gibraltar", () {
+      var searchTerm = "Gibraltar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Greece", () {
+      var searchTerm = "Greece";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Greenland", () {
+      var searchTerm = "Greenland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Grenada", () {
+      var searchTerm = "Grenada";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guadeloupe", () {
+      var searchTerm = "Guadeloupe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guam", () {
+      var searchTerm = "Guam";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guatemala", () {
+      var searchTerm = "Guatemala";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guernsey", () {
+      var searchTerm = "Guernsey";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guinea", () {
+      var searchTerm = "Guinea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guinea-Bissau", () {
+      var searchTerm = "Guinea-Bissau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Guyana", () {
+      var searchTerm = "Guyana";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Haiti", () {
+      var searchTerm = "Haiti";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Honduras", () {
+      var searchTerm = "Honduras";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hong Kong", () {
+      var searchTerm = "Hong Kong";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Hungary", () {
+      var searchTerm = "Hungary";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Iceland", () {
+      var searchTerm = "Iceland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("India", () {
+      var searchTerm = "India";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Indonesia", () {
+      var searchTerm = "Indonesia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Iran", () {
+      var searchTerm = "Iran";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Iraq", () {
+      var searchTerm = "Iraq";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ireland", () {
+      var searchTerm = "Ireland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Isle of Man", () {
+      var searchTerm = "Isle of Man";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Israel", () {
+      var searchTerm = "Israel";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Italy", () {
+      var searchTerm = "Italy";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ivory Coast", () {
+      var searchTerm = "Ivory Coast";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jamaica", () {
+      var searchTerm = "Jamaica";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Japan", () {
+      var searchTerm = "Japan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jersey", () {
+      var searchTerm = "Jersey";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jordan", () {
+      var searchTerm = "Jordan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kazakhstan", () {
+      var searchTerm = "Kazakhstan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kenya", () {
+      var searchTerm = "Kenya";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kiribati", () {
+      var searchTerm = "Kiribati";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kosovo", () {
+      var searchTerm = "Kosovo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kuwait", () {
+      var searchTerm = "Kuwait";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kyrgyzstan", () {
+      var searchTerm = "Kyrgyzstan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Laos", () {
+      var searchTerm = "Laos";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Latvia", () {
+      var searchTerm = "Latvia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lebanon", () {
+      var searchTerm = "Lebanon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lesotho", () {
+      var searchTerm = "Lesotho";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Liberia", () {
+      var searchTerm = "Liberia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Libya", () {
+      var searchTerm = "Libya";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Liechtenstein", () {
+      var searchTerm = "Liechtenstein";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lithuania", () {
+      var searchTerm = "Lithuania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Luxembourg", () {
+      var searchTerm = "Luxembourg";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Macao", () {
+      var searchTerm = "Macao";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Macau", () {
+      var searchTerm = "Macau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Madagascar", () {
+      var searchTerm = "Madagascar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malawi", () {
+      var searchTerm = "Malawi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malaysia", () {
+      var searchTerm = "Malaysia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Maldives", () {
+      var searchTerm = "Maldives";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mali", () {
+      var searchTerm = "Mali";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malta", () {
+      var searchTerm = "Malta";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Marshall Islands", () {
+      var searchTerm = "Marshall Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Martinique", () {
+      var searchTerm = "Martinique";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mauritania", () {
+      var searchTerm = "Mauritania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mauritius", () {
+      var searchTerm = "Mauritius";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mayotte", () {
+      var searchTerm = "Mayotte";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mexico", () {
+      var searchTerm = "Mexico";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Micronesia", () {
+      var searchTerm = "Micronesia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Moldova", () {
+      var searchTerm = "Moldova";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Monaco", () {
+      var searchTerm = "Monaco";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mongolia", () {
+      var searchTerm = "Mongolia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Montenegro", () {
+      var searchTerm = "Montenegro";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Montserrat", () {
+      var searchTerm = "Montserrat";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Morocco", () {
+      var searchTerm = "Morocco";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mozambique", () {
+      var searchTerm = "Mozambique";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Myanmar", () {
+      var searchTerm = "Myanmar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Namibia", () {
+      var searchTerm = "Namibia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nauru", () {
+      var searchTerm = "Nauru";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nepal", () {
+      var searchTerm = "Nepal";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Netherlands", () {
+      var searchTerm = "Netherlands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("New Caledonia", () {
+      var searchTerm = "New Caledonia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("New Zealand", () {
+      var searchTerm = "New Zealand";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nicaragua", () {
+      var searchTerm = "Nicaragua";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Niger", () {
+      var searchTerm = "Niger";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nigeria", () {
+      var searchTerm = "Nigeria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Niue", () {
+      var searchTerm = "Niue";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Norfolk Island", () {
+      var searchTerm = "Norfolk Island";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Northern Cyprus", () {
+      var searchTerm = "Northern Cyprus";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Northern Marianas", () {
+      var searchTerm = "Northern Marianas";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("North Korea", () {
+      var searchTerm = "North Korea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("North Macedonia", () {
+      var searchTerm = "North Macedonia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Norway", () {
+      var searchTerm = "Norway";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Oman", () {
+      var searchTerm = "Oman";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Pakistan", () {
+      var searchTerm = "Pakistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Palau", () {
+      var searchTerm = "Palau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Palestine", () {
+      var searchTerm = "Palestine";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Panama", () {
+      var searchTerm = "Panama";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Papua New Guinea", () {
+      var searchTerm = "Papua New Guinea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Paraguay", () {
+      var searchTerm = "Paraguay";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Peru", () {
+      var searchTerm = "Peru";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Philippines", () {
+      var searchTerm = "Philippines";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Pitcairn Islands", () {
+      var searchTerm = "Pitcairn Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Poland", () {
+      var searchTerm = "Poland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Portugal", () {
+      var searchTerm = "Portugal";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Puerto Rico", () {
+      var searchTerm = "Puerto Rico";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Qatar", () {
+      var searchTerm = "Qatar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Republic of the Congo", () {
+      var searchTerm = "Republic of the Congo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Reunion", () {
+      var searchTerm = "Reunion";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Romania", () {
+      var searchTerm = "Romania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Russia", () {
+      var searchTerm = "Russia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Rwanda", () {
+      var searchTerm = "Rwanda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sahrawi Arab Democratic Republic", () {
+      var searchTerm = "Sahrawi Arab Democratic Republic";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Barthelemy", () {
+      var searchTerm = "Saint Barthelemy";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Helena", () {
+      var searchTerm = "Saint Helena";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Kitts and Nevis", () {
+      var searchTerm = "Saint Kitts and Nevis";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Lucia", () {
+      var searchTerm = "Saint Lucia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Pierre and Miquelon", () {
+      var searchTerm = "Saint Pierre and Miquelon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saint Vincent and the Grenadines", () {
+      var searchTerm = "Saint Vincent and the Grenadines";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Samoa", () {
+      var searchTerm = "Samoa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("San Marino", () {
+      var searchTerm = "San Marino";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sao Tome and Principe", () {
+      var searchTerm = "Sao Tome and Principe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("São Tomé and Príncipe", () {
+      var searchTerm = "São Tomé and Príncipe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saudi Arabia", () {
+      var searchTerm = "Saudi Arabia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Senegal", () {
+      var searchTerm = "Senegal";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Serbia", () {
+      var searchTerm = "Serbia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Seychelles", () {
+      var searchTerm = "Seychelles";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sierra Leone", () {
+      var searchTerm = "Sierra Leone";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Singapore", () {
+      var searchTerm = "Singapore";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sint Maarten", () {
+      var searchTerm = "Sint Maarten";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Slovakia", () {
+      var searchTerm = "Slovakia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Slovenia", () {
+      var searchTerm = "Slovenia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Solomon Islands", () {
+      var searchTerm = "Solomon Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Somalia", () {
+      var searchTerm = "Somalia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Somaliland", () {
+      var searchTerm = "Somaliland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("South Africa", () {
+      var searchTerm = "South Africa";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("South Georgia", () {
+      var searchTerm = "South Georgia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("South Korea", () {
+      var searchTerm = "South Korea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("South Ossetia", () {
+      var searchTerm = "South Ossetia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("South Sudan", () {
+      var searchTerm = "South Sudan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Spain", () {
+      var searchTerm = "Spain";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sri Lanka", () {
+      var searchTerm = "Sri Lanka";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("St. Martin", () {
+      var searchTerm = "St. Martin";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sudan", () {
+      var searchTerm = "Sudan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Suriname", () {
+      var searchTerm = "Suriname";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Svalbard", () {
+      var searchTerm = "Svalbard";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sweden", () {
+      var searchTerm = "Sweden";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Switzerland", () {
+      var searchTerm = "Switzerland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Syria", () {
+      var searchTerm = "Syria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Taiwan", () {
+      var searchTerm = "Taiwan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tajikistan", () {
+      var searchTerm = "Tajikistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tanzania", () {
+      var searchTerm = "Tanzania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Thailand", () {
+      var searchTerm = "Thailand";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Timor-Leste", () {
+      var searchTerm = "Timor-Leste";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Togo", () {
+      var searchTerm = "Togo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tonga", () {
+      var searchTerm = "Tonga";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Transnistria", () {
+      var searchTerm = "Transnistria";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Trinidad and Tobago", () {
+      var searchTerm = "Trinidad and Tobago";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tunisia", () {
+      var searchTerm = "Tunisia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Turkey", () {
+      var searchTerm = "Turkey";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Turkmenistan", () {
+      var searchTerm = "Turkmenistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Turks and Caicos Islands", () {
+      var searchTerm = "Turks and Caicos Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tuvalu", () {
+      var searchTerm = "Tuvalu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Uganda", () {
+      var searchTerm = "Uganda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ukraine", () {
+      var searchTerm = "Ukraine";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("United Arab Emirates", () {
+      var searchTerm = "United Arab Emirates";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("United Kingdom", () {
+      var searchTerm = "United Kingdom";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("United States", () {
+      var searchTerm = "United States";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("United States of America", () {
+      var searchTerm = "United States of America";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Uruguay", () {
+      var searchTerm = "Uruguay";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Uzbekistan", () {
+      var searchTerm = "Uzbekistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vanuatu", () {
+      var searchTerm = "Vanuatu";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vatican", () {
+      var searchTerm = "Vatican";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vatican City", () {
+      var searchTerm = "Vatican City";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Venezuela", () {
+      var searchTerm = "Venezuela";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vietnam", () {
+      var searchTerm = "Vietnam";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Virgin Islands", () {
+      var searchTerm = "Virgin Islands";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Wallis and Futuna", () {
+      var searchTerm = "Wallis and Futuna";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Western Sahara", () {
+      var searchTerm = "Western Sahara";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Yemen", () {
+      var searchTerm = "Yemen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zambia", () {
+      var searchTerm = "Zambia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zimbabwe", () {
+      var searchTerm = "Zimbabwe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    // GERMAN
+    test("Ägypten", () {
+      var searchTerm = "Ägypten";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Albanien", () {
+      var searchTerm = "Albanien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Algerien", () {
+      var searchTerm = "Algerien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Antigua und Barbuda", () {
+      var searchTerm = "Antigua und Barbuda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Äquatorialguinea", () {
+      var searchTerm = "Äquatorialguinea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Argentinien", () {
+      var searchTerm = "Argentinien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Armenien", () {
+      var searchTerm = "Armenien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Aserbaidschan", () {
+      var searchTerm = "Aserbaidschan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Äthiopien", () {
+      var searchTerm = "Äthiopien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Australien", () {
+      var searchTerm = "Australien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bangladesch", () {
+      var searchTerm = "Bangladesch";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Belgien", () {
+      var searchTerm = "Belgien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bolivien", () {
+      var searchTerm = "Bolivien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bosnien und Herzegowina", () {
+      var searchTerm = "Bosnien und Herzegowina";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Brasilien", () {
+      var searchTerm = "Brasilien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Bulgarien", () {
+      var searchTerm = "Bulgarien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("China, Volksrepublik", () {
+      var searchTerm = "China, Volksrepublik";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dänemark", () {
+      var searchTerm = "Dänemark";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Deutschland", () {
+      var searchTerm = "Deutschland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dominikanische Republik", () {
+      var searchTerm = "Dominikanische Republik";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Dschibuti", () {
+      var searchTerm = "Dschibuti";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Elfenbeinküste", () {
+      var searchTerm = "Elfenbeinküste";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Estland", () {
+      var searchTerm = "Estland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Fidschi", () {
+      var searchTerm = "Fidschi";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Finnland", () {
+      var searchTerm = "Finnland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Frankreich", () {
+      var searchTerm = "Frankreich";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Gabun", () {
+      var searchTerm = "Gabun";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Georgien", () {
+      var searchTerm = "Georgien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Griechenland", () {
+      var searchTerm = "Griechenland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Indien", () {
+      var searchTerm = "Indien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Indonesien", () {
+      var searchTerm = "Indonesien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Irak", () {
+      var searchTerm = "Irak";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Irland", () {
+      var searchTerm = "Irland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Island", () {
+      var searchTerm = "Island";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Italien", () {
+      var searchTerm = "Italien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jamaika", () {
+      var searchTerm = "Jamaika";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jemen", () {
+      var searchTerm = "Jemen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Jordanien", () {
+      var searchTerm = "Jordanien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kambodscha", () {
+      var searchTerm = "Kambodscha";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kamerun", () {
+      var searchTerm = "Kamerun";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kanada", () {
+      var searchTerm = "Kanada";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kap Verde", () {
+      var searchTerm = "Kap Verde";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kasachstan", () {
+      var searchTerm = "Kasachstan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Katar", () {
+      var searchTerm = "Katar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kenia", () {
+      var searchTerm = "Kenia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kirgisistan", () {
+      var searchTerm = "Kirgisistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kolumbien", () {
+      var searchTerm = "Kolumbien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Komoren", () {
+      var searchTerm = "Komoren";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kongo", () {
+      var searchTerm = "Kongo";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kroatien", () {
+      var searchTerm = "Kroatien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Kuba", () {
+      var searchTerm = "Kuba";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Lettland", () {
+      var searchTerm = "Lettland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Libanon", () {
+      var searchTerm = "Libanon";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Libyen", () {
+      var searchTerm = "Libyen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Litauen", () {
+      var searchTerm = "Litauen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Luxemburg", () {
+      var searchTerm = "Luxemburg";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Madagaskar", () {
+      var searchTerm = "Madagaskar";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Malediven", () {
+      var searchTerm = "Malediven";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Marokko", () {
+      var searchTerm = "Marokko";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Marshallinseln", () {
+      var searchTerm = "Marshallinseln";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mauretanien", () {
+      var searchTerm = "Mauretanien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mexiko", () {
+      var searchTerm = "Mexiko";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mikronesien", () {
+      var searchTerm = "Mikronesien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Moldau", () {
+      var searchTerm = "Moldau";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mongolei", () {
+      var searchTerm = "Mongolei";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Mosambik", () {
+      var searchTerm = "Mosambik";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Neuseeland", () {
+      var searchTerm = "Neuseeland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Niederlande", () {
+      var searchTerm = "Niederlande";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nordkorea", () {
+      var searchTerm = "Nordkorea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Nordmazedonien", () {
+      var searchTerm = "Nordmazedonien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Norwegen", () {
+      var searchTerm = "Norwegen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Österreich", () {
+      var searchTerm = "Österreich";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Osttimor", () {
+      var searchTerm = "Osttimor";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Palästina", () {
+      var searchTerm = "Palästina";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Papua-Neuguinea", () {
+      var searchTerm = "Papua-Neuguinea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Philippinen", () {
+      var searchTerm = "Philippinen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Polen", () {
+      var searchTerm = "Polen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ruanda", () {
+      var searchTerm = "Ruanda";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Rumänien", () {
+      var searchTerm = "Rumänien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Russland", () {
+      var searchTerm = "Russland";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Salomonen", () {
+      var searchTerm = "Salomonen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Sambia", () {
+      var searchTerm = "Sambia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("São Tomé und Príncipe", () {
+      var searchTerm = "São Tomé und Príncipe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Saudi-Arabien", () {
+      var searchTerm = "Saudi-Arabien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Schweden", () {
+      var searchTerm = "Schweden";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Schweiz", () {
+      var searchTerm = "Schweiz";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Serbien", () {
+      var searchTerm = "Serbien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Seychellen", () {
+      var searchTerm = "Seychellen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Simbabwe", () {
+      var searchTerm = "Simbabwe";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Singapur", () {
+      var searchTerm = "Singapur";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Slowakei", () {
+      var searchTerm = "Slowakei";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Slowenien", () {
+      var searchTerm = "Slowenien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Spanien", () {
+      var searchTerm = "Spanien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("St. Kitts und Nevis", () {
+      var searchTerm = "St. Kitts und Nevis";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("St. Lucia", () {
+      var searchTerm = "St. Lucia";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("St. Vincent und die Grenadinen", () {
+      var searchTerm = "St. Vincent und die Grenadinen";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Südafrika", () {
+      var searchTerm = "Südafrika";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Südkorea", () {
+      var searchTerm = "Südkorea";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Südsudan", () {
+      var searchTerm = "Südsudan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Syrien", () {
+      var searchTerm = "Syrien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tadschikistan", () {
+      var searchTerm = "Tadschikistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tansania", () {
+      var searchTerm = "Tansania";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Trinidad und Tobago", () {
+      var searchTerm = "Trinidad und Tobago";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tschad", () {
+      var searchTerm = "Tschad";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tschechien", () {
+      var searchTerm = "Tschechien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Tunesien", () {
+      var searchTerm = "Tunesien";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Türkei", () {
+      var searchTerm = "Türkei";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Ungarn", () {
+      var searchTerm = "Ungarn";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Usbekistan", () {
+      var searchTerm = "Usbekistan";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vatikanstadt", () {
+      var searchTerm = "Vatikanstadt";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vereinigte Arabische Emirate", () {
+      var searchTerm = "Vereinigte Arabische Emirate";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vereinigtes Königreich", () {
+      var searchTerm = "Vereinigtes Königreich";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Vereinigte Staaten", () {
+      var searchTerm = "Vereinigte Staaten";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zentralafrikanische Republik", () {
+      var searchTerm = "Zentralafrikanische Republik";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+
+    test("Zypern", () {
+      var searchTerm = "Zypern";
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      expect(loc.length, greaterThan(0));
+    });
+  }, skip: true);
 }

@@ -7,6 +7,7 @@
 
 ### Changed
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
+- better timezone search keyword coverage
 
 ---
 
