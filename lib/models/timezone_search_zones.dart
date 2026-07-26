@@ -283,8 +283,8 @@ const List<TzEntry> tzEntries_Americas = [
 const List<TzEntry> tzEntries_Asia = [
   TzEntry(
     ianaZone: 'Asia/Ashgabat',
-    offsetWinter: '+04:00', offsetSummer: '+04:00',
-    abbrWinter: '+04', abbrSummer: '+04',
+    offsetWinter: '+05:00', offsetSummer: '+05:00',
+    abbrWinter: '+05', abbrSummer: '+05',
     terms: [
       ...['turkmenistan time', 'TMT'],
       ...[],
