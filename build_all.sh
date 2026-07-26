@@ -84,8 +84,21 @@ skipCopy=0
 useLogging=1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
-flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
+flutter_active="$HOME/Android/flutter/bin/flutter"  # installed manually via GH clone
 flutter_version=$($flutter_active --version)
+latest_timezone_version=$(curl -s "https://pub.dev/api/packages/timezone" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
+installed_timezone_version=$(dart pub deps --json | jq '.packages[] | select(.name=="timezone") | .version')
+if [ "$cwd" == "$GL_Epoch" ] ; then
+    file_to_check="$PUB_CACHE"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+else
+    file_to_check="$HOME"/.pub-cache/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+fi
+if [ -e "$file_to_check" ] ; then
+    iana_database=$(grep 'Timezone data version' "$file_to_check" | cut -d':' -f 2 | sed -r 's/^\s+//')
+else
+    echo "Could not find $file_to_check -- timezone upgrade needed?"
+    exit 1;
+fi
 
 target_platform_android_arm='app-armeabi-v7a-release.apk'
 target_platform_android_arm64='app-arm64-v8a-release.apk'
@@ -121,8 +134,10 @@ tee "$build_all_log" << EOF
 [$build_timestamp] Building $what... (mode = $mode, dryRun = $dryRun)
 Flutter: $flutter_active
 $flutter_version
+installed timezone: $installed_timezone_version | latest: $latest_timezone_version
+installed IANA database: $iana_database
 Logfile: $build_all_log
-Repo: $cwd
+Workspace: $cwd
 skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
