@@ -9,6 +9,9 @@
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
 - better timezone search keyword coverage
 
+### Fixed
+- custom labels were reset to default labels on repeated edits
+
 ---
 
 ## [1.3.0] - 2026-07-20

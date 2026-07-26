@@ -335,10 +335,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (result == null) return;
     final newLabel = result.reset
         ? null
-        : (result.label == timeValue.localizedDisplayLabel(l10n) ||
-        result.label!.isEmpty)
-        ? null
-        : result.label;
+        : (timeValue.customLabel == null &&
+            result.label == timeValue.localizedDisplayLabel(l10n)
+            ||
+            result.label!.isEmpty)
+            ? null
+            : result.label;
     final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
     final newShowSeconds = result.reset ? true : result.showSeconds;
 
