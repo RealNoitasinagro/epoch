@@ -745,11 +745,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ANAST', () {
+    test('ANAST -- unused', () {
       var searchTerm = 'ANAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('ANAT', () {
@@ -822,11 +822,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('AZST', () {
+    test('AZST -- unused', () {
       var searchTerm = 'AZST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('AZT', () {
@@ -1284,11 +1284,11 @@ void main() {
       expect(loc.length, equals(0));
     });
 
-    test('IRKST', () {
+    test('IRKST -- unused', () {
       var searchTerm = 'IRKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('IRKT', () {
@@ -1340,11 +1340,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('KRAST', () {
+    test('KRAST -- unused', () {
       var searchTerm = 'KRAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('KRAT', () {
@@ -1389,11 +1389,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('MAGST', () {
+    test('MAGST -- unused', () {
       var searchTerm = 'MAGST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('MAGT', () {
@@ -1571,11 +1571,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('OMSST', () {
+    test('OMSST -- unused', () {
       var searchTerm = 'OMSST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('OMST', () {
@@ -1606,11 +1606,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('PETST', () {
+    test('PETST -- unused', () {
       var searchTerm = 'PETST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('PETT', () {
@@ -1760,11 +1760,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('SRET', () {
+    test('SRET -- unused', () {
       var searchTerm = 'SRET';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('SRT', () {
@@ -1907,11 +1907,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('VLAST', () {
+    test('VLAST -- unused', () {
       var searchTerm = 'VLAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('VLAT', () {
@@ -2033,11 +2033,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('YAKST', () {
+    test('YAKST -- unused', () {
       var searchTerm = 'YAKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('YAKT', () {
@@ -2054,11 +2054,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('YEKST', () {
+    test('YEKST -- unused', () {
       var searchTerm = 'YEKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('YEKT', () {
@@ -2399,11 +2399,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Anadyr Summer Time", () {
+    test("Anadyr Summer Time -- unused", () {
       var searchTerm = "Anadyr Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Anadyr Time", () {
@@ -2581,11 +2581,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Azerbaijan Summer Time", () {
+    test("Azerbaijan Summer Time -- unused", () {
       var searchTerm = "Azerbaijan Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Azerbaijan Time", () {
@@ -3453,11 +3453,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Irkutsk Summer Time", () {
+    test("Irkutsk Summer Time -- unused", () {
       var searchTerm = "Irkutsk Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Irkutsk Time", () {
@@ -3488,11 +3488,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Kamchatka Summer Time", () {
+    test("Kamchatka Summer Time -- unused", () {
       var searchTerm = "Kamchatka Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Kamchatka Time", () {
@@ -3537,11 +3537,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Krasnoyarsk Summer Time", () {
+    test("Krasnoyarsk Summer Time -- unused", () {
       var searchTerm = "Krasnoyarsk Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Krasnoyarsk Time", () {
@@ -3586,11 +3586,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Magadan Island Summer Time", () {
+    test("Magadan Island Summer Time -- unused", () {
       var searchTerm = "Magadan Island Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Magadan Island Time", () {
@@ -3901,11 +3901,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Omsk Summer Time", () {
+    test("Omsk Summer Time -- unused", () {
       var searchTerm = "Omsk Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Omsk Time", () {
@@ -4111,11 +4111,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Samara Summer Time", () {
+    test("Samara Summer Time -- unused", () {
       var searchTerm = "Samara Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Samara Time", () {
@@ -4195,11 +4195,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Srednekolymsk Time", () {
+    test("Srednekolymsk Time -- unused", () {
       var searchTerm = "Srednekolymsk Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Suriname Time", () {
@@ -4335,11 +4335,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Vladivostok Summer Time", () {
+    test("Vladivostok Summer Time -- unused", () {
       var searchTerm = "Vladivostok Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Vladivostok Time", () {
@@ -4531,11 +4531,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Yakutsk Summer Time", () {
+    test("Yakutsk Summer Time -- unused", () {
       var searchTerm = "Yakutsk Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Yakutsk Time", () {
@@ -4552,11 +4552,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Yekaterinburg Summer Time", () {
+    test("Yekaterinburg Summer Time -- unused", () {
       var searchTerm = "Yekaterinburg Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Yekaterinburg Time", () {

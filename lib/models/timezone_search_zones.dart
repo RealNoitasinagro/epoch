@@ -170,8 +170,10 @@ const List<TzEntry> tzEntries_Americas = [
     abbrWinter: 'AST', abbrSummer: 'ADT',
     terms: [
       ...['atlantic time', 'atlantic standard time', 'atlantic daylight time',
-        'atlantic daylight saving time', 'atlantic summer time', 'AT'],
-      ...['atlantik-zeit', 'atlantik-normalzeit', 'atlantik-sommerzeit'],
+        'atlantic daylight saving time', 'atlantic summer time', 'AT',
+        'canada east', 'nova scotia', 'new brunswick'],
+      ...['atlantik-zeit', 'atlantik-normalzeit', 'atlantik-sommerzeit',
+        'kanada ost', 'neubraunschweig'],
     ],
   ),
   TzEntry(
@@ -250,8 +252,10 @@ const List<TzEntry> tzEntries_Americas = [
     abbrWinter: 'NST', abbrSummer: 'NDT',
     terms: [
       ...['newfoundland standard time', 'newfoundland daylight time',
-        "saint john's", "st. john's"],
-      ...['neufundland-normalzeit', 'neufundland-sommerzeit'],
+        "saint john's", "st. john's", 'canada east',
+        'newfoundland and labrador'],
+      ...['neufundland-normalzeit', 'neufundland-sommerzeit', 'kanada east',
+        'neufundland und labrador'],
     ],
   ),
   TzEntry(
@@ -259,8 +263,9 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-05:00', offsetSummer: '-04:00',
     abbrWinter: 'EST', abbrSummer: 'EDT',
     terms: [...tEST_EDT,
-      ...['canada east', 'montreal', 'ottawa', 'nassau', 'nipigon', 'thunder_bay'],
-      ...['kanada ost', ],
+      ...['canada east', 'ontario', 'montreal', 'ottawa', 'nassau', 'nipigon',
+        'thunder bay'],
+      ...['kanada ost'],
     ],
   ),
   TzEntry(
@@ -268,7 +273,7 @@ const List<TzEntry> tzEntries_Americas = [
     offsetWinter: '-08:00', offsetSummer: '-07:00',
     abbrWinter: 'PST', abbrSummer: 'PDT',
     terms: [...tPST_PDT,
-      ...['canada west'],
+      ...['canada west', 'british columbia'],
       ...['kanada west'],
     ],
   ),
@@ -276,6 +281,15 @@ const List<TzEntry> tzEntries_Americas = [
 
 // ── Asia ─────────────────────────────────────────────────────────────
 const List<TzEntry> tzEntries_Asia = [
+  TzEntry(
+    ianaZone: 'Asia/Ashgabat',
+    offsetWinter: '+04:00', offsetSummer: '+04:00',
+    abbrWinter: '+04', abbrSummer: '+04',
+    terms: [
+      ...['turkmenistan time', 'TMT'],
+      ...[],
+    ],
+  ),
   TzEntry(
     ianaZone: 'Asia/Baghdad',
     offsetWinter: '+03:00', offsetSummer: '+03:00',
@@ -289,6 +303,15 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Baku',
+    offsetWinter: '+04:00', offsetSummer: '+04:00',
+    abbrWinter: '+04', abbrSummer: '+04',
+    terms: [
+      ...['azerbaijan time', 'AZT'],
+      ...['aserbaidschan'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Bangkok',
     offsetWinter: '+07:00', offsetSummer: '+07:00',
     abbrWinter: '+07', abbrSummer: '+07',
@@ -298,6 +321,15 @@ const List<TzEntry> tzEntries_Asia = [
         'vietnam', 'dong nai', 'hanoi', 'ho chi minh city', 'saigon',
         'laos', 'vientiane'],
       ...['indochina-zeit', 'kambodscha', 'ho-chi-minh-stadt'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Bishkek',
+    offsetWinter: '+06:00', offsetSummer: '+06:00',
+    abbrWinter: '+06', abbrSummer: '+06',
+    terms: [
+      ...['kyrgyzstan time', 'KGT'],
+      ...['kirgisistan', 'kirgistan', 'kirgisien'],
     ],
   ),
   TzEntry(
@@ -329,12 +361,30 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Dushanbe',
+    offsetWinter: '+05:00', offsetSummer: '+05:00',
+    abbrWinter: '+05', abbrSummer: '+05',
+    terms: [
+      ...['tajikistan time', 'TJT'],
+      ...['tadschikistan'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Hong_Kong',
     offsetWinter: '+08:00', offsetSummer: '+08:00',
     abbrWinter: 'HKT', abbrSummer: 'HKT',
     terms: [
       ...['hong kong standard time' ,'hong kong time'],
       ...['hongkong-normalzeit', 'hongkong-zeit'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Irkutsk',
+    offsetWinter: '+08:00', offsetSummer: '+08:00',
+    abbrWinter: '+08', abbrSummer: '+08',
+    terms: [
+      ...['russia', 'irkutsk time', 'IRKT'],
+      ...['russland'],
     ],
   ),
   TzEntry(
@@ -367,6 +417,15 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Kamchatka',
+    offsetWinter: '+12:00', offsetSummer: '+12:00',
+    abbrWinter: '+12', abbrSummer: '+12',
+    terms: [
+      ...['russia', 'kamchatka time', 'petropavlovsk time', 'PETT', 'anadyr time', 'ANAT'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Karachi',
     offsetWinter: '+05:00', offsetSummer: '+05:00',
     abbrWinter: 'PKT', abbrSummer: 'PKT',
@@ -375,7 +434,7 @@ const List<TzEntry> tzEntries_Asia = [
       ...['pakistanische normalzeit'],
     ],
   ),
-  TzEntry(
+    TzEntry(
     ianaZone: 'Asia/Kathmandu',
     offsetWinter: '+05:45', offsetSummer: '+05:45',
     abbrWinter: '+0545', abbrSummer: '+0545',
@@ -395,6 +454,24 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Krasnoyarsk',
+    offsetWinter: '+07:00', offsetSummer: '+07:00',
+    abbrWinter: '+07', abbrSummer: '+07',
+    terms: [
+      ...['russia', 'krasnoyarsk time', 'KRAT'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Magadan',
+    offsetWinter: '+11:00', offsetSummer: '+11:00',
+    abbrWinter: '+11', abbrSummer: '+11',
+    terms: [
+      ...['russia', 'magadan time', 'MAGT', 'sakhalin time', 'SAKT'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Manila',
     offsetWinter: '+08:00', offsetSummer: '+08:00',
     abbrWinter: 'PST', abbrSummer: 'PST',
@@ -410,6 +487,25 @@ const List<TzEntry> tzEntries_Asia = [
     terms: [...tEET_EEST,
       ...['cyprus'],
       ...['zypern'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Omsk',
+    offsetWinter: '+06:00', offsetSummer: '+06:00',
+    abbrWinter: '+06', abbrSummer: '+06',
+    terms: [
+      ...['russia', 'omsk time', 'OMST'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Oral',
+    offsetWinter: '+05:00', offsetSummer: '+05:00',
+    abbrWinter: '+05', abbrSummer: '+05',
+    terms: [
+      ...['oral time', 'kazakhstan', 'ORAT', 'astana',
+        'qyzylorda time', 'QYZT'],
+      ...['kasachstan'],
     ],
   ),
   TzEntry(
@@ -459,6 +555,24 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Tashkent',
+    offsetWinter: '+05:00', offsetSummer: '+05:00',
+    abbrWinter: '+05', abbrSummer: '+05',
+    terms: [
+      ...['uzbekistan time', 'UZT', 'samarkand'],
+      ...['usbekistan'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Tbilisi',
+    offsetWinter: '+04:00', offsetSummer: '+04:00',
+    abbrWinter: '+04', abbrSummer: '+04',
+    terms: [
+      ...['georgia time', 'GET'],
+      ...['georgien'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Tehran',
     offsetWinter: '+03:30', offsetSummer: '+03:30',
     abbrWinter: '+0330', abbrSummer: '+0330',
@@ -477,12 +591,39 @@ const List<TzEntry> tzEntries_Asia = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Asia/Vladivostok',
+    offsetWinter: '+10:00', offsetSummer: '+10:00',
+    abbrWinter: '+10', abbrSummer: '+10',
+    terms: [
+      ...['russia', 'vladivostok time', 'VLAT'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Yakutsk',
+    offsetWinter: '+09:00', offsetSummer: '+09:00',
+    abbrWinter: '+09', abbrSummer: '+09',
+    terms: [
+      ...['russia', 'yakutsk time', 'YAKT'],
+      ...['russland'],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Asia/Yangon',
     offsetWinter: '+06:30', offsetSummer: '+06:30',
     abbrWinter: '+0630', abbrSummer: '+0630',
     terms: [
       ...['myanmar standard time', 'myanmar time', 'MMT', 'burma standard time', 'rangoon'],
       ...['myanmar-zeit', 'birmanische zeit', 'rangun'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Asia/Yekaterinburg',
+    offsetWinter: '+05:00', offsetSummer: '+05:00',
+    abbrWinter: '+05', abbrSummer: '+05',
+    terms: [
+      ...['russia', 'yekaterinburg time', 'YEKT', 'ekaterinburg', 'sverdlovsk'],
+      ...['russland', 'jekaterinburg'],
     ],
   ),
 ];
@@ -968,6 +1109,15 @@ const List<TzEntry> tzEntries_Europe = [
     terms: [...tCET_CEST,
       ...['italy', 'italia', 'mailand', 'milan', 'milano', 'naples', 'san marino', 'vatican'],
       ...['italien', 'rom', 'neapel', 'vatikan'],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Europe/Samara',
+    offsetWinter: '+04:00', offsetSummer: '+04:00',
+    abbrWinter: '+04', abbrSummer: '+04',
+    terms: [
+      ...['russia', 'samara time', 'SAMT'],
+      ...['russland'],
     ],
   ),
   TzEntry(
