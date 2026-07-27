@@ -10,7 +10,7 @@ cwd=$(pwd)
 
 case "$cwd" in
     "$GH_Epoch")
-        unset PUB_CACHE  # just in case...
+        unset PUB_CACHE  # just in case... default: $HOME/.pub-cache
     ;;
     "$GL_Epoch")
         export PUB_CACHE="$GL_Epoch"/.pub-cache
@@ -85,21 +85,6 @@ useLogging=1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
 flutter_active="$HOME/Android/flutter/bin/flutter"  # installed manually via GH clone
-flutter_version=$($flutter_active --version)
-latest_timezone_version=$(curl -s "https://pub.dev/api/packages/timezone" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
-installed_timezone_version=$(dart pub deps --json | jq '.packages[] | select(.name=="timezone") | .version')
-if [ "$cwd" == "$GL_Epoch" ] ; then
-    file_to_check="$PUB_CACHE"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
-else
-    file_to_check="$HOME"/.pub-cache/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
-fi
-if [ -e "$file_to_check" ] ; then
-    iana_database=$(grep 'Timezone data version' "$file_to_check" | cut -d':' -f 2 | sed -r 's/^\s+//')
-else
-    echo "Could not find $file_to_check -- timezone upgrade needed?"
-    exit 1;
-fi
-
 target_platform_android_arm='app-armeabi-v7a-release.apk'
 target_platform_android_arm64='app-arm64-v8a-release.apk'
 target_platform_android_x86_64='app-x86_64-release.apk'
@@ -113,16 +98,45 @@ build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+flutter_version=$($flutter_active --version)
+installed_timezone_version=$(dart pub deps --json | python3 -c "import json,sys; deps=json.load(sys.stdin); print(next(p['version'] for p in deps['packages'] if p['name']=='timezone'))")
+latest_timezone_version=$(curl -s "https://pub.dev/api/packages/timezone" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
+file_to_check="${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+if [ "$cwd" == "$GL_Epoch" ] ; then
+    repo_status=''
+else
+    repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
+fi
+if [ -e "$file_to_check" ] ; then
+    iana_database=$(grep 'Timezone data version' "$file_to_check" | cut -d':' -f 2 | sed -r 's/^\s+//')
+else
+    echo "Could not find $file_to_check -- timezone package upgrade needed!"
+    echo "(installed: $installed_timezone_version, latest: $latest_timezone_version)"
+    exit 1;
+fi
+
+
 function run_flutter_build {
     local _variant=$1
-    local flutter_command="$flutter_active build $_variant --$mode --no-pub"
-    if [ "$cwd" == "$GH_Epoch" ] ; then  # no build timestamps in $GL_Epoch
-        flutter_command="$flutter_command --dart-define=BUILD_TIMESTAMP=$build_timestamp"
+    local flutter_command_build=(
+      "$flutter_active"
+      build
+      "$_variant"
+      --"$mode"
+      --no-pub
+    )
+
+    if [ "$cwd" == "$GL_Epoch" ] ; then
+        build_info=$(printf '%s | %s' "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        # flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")  # would require metadata update + MR
+    elif [ "$cwd" == "$GH_Epoch" ] ; then
+        build_info=$(printf '%s | %s | %s | %s' "Build: $build_timestamp" "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")
     fi
 
-    echo "# $flutter_command" | tee -a "$build_all_log"
+    echo '#' "${flutter_command_build[@]}" | tee -a "$build_all_log"
     if [ ! "$dryRun" -eq "1" ] ; then
-        $flutter_command
+        "${flutter_command_build[@]}"
     fi
 }
 
@@ -134,10 +148,10 @@ tee "$build_all_log" << EOF
 [$build_timestamp] Building $what... (mode = $mode, dryRun = $dryRun)
 Flutter: $flutter_active
 $flutter_version
-installed timezone: $installed_timezone_version | latest: $latest_timezone_version
-installed IANA database: $iana_database
+Installed timezone: $installed_timezone_version | latest: $latest_timezone_version
+Installed IANA database: $iana_database
 Logfile: $build_all_log
-Workspace: $cwd
+Workspace: $cwd | $repo_status
 skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 

@@ -525,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (ctx) => AlertDialog(
         title: const Text('Build info'),
         content: Text(
-          kBuildTimestamp,
+          kBuildInfo,
           style: const TextStyle(fontFamily: fontFamilyDefault),
         ),
         actions: [

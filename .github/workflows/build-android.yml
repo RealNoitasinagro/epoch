@@ -48,10 +48,10 @@ jobs:
           EOF
 
       - name: Build APK (universal)
-        run: flutter build apk --release --dart-define=BUILD_TIMESTAMP="CI build"
+        run: flutter build apk --release --dart-define=BUILD_INFO="CI build"
 
       - name: Build APKs (split per ABI)
-        run: flutter build apk --release --split-per-abi --dart-define=BUILD_TIMESTAMP="CI build"
+        run: flutter build apk --release --split-per-abi --dart-define=BUILD_INFO="CI build"
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v7.0.1
