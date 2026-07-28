@@ -1309,7 +1309,10 @@ void main() {
       var searchTerm = 'IST';  // This should not match Istanbul.
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(3));
+      expect(loc.any((tzE) => tzE.ianaZone == 'Asia/Jerusalem'), isTrue); // israel standard time
+      expect(loc.any((tzE) => tzE.ianaZone == 'Asia/Kolkata'), isTrue);   // india standard time
+      expect(loc.any((tzE) => tzE.ianaZone == 'Europe/Dublin'), isTrue);  // irish standard time
       expect(loc.any((tzE) => tzE.ianaZone == 'Europe/Istanbul'), isFalse);
 
       searchTerm = 'ist';  // This should match Istanbul.
@@ -1949,11 +1952,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('WAST', () {
+    test('WAST -- unused', () {
       var searchTerm = 'WAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('WAT', () {
@@ -4391,11 +4394,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("West Africa Summer Time", () {
+    test("West Africa Summer Time -- unused", () {
       var searchTerm = "West Africa Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("West Africa Time", () {

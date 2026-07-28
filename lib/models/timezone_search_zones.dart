@@ -229,7 +229,7 @@ const List<TzEntry> tzEntries_Americas = [
     terms: [
       ...['san juan', 'anguilla', 'antigua', 'aruba', 'blanc-sablon', 'curacao', 'dominica', 'grenada',
         'guadeloupe', 'kralendijk', 'lower princes', 'marigot', 'montserrat', 'port of spain',
-        'saint barthelemy', 'saint barthélemy' 'saint christopher', 'saint kitts', 'saint lucia',
+        'saint barthelemy', 'saint barthélemy', 'saint christopher', 'saint kitts', 'saint lucia',
         'saint thomas', 'st barthelemy', 'st kitts', 'st lucia', 'st thomas', 'st vincent',
         'tortola', 'virgin'],
       ...[],
@@ -317,7 +317,7 @@ const List<TzEntry> tzEntries_Asia = [
     abbrWinter: '+07', abbrSummer: '+07',
     terms: [
       ...['indochina time', 'ICT', 'thailand',
-        'cambodia' 'phnom penh',
+        'cambodia', 'phnom penh',
         'vietnam', 'dong nai', 'hanoi', 'ho chi minh city', 'saigon',
         'laos', 'vientiane'],
       ...['indochina-zeit', 'kambodscha', 'ho-chi-minh-stadt'],
@@ -793,6 +793,24 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Pacific/Efate',
+    offsetWinter: '+11:00', offsetSummer: '+11:00',
+    abbrWinter: '+11', abbrSummer: '+11',
+    terms: [
+      ...['vanuatu time', 'VUT', 'port vila'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Fakaofo',
+    offsetWinter: '+13:00', offsetSummer: '+13:00',
+    abbrWinter: '+13', abbrSummer: '+13',
+    terms: [
+      ...['tokelau time', 'TKT'],
+      ...[],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Pacific/Fiji',
     offsetWinter: '+12:00', offsetSummer: '+12:00',
     abbrWinter: '+12', abbrSummer: '+12',
@@ -806,7 +824,8 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+11:00', offsetSummer: '+11:00',
     abbrWinter: '+11', abbrSummer: '+11',
     terms: [
-      ...['solomon islands time', 'honiara', 'micronesia', 'palikir', 'pohnpei', 'ponape'],
+      ...['solomon islands time', 'SBT', 'honiara', 'micronesia', 'palikir',
+        'pohnpei standard time', 'ponape', 'PONT'],
       ...['salomonen', 'salomoninseln', 'mikronesien'],
     ],
   ),
@@ -829,12 +848,30 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Pacific/Kanton',
+    offsetWinter: '+13:00', offsetSummer: '+13:00',
+    abbrWinter: '+13', abbrSummer: '+13',
+    terms: [
+      ...['phoenix island time', 'PHOT', 'kiribati', 'phoenix islands'],
+      ...[],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Pacific/Kiritimati',
     offsetWinter: '+14:00', offsetSummer: '+14:00',
     abbrWinter: '+14', abbrSummer: '+14',
     terms: [
-      ...['line islands time', 'kiribati', 'LINT'],
+      ...['line islands time', 'LINT', 'kiribati'],
       ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Kosrae',
+    offsetWinter: '+11:00', offsetSummer: '+11:00',
+    abbrWinter: '+11', abbrSummer: '+11',
+    terms: [
+      ...['kosrae time', 'KOST', 'micronesia', 'tofol'],
+      ...['mikronesien'],
     ],
   ),
   TzEntry(
@@ -843,6 +880,15 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     abbrWinter: '-0930', abbrSummer: '-0930',
     terms: [
       ...['marquesas time', 'MART'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Nauru',
+    offsetWinter: '+12:00', offsetSummer: '+12:00',
+    abbrWinter: '+12', abbrSummer: '+12',
+    terms: [
+      ...['nauru time', 'NRT', 'yaren'],
       ...[],
     ],
   ),
@@ -866,12 +912,21 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Pacific/Palau',
+    offsetWinter: '+09:00', offsetSummer: '+09:00',
+    abbrWinter: '+09', abbrSummer: '+09',
+    terms: [
+      ...['palau time', 'PWT', 'ngerulmud'],
+      ...[],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Pacific/Port_Moresby',
     offsetWinter: '+10:00', offsetSummer: '+10:00',
     abbrWinter: '+10', abbrSummer: '+10',
     terms: [
       ...['papua new guinea standard time', 'papua new guinea time', 'PGT',
-        'chuuk', 'truk', 'yap'],
+        'chuuk time', 'CHUT', 'truk', 'yap'],
       ...['papua-neuguinea-zeit'],
     ],
   ),
@@ -889,7 +944,10 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     offsetWinter: '+12:00', offsetSummer: '+12:00',
     abbrWinter: '+12', abbrSummer: '+12',
     terms: [
-      ...['funafuti', 'majuro', 'wake', 'wallis', 'gilbert islands', 'marshall islands' 'kiribati'],
+      ...['funafuti', 'majuro', 'wake', 'wallis',
+        'gilbert island time', 'GILT', 'gilbert islands',
+        'marshall island time', 'MHT', 'marshall islands',
+        'tuvalu time', 'TVT', 'kiribati'],
       ...['gilbertinseln', 'marshallinseln'],
     ],
   ),
@@ -1179,7 +1237,7 @@ const List<TzEntry> tzEntries_Europe = [
     offsetWinter: '+01:00', offsetSummer: '+02:00',
     abbrWinter: 'CET', abbrSummer: 'CEST',
     terms: [...tCET_CEST,
-      ...['switzerland', 'suisse', 'svizzera', 'bern' 'geneva', 'genève',
+      ...['switzerland', 'suisse', 'svizzera', 'bern', 'geneva', 'genève',
         'busingen', 'liechtenstein', 'vaduz'],
       ...['schweiz', 'zürich', 'genf', 'büsingen'],
     ],
