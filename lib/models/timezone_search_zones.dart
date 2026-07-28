@@ -893,12 +893,30 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
     ],
   ),
   TzEntry(
+    ianaZone: 'Pacific/Niue',
+    offsetWinter: '-11:00', offsetSummer: '-11:00',
+    abbrWinter: '-11', abbrSummer: '-11',
+    terms: [
+      ...['niue time', 'NUT', 'alofi'],
+      ...[],
+    ],
+  ),
+  TzEntry(
     ianaZone: 'Pacific/Norfolk',
     offsetWinter: '+11:00', offsetSummer: '+12:00',
     abbrWinter: '+11', abbrSummer: '+12',
     terms: [
       ...['norfolk time', 'norfolk island time',
         'norfolk daylight time', 'norfolk island daylight time', 'NFT', 'NFDT'],
+      ...[],
+    ],
+  ),
+  TzEntry(
+    ianaZone: 'Pacific/Noumea',
+    offsetWinter: '+11:00', offsetSummer: '+11:00',
+    abbrWinter: '+11', abbrSummer: '+11',
+    terms: [
+      ...['new caledonia time', 'NCT', 'nouméa'],
       ...[],
     ],
   ),
@@ -947,7 +965,9 @@ const List<TzEntry> tzEntries_Australia_Pacific = [
       ...['funafuti', 'majuro', 'wake', 'wallis',
         'gilbert island time', 'GILT', 'gilbert islands',
         'marshall island time', 'MHT', 'marshall islands',
-        'tuvalu time', 'TVT', 'kiribati'],
+        'tuvalu time', 'TVT',
+        'wallis and futuna time', 'WFT',
+        'kiribati'],
       ...['gilbertinseln', 'marshallinseln'],
     ],
   ),
