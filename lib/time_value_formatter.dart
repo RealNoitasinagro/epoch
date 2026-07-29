@@ -58,7 +58,10 @@ class TimeValueFormatter {
             thousandsSep: thousandsSep);
       // Curiosities
       case ValueType.swatchBeats:
-        return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
+        final double swatchBeats = TimeUtils.swatchBeats(utcNow);
+        return "@${timeValue.showSeconds
+            ? swatchBeats.toStringAsFixed(2)
+            : swatchBeats.toInt()}";
       case ValueType.doomsdayClock:
         return TimeUtils.doomsDayClockString(hourFormat24);
       default:

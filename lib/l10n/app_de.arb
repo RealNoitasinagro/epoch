@@ -124,6 +124,7 @@
   "labelNewTabName": "Tab-Name",
   "labelNextClockChanges": "Nächste Zeitumstellungen",
   "labelSeconds": "Sek",
+  "labelShowDecimals": "Dezimalstellen anzeigen",
   "labelShowSeconds": "Sekunden anzeigen",
   "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
   "messageCopiedToClipboard": "Kopiert: {label}",

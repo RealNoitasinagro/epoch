@@ -608,6 +608,12 @@ abstract class AppLocalizations {
   /// **'SS'**
   String get labelSeconds;
 
+  /// No description provided for @labelShowDecimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Show decimals'**
+  String get labelShowDecimals;
+
   /// No description provided for @labelShowSeconds.
   ///
   /// In en, this message translates to:

@@ -124,6 +124,7 @@
   "labelNewTabName": "Tab name",
   "labelNextClockChanges": "Next clock changes",
   "labelSeconds": "SS",
+  "labelShowDecimals": "Show decimals",
   "labelShowSeconds": "Show seconds",
   "messageAlreadyDisplayed": "This value is already displayed.",
   "messageCopiedToClipboard": "Copied: {label}",

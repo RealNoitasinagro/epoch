@@ -318,6 +318,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelSeconds => 'SS';
 
   @override
+  String get labelShowDecimals => 'Show decimals';
+
+  @override
   String get labelShowSeconds => 'Show seconds';
 
   @override

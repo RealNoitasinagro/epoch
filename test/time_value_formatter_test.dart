@@ -69,7 +69,8 @@ void main() {
       const tv = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, startsWith('@'));
-      final beats = int.tryParse(result.substring(1));
+      //final beats = int.tryParse(result.substring(1));
+      final beats = double.tryParse(result.substring(1));
       expect(beats, isNotNull);
       expect(beats, greaterThanOrEqualTo(0));
       expect(beats, lessThan(1000));

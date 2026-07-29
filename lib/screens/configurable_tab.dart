@@ -297,12 +297,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   )
                 ),
               ],
-              if (timeValue.valueType.isGraphical) ...[
+              if (timeValue.valueType.isGraphical ||
+                  timeValue.valueType == ValueType.swatchBeats) ...<Widget>[
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
-                  title: Text(l10n.labelShowSeconds),
+                  title: Text(
+                      timeValue.valueType == ValueType.swatchBeats
+                          ? l10n.labelShowDecimals
+                          : l10n.labelShowSeconds
+                  ),
                   value: selectedShowSeconds,
                   onChanged: (v) => setDialogState(() => selectedShowSeconds = v ?? true),
                 ),

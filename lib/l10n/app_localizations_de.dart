@@ -321,6 +321,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelSeconds => 'Sek';
 
   @override
+  String get labelShowDecimals => 'Dezimalstellen anzeigen';
+
+  @override
   String get labelShowSeconds => 'Sekunden anzeigen';
 
   @override
