@@ -14,6 +14,7 @@
 ### Fixed
 - Swatch beats were up to half a .beat off (because of unwanted rounding)
 - custom labels were reset to default labels on repeated edits
+- Curiosities tab scroll issue after immersive mode (final value was not fully visible)
 
 ---
 
