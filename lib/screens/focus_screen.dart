@@ -176,8 +176,7 @@ class _FocusScreenState extends State<FocusScreen> {
     final display = _currentDisplay();
     final hasLine2 = display.line2.isNotEmpty &&
         !widget.timeValue.valueType.isGraphical;
-    final handleSeconds = widget.timeValue.valueType
-        == ValueType.sevenSegmentClock;
+    final handleSeconds = widget.timeValue.valueType.isGraphical;
 
     if (_brightness == null) return const Scaffold(backgroundColor: Colors.black);
 
@@ -451,6 +450,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showSeconds: _showSeconds,
             showLabels: false,
           ),
         ValueType.binaryClockBcd =>
@@ -458,6 +458,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showSeconds: _showSeconds,
             showLabels: false,
           ),
         _ => throw StateError(

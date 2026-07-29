@@ -10,8 +10,8 @@ class ValueTile extends StatelessWidget {
   final Widget content;      // text field or graphical clock
   final List<Widget?> actionSlots; // always 3 slots
   static const double textTileHeight    = 88.0;
-  static const double graphicTileHeight = 222.0; // fits 6 bit rows
-  final double? height; // null = textTileHeight
+  static const double graphicTileHeight = 222.0;  // fits 6 bit rows
+  final double? height;  // null = textTileHeight
   final bool showZoneIndicator;
   final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
   final bool showPinnedIndicator;  // timezoneClockChangeMode != auto

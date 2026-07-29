@@ -9,6 +9,7 @@ class BinaryColumnsClock extends StatelessWidget {
   final AppLocalizations l10n;
   final double dotSize;
   final bool showLabels;
+  final bool showSeconds;
 
   const BinaryColumnsClock({
     super.key,
@@ -16,6 +17,7 @@ class BinaryColumnsClock extends StatelessWidget {
     required this.l10n,
     this.dotSize = kGraphicalBinaryClockDotSizeDefault,
     this.showLabels = true,
+    this.showSeconds = true,
   });
 
   @override
@@ -67,8 +69,10 @@ class BinaryColumnsClock extends StatelessWidget {
         bitColumn(bin.hours, l10n.labelHours,   6),
         SizedBox(width: dotSize * 0.75),
         bitColumn(bin.minutes, l10n.labelMinutes, 6),
-        SizedBox(width: dotSize * 0.75),
-        bitColumn(bin.seconds, l10n.labelSeconds, 6),
+        if (showSeconds) ...[
+          SizedBox(width: dotSize * 0.75),
+          bitColumn(bin.seconds, l10n.labelSeconds, 6),
+        ],
       ],
     );
   }

@@ -8,6 +8,7 @@
 ### Changed
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
 - better timezone search keyword coverage
+- binary clocks now allow to turn seconds off, like seven-segment clock
 
 ### Fixed
 - custom labels were reset to default labels on repeated edits
