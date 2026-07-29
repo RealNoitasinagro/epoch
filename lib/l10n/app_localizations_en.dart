@@ -383,6 +383,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsCustomFormat => 'Custom…';
+
+  @override
+  String get settingsDateFormat => 'Date format';
+
+  @override
   String get settingsDateWithDetails => 'Expanded date';
 
   @override
@@ -472,6 +478,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThousandsSepSub => 'e. g. 1,746,000 instead of 1746000';
+
+  @override
+  String get settingsTimeFormat => 'Time format';
 
   @override
   String get settingsWhatsNew => 'What\'s New';

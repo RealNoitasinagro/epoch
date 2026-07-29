@@ -24,6 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _hourFormat24;
   late bool _thousandsSep;
   late bool _dateWithDetails;
+  String _dateFormat = kDatePatternIso;
+  String _timeFormat = kTimePatternFull;
   late ZoneDisplayMode _zoneDisplayMode;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
@@ -47,6 +49,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _hourFormat24 = app.hourFormat24;
       _thousandsSep = app.thousandsSep;
       _dateWithDetails = app.dateWithDetails;
+      _dateFormat = app.dateFormat;
+      _timeFormat = app.timeFormat;
       _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
@@ -193,6 +197,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => _dateWithDetails = val);
               app.setDateWithDetails(val);
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_today),
+            title: Text(l10n.settingsDateFormat),
+            subtitle: Text(_dateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: true),
+          ),
+          ListTile(
+            leading: const Icon(Icons.access_time),
+            title: Text(l10n.settingsTimeFormat),
+            subtitle: Text(_timeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: false),
           ),
           ListTile(
             leading: const Icon(Icons.format_list_numbered),
@@ -378,6 +394,202 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () async => await resetSettings(context),
           )
         ],
+      ),
+    );
+  }
+
+  Future<void> _showFormatPicker(BuildContext context,
+      AppLocalizations l10n, {required bool isDate}) async {
+    final presets = isDate
+        ? [kDatePatternIso, kDatePatternDe, kDatePatternUk,
+      kDatePatternUs, kDatePatternIsoTight, kDatePatternCompact]
+        : [kTimePatternFull, kTimePatternNoSeconds,
+      kTimePatternNoLeadingZero, kTimePatternCompact];
+
+    final current = isDate ? _dateFormat : _timeFormat;
+    // If current is a custom pattern, start with it; otherwise start with preset:
+    String selected = current;
+
+    final confirmed = await showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) {
+          final isCustom = !presets.contains(selected);
+
+          return AlertDialog(
+            title: Text(isDate
+                ? l10n.settingsDateFormat
+                : l10n.settingsTimeFormat),
+            content: SingleChildScrollView(
+              child: RadioGroup<String>(
+                groupValue: isCustom ? '__custom__' : selected,
+                onChanged: (v) async {
+                  if (v == '__custom__') {
+                    // Open custom dialog with current pattern as starting point:
+                    final custom = await _showCustomFormatDialog(
+                        ctx, l10n, selected, isDate);
+                    if (custom != null) setDialogState(() => selected = custom);
+                  } else if (v != null) {
+                    setDialogState(() => selected = v);
+                  }
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Preset options:
+                    ...presets.map((pattern) => RadioListTile(
+                      value: pattern,
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(
+                        _formatPreview(pattern, isDate, l10n.localeName),
+                        style: const TextStyle(fontFamily: fontFamilyDefault),
+                      ),
+                      subtitle: Text(
+                        pattern,
+                        style: TextStyle(
+                          fontFamily: fontFamilyDefault,
+                          fontSize: 10,
+                          color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                        ),
+                      ),
+                    )),
+                    // Custom option:
+                    RadioListTile(
+                      value: '__custom__',
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(l10n.settingsCustomFormat),
+                      subtitle: isCustom
+                          ? Text(
+                        '${_formatPreview(selected, isDate, l10n.localeName)}'
+                            '  ($selected)',
+                        style: TextStyle(
+                          fontFamily: fontFamilyDefault,
+                          fontSize: 10,
+                          color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                        ),
+                      )
+                          : null,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l10n.actionCancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, selected),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    if (confirmed == null || confirmed == current) return;
+    if (!context.mounted) return;
+    setState(() {
+      if (isDate) {
+        _dateFormat = confirmed;
+        EpochApp.of(context).setDateFormat(confirmed);
+      } else {
+        _timeFormat = confirmed;
+        EpochApp.of(context).setTimeFormat(confirmed);
+      }
+    });
+  }
+
+  String _formatPreview(String pattern, bool isDate, String locale) {
+    final reference = DateTime(2026, 7, 29, 14, 5, 9);  // Tue, fixed reference
+    if (isDate) {
+      return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
+    }
+    return TimeValueFormatter.formatTimePattern(reference, pattern,
+        hourFormat24: _hourFormat24);
+  }
+
+  Future<String?> _showCustomFormatDialog(
+      BuildContext context, AppLocalizations l10n,
+      String initialPattern, bool isDate) async {
+    final controller = TextEditingController(text: initialPattern);
+    final previewNow = DateTime(2026, 7, 29, 14, 5, 9);
+
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) {
+          final error   = TimeValueFormatter.validatePattern(
+              controller.text, isDate);
+          final preview = error == null
+              ? (isDate
+              ? TimeValueFormatter.formatDatePattern(
+              previewNow, controller.text, l10n.localeName)
+              : TimeValueFormatter.formatTimePattern(
+              previewNow, controller.text,
+              hourFormat24: _hourFormat24))
+              : null;
+
+          // Token reference string:
+          final tokenRef = isDate
+              ? 'YYYY  YY  MM  M  MMM  MMMM  DD  D  DDD  DDDD'
+              : 'HH  H  mm  ss';
+
+          return AlertDialog(
+            title: Text(isDate
+                ? l10n.settingsDateFormat
+                : l10n.settingsTimeFormat),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(tokenRef,
+                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                    fontFamily: fontFamilyDefault,
+                    color: Theme.of(ctx).colorScheme.onSurface.withAlpha(150),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: controller,
+                  autofocus: true,
+                  onChanged: (_) => setDialogState(() {}),
+                  style: const TextStyle(fontFamily: fontFamilyDefault),
+                  decoration: InputDecoration(
+                    labelText: l10n.settingsCustomFormat,
+                    errorText: error,
+                  ),
+                ),
+                if (preview != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    preview,
+                    style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                      fontFamily: fontFamilyDefault,
+                      color: Theme.of(ctx).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l10n.actionCancel),
+              ),
+              TextButton(
+                onPressed: error != null
+                    ? null
+                    : () => Navigator.pop(ctx, controller.text.trim()),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -40,6 +40,8 @@ class TimeStringRow extends TimeValueRow {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         bool showDateDetails = true,
+        String dateFormat = kDatePatternIso,
+        String timeFormat = kTimePatternFull,
         ZoneDisplayMode zoneDisplayMode = ZoneDisplayMode.full,
         double? longitude,
       }
@@ -49,6 +51,8 @@ class TimeStringRow extends TimeValueRow {
       localIanaZone: localIanaZone,
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
+      dateFormat: dateFormat,
+      timeFormat: timeFormat,
       longitude: longitude,
     );
 
@@ -110,8 +114,8 @@ class TimeStringRow extends TimeValueRow {
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (
-    line1: value.substring(0, match.start).trim(),
-    line2: match.group(0)!,
+      line1: value.substring(0, match.start).trim(),
+      line2: match.group(0)!,
     );
   }
 
@@ -198,6 +202,7 @@ class TimeStringRow extends TimeValueRow {
 
   @override
   Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
@@ -207,7 +212,9 @@ class TimeStringRow extends TimeValueRow {
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
       showDateDetails: showDateDetails,
-      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
+      zoneDisplayMode: app.zoneDisplayMode,
       longitude: longitude,
     );
     String label = computeLabel(l10n, timeValue, longitude);

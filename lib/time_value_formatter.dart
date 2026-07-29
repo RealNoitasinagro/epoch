@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'l10n/app_localizations.dart';
+import 'models/app_settings.dart';
 import 'models/time_value.dart';
 import 'models/timezone_abbr_localization.dart';
 import 'time_utils.dart';
@@ -14,6 +15,8 @@ class TimeValueFormatter {
       {
         bool hourFormat24 = true,
         bool thousandsSep = true,
+        String dateFormat = kDatePatternIso,
+        String timeFormat = kTimePatternFull,
         String localIanaZone = 'UTC',
         double? longitude,
       }
@@ -104,11 +107,13 @@ class TimeValueFormatter {
     switch (timeValue.valueType) {
       // Civil
       case ValueType.date:
-        return formatDate(locale, dt);
+        return formatDate(locale, dt, pattern: dateFormat);
       case ValueType.time:
-        return formatTime(hourFormat24, dt.hour, dt.minute, dt.second, tzSuffix);
+        return formatTime(hourFormat24, dt.hour, dt.minute, dt.second,
+            tzSuffix: tzSuffix, pattern: timeFormat);
       case ValueType.dateTime:
-        return formatDateTime(hourFormat24, locale, dt, tzSuffix);
+        return formatDateTime(hourFormat24, locale, dt, tzSuffix,
+            datePattern: dateFormat, timePattern: timeFormat);
       case ValueType.daySecond:
         final value = TimeUtils.daySecond(dt);
         String formattedValue = thousandsSep
@@ -156,26 +161,65 @@ class TimeValueFormatter {
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
-  static String formatDate(String locale, DateTime dt) =>
-      DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+  static String formatDate(String locale, DateTime dt,
+      {String pattern = kDatePatternIso}) =>
+      formatDatePattern(dt, pattern, locale);
 
-  static String formatTime(bool hourFormat24, int hour, int minute, int second, String? tzSuffix) {
-    final period = hour < 12 ? 'AM' : 'PM';
-    hour = !hourFormat24 ? hour % 12 == 0 ? 12 : hour % 12 : hour;
-    final hh = hour.toString().padLeft(2, '0');
-    final mm = minute.toString().padLeft(2, '0');
-    final ss = second.toString().padLeft(2, '0');
-    String timeFormat = '$hh:$mm:$ss';
-    if (!hourFormat24) timeFormat += ' $period';
-    if (tzSuffix != null) timeFormat += ' $tzSuffix';
-    return timeFormat;
+  static String formatTime(bool hourFormat24, int hour, int minute,
+      int second, { String? tzSuffix, String pattern = kTimePatternFull }) {
+    final dt = DateTime(2000, 1, 1, hour, minute, second);
+    final timeStr = formatTimePattern(dt, pattern, hourFormat24: hourFormat24);
+    final period = !hourFormat24 ? (hour < 12 ? ' AM' : ' PM') : '';
+    return tzSuffix != null
+        ? '$timeStr$period $tzSuffix'
+        : '$timeStr$period';
   }
 
-  static String formatDateTime(bool hourFormat24, String locale, DateTime dt,
-      String? tzSuffix) {
-    String formattedDate = formatDate(locale, dt);
-    String formattedTime = formatTime(hourFormat24, dt.hour, dt.minute, dt.second, tzSuffix);
+  static String formatDateTime(
+      bool hourFormat24, String locale, DateTime dt, String? tzSuffix,
+      {String datePattern = kDatePatternIso, String timePattern = kTimePatternFull}
+    ) {
+    String formattedDate = formatDate(locale, dt, pattern: datePattern);
+    String formattedTime = formatTime(hourFormat24, dt.hour, dt.minute, dt.second,
+        tzSuffix: tzSuffix, pattern: timePattern);
     return "$formattedDate $formattedTime";
+  }
+
+  static String formatDatePattern(DateTime dt, String pattern, String locale) {
+    // Use intl for localized names:
+    final monthLong    = DateFormat('MMMM', locale).format(dt);
+    final monthShort   = DateFormat('MMM',  locale).format(dt);
+    final weekDayLong  = DateFormat('EEEE', locale).format(dt);
+    final weekDayShort = DateFormat('EEE',  locale).format(dt);
+
+    // Apply tokens longest-first to avoid partial substitution:
+    final tokens = <String, String>{
+      'YYYY': dt.year.toString().padLeft(4, '0'),
+      'YY':   (dt.year % 100).toString().padLeft(2, '0'),
+      'MMMM': monthLong,
+      'MMM':  monthShort,
+      'MM':   dt.month.toString().padLeft(2, '0'),
+      'M':    dt.month.toString(),
+      'DDDD': weekDayLong,
+      'DDD':  weekDayShort,
+      'DD':   dt.day.toString().padLeft(2, '0'),
+      'D':    dt.day.toString(),
+    };
+    return _applyTokens(pattern, tokens);
+  }
+
+  static String formatTimePattern(DateTime dt, String pattern,
+      {bool hourFormat24 = true}) {
+    final displayHour = hourFormat24
+        ? dt.hour
+        : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
+    final tokens = <String, String>{
+      'HH': displayHour.toString().padLeft(2, '0'),
+      'H':  displayHour.toString(),
+      'mm': dt.minute.toString().padLeft(2, '0'),
+      'ss': dt.second.toString().padLeft(2, '0'),
+    };
+    return _applyTokens(pattern, tokens);
   }
 
   /// Returns a double formatted to a given number of decimal digits.
@@ -198,4 +242,51 @@ class TimeValueFormatter {
     final deg = formatDecimal(longitude.abs(), locale, 2, thousandsSep: false);
     return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
   }
+
+  static String _applyTokens(String pattern, Map<String, String> tokens) {
+    var result = pattern;
+    // Sort by length descending to avoid partial matches:
+    final sorted = tokens.keys.toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
+    for (final token in sorted) {
+      result = result.replaceAll(token, tokens[token]!);
+    }
+    return result;
+  }
+
+  static String? validateDatePattern(String pattern) {
+    final validTokens = {
+      'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'DDDD', 'DDD', 'DD', 'D'};
+    return _validatePattern(pattern, validTokens, requireAny: true);
+  }
+
+  static String? validateTimePattern(String pattern) {
+    const validTokens = {'HH', 'H', 'mm', 'ss'};
+    final error = _validatePattern(pattern, validTokens, requireAny: false);
+    if (error != null) return error;
+    if (!pattern.contains('HH') && !pattern.contains('H')) {
+      return 'H or HH required';
+    }
+    if (!pattern.contains('mm')) return 'mm required';
+    return null;
+  }
+
+  static String? _validatePattern(String pattern,
+      Set<String> validTokens, {required bool requireAny}) {
+    var remaining = pattern;
+    // Remove all valid tokens:
+    for (final token in validTokens) {
+      remaining = remaining.replaceAll(token, '');
+    }
+    // Check for leftover uppercase sequences:
+    final badTokens = RegExp(r'[A-Z]+').allMatches(remaining)
+        .map((m) => m.group(0)!)
+        .where((s) => s.isNotEmpty)
+        .toSet();
+    if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
+    return null;
+  }
+
+  static String? validatePattern(String pattern, bool isDate) =>
+      isDate ? validateDatePattern(pattern) : validateTimePattern(pattern);
 }

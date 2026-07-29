@@ -606,7 +606,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       showDateDetails: widget.showDateDetails,
-      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
+      zoneDisplayMode: app.zoneDisplayMode,
       longitude: longitude,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);

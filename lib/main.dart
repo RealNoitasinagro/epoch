@@ -85,6 +85,8 @@ class EpochAppState extends State<EpochApp> {
   bool _hourFormat24               = kDefaultHourFormat24;
   bool _thousandsSep               = kDefaultThousandsSep;
   bool _dateWithDetails            = kDefaultDateWithDetails;
+  String _dateFormat               = kDatePatternIso;
+  String _timeFormat               = kTimePatternFull;
   ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
   LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
@@ -108,6 +110,8 @@ class EpochAppState extends State<EpochApp> {
     final hour24          = await loadHourFormat24();
     final thousands       = await loadThousandsSep();
     final dateWithDetails = await loadDateWithDetails();
+    final dateFormat      = await loadDateFormat();
+    final timeFormat      = await loadTimeFormat();
     final zoneDisplayMode = await loadZoneDisplayMode();
     final lmstMode        = await loadLmstMode();
     final lmstLongitude   = await loadLmstLongitude();
@@ -127,6 +131,8 @@ class EpochAppState extends State<EpochApp> {
       _hourFormat24    = hour24;
       _thousandsSep    = thousands;
       _dateWithDetails = dateWithDetails;
+      _dateFormat      = dateFormat;
+      _timeFormat      = timeFormat;
       _zoneDisplayMode = zoneDisplayMode;
       _lmstMode        = lmstMode;
       _lmstLongitude   = lmstLongitude;
@@ -159,6 +165,16 @@ class EpochAppState extends State<EpochApp> {
     saveDateWithDetails(v);
   }
 
+  void setDateFormat(String pattern) {
+    setState(() => _dateFormat = pattern);
+    saveDateFormat(pattern);
+  }
+
+  void setTimeFormat(String pattern) {
+    setState(() => _timeFormat = pattern);
+    saveTimeFormat(pattern);
+  }
+
   void setZoneDisplayMode(ZoneDisplayMode mode) {
     setState(() => _zoneDisplayMode = mode);
     saveZoneDisplayMode(mode);
@@ -187,6 +203,8 @@ class EpochAppState extends State<EpochApp> {
   bool get hourFormat24               => _hourFormat24;
   bool get thousandsSep               => _thousandsSep;
   bool get dateWithDetails            => _dateWithDetails;
+  String get dateFormat               => _dateFormat;
+  String get timeFormat               => _timeFormat;
   ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
