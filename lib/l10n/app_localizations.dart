@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'Double-tap to switch to focus screen'**
   String get hintFocusScreenOpen;
 
+  /// No description provided for @hintFocusScreenToggleDecimalsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to suppress decimals'**
+  String get hintFocusScreenToggleDecimalsOff;
+
+  /// No description provided for @hintFocusScreenToggleDecimalsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to display decimals'**
+  String get hintFocusScreenToggleDecimalsOn;
+
   /// No description provided for @hintFocusScreenToggleSecondsOff.
   ///
   /// In en, this message translates to:

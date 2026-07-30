@@ -67,6 +67,8 @@
   "hintEditTimeValue": "Edit time value",
   "hintFocusScreenExit": "Double-tap to exit",
   "hintFocusScreenOpen": "Double-tap to switch to focus screen",
+  "hintFocusScreenToggleDecimalsOff": "Hold to suppress decimals",
+  "hintFocusScreenToggleDecimalsOn": "Hold to display decimals",
   "hintFocusScreenToggleSecondsOff": "Hold to suppress seconds",
   "hintFocusScreenToggleSecondsOn": "Hold to display seconds",
   "hintFocusScreenToggleToOneLine": "Hold for one line",

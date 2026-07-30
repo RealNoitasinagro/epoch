@@ -137,8 +137,15 @@ class _FocusScreenState extends State<FocusScreen> {
 
   ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
+
+    // For swatchBeats, override showSeconds with volatile _showSeconds:
+    final effectiveTimeValue = (
+        widget.timeValue.valueType == ValueType.swatchBeats
+    ) ? widget.timeValue.withShowSeconds(_showSeconds)
+        : widget.timeValue;
+
     return TimeStringRow.computeDisplay(
-      widget.timeValue,
+      effectiveTimeValue,
       _now,
       widget.locale,
       AppLocalizations.of(context)!,
@@ -174,9 +181,15 @@ class _FocusScreenState extends State<FocusScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final display = _currentDisplay();
-    final hasLine2 = display.line2.isNotEmpty &&
-        !widget.timeValue.valueType.isGraphical;
-    final handleSeconds = widget.timeValue.valueType.isGraphical;
+    final hasLine2 = display.line2.isNotEmpty
+        && !widget.timeValue.valueType.isGraphical;
+    final handleSeconds =
+      widget.timeValue.valueType == ValueType.swatchBeats
+        ? 'swatchBeats'
+        : widget.timeValue.valueType.isGraphical
+          ? 'isGraphical'
+          : '';
+
 
     if (_brightness == null) return const Scaffold(backgroundColor: Colors.black);
 
@@ -185,7 +198,9 @@ class _FocusScreenState extends State<FocusScreen> {
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress: handleSeconds ? _toggleSeconds : _toggleLine2,
+        onLongPress:
+          handleSeconds == 'swatchBeats' || handleSeconds == 'isGraphical'
+            ? _toggleSeconds : _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -224,7 +239,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, String handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -261,7 +276,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, String handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -399,18 +414,23 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _exitHint(
-        {required bool hasLine2, required bool handleSeconds,
+        {required bool hasLine2, required String handleSeconds,
          required AppLocalizations l10n}
       ) {
     final String text;
-    if (hasLine2 && !handleSeconds) {
-      text = _showLine2
-          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
-          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
-    } else if (handleSeconds && !hasLine2) {
+    if (!hasLine2 && handleSeconds == 'swatchBeats') {
+      text = !_showSeconds
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOn}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOff}';
+    } else if (!hasLine2 && handleSeconds == 'isGraphical') {
       text = !_showSeconds
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOff}';
+    }
+    else if (hasLine2 && handleSeconds.isEmpty) {
+      text = _showLine2
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
     } else {
       text = l10n.hintFocusScreenExit;
     }

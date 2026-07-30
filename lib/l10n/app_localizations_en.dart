@@ -112,6 +112,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff => 'Hold to suppress decimals';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn => 'Hold to display decimals';
+
+  @override
   String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
 
   @override

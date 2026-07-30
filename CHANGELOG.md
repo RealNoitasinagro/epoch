@@ -7,9 +7,9 @@
 
 ### Changed
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
-- better timezone search keyword coverage
+- much better timezone search keyword coverage (still WIP)
 - graphical binary clocks now allow to turn seconds off, like seven-segment clock
-- Swatch beats now allow to show two decimals
+- Swatch beats now show two decimals by default (with option for no decimals)
 
 ### Fixed
 - Swatch beats were up to half a .beat off (because of unwanted rounding)

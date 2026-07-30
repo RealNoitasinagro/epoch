@@ -112,6 +112,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Doppelt antippen zum Wechsel in den Fokus-Screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff =>
+      'Gedrückt halten für Anzeige ohne Dezimalstellen';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn =>
+      'Gedrückt halten für Anzeige mit Dezimalstellen';
+
+  @override
   String get hintFocusScreenToggleSecondsOff =>
       'Gedrückt halten für Anzeige ohne Sekunden';
 

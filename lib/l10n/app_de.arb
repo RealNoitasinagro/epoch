@@ -67,6 +67,8 @@
   "hintEditTimeValue": "Zeitwert bearbeiten",
   "hintFocusScreenExit": "Doppelt antippen zum Verlassen",
   "hintFocusScreenOpen": "Doppelt antippen zum Wechsel in den Fokus-Screen",
+  "hintFocusScreenToggleDecimalsOff": "Gedrückt halten für Anzeige ohne Dezimalstellen",
+  "hintFocusScreenToggleDecimalsOn": "Gedrückt halten für Anzeige mit Dezimalstellen",
   "hintFocusScreenToggleSecondsOff": "Gedrückt halten für Anzeige ohne Sekunden",
   "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
