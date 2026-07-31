@@ -516,14 +516,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<String?> _showCustomFormatDialog(
       BuildContext context, AppLocalizations l10n,
       String initialPattern, bool isDate) async {
+    final locale = Localizations.localeOf(context).toString();
     final controller = TextEditingController(text: initialPattern);
-    final previewNow = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
+    final previewNow = DateTime.now();
+    final referenceDateTime = DateTime(2026, 5, 1, 8, 14, 27);
+    final tokenRows = isDate
+        ? [
+            ('YYYY', TimeValueFormatter.formatDatePattern(referenceDateTime, 'YYYY', locale)),
+            ('YY',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'YY',   locale)),
+            ('MM',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'MM',   locale)),
+            ('M',    TimeValueFormatter.formatDatePattern(referenceDateTime, 'M',    locale)),
+            ('MMM',  TimeValueFormatter.formatDatePattern(referenceDateTime, 'MMM',  locale)),
+            ('MMMM', TimeValueFormatter.formatDatePattern(referenceDateTime, 'MMMM', locale)),
+            ('DD',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'DD',   locale)),
+            ('D',    TimeValueFormatter.formatDatePattern(referenceDateTime, 'D',    locale)),
+            ('EEE',  TimeValueFormatter.formatDatePattern(referenceDateTime, 'EEE',  locale)),
+            ('EEEE', TimeValueFormatter.formatDatePattern(referenceDateTime, 'EEEE', locale)),
+          ]
+        : [
+            ('HH', TimeValueFormatter.formatTimePattern(referenceDateTime, 'HH', hourFormat24: _hourFormat24)),
+            ('H',  TimeValueFormatter.formatTimePattern(referenceDateTime, 'H',  hourFormat24: _hourFormat24)),
+            ('mm', TimeValueFormatter.formatTimePattern(referenceDateTime, 'mm', hourFormat24: _hourFormat24)),
+            ('ss', TimeValueFormatter.formatTimePattern(referenceDateTime, 'ss', hourFormat24: _hourFormat24)),
+          ];
 
     return showDialog<String>(
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) {
-          final error   = TimeValueFormatter.validatePattern(
+          final error = TimeValueFormatter.validatePattern(
               controller.text, isDate);
           final preview = error == null
               ? (isDate
@@ -534,11 +555,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   hourFormat24: _hourFormat24))
               : null;
 
-          // Token reference string:
-          final tokenRef = isDate
-              ? 'YYYY  YY  MM  M  MMM  MMMM  DD  D  EEE  EEEE'
-              : 'HH  H  mm  ss';
-
           return AlertDialog(
             title: Text(isDate
                 ? l10n.settingsDateFormat
@@ -547,11 +563,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(tokenRef,
-                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                    fontFamily: fontFamilyDefault,
-                    color: Theme.of(ctx).colorScheme.onSurface.withAlpha(150),
-                  ),
+                Table(
+                  columnWidths: const {
+                    0: FixedColumnWidth(60),
+                    1: FlexColumnWidth(),
+                  },
+                  children: tokenRows.map<TableRow>(((String, String) row) =>
+                      TableRow(children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Text(row.$1,
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Text(row.$2,
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontSize: 11,
+                              color: Theme.of(ctx).colorScheme.onSurface.withAlpha(180),
+                            ),
+                          ),
+                        ),
+                      ])
+                  ).toList(),
                 ),
                 const SizedBox(height: 8),
                 TextField(
