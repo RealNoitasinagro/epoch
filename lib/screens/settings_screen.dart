@@ -505,7 +505,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String _formatPreview(String pattern, bool isDate, String locale) {
-    final reference = DateTime(2026, 7, 29, 14, 5, 9);  // Tue, fixed reference
+    final reference = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
     if (isDate) {
       return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
     }
@@ -517,7 +517,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       BuildContext context, AppLocalizations l10n,
       String initialPattern, bool isDate) async {
     final controller = TextEditingController(text: initialPattern);
-    final previewNow = DateTime(2026, 7, 29, 14, 5, 9);
+    final previewNow = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
 
     return showDialog<String>(
       context: context,
@@ -527,16 +527,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               controller.text, isDate);
           final preview = error == null
               ? (isDate
-              ? TimeValueFormatter.formatDatePattern(
-              previewNow, controller.text, l10n.localeName)
-              : TimeValueFormatter.formatTimePattern(
-              previewNow, controller.text,
-              hourFormat24: _hourFormat24))
+                ? TimeValueFormatter.formatDatePattern(
+                  previewNow, controller.text, l10n.localeName)
+                : TimeValueFormatter.formatTimePattern(
+                  previewNow, controller.text,
+                  hourFormat24: _hourFormat24))
               : null;
 
           // Token reference string:
           final tokenRef = isDate
-              ? 'YYYY  YY  MM  M  MMM  MMMM  DD  D  DDD  DDDD'
+              ? 'YYYY  YY  MM  M  MMM  MMMM  DD  D  EEE  EEEE'
               : 'HH  H  mm  ss';
 
           return AlertDialog(

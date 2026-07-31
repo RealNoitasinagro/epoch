@@ -200,8 +200,8 @@ class TimeValueFormatter {
       'MMM':  monthShort,
       'MM':   dt.month.toString().padLeft(2, '0'),
       'M':    dt.month.toString(),
-      'DDDD': weekDayLong,
-      'DDD':  weekDayShort,
+      'EEEE': weekDayLong,
+      'EEE':  weekDayShort,
       'DD':   dt.day.toString().padLeft(2, '0'),
       'D':    dt.day.toString(),
     };
@@ -256,7 +256,7 @@ class TimeValueFormatter {
 
   static String? validateDatePattern(String pattern) {
     final validTokens = {
-      'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'DDDD', 'DDD', 'DD', 'D'};
+      'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'EEEE', 'EEE', 'DD', 'D'};
     return _validatePattern(pattern, validTokens, requireAny: true);
   }
 

@@ -218,7 +218,9 @@ class TimeStringRow extends TimeValueRow {
       longitude: longitude,
     );
     String label = computeLabel(l10n, timeValue, longitude);
-    String clipboardValue = display.line1 + '\n' + display.line2;
+    final clipboardValue = display.line2.isEmpty
+        ? display.line1
+        : '${display.line1}\n${display.line2}';
 
     return ValueTile(
       label: label,
