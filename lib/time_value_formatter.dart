@@ -84,13 +84,16 @@ class TimeValueFormatter {
           final tzLocation = tz.getLocation(localIanaZone);
           final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
           tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
-        } catch (_) { tzLabel = now.timeZoneName; }
+        } catch (_) {
+          tzLabel = now.timeZoneName;
+        }
         offset = now.timeZoneOffset;
       case ZoneNamed(ianaZone: final zone):
         final tzDt = TimeUtils.inZone(utcNow, zone);
         if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
           final info = TimeUtils.daylightOrStandardOffset(
-              zone, timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.forceDst);
+              zone, timeValue.timezoneClockChangeMode ==
+                TimezoneClockChangeMode.forceDst);
           if (info != null) {
             tzLabel = localizeTimezoneAbbr(info.abbreviation, locale);
             offset = info.offset;
@@ -180,7 +183,8 @@ class TimeValueFormatter {
       {String datePattern = kDatePatternIso, String timePattern = kTimePatternFull}
     ) {
     String formattedDate = formatDate(locale, dt, pattern: datePattern);
-    String formattedTime = formatTime(hourFormat24, dt.hour, dt.minute, dt.second,
+    String formattedTime = formatTime(
+        hourFormat24, dt.hour, dt.minute, dt.second,
         tzSuffix: tzSuffix, pattern: timePattern);
     return "$formattedDate $formattedTime";
   }
@@ -222,27 +226,6 @@ class TimeValueFormatter {
     return _applyTokens(pattern, tokens);
   }
 
-  /// Returns a double formatted to a given number of decimal digits.
-  static String formatDecimal(
-      double value, String locale, int decimals,
-      { bool thousandsSep = true, }
-      ) {
-    final fmt = NumberFormat.decimalPatternDigits(
-        locale: locale, decimalDigits: decimals);
-    fmt.minimumFractionDigits = decimals;
-    if (!thousandsSep) fmt.turnOffGrouping();
-    return fmt.format(value);
-  }
-
-  /// Adds longitude to the LMST label.
-  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue, double? longitude ) {
-    String locale = l10n.localeName;
-    if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
-    final dir = longitude >= 0 ? 'E' : 'W';
-    final deg = formatDecimal(longitude.abs(), locale, 2, thousandsSep: false);
-    return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
-  }
-
   static String _applyTokens(String pattern, Map<String, String> tokens) {
     var result = pattern;
     // Sort by length descending to avoid partial matches:
@@ -253,6 +236,29 @@ class TimeValueFormatter {
     }
     return result;
   }
+
+  /// Returns a double formatted to a given number of decimal digits.
+  static String formatDecimal(double value, String locale, int decimals,
+      { bool thousandsSep = true,}) {
+    final fmt = NumberFormat.decimalPatternDigits(
+        locale: locale, decimalDigits: decimals);
+    fmt.minimumFractionDigits = decimals;
+    if (!thousandsSep) fmt.turnOffGrouping();
+    return fmt.format(value);
+  }
+
+  /// Adds longitude to the LMST label.
+  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue,
+      double? longitude) {
+    String locale = l10n.localeName;
+    if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
+    final dir = longitude >= 0 ? 'E' : 'W';
+    final deg = formatDecimal(longitude.abs(), locale, 2, thousandsSep: false);
+    return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
+  }
+
+  static String? validatePattern(String pattern, bool isDate) =>
+      isDate ? validateDatePattern(pattern) : validateTimePattern(pattern);
 
   static String? validateDatePattern(String pattern) {
     final validTokens = {
@@ -286,7 +292,4 @@ class TimeValueFormatter {
     if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
     return null;
   }
-
-  static String? validatePattern(String pattern, bool isDate) =>
-      isDate ? validateDatePattern(pattern) : validateTimePattern(pattern);
 }

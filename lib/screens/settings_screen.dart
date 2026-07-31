@@ -118,25 +118,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(l10n.settingsLanguage),
-            trailing: DropdownButton<String>(
-              value: _locale?.languageCode ?? 'en',
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: const [
-                DropdownMenuItem(value: 'en', child: Text('English')),
-                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
-              ],
-              onChanged: (code) {
-                if (code == null) return;
-                final locale = Locale(code);
-                setState(() => _locale = locale);
-                app.setLocale(locale);
-              },
-            ),
-          ),
-          ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
             trailing: DropdownButton<AppThemeMode>(
@@ -168,15 +149,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
           ),
-          SwitchListTile(
-            secondary: const Icon(Icons.schedule),
-            title: Text(l10n.settingsHourFormat),
-            subtitle: Text(l10n.settingsHourFormatSub),
-            value: _hourFormat24,
-            onChanged: (val) {
-              setState(() => _hourFormat24 = val);
-              app.setHourFormat24(val);
-            },
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(l10n.settingsLanguage),
+            trailing: DropdownButton<String>(
+              value: _locale?.languageCode ?? 'en',
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
+              ],
+              onChanged: (code) {
+                if (code == null) return;
+                final locale = Locale(code);
+                setState(() => _locale = locale);
+                app.setLocale(locale);
+              },
+            ),
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
@@ -186,16 +176,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (val) {
               setState(() => _thousandsSep = val);
               app.setThousandsSep(val);
-            },
-          ),
-          SwitchListTile(
-            secondary: const Icon(Icons.calendar_today),
-            title: Text(l10n.settingsDateWithDetails),
-            subtitle: Text(l10n.settingsDateWithDetailsSub),
-            value: _dateWithDetails,
-            onChanged: (val) {
-              setState(() => _dateWithDetails = val);
-              app.setDateWithDetails(val);
             },
           ),
           ListTile(
@@ -400,6 +380,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _showFormatPicker(BuildContext context,
       AppLocalizations l10n, {required bool isDate}) async {
+    final app = EpochApp.of(context);
     final presets = isDate
         ? [kDatePatternIso, kDatePatternDe, kDatePatternUk,
       kDatePatternUs, kDatePatternIsoTight, kDatePatternCompact]
@@ -420,72 +401,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(isDate
                 ? l10n.settingsDateFormat
                 : l10n.settingsTimeFormat),
-            content: SingleChildScrollView(
-              child: RadioGroup<String>(
-                groupValue: isCustom ? '__custom__' : selected,
-                onChanged: (v) async {
-                  if (v == '__custom__') {
-                    // Open custom dialog with current pattern as starting point:
-                    final custom = await _showCustomFormatDialog(
-                        ctx, l10n, selected, isDate);
-                    if (custom != null) setDialogState(() => selected = custom);
-                  } else if (v != null) {
-                    setDialogState(() => selected = v);
-                  }
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Preset options:
-                    ...presets.map((pattern) => RadioListTile<String>(
-                      value: pattern,
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(
-                        _formatPreview(pattern, isDate, l10n.localeName),
-                        style: const TextStyle(fontFamily: fontFamilyDefault),
-                      ),
-                      subtitle: Text(
-                        pattern,
-                        style: TextStyle(
-                          fontFamily: fontFamilyDefault,
-                          fontSize: 10,
-                          color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+            content: SizedBox(
+              width: 340,
+              child: SingleChildScrollView(
+                child: RadioGroup<String>(
+                  groupValue: isCustom ? '__custom__' : selected,
+                  onChanged: (v) async {
+                    if (v == '__custom__') {
+                      // Open custom dialog with current pattern as starting point:
+                      final custom = await _showCustomFormatDialog(
+                          ctx, l10n, selected, isDate);
+                      if (custom != null) setDialogState(() => selected = custom);
+                    } else if (v != null) {
+                      setDialogState(() => selected = v);
+                    }
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Preset options:
+                      ...presets.map((pattern) => RadioListTile<String>(
+                        value: pattern,
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(
+                          _formatPreview(pattern, isDate, l10n.localeName),
+                          style: const TextStyle(fontFamily: fontFamilyDefault),
                         ),
-                      ),
-                    )),
-                    // Custom option:
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<String>(
-                            value: '__custom__',
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(l10n.settingsCustomFormat),
-                            subtitle: isCustom
-                                ? Text(
-                                  '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
-                                  style: TextStyle(
-                                    fontFamily: fontFamilyDefault,
-                                    fontSize: 10,
-                                    color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
-                                  ),
-                                )
-                                : null,
+                        subtitle: Text(
+                          pattern,
+                          style: TextStyle(
+                            fontFamily: fontFamilyDefault,
+                            fontSize: 10,
+                            color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
                           ),
                         ),
-                        if (isCustom) IconButton(
-                          icon: const Icon(Icons.edit, size: kIconSizeDefault),
-                          onPressed: () async {
-                            final custom = await _showCustomFormatDialog(
-                                ctx, l10n, selected, isDate);
-                            if (custom != null) setDialogState(() => selected = custom);
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                      )),
+                      // Custom option:
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              value: '__custom__',
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text(l10n.settingsCustomFormat),
+                              subtitle: isCustom
+                                  ? Text(
+                                    '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
+                                    style: TextStyle(
+                                      fontFamily: fontFamilyDefault,
+                                      fontSize: 10,
+                                      color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                                    ),
+                                  )
+                                  : null,
+                            ),
+                          ),
+                          if (isCustom) IconButton(
+                            icon: const Icon(Icons.edit, size: kIconSizeDefault),
+                            onPressed: () async {
+                              final custom = await _showCustomFormatDialog(
+                                  ctx, l10n, selected, isDate);
+                              if (custom != null) setDialogState(() => selected = custom);
+                            },
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                      isDate
+                          ? _expandedDateCheckbox(app, l10n)
+                          : _HourFormat24Checkbox(app, l10n)
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -515,6 +503,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
         EpochApp.of(context).setTimeFormat(confirmed);
       }
     });
+  }
+
+  GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      onTap: () {
+        setState(() => _dateWithDetails = !_dateWithDetails);
+        app.setDateWithDetails(_dateWithDetails);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 24, height: 24,
+              child: Checkbox(
+                value: _dateWithDetails,
+                tristate: false,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (val) {
+                  setState(() => _dateWithDetails = val!);
+                  app.setDateWithDetails(val!);
+                },
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.settingsDateWithDetails,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontFamily: fontFamilyDefault,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _HourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      onTap: () {
+        setState(() => _hourFormat24 = !_hourFormat24);
+        app.setHourFormat24(_hourFormat24);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 24, height: 24,
+              child: Checkbox(
+                value: _hourFormat24,
+                tristate: false,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (val) {
+                  setState(() => _hourFormat24 = val!);
+                  app.setHourFormat24(val!);
+                },
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.settingsHourFormat,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontFamily: fontFamilyDefault,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   String _formatPreview(String pattern, bool isDate, String locale) {
@@ -572,62 +636,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(isDate
                 ? l10n.settingsDateFormat
                 : l10n.settingsTimeFormat),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Table(
-                  columnWidths: const {
-                    0: FixedColumnWidth(60),
-                    1: FlexColumnWidth(),
-                  },
-                  children: tokenRows.map<TableRow>(((String, String) row) =>
-                      TableRow(children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Text(row.$1,
-                            style: TextStyle(
-                              fontFamily: fontFamilyDefault,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
+            content: SizedBox(
+              width: 340,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Table(
+                    columnWidths: const {
+                      0: FixedColumnWidth(60),
+                      1: FlexColumnWidth(),
+                    },
+                    children: tokenRows.map<TableRow>(((String, String) row) =>
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(row.$1,
+                              style: TextStyle(
+                                fontFamily: fontFamilyDefault,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Text(row.$2,
-                            style: TextStyle(
-                              fontFamily: fontFamilyDefault,
-                              fontSize: 11,
-                              color: Theme.of(ctx).colorScheme.onSurface.withAlpha(180),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(row.$2,
+                              style: TextStyle(
+                                fontFamily: fontFamilyDefault,
+                                fontSize: 11,
+                                color: Theme.of(ctx).colorScheme.onSurface.withAlpha(180),
+                              ),
                             ),
                           ),
-                        ),
-                      ])
-                  ).toList(),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: controller,
-                  autofocus: true,
-                  onChanged: (_) => setDialogState(() {}),
-                  style: const TextStyle(fontFamily: fontFamilyDefault),
-                  decoration: InputDecoration(
-                    labelText: l10n.settingsCustomFormat,
-                    errorText: error,
+                        ])
+                    ).toList(),
                   ),
-                ),
-                if (preview != null) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    preview,
-                    style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
-                      fontFamily: fontFamilyDefault,
-                      color: Theme.of(ctx).colorScheme.primary,
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: controller,
+                    autofocus: true,
+                    onChanged: (_) => setDialogState(() {}),
+                    style: const TextStyle(fontFamily: fontFamilyDefault),
+                    decoration: InputDecoration(
+                      labelText: l10n.settingsCustomFormat,
+                      errorText: error,
                     ),
                   ),
+                  if (preview != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      preview,
+                      style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                        fontFamily: fontFamilyDefault,
+                        color: Theme.of(ctx).colorScheme.primary,
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
             actions: [
               TextButton(

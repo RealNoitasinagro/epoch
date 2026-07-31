@@ -743,14 +743,8 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
-  /// **'Expanded date'**
+  /// **'calender week, day of year'**
   String get settingsDateWithDetails;
-
-  /// No description provided for @settingsDateWithDetailsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
-  String get settingsDateWithDetailsSub;
 
   /// No description provided for @settingsDstAlwaysOff.
   ///
@@ -781,12 +775,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'24-hour format'**
   String get settingsHourFormat;
-
-  /// No description provided for @settingsHourFormatSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Off = 12-hour with AM/PM'**
-  String get settingsHourFormatSub;
 
   /// No description provided for @settingsLanguage.
   ///
