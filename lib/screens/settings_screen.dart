@@ -437,7 +437,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Preset options:
-                    ...presets.map((pattern) => RadioListTile(
+                    ...presets.map((pattern) => RadioListTile<String>(
                       value: pattern,
                       contentPadding: EdgeInsets.zero,
                       dense: true,
@@ -455,22 +455,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     )),
                     // Custom option:
-                    RadioListTile(
-                      value: '__custom__',
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(l10n.settingsCustomFormat),
-                      subtitle: isCustom
-                          ? Text(
-                        '${_formatPreview(selected, isDate, l10n.localeName)}'
-                            '  ($selected)',
-                        style: TextStyle(
-                          fontFamily: fontFamilyDefault,
-                          fontSize: 10,
-                          color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RadioListTile<String>(
+                            value: '__custom__',
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            title: Text(l10n.settingsCustomFormat),
+                            subtitle: isCustom
+                                ? Text(
+                                  '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
+                                  style: TextStyle(
+                                    fontFamily: fontFamilyDefault,
+                                    fontSize: 10,
+                                    color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                                  ),
+                                )
+                                : null,
+                          ),
                         ),
-                      )
-                          : null,
+                        if (isCustom) IconButton(
+                          icon: const Icon(Icons.edit, size: kIconSizeDefault),
+                          onPressed: () async {
+                            final custom = await _showCustomFormatDialog(
+                                ctx, l10n, selected, isDate);
+                            if (custom != null) setDialogState(() => selected = custom);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
