@@ -517,138 +517,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  String _formatPreview(String pattern, bool isDate, String locale) {
-    final reference = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
-    if (isDate) {
-      return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
-    }
-    return TimeValueFormatter.formatTimePattern(reference, pattern,
-        hourFormat24: _hourFormat24);
-  }
-
-  Future<String?> _showCustomFormatDialog(
-      BuildContext context, AppLocalizations l10n,
-      String initialPattern, bool isDate) async {
-    final locale = Localizations.localeOf(context).toString();
-    final controller = TextEditingController(text: initialPattern);
-    final previewNow = DateTime.now();
-    final referenceDateTime = DateTime(2026, 5, 1, 8, 14, 27);
-    final tokenRows = isDate
-        ? [
-            ('YYYY', TimeValueFormatter.formatDatePattern(referenceDateTime, 'YYYY', locale)),
-            ('YY',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'YY',   locale)),
-            ('MM',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'MM',   locale)),
-            ('M',    TimeValueFormatter.formatDatePattern(referenceDateTime, 'M',    locale)),
-            ('MMM',  TimeValueFormatter.formatDatePattern(referenceDateTime, 'MMM',  locale)),
-            ('MMMM', TimeValueFormatter.formatDatePattern(referenceDateTime, 'MMMM', locale)),
-            ('DD',   TimeValueFormatter.formatDatePattern(referenceDateTime, 'DD',   locale)),
-            ('D',    TimeValueFormatter.formatDatePattern(referenceDateTime, 'D',    locale)),
-            ('EEE',  TimeValueFormatter.formatDatePattern(referenceDateTime, 'EEE',  locale)),
-            ('EEEE', TimeValueFormatter.formatDatePattern(referenceDateTime, 'EEEE', locale)),
-          ]
-        : [
-            ('HH', TimeValueFormatter.formatTimePattern(referenceDateTime, 'HH', hourFormat24: _hourFormat24)),
-            ('H',  TimeValueFormatter.formatTimePattern(referenceDateTime, 'H',  hourFormat24: _hourFormat24)),
-            ('mm', TimeValueFormatter.formatTimePattern(referenceDateTime, 'mm', hourFormat24: _hourFormat24)),
-            ('ss', TimeValueFormatter.formatTimePattern(referenceDateTime, 'ss', hourFormat24: _hourFormat24)),
-          ];
-
-    return showDialog<String>(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) {
-          final error = TimeValueFormatter.validatePattern(
-              controller.text, isDate);
-          final preview = error == null
-              ? (isDate
-                ? TimeValueFormatter.formatDatePattern(
-                  previewNow, controller.text, l10n.localeName)
-                : TimeValueFormatter.formatTimePattern(
-                  previewNow, controller.text,
-                  hourFormat24: _hourFormat24))
-              : null;
-
-          return AlertDialog(
-            title: Text(isDate
-                ? l10n.settingsDateFormat
-                : l10n.settingsTimeFormat),
-            content: SizedBox(
-              width: 340,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Table(
-                    columnWidths: const {
-                      0: FixedColumnWidth(60),
-                      1: FlexColumnWidth(),
-                    },
-                    children: tokenRows.map<TableRow>(((String, String) row) =>
-                        TableRow(children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2),
-                            child: Text(row.$1,
-                              style: TextStyle(
-                                fontFamily: fontFamilyDefault,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2),
-                            child: Text(row.$2,
-                              style: TextStyle(
-                                fontFamily: fontFamilyDefault,
-                                fontSize: 14,
-                                color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
-                              ),
-                            ),
-                          ),
-                        ])
-                    ).toList(),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: controller,
-                    autofocus: true,
-                    onChanged: (_) => setDialogState(() {}),
-                    style: const TextStyle(fontFamily: fontFamilyDefault),
-                    decoration: InputDecoration(
-                      labelText: l10n.settingsCustomFormat,
-                      errorText: error,
-                    ),
-                  ),
-                  if (preview != null) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      preview,
-                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontFamily: fontFamilyDefault,
-                        color: Theme.of(ctx).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: Text(l10n.actionCancel),
-              ),
-              TextButton(
-                onPressed: error != null
-                    ? null
-                    : () => Navigator.pop(ctx, controller.text.trim()),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
   GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -667,8 +535,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           app.setDateWithDetails(val!);
         },
         title: Text(
-          l10n.settingsDateWithDetails,
-          style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+            l10n.settingsDateWithDetails,
+            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
         ),
         subtitle: Text(
             l10n.settingsDateWithDetailsSub,
@@ -697,8 +565,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           app.setHourFormat24(val!);
         },
         title: Text(
-          l10n.settingsHourFormat,
-          style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+            l10n.settingsHourFormat,
+            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
         ),
         subtitle: Text(
             l10n.settingsHourFormatSub,
@@ -707,5 +575,152 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  Future<String?> _showCustomFormatDialog(
+      BuildContext context, AppLocalizations l10n,
+      String initialPattern, bool isDate) async {
+    final locale = Localizations.localeOf(context).toString();
+    final controller = TextEditingController(text: initialPattern);
+    final previewNow = DateTime.now();
+    final referenceDateTime = DateTime(2026, 1, 9, 8, 14, 27);
+
+    final leftRows = isDate
+        ? [('YYYY','2026'), ('YY','26'), ('MM','01'), ('M','1'),
+          ('DD','09'), ('D','9')]
+        : [('HH','08'), ('H','8'), ('mm','14'), ('ss','27')];
+
+    final rightRows = isDate
+        ? [('',     ''),
+          ('',     ''),
+          ('MMMM',  TimeValueFormatter.formatDatePattern(referenceDateTime,'MMMM',locale)),
+          ('MMM',   TimeValueFormatter.formatDatePattern(referenceDateTime,'MMM', locale)),
+          ('EEEE',  TimeValueFormatter.formatDatePattern(referenceDateTime,'EEEE',locale)),
+          ('EEE',   TimeValueFormatter.formatDatePattern(referenceDateTime,'EEE', locale))]
+        : [('',''),('',''),('',''),('','')];
+
+    final rowCount = leftRows.length;
+
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) {
+          final error = TimeValueFormatter.validatePattern(
+              controller.text, isDate);
+          final preview = error == null
+              ? (isDate
+                ? TimeValueFormatter.formatDatePattern(
+                  previewNow, controller.text, l10n.localeName)
+                : TimeValueFormatter.formatTimePattern(
+                  previewNow, controller.text,
+                  hourFormat24: _hourFormat24))
+              : null;
+
+          return AlertDialog(
+            title: Text(isDate
+                ? l10n.settingsDateFormat
+                : l10n.settingsTimeFormat),
+            content: SizedBox(
+              width: 340,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Table(
+                        columnWidths: const {
+                          0: FixedColumnWidth(52),   // Token links
+                          1: FixedColumnWidth(48),   // Beispiel links
+                          2: FixedColumnWidth(16),   // Abstand
+                          3: FixedColumnWidth(52),   // Token rechts
+                          4: FlexColumnWidth(),      // Beispiel rechts
+                        },
+                        children: List.generate(rowCount, (i) {
+                          final l = leftRows[i];
+                          final r = i < rightRows.length ? rightRows[i] : ('', '');
+                          return TableRow(children: [
+                            _tokenCell(l.$1, bold: true, ctx: ctx),
+                            _tokenCell(l.$2, ctx: ctx),
+                            const SizedBox(),
+                            _tokenCell(r.$1, bold: true, ctx: ctx),
+                            _tokenCell(r.$2, ctx: ctx),
+                          ]);
+                        }),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: controller,
+                        autofocus: true,
+                        onChanged: (_) => setDialogState(() {}),
+                        style: const TextStyle(fontFamily: fontFamilyDefault),
+                        decoration: InputDecoration(
+                          labelText: l10n.settingsCustomFormat,
+                          errorText: error,
+                        ),
+                      ),
+                      if (preview != null) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          preview,
+                          style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                            fontFamily: fontFamilyDefault,
+                            color: Theme.of(ctx).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l10n.actionCancel),
+              ),
+              TextButton(
+                onPressed: error != null
+                    ? null
+                    : () => Navigator.pop(ctx, controller.text.trim()),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _tokenCell(String text, {required BuildContext ctx, bool bold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: Text(text,
+        style: TextStyle(
+          fontFamily: fontFamilyDefault,
+          fontSize: 11,
+          fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+          color: bold
+              ? null
+              : Theme
+              .of(ctx)
+              .colorScheme
+              .onSurface
+              .withAlpha(160),
+        ),
+      ),
+    );
+  }
+
+  String _formatPreview(String pattern, bool isDate, String locale) {
+    final reference = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
+    if (isDate) {
+      return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
+    }
+    return TimeValueFormatter.formatTimePattern(reference, pattern,
+        hourFormat24: _hourFormat24);
   }
 }
