@@ -153,6 +153,8 @@ class _FocusScreenState extends State<FocusScreen> {
       hourFormat24: app.hourFormat24,
       thousandsSep: app.thousandsSep,
       showDateDetails: app.dateWithDetails,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
       zoneDisplayMode: app.zoneDisplayMode,
       longitude: app.lmstLongitude,
     );

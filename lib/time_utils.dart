@@ -277,6 +277,6 @@ class TimeUtils {
   /// Last check for accuracy of hardcoded values: 2026-05-20.
   static String doomsDayClockString(bool hourFormat24) {
     int hh = 23; int mm = 58; int ss = 35;
-    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, null);
+    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
   }
 }

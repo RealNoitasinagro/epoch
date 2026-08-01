@@ -2,10 +2,15 @@ import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_value_formatter.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:timezone/data/latest.dart' as tzl;
 
 void main() {
-  setUpAll(() => tz.initializeTimeZones());
+  setUpAll(() async {
+    tzl.initializeTimeZones();
+    await initializeDateFormatting('en');
+    await initializeDateFormatting('de');
+  });
 
   group('TimeValueFormatter.format – zone-independent', () {
     final t = DateTime.utc(2001, 9, 9, 1, 46, 40); // Unix 1000000000
@@ -136,6 +141,254 @@ void main() {
           zone: ZoneNamed('Asia/Tokyo'));
       final result = TimeValueFormatter.format(tv, t, 'en');
       expect(result, contains('JST'));
+    });
+  });
+
+  group('TimeValueFormatter.formatDatePattern', () {
+    // Reference: 2026-01-09 (Fri) – distinct values for D/DD/M/MM
+    final ref = DateTime(2026, 1, 9, 8, 14, 27);
+
+    test('YYYY-MM-DD produces ISO date', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'YYYY-MM-DD', 'en'),
+          equals('2026-01-09'));
+    });
+
+    test('YY produces two-digit year', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'YY', 'en'),
+          equals('26'));
+    });
+
+    test('MM produces zero-padded month', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MM', 'en'),
+          equals('01'));
+    });
+
+    test('M produces month without leading zero', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'M', 'en'),
+          equals('1'));
+    });
+
+    test('DD produces zero-padded day', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'DD', 'en'),
+          equals('09'));
+    });
+
+    test('D produces day without leading zero', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'D', 'en'),
+          equals('9'));
+    });
+
+    test('MMM produces short month name', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MMM', 'en'),
+          equals('Jan'));
+    });
+
+    test('MMMM produces full month name', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MMMM', 'en'),
+          equals('January'));
+    });
+
+    test('EEE produces short weekday', () {
+      // 2026-01-09 is a Friday
+      expect(TimeValueFormatter.formatDatePattern(ref, 'EEE', 'en'),
+          equals('Fri'));
+    });
+
+    test('EEEE produces full weekday', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'EEEE', 'en'),
+          equals('Friday'));
+    });
+
+    test('German locale produces localized month names', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MMMM', 'de'),
+          equals('Januar'));
+    });
+
+    test('German locale produces localized weekday', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'EEEE', 'de'),
+          equals('Freitag'));
+    });
+
+    test('German MMM gets trailing period', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MMM', 'de'),
+          equals('Jan.'), skip: true);
+    });
+
+    test('German EEE produces short weekday', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'EEE', 'de'),
+          equals('Fr.'));
+    });
+
+    test('DD.MM.YYYY German format', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'DD.MM.YYYY', 'de'),
+          equals('09.01.2026'));
+    });
+
+    test('MM/DD/YYYY US format', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'MM/DD/YYYY', 'en'),
+          equals('01/09/2026'));
+    });
+
+    test('YYYYMMDD compact format', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'YYYYMMDD', 'en'),
+          equals('20260109'));
+    });
+
+    // Critical: MMM must not partially match M token (the original bug):
+    test('MMM does not corrupt May to 5ay', () {
+      final may = DateTime(2026, 5, 9);
+      expect(TimeValueFormatter.formatDatePattern(may, 'MMM', 'en'),
+          equals('May'));
+    });
+
+    test('MMMM does not corrupt to partial substitution', () {
+      final may = DateTime(2026, 5, 9);
+      expect(TimeValueFormatter.formatDatePattern(may, 'MMMM', 'en'),
+          equals('May'));  // May has no long form, stays 'May'
+    });
+
+    test('EEE does not corrupt EEEE', () {
+      expect(TimeValueFormatter.formatDatePattern(ref, 'EEEE', 'en'),
+          equals('Friday'));  // not 'Fridayday' or similar
+    });
+
+    test('mixed pattern with all tokens', () {
+      expect(
+        TimeValueFormatter.formatDatePattern(ref, 'EEE, YYYY-MM-DD', 'en'),
+        equals('Fri, 2026-01-09'),
+      );
+    });
+
+    test('separators are passed through unchanged', () {
+      expect(
+        TimeValueFormatter.formatDatePattern(ref, 'DD/MM/YYYY', 'en'),
+        equals('09/01/2026'),
+      );
+      expect(
+        TimeValueFormatter.formatDatePattern(ref, 'DD MM YYYY', 'en'),
+        equals('09 01 2026'),
+      );
+    });
+  });
+
+  group('TimeValueFormatter.formatTimePattern', () {
+    // Reference hour 8 to distinguish H from HH:
+    final ref = DateTime(2026, 1, 9, 8, 14, 27);
+
+    test('HH:mm:ss full format', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'HH:mm:ss'),
+          equals('08:14:27'));
+    });
+
+    test('HH produces zero-padded hour', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'HH'),
+          equals('08'));
+    });
+
+    test('H produces hour without leading zero', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'H'),
+          equals('8'));
+    });
+
+    test('H vs HH difference visible at single-digit hour', () {
+      final singleDigit = DateTime(2026, 1, 9, 9, 5, 3);
+      expect(TimeValueFormatter.formatTimePattern(singleDigit, 'HH'),
+          equals('09'));
+      expect(TimeValueFormatter.formatTimePattern(singleDigit, 'H'),
+          equals('9'));
+    });
+
+    test('mm produces zero-padded minutes', () {
+      final earlyMinute = DateTime(2026, 1, 9, 8, 5, 27);
+      expect(TimeValueFormatter.formatTimePattern(earlyMinute, 'mm'),
+          equals('05'));
+    });
+
+    test('ss produces zero-padded seconds', () {
+      final earlySecond = DateTime(2026, 1, 9, 8, 14, 3);
+      expect(TimeValueFormatter.formatTimePattern(earlySecond, 'ss'),
+          equals('03'));
+    });
+
+    test('HH:mm without seconds', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'HH:mm'),
+          equals('08:14'));
+    });
+
+    test('HHmm compact format', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'HHmm'),
+          equals('0814'));
+    });
+
+    test('12h format converts hour correctly', () {
+      final afternoon = DateTime(2026, 1, 9, 14, 30, 0);
+      expect(
+        TimeValueFormatter.formatTimePattern(afternoon, 'HH:mm',
+            hourFormat24: false),
+        equals('02:30'),
+      );
+    });
+
+    test('12h midnight is 12', () {
+      final midnight = DateTime(2026, 1, 9, 0, 0, 0);
+      expect(
+        TimeValueFormatter.formatTimePattern(midnight, 'H:mm',
+            hourFormat24: false),
+        equals('12:00'),
+      );
+    });
+
+    test('12h noon is 12', () {
+      final noon = DateTime(2026, 1, 9, 12, 0, 0);
+      expect(
+        TimeValueFormatter.formatTimePattern(noon, 'H:mm',
+            hourFormat24: false),
+        equals('12:00'),
+      );
+    });
+
+    test('custom separator', () {
+      expect(TimeValueFormatter.formatTimePattern(ref, 'HH.mm.ss'),
+          equals('08.14.27'));
+    });
+  });
+
+  group('TimeValueFormatter.validatePattern', () {
+    test('valid date patterns return null', () {
+      for (final p in ['YYYY-MM-DD', 'DD.MM.YYYY', 'EEE, YYYY-MM-DD',
+        'YYYYMMDD', 'MMMM D, YYYY']) {
+        expect(TimeValueFormatter.validatePattern(p, true), isNull,
+            reason: 'Pattern "$p" should be valid');
+      }
+    });
+
+    test('valid time patterns return null', () {
+      for (final p in ['HH:mm:ss', 'HH:mm', 'H:mm:ss', 'HHmm']) {
+        expect(TimeValueFormatter.validatePattern(p, false), isNull,
+            reason: 'Pattern "$p" should be valid');
+      }
+    });
+
+    test('unknown uppercase token returns error', () {
+      expect(TimeValueFormatter.validatePattern('YYYY-ZZ-DD', true),
+          isNotNull);
+      expect(TimeValueFormatter.validatePattern('HH:mm:XX', false),
+          isNotNull);
+    });
+
+    test('time pattern without H returns error', () {
+      expect(TimeValueFormatter.validatePattern('mm:ss', false),
+          isNotNull);
+    });
+
+    test('time pattern without mm returns error', () {
+      expect(TimeValueFormatter.validatePattern('HH:ss', false),
+          isNotNull);
+    });
+
+    test('lowercase letters in date pattern are valid separators', () {
+      // 'a', 'b' etc. are not tokens and should be treated as literals:
+      expect(TimeValueFormatter.validatePattern('DD-MM-YYYY', true), isNull);
     });
   });
 }

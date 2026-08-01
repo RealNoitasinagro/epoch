@@ -24,6 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _hourFormat24;
   late bool _thousandsSep;
   late bool _dateWithDetails;
+  String _dateFormat = kDatePatternIso;
+  String _timeFormat = kTimePatternFull;
   late ZoneDisplayMode _zoneDisplayMode;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
@@ -47,6 +49,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _hourFormat24 = app.hourFormat24;
       _thousandsSep = app.thousandsSep;
       _dateWithDetails = app.dateWithDetails;
+      _dateFormat = app.dateFormat;
+      _timeFormat = app.timeFormat;
       _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
@@ -114,25 +118,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(l10n.settingsLanguage),
-            trailing: DropdownButton<String>(
-              value: _locale?.languageCode ?? 'en',
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: const [
-                DropdownMenuItem(value: 'en', child: Text('English')),
-                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
-              ],
-              onChanged: (code) {
-                if (code == null) return;
-                final locale = Locale(code);
-                setState(() => _locale = locale);
-                app.setLocale(locale);
-              },
-            ),
-          ),
-          ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
             trailing: DropdownButton<AppThemeMode>(
@@ -164,15 +149,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
           ),
-          SwitchListTile(
-            secondary: const Icon(Icons.schedule),
-            title: Text(l10n.settingsHourFormat),
-            subtitle: Text(l10n.settingsHourFormatSub),
-            value: _hourFormat24,
-            onChanged: (val) {
-              setState(() => _hourFormat24 = val);
-              app.setHourFormat24(val);
-            },
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(l10n.settingsLanguage),
+            trailing: DropdownButton<String>(
+              value: _locale?.languageCode ?? 'en',
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
+              ],
+              onChanged: (code) {
+                if (code == null) return;
+                final locale = Locale(code);
+                setState(() => _locale = locale);
+                app.setLocale(locale);
+              },
+            ),
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
@@ -184,15 +178,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               app.setThousandsSep(val);
             },
           ),
-          SwitchListTile(
-            secondary: const Icon(Icons.calendar_today),
-            title: Text(l10n.settingsDateWithDetails),
-            subtitle: Text(l10n.settingsDateWithDetailsSub),
-            value: _dateWithDetails,
-            onChanged: (val) {
-              setState(() => _dateWithDetails = val);
-              app.setDateWithDetails(val);
-            },
+          ListTile(
+            leading: const Icon(Icons.calendar_today),
+            title: Text(l10n.settingsDateFormat),
+            subtitle: Text(_dateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: true),
+          ),
+          ListTile(
+            leading: const Icon(Icons.access_time),
+            title: Text(l10n.settingsTimeFormat),
+            subtitle: Text(_timeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: false),
           ),
           ListTile(
             leading: const Icon(Icons.format_list_numbered),
@@ -380,5 +376,351 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _showFormatPicker(BuildContext context,
+      AppLocalizations l10n, {required bool isDate}) async {
+    final app = EpochApp.of(context);
+    final presets = isDate
+        ? [kDatePatternIso, kDatePatternDe, kDatePatternUk,
+      kDatePatternUs, kDatePatternIsoTight, kDatePatternCompact]
+        : [kTimePatternFull, kTimePatternNoSeconds,
+      kTimePatternNoLeadingZero, kTimePatternCompact];
+
+    final current = isDate ? _dateFormat : _timeFormat;
+    // If current is a custom pattern, start with it; otherwise start with preset:
+    String selected = current;
+
+    final confirmed = await showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) {
+          final isCustom = !presets.contains(selected);
+
+          return AlertDialog(
+            title: Text(isDate
+                ? l10n.settingsDateFormat
+                : l10n.settingsTimeFormat),
+            content: SizedBox(
+              width: 340,
+              child: SingleChildScrollView(
+                child: RadioGroup<String>(
+                  groupValue: isCustom ? '__custom__' : selected,
+                  onChanged: (v) async {
+                    if (v == '__custom__') {
+                      // Open custom dialog with current pattern as starting point:
+                      final custom = await _showCustomFormatDialog(
+                          ctx, l10n, selected, isDate);
+                      if (custom != null) setDialogState(() => selected = custom);
+                    } else if (v != null) {
+                      setDialogState(() => selected = v);
+                    }
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Preset options:
+                      ...presets.map( (pattern) => RadioListTile<String>(
+                          value: pattern,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            _formatPreview(pattern, isDate, l10n.localeName),
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            pattern,
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontSize: 14,
+                              color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Custom option:
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              value: '__custom__',
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              title: Text(
+                                l10n.settingsCustomFormat,
+                                style: TextStyle(
+                                  fontFamily: fontFamilyDefault,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              subtitle: isCustom
+                                  ? Text(
+                                    '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
+                                    style: TextStyle(
+                                      fontFamily: fontFamilyDefault,
+                                      fontSize: 14,
+                                      color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                                    ),
+                                  )
+                                  : null,
+                            ),
+                          ),
+                          if (isCustom) IconButton(
+                            icon: const Icon(Icons.edit, size: kIconSizeDefault),
+                            onPressed: () async {
+                              final custom = await _showCustomFormatDialog(
+                                  ctx, l10n, selected, isDate);
+                              if (custom != null) setDialogState(() => selected = custom);
+                            },
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                      isDate
+                          ? _expandedDateCheckbox(app, l10n)
+                          : _hourFormat24Checkbox(app, l10n)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l10n.actionCancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, selected),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    if (confirmed == null || confirmed == current) return;
+    if (!context.mounted) return;
+    setState(() {
+      if (isDate) {
+        _dateFormat = confirmed;
+        EpochApp.of(context).setDateFormat(confirmed);
+      } else {
+        _timeFormat = confirmed;
+        EpochApp.of(context).setTimeFormat(confirmed);
+      }
+    });
+  }
+
+  GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() => _dateWithDetails = !_dateWithDetails);
+        app.setDateWithDetails(_dateWithDetails);
+      },
+      child: CheckboxListTile(
+        value: _dateWithDetails,
+        tristate: false,
+        dense: true,
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        onChanged: (val) {
+          setState(() => _dateWithDetails = val!);
+          app.setDateWithDetails(val!);
+        },
+        title: Text(
+            l10n.settingsDateWithDetails,
+            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+        ),
+        subtitle: Text(
+            l10n.settingsDateWithDetailsSub,
+            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _hourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() => _hourFormat24 = !_hourFormat24);
+        app.setHourFormat24(_hourFormat24);
+      },
+      child: CheckboxListTile(
+        value: _hourFormat24,
+        tristate: false,
+        dense: true,
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        onChanged: (val) {
+          setState(() => _hourFormat24 = val!);
+          app.setHourFormat24(val!);
+        },
+        title: Text(
+            l10n.settingsHourFormat,
+            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+        ),
+        subtitle: Text(
+            l10n.settingsHourFormatSub,
+            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
+        ),
+      ),
+    );
+  }
+
+  Future<String?> _showCustomFormatDialog(
+      BuildContext context, AppLocalizations l10n,
+      String initialPattern, bool isDate) async {
+    final locale = Localizations.localeOf(context).toString();
+    final controller = TextEditingController(text: initialPattern);
+    final previewNow = DateTime.now();
+    final referenceDateTime = DateTime(2026, 1, 9, 8, 14, 27);
+
+    final leftRows = isDate
+        ? [('YYYY','2026'), ('YY','26'), ('MM','01'), ('M','1'),
+          ('DD','09'), ('D','9')]
+        : [('HH','08'), ('H','8'), ('mm','14'), ('ss','27')];
+
+    final rightRows = isDate
+        ? [('',     ''),
+          ('',     ''),
+          ('MMMM',  TimeValueFormatter.formatDatePattern(referenceDateTime,'MMMM',locale)),
+          ('MMM',   TimeValueFormatter.formatDatePattern(referenceDateTime,'MMM', locale)),
+          ('EEEE',  TimeValueFormatter.formatDatePattern(referenceDateTime,'EEEE',locale)),
+          ('EEE',   TimeValueFormatter.formatDatePattern(referenceDateTime,'EEE', locale))]
+        : [('',''),('',''),('',''),('','')];
+
+    final rowCount = leftRows.length;
+
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) {
+          final error = TimeValueFormatter.validatePattern(
+              controller.text, isDate);
+          final preview = error == null
+              ? (isDate
+                ? TimeValueFormatter.formatDatePattern(
+                  previewNow, controller.text, l10n.localeName)
+                : TimeValueFormatter.formatTimePattern(
+                  previewNow, controller.text,
+                  hourFormat24: _hourFormat24))
+              : null;
+
+          return AlertDialog(
+            title: Text(isDate
+                ? l10n.settingsDateFormat
+                : l10n.settingsTimeFormat),
+            content: SizedBox(
+              width: 340,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Table(
+                        columnWidths: const {
+                          0: FixedColumnWidth(52),   // Token links
+                          1: FixedColumnWidth(48),   // Beispiel links
+                          2: FixedColumnWidth(16),   // Abstand
+                          3: FixedColumnWidth(52),   // Token rechts
+                          4: FlexColumnWidth(),      // Beispiel rechts
+                        },
+                        children: List.generate(rowCount, (i) {
+                          final l = leftRows[i];
+                          final r = i < rightRows.length ? rightRows[i] : ('', '');
+                          return TableRow(children: [
+                            _tokenCell(l.$1, bold: true, ctx: ctx),
+                            _tokenCell(l.$2, ctx: ctx),
+                            const SizedBox(),
+                            _tokenCell(r.$1, bold: true, ctx: ctx),
+                            _tokenCell(r.$2, ctx: ctx),
+                          ]);
+                        }),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: controller,
+                        autofocus: true,
+                        onChanged: (_) => setDialogState(() {}),
+                        style: const TextStyle(fontFamily: fontFamilyDefault),
+                        decoration: InputDecoration(
+                          labelText: l10n.settingsCustomFormat,
+                          errorText: error,
+                        ),
+                      ),
+                      if (preview != null) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          preview,
+                          style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                            fontFamily: fontFamilyDefault,
+                            color: Theme.of(ctx).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l10n.actionCancel),
+              ),
+              TextButton(
+                onPressed: error != null
+                    ? null
+                    : () => Navigator.pop(ctx, controller.text.trim()),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _tokenCell(String text, {required BuildContext ctx, bool bold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: Text(text,
+        style: TextStyle(
+          fontFamily: fontFamilyDefault,
+          fontSize: 11,
+          fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+          color: bold
+              ? null
+              : Theme
+              .of(ctx)
+              .colorScheme
+              .onSurface
+              .withAlpha(160),
+        ),
+      ),
+    );
+  }
+
+  String _formatPreview(String pattern, bool isDate, String locale) {
+    final reference = DateTime.now().copyWith(hour: 8, minute: 14, second: 27);
+    if (isDate) {
+      return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
+    }
+    return TimeValueFormatter.formatTimePattern(reference, pattern,
+        hourFormat24: _hourFormat24);
   }
 }

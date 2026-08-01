@@ -746,6 +746,18 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsCustomFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom…'**
+  String get settingsCustomFormat;
+
+  /// No description provided for @settingsDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get settingsDateFormat;
+
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
@@ -755,7 +767,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
+  /// **'calender week, day of the year'**
   String get settingsDateWithDetailsSub;
 
   /// No description provided for @settingsDstAlwaysOff.
@@ -919,6 +931,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e. g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
+
+  /// No description provided for @settingsTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time format'**
+  String get settingsTimeFormat;
 
   /// No description provided for @settingsWhatsNew.
   ///

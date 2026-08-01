@@ -93,22 +93,22 @@ void main() {
     bool hourFormat24 = false;
 
     test('midnight = 12:00:00 AM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, tzSuffix: null),
           equals('12:00:00 AM'));
     });
 
     test('noon = 12:00:00 PM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, tzSuffix: null),
           equals('12:00:00 PM'));
     });
 
     test('13:30:00 = 01:30:00 PM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, null),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, tzSuffix: null),
           equals('01:30:00 PM'));
     });
 
     test('with timezone suffix', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, 'UTC'),
+      expect(TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, tzSuffix: 'UTC'),
           equals('09:00:00 AM UTC'));
     });
   });
