@@ -424,6 +424,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           value: pattern,
                           contentPadding: EdgeInsets.zero,
                           dense: true,
+                          controlAffinity: ListTileControlAffinity.leading,
                           title: Text(
                             _formatPreview(pattern, isDate, l10n.localeName),
                             style: TextStyle(
@@ -449,6 +450,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               value: '__custom__',
                               contentPadding: EdgeInsets.zero,
                               dense: true,
+                              controlAffinity: ListTileControlAffinity.leading,
                               title: Text(
                                 l10n.settingsCustomFormat,
                                 style: TextStyle(
@@ -654,46 +656,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         setState(() => _dateWithDetails = !_dateWithDetails);
         app.setDateWithDetails(_dateWithDetails);
       },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 24, height: 24,
-              child: Checkbox(
-                value: _dateWithDetails,
-                tristate: false,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (val) {
-                  setState(() => _dateWithDetails = val!);
-                  app.setDateWithDetails(val!);
-                },
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    l10n.settingsDateWithDetails,
-                    style: TextStyle(
-                      fontFamily: fontFamilyDefault,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    l10n.settingsDateWithDetailsSub,
-                    style: TextStyle(
-                      fontFamily: fontFamilyDefault,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+      child: CheckboxListTile(
+        value: _dateWithDetails,
+        tristate: false,
+        dense: true,
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        onChanged: (val) {
+          setState(() => _dateWithDetails = val!);
+          app.setDateWithDetails(val!);
+        },
+        title: Text(
+          l10n.settingsDateWithDetails,
+          style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+        ),
+        subtitle: Text(
+            l10n.settingsDateWithDetailsSub,
+            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
         ),
       ),
     );
@@ -706,46 +686,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         setState(() => _hourFormat24 = !_hourFormat24);
         app.setHourFormat24(_hourFormat24);
       },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 24, height: 24,
-              child: Checkbox(
-                value: _hourFormat24,
-                tristate: false,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (val) {
-                  setState(() => _hourFormat24 = val!);
-                  app.setHourFormat24(val!);
-                },
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    l10n.settingsHourFormat,
-                    style: TextStyle(
-                      fontFamily: fontFamilyDefault,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    l10n.settingsHourFormatSub,
-                    style: TextStyle(
-                      fontFamily: fontFamilyDefault,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+      child: CheckboxListTile(
+        value: _hourFormat24,
+        tristate: false,
+        dense: true,
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        onChanged: (val) {
+          setState(() => _hourFormat24 = val!);
+          app.setHourFormat24(val!);
+        },
+        title: Text(
+          l10n.settingsHourFormat,
+          style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
+        ),
+        subtitle: Text(
+            l10n.settingsHourFormatSub,
+            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
         ),
       ),
     );
