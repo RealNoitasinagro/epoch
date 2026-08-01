@@ -227,14 +227,28 @@ class TimeValueFormatter {
   }
 
   static String _applyTokens(String pattern, Map<String, String> tokens) {
-    var result = pattern;
-    // Sort by length descending to avoid partial matches:
+    // Sort tokens by length descending for greedy matching:
     final sorted = tokens.keys.toList()
       ..sort((a, b) => b.length.compareTo(a.length));
-    for (final token in sorted) {
-      result = result.replaceAll(token, tokens[token]!);
+
+    final buffer = StringBuffer();
+    int i = 0;
+    while (i < pattern.length) {
+      bool matched = false;
+      for (final token in sorted) {
+        if (pattern.startsWith(token, i)) {
+          buffer.write(tokens[token]);
+          i += token.length;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        buffer.write(pattern[i]);
+        i++;
+      }
     }
-    return result;
+    return buffer.toString();
   }
 
   /// Returns a double formatted to a given number of decimal digits.

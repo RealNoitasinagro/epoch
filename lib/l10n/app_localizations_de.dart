@@ -393,7 +393,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsDateFormat => 'Datumsformat';
 
   @override
-  String get settingsDateWithDetails => 'Kalenderwoche, Tag des Jahres';
+  String get settingsDateWithDetails => 'Erweitertes Datum';
+
+  @override
+  String get settingsDateWithDetailsSub => 'Kalenderwoche, Tag des Jahres';
 
   @override
   String get settingsDstAlwaysOff => 'Immer Normalzeit';
@@ -409,6 +412,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsHourFormat => '24-Stunden-Format';
+
+  @override
+  String get settingsHourFormatSub => 'Aus = 12-Stunden mit AM/PM';
 
   @override
   String get settingsLanguage => 'Sprache';

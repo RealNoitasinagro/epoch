@@ -420,23 +420,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Preset options:
-                      ...presets.map((pattern) => RadioListTile<String>(
-                        value: pattern,
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          _formatPreview(pattern, isDate, l10n.localeName),
-                          style: const TextStyle(fontFamily: fontFamilyDefault),
-                        ),
-                        subtitle: Text(
-                          pattern,
-                          style: TextStyle(
-                            fontFamily: fontFamilyDefault,
-                            fontSize: 10,
-                            color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                      ...presets.map( (pattern) => RadioListTile<String>(
+                          value: pattern,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            _formatPreview(pattern, isDate, l10n.localeName),
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            pattern,
+                            style: TextStyle(
+                              fontFamily: fontFamilyDefault,
+                              fontSize: 14,
+                              color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                            ),
                           ),
                         ),
-                      )),
+                      ),
                       // Custom option:
                       Row(
                         children: [
@@ -445,13 +449,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               value: '__custom__',
                               contentPadding: EdgeInsets.zero,
                               dense: true,
-                              title: Text(l10n.settingsCustomFormat),
+                              title: Text(
+                                l10n.settingsCustomFormat,
+                                style: TextStyle(
+                                  fontFamily: fontFamilyDefault,
+                                  fontSize: 14,
+                                ),
+                              ),
                               subtitle: isCustom
                                   ? Text(
                                     '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
                                     style: TextStyle(
                                       fontFamily: fontFamilyDefault,
-                                      fontSize: 10,
+                                      fontSize: 14,
                                       color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
                                     ),
                                   )
@@ -471,7 +481,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Divider(),
                       isDate
                           ? _expandedDateCheckbox(app, l10n)
-                          : _HourFormat24Checkbox(app, l10n)
+                          : _hourFormat24Checkbox(app, l10n)
                     ],
                   ),
                 ),
@@ -503,82 +513,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         EpochApp.of(context).setTimeFormat(confirmed);
       }
     });
-  }
-
-  GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
-    return GestureDetector(
-      onTap: () {
-        setState(() => _dateWithDetails = !_dateWithDetails);
-        app.setDateWithDetails(_dateWithDetails);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 24, height: 24,
-              child: Checkbox(
-                value: _dateWithDetails,
-                tristate: false,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (val) {
-                  setState(() => _dateWithDetails = val!);
-                  app.setDateWithDetails(val!);
-                },
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                l10n.settingsDateWithDetails,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontFamily: fontFamilyDefault,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  GestureDetector _HourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) {
-    return GestureDetector(
-      onTap: () {
-        setState(() => _hourFormat24 = !_hourFormat24);
-        app.setHourFormat24(_hourFormat24);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 24, height: 24,
-              child: Checkbox(
-                value: _hourFormat24,
-                tristate: false,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (val) {
-                  setState(() => _hourFormat24 = val!);
-                  app.setHourFormat24(val!);
-                },
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                l10n.settingsHourFormat,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontFamily: fontFamilyDefault,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   String _formatPreview(String pattern, bool isDate, String locale) {
@@ -654,8 +588,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Text(row.$1,
                               style: TextStyle(
                                 fontFamily: fontFamilyDefault,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
+                                fontSize: 14,
                               ),
                             ),
                           ),
@@ -664,8 +597,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Text(row.$2,
                               style: TextStyle(
                                 fontFamily: fontFamilyDefault,
-                                fontSize: 11,
-                                color: Theme.of(ctx).colorScheme.onSurface.withAlpha(180),
+                                fontSize: 14,
+                                color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
                               ),
                             ),
                           ),
@@ -687,7 +620,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 12),
                     Text(
                       preview,
-                      style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                         fontFamily: fontFamilyDefault,
                         color: Theme.of(ctx).colorScheme.primary,
                       ),
@@ -710,6 +643,110 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() => _dateWithDetails = !_dateWithDetails);
+        app.setDateWithDetails(_dateWithDetails);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 24, height: 24,
+              child: Checkbox(
+                value: _dateWithDetails,
+                tristate: false,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (val) {
+                  setState(() => _dateWithDetails = val!);
+                  app.setDateWithDetails(val!);
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.settingsDateWithDetails,
+                    style: TextStyle(
+                      fontFamily: fontFamilyDefault,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    l10n.settingsDateWithDetailsSub,
+                    style: TextStyle(
+                      fontFamily: fontFamilyDefault,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _hourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() => _hourFormat24 = !_hourFormat24);
+        app.setHourFormat24(_hourFormat24);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 24, height: 24,
+              child: Checkbox(
+                value: _hourFormat24,
+                tristate: false,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (val) {
+                  setState(() => _hourFormat24 = val!);
+                  app.setHourFormat24(val!);
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.settingsHourFormat,
+                    style: TextStyle(
+                      fontFamily: fontFamilyDefault,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    l10n.settingsHourFormatSub,
+                    style: TextStyle(
+                      fontFamily: fontFamilyDefault,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
