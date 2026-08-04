@@ -211,7 +211,7 @@ void main() {
 
     test('German MMM gets trailing period', () {
       expect(TimeValueFormatter.formatDatePattern(ref, 'MMM', 'de'),
-          equals('Jan.'), skip: true);
+          equals('Jan.'), skip: 'acceptable without period, following DateFormat()');
     });
 
     test('German EEE produces short weekday', () {
