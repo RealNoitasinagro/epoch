@@ -13,7 +13,7 @@ case "$cwd" in
         unset PUB_CACHE  # just in case... default: $HOME/.pub-cache
     ;;
     "$GL_Epoch")
-        export PUB_CACHE="$GL_Epoch"/.pub-cache
+        export PUB_CACHE="${GL_Epoch}/.pub-cache"
     ;;
     *)
         echo "Invalid directory! (Run from the right location, and/or check env variables.)";
@@ -117,11 +117,11 @@ fi
 
 
 function run_flutter_build {
-    local _variant=$1
+    local -a variant=("$@")
     local flutter_command_build=(
       "$flutter_active"
       build
-      "$_variant"
+      "${variant[@]}"
       --"$mode"
       --no-pub
     )
@@ -225,7 +225,7 @@ echo
 
 echo "# apk (--split-per-abi)"
 if [ ! "$skipSplit" -eq "1" ] ; then
-    run_flutter_build 'apk --split-per-abi'
+    run_flutter_build 'apk' '--split-per-abi'
 else
     echo "Skipped."
 fi
@@ -258,7 +258,7 @@ if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ;
   echo
 fi
 
-if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
+if [[ ( "$cwd" == "$GL_Epoch" && "$dryRun" -eq "0" && ("$mode" != "release" || ! -e "${GL_Epoch}/.git-commit") ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
     tee -a "$build_all_log" << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -272,7 +272,7 @@ fi
 
 if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
-      "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
+      "$skipChecksums" -eq "0" && "$useLogging" -eq "1" && -e "${GL_Epoch}/.git-commit" ]] ; then
     rm -v -f $destination_path/*.apk
     cp -v $apk_output_path/${target_platform_android_arm} $destination_path
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
