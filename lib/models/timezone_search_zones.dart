@@ -143,6 +143,15 @@ const List<TzEntry> tzEntries_Americas = [
     ],
   ),
   TzEntry(
+      ianaZone: 'America/Cayenne',
+      offsetWinter: '-03:00', offsetSummer: '-03:00',
+      abbrWinter: '-03', abbrSummer: '-03',
+      terms: [
+        ...['french guiana time', 'GFT', 'guyane', 'kourou'],
+        ...['französisch-guayana'],
+      ]
+  ),
+  TzEntry(
     ianaZone: 'America/Chicago',
     offsetWinter: '-06:00', offsetSummer: '-05:00',
     abbrWinter: 'CST', abbrSummer: 'CDT',
@@ -439,7 +448,7 @@ const List<TzEntry> tzEntries_Asia = [
     offsetWinter: '+05:45', offsetSummer: '+05:45',
     abbrWinter: '+0545', abbrSummer: '+0545',
     terms: [
-      ...['nepal time', 'NPT', 'katmandu'],
+      ...['nepal time', 'NPT', 'nepal standard time', 'katmandu'],
       ...['nepalesische zeit'],
     ],
   ),
@@ -1035,10 +1044,10 @@ const List<TzEntry> tzEntries_Europe = [
     terms: [...tCET_CEST,
       ...['belgium', 'belgique', 'bruxelles',
         'luxembourg',
-        'netherlands', 'holland', 'amsterdam', 'rotterdam'],
+        'netherlands', 'holland', 'amsterdam', 'rotterdam', 'the hague', "'s-Gravenhage"],
       ...['belgien', 'brüssel',
         'luxemburg',
-        'niederlande'],
+        'niederlande', 'den haag'],
     ],
   ),
   TzEntry(

@@ -36,7 +36,7 @@ class ConfigurableTab extends StatefulWidget {
     this.thousandsSep = true,
     this.hourFormat24 = true,
     this.showDateDetails = true,
-    this.maxEntries = 20,
+    this.maxEntries = 25,
     this.allowedTypes,
   });
 

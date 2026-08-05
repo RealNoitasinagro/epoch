@@ -1019,19 +1019,19 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (BCD)'**
+  /// **'Binary Clock (BCD)'**
   String get valueTypeBinaryClockBcd;
 
   /// No description provided for @valueTypeBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (columns)'**
+  /// **'Binary Clock (columns)'**
   String get valueTypeBinaryClockColumns;
 
   /// No description provided for @valueTypeBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Binary time (string)'**
+  /// **'Binary Time (string)'**
   String get valueTypeBinaryClockString;
 
   /// No description provided for @valueTypeDate.
@@ -1049,13 +1049,13 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Day percent'**
+  /// **'Day Percent'**
   String get valueTypeDayPercent;
 
   /// No description provided for @valueTypeDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Day second'**
+  /// **'Day Second'**
   String get valueTypeDaySecond;
 
   /// No description provided for @valueTypeDoomsdayClock.
@@ -1103,7 +1103,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeSevenSegmentTime.
   ///
   /// In en, this message translates to:
-  /// **'Seven-segment clock'**
+  /// **'Seven-segment Clock'**
   String get valueTypeSevenSegmentTime;
 
   /// No description provided for @valueTypeSwatchBeats.
@@ -1127,7 +1127,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Unix time (s)'**
+  /// **'Unix Time (s)'**
   String get valueTypeUnixSeconds;
 }
 

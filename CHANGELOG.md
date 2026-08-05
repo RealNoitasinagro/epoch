@@ -5,12 +5,14 @@
 ### Added
 - display the next four clock changes for configured time values with DST in info
 - date and time formats configurable (preset and custom options)
+- `example_configs` and [config manual](https://github.com/RealNoitasinagro/epoch/blob/develop/example_configs/CONFIG_MANUAL.md) on GitHub
 
 ### Changed
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
 - much better timezone search keyword coverage (still WIP)
 - graphical binary clocks now allow to turn seconds off, like seven-segment clock
 - Swatch beats now show two decimals by default (with option for no decimals)
+- max entries per configurable tab increased from 20 to 25
 
 ### Fixed
 - Swatch beats were up to half a .beat off (because of unwanted rounding)

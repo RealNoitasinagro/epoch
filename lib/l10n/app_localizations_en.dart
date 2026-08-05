@@ -531,13 +531,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabTechnical => 'Technical';
 
   @override
-  String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
+  String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';
 
   @override
-  String get valueTypeBinaryClockColumns => 'Binary clock (columns)';
+  String get valueTypeBinaryClockColumns => 'Binary Clock (columns)';
 
   @override
-  String get valueTypeBinaryClockString => 'Binary time (string)';
+  String get valueTypeBinaryClockString => 'Binary Time (string)';
 
   @override
   String get valueTypeDate => 'Date';
@@ -546,10 +546,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeDateTime => 'Date & Time';
 
   @override
-  String get valueTypeDayPercent => 'Day percent';
+  String get valueTypeDayPercent => 'Day Percent';
 
   @override
-  String get valueTypeDaySecond => 'Day second';
+  String get valueTypeDaySecond => 'Day Second';
 
   @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
@@ -573,7 +573,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
 
   @override
-  String get valueTypeSevenSegmentTime => 'Seven-segment clock';
+  String get valueTypeSevenSegmentTime => 'Seven-segment Clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';
@@ -585,5 +585,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeTime => 'Time';
 
   @override
-  String get valueTypeUnixSeconds => 'Unix time (s)';
+  String get valueTypeUnixSeconds => 'Unix Time (s)';
 }

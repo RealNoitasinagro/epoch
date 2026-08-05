@@ -1,0 +1,13 @@
+{
+  "active_tab": 4,
+  "custom_tabs": [
+    "1785924056345\tHeimat-Zeit\tdate/local\ttime/local\ttime/named:Europe/Berlin|Hamburg, DE -- immer Normalzeit|dst:forceStandard\tdivider:1785924144263\tgmst/utc\tlmst/utc"
+  ],
+  "date_format": "EEEE, DD.MM.YYYY",
+  "hour_format_24": true,
+  "lmst_lon": 10.2339598,
+  "lmst_mode": "manual",
+  "locale": "de",
+  "theme_mode": "night",
+  "zone_display": "hidden"
+}

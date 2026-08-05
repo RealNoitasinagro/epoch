@@ -34,7 +34,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
-- 7-day advance clock change notice
+- 7-day advance clock change notice, display upcoming clock changes in the next few years
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
@@ -45,9 +45,9 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Light, dark, and system themes
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
-- 12 / 24-hour format toggle
-- Thousands separator toggle
+- Customizable date and time formats, 12/24-hour format toggle
 - Expanded date toggle
+- Thousands separator toggle
 - Timezone details (abbreviation and UTC offset) configurable
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
@@ -80,10 +80,16 @@ Epoch is built around flexibility:
 rather than making choices for you, it gives you the building blocks
 to assemble exactly the time display you need — and nothing you don't.
 
+> [!TIP]
+> Check out the `example_configs` folder with (partly) localized pre-made configurations 
+> that you might like to fine-tune for your needs. \
+> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/develop/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots.
+
 
 ## Screenshots
 
-Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
+Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`. \
+There are slight differences between the two sets to highlight different aspects and details.
 
 <details>
 <summary>Click to expand (English)</summary>
