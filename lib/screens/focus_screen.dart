@@ -17,12 +17,12 @@ import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/time_string_row.dart';
 
 const _colorOptions = [
-  Color(0xFFFFFFFF),  // white
-  Color(0xFFCC1010),  // night red
-  Color(0xFF00FF41),  // matrix green
-  Color(0xFFFFB300),  // amber
-  Color(0xFF00E5FF),  // cyan
-  Color(0xFFB0B0B0),  // grey
+  Color(0xFFFFFFFF),  // white            4294967295
+  Color(0xFFCC1010),  // night red        4291563536
+  Color(0xFF00FF41),  // matrix green     4278255425
+  Color(0xFFFFB300),  // amber            4294947584
+  Color(0xFF00E5FF),  // cyan             4278248959
+  Color(0xFFB0B0B0),  // grey             4289769648
 ];
 
 class FocusScreen extends StatefulWidget {
@@ -94,10 +94,10 @@ class _FocusScreenState extends State<FocusScreen> {
       } else {
         initial = (!kIsWeb && !Platform.isLinux)
             ? await ScreenBrightness().application
-            : 1.0;
+            : kDefaultFocusBrightness;
       }
     } catch (_) {
-      initial = 1.0;
+      initial = kDefaultFocusBrightness;
     }
     if (mounted) setState(() {
       _brightness = initial;
