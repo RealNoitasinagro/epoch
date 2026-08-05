@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source='main'
+source_branch='main'
+source_remote="origin/${source_branch}"
 
-# Make sure $GH_Epoch is on main, and the working directory is clean:
+# Make sure $GH_Epoch is on the correct branch, and the working directory is clean:
 # shellcheck disable=SC2154
 current_branch=$(git -C "$GH_Epoch" branch --show-current)
 if git -C "$GH_Epoch" diff --quiet && git -C "$GH_Epoch" diff --cached --quiet; then
@@ -11,11 +12,20 @@ if git -C "$GH_Epoch" diff --quiet && git -C "$GH_Epoch" diff --cached --quiet; 
 else
     working_dir_status='dirty'
 fi
-if [[ ! "$current_branch" == "$source" || ! "$working_dir_status" == "clean" ]] ; then
-    echo "Releases should be done from a clean $source branch!";
+if [[ "$current_branch" != "$source_branch" || "$working_dir_status" != "clean" ]] ; then
+    echo "Releases should be done from a clean $source_branch branch!";
     echo "(Current branch is $current_branch, status $working_dir_status.)"
     exit 1
 fi
+
+git -C "$GH_Epoch" fetch origin --quiet
+local_commit=$(git -C "$GH_Epoch" rev-parse "$source_branch")
+remote_commit=$(git -C "$GH_Epoch" rev-parse "$source_remote")
+if [[ "$local_commit" != "$remote_commit" ]]; then
+    echo "Local $source_branch is not in sync with $source_remote – push first!"
+    exit 1
+fi
+
 
 # shellcheck disable=SC2154
 target="$GL_Epoch"
@@ -56,7 +66,7 @@ cp -v "$GH_Epoch"/android/key.properties "$GL_Epoch"/android
 cp -v "$GH_Epoch"/android/app/upload-keystore.jks "$GL_Epoch"/android/app
 
 echo
-echo "Synced $(tail -1 "$target/.git-commit" | cut -c1-8) from $source to $target."
+echo "Synced $(tail -1 "$target/.git-commit" | cut -c1-8) from $source_branch to $target."
 echo
 
 exit 0
