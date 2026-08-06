@@ -68,7 +68,7 @@ Future<void> importSettings(BuildContext context) async {
   } else return;
 
   try {
-    await _importSettingsJson(json);
+    await importSettingsJson(json);
   } on FormatException {
     if (!context.mounted) return;
     _showSnackBar(context, l10n.messageSettingsImportFailed);
@@ -145,7 +145,7 @@ Future<String> _exportSettingsJson() async {
   return encoder.convert(map);
 }
 
-Future<void> _importSettingsJson(String json) async {
+Future<void> importSettingsJson(String json) async {
   final prefs = await SharedPreferences.getInstance();
 
   // Parse first – throws FormatException before any changes if invalid:
