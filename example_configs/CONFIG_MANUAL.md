@@ -97,8 +97,8 @@ This will change soon. Custom tabs are already fully configurable.
 ### Custom Tabs
 
 Custom tabs are stored as a JSON array under the key `custom_tabs`. \
-Each entry is a tab string, its position in the array determines its place in the app. \
-(It's currently not possible to reorder tabs in the app itself.)
+Each entry is a tab string, its position in the array determines its place in the app.
+(It's currently not possible to reorder tabs in the app itself.) \
 The string consists of fields separated by tabulator characters (`\t`):
 
 ```
@@ -122,7 +122,7 @@ valueType/zone|Custom Label
 valueType/zone|Custom Label|dst:forceDst
 valueType/zone||dst:forceStandard
 ```
-Note: valueType and zone are obligatory, custom label and forced clock change mode settings are optional.
+Note: `valueType` and `zone` are obligatory, custom label and forced clock change mode settings are optional.
 
 **Value types:**
 
@@ -171,7 +171,7 @@ Note: valueType and zone are obligatory, custom label and forced clock change mo
 | `dst:forceDst`      | Always show summer time               |
 | `dst:forceStandard` | Always show standard time             |
 
-**Show seconds** (optional suffix for binaryClockColumns, binaryClockBcd, sevenSegmentClock and swatchBeats):
+**Show seconds** (optional suffix for `binaryClockColumns`, `binaryClockBcd`, `sevenSegmentClock` and `swatchBeats`):
 
 | Suffix    | Effect                  |
 |-----------|-------------------------|

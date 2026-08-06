@@ -133,6 +133,32 @@ There are slight differences between the two sets to highlight different aspects
 
 </details>
 
+Additional screenshots for `example_configs`:
+
+<details>
+<summary>Click to expand (English)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_home.png" width="180" alt="en epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_spaceflight.png" width="180" alt="en epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_special_timezones.png" width="180" alt="en epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_uno.png" width="180" alt="en epoch_settings_uno.json">
+</p>
+
+</details>
+
+<details>
+<summary>Click to expand (German)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_home.png" width="180" alt="de epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_spaceflight.png" width="180" alt="de epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_special_timezones.png" width="180" alt="de epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_uno.png" width="180" alt="de epoch_settings_uno.json">
+</p>
+
+</details>
+
 ---
 
 ## Platforms
