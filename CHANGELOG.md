@@ -6,6 +6,7 @@
 - display the next four clock changes for configured time values with (unpinned) DST in info
 - date and time formats configurable (preset and custom options)
 - `example_configs` and [config manual](https://github.com/RealNoitasinagro/epoch/blob/develop/example_configs/CONFIG_MANUAL.md) on GitHub
+- support for direct config loading on Linux commandline
 
 ### Changed
 - a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)

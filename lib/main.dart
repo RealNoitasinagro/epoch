@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
+import 'models/settings_io.dart';
 import 'models/time_value.dart';
 import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
@@ -17,8 +19,26 @@ import 'screens/curiosities_tab.dart';
 import 'screens/settings_screen.dart';
 import 'screens/technical_tab.dart';
 
-void main() {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
+
+  // On Linux: check for config file argument:
+  if (args.isNotEmpty && Platform.isLinux) {
+    final configPath = args.first;
+    final file = File(configPath);
+    if (file.existsSync()) {
+      try {
+        final json = await file.readAsString();
+        await importSettingsJson(json);  // aus settings_io.dart
+      } catch (e) {
+        debugPrint('Failed to load config: $e');
+      }
+    } else {
+      debugPrint('Config file not found: $configPath');
+    }
+  }
+
   runApp(const EpochApp());
 }
 
