@@ -35,6 +35,10 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
 - 7-day advance clock change notice, display upcoming clock changes in the next few years
+- Customizable date and time formats, 12/24-hour format toggle
+- Timezone details (abbreviation and UTC offset) configurable
+- Expanded date toggle
+- Thousands separator toggle
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
@@ -45,10 +49,6 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Light, dark, and system themes
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
-- Customizable date and time formats, 12/24-hour format toggle
-- Expanded date toggle
-- Thousands separator toggle
-- Timezone details (abbreviation and UTC offset) configurable
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
 - Android widgets planned
