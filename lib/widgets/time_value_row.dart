@@ -52,7 +52,8 @@ abstract class TimeValueRow extends StatelessWidget {
                 ),
               ),
             ],
-            if (ianaZone != null)
+            if (ianaZone != null &&
+                timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto)
               ..._buildDstTransitionsSection(ianaZone, ctx, l10n),
           ],
         ),

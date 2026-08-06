@@ -51,7 +51,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Timezone details (abbreviation and UTC offset) configurable
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
-- Android widgets coming soon
+- Android widgets planned
 - Not yet: conversions between time systems
 
 ### Privacy & permissions

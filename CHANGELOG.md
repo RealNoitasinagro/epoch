@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- display the next four clock changes for configured time values with DST in info
+- display the next four clock changes for configured time values with (unpinned) DST in info
 - date and time formats configurable (preset and custom options)
 - `example_configs` and [config manual](https://github.com/RealNoitasinagro/epoch/blob/develop/example_configs/CONFIG_MANUAL.md) on GitHub
 
