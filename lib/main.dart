@@ -8,6 +8,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
+import 'layout_constants.dart';
 import 'models/app_settings.dart';
 import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
@@ -24,18 +25,29 @@ void main(List<String> args) async {
   tz.initializeTimeZones();
 
   // On Linux: check for config file argument:
-  if (args.isNotEmpty && Platform.isLinux) {
-    final configPath = args.first;
+  if (!Platform.isLinux || args.isEmpty) {
+    runApp(const EpochApp());
+    return;
+  }
+  if (args.contains('--help') || args.contains('-h')) {
+    stdout.writeln('Usage: epoch [config.json]');
+    exit(0);
+  }
+
+  final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+  if (configPath != null) {
     final file = File(configPath);
     if (file.existsSync()) {
       try {
         final json = await file.readAsString();
-        await importSettingsJson(json);  // aus settings_io.dart
+        await importSettingsJson(json);
       } catch (e) {
-        debugPrint('Failed to load config: $e');
+        stderr.writeln('Failed to load config: $e');
+        exit(1);
       }
     } else {
-      debugPrint('Config file not found: $configPath');
+      stderr.writeln('Config file not found: $configPath');
+      exit(1);
     }
   }
 
@@ -43,8 +55,8 @@ void main(List<String> args) async {
 }
 
 const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
-const _nightRed = Color(0xFFCC1010);
-const _nightRedDim = Color(0xFF7A0000);
+const _nightRed = kColorNightRed;
+const _nightRedDim = kColorNightRedDim;
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -108,6 +120,7 @@ class EpochAppState extends State<EpochApp> {
   String _dateFormat               = kDatePatternIso;
   String _timeFormat               = kTimePatternFull;
   ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
+  bool _dayQuarterColor            = kDefaultDayQuarterColor;
   LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
 
@@ -133,6 +146,7 @@ class EpochAppState extends State<EpochApp> {
     final dateFormat      = await loadDateFormat();
     final timeFormat      = await loadTimeFormat();
     final zoneDisplayMode = await loadZoneDisplayMode();
+    final dayQuarterColor = await loadDayQuarterColor();
     final lmstMode        = await loadLmstMode();
     final lmstLongitude   = await loadLmstLongitude();
 
@@ -154,6 +168,7 @@ class EpochAppState extends State<EpochApp> {
       _dateFormat      = dateFormat;
       _timeFormat      = timeFormat;
       _zoneDisplayMode = zoneDisplayMode;
+      _dayQuarterColor = dayQuarterColor;
       _lmstMode        = lmstMode;
       _lmstLongitude   = lmstLongitude;
       _settingsLoaded  = true;
@@ -200,6 +215,11 @@ class EpochAppState extends State<EpochApp> {
     saveZoneDisplayMode(mode);
   }
 
+  void setDayQuarterColor(bool v) {
+    setState(() => _dayQuarterColor = v);
+    saveDayQuarterColor(v);
+  }
+
   void setLmstMode(LmstMode mode) {
     setState(() => _lmstMode = mode);
     saveLmstMode(mode);
@@ -226,6 +246,7 @@ class EpochAppState extends State<EpochApp> {
   String get dateFormat               => _dateFormat;
   String get timeFormat               => _timeFormat;
   ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
+  bool get dayQuarterColor            => _dayQuarterColor;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
 

@@ -22,23 +22,24 @@ Default values will show up in config files when a non-default value had been co
 
 ### Global Settings
 
-| Key                | Type             | Default             | Description                                                                             |
-|--------------------|------------------|---------------------|-----------------------------------------------------------------------------------------|
-| `active_tab`       | string           | `0`                 | app will open with the tab used last                                                    |
-| `custom_tabs`      | array of strings | `[]`                | user-defined Watchlist tabs (see below)                                                 |
-| `date_cw_doy`      | bool             | `true`              | Show ISO week number and day of year                                                    |
-| `date_format`      | string           | `"EEE, YYYY-MM-DD"` | Date display format (see tokens below)                                                  |
-| `focus_brightness` | number           | `0.5`               | Focus screen brightness (0.01–1.0, mobile-only)                                         |
-| `focus_color`      | integer          | `4294967295`        | Focus screen text color as ARGB integer (see below)                                     |
-| `hour_format_24`   | bool             | `true`              | 24-hour clock                                                                           |
-| `last_export_dir`  | string           | `""`                | Path to a folder (defaults platform-specific)                                           |
-| `lmst_lon`         | number           | `—`                 | Longitude in decimal degrees (−180 to +180)                                             |
-| `lmst_mode`        | string           | `"off"`             | `"off"`, `"manual"`, `"locationAccess"`                                                 |
-| `locale`           | string           | `"en"`              | `"en"` or `"de"`                                                                        |
-| `theme_mode`       | string           | `"system"`          | `"light"`, `"dark"`, `"night"`, `"system"`                                              |
-| `time_format`      | string           | `"HH:mm:ss"`        | Time display format (see tokens below)                                                  |
-| `thousands_sep`    | bool             | `true`              | Thousands separator in numbers (locale-dependent)                                       |
-| `zone_display`     | string           | `"full"`            | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"` |
+| Key                  | Type             | Default             | Description                                                                             |
+|----------------------|------------------|---------------------|-----------------------------------------------------------------------------------------|
+| `active_tab`         | string           | `0`                 | app will open with the tab used last                                                    |
+| `custom_tabs`        | array of strings | `[]`                | user-defined Watchlist tabs (see below)                                                 |
+| `date_cw_doy`        | bool             | `true`              | Show ISO week number and day of year                                                    |
+| `date_format`        | string           | `"EEE, YYYY-MM-DD"` | Date display format (see tokens below)                                                  |
+| `day_quarter_color`  | bool             | `true`              | Show day quarter indicator in night red, cyan, amber, matrix green                      |
+| `focus_brightness`   | number           | `0.5`               | Focus screen brightness (0.01–1.0, mobile-only)                                         |
+| `focus_color`        | integer          | `4294967295`        | Focus screen text color as ARGB integer (see below)                                     |
+| `hour_format_24`     | bool             | `true`              | 24-hour clock                                                                           |
+| `last_export_dir`    | string           | `""`                | Path to a folder (defaults platform-specific)                                           |
+| `lmst_lon`           | number           | `—`                 | Longitude in decimal degrees (−180 to +180)                                             |
+| `lmst_mode`          | string           | `"off"`             | `"off"`, `"manual"`, `"locationAccess"`                                                 |
+| `locale`             | string           | `"en"`              | `"en"` or `"de"`                                                                        |
+| `theme_mode`         | string           | `"system"`          | `"light"`, `"dark"`, `"night"`, `"system"`                                              |
+| `time_format`        | string           | `"HH:mm:ss"`        | Time display format (see tokens below)                                                  |
+| `thousands_sep`      | bool             | `true`              | Thousands separator in numbers (locale-dependent)                                       |
+| `zone_display`       | string           | `"full"`            | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"` |
 
 > [!TIP]
 > If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`. \

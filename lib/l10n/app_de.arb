@@ -151,6 +151,8 @@
   "settingsDateFormat": "Datumsformat",
   "settingsDateWithDetails": "Erweitertes Datum",
   "settingsDateWithDetailsSub": "Kalenderwoche, Tag des Jahres",
+  "settingsDayQuarterColor": "Tagesviertel-Farbe",
+  "settingsDayQuarterColorSub": "1. rot | 2. zyan | 3. gelb | 4. grün",
   "settingsDstAlwaysOff": "Immer Normalzeit",
   "settingsDstAlwaysOn": "Immer Sommerzeit",
   "settingsDstAuto": "Automatisch",

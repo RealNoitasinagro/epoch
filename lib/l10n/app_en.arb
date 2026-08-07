@@ -151,6 +151,8 @@
   "settingsDateFormat": "Date format",
   "settingsDateWithDetails": "Expanded date",
   "settingsDateWithDetailsSub": "calender week, day of the year",
+  "settingsDayQuarterColor": "Day quarter color",
+  "settingsDayQuarterColorSub": "1st red | 2nd cyan | 3rd amber | 4th green",
   "settingsDstAlwaysOff": "Always standard time",
   "settingsDstAlwaysOn": "Always summer time",
   "settingsDstAuto": "Automatic",

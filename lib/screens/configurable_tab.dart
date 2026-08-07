@@ -621,7 +621,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final segmentColor = switch (app.themeMode) {
       AppThemeMode.light  => Colors.black,
       AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.night  => kColorNightRed,
       AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
           ? Colors.white : Colors.black,
     };
@@ -655,6 +655,18 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       };
     };
 
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
+
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night &&
+        !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(widget.now.toUtc(), ianaZone)
+        : null;
+
     return Dismissible(
       key: ValueKey(timeValue.key),
       direction: DismissDirection.endToStart,
@@ -672,8 +684,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
-            ? GraphicValueContent(clock: clock)
-            : TextValueContent(line1: display.line1, line2: display.line2),
+            ? GraphicValueContent(
+                clock: clock,
+                dayQuarterColor: dayQuarterColor,
+              )
+            : TextValueContent(
+                line1: display.line1,
+                line2: display.line2,
+                dayQuarterColor: dayQuarterColor,
+              ),
         actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
       ),
     );

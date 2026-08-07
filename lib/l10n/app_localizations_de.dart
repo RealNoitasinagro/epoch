@@ -410,6 +410,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsDateWithDetailsSub => 'Kalenderwoche, Tag des Jahres';
 
   @override
+  String get settingsDayQuarterColor => 'Tagesviertel-Farbe';
+
+  @override
+  String get settingsDayQuarterColorSub =>
+      '1. rot | 2. zyan | 3. gelb | 4. grün';
+
+  @override
   String get settingsDstAlwaysOff => 'Immer Normalzeit';
 
   @override

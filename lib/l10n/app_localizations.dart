@@ -770,6 +770,18 @@ abstract class AppLocalizations {
   /// **'calender week, day of the year'**
   String get settingsDateWithDetailsSub;
 
+  /// No description provided for @settingsDayQuarterColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Day quarter color'**
+  String get settingsDayQuarterColor;
+
+  /// No description provided for @settingsDayQuarterColorSub.
+  ///
+  /// In en, this message translates to:
+  /// **'1st red | 2nd cyan | 3rd amber | 4th green'**
+  String get settingsDayQuarterColorSub;
+
   /// No description provided for @settingsDstAlwaysOff.
   ///
   /// In en, this message translates to:

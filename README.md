@@ -39,6 +39,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Timezone details (abbreviation and UTC offset) configurable
 - Expanded date toggle
 - Thousands separator toggle
+- Day quarter color toggle
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers

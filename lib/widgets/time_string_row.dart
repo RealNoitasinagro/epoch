@@ -222,6 +222,18 @@ class TimeStringRow extends TimeValueRow {
         ? display.line1
         : '${display.line1}\n${display.line2}';
 
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
+
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night &&
+        !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        : null;
+
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
@@ -230,9 +242,10 @@ class TimeStringRow extends TimeValueRow {
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,
         waitDuration: const Duration(milliseconds: 1000),
-        child:  TextValueContent(
+        child: TextValueContent(
           line1: display.line1,
           line2: display.line2,
+          dayQuarterColor: dayQuarterColor,
           onDoubleTap: () => openFocusScreen(context, locale),
         ),
       ),

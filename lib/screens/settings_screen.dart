@@ -27,6 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _dateFormat = kDatePatternIso;
   String _timeFormat = kTimePatternFull;
   late ZoneDisplayMode _zoneDisplayMode;
+  late bool _dayQuarterColor;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
   bool _locationLoading = false;
@@ -51,6 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _dateWithDetails = app.dateWithDetails;
       _dateFormat = app.dateFormat;
       _timeFormat = app.timeFormat;
+      _dayQuarterColor = app.dayQuarterColor;
       _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
@@ -234,6 +236,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
             ),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.palette),
+            title: Text(l10n.settingsDayQuarterColor),
+            subtitle: Text(l10n.settingsDayQuarterColorSub),
+            value: _dayQuarterColor,
+            onChanged: (val) {
+              setState(() => _dayQuarterColor = val);
+              app.setDayQuarterColor(val);
+            },
           ),
           const Divider(height: kDividerHeight),
           Padding(

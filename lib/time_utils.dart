@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:epoch/layout_constants.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
@@ -125,6 +127,21 @@ class TimeUtils {
     } catch (_) {
       return (before: '?', after: '?');
     }
+  }
+
+  /// Return a color depending on what quarter of the day it is.
+  static Color dayQuarterColor(DateTime utc, String? ianaZone) {
+    int hour;
+    if (ianaZone == null) {
+      hour = utc.hour;
+    } else {
+      tz.TZDateTime tzDt = inZone(utc, ianaZone);
+      hour = tzDt.hour;
+    }
+    if (hour < 6)  return kColorNightRed;
+    if (hour < 12) return kColorCyan;
+    if (hour < 18) return kColorAmber;
+    return kColorMatrixGreen;
   }
 
 

@@ -5,6 +5,7 @@
   ],
   "date_cw_doy": false,
   "date_format": "EEE, DD/MM/YYYY",
+  "day_quarter_color": false,
   "focus_brightness": 0.1585,
   "focus_color": 4278248959,
   "hour_format_24": false,
