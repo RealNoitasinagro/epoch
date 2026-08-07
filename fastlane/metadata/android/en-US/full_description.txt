@@ -1,22 +1,38 @@
-Epoch displays the current moment across a wide range of time systems —
+Epoch shows the current moment across a wide range of time systems —
 updating every second, all in one place.
 
-WHAT EPOCH SHOWS YOU
-- Civil: date, time, day second, day percent — for any timezone worldwide
+<b>What Epoch gives you</b>
+- Civil: date, time, day second, day percent — for any timezone
 - Technical: Unix time, International Atomic Time (TAI), GPS time
-- Astronomical: Greenwich Mean Sidereal Time, Julian Date, Modified Julian Date
-- Curiosities: Swatch Internet Time, three binary clock variants, Doomsday Clock
+- Astronomical: Greenwich and Local Mean Sidereal Time (GMST, LMST), Julian Date variants
+- Curiosities: Swatch Internet Time, seven-segment and binary clocks, Doomsday Clock
+Copy any value to clipboard with one tap.
 
-CONFIGURABLE
-Build your own display with Watchlist tabs — combine any values from any category, in any order.
-Set custom labels, reorder by drag-and-drop, swipe to remove.
+<b>Configurable</b>
+- Build your own Watchlist tabs — combine any value from any category, in any order.
+- Set custom labels, section headers, and dividers.
+- Reorder by drag-and-drop, swipe to remove.
+- Customize date and time formats, configure timezone information.
+- Optionally pin timezones to always show standard or summer time.
+- 7-day advance notice of clock changes, with upcoming transitions shown in the value's info dialog.
+- Export, import, and reset all preferences.
 
-DESIGNED FOR NIGHT USE
+<b>Focus mode</b>
+- Double-tap any value for a full-screen, always-on display — ideal as a bedside clock.
+- Adjustable brightness (Android) and text color.
+- Toggle details with a long press.
+
+<b>Designed for night use</b>
 Night mode displays red text on black — preserving your eyes' dark adaptation for stargazing.
 
-PRIVACY FIRST
-No ads. No notifications. No tracking. No analytics. No network requests.
+<b>Example configurations</b>
+Ready-to-import <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">example configurations</a> are available on GitHub,
+including spaceflight tab, world timezone explorer, and config manual.
+
+<b>Privacy first</b>
+No ads, notifications, tracking, analytics, or network requests.
 All settings stored locally on your device.
 No permissions required.
+For Local Mean Sidereal Time: optionally grant location access once (coarse, no GPS) or enter longitude manually.
 
 Available in English and German.

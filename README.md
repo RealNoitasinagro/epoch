@@ -27,7 +27,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Civil** – date, time, day second, day percent for any timezone
 - **Technical** – Unix time, TAI, GPS time
 - **Astronomical** – GMST, LMST, Julian Date, Modified Julian Date (MJD), MJD2000
-- **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
+- **Curiosities** – Swatch Internet Time, seven-segment and binary clocks, Doomsday Clock
 
 ### Configurable display
 - Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
@@ -173,6 +173,21 @@ Additional screenshots for `example_configs`:
 | Windows  | ❌ Not supported |                                                                                                                                                |
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
+
+### A note on the timeliness of the data
+
+> [!NOTE]
+> **Timezone data:** Epoch uses the [timezone](https://pub.dev/packages/timezone) package,
+> which bundles the [IANA Time Zone Database](https://www.iana.org/time-zones). \
+> The timezone package may not have the latest available IANA database, and politically motivated
+> changes may not yet be reflected. \
+> For most use cases, this makes no difference. \
+> However, if you'd like to build Epoch yourself with an up-to-date IANA db, check out the script
+> `update_timezone_to_latest_iana_db.sh` in the repo's root. \
+> It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
+> Current (2026-08) versions:
+> - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
+> - IANA database: [2025c](https://www.iana.org/time-zones/releases/2025c), latest: [2026c](https://www.iana.org/time-zones/releases/2026c)
 
 ### Linux
 

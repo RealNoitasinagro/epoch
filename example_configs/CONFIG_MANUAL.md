@@ -124,7 +124,7 @@ valueType/zone||dst:forceStandard
 ```
 Note: `valueType` and `zone` are obligatory, custom label and forced clock change mode settings are optional.
 
-**Value types:**
+##### Value types
 
 | `valueType`              | Description                  |
 |--------------------------|------------------------------|
@@ -150,7 +150,7 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 
 *Graphical types* in italics.
 
-**Zones:**
+##### Zones
 
 | `zone`                | Description                |
 |-----------------------|----------------------------|
@@ -163,7 +163,9 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 > Use `utc` for those. Other values would work technically, but are probably more confusing. \
 > Values where the zone is missing will be silently ignored.
 
-**Clock change mode** (optional suffix, for zones that have DST):
+##### Clock change mode
+
+The optional suffix is only for zones that have DST:
 
 | Suffix              | Effect                                |
 |---------------------|---------------------------------------|
@@ -171,7 +173,9 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `dst:forceDst`      | Always show summer time               |
 | `dst:forceStandard` | Always show standard time             |
 
-**Show seconds** (optional suffix for `binaryClockColumns`, `binaryClockBcd`, `sevenSegmentClock` and `swatchBeats`):
+##### Show seconds
+
+The optional suffix is only for `binaryClockColumns`, `binaryClockBcd`, `sevenSegmentClock` and `swatchBeats`:
 
 | Suffix    | Effect                  |
 |-----------|-------------------------|

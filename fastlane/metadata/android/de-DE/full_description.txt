@@ -1,24 +1,38 @@
-Epoch zeigt den aktuellen Zeitpunkt in einer Vielzahl von Zeitsystemen an –
+Epoch zeigt die aktuelle Zeit in einer Vielzahl von Zeitsystemen an —
 jede Sekunde aktualisiert, alles auf einen Blick.
 
-WAS EPOCH ANZEIGT
-- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent – für jede Zeitzone weltweit
+<b>Was Epoch bietet</b>
+- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent — für jede Zeitzone
 - Technisch: Unix-Zeit, Internationale Atomzeit (TAI), GPS-Zeit
-- Astronomisch: Greenwich Mean Sidereal Time, Julianisches Datum, Modifiziertes Julianisches Datum
-- Kurioses: Swatch-Internetzeit, drei Binäruhr-Varianten, Weltuntergangsuhr
+- Astronomisch: Greenwich und Local Mean Sidereal Time (GMST, LMST), Julianisches Datum in mehreren Varianten
+- Kurioses: Swatch-Internetzeit, Sieben-Segment- und Binäruhren, Weltuntergangsuhr
+Alle Zeitwerte können in die Zwischenablage kopiert werden.
 
-KONFIGURIERBAR
-Erstelle deine eigene Ansicht mit Watchlist-Tabs – kombiniere beliebige Werte
-aus beliebigen Kategorien, in beliebiger Reihenfolge.
-Eigene Labels vergeben, per Drag-and-drop sortieren, per Wischgeste entfernen.
+<b>Konfigurierbar</b>
+- Erstelle deine eigenen Watchlist-Tabs – kombiniere beliebige Werte aus beliebigen Kategorien, in beliebiger Reihenfolge.
+- Eigene Labels, Abschnittsüberschriften und Trennlinien einfügen
+- Mit drag-and-drop sortieren, per Wischgeste entfernen
+- Datum- und Zeitformate sowie Zeitzoneninfos konfigurierbar
+- Option, Zeitzonen unabhängig vom Datum dauerhaft auf Normalzeit oder Sommerzeit zu fixieren
+- Ankündigung von Zeitumstellungen 7 Tage im Voraus, Anzeige von Zeitumstellungen der nächsten Jahre im Info-Dialog des Zeitwerts
+- Alle Einstellungen exportierbar, importierbar und zurücksetzbar
 
-NACHTMODUS FÜR ASTRONOMEN
-Der Nachtmodus zeigt roten Text auf schwarzem Hintergrund –
-schützt die Dunkeladaption deiner Augen beim Sternegucken.
+<b>Fokus-Modus</b>
+- Jeder Wert doppelt antippbar zum Wechsel in den Vollbildmodus — ideal als Nachttischuhr
+- Helligkeitseinstellung (Android) und Farbauswahl
+- Zusatzinformationen mittels Gedrückthalten
 
-DATENSCHUTZ
-Keine Werbung. Keine Benachrichtigungen. Kein Tracking. Keine Analyse. Keine Netzwerkanfragen.
+<b>Nachtmodus für Astronomen</b>
+Der Nachtmodus zeigt roten Text auf schwarzem Hintergrund – schützt die Dunkeladaption deiner Augen beim Sternegucken.
+
+<b>Beispiel-Konfigurationen</b>
+Importierbare <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">Beispiel-Konfigurationen</a> auf GitHub verfügbar,
+der Ordner enthält z. B. einen Raumfahrt-Tab, einen Zeitzonenexplorer sowie eine Konfigurations-Hilfeseite (in Englisch).
+
+<b>Datenschutz</b>
+Keine Werbung, Benachrichtigungen, Analysen, Netzwerkanfragen oder Tracking.
 Alle Einstellungen werden lokal auf deinem Gerät gespeichert.
 Keine besonderen Berechtigungen erforderlich.
+Für Local Mean Sidereal Time: einmalig Standortzugriff aktivieren und Berechtigung erteilen (kein GPS), oder Längengrad manuell eingeben.
 
 Verfügbar auf Englisch und Deutsch.
