@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+---
+
+## [1.4.0] - 2026-08-08
+
 ### Added
 - display the next four clock changes for configured time values with (unpinned) DST in info
 - date and time formats configurable (preset and custom options)
