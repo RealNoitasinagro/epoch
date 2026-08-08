@@ -36,7 +36,7 @@ class ConfigurableTab extends StatefulWidget {
     this.thousandsSep = true,
     this.hourFormat24 = true,
     this.showDateDetails = true,
-    this.maxEntries = 25,
+    this.maxEntries = 30,
     this.allowedTypes,
   });
 
@@ -378,7 +378,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _showAddDialog() async {
     final l10n = AppLocalizations.of(context)!;
-    if (widget.entries.length >= widget.maxEntries) {
+    int timeValueEntries = widget.entries.where( (e) => e is TimeValue ).length;
+    if (timeValueEntries >= widget.maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(l10n.messageMaxValues(widget.maxEntries)),
         behavior: SnackBarBehavior.floating,

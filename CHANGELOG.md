@@ -14,7 +14,7 @@
 - much better timezone search keyword coverage (still WIP)
 - graphical binary clocks now allow to turn seconds off, like seven-segment clock
 - Swatch beats now show two decimals by default (with option for no decimals)
-- max entries per configurable tab increased from 20 to 25
+- max (time value) entries per configurable tab increased from 20 to 30 (sections, dividers don't count)
 
 ### Fixed
 - Swatch beats were up to half a .beat off (because of unwanted rounding)

@@ -175,10 +175,10 @@ Additional screenshots for `example_configs`:
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
 
-### A note on the timeliness of the data
+### Timeliness of the Timezone Data
 
 > [!NOTE]
-> **Timezone data:** Epoch uses the [timezone](https://pub.dev/packages/timezone) package,
+> Epoch uses the [timezone](https://pub.dev/packages/timezone) package,
 > which bundles the [IANA Time Zone Database](https://www.iana.org/time-zones). \
 > The timezone package may not have the latest available IANA database, and politically motivated
 > changes may not yet be reflected. \
@@ -188,7 +188,7 @@ Additional screenshots for `example_configs`:
 > It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
 > Current (2026-08) versions:
 > - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
-> - IANA database: [2025c](https://www.iana.org/time-zones/releases/2025c), latest: [2026c](https://www.iana.org/time-zones/releases/2026c)
+> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026c](https://www.iana.org/time-zones/releases/2026c)
 
 ### Linux
 
