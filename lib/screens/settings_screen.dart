@@ -113,6 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
+    final isNight = app.themeMode == AppThemeMode.night;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.pageSettings),
@@ -240,7 +241,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile(
             secondary: const Icon(Icons.palette),
             title: Text(l10n.settingsDayQuarterColor),
-            subtitle: Text(l10n.settingsDayQuarterColorSub),
+            subtitle: Row(
+              children: [
+                Text(l10n.settingsDayQuarterColorSub1st,
+                    style: TextStyle(color: isNight ? null : kColorNightRed)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub2nd,
+                    style: TextStyle(color: isNight ? null : kColorCyan)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub3rd,
+                    style: TextStyle(color: isNight ? null : kColorAmber)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub4th,
+                    style: TextStyle(color: isNight ? null : kColorMatrixGreen)),
+              ],
+            ),
             value: _dayQuarterColor,
             onChanged: (val) {
               setState(() => _dayQuarterColor = val);

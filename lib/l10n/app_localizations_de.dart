@@ -413,8 +413,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsDayQuarterColor => 'Tagesviertel-Farbe';
 
   @override
-  String get settingsDayQuarterColorSub =>
-      '1. rot | 2. zyan | 3. gelb | 4. grün';
+  String get settingsDayQuarterColorSub1st => '1. rot';
+
+  @override
+  String get settingsDayQuarterColorSub2nd => '2. zyan';
+
+  @override
+  String get settingsDayQuarterColorSub3rd => '3. gelb';
+
+  @override
+  String get settingsDayQuarterColorSub4th => '4. grün';
 
   @override
   String get settingsDstAlwaysOff => 'Immer Normalzeit';

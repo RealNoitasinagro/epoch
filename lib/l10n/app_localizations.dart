@@ -776,11 +776,29 @@ abstract class AppLocalizations {
   /// **'Day quarter color'**
   String get settingsDayQuarterColor;
 
-  /// No description provided for @settingsDayQuarterColorSub.
+  /// No description provided for @settingsDayQuarterColorSub1st.
   ///
   /// In en, this message translates to:
-  /// **'1st red | 2nd cyan | 3rd amber | 4th green'**
-  String get settingsDayQuarterColorSub;
+  /// **'1st red'**
+  String get settingsDayQuarterColorSub1st;
+
+  /// No description provided for @settingsDayQuarterColorSub2nd.
+  ///
+  /// In en, this message translates to:
+  /// **'2nd cyan'**
+  String get settingsDayQuarterColorSub2nd;
+
+  /// No description provided for @settingsDayQuarterColorSub3rd.
+  ///
+  /// In en, this message translates to:
+  /// **'3rd amber'**
+  String get settingsDayQuarterColorSub3rd;
+
+  /// No description provided for @settingsDayQuarterColorSub4th.
+  ///
+  /// In en, this message translates to:
+  /// **'4th green'**
+  String get settingsDayQuarterColorSub4th;
 
   /// No description provided for @settingsDstAlwaysOff.
   ///
