@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/screens/civil_tab.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -24,30 +25,26 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
 
-  // On Linux: check for config file argument:
-  if (!Platform.isLinux || args.isEmpty) {
-    runApp(const EpochApp());
-    return;
-  }
-  if (args.contains('--help') || args.contains('-h')) {
-    stdout.writeln('Usage: epoch [config.json]');
-    exit(0);
-  }
-
-  final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
-  if (configPath != null) {
-    final file = File(configPath);
-    if (file.existsSync()) {
-      try {
-        final json = await file.readAsString();
-        await importSettingsJson(json);
-      } catch (e) {
-        stderr.writeln('Failed to load config: $e');
+  if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
+    if (args.contains('--help') || args.contains('-h')) {
+      stdout.writeln('Usage: epoch [config.json]');
+      exit(0);
+    }
+    final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+    if (configPath != null) {
+      final file = File(configPath);
+      if (file.existsSync()) {
+        try {
+          final json = await file.readAsString();
+          await importSettingsJson(json);
+        } catch (e) {
+          stderr.writeln('Failed to load config: $e');
+          exit(1);
+        }
+      } else {
+        stderr.writeln('Config file not found: $configPath');
         exit(1);
       }
-    } else {
-      stderr.writeln('Config file not found: $configPath');
-      exit(1);
     }
   }
 
