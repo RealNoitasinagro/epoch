@@ -27,14 +27,19 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Civil** – date, time, day second, day percent for any timezone
 - **Technical** – Unix time, TAI, GPS time
 - **Astronomical** – GMST, LMST, Julian Date, Modified Julian Date (MJD), MJD2000
-- **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
+- **Curiosities** – Swatch Internet Time, seven-segment and binary clocks, Doomsday Clock
 
 ### Configurable display
 - Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
 - Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
-- 7-day advance clock change notice
+- 7-day advance clock change notice, display upcoming clock changes in the next few years
+- Customizable date and time formats, 12/24-hour format toggle
+- Timezone details (abbreviation and UTC offset) configurable
+- Expanded date toggle
+- Thousands separator toggle
+- Day quarter color toggle
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
@@ -44,14 +49,10 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Night mode with red-on-black display — preserves dark adaptation for stargazing
 - Light, dark, and system themes
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
-- Focus mode: double-tap any value for a full-screen, always-on display with adjustable brightness (Android) and color
-- 12 / 24-hour format toggle
-- Thousands separator toggle
-- Expanded date toggle
-- Timezone details (abbreviation and UTC offset) configurable
+- Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
-- Android widgets coming soon
+- Android widgets planned
 - Not yet: conversions between time systems
 
 ### Privacy & permissions
@@ -80,28 +81,34 @@ Epoch is built around flexibility:
 rather than making choices for you, it gives you the building blocks
 to assemble exactly the time display you need — and nothing you don't.
 
+> [!TIP]
+> Check out the `example_configs` folder with (partly) localized pre-made configurations 
+> that you might like to fine-tune for your needs. \
+> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots (see next section).
+
 
 ## Screenshots
 
-Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
+Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}/images/phoneScreenshots/`. \
+There are slight differences between the two sets to highlight different aspects and details.
 
 <details>
 <summary>Click to expand (English)</summary>
 
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="en 1">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="en 2">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="en 3">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="180" alt="en 1">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="180" alt="en 2">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="180" alt="en 3">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="180" alt="en 4">
 </p>
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="en 4">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" alt="en 5">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="en 6">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="180" alt="en 5">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="180" alt="en 6">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="180" alt="en 7">
 </p>
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="260" alt="en 7">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="260" alt="en 8">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="260" alt="en 9">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="350" alt="en 8">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="350" alt="en 9">
 </p>
 
 </details>
@@ -110,19 +117,53 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 <summary>Click to expand (German)</summary>
 
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/1.png" width="200" alt="de 1">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/2.png" width="200" alt="de 2">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/3.png" width="200" alt="de 3">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/1.png" width="180" alt="de 1">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/2.png" width="180" alt="de 2">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/3.png" width="180" alt="de 3">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/4.png" width="180" alt="de 4">
 </p>
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/4.png" width="200" alt="de 4">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/5.png" width="200" alt="de 5">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/6.png" width="200" alt="de 6">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/5.png" width="180" alt="de 5">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/6.png" width="180" alt="de 6">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/7.png" width="180" alt="de 7">
 </p>
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/7.png" width="260" alt="de 7">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/8.png" width="260" alt="de 8">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/9.png" width="260" alt="de 9">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/8.png" width="350" alt="de 8">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/fastlane/metadata/android/de-DE/images/phoneScreenshots/9.png" width="350" alt="de 9">
+</p>
+
+</details>
+
+Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
+
+<details>
+<summary>Click to expand (English)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_home.png" width="180" alt="en epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_spaceflight.png" width="180" alt="en epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_special_timezones.png" width="180" alt="en epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_uno.png" width="180" alt="en epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
+</p>
+
+</details>
+
+<details>
+<summary>Click to expand (German)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_home.png" width="180" alt="de epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_spaceflight.png" width="180" alt="de epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_special_timezones.png" width="180" alt="de epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_uno.png" width="180" alt="de epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
 </p>
 
 </details>
@@ -141,6 +182,21 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 | Windows  | ❌ Not supported |                                                                                                                                                |
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
+
+### Timeliness of the Timezone Data
+
+> [!NOTE]
+> Epoch uses the [timezone](https://pub.dev/packages/timezone) package,
+> which bundles the [IANA Time Zone Database](https://www.iana.org/time-zones). \
+> The timezone package may not have the latest available IANA database, and politically motivated
+> changes may not yet be reflected. \
+> For most use cases, this makes no difference. \
+> However, if you'd like to build Epoch yourself with an up-to-date IANA db, check out the script
+> `update_timezone_to_latest_iana_db.sh` in the repo's root. \
+> It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
+> Current (2026-08) versions:
+> - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
+> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026c](https://www.iana.org/time-zones/releases/2026c)
 
 ### Linux
 

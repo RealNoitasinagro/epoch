@@ -1,7 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'l10n/app_localizations.dart';
+import 'models/app_settings.dart';
 import 'models/time_value.dart';
+import 'models/timezone_abbr_localization.dart';
 import 'time_utils.dart';
 
 class TimeValueFormatter {
@@ -13,6 +15,8 @@ class TimeValueFormatter {
       {
         bool hourFormat24 = true,
         bool thousandsSep = true,
+        String dateFormat = kDatePatternIso,
+        String timeFormat = kTimePatternFull,
         String localIanaZone = 'UTC',
         double? longitude,
       }
@@ -57,7 +61,10 @@ class TimeValueFormatter {
             thousandsSep: thousandsSep);
       // Curiosities
       case ValueType.swatchBeats:
-        return '@${TimeUtils.swatchBeats(utcNow).toStringAsFixed(0)}';
+        final double swatchBeats = TimeUtils.swatchBeats(utcNow);
+        return "@${timeValue.showSeconds
+            ? swatchBeats.toStringAsFixed(2)
+            : swatchBeats.toInt()}";
       case ValueType.doomsdayClock:
         return TimeUtils.doomsDayClockString(hourFormat24);
       default:
@@ -79,46 +86,40 @@ class TimeValueFormatter {
         try {
           final tzLocation = tz.getLocation(localIanaZone);
           final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
-          tzLabel = tzDt.timeZone.abbreviation;
-        } catch (_) { tzLabel = now.timeZoneName; }
+          tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
+        } catch (_) {
+          tzLabel = now.timeZoneName;
+        }
         offset = now.timeZoneOffset;
       case ZoneNamed(ianaZone: final zone):
         final tzDt = TimeUtils.inZone(utcNow, zone);
         if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
           final info = TimeUtils.daylightOrStandardOffset(
-              zone, timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.forceDst);
+              zone, timeValue.timezoneClockChangeMode ==
+                TimezoneClockChangeMode.forceDst);
           if (info != null) {
-            tzLabel = info.abbreviation;
+            tzLabel = localizeTimezoneAbbr(info.abbreviation, locale);
             offset = info.offset;
             dt = utcNow.add(offset);
             break;
           }
         }
         dt = tzDt;
-        tzLabel = tzDt.timeZone.abbreviation;
+        tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
         offset = tzDt.timeZoneOffset;
     }
-
-    final hh = dt.hour.toString().padLeft(2, '0');
-    final mm = dt.minute.toString().padLeft(2, '0');
-    final ss = dt.second.toString().padLeft(2, '0');
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
 
     switch (timeValue.valueType) {
       // Civil
       case ValueType.date:
-        return formatDate(locale, dt);
+        return formatDate(locale, dt, pattern: dateFormat);
       case ValueType.time:
-        if (!hourFormat24) {
-          return formatTime12h(dt.hour, mm, ss, tzSuffix);
-        }
-        return '$hh:$mm:$ss $tzSuffix';
+        return formatTime(hourFormat24, dt.hour, dt.minute, dt.second,
+            tzSuffix: tzSuffix, pattern: timeFormat);
       case ValueType.dateTime:
-        final dateStr = formatDate(locale, dt);
-        if (!hourFormat24) {
-          return '$dateStr ${formatTime12h(dt.hour, mm, ss, tzSuffix)}';
-        }
-        return '$dateStr $hh:$mm:$ss $tzSuffix';
+        return formatDateTime(hourFormat24, locale, dt, tzSuffix,
+            datePattern: dateFormat, timePattern: timeFormat);
       case ValueType.daySecond:
         final value = TimeUtils.daySecond(dt);
         String formattedValue = thousandsSep
@@ -166,26 +167,96 @@ class TimeValueFormatter {
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
-  static String formatDate(String locale, DateTime dt) =>
-      DateFormat('EEE, yyyy-MM-dd', locale).format(dt);
+  static String formatDate(String locale, DateTime dt,
+      {String pattern = kDatePatternIso}) =>
+      formatDatePattern(dt, pattern, locale);
 
-  /// Format a time to 12-hour format with timezone, e. g. "08:13:10 AM UTC".
-  static String formatTime12h(int hh, String mm, String ss, String? tzSuffix) {
-    final hour12 = hh % 12 == 0 ? 12 : hh % 12;
-    final period = hh < 12 ? 'AM' : 'PM';
-    final h12 = hour12.toString().padLeft(2, '0');
-    String timeFormat12h = '$h12:$mm:$ss $period';
-    if (tzSuffix != null) {
-      timeFormat12h = '$timeFormat12h $tzSuffix';
+  static String formatTime(bool hourFormat24, int hour, int minute,
+      int second, { String? tzSuffix, String pattern = kTimePatternFull }) {
+    final dt = DateTime(2000, 1, 1, hour, minute, second);
+    final timeStr = formatTimePattern(dt, pattern, hourFormat24: hourFormat24);
+    final period = !hourFormat24 ? (hour < 12 ? ' AM' : ' PM') : '';
+    return tzSuffix != null
+        ? '$timeStr$period $tzSuffix'
+        : '$timeStr$period';
+  }
+
+  static String formatDateTime(
+      bool hourFormat24, String locale, DateTime dt, String? tzSuffix,
+      {String datePattern = kDatePatternIso, String timePattern = kTimePatternFull}
+    ) {
+    String formattedDate = formatDate(locale, dt, pattern: datePattern);
+    String formattedTime = formatTime(
+        hourFormat24, dt.hour, dt.minute, dt.second,
+        tzSuffix: tzSuffix, pattern: timePattern);
+    return "$formattedDate $formattedTime";
+  }
+
+  static String formatDatePattern(DateTime dt, String pattern, String locale) {
+    // Use intl for localized names:
+    final monthLong    = DateFormat('MMMM', locale).format(dt);
+    final monthShort   = DateFormat('MMM',  locale).format(dt);
+    final weekDayLong  = DateFormat('EEEE', locale).format(dt);
+    final weekDayShort = DateFormat('EEE',  locale).format(dt);
+
+    // Apply tokens longest-first to avoid partial substitution:
+    final tokens = <String, String>{
+      'YYYY': dt.year.toString().padLeft(4, '0'),
+      'YY':   (dt.year % 100).toString().padLeft(2, '0'),
+      'MMMM': monthLong,
+      'MMM':  monthShort,
+      'MM':   dt.month.toString().padLeft(2, '0'),
+      'M':    dt.month.toString(),
+      'EEEE': weekDayLong,
+      'EEE':  weekDayShort,
+      'DD':   dt.day.toString().padLeft(2, '0'),
+      'D':    dt.day.toString(),
+    };
+    return _applyTokens(pattern, tokens);
+  }
+
+  static String formatTimePattern(DateTime dt, String pattern,
+      {bool hourFormat24 = true}) {
+    final displayHour = hourFormat24
+        ? dt.hour
+        : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
+    final tokens = <String, String>{
+      'HH': displayHour.toString().padLeft(2, '0'),
+      'H':  displayHour.toString(),
+      'mm': dt.minute.toString().padLeft(2, '0'),
+      'ss': dt.second.toString().padLeft(2, '0'),
+    };
+    return _applyTokens(pattern, tokens);
+  }
+
+  static String _applyTokens(String pattern, Map<String, String> tokens) {
+    // Sort tokens by length descending for greedy matching:
+    final sorted = tokens.keys.toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
+
+    final buffer = StringBuffer();
+    int i = 0;
+    while (i < pattern.length) {
+      bool matched = false;
+      for (final token in sorted) {
+        if (pattern.startsWith(token, i)) {
+          buffer.write(tokens[token]);
+          i += token.length;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        buffer.write(pattern[i]);
+        i++;
+      }
     }
-    return timeFormat12h;
+    return buffer.toString();
   }
 
   /// Returns a double formatted to a given number of decimal digits.
-  static String formatDecimal(
-      double value, String locale, int decimals,
-      { bool thousandsSep = true, }
-      ) {
+  static String formatDecimal(double value, String locale, int decimals,
+      { bool thousandsSep = true,}) {
     final fmt = NumberFormat.decimalPatternDigits(
         locale: locale, decimalDigits: decimals);
     fmt.minimumFractionDigits = decimals;
@@ -194,11 +265,48 @@ class TimeValueFormatter {
   }
 
   /// Adds longitude to the LMST label.
-  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue, double? longitude ) {
-    String _locale = l10n.localeName;
+  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue,
+      double? longitude) {
+    String locale = l10n.localeName;
     if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
     final dir = longitude >= 0 ? 'E' : 'W';
-    final deg = formatDecimal(longitude.abs(), _locale, 2, thousandsSep: false);
+    final deg = formatDecimal(longitude.abs(), locale, 2, thousandsSep: false);
     return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
+  }
+
+  static String? validatePattern(String pattern, bool isDate) =>
+      isDate ? validateDatePattern(pattern) : validateTimePattern(pattern);
+
+  static String? validateDatePattern(String pattern) {
+    final validTokens = {
+      'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'EEEE', 'EEE', 'DD', 'D'};
+    return _validatePattern(pattern, validTokens, requireAny: true);
+  }
+
+  static String? validateTimePattern(String pattern) {
+    const validTokens = {'HH', 'H', 'mm', 'ss'};
+    final error = _validatePattern(pattern, validTokens, requireAny: false);
+    if (error != null) return error;
+    if (!pattern.contains('HH') && !pattern.contains('H')) {
+      return 'H or HH required';
+    }
+    if (!pattern.contains('mm')) return 'mm required';
+    return null;
+  }
+
+  static String? _validatePattern(String pattern,
+      Set<String> validTokens, {required bool requireAny}) {
+    var remaining = pattern;
+    // Remove all valid tokens:
+    for (final token in validTokens) {
+      remaining = remaining.replaceAll(token, '');
+    }
+    // Check for leftover uppercase sequences:
+    final badTokens = RegExp(r'[A-Z]+').allMatches(remaining)
+        .map((m) => m.group(0)!)
+        .where((s) => s.isNotEmpty)
+        .toSet();
+    if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
+    return null;
   }
 }

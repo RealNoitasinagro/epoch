@@ -17,15 +17,18 @@ class TechnicalTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
 
     return Column(
       children: [
         TabValueCount(count: technicalEntries.length),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-                kTabHorizontalPadding, kTabVerticalPadding,
-                kTabHorizontalPadding, kTabVerticalPadding),
+            padding: EdgeInsets.fromLTRB(
+                kTabHorizontalPadding,
+                kTabVerticalPadding,
+                kTabHorizontalPadding,
+                kTabVerticalPadding + bottomInset),
             children: [
               SectionHeader(label: l10n.sectionUnix),
               const SizedBox(height: kEntrySpacing),

@@ -240,8 +240,7 @@ class TimeValue implements TabEntry {
         ValueType.lmst => l10n.valueTypeLmst,
         ValueType.julianDate => l10n.valueTypeJulianDate,
         ValueType.modifiedJulianDate => l10n.valueTypeModifiedJulianDate,
-        ValueType.modifiedJulianDate2000 =>
-          l10n.valueTypeModifiedJulianDate2000,
+        ValueType.modifiedJulianDate2000 => l10n.valueTypeModifiedJulianDate2000,
         ValueType.swatchBeats => l10n.valueTypeSwatchBeats,
         ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
         ValueType.binaryClockBcd => l10n.valueTypeBinaryClockBcd,

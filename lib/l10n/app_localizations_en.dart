@@ -112,6 +112,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff => 'Hold to suppress decimals';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn => 'Hold to display decimals';
+
+  @override
   String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
 
   @override
@@ -312,7 +318,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNewTabName => 'Tab name';
 
   @override
+  String get labelNextClockChanges => 'Next clock changes';
+
+  @override
   String get labelSeconds => 'SS';
+
+  @override
+  String get labelShowDecimals => 'Show decimals';
 
   @override
   String get labelShowSeconds => 'Show seconds';
@@ -380,11 +392,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsCustomFormat => 'Custom…';
+
+  @override
+  String get settingsDateFormat => 'Date format';
+
+  @override
   String get settingsDateWithDetails => 'Expanded date';
 
   @override
-  String get settingsDateWithDetailsSub =>
-      'On = with ISO calender week, day of the year';
+  String get settingsDateWithDetailsSub => 'calender week, day of the year';
+
+  @override
+  String get settingsDayQuarterColor => 'Day quarter color';
+
+  @override
+  String get settingsDayQuarterColorSub1st => '1st red';
+
+  @override
+  String get settingsDayQuarterColorSub2nd => '2nd cyan';
+
+  @override
+  String get settingsDayQuarterColorSub3rd => '3rd amber';
+
+  @override
+  String get settingsDayQuarterColorSub4th => '4th green';
 
   @override
   String get settingsDstAlwaysOff => 'Always standard time';
@@ -471,6 +503,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThousandsSepSub => 'e. g. 1,746,000 instead of 1746000';
 
   @override
+  String get settingsTimeFormat => 'Time format';
+
+  @override
   String get settingsWhatsNew => 'What\'s New';
 
   @override
@@ -511,13 +546,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabTechnical => 'Technical';
 
   @override
-  String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
+  String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';
 
   @override
-  String get valueTypeBinaryClockColumns => 'Binary clock (columns)';
+  String get valueTypeBinaryClockColumns => 'Binary Clock (columns)';
 
   @override
-  String get valueTypeBinaryClockString => 'Binary time (string)';
+  String get valueTypeBinaryClockString => 'Binary Time (string)';
 
   @override
   String get valueTypeDate => 'Date';
@@ -526,10 +561,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeDateTime => 'Date & Time';
 
   @override
-  String get valueTypeDayPercent => 'Day percent';
+  String get valueTypeDayPercent => 'Day Percent';
 
   @override
-  String get valueTypeDaySecond => 'Day second';
+  String get valueTypeDaySecond => 'Day Second';
 
   @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
@@ -553,7 +588,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
 
   @override
-  String get valueTypeSevenSegmentTime => 'Seven-segment clock';
+  String get valueTypeSevenSegmentTime => 'Seven-segment Clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';
@@ -565,5 +600,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeTime => 'Time';
 
   @override
-  String get valueTypeUnixSeconds => 'Unix time (s)';
+  String get valueTypeUnixSeconds => 'Unix Time (s)';
 }

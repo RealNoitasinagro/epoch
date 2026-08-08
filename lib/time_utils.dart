@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:epoch/layout_constants.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
@@ -87,17 +89,73 @@ class TimeUtils {
     }
   }
 
+  /// Determine IANA zone identifier (Area/Location) from a timeValue.
+  static String? resolveIanaZone(TimeValue timeValue, String localIanaZone) {
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
+    return ianaZone;
+  }
+
   /// Returns the DateTime of the next clock change for a ianaZone.
   static DateTime? nextDstTransition(String ianaZone, DateTime afterUtc) {
+    return nextDstTransitions(ianaZone, afterUtc, count: 1).firstOrNull;
+  }
+
+  /// Returns a list of DateTime for the next n clock changes for a ianaZone.
+  static List<DateTime> nextDstTransitions(String ianaZone,
+      DateTime afterUtc, {int count = 4}) {
     try {
       final loc = tz.getLocation(ianaZone);
       final afterUtcMs = afterUtc.millisecondsSinceEpoch;
-      final idx = loc.transitionAt.indexWhere((t) => t > afterUtcMs);
-      if (idx < 0) return null;
-      return DateTime.fromMillisecondsSinceEpoch(
-          loc.transitionAt[idx], isUtc: true);
-    } catch (_) { return null; }
+      final result = <DateTime>[];
+      for (final t in loc.transitionAt) {
+        if (t > afterUtcMs) {
+          result.add(DateTime.fromMillisecondsSinceEpoch(t, isUtc: true));
+          if (result.length >= count) break;
+        }
+      }
+      return result;
+    } catch (_) { return []; }
   }
+
+  /// Returns the timezone abbreviations immediately before and after
+  /// a DST transition, e.g. ('CEST', 'CET').
+  static ({String before, String after}) dstTransitionAbbreviations(
+      String ianaZone, DateTime transitionUtc) {
+    try {
+      final loc = tz.getLocation(ianaZone);
+      final before = tz.TZDateTime.from(
+          transitionUtc.subtract(const Duration(hours: 1)), loc)
+          .timeZone.abbreviation;
+      final after = tz.TZDateTime.from(
+          transitionUtc.add(const Duration(hours: 1)), loc)
+          .timeZone.abbreviation;
+      return (before: before, after: after);
+    } catch (_) {
+      return (before: '?', after: '?');
+    }
+  }
+
+  /// Return a color depending on what quarter of the day it is.
+  static Color dayQuarterColor(DateTime utc, String? ianaZone) {
+    int hour;
+    if (ianaZone == null) {
+      hour = utc.hour;
+    } else {
+      tz.TZDateTime tzDt = inZone(utc, ianaZone);
+      hour = tzDt.hour;
+    }
+    if (hour < 6)  return kColorNightRed;
+    if (hour < 12) return kColorCyan;
+    if (hour < 18) return kColorAmber;
+    return kColorMatrixGreen;
+  }
+
+
+  // ── Value Type functions ───────────────────────────────────────────────────
 
   /// Day second (seconds since midnight) for a DateTime.
   static int daySecond(DateTime dt) =>
@@ -245,12 +303,7 @@ class TimeUtils {
   /// Returns the current Doomsday Clock time as of Jan 2026.
   /// Last check for accuracy of hardcoded values: 2026-05-20.
   static String doomsDayClockString(bool hourFormat24) {
-    int hh = 23;
-    int mm = 58;
-    int ss = 35;
-
-    return !hourFormat24
-        ? TimeValueFormatter.formatTime12h(hh, '$mm', '$ss', null)
-        : '$hh:$mm:$ss';
+    int hh = 23; int mm = 58; int ss = 35;
+    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
   }
 }

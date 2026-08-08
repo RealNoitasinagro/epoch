@@ -1,0 +1,20 @@
+{
+  "active_tab": 4,
+  "custom_tabs": [
+    "1784784052469\tWatchlist 1"
+  ],
+  "date_cw_doy": false,
+  "date_format": "EEE, DD/MM/YYYY",
+  "day_quarter_color": false,
+  "focus_brightness": 0.1585,
+  "focus_color": 4278248959,
+  "hour_format_24": false,
+  "last_export_dir": "/home/username/epoch_settings",
+  "lmst_lon": 8.1427,
+  "lmst_mode": "manual",
+  "locale": "en",
+  "theme_mode": "dark",
+  "thousands_sep": false,
+  "time_format": "HH:mm",
+  "zone_display": "abbreviation"
+}

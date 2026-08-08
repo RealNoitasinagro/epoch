@@ -112,6 +112,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Doppelt antippen zum Wechsel in den Fokus-Screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff =>
+      'Gedrückt halten für Anzeige ohne Dezimalstellen';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn =>
+      'Gedrückt halten für Anzeige mit Dezimalstellen';
+
+  @override
   String get hintFocusScreenToggleSecondsOff =>
       'Gedrückt halten für Anzeige ohne Sekunden';
 
@@ -315,7 +323,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelNewTabName => 'Tab-Name';
 
   @override
+  String get labelNextClockChanges => 'Nächste Zeitumstellungen';
+
+  @override
   String get labelSeconds => 'Sek';
+
+  @override
+  String get labelShowDecimals => 'Dezimalstellen anzeigen';
 
   @override
   String get labelShowSeconds => 'Sekunden anzeigen';
@@ -384,11 +398,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAbout => 'Über die App';
 
   @override
+  String get settingsCustomFormat => 'Benutzerdefiniert…';
+
+  @override
+  String get settingsDateFormat => 'Datumsformat';
+
+  @override
   String get settingsDateWithDetails => 'Erweitertes Datum';
 
   @override
-  String get settingsDateWithDetailsSub =>
-      'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
+  String get settingsDateWithDetailsSub => 'Kalenderwoche, Tag des Jahres';
+
+  @override
+  String get settingsDayQuarterColor => 'Tagesviertel-Farbe';
+
+  @override
+  String get settingsDayQuarterColorSub1st => '1. rot';
+
+  @override
+  String get settingsDayQuarterColorSub2nd => '2. zyan';
+
+  @override
+  String get settingsDayQuarterColorSub3rd => '3. gelb';
+
+  @override
+  String get settingsDayQuarterColorSub4th => '4. grün';
 
   @override
   String get settingsDstAlwaysOff => 'Immer Normalzeit';
@@ -476,17 +510,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
 
   @override
+  String get settingsTimeFormat => 'Zeitformat';
+
+  @override
   String get settingsWhatsNew => 'Was ist neu';
 
   @override
   String get settingsZoneDisplayMode => 'Zeitzonenangabe';
 
   @override
-  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [CEST]';
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [MESZ]';
 
   @override
   String get settingsZoneDisplayModeFull =>
-      'Kürzel + Offset\n  [CEST (UTC+02:00)]';
+      'Kürzel + Offset\n  [MESZ (UTC+02:00)]';
 
   @override
   String get settingsZoneDisplayModeHidden => 'Ausgeblendet';

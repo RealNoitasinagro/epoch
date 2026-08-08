@@ -1,0 +1,7 @@
+{
+    "active_tab": 4,
+    "custom_tabs": [
+        "TAB_ID\tZeitzonen-Mix\tsection:SEC1:30- & 45-Minuten-Offsets\tdateTime/named:Asia/Kolkata|Kolkata -- Indische Normalzeit für > 1.4 Milliarden Menschen\tdateTime/named:Asia/Colombo|Colombo -- variierte von +05:30 bis +06:30 seit 1880\tdateTime/named:Asia/Kathmandu|Kathmandu -- 1 von 3 Zeitzonen mit 45-Minuten-Offset zu UTC\tdateTime/named:Australia/Adelaide|Adelaide\tdivider:DIV1\tsection:SEC2:Politisch interessant\tdateTime/named:Australia/Lord_Howe|Lord Howe -- Sommerzeit +00:30\tdateTime/named:Antarctica/Troll|Troll -- Sommerzeit +02:00\tdateTime/named:Europe/Dublin|Dublin -- Irish Standard Time im Sommer\tdateTime/named:Asia/Jerusalem|Jerusalem -- Sommerzeitbeginn am Freitag\tdateTime/named:Pacific/Chatham|Chatham -- +00:45 zu Neuseeland-Zeit\tdivider:DIV2\tsection:SEC3:Ferner Osten & Datumslinie\tdateTime/named:Asia/Tokyo|Tokio\tdateTime/named:Pacific/Auckland|Auckland\tdateTime/named:Pacific/Apia|Apia -- Samoa hat Fr., 2011-12-30 übersprungen\tdateTime/named:Pacific/Kiritimati|Kiritimati -- früheste Zeitzone der Erde"
+    ],
+    "locale": "de"
+}

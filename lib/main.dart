@@ -1,15 +1,19 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:epoch/models/tab_entry.dart';
 import 'package:epoch/screens/civil_tab.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
+import 'layout_constants.dart';
 import 'models/app_settings.dart';
 import 'models/civil_tab_config.dart';
 import 'models/custom_tab_model.dart';
+import 'models/settings_io.dart';
 import 'models/time_value.dart';
 import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
@@ -17,14 +21,39 @@ import 'screens/curiosities_tab.dart';
 import 'screens/settings_screen.dart';
 import 'screens/technical_tab.dart';
 
-void main() {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
+
+  if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
+    if (args.contains('--help') || args.contains('-h')) {
+      stdout.writeln('Usage: epoch [config.json]');
+      exit(0);
+    }
+    final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+    if (configPath != null) {
+      final file = File(configPath);
+      if (file.existsSync()) {
+        try {
+          final json = await file.readAsString();
+          await importSettingsJson(json);
+        } catch (e) {
+          stderr.writeln('Failed to load config: $e');
+          exit(1);
+        }
+      } else {
+        stderr.writeln('Config file not found: $configPath');
+        exit(1);
+      }
+    }
+  }
+
   runApp(const EpochApp());
 }
 
 const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
-const _nightRed = Color(0xFFCC1010);
-const _nightRedDim = Color(0xFF7A0000);
+const _nightRed = kColorNightRed;
+const _nightRedDim = kColorNightRedDim;
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -85,7 +114,10 @@ class EpochAppState extends State<EpochApp> {
   bool _hourFormat24               = kDefaultHourFormat24;
   bool _thousandsSep               = kDefaultThousandsSep;
   bool _dateWithDetails            = kDefaultDateWithDetails;
+  String _dateFormat               = kDatePatternIso;
+  String _timeFormat               = kTimePatternFull;
   ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
+  bool _dayQuarterColor            = kDefaultDayQuarterColor;
   LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
 
@@ -108,7 +140,10 @@ class EpochAppState extends State<EpochApp> {
     final hour24          = await loadHourFormat24();
     final thousands       = await loadThousandsSep();
     final dateWithDetails = await loadDateWithDetails();
+    final dateFormat      = await loadDateFormat();
+    final timeFormat      = await loadTimeFormat();
     final zoneDisplayMode = await loadZoneDisplayMode();
+    final dayQuarterColor = await loadDayQuarterColor();
     final lmstMode        = await loadLmstMode();
     final lmstLongitude   = await loadLmstLongitude();
 
@@ -127,7 +162,10 @@ class EpochAppState extends State<EpochApp> {
       _hourFormat24    = hour24;
       _thousandsSep    = thousands;
       _dateWithDetails = dateWithDetails;
+      _dateFormat      = dateFormat;
+      _timeFormat      = timeFormat;
       _zoneDisplayMode = zoneDisplayMode;
+      _dayQuarterColor = dayQuarterColor;
       _lmstMode        = lmstMode;
       _lmstLongitude   = lmstLongitude;
       _settingsLoaded  = true;
@@ -159,9 +197,24 @@ class EpochAppState extends State<EpochApp> {
     saveDateWithDetails(v);
   }
 
+  void setDateFormat(String pattern) {
+    setState(() => _dateFormat = pattern);
+    saveDateFormat(pattern);
+  }
+
+  void setTimeFormat(String pattern) {
+    setState(() => _timeFormat = pattern);
+    saveTimeFormat(pattern);
+  }
+
   void setZoneDisplayMode(ZoneDisplayMode mode) {
     setState(() => _zoneDisplayMode = mode);
     saveZoneDisplayMode(mode);
+  }
+
+  void setDayQuarterColor(bool v) {
+    setState(() => _dayQuarterColor = v);
+    saveDayQuarterColor(v);
   }
 
   void setLmstMode(LmstMode mode) {
@@ -187,7 +240,10 @@ class EpochAppState extends State<EpochApp> {
   bool get hourFormat24               => _hourFormat24;
   bool get thousandsSep               => _thousandsSep;
   bool get dateWithDetails            => _dateWithDetails;
+  String get dateFormat               => _dateFormat;
+  String get timeFormat               => _timeFormat;
   ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
+  bool get dayQuarterColor            => _dayQuarterColor;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
 
@@ -525,7 +581,7 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (ctx) => AlertDialog(
         title: const Text('Build info'),
         content: Text(
-          kBuildTimestamp,
+          kBuildInfo,
           style: const TextStyle(fontFamily: fontFamilyDefault),
         ),
         actions: [

@@ -31,7 +31,7 @@ class TimeGraphicalRow extends TimeValueRow {
     final segmentColor = switch (app.themeMode) {
       AppThemeMode.light  => Colors.black,
       AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.night  => kColorNightRed,
       AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
           ? Colors.white : Colors.black,
     };
@@ -47,12 +47,28 @@ class TimeGraphicalRow extends TimeValueRow {
           color: segmentColor,
         ),
       ValueType.binaryClockColumns =>
-        BinaryColumnsClock(now: zonedNow, l10n: l10n),
+        BinaryColumnsClock(
+            now: zonedNow,
+            l10n: l10n,
+            showSeconds: timeValue.showSeconds,
+        ),
       ValueType.binaryClockBcd =>
-        BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+        BinaryCodedDecimalClock(
+            now: zonedNow,
+            l10n: l10n,
+            showSeconds: timeValue.showSeconds,
+        ),
       _ => throw StateError(
           'Unhandled graphical ValueType: ${timeValue.valueType}'),
     };
+
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night &&
+        !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        : null;
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
@@ -65,6 +81,7 @@ class TimeGraphicalRow extends TimeValueRow {
         waitDuration: const Duration(milliseconds: 1000),
         child: GraphicValueContent(
           clock: clock,
+          dayQuarterColor: dayQuarterColor,
           onDoubleTap: () => openFocusScreen(context, locale),
         ),
       ),

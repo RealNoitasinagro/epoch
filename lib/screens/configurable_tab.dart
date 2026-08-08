@@ -36,7 +36,7 @@ class ConfigurableTab extends StatefulWidget {
     this.thousandsSep = true,
     this.hourFormat24 = true,
     this.showDateDetails = true,
-    this.maxEntries = 20,
+    this.maxEntries = 30,
     this.allowedTypes,
   });
 
@@ -297,12 +297,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   )
                 ),
               ],
-              if (timeValue.valueType == ValueType.sevenSegmentClock) ...[
+              if (timeValue.valueType.isGraphical ||
+                  timeValue.valueType == ValueType.swatchBeats) ...<Widget>[
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
-                  title: Text(l10n.labelShowSeconds),
+                  title: Text(
+                      timeValue.valueType == ValueType.swatchBeats
+                          ? l10n.labelShowDecimals
+                          : l10n.labelShowSeconds
+                  ),
                   value: selectedShowSeconds,
                   onChanged: (v) => setDialogState(() => selectedShowSeconds = v ?? true),
                 ),
@@ -335,10 +340,12 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (result == null) return;
     final newLabel = result.reset
         ? null
-        : (result.label == timeValue.localizedDisplayLabel(l10n) ||
-        result.label!.isEmpty)
-        ? null
-        : result.label;
+        : (timeValue.customLabel == null &&
+            result.label == timeValue.localizedDisplayLabel(l10n)
+            ||
+            result.label!.isEmpty)
+            ? null
+            : result.label;
     final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
     final newShowSeconds = result.reset ? true : result.showSeconds;
 
@@ -371,7 +378,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _showAddDialog() async {
     final l10n = AppLocalizations.of(context)!;
-    if (widget.entries.length >= widget.maxEntries) {
+    int timeValueEntries = widget.entries.where( (e) => e is TimeValue ).length;
+    if (timeValueEntries >= widget.maxEntries) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(l10n.messageMaxValues(widget.maxEntries)),
         behavior: SnackBarBehavior.floating,
@@ -604,7 +612,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       hourFormat24: widget.hourFormat24,
       thousandsSep: widget.thousandsSep,
       showDateDetails: widget.showDateDetails,
-      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
+      zoneDisplayMode: app.zoneDisplayMode,
       longitude: longitude,
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
@@ -612,7 +622,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final segmentColor = switch (app.themeMode) {
       AppThemeMode.light  => Colors.black,
       AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => const Color(0xFFCC1010),
+      AppThemeMode.night  => kColorNightRed,
       AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
           ? Colors.white : Colors.black,
     };
@@ -630,13 +640,29 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               color: segmentColor,
             ),
         ValueType.binaryClockColumns =>
-            BinaryColumnsClock(now: zonedNow, l10n: l10n),
+            BinaryColumnsClock(
+              now: zonedNow,
+              l10n: l10n,
+              showSeconds: timeValue.showSeconds,
+            ),
         ValueType.binaryClockBcd =>
-            BinaryCodedDecimalClock(now: zonedNow, l10n: l10n),
+            BinaryCodedDecimalClock(
+              now: zonedNow,
+              l10n: l10n,
+              showSeconds: timeValue.showSeconds,
+            ),
         _ => throw StateError(
             'Unhandled graphical ValueType: ${timeValue.valueType}'),
       };
     };
+
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night &&
+        !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(widget.now.toUtc(), ianaZone)
+        : null;
 
     return Dismissible(
       key: ValueKey(timeValue.key),
@@ -655,8 +681,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
-            ? GraphicValueContent(clock: clock)
-            : TextValueContent(line1: display.line1, line2: display.line2),
+            ? GraphicValueContent(
+                clock: clock,
+                dayQuarterColor: dayQuarterColor,
+              )
+            : TextValueContent(
+                line1: display.line1,
+                line2: display.line2,
+                dayQuarterColor: dayQuarterColor,
+              ),
         actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
       ),
     );

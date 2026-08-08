@@ -7,13 +7,13 @@ import '../main.dart';
 
 class ValueTile extends StatelessWidget {
   final String label;
-  final Widget content;      // text field or graphical clock
-  final List<Widget?> actionSlots; // always 3 slots
+  final Widget content;  // text field or graphical clock
+  final List<Widget?> actionSlots;  // always 3 slots
   static const double textTileHeight    = 88.0;
-  static const double graphicTileHeight = 222.0; // fits 6 bit rows
-  final double? height; // null = textTileHeight
+  static const double graphicTileHeight = 222.0;  // fits 6 bit rows
+  final double? height;  // null = textTileHeight
   final bool showZoneIndicator;
-  final IconData? dstStatusIndicator;  // null, Icons.wb_sunny_outlined, Icons.brightness_3
+  final IconData? dstStatusIndicator;  // null, or originally Icons.wb_sunny_outlined, Icons.brightness_3
   final bool showPinnedIndicator;  // timezoneClockChangeMode != auto
 
   const ValueTile({
@@ -104,12 +104,14 @@ class TextValueContent extends StatelessWidget {
   final String line1;
   final String line2;
   final VoidCallback? onDoubleTap;
+  final Color? dayQuarterColor;  // not: night mode, zone-independent values
 
   const TextValueContent({
     super.key,
     required this.line1,
     this.line2 = '',
     this.onDoubleTap,
+    this.dayQuarterColor,
   });
 
   @override
@@ -123,6 +125,9 @@ class TextValueContent extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.onSurface.withAlpha(30),
         borderRadius: BorderRadius.circular(kTileBorderRadius),
+        border: dayQuarterColor != null
+            ? Border( left: BorderSide(color: dayQuarterColor!, width: 3) )
+            : Border()
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,11 +170,13 @@ class TextValueContent extends StatelessWidget {
 class GraphicValueContent extends StatelessWidget {
   final Widget clock;
   final VoidCallback? onDoubleTap;
+  final Color? dayQuarterColor;  // not: night mode, zone-independent values
 
   const GraphicValueContent({
     super.key,
     required this.clock,
     this.onDoubleTap,
+    this.dayQuarterColor,
   });
 
   @override
@@ -180,6 +187,9 @@ class GraphicValueContent extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface.withAlpha(30),
         borderRadius: BorderRadius.circular(kTileBorderRadius),
+        border: dayQuarterColor != null
+            ? Border( left: BorderSide(color: dayQuarterColor!, width: 3) )
+            : Border()
       ),
       child: FittedBox(
         alignment: Alignment.centerLeft,

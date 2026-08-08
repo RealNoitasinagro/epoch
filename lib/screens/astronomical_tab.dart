@@ -30,15 +30,18 @@ class AstronomicalTab extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final count = astronomicalEntries.length + (_showLmst ? 1 : 0);
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
 
     return Column(
       children: [
         TabValueCount(count: count),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-                kTabHorizontalPadding, kTabVerticalPadding,
-                kTabHorizontalPadding, kTabVerticalPadding),
+            padding: EdgeInsets.fromLTRB(
+                kTabHorizontalPadding,
+                kTabVerticalPadding,
+                kTabHorizontalPadding,
+                kTabVerticalPadding + bottomInset),
             children: [
               SectionHeader(label: l10n.sectionSidereal),
               const SizedBox(height: kEntrySpacing),

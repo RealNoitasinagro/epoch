@@ -353,4 +353,84 @@ void main() {
       expect(daysUntil, equals(0));
     });
   });
+
+  group('TimeUtils.dstTransitionAbbreviations', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('Berlin autumn transition 2026: CEST -> CET', () {
+      // 2026-10-25 01:00 UTC: clocks go back from 03:00 CEST to 02:00 CET
+      final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
+      final result = TimeUtils.dstTransitionAbbreviations(
+          'Europe/Berlin', transition);
+      expect(result.before, equals('CEST'));
+      expect(result.after,  equals('CET'));
+    });
+
+    test('Berlin spring transition 2027: CET -> CEST', () {
+      final transition = DateTime.utc(2027, 3, 28, 1, 0, 0);
+      final result = TimeUtils.dstTransitionAbbreviations(
+          'Europe/Berlin', transition);
+      expect(result.before, equals('CET'));
+      expect(result.after,  equals('CEST'));
+    });
+
+    test('Lord Howe spring transition: LHST -> LHDT', () {
+      // Lord Howe goes to summer time in October
+      final transitions = TimeUtils.nextDstTransitions(
+          'Australia/Lord_Howe',
+          DateTime.utc(2026, 9, 1), count: 1);
+      expect(transitions, isNotEmpty);
+      final result = TimeUtils.dstTransitionAbbreviations(
+          'Australia/Lord_Howe', transitions.first);
+      // +10:30 -> +11:00
+      expect(result.before, equals('+1030'));
+      expect(result.after,  equals('+11'));
+    });
+
+    test('Chatham autumn transition: NZDT -> NZST direction', () {
+      // Chatham: +13:45 summer / +12:45 winter
+      final transitions = TimeUtils.nextDstTransitions(
+          'Pacific/Chatham',
+          DateTime.utc(2026, 1, 1), count: 2);
+      expect(transitions.length, equals(2));
+      // First transition in 2026 is autumn (clocks back):
+      final autumnAbbrs = TimeUtils.dstTransitionAbbreviations(
+          'Pacific/Chatham', transitions[0]);
+      final springAbbrs = TimeUtils.dstTransitionAbbreviations(
+          'Pacific/Chatham', transitions[1]);
+      // Autumn: summer abbr -> winter abbr
+      expect(autumnAbbrs.before, isNot(equals(autumnAbbrs.after)));
+      // Spring: winter abbr -> summer abbr (reversed)
+      expect(springAbbrs.before, equals(autumnAbbrs.after));
+      expect(springAbbrs.after,  equals(autumnAbbrs.before));
+    });
+
+    test('UTC has no transitions', () {
+      final transitions = TimeUtils.nextDstTransitions(
+          'UTC', DateTime.utc(2026, 1, 1));
+      expect(transitions, isEmpty);
+    });
+
+    test('nextDstTransitions returns correct count', () {
+      final transitions = TimeUtils.nextDstTransitions(
+          'Europe/Berlin', DateTime.utc(2026, 1, 1), count: 4);
+      expect(transitions.length, equals(4));
+      // All transitions are in the future:
+      for (final t in transitions) {
+        expect(t.isAfter(DateTime.utc(2026, 1, 1)), isTrue);
+      }
+      // Transitions are sorted chronologically:
+      for (int i = 1; i < transitions.length; i++) {
+        expect(transitions[i].isAfter(transitions[i-1]), isTrue);
+      }
+    });
+
+    test('nextDstTransition (singular) matches first of nextDstTransitions', () {
+      final afterUtc = DateTime.utc(2026, 6, 1);
+      final single   = TimeUtils.nextDstTransition('Europe/Berlin', afterUtc);
+      final list     = TimeUtils.nextDstTransitions('Europe/Berlin', afterUtc,
+          count: 1);
+      expect(single, equals(list.firstOrNull));
+    });
+  });
 }

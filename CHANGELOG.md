@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+### Added
+- display the next four clock changes for configured time values with (unpinned) DST in info
+- date and time formats configurable (preset and custom options)
+- day quarter indicator in different colors (on/off-switch in Settings)
+- support for direct config loading on Linux command line
+- `example_configs` and [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) on GitHub
+
+### Changed
+- a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
+- much better timezone search keyword coverage (still WIP)
+- graphical binary clocks now allow to turn seconds off, like seven-segment clock
+- Swatch beats now show two decimals by default (with option for no decimals)
+- max (time value) entries per configurable tab increased from 20 to 30 (sections, dividers don't count)
+
+### Fixed
+- Swatch beats were up to half a .beat off (because of unwanted rounding)
+- custom labels were reset to default labels on repeated edits
+- Curiosities tab scroll issue after immersive mode (final value was not fully visible)
+
 ---
 
 ## [1.3.0] - 2026-07-20

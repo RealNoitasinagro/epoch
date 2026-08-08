@@ -10,10 +10,10 @@ cwd=$(pwd)
 
 case "$cwd" in
     "$GH_Epoch")
-        unset PUB_CACHE  # just in case...
+        unset PUB_CACHE  # just in case... default: $HOME/.pub-cache
     ;;
     "$GL_Epoch")
-        export PUB_CACHE="$GL_Epoch"/.pub-cache
+        export PUB_CACHE="${GL_Epoch}/.pub-cache"
     ;;
     *)
         echo "Invalid directory! (Run from the right location, and/or check env variables.)";
@@ -84,9 +84,7 @@ skipCopy=0
 useLogging=1
 
 # flutter_active='/snap/bin/flutter'  # default, installed via snap
-flutter_active="$HOME/Android/flutter/bin/flutter";  # installed manually via GH clone
-flutter_version=$($flutter_active --version)
-
+flutter_active="$HOME/Android/flutter/bin/flutter"  # installed manually via GH clone
 target_platform_android_arm='app-armeabi-v7a-release.apk'
 target_platform_android_arm64='app-arm64-v8a-release.apk'
 target_platform_android_x86_64='app-x86_64-release.apk'
@@ -100,16 +98,45 @@ build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+flutter_version=$($flutter_active --version)
+installed_timezone_version=$(dart pub deps --json | python3 -c "import json,sys; deps=json.load(sys.stdin); print(next(p['version'] for p in deps['packages'] if p['name']=='timezone'))")
+latest_timezone_version=$(curl -s "https://pub.dev/api/packages/timezone" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
+file_to_check="${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+if [ "$cwd" == "$GL_Epoch" ] ; then
+    repo_status=''
+else
+    repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
+fi
+if [ -e "$file_to_check" ] ; then
+    iana_database=$(grep 'Timezone data version' "$file_to_check" | cut -d':' -f 2 | sed -r 's/^\s+//')
+else
+    echo "Could not find $file_to_check -- timezone package upgrade needed!"
+    echo "(installed: $installed_timezone_version, latest: $latest_timezone_version)"
+    exit 1;
+fi
+
+
 function run_flutter_build {
-    local _variant=$1
-    local flutter_command="$flutter_active build $_variant --$mode"
-    if [ "$cwd" == "$GH_Epoch" ] ; then  # no build timestamps in $GL_Epoch
-        flutter_command="$flutter_command --dart-define=BUILD_TIMESTAMP=$build_timestamp"
+    local -a variant=("$@")
+    local flutter_command_build=(
+      "$flutter_active"
+      build
+      "${variant[@]}"
+      --"$mode"
+      --no-pub
+    )
+
+    if [ "$cwd" == "$GL_Epoch" ] ; then
+        build_info=$(printf '%s | %s' "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        # flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")  # would require metadata update + MR
+    elif [ "$cwd" == "$GH_Epoch" ] ; then
+        build_info=$(printf '%s | %s | %s | %s' "Build: $build_timestamp" "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")
     fi
 
-    echo "# $flutter_command" | tee -a "$build_all_log"
+    echo '#' "${flutter_command_build[@]}" | tee -a "$build_all_log"
     if [ ! "$dryRun" -eq "1" ] ; then
-        $flutter_command
+        "${flutter_command_build[@]}"
     fi
 }
 
@@ -121,8 +148,10 @@ tee "$build_all_log" << EOF
 [$build_timestamp] Building $what... (mode = $mode, dryRun = $dryRun)
 Flutter: $flutter_active
 $flutter_version
+Installed timezone: $installed_timezone_version | latest: $latest_timezone_version
+Installed IANA database: $iana_database
 Logfile: $build_all_log
-Repo: $cwd
+Workspace: $cwd | $repo_status
 skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
@@ -138,11 +167,21 @@ else
 fi
 echo
 
+echo "# pub get"
+flutter_command="$flutter_active pub get"
+echo "# $flutter_command" | tee -a "$build_all_log"
+if [ ! "$dryRun" -eq "1" ] ; then
+    $flutter_command
+fi
+echo
+
 echo "# analyze"
 if [ ! "$skipAnalyze" -eq "1" ] ; then
-    flutter_command="$flutter_active analyze"
+    flutter_command="$flutter_active analyze --no-pub"
     echo "# $flutter_command" | tee -a "$build_all_log"
-    $flutter_command
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
 else
     echo "Skipped."
 fi
@@ -150,9 +189,11 @@ echo
 
 echo "# test"
 if [ ! "$skipTest" -eq "1" ] ; then
-    flutter_command="$flutter_active test"
+    flutter_command="$flutter_active test --no-pub"
     echo "# $flutter_command" | tee -a "$build_all_log"
-    $flutter_command
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
 else
     echo "Skipped."
 fi
@@ -184,7 +225,7 @@ echo
 
 echo "# apk (--split-per-abi)"
 if [ ! "$skipSplit" -eq "1" ] ; then
-    run_flutter_build 'apk --split-per-abi'
+    run_flutter_build 'apk' '--split-per-abi'
 else
     echo "Skipped."
 fi
@@ -203,10 +244,12 @@ else
 fi
 echo | tee -a "$build_all_log"
 
-echo "# Listing output files in $apk_output_path..."
-# shellcheck disable=SC2012
-ls -l "$apk_output_path" | tee -a "$build_all_log"
-echo | tee -a "$build_all_log"
+if [[ ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
+    echo "# Listing output files in $apk_output_path..."
+    # shellcheck disable=SC2012
+    ls -l "$apk_output_path" | tee -a "$build_all_log"
+    echo | tee -a "$build_all_log"
+fi
 
 if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
   echo "# Copying output files..."
@@ -215,7 +258,7 @@ if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ;
   echo
 fi
 
-if [[ ( "$cwd" == "$GL_Epoch" && "$mode" != "release" && "$dryRun" -eq "0" ) ||
+if [[ ( "$cwd" == "$GL_Epoch" && "$dryRun" -eq "0" && ("$mode" != "release" || ! -e "${GL_Epoch}/.git-commit") ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
     tee -a "$build_all_log" << EOF
 +++++ <!> WARNING <!> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -229,7 +272,7 @@ fi
 
 if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
-      "$skipChecksums" -eq "0" && "$useLogging" -eq "1" ]] ; then
+      "$skipChecksums" -eq "0" && "$useLogging" -eq "1" && -e "${GL_Epoch}/.git-commit" ]] ; then
     rm -v -f $destination_path/*.apk
     cp -v $apk_output_path/${target_platform_android_arm} $destination_path
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path

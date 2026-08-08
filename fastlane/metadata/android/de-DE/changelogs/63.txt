@@ -1,0 +1,13 @@
+- Nächste Zeitumstellungen im Info-Dialog
+- Datum-/Zeitformate konfigurierbar (Vorauswahl und eigene)
+- Farbiger Streifen zeigt Tagesviertel — gut für Weltzeituhr-Tabs
+- Linux: Config-Datei vom Terminal laden
+- Beispiel-Configs und Config-Handbuch auf GitHub
+- Zeitzonen-Kürzel DE: MEZ, MESZ, OEZ, OESZ, WEZ, WESZ
+- Verbesserte Zeitzonensuche
+
+Behoben
+- Swatch-Beats-Rundungsfehler (bis zu einem halben Beat)
+- Eigene Labels bei erneutem Bearbeiten zurückgesetzt
+
++ weitere Verbesserungen

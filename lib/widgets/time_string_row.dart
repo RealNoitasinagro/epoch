@@ -1,11 +1,11 @@
 import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:timezone/timezone.dart' as tz;
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
+import '../models/timezone_abbr_localization.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
@@ -40,6 +40,8 @@ class TimeStringRow extends TimeValueRow {
         bool hourFormat24 = true,
         bool thousandsSep = true,
         bool showDateDetails = true,
+        String dateFormat = kDatePatternIso,
+        String timeFormat = kTimePatternFull,
         ZoneDisplayMode zoneDisplayMode = ZoneDisplayMode.full,
         double? longitude,
       }
@@ -49,6 +51,8 @@ class TimeStringRow extends TimeValueRow {
       localIanaZone: localIanaZone,
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
+      dateFormat: dateFormat,
+      timeFormat: timeFormat,
       longitude: longitude,
     );
 
@@ -77,11 +81,7 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      final ianaZone = switch (timeValue.zone) {
-        ZoneLocal()                  => localIanaZone,
-        ZoneNamed(ianaZone: final z) => z,
-        ZoneUtc()                    => null,
-      };
+      String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
       if (ianaZone != null &&
           timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
@@ -110,8 +110,8 @@ class TimeStringRow extends TimeValueRow {
     ).firstMatch(value);
     if (match == null) return (line1: value, line2: '');
     return (
-    line1: value.substring(0, match.start).trim(),
-    line2: match.group(0)!,
+      line1: value.substring(0, match.start).trim(),
+      line2: match.group(0)!,
     );
   }
 
@@ -128,13 +128,10 @@ class TimeStringRow extends TimeValueRow {
     final daysUntil = nextDate.difference(nowDate).inDays;
     if (daysUntil > 7) return null;
 
-    // Abbreviations before and after the transition:
-    final loc = tz.getLocation(ianaZone);
-    final abbrBefore = tz.TZDateTime.from(
-        next.subtract(const Duration(hours: 1)), loc).timeZone.abbreviation;
-    final abbrAfter = tz.TZDateTime.from(
-        next.add(const Duration(hours: 1)), loc).timeZone.abbreviation;
-    final arrow = '$abbrBefore → $abbrAfter';
+    final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, next);
+    final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
+    final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+    final arrow = '$before → $after';
 
     if (daysUntil == 0) return '$arrow ${l10n.labelDstChangeToday}';
     if (daysUntil == 1) return '$arrow ${l10n.labelDstChangeTomorrow}';
@@ -201,6 +198,7 @@ class TimeStringRow extends TimeValueRow {
 
   @override
   Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
@@ -210,11 +208,23 @@ class TimeStringRow extends TimeValueRow {
       hourFormat24: hourFormat24,
       thousandsSep: thousandsSep,
       showDateDetails: showDateDetails,
-      zoneDisplayMode: EpochApp.of(context).zoneDisplayMode,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
+      zoneDisplayMode: app.zoneDisplayMode,
       longitude: longitude,
     );
     String label = computeLabel(l10n, timeValue, longitude);
-    String clipboardValue = display.line1 + '\n' + display.line2;
+    final clipboardValue = display.line2.isEmpty
+        ? display.line1
+        : '${display.line1}\n${display.line2}';
+
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night &&
+        !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        : null;
 
     return ValueTile(
       label: label,
@@ -224,9 +234,10 @@ class TimeStringRow extends TimeValueRow {
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,
         waitDuration: const Duration(milliseconds: 1000),
-        child:  TextValueContent(
+        child: TextValueContent(
           line1: display.line1,
           line2: display.line2,
+          dayQuarterColor: dayQuarterColor,
           onDoubleTap: () => openFocusScreen(context, locale),
         ),
       ),

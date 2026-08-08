@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'Double-tap to switch to focus screen'**
   String get hintFocusScreenOpen;
 
+  /// No description provided for @hintFocusScreenToggleDecimalsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to suppress decimals'**
+  String get hintFocusScreenToggleDecimalsOff;
+
+  /// No description provided for @hintFocusScreenToggleDecimalsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to display decimals'**
+  String get hintFocusScreenToggleDecimalsOn;
+
   /// No description provided for @hintFocusScreenToggleSecondsOff.
   ///
   /// In en, this message translates to:
@@ -596,11 +608,23 @@ abstract class AppLocalizations {
   /// **'Tab name'**
   String get labelNewTabName;
 
+  /// No description provided for @labelNextClockChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Next clock changes'**
+  String get labelNextClockChanges;
+
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
   /// **'SS'**
   String get labelSeconds;
+
+  /// No description provided for @labelShowDecimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Show decimals'**
+  String get labelShowDecimals;
 
   /// No description provided for @labelShowSeconds.
   ///
@@ -722,6 +746,18 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsCustomFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom…'**
+  String get settingsCustomFormat;
+
+  /// No description provided for @settingsDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get settingsDateFormat;
+
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
@@ -731,8 +767,38 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
+  /// **'calender week, day of the year'**
   String get settingsDateWithDetailsSub;
+
+  /// No description provided for @settingsDayQuarterColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Day quarter color'**
+  String get settingsDayQuarterColor;
+
+  /// No description provided for @settingsDayQuarterColorSub1st.
+  ///
+  /// In en, this message translates to:
+  /// **'1st red'**
+  String get settingsDayQuarterColorSub1st;
+
+  /// No description provided for @settingsDayQuarterColorSub2nd.
+  ///
+  /// In en, this message translates to:
+  /// **'2nd cyan'**
+  String get settingsDayQuarterColorSub2nd;
+
+  /// No description provided for @settingsDayQuarterColorSub3rd.
+  ///
+  /// In en, this message translates to:
+  /// **'3rd amber'**
+  String get settingsDayQuarterColorSub3rd;
+
+  /// No description provided for @settingsDayQuarterColorSub4th.
+  ///
+  /// In en, this message translates to:
+  /// **'4th green'**
+  String get settingsDayQuarterColorSub4th;
 
   /// No description provided for @settingsDstAlwaysOff.
   ///
@@ -896,6 +962,12 @@ abstract class AppLocalizations {
   /// **'e. g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
 
+  /// No description provided for @settingsTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time format'**
+  String get settingsTimeFormat;
+
   /// No description provided for @settingsWhatsNew.
   ///
   /// In en, this message translates to:
@@ -977,19 +1049,19 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (BCD)'**
+  /// **'Binary Clock (BCD)'**
   String get valueTypeBinaryClockBcd;
 
   /// No description provided for @valueTypeBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (columns)'**
+  /// **'Binary Clock (columns)'**
   String get valueTypeBinaryClockColumns;
 
   /// No description provided for @valueTypeBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Binary time (string)'**
+  /// **'Binary Time (string)'**
   String get valueTypeBinaryClockString;
 
   /// No description provided for @valueTypeDate.
@@ -1007,13 +1079,13 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Day percent'**
+  /// **'Day Percent'**
   String get valueTypeDayPercent;
 
   /// No description provided for @valueTypeDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Day second'**
+  /// **'Day Second'**
   String get valueTypeDaySecond;
 
   /// No description provided for @valueTypeDoomsdayClock.
@@ -1061,7 +1133,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeSevenSegmentTime.
   ///
   /// In en, this message translates to:
-  /// **'Seven-segment clock'**
+  /// **'Seven-segment Clock'**
   String get valueTypeSevenSegmentTime;
 
   /// No description provided for @valueTypeSwatchBeats.
@@ -1085,7 +1157,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Unix time (s)'**
+  /// **'Unix Time (s)'**
   String get valueTypeUnixSeconds;
 }
 
