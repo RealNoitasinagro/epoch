@@ -89,6 +89,16 @@ class TimeUtils {
     }
   }
 
+  /// Determine IANA zone identifier (Area/Location) from a timeValue.
+  static String? resolveIanaZone(TimeValue timeValue, String localIanaZone) {
+    final ianaZone = switch (timeValue.zone) {
+      ZoneLocal()                  => localIanaZone,
+      ZoneNamed(ianaZone: final z) => z,
+      ZoneUtc()                    => null,
+    };
+    return ianaZone;
+  }
+
   /// Returns the DateTime of the next clock change for a ianaZone.
   static DateTime? nextDstTransition(String ianaZone, DateTime afterUtc) {
     return nextDstTransitions(ianaZone, afterUtc, count: 1).firstOrNull;

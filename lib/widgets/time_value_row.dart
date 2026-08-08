@@ -24,11 +24,7 @@ abstract class TimeValueRow extends StatelessWidget {
 
   void showInfo(BuildContext context, AppLocalizations l10n) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final ianaZone = switch (timeValue.zone) {
-      ZoneLocal()                  => localIanaZone,
-      ZoneNamed(ianaZone: final z) => z,
-      ZoneUtc()                    => null,
-    };
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
     final link = infoLinkOverride ?? timeValue.localizedInfoLink(l10n);
     showDialog(
       context: context,

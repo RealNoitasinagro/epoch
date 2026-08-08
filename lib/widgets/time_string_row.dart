@@ -81,11 +81,7 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      final ianaZone = switch (timeValue.zone) {
-        ZoneLocal()                  => localIanaZone,
-        ZoneNamed(ianaZone: final z) => z,
-        ZoneUtc()                    => null,
-      };
+      String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
       if (ianaZone != null &&
           timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
@@ -222,11 +218,7 @@ class TimeStringRow extends TimeValueRow {
         ? display.line1
         : '${display.line1}\n${display.line2}';
 
-    final ianaZone = switch (timeValue.zone) {
-      ZoneLocal()                  => localIanaZone,
-      ZoneNamed(ianaZone: final z) => z,
-      ZoneUtc()                    => null,
-    };
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night &&

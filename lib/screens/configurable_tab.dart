@@ -655,11 +655,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       };
     };
 
-    final ianaZone = switch (timeValue.zone) {
-      ZoneLocal()                  => localIanaZone,
-      ZoneNamed(ianaZone: final z) => z,
-      ZoneUtc()                    => null,
-    };
+    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night &&
