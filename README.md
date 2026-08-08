@@ -84,12 +84,12 @@ to assemble exactly the time display you need — and nothing you don't.
 > [!TIP]
 > Check out the `example_configs` folder with (partly) localized pre-made configurations 
 > that you might like to fine-tune for your needs. \
-> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/develop/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots.
+> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots (see next section).
 
 
 ## Screenshots
 
-Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`. \
+Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}/images/phoneScreenshots/`. \
 There are slight differences between the two sets to highlight different aspects and details.
 
 <details>
@@ -134,16 +134,20 @@ There are slight differences between the two sets to highlight different aspects
 
 </details>
 
-Additional screenshots for `example_configs`:
+Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 
 <details>
 <summary>Click to expand (English)</summary>
 
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_home.png" width="180" alt="en epoch_settings_home.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_spaceflight.png" width="180" alt="en epoch_settings_spaceflight.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_special_timezones.png" width="180" alt="en epoch_settings_special_timezones.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/en-US/screenshots/epoch_settings_uno.png" width="180" alt="en epoch_settings_uno.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_home.png" width="180" alt="en epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_spaceflight.png" width="180" alt="en epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_special_timezones.png" width="180" alt="en epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_uno.png" width="180" alt="en epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
 </p>
 
 </details>
@@ -152,10 +156,14 @@ Additional screenshots for `example_configs`:
 <summary>Click to expand (German)</summary>
 
 <p>
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_home.png" width="180" alt="de epoch_settings_home.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_spaceflight.png" width="180" alt="de epoch_settings_spaceflight.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_special_timezones.png" width="180" alt="de epoch_settings_special_timezones.json">
-  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/develop/example_configs/de-DE/screenshots/epoch_settings_uno.png" width="180" alt="de epoch_settings_uno.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_home.png" width="180" alt="de epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_spaceflight.png" width="180" alt="de epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_special_timezones.png" width="180" alt="de epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_uno.png" width="180" alt="de epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
 </p>
 
 </details>

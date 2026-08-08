@@ -1,7 +1,7 @@
 {
     "active_tab": 4,
     "custom_tabs": [
-        "1782930589066\tRaumfahrt\tsection:1784745191776:Internationale Raumstation (ISS)\ttime/utc\tdivider:1786003557722\tsection:1782934224911:[NASA] Missionskontrollzentrum\tdate/named:America/Chicago|Houston\ttime/named:America/Chicago|Houston\tsection:1782934445324:[NASA] Kennedy Space Center (KSC)\ttime/named:America/New_York|Merritt Island\tdivider:1784745146562\tsection:1786003582890:[ESA] Europäisches Raumflugkontrollzentrum (ESOC)\ttime/named:Europe/Berlin|Darmstadt\tsection:1786004924481:[ESA] Raumfahrtzentrum Guayana (CSG)\ttime/named:America/Cayenne|Kourou\tdivider:1786005172663\tsection:1786005664562:[ROSCOSMOS] Kosmodrom Baikonur\ttime/named:Asia/Oral|Baikonur"
+        "1782930589066\tRaumfahrt\tsection:1784745191776:Internationale Raumstation (ISS)\ttime/utc\tdivider:1786003557722\tsection:1782934224911:[NASA] Missionskontrollzentrum (MCC)\tdate/named:America/Chicago|Houston\ttime/named:America/Chicago|Houston\tsection:1782934445324:[NASA] Kennedy Space Center (KSC)\ttime/named:America/New_York|Merritt Island\tdivider:1784745146562\tsection:1786003582890:[ESA] Europäisches Raumflugkontrollzentrum (ESOC)\ttime/named:Europe/Berlin|Darmstadt\tsection:1786004924481:[ESA] Raumfahrtzentrum Guayana (CSG)\ttime/named:America/Cayenne|Kourou\tdivider:1786005172663\tsection:1786005664562:[ROSCOSMOS] Kosmodrom Baikonur\ttime/named:Asia/Oral|Baikonur"
     ],
     "locale": "de"
 }

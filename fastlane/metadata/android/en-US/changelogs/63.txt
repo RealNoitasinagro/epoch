@@ -1,0 +1,13 @@
+- Upcoming clock changes in value info dialog
+- Configurable date and time formats (presets and custom patterns)
+- Color-coded stripe shows quarter of day — great for world clock tabs
+- Linux: load a config file via terminal
+- Example configs and config manual on GitHub
+- Timezone abbreviations for DE: MEZ, MESZ, OEZ, OESZ, WEZ, WESZ
+- Improved timezone search
+
+Fixed
+- Swatch Beats rounding error (up to half a beat off)
+- custom labels were reset on repeated edits
+
++ other improvements
