@@ -33,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _locationLoading = false;
   final _longitudeController = TextEditingController();
   ValueNotifier<int>? _settingsReloadNotifier;
+  late String? _lastImportedConfig;
 
   static const _fallbackVersion = '0.0.0';
   static const _fallbackBuildNumber = '0';
@@ -71,6 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
+      _lastImportedConfig = app.lastImportedConfig;
     });
   }
 
@@ -422,6 +424,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.upload_file),
             title: Text(l10n.settingsPreferencesImport),
+            subtitle: _lastImportedConfig != null
+                ? Text(_lastImportedConfig!,
+                    style: TextStyle(fontFamily: fontFamilyDefault))
+                : null,
             onTap: () async => await importSettings(context),
           ),
           ListTile(

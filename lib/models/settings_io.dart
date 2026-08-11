@@ -69,6 +69,11 @@ Future<void> importSettings(BuildContext context) async {
 
   try {
     await importSettingsJson(json);
+    if (file.path != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_imported_config', file.name);
+    }
+
   } on FormatException {
     if (!context.mounted) return;
     _showSnackBar(context, l10n.messageSettingsImportFailed);

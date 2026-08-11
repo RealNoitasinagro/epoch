@@ -16,6 +16,7 @@ const _kLmstLongitudeKey = 'lmst_lon';  // double
 const _kActiveTabKey = 'active_tab';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
+const _kLastImportedConfigKey = 'last_imported_config';
 
 const kDefaultLocale          = Locale('en');
 const kDefaultThemeMode       = AppThemeMode.system;
@@ -226,4 +227,14 @@ Future<Color> loadFocusColor(bool isNightMode) async {
 Future<void> saveFocusColor(Color color) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kFocusColorKey, color.toARGB32());
+}
+
+Future<String?> loadLastImportedConfig() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(_kLastImportedConfigKey);
+}
+
+Future<void> saveLastImportedConfig(String filename) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kLastImportedConfigKey, filename);
 }

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- import function shows last loaded config in Settings
+
 ### Changed
 - more informative date and time format subtitles in Settings
 
