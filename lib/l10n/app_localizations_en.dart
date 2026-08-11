@@ -470,6 +470,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLmstOff => 'Do not show';
 
   @override
+  String get settingsOff => 'off';
+
+  @override
+  String get settingsOn => 'on';
+
+  @override
   String get settingsPreferencesExport => 'Export preferences';
 
   @override

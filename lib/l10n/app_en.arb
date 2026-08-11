@@ -172,6 +172,8 @@
   "settingsLmstLongitudeNotYetDetermined": "Not yet determined",
   "settingsLmstLongitudeUnavailable": "Location unavailable – enable location access and grant permission to Epoch temporarily, or enter longitude manually",
   "settingsLmstOff": "Do not show",
+  "settingsOff": "off",
+  "settingsOn": "on",
   "settingsPreferencesExport": "Export preferences",
   "settingsPreferencesImport": "Import preferences",
   "settingsPreferencesReset": "Reset preferences",

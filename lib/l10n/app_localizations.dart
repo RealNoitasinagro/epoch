@@ -896,6 +896,18 @@ abstract class AppLocalizations {
   /// **'Do not show'**
   String get settingsLmstOff;
 
+  /// No description provided for @settingsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'off'**
+  String get settingsOff;
+
+  /// No description provided for @settingsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'on'**
+  String get settingsOn;
+
   /// No description provided for @settingsPreferencesExport.
   ///
   /// In en, this message translates to:

@@ -24,16 +24,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _hourFormat24;
   late bool _thousandsSep;
   late bool _dateWithDetails;
-  String _dateFormat = kDatePatternIso;
-  String _timeFormat = kTimePatternFull;
+  late String _dateFormat;
+  late String _timeFormat;
   late ZoneDisplayMode _zoneDisplayMode;
   late bool _dayQuarterColor;
   late LmstMode _lmstMode;
   late double? _lmstLongitude;
   bool _locationLoading = false;
   final _longitudeController = TextEditingController();
+  ValueNotifier<int>? _settingsReloadNotifier;
 
-  static const _fallbackVersion = '1.0.0';
+  static const _fallbackVersion = '0.0.0';
+  static const _fallbackBuildNumber = '0';
 
   bool get _isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -41,8 +43,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       defaultTargetPlatform == TargetPlatform.macOS;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
+    _settingsReloadNotifier = EpochApp.of(context).settingsReloadNotifier;
+    _settingsReloadNotifier!.addListener(_onExternalReload);
+    _setSettingsState();
+  }
+
+  void _setSettingsState() {
     final app = EpochApp.of(context);
     setState(() {
       _locale = app.locale;
@@ -60,8 +74,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void _onExternalReload() {
+    if (!mounted) return;
+    _setSettingsState();
+  }
+
   @override
   void dispose() {
+    _settingsReloadNotifier?.removeListener(_onExternalReload);;
     _longitudeController.dispose();
     super.dispose();
   }
@@ -70,12 +90,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String version;
     String build;
     try {
-      final info = await PackageInfo.fromPlatform();
+      final PackageInfo info = await PackageInfo.fromPlatform();
       version = info.version.isNotEmpty ? info.version : _fallbackVersion;
-      build = info.buildNumber.isNotEmpty ? info.buildNumber : '1';
+      build = info.buildNumber.isNotEmpty ? info.buildNumber : _fallbackBuildNumber;
     } catch (_) {
       version = _fallbackVersion;
-      build = '1';
+      build = _fallbackBuildNumber;
     }
     if (!context.mounted) return;
     showAboutDialog(
@@ -114,6 +134,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final app = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
     final isNight = app.themeMode == AppThemeMode.night;
+
+    final dateFormatString = _dateWithDetails ? l10n.settingsOn : l10n.settingsOff;
+    final subTitleDateFormat = _dateFormat
+        + ' | ' + l10n.settingsDateWithDetails + ': ' + dateFormatString;
+
+    final hourFormatString = _hourFormat24 ? l10n.settingsOn : l10n.settingsOff;
+    final subTitleTimeFormat = _timeFormat
+        + ' | ' + l10n.settingsHourFormat + ': ' + hourFormatString;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.pageSettings),
@@ -184,13 +213,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: Text(l10n.settingsDateFormat),
-            subtitle: Text(_dateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            subtitle: Text(subTitleDateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
             onTap: () => _showFormatPicker(context, l10n, isDate: true),
           ),
           ListTile(
             leading: const Icon(Icons.access_time),
             title: Text(l10n.settingsTimeFormat),
-            subtitle: Text(_timeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
             onTap: () => _showFormatPicker(context, l10n, isDate: false),
           ),
           ListTile(

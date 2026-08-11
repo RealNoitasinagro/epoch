@@ -96,15 +96,32 @@ Future<void> resetSettings(BuildContext context) async {
   // reload
   if (!context.mounted) return;
   await EpochApp.of(context).reloadPreferences();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (context.mounted) {
-      (context as Element).markNeedsBuild();
-    }
-  });
 
   // report
   if (!context.mounted) return;
   _showSnackBar(context, l10n.messageSettingsReset);
+}
+
+Future<void> importSettingsJson(String json) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Parse first – throws FormatException before any changes if invalid:
+  final map = jsonDecode(json) as Map<String, dynamic>;
+
+  // Snapshot for rollback:
+  final backup = <String, dynamic>{
+    for (final key in prefs.getKeys()) key: prefs.get(key),
+  };
+
+  await prefs.clear();
+
+  try {
+    await _writeMapToPrefs(prefs, map);
+  } catch (e) {
+    await prefs.clear();
+    await _writeMapToPrefs(prefs, backup);
+    rethrow;
+  }
 }
 
 // ── Private helpers ──────────────────────────────────────────────────────────
@@ -143,28 +160,6 @@ Future<String> _exportSettingsJson() async {
   };
   const encoder = JsonEncoder.withIndent('  ');
   return encoder.convert(map);
-}
-
-Future<void> importSettingsJson(String json) async {
-  final prefs = await SharedPreferences.getInstance();
-
-  // Parse first – throws FormatException before any changes if invalid:
-  final map = jsonDecode(json) as Map<String, dynamic>;
-
-  // Snapshot for rollback:
-  final backup = <String, dynamic>{
-    for (final key in prefs.getKeys()) key: prefs.get(key),
-  };
-
-  await prefs.clear();
-
-  try {
-    await _writeMapToPrefs(prefs, map);
-  } catch (e) {
-    await prefs.clear();
-    await _writeMapToPrefs(prefs, backup);
-    rethrow;
-  }
 }
 
 Future<void> _writeMapToPrefs(

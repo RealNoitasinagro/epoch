@@ -122,6 +122,7 @@ class EpochAppState extends State<EpochApp> {
   double? _lmstLongitude;
 
   Key _homeKey = UniqueKey();
+  final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
 
   @override
   void initState() {
@@ -131,7 +132,10 @@ class EpochAppState extends State<EpochApp> {
 
   Future<void> reloadPreferences() async {
     await _loadPreferences();
-    if (mounted) setState(() => _homeKey = UniqueKey());
+    if (mounted) {
+      setState(() => _homeKey = UniqueKey());
+      settingsReloadNotifier.value++;  // signals SettingsScreen to refresh
+    }
   }
 
   Future<void> _loadPreferences() async {

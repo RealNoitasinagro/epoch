@@ -172,6 +172,8 @@
   "settingsLmstLongitudeNotYetDetermined": "Noch nicht bestimmt",
   "settingsLmstLongitudeUnavailable": "Standort nicht verfügbar – Standortzugriff aktivieren und Epoch temporär die Berechtigung erteilen, oder Längengrad manuell eingeben",
   "settingsLmstOff": "Nicht anzeigen",
+  "settingsOff": "aus",
+  "settingsOn": "an",
   "settingsPreferencesExport": "Einstellungen exportieren",
   "settingsPreferencesImport": "Einstellungen importieren",
   "settingsPreferencesReset": "Einstellungen zurücksetzen",

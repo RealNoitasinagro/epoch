@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Changed
+- more informative date and time format subtitles in Settings
+
+### Fixed
+- Settings not always showing correct state immediately after import (previous fix for reset insufficient) 
+
 ---
 
 ## [1.4.0] - 2026-08-08
