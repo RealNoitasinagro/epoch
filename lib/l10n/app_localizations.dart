@@ -824,6 +824,12 @@ abstract class AppLocalizations {
   /// **'Daylight saving time (DST)'**
   String get settingsDstMode;
 
+  /// No description provided for @settingsExportImportReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Export, import and reset'**
+  String get settingsExportImportReset;
+
   /// No description provided for @settingsHourFormat.
   ///
   /// In en, this message translates to:
@@ -944,6 +950,12 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
+  /// No description provided for @settingsThemeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme and language'**
+  String get settingsThemeLanguage;
+
   /// No description provided for @settingsThemeLight.
   ///
   /// In en, this message translates to:
@@ -979,6 +991,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time format'**
   String get settingsTimeFormat;
+
+  /// No description provided for @settingsValueDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Value display'**
+  String get settingsValueDisplay;
 
   /// No description provided for @settingsWhatsNew.
   ///

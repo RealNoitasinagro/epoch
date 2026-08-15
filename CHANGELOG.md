@@ -6,7 +6,7 @@
 - import function shows last loaded config in Settings
 
 ### Changed
-- more informative date and time format subtitles in Settings
+- more informative date and time format subtitles and improved layout in Settings
 
 ### Fixed
 - Settings not always showing correct state immediately after import (previous fix for reset insufficient) 

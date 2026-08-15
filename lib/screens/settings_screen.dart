@@ -151,6 +151,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsThemeLanguage),
+          ),
           ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
@@ -201,6 +208,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 app.setLocale(locale);
               },
             ),
+          ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsValueFormats),
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
@@ -401,21 +416,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ),
           const Divider(height: kDividerHeight),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(l10n.settingsAbout),
-            onTap: () => _showAbout(context, l10n),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsExportImportReset),
           ),
-          ListTile(
-            leading: const Icon(Icons.new_releases_outlined),
-            title: Text(l10n.settingsWhatsNew),
-            onTap: () async {
-              final uri = Uri.parse(
-                  'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-            },
-          ),
-          const Divider(height: kDividerHeight),
           ListTile(
             leading: const Icon(Icons.download),
             title: Text(l10n.settingsPreferencesExport),
@@ -434,7 +441,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: const Icon(Icons.restart_alt),
             title: Text(l10n.settingsPreferencesReset),
             onTap: () async => await resetSettings(context),
-          )
+          ),
+          // The following will be moved out of Settings later.
+          const Divider(height: kDividerHeight),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: Text(l10n.settingsAbout),
+            onTap: () => _showAbout(context, l10n),
+          ),
+          ListTile(
+            leading: const Icon(Icons.new_releases_outlined),
+            title: Text(l10n.settingsWhatsNew),
+            onTap: () async {
+              final uri = Uri.parse(
+                  'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            },
+          ),
         ],
       ),
     );

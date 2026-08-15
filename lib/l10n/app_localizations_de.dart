@@ -437,6 +437,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsDstMode => 'Sommerzeit';
 
   @override
+  String get settingsExportImportReset => 'Export, Import und Reset';
+
+  @override
   String get settingsHourFormat => '24-Stunden-Format';
 
   @override
@@ -501,6 +504,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsThemeDark => 'Dunkel';
 
   @override
+  String get settingsThemeLanguage => 'Design und Sprache';
+
+  @override
   String get settingsThemeLight => 'Hell';
 
   @override
@@ -517,6 +523,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsTimeFormat => 'Zeitformat';
+
+  @override
+  String get settingsValueDisplay => 'Wertanzeige';
 
   @override
   String get settingsWhatsNew => 'Was ist neu';
