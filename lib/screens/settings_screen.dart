@@ -215,7 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               kTabHorizontalPadding, 0,
               kTabHorizontalPadding, 0,
             ),
-            child: SectionHeader(label: l10n.settingsValueFormats),
+            child: SectionHeader(label: l10n.settingsValueDisplay),
           ),
           SwitchListTile(
             secondary: const Icon(Icons.tag),
