@@ -185,8 +185,11 @@ class TimeStringRow extends TimeValueRow {
   }
 
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
-      String label, String displayValue) {
-    Clipboard.setData(ClipboardData(text: '$label: $displayValue'));
+      String label, String displayValue, { bool copyValueWithLabel = true }) {
+    String clipboardText = copyValueWithLabel
+        ? '$label: $displayValue'
+        : displayValue;
+    Clipboard.setData(ClipboardData(text: clipboardText));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.messageCopiedToClipboard(label)),
@@ -253,6 +256,8 @@ class TimeStringRow extends TimeValueRow {
           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           tooltip: l10n.hintCopyToClipboard,
           onPressed: () => _copyToClipboard(context, l10n, label, clipboardValue),
+          onLongPress: () => _copyToClipboard(context, l10n, label, clipboardValue,
+              copyValueWithLabel: false),
         ),
         null,
       ],

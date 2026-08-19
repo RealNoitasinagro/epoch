@@ -7,6 +7,7 @@
 
 ### Changed
 - more informative date and time format subtitles and improved layout in Settings
+- improved copy-to-clipboard: long-press for value only, without label 
 
 ### Fixed
 - Settings not always showing correct state immediately after import (previous fix for reset insufficient) 

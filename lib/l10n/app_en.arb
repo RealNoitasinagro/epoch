@@ -56,7 +56,7 @@
   "hintAddTab": "Add tab",
   "hintAddValue": "Add value",
   "hintBack": "Back",
-  "hintCopyToClipboard": "Copy to clipboard",
+  "hintCopyToClipboard": "Copy · Long-press for value only, no label",
   "hintDeselect": "Deselect",
   "hintDeselectAll": "Deselect all",
   "hintDoneEditing": "Done editing",

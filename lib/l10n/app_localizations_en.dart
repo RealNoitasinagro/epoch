@@ -77,7 +77,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintBack => 'Back';
 
   @override
-  String get hintCopyToClipboard => 'Copy to clipboard';
+  String get hintCopyToClipboard =>
+      'Copy · Long-press for value only, no label';
 
   @override
   String get hintDeselect => 'Deselect';

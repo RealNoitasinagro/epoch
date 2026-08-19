@@ -203,7 +203,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintCopyToClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Copy to clipboard'**
+  /// **'Copy · Long-press for value only, no label'**
   String get hintCopyToClipboard;
 
   /// No description provided for @hintDeselect.

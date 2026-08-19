@@ -77,7 +77,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintBack => 'Zurück';
 
   @override
-  String get hintCopyToClipboard => 'In Zwischenablage kopieren';
+  String get hintCopyToClipboard =>
+      'Kopieren · Gedrückt halten: nur Wert, kein Label';
 
   @override
   String get hintDeselect => 'Abwählen';
