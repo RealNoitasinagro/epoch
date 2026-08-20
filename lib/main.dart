@@ -489,6 +489,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: NavigationToolbar.kMiddleSpacing,
         flexibleSpace: Builder(
           builder: (context) {
             final isNight = EpochApp.of(context).isNightMode;
@@ -510,9 +511,9 @@ class _HomeScreenState extends State<HomeScreen>
           },
         ),
         title: GestureDetector(
+          child: Text(l10n.appName),
           onDoubleTap: _toggleFullscreen,
           onLongPress: () => _showBuildInfo(context),
-          child: Text(l10n.appName),
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
@@ -530,6 +531,7 @@ class _HomeScreenState extends State<HomeScreen>
             tooltip: l10n.pageSettings,
             onPressed: () => _openSettings(context),
           ),
+          const SizedBox(width: 8),
         ],
         bottom: TabBar(
           controller: _tabController,
