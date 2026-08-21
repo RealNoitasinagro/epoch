@@ -4,6 +4,7 @@
 
 ### Added
 - import function shows last loaded config in Settings
+- new popup menu for Settings, About and What's New
 
 ### Changed
 - more informative date and time format subtitles and improved layout in Settings

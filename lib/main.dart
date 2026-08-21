@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
@@ -307,6 +309,10 @@ class _HomeScreenState extends State<HomeScreen>
   bool _loaded = false;
   bool _isFullscreen = false;
 
+  static const _fallbackVersion = '0.0.0';
+  static const _fallbackBuildNumber = '0';
+  static const changelogLink = 'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md';
+
   @override
   void initState() {
     super.initState();
@@ -526,10 +532,60 @@ class _HomeScreenState extends State<HomeScreen>
                 _addCustomTab(l10n);
               },
             ),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: l10n.pageSettings,
-            onPressed: () => _openSettings(context),
+          // If we still need a direct shortcut...
+          // IconButton(
+          //   icon: const Icon(Icons.settings),
+          //   tooltip: l10n.pageSettings,
+          //   onPressed: () => _openSettings(context),
+          // ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              switch (value) {
+                case 'settings':
+                  _openSettings(context);
+                case 'about':
+                  _showAbout(context, l10n);
+                case 'whats_new':
+                  launchUrl(
+                    Uri.parse(changelogLink),
+                    mode: LaunchMode.externalApplication
+                  );
+              }
+            },
+            itemBuilder: (context) {
+              final l10n = AppLocalizations.of(context)!;
+              return [
+                PopupMenuItem(
+                  value: 'settings',
+                  child: ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: Text(l10n.pageSettings),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuDivider(),
+                PopupMenuItem(
+                  value: 'about',
+                  child: ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: Text(l10n.settingsAbout),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'whats_new',
+                  child: ListTile(
+                    leading: const Icon(Icons.new_releases_outlined),
+                    title: Text(l10n.settingsWhatsNew),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+              ];
+            },
           ),
           const SizedBox(width: 8),
         ],
@@ -606,6 +662,30 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
+    String version;
+    String build;
+    try {
+      final PackageInfo info = await PackageInfo.fromPlatform();
+      version = info.version.isNotEmpty ? info.version : _fallbackVersion;
+      build = info.buildNumber.isNotEmpty ? info.buildNumber : _fallbackBuildNumber;
+    } catch (_) {
+      version = _fallbackVersion;
+      build = _fallbackBuildNumber;
+    }
+    if (!context.mounted) return;
+    showAboutDialog(
+      context: context,
+      applicationName: l10n.appName,
+      applicationVersion: '$version (build $build)',
+      applicationLegalese: l10n.dialogueAboutLegalese,
+      children: [
+        SizedBox(height: 16),
+        Text(l10n.dialogueAbout),
+      ],
     );
   }
 }

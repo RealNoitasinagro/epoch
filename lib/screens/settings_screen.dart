@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../l10n/app_localizations.dart';
@@ -34,9 +32,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _longitudeController = TextEditingController();
   ValueNotifier<int>? _settingsReloadNotifier;
   late String? _lastImportedConfig;
-
-  static const _fallbackVersion = '0.0.0';
-  static const _fallbackBuildNumber = '0';
 
   bool get _isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -86,30 +81,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _settingsReloadNotifier?.removeListener(_onExternalReload);;
     _longitudeController.dispose();
     super.dispose();
-  }
-
-  Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
-    String version;
-    String build;
-    try {
-      final PackageInfo info = await PackageInfo.fromPlatform();
-      version = info.version.isNotEmpty ? info.version : _fallbackVersion;
-      build = info.buildNumber.isNotEmpty ? info.buildNumber : _fallbackBuildNumber;
-    } catch (_) {
-      version = _fallbackVersion;
-      build = _fallbackBuildNumber;
-    }
-    if (!context.mounted) return;
-    showAboutDialog(
-      context: context,
-      applicationName: l10n.appName,
-      applicationVersion: '$version (build $build)',
-      applicationLegalese: l10n.dialogueAboutLegalese,
-      children: [
-        SizedBox(height: 16),
-        Text(l10n.dialogueAbout),
-      ],
-    );
   }
 
   Future<void> _determineLocation() async {
@@ -441,22 +412,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: const Icon(Icons.restart_alt),
             title: Text(l10n.settingsPreferencesReset),
             onTap: () async => await resetSettings(context),
-          ),
-          // The following will be moved out of Settings later.
-          const Divider(height: kDividerHeight),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(l10n.settingsAbout),
-            onTap: () => _showAbout(context, l10n),
-          ),
-          ListTile(
-            leading: const Icon(Icons.new_releases_outlined),
-            title: Text(l10n.settingsWhatsNew),
-            onTap: () async {
-              final uri = Uri.parse(
-                  'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md');
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-            },
           ),
         ],
       ),
