@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/timezone_search.dart';
 import '../l10n/app_localizations.dart';
+import '../models/timezone_search.dart';
 import '../models/timezone_search_zones.dart';
 
 // Full-screen timezone search, returns selected IANA zone string or null.

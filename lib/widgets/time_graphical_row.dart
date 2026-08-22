@@ -1,6 +1,3 @@
-import 'package:epoch/widgets/clocks/seven_segment_clock.dart';
-import 'package:epoch/widgets/time_value_row.dart';
-import 'package:epoch/widgets/value_tile.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
@@ -8,6 +5,9 @@ import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
+import '../widgets/clocks/seven_segment_clock.dart';
+import '../widgets/time_value_row.dart';
+import '../widgets/value_tile.dart';
 import 'clocks/binary_coded_decimal_clock.dart';
 import 'clocks/binary_columns_clock.dart';
 

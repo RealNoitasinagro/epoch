@@ -1,9 +1,9 @@
-import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../models/timezone_abbr_localization.dart';
 import '../time_utils.dart';

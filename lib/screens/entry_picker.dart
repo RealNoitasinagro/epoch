@@ -1,13 +1,13 @@
-import 'package:epoch/models/astronomical_tab_config.dart';
-import 'package:epoch/models/civil_tab_config.dart';
-import 'package:epoch/models/curiosities_tab_config.dart';
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/models/technical_tab_config.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../models/app_settings.dart';
+import '../models/astronomical_tab_config.dart';
+import '../models/civil_tab_config.dart';
+import '../models/curiosities_tab_config.dart';
+import '../models/tab_entry.dart';
+import '../models/technical_tab_config.dart';
 import '../models/time_value.dart';
-import '../l10n/app_localizations.dart';
 import 'timezone_search_screen.dart';
 
 // Displays a two-step dialog: value type → timezone (if zone-dependent).

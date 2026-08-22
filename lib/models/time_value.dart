@@ -1,9 +1,9 @@
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
+import 'tab_entry.dart';
+import 'timezone_search_zones.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {

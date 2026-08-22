@@ -2,8 +2,8 @@
 
 // For details, cf. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-import 'package:epoch/models/timezone_search.dart';
-import 'package:epoch/models/timezone_search_terms.dart';
+import 'timezone_search.dart';
+import 'timezone_search_terms.dart';
 
 const List<TzEntry> tzDatabase = [          // 88 entries in total
   ...tzEntries_Africa,                      //  8 entries

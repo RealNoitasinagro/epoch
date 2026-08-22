@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';

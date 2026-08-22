@@ -1,4 +1,3 @@
-import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/src/date_time.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -9,6 +8,7 @@ import '../models/time_value.dart';
 import '../models/timezone_abbr_localization.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
+import '../time_value_formatter.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;

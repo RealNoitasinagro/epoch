@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
-import '../l10n/app_localizations.dart';
 import '../models/app_settings.dart';
 import '../models/settings_io.dart';
 import '../services/location_service.dart';

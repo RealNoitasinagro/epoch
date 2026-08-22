@@ -1,11 +1,11 @@
 import 'dart:ui';
-import 'package:epoch/l10n/app_localizations.dart';
-import 'package:epoch/models/app_settings.dart';
-import 'package:epoch/models/time_value.dart';
-import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tzl;
+import '../lib/l10n/app_localizations.dart';
+import '../lib/models/app_settings.dart';
+import '../lib/models/time_value.dart';
+import '../lib/widgets/time_string_row.dart';
 
 void main() {
   setUpAll(() async {

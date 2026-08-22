@@ -1,6 +1,6 @@
-import 'package:epoch/layout_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../layout_constants.dart';
 
 const _kLocaleKey = 'locale';
 const _kThemeModeKey = 'theme_mode';

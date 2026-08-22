@@ -1,10 +1,10 @@
 import 'dart:ui';
-import 'package:epoch/layout_constants.dart';
-import 'package:epoch/time_value_formatter.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
+import 'layout_constants.dart';
 import 'models/time_value.dart';
 import 'models/timezone_search_zones.dart';
+import 'time_value_formatter.dart';
 
 class TimeUtils {
   static int dayOfYear(DateTime dt) => dt.ordinalDate;

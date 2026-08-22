@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:epoch/l10n/app_localizations.dart';
-import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:epoch/models/time_value.dart';
+import '../lib/l10n/app_localizations.dart';
+import '../lib/models/time_value.dart';
+import '../lib/time_value_formatter.dart';
 
 void main() {
   group('TimeValue.key', () {
