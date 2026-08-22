@@ -407,7 +407,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             final tab = _tabs.where((t) => t.builtinKind == kind).firstOrNull;
             return SwitchListTile(
               secondary: const Icon(Icons.tab),
-              title: Text(_tabLabel(kind, l10n)),
+              title: Text(
+                  _tabLabel(kind, l10n),
+                  style: TextStyle(fontStyle: FontStyle.italic),
+              ),
               value: tab?.isVisible ?? true,
               onChanged: tab == null
                   ? null  // tabs not loaded yet

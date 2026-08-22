@@ -672,7 +672,7 @@ class _HomeScreenState extends State<HomeScreen>
 
 class _AppTab extends StatelessWidget {
   final TabConfig tabConfig;
-  final VoidCallback? onRename;     // null for builtin tabs (no rename)
+  final VoidCallback? onRename;  // null for builtin tabs (no rename)
   final VoidCallback onHideOrDelete;
 
   const _AppTab({
@@ -699,7 +699,7 @@ class _AppTab extends StatelessWidget {
               ),
             ListTile(
               leading: Icon(
-                tabConfig.isBuiltin ? Icons.visibility_off_outlined : Icons.close,
+                tabConfig.isBuiltin ? Icons.visibility_off_outlined : Icons.delete_outline,
                 color: Colors.redAccent,
               ),
               title: Text(
