@@ -7,6 +7,7 @@
 - import function shows last loaded config in Settings
 
 ### Changed
+- all tabs now fully configurable (except rename for builtins), builtin tabs can be (un)hidden
 - more informative date and time format subtitles and improved layout in Settings
 - improved copy-to-clipboard: long-press for value only, without label 
 

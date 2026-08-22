@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/screens/civil_tab.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,18 +11,17 @@ import 'build_info.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
 import 'models/app_settings.dart';
-import 'models/civil_tab_config.dart';
-import 'models/custom_tab_model.dart';
+import 'models/prefs_migrations.dart';
 import 'models/settings_io.dart';
+import 'models/tab_config.dart';
+import 'models/tab_entry.dart';
 import 'models/time_value.dart';
-import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
-import 'screens/curiosities_tab.dart';
 import 'screens/settings_screen.dart';
-import 'screens/technical_tab.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await runPrefsMigrations();
   tz.initializeTimeZones();
 
   if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
@@ -162,7 +159,7 @@ class EpochAppState extends State<EpochApp> {
     } catch (_) {
       localZone = 'UTC';
     }
-    
+
     setState(() {
       _localIanaZone      = localZone;
       _locale             = locale;
@@ -304,8 +301,7 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TabEntry> _civilEntries = [];
-  List<CustomTabData> _customTabs = [];
+  List<TabConfig> _tabs = [];
   bool _loaded = false;
   bool _isFullscreen = false;
 
@@ -330,16 +326,20 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  int get _tabCount => 4 + _customTabs.length;
+  List<TabConfig> get _visibleTabs =>
+      _tabs.where((t) => t.isVisible).toList();
+  int get _tabCount => _visibleTabs.length;
 
   Future<void> _loadData() async {
-    final civil      = await loadCivilEntries();
-    final customTabs = await loadCustomTabs();
-    final activeTab  = await loadActiveTab();
+    var tabs = await loadAllTabs();
+    if (tabs.isEmpty) {
+      tabs = defaultBuiltinTabs();
+      await saveAllTabs(tabs);
+    }
+    final activeTab = await loadActiveTab();
     setState(() {
-      _civilEntries = civil;
-      _customTabs   = customTabs;
-      _loaded       = true;
+      _tabs   = tabs;
+      _loaded = true;
     });
     _updateTabController(initialIndex: activeTab);
   }
@@ -353,14 +353,12 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  // ── Civil tab callbacks ──────────────────────────────────────────────
-
-  void _onCivilChanged(List<TabEntry> entries) {
-    setState(() => _civilEntries = entries);
-    saveCivilEntries(entries);
+  void _onTabEntriesChanged(String id, List<TabEntry> entries) {
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    tab.entries = entries;
+    saveAllTabs(_tabs);
+    setState(() {});
   }
-
-  // ── Custom tab management ────────────────────────────────────────────
 
   void _updateTabController({int? initialIndex}) {
     final newCount = _tabCount;
@@ -385,28 +383,27 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _addCustomTab(AppLocalizations l10n) {
-    if (_customTabs.length >= maxCustomTabs) return;
-    final tab = CustomTabData(
-      id:      generateId(),
-      name:    defaultTabName(_customTabs.length),
+    final watchlistCount = _tabs.where((t) => !t.isBuiltin).length;
+    if (watchlistCount >= maxCustomTabs) return;
+    final tab = TabConfig(
+      id: generateId(),
+      customName: defaultTabName(watchlistCount),
       entries: [],
     );
-    _customTabs.add(tab);
-    saveCustomTabs(_customTabs);
+    _tabs.add(tab);
+    saveAllTabs(_tabs);
     _updateTabController();
-    // Navigate to the newly created tab.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _tabController?.animateTo(4 + _customTabs.length - 1);
+      _tabController?.animateTo(_visibleTabs.length - 1);
     });
   }
 
   void _deleteCustomTab(String id) {
-    final idx = _customTabs.indexWhere((t) => t.id == id);
-    _customTabs.removeWhere((t) => t.id == id);
-    saveCustomTabs(_customTabs);
-    // Navigate to tab left of the deleted one, minimum index 0.
-    final targetIndex = (idx + 3).clamp(0, _tabCount - 1);
+    final idx = _visibleTabs.indexWhere((t) => t.id == id);
+    _tabs.removeWhere((t) => t.id == id);
+    saveAllTabs(_tabs);
+    final targetIndex = (idx - 1).clamp(0, _tabCount - 1);
     _updateTabController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -414,17 +411,11 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TabEntry> entries) {
-    final tab = _customTabs.firstWhere((t) => t.id == id);
-    tab.entries = entries;
-    saveCustomTabs(_customTabs);
-    setState(() {});
-  }
 
   Future<void> _renameCustomTab(
       BuildContext context, AppLocalizations l10n, String id) async {
-    final tab = _customTabs.firstWhere((t) => t.id == id);
-    final controller = TextEditingController(text: tab.name);
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    final controller = TextEditingController(text: tab.customName);
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -451,24 +442,29 @@ class _HomeScreenState extends State<HomeScreen>
     // post-frame assertion on Linux when the dialog rebuilds after pop.
     // The GC will collect it correctly since no further references exist.
     if (result == null || result.isEmpty) return;
-    setState(() => tab.name = result);
-    saveCustomTabs(_customTabs);
+    setState(() => tab.customName = result);
+    saveAllTabs(_tabs);
   }
 
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
-    ).then((_) {
+    ).then((_) async {
       if (!mounted) return;
       if (EpochApp.of(context).lmstMode == LmstMode.off) {
         _removeLmstFromAllTabs();
       }
+      // Tab visibility may have changed in Settings – reload:
+      final reloadedTabs = await loadAllTabs();
+      if (!mounted) return;
+      setState(() => _tabs = reloadedTabs);
+      _updateTabController();
     });
   }
 
   void _removeLmstFromAllTabs() {
-    for (final tab in _customTabs) {
+    for (final tab in _tabs) {
       final newEntries = tab.entries
           .where((e) => e.valueType != ValueType.lmst)
           .toList();
@@ -476,7 +472,7 @@ class _HomeScreenState extends State<HomeScreen>
         tab.entries = newEntries;
       }
     }
-    saveCustomTabs(_customTabs);
+    saveAllTabs(_tabs);
     setState(() {});
   }
 
@@ -523,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          if (_customTabs.length < maxCustomTabs)
+          if (_tabs.where((t) => !t.isBuiltin).length < maxCustomTabs)
             IconButton(
               icon: const Icon(Icons.add),
               tooltip: l10n.hintAddTab,
@@ -593,57 +589,41 @@ class _HomeScreenState extends State<HomeScreen>
           controller: _tabController,
           isScrollable: true,
           tabAlignment: TabAlignment.start,
-          tabs: [
-            Tab(child: Text(l10n.tabCivil)),
-            Tab(child: Text(l10n.tabTechnical)),
-            Tab(child: Text(l10n.tabAstronomical)),
-            Tab(child: Text(l10n.tabCuriosities)),
-            ..._customTabs.map((tab) => _CustomTab(
-              name: tab.name,
-              onRename: () => _renameCustomTab(context, l10n, tab.id),
-              onDelete: () => _deleteCustomTab(tab.id),
-            )),
-          ],
+          tabs: _visibleTabs.map((tab) => _AppTab(
+            tabConfig: tab,
+            onRename: tab.isBuiltin
+                ? null
+                : () => _renameCustomTab(context, l10n, tab.id),
+            onHideOrDelete: tab.isBuiltin
+                ? () => _hideBuiltinTab(tab.id)
+                : () => _deleteCustomTab(tab.id),
+          )).toList(),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          CivilTab(
-            now: _now,
-            entries: _civilEntries,
-            thousandsSep: app.thousandsSep,
-            hourFormat24: app.hourFormat24,
-            showDateDetails: app.dateWithDetails,
-            onEntriesChanged: _onCivilChanged,
-          ),
-          TechnicalTab(
-              now: _now,
-              thousandsSep: app.thousandsSep
-          ),
-          AstronomicalTab(
-              now: _now,
-              thousandsSep: app.thousandsSep,
-              lmstMode: app.lmstMode,
-              lmstLongitude: app.lmstLongitude,
-          ),
-          CuriositiesTab(
-              now: _now,
-              hourFormat24:
-              app.hourFormat24
-          ),
-          ..._customTabs.map((tab) => ConfigurableTab(
-            now: _now,
-            entries: tab.entries,
-            thousandsSep: app.thousandsSep,
-            hourFormat24: app.hourFormat24,
-            showDateDetails: app.dateWithDetails,
-            onEntriesChanged: (e) =>
-                _onCustomTabEntriesChanged(tab.id, e),
-          )),
-        ],
+        children: _visibleTabs.map((tab) => ConfigurableTab(
+          key: ValueKey(tab.id),
+          now: _now,
+          entries: tab.entries,
+          defaultEntries: tab.isBuiltin
+              ? defaultEntriesFor(tab.builtinKind!)
+              : const [],
+          thousandsSep: app.thousandsSep,
+          hourFormat24: app.hourFormat24,
+          showDateDetails: app.dateWithDetails,
+          onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
+        )).toList(),
       ),
     );
+  }
+
+  void _hideBuiltinTab(String id) {
+    final idx = _tabs.indexWhere((t) => t.id == id);
+    _tabs[idx] = _tabs[idx].copyWith(isVisible: false);
+    saveAllTabs(_tabs);
+    _updateTabController();
+    setState(() {});
   }
 
   void _showBuildInfo(BuildContext context) {
@@ -690,17 +670,15 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
-// ── Custom tab label with long-press and delete ───────────────────────────────
+class _AppTab extends StatelessWidget {
+  final TabConfig tabConfig;
+  final VoidCallback? onRename;     // null for builtin tabs (no rename)
+  final VoidCallback onHideOrDelete;
 
-class _CustomTab extends StatelessWidget {
-  final String name;
-  final VoidCallback onRename;
-  final VoidCallback onDelete;
-
-  const _CustomTab({
-    required this.name,
+  const _AppTab({
+    required this.tabConfig,
     required this.onRename,
-    required this.onDelete,
+    required this.onHideOrDelete,
   });
 
   void _showOptions(BuildContext context, AppLocalizations l10n) {
@@ -710,22 +688,27 @@ class _CustomTab extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (onRename != null)
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: Text(l10n.actionRenameTab),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  onRename!();
+                },
+              ),
             ListTile(
-              leading: const Icon(Icons.edit),
-              title: Text(l10n.actionRenameTab),
+              leading: Icon(
+                tabConfig.isBuiltin ? Icons.visibility_off_outlined : Icons.close,
+                color: Colors.redAccent,
+              ),
+              title: Text(
+                tabConfig.isBuiltin ? l10n.actionHideTab : l10n.actionDeleteTab,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
-                onRename();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.close,
-                  color: Colors.redAccent),
-              title: Text(l10n.actionDeleteTab,
-                  style: const TextStyle(color: Colors.redAccent)),
-              onTap: () {
-                Navigator.pop(ctx);
-                onDelete();
+                onHideOrDelete();
               },
             ),
           ],
@@ -741,8 +724,10 @@ class _CustomTab extends StatelessWidget {
       child: GestureDetector(
         onLongPress: () => _showOptions(context, l10n),
         child: Text(
-          name,
-          style: const TextStyle(fontStyle: FontStyle.italic),
+          tabConfig.displayName(l10n),
+          style: tabConfig.isBuiltin
+              ? const TextStyle(fontStyle: FontStyle.italic)
+              : null,
         ),
       ),
     );

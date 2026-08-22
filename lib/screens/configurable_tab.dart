@@ -1,11 +1,9 @@
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
-import '../models/civil_tab_config.dart';
+import '../models/tab_entry.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
@@ -13,6 +11,7 @@ import '../widgets/clocks/binary_columns_clock.dart';
 import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
+import '../widgets/time_string_row.dart';
 import '../widgets/value_tile.dart';
 import 'entry_picker.dart';
 
@@ -26,18 +25,18 @@ class ConfigurableTab extends StatefulWidget {
   final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TabEntry>> onEntriesChanged;
-  final List<ValueType>? allowedTypes; // null = all types allowed
+  final List<TabEntry> defaultEntries;  // used by "reset to defaults"
 
   const ConfigurableTab({
     super.key,
     required this.now,
     required this.entries,
     required this.onEntriesChanged,
+    required this.defaultEntries,
     this.thousandsSep = true,
     this.hourFormat24 = true,
     this.showDateDetails = true,
     this.maxEntries = 30,
-    this.allowedTypes,
   });
 
   @override
@@ -112,7 +111,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   void _resetToDefaults() {
     _checked.clear();
-    widget.onEntriesChanged(_cleanTrailing(List.of(defaultCivilEntries)));
+    widget.onEntriesChanged(_cleanTrailing(List.of(widget.defaultEntries)));
     setState(() {});
   }
 
@@ -359,12 +358,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   Future<void> _editSectionLabel(
       BuildContext context, TabSection s, AppLocalizations l10n) async {
+    final currentLabel = s.localizedLabel(l10n);
     await _showLabelDialog(
       context, l10n,
       title: l10n.hintEditSectionHeader,
       labelText: l10n.labelNewSectionName,
-      initialText: s.label,
-      hintText: s.label,
+      initialText: currentLabel,
+      hintText: currentLabel,
       onResult: (result) {
         if (result == null || result.isEmpty) return;
         final updated = List<TabEntry>.of(widget.entries);
@@ -390,7 +390,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final app = EpochApp.of(context);
     final result = await showEntryPicker(
       context,
-      allowedTypes: widget.allowedTypes,
       existingEntries: widget.entries,
       lmstMode: app.lmstMode,
       lmstLongitude: app.lmstLongitude,
@@ -526,7 +525,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         height: kSectionHeaderHeight,
         child: Align(
           alignment: Alignment.centerLeft,
-          child: SectionHeader(label: s.label),
+          child: SectionHeader(label: s.localizedLabel(l10n)),
         ),
       );
     }
@@ -544,7 +543,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(child: SectionHeader(label: s.label)),
+              Expanded(child: SectionHeader(label: s.localizedLabel(l10n))),
               SizedBox(width: 40, height: kSectionHeaderHeight,
                 child: IconButton(
                   padding: EdgeInsets.zero,

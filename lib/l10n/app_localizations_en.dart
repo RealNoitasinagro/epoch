@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionDeleteTab => 'Delete tab';
 
   @override
+  String get actionHideTab => 'Hide tab';
+
+  @override
   String get actionRenameTab => 'Rename tab';
 
   @override
@@ -363,6 +366,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSettingsReset => 'Settings reset to defaults';
 
   @override
+  String get messageTabReactivated =>
+      'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.';
+
+  @override
   String get pageSettings => 'Settings';
 
   @override
@@ -490,6 +497,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPreferencesResetBackupTitle => 'Save backup before reset';
+
+  @override
+  String get settingsTabVisibility => 'Tab visibility';
 
   @override
   String get settingsTheme => 'Theme';

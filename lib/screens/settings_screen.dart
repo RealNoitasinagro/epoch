@@ -5,6 +5,7 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/settings_io.dart';
+import '../models/tab_config.dart';
 import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
@@ -32,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _longitudeController = TextEditingController();
   ValueNotifier<int>? _settingsReloadNotifier;
   late String? _lastImportedConfig;
+  List<TabConfig> _tabs = [];
 
   bool get _isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -69,6 +71,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
       _lastImportedConfig = app.lastImportedConfig;
     });
+    _loadTabs();
+  }
+
+  Future<void> _loadTabs() async {
+    final tabs = await loadAllTabs();
+    if (!mounted) return;
+    setState(() => _tabs = tabs);
   }
 
   void _onExternalReload() {
@@ -386,6 +395,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             )
           ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsTabVisibility),
+          ),
+          ...BuiltinTabKind.values.map((kind) {
+            final tab = _tabs.where((t) => t.builtinKind == kind).firstOrNull;
+            return SwitchListTile(
+              secondary: const Icon(Icons.tab),
+              title: Text(_tabLabel(kind, l10n)),
+              value: tab?.isVisible ?? true,
+              onChanged: tab == null
+                  ? null  // tabs not loaded yet
+                  : (val) => _toggleTabVisibility(kind, val),
+            );
+          }),
           const Divider(height: kDividerHeight),
           Padding(
             padding: const EdgeInsets.fromLTRB(
@@ -763,4 +791,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return TimeValueFormatter.formatTimePattern(reference, pattern,
         hourFormat24: _hourFormat24);
   }
+
+  void _toggleTabVisibility(BuiltinTabKind kind, bool value) {
+    final idx = _tabs.indexWhere((t) => t.builtinKind == kind);
+    if (idx == -1) return;
+    final wasHidden = !_tabs[idx].isVisible;
+    setState(() => _tabs[idx] = _tabs[idx].copyWith(isVisible: value));
+    saveAllTabs(_tabs);
+
+    if (value && wasHidden) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l10n.messageTabReactivated),
+        duration: const Duration(seconds: 6),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+  }
+
+  String _tabLabel(BuiltinTabKind kind, AppLocalizations l10n) => switch (kind) {
+    BuiltinTabKind.civil        => l10n.tabCivil,
+    BuiltinTabKind.technical    => l10n.tabTechnical,
+    BuiltinTabKind.astronomical => l10n.tabAstronomical,
+    BuiltinTabKind.curiosities  => l10n.tabCuriosities,
+  };
 }

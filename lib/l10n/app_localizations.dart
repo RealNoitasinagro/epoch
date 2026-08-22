@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Delete tab'**
   String get actionDeleteTab;
 
+  /// No description provided for @actionHideTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide tab'**
+  String get actionHideTab;
+
   /// No description provided for @actionRenameTab.
   ///
   /// In en, this message translates to:
@@ -686,6 +692,12 @@ abstract class AppLocalizations {
   /// **'Settings reset to defaults'**
   String get messageSettingsReset;
 
+  /// No description provided for @messageTabReactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.'**
+  String get messageTabReactivated;
+
   /// No description provided for @pageSettings.
   ///
   /// In en, this message translates to:
@@ -937,6 +949,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save backup before reset'**
   String get settingsPreferencesResetBackupTitle;
+
+  /// No description provided for @settingsTabVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab visibility'**
+  String get settingsTabVisibility;
 
   /// No description provided for @settingsTheme.
   ///

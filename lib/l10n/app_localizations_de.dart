@@ -15,6 +15,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionDeleteTab => 'Tab löschen';
 
   @override
+  String get actionHideTab => 'Tab ausblenden';
+
+  @override
   String get actionRenameTab => 'Tab umbenennen';
 
   @override
@@ -369,6 +372,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageSettingsReset => 'Einstellungen zurückgesetzt';
 
   @override
+  String get messageTabReactivated =>
+      'Tab reaktiviert – er entspricht evtl. nicht mehr der Standardkonfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.';
+
+  @override
   String get pageSettings => 'Einstellungen';
 
   @override
@@ -497,6 +504,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsPreferencesResetBackupTitle =>
       'Backup vor dem Zurücksetzen speichern';
+
+  @override
+  String get settingsTabVisibility => 'Tab-Sichtbarkeit';
 
   @override
   String get settingsTheme => 'Design';
