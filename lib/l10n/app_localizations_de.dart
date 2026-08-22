@@ -356,6 +356,10 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get messageNoTabsVisible =>
+      'Alle Tabs sind ausgeblendet.\nAktiviere einen Tab in den Einstellungen, oder lege einen neuen an.';
+
+  @override
   String get messageNoTimezone => 'Keine passende Zeitzone gefunden.';
 
   @override

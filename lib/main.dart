@@ -364,12 +364,13 @@ class _HomeScreenState extends State<HomeScreen>
     final newCount = _tabCount;
     final oldIndex = initialIndex ?? _tabController?.index ?? 0;
     final oldController = _tabController;
-    _tabController = TabController(
+    _tabController = newCount == 0
+        ? null
+        : (TabController(
       length: newCount,
       vsync: this,
       initialIndex: oldIndex.clamp(0, newCount - 1),
-    );
-    _tabController!.addListener(_onTabChanged);
+    )..addListener(_onTabChanged));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       oldController?.dispose();
     });
@@ -411,7 +412,6 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-
   Future<void> _renameCustomTab(
       BuildContext context, AppLocalizations l10n, String id) async {
     final tab = _tabs.firstWhere((t) => t.id == id);
@@ -452,42 +452,46 @@ class _HomeScreenState extends State<HomeScreen>
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
     ).then((_) async {
       if (!mounted) return;
-      if (EpochApp.of(context).lmstMode == LmstMode.off) {
-        _removeLmstFromAllTabs();
-      }
-      // Tab visibility may have changed in Settings – reload:
+      // Reload first – tab visibility may have changed in Settings:
       final reloadedTabs = await loadAllTabs();
       if (!mounted) return;
       setState(() => _tabs = reloadedTabs);
+      if (EpochApp.of(context).lmstMode == LmstMode.off) {
+        _removeLmstFromAllTabs();  // now operates on fresh data
+      }
       _updateTabController();
     });
   }
 
   void _removeLmstFromAllTabs() {
+    var anyChanged = false;
     for (final tab in _tabs) {
       final newEntries = tab.entries
           .where((e) => e.valueType != ValueType.lmst)
           .toList();
       if (newEntries.length != tab.entries.length) {
         tab.entries = newEntries;
+        anyChanged = true;
       }
     }
+    if (!anyChanged) return;  // avoid pointless/harmful writes
     saveAllTabs(_tabs);
     setState(() {});
   }
 
-  // ── Build ────────────────────────────────────────────────────────────
-
   @override
   Widget build(BuildContext context) {
-    if (!_loaded || _tabController == null) {
+    final app  = EpochApp.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    if (!_loaded) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
-
-    final app  = EpochApp.of(context);
-    final l10n = AppLocalizations.of(context)!;
+    if (_tabController == null) {
+      return _buildNoTabsScreen(context, l10n);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -608,12 +612,45 @@ class _HomeScreenState extends State<HomeScreen>
           entries: tab.entries,
           defaultEntries: tab.isBuiltin
               ? defaultEntriesFor(tab.builtinKind!)
-              : const [],
+              : List.of(defaultWatchlistEntries),
           thousandsSep: app.thousandsSep,
           hourFormat24: app.hourFormat24,
           showDateDetails: app.dateWithDetails,
           onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
         )).toList(),
+      ),
+    );
+  }
+
+  // main.dart – new method:
+  Widget _buildNoTabsScreen(BuildContext context, AppLocalizations l10n) {
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.appName)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.visibility_off_outlined, size: 48,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(120)),
+              const SizedBox(height: 16),
+              Text(l10n.messageNoTabsVisible, textAlign: TextAlign.center),
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                icon: const Icon(Icons.settings),
+                label: Text(l10n.pageSettings),
+                onPressed: () => _openSettings(context),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                label: Text(l10n.hintAddTab),
+                onPressed: () => _addCustomTab(l10n),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

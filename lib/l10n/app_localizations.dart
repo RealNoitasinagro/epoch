@@ -662,6 +662,12 @@ abstract class AppLocalizations {
   /// **'Maximum of {count} values reached.'**
   String messageMaxValues(int count);
 
+  /// No description provided for @messageNoTabsVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'All tabs are hidden.\nActivate a tab in Settings, or add a new one.'**
+  String get messageNoTabsVisible;
+
   /// No description provided for @messageNoTimezone.
   ///
   /// In en, this message translates to:

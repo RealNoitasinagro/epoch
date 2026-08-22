@@ -351,6 +351,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get messageNoTabsVisible =>
+      'All tabs are hidden.\nActivate a tab in Settings, or add a new one.';
+
+  @override
   String get messageNoTimezone => 'No matching timezone found.';
 
   @override

@@ -1,3 +1,4 @@
+import 'package:epoch/models/time_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import 'astronomical_tab_config.dart';
@@ -147,3 +148,16 @@ List<TabEntry> defaultEntriesFor(BuiltinTabKind kind) => switch (kind) {
   BuiltinTabKind.astronomical => List.of(defaultAstronomicalEntries),
   BuiltinTabKind.curiosities  => List.of(defaultCuriositiesEntries),
 };
+
+const defaultWatchlistEntries = [
+  TimeValue(valueType: ValueType.date, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.time, zone: ZoneLocal()),
+  TimeValue(
+    valueType: ValueType.time,
+    zone: ZoneNamed('Europe/Berlin'),
+    timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+  ),
+  TabDivider(id: 'builtin_divider_watchlist_1'),
+  TimeValue(valueType: ValueType.gmst, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc()),
+];

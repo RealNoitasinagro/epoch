@@ -804,7 +804,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (value && wasHidden) {
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      final messenger = ScaffoldMessenger.of(context);
+      messenger.clearSnackBars();  // drop any queued ones – show only the latest
+      messenger.showSnackBar(SnackBar(
         content: Text(l10n.messageTabReactivated),
         duration: const Duration(seconds: 6),
         behavior: SnackBarBehavior.floating,
