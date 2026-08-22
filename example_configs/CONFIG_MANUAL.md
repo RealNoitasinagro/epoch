@@ -45,8 +45,9 @@ Default values will show up in config files when a non-default value had been co
 [^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
 
 > [!TIP]
-> If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`. \
-> As an alternative way to reset the whole app to defaults (and bypassing backup!), you can import an empty config (`reset_to_defaults.json`).
+> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`. \
+> * As an alternative way to reset the whole app to defaults (and bypassing backup!), you can import an empty config (`reset_to_defaults.json`).
+> * If you want to "comment out" a setting, rename its key to make it invalid, e.g. append "ooo" for out-of-order. That way you can keep an entry in the config while making the app ignore it.
 
 ### Date Format Tokens
 
@@ -220,10 +221,10 @@ Renders a section heading above the following entries.
 > Though not necessary technically, you might want to do the same when creating configs manually to facilitate comparing files. 
 
 > [!NOTE]
-> Manually editing configuration files can exceed limits enforced by the app UI  (e.g. more than 25 values per tab, duplicate entries, trailing dividers). \
+> Manually editing configuration files can exceed limits enforced by the app UI  (e.g. more than the max number of values per tab, duplicate entries, trailing dividers). \
 > The app does not validate imported files beyond basic JSON syntax. Use with care.
 
 ## Contributing
 
-Have an interesting configuration? Pull requests for new example configs are welcome. \
+Have an interesting configuration to share? Pull requests for new example configs are welcome. \
 Please include a brief description of the use case.
