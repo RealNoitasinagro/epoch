@@ -1,7 +1,7 @@
+import 'package:epoch/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import '../lib/l10n/app_localizations.dart';
 
 void main() {
   setUpAll(() {

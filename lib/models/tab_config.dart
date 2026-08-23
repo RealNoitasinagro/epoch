@@ -149,7 +149,7 @@ List<TabEntry> defaultEntriesFor(BuiltinTabKind kind) => switch (kind) {
   BuiltinTabKind.curiosities  => List.of(defaultCuriositiesEntries),
 };
 
-const defaultWatchlistEntries = [
+const List<TabEntry> defaultWatchlistEntries = [
   TimeValue(valueType: ValueType.date, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.time, zone: ZoneLocal()),
   TimeValue(

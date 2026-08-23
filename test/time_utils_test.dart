@@ -1,7 +1,7 @@
+import 'package:epoch/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
-import '../lib/time_utils.dart';
 
 void main() {
 

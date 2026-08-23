@@ -404,8 +404,10 @@ class _HomeScreenState extends State<HomeScreen>
     final idx = _visibleTabs.indexWhere((t) => t.id == id);
     _tabs.removeWhere((t) => t.id == id);
     saveAllTabs(_tabs);
-    final targetIndex = (idx - 1).clamp(0, _tabCount - 1);
+    final newCount = _tabCount;  // recomputed after removal
     _updateTabController();
+    if (newCount == 0) return;   // nothing left to animate to
+    final targetIndex = (idx - 1).clamp(0, newCount - 1);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _tabController?.animateTo(targetIndex);

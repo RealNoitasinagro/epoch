@@ -1,9 +1,9 @@
+import 'package:epoch/models/time_value.dart';
+import 'package:epoch/time_utils.dart';
+import 'package:epoch/time_value_formatter.dart';
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import '../lib/models/time_value.dart';
-import '../lib/time_utils.dart';
-import '../lib/time_value_formatter.dart';
-import '../lib/widgets/time_string_row.dart';
 
 void main() {
   setUpAll(() => tz.initializeTimeZones());

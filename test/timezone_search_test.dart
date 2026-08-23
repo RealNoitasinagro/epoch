@@ -1,9 +1,9 @@
+import 'package:epoch/models/timezone_search.dart';
+import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
-import '../lib/models/timezone_search.dart';
-import '../lib/models/timezone_search_zones.dart';
 
 void _printDetails(String searchTerm, List<TzEntry> loc, showDetails) {
   if (!showDetails) return;
