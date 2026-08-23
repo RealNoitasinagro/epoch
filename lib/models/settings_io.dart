@@ -166,7 +166,7 @@ Future<String> _exportSettingsJson() async {
     for (final key in sortedKeys) key: prefs.get(key),
   };
   const encoder = JsonEncoder.withIndent('  ');
-  return encoder.convert(map);
+  return '${encoder.convert(map)}\n';
 }
 
 Future<void> _writeMapToPrefs(

@@ -45,7 +45,7 @@ Default values will show up in config files when a non-default value had been co
 [^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
 
 > [!TIP]
-> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`. \
+> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`.
 > * As an alternative way to reset the whole app to defaults (and bypassing backup!), you can import an empty config (`reset_to_defaults.json`).
 > * If you want to "comment out" a setting, rename its key to make it invalid, e.g. append "ooo" for out-of-order. That way you can keep an entry in the config while making the app ignore it.
 
@@ -109,7 +109,7 @@ Each entry is a tab string, its position in the array determines its place in th
 The string consists of fields separated by tabulator characters (`\t`):
 
 ```
-"custom_tabs": [
+"all_tabs": [
   TAB_ID\tCustomNameOrEmpty\tBuiltinKindOrEmpty\tVisible\tENTRY\tENTRY\t...
 ]
 ```
@@ -211,7 +211,7 @@ Renders a section heading above the following entries.
 > A section title starting with `@` is reserved for the app's own built-in, localized section headers (`unix`, `atomic`, `gps`, `sidereal`, `julian`, `internet`, `binaryClock`, `doomsdayClock` – these show translated names that follow the app's current language).
 > Your own section titles can start with `@` too; just make sure it does not exactly match one of these reserved keywords.
 
-### Custom Tab Example
+### Config Example
 
 ```json
 {
