@@ -357,7 +357,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get messageNoTabsVisible =>
-      'Alle Tabs sind ausgeblendet.\nAktiviere einen Tab in den Einstellungen, oder lege einen neuen an.';
+      'Alle Tabs sind ausgeblendet.\nAktiviere einen Tab in Einstellungen, oder lege einen neuen an.';
 
   @override
   String get messageNoTimezone => 'Keine passende Zeitzone gefunden.';
@@ -377,7 +377,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get messageTabReactivated =>
-      'Tab reaktiviert – er entspricht evtl. nicht mehr der Standardkonfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.';
+      'Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.';
 
   @override
   String get pageSettings => 'Einstellungen';

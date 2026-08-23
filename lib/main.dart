@@ -332,10 +332,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _loadData() async {
     var tabs = await loadAllTabs();
-    if (tabs.isEmpty) {
-      tabs = defaultBuiltinTabs();
-      await saveAllTabs(tabs);
-    }
+    final originalCount = tabs.length;
+    tabs = tabs.isEmpty ? defaultBuiltinTabs() : ensureBuiltinTabs(tabs);
+    if (tabs.length != originalCount) await saveAllTabs(tabs);
     final activeTab = await loadActiveTab();
     setState(() {
       _tabs   = tabs;

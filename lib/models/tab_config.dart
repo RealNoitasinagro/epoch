@@ -16,6 +16,7 @@ const int maxCustomTabs = 4;  // unchanged limit on user-created (Watchlist) tab
 enum BuiltinTabKind { civil, technical, astronomical, curiosities }
 
 class TabConfig {
+
   final String id;
   String? customName;           // null = use localized builtin name
   final BuiltinTabKind? builtinKind;  // null = user-created (Watchlist) tab
@@ -139,6 +140,22 @@ List<TabConfig> defaultBuiltinTabs() => [
   TabConfig(id: generateId(), builtinKind: BuiltinTabKind.curiosities,
       entries: List.of(defaultCuriositiesEntries)),
 ];
+
+// Ensures all four builtin tab kinds are present, appending any missing
+// ones (visible, with their default entries) at the end. Guards against
+// hand-edited or pre-1.5.0-derived configs that don't cover every
+// builtin category – without this, a missing kind would permanently
+// disable its Settings switch (no tab to toggle).
+List<TabConfig> ensureBuiltinTabs(List<TabConfig> tabs) {
+  final present = tabs.map((t) => t.builtinKind).whereType<BuiltinTabKind>().toSet();
+  final missing = BuiltinTabKind.values.where((k) => !present.contains(k));
+  if (missing.isEmpty) return tabs;
+  return [
+    ...tabs,
+    for (final kind in missing)
+      TabConfig(id: generateId(), builtinKind: kind, entries: defaultEntriesFor(kind)),
+  ];
+}
 
 // Returns the correct default-entry list for a builtin tab kind –
 // used by ConfigurableTab's per-tab "reset to defaults".

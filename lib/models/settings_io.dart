@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:epoch/models/prefs_migrations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,7 @@ Future<void> importSettingsJson(String json) async {
 
   try {
     await _writeMapToPrefs(prefs, map);
+    await runPrefsMigrations();  // handle configs exported before 1.5.0
   } catch (e) {
     await prefs.clear();
     await _writeMapToPrefs(prefs, backup);
