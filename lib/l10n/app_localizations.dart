@@ -662,6 +662,12 @@ abstract class AppLocalizations {
   /// **'Maximum of {count} values reached.'**
   String messageMaxValues(int count);
 
+  /// No description provided for @messageMissingTabsRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Some built-in tabs were missing from the loaded configuration and have been restored.'**
+  String get messageMissingTabsRestored;
+
   /// No description provided for @messageNoTabsVisible.
   ///
   /// In en, this message translates to:

@@ -302,12 +302,26 @@ class _HomeScreenState extends State<HomeScreen>
   late DateTime _now;
   TabController? _tabController;
   List<TabConfig> _tabs = [];
+  ValueNotifier<int>? _settingsReloadNotifier;
   bool _loaded = false;
   bool _isFullscreen = false;
 
   static const _fallbackVersion = '0.0.0';
   static const _fallbackBuildNumber = '0';
   static const changelogLink = 'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
+    _settingsReloadNotifier = EpochApp.of(context).settingsReloadNotifier;
+    _settingsReloadNotifier!.addListener(_onExternalReload);
+  }
+
+  void _onExternalReload() {
+    if (!mounted) return;
+    _loadData();
+  }
 
   @override
   void initState() {
@@ -323,6 +337,7 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _timer.cancel();
     _tabController?.dispose();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }
 
@@ -331,13 +346,10 @@ class _HomeScreenState extends State<HomeScreen>
   int get _tabCount => _visibleTabs.length;
 
   Future<void> _loadData() async {
-    var tabs = await loadAllTabs();
-    final originalCount = tabs.length;
-    tabs = tabs.isEmpty ? defaultBuiltinTabs() : ensureBuiltinTabs(tabs);
-    if (tabs.length != originalCount) await saveAllTabs(tabs);
+    final result = await loadOrSeedAllTabs();
     final activeTab = await loadActiveTab();
     setState(() {
-      _tabs   = tabs;
+      _tabs   = result.tabs;
       _loaded = true;
     });
     _updateTabController(initialIndex: activeTab);
@@ -447,20 +459,20 @@ class _HomeScreenState extends State<HomeScreen>
     saveAllTabs(_tabs);
   }
 
+  // The listener now keeps _tabs live-synced regardless of Settings being
+  // open/closed or Home being rebuilt in between, so the explicit reload here
+  // is no longer needed –
+  // only the LMST cleanup still belongs here (it's tied to leaving Settings,
+  // not to a tab-data change as such):
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
-    ).then((_) async {
+    ).then((_) {
       if (!mounted) return;
-      // Reload first – tab visibility may have changed in Settings:
-      final reloadedTabs = await loadAllTabs();
-      if (!mounted) return;
-      setState(() => _tabs = reloadedTabs);
       if (EpochApp.of(context).lmstMode == LmstMode.off) {
-        _removeLmstFromAllTabs();  // now operates on fresh data
+        _removeLmstFromAllTabs();
       }
-      _updateTabController();
     });
   }
 

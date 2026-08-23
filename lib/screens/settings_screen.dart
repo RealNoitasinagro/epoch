@@ -31,9 +31,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late double? _lmstLongitude;
   bool _locationLoading = false;
   final _longitudeController = TextEditingController();
-  ValueNotifier<int>? _settingsReloadNotifier;
-  late String? _lastImportedConfig;
   List<TabConfig> _tabs = [];
+  ValueNotifier<int>? _settingsReloadNotifier;
+  bool _ioInProgress = false;
+  late String? _lastImportedConfig;
 
   bool get _isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -51,6 +52,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     _settingsReloadNotifier = EpochApp.of(context).settingsReloadNotifier;
     _settingsReloadNotifier!.addListener(_onExternalReload);
+    _setSettingsState();
+  }
+
+  void _onExternalReload() {
+    if (!mounted) return;
     _setSettingsState();
   }
 
@@ -72,17 +78,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _lastImportedConfig = app.lastImportedConfig;
     });
     _loadTabs();
-  }
-
-  Future<void> _loadTabs() async {
-    final tabs = await loadAllTabs();
-    if (!mounted) return;
-    setState(() => _tabs = tabs);
-  }
-
-  void _onExternalReload() {
-    if (!mounted) return;
-    _setSettingsState();
   }
 
   @override
@@ -109,6 +104,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _lmstLongitude = longitude);
     EpochApp.of(context).setLmstLongitude(longitude);
     _longitudeController.text = longitude.toStringAsFixed(4);
+  }
+
+  Future<void> _loadTabs() async {
+    final result = await loadOrSeedAllTabs();
+    if (!mounted) return;
+    setState(() => _tabs = result.tabs);
+    if (result.backfilled) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(AppLocalizations.of(context)!.messageMissingTabsRestored),
+        duration: const Duration(seconds: 6),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+  }
+
+  Future<void> _guardedIO(Future<void> Function() action) async {
+    if (_ioInProgress) return;
+    setState(() => _ioInProgress = true);
+    try {
+      await action();
+    } finally {
+      if (mounted) setState(() => _ioInProgress = false);
+    }
   }
 
   @override
@@ -428,21 +446,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.download),
             title: Text(l10n.settingsPreferencesExport),
-            onTap: () async => await exportSettings(context),
+            enabled: !_ioInProgress,
+            onTap: () => _guardedIO(() => exportSettings(context)),
           ),
           ListTile(
             leading: const Icon(Icons.upload_file),
             title: Text(l10n.settingsPreferencesImport),
+            enabled: !_ioInProgress,
             subtitle: _lastImportedConfig != null
                 ? Text(_lastImportedConfig!,
                     style: TextStyle(fontFamily: fontFamilyDefault))
                 : null,
-            onTap: () async => await importSettings(context),
+            onTap: () => _guardedIO(() => importSettings(context)),
           ),
           ListTile(
             leading: const Icon(Icons.restart_alt),
             title: Text(l10n.settingsPreferencesReset),
-            onTap: () async => await resetSettings(context),
+            enabled: !_ioInProgress,
+            onTap: () => _guardedIO(() => resetSettings(context)),
           ),
         ],
       ),
@@ -801,6 +822,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final wasHidden = !_tabs[idx].isVisible;
     setState(() => _tabs[idx] = _tabs[idx].copyWith(isVisible: value));
     saveAllTabs(_tabs);
+    EpochApp.of(context).settingsReloadNotifier.value++;
 
     if (value && wasHidden) {
       final l10n = AppLocalizations.of(context)!;

@@ -351,6 +351,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get messageMissingTabsRestored =>
+      'Some built-in tabs were missing from the loaded configuration and have been restored.';
+
+  @override
   String get messageNoTabsVisible =>
       'All tabs are hidden.\nActivate a tab in Settings, or add a new one.';
 

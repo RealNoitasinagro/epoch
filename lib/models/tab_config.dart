@@ -94,6 +94,25 @@ class TabConfig {
   }
 }
 
+/// Loads all tabs, seeding fresh builtin defaults on a first run/after a
+/// reset, and backfilling any builtin kind missing from an incomplete
+/// config (e.g. hand-edited, or imported from an older version). Persists
+/// any seeding/backfill immediately, so whichever screen calls this first
+/// (HomeScreen at startup, SettingsScreen while already open) sees a
+/// consistent, already-saved result – no dependency on load order.
+Future<({List<TabConfig> tabs, bool backfilled})> loadOrSeedAllTabs() async {
+  var tabs = await loadAllTabs();
+  if (tabs.isEmpty) {
+    tabs = defaultBuiltinTabs();
+    await saveAllTabs(tabs);
+    return (tabs: tabs, backfilled: false);  // fresh seed, not worth notifying
+  }
+  final withBuiltins = ensureBuiltinTabs(tabs);
+  final backfilled = withBuiltins.length != tabs.length;
+  if (backfilled) await saveAllTabs(withBuiltins);
+  return (tabs: withBuiltins, backfilled: backfilled);
+}
+
 Future<List<TabConfig>> loadAllTabs() async {
   final prefs = await SharedPreferences.getInstance();
   final stored = prefs.getStringList(_kAllTabsKey);
@@ -105,6 +124,7 @@ Future<List<TabConfig>> loadAllTabs() async {
 }
 
 Future<void> saveAllTabs(List<TabConfig> tabs) async {
+
   final prefs = await SharedPreferences.getInstance();
   await prefs.setStringList(
     _kAllTabsKey,

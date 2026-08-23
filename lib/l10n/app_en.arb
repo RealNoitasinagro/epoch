@@ -133,6 +133,7 @@
   "messageCopiedToClipboard": "Copied: {label}",
   "messageEmptyTab": "Configurable tab.\nUse the edit mode to add values.",
   "messageMaxValues": "Maximum of {count} values reached.",
+  "messageMissingTabsRestored": "Some built-in tabs were missing from the loaded configuration and have been restored.",
   "messageNoTabsVisible": "All tabs are hidden.\nActivate a tab in Settings, or add a new one.",
   "messageNoTimezone": "No matching timezone found.",
   "messageSettingsExported": "Settings exported",
