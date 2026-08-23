@@ -1,7 +1,11 @@
 {
   "active_tab": 4,
-  "custom_tabs": [
-    "1786001074462\tUNO\ttime/named:America/New_York|New York -- Hauptquartier, UNICEF\ttime/named:America/Toronto|Montreal -- ICAO\tdivider:1786001507193\ttime/named:Europe/London|London -- IMO\tdivider:1786001358510\ttime/named:Europe/Brussels|Den Haag -- ICJ\ttime/named:Europe/Zurich|Genf -- WHO, WMO\ttime/named:Europe/Paris|Paris -- UNESCO\ttime/named:Europe/Rome|Rom -- FAO\tdivider:1786002559017\ttime/named:Africa/Nairobi|Nairobi -- UNEP\tdivider:1786002752184\ttime/named:Asia/Tokyo|Tokio -- UNU"
+  "all_tabs": [
+    "1787495553925_12\t\tcivil\t1\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\ttime/utc\tdaySecond/utc\tsevenSegmentClock/local",
+    "1787495553925_13\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
+    "1787495553925_14\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc",
+    "1787495553925_15\t\tcuriosities\t1\tsection:builtin_internet:@internet\tswatchBeats/utc\tdivider:builtin_divider_curio_1\tsection:builtin_binaryClock:@binaryClock\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
+    "1786001074462\tUNO\t\t1\ttime/named:America/New_York|New York -- Hauptquartier, UNICEF\ttime/named:America/Toronto|Montreal -- ICAO\tdivider:1786001507193\ttime/named:Europe/London|London -- IMO\tdivider:1786001358510\ttime/named:Europe/Brussels|Den Haag -- ICJ\ttime/named:Europe/Zurich|Genf -- WHO, WMO\ttime/named:Europe/Paris|Paris -- UNESCO\ttime/named:Europe/Rome|Rom -- FAO\tdivider:1786002559017\ttime/named:Africa/Nairobi|Nairobi -- UNEP\tdivider:1786002752184\ttime/named:Asia/Tokyo|Tokio -- UNU"
   ],
   "locale": "de"
 }

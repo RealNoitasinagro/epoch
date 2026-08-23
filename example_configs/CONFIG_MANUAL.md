@@ -25,7 +25,7 @@ Default values will show up in config files when a non-default value had been co
 | Key                        | Type             | Default             | Description                                                                             |
 |----------------------------|------------------|---------------------|-----------------------------------------------------------------------------------------|
 | `active_tab`               | string           | `0`                 | app will open with the tab used last                                                    |
-| `custom_tabs`              | array of strings | `[]`                | user-defined Watchlist tabs (see below)                                                 |
+| `all_tabs`                 | array of strings | `[]`                | each line contains the settings for one tab (see below)                                 |
 | `date_cw_doy`              | bool             | `true`              | Show ISO week number and day of year                                                    |
 | `date_format`              | string           | `"EEE, YYYY-MM-DD"` | Date display format (see tokens below)                                                  |
 | `day_quarter_color`        | bool             | `true`              | Show day quarter indicator in night red, cyan, amber, matrix green                      |
@@ -34,13 +34,13 @@ Default values will show up in config files when a non-default value had been co
 | `hour_format_24`           | bool             | `true`              | 24-hour clock                                                                           |
 | `last_export_dir`          | string           | `""`                | Path to a folder (defaults platform-specific)                                           |
 | `last_imported_config`[^1] | string           | `""`                | Filename of the last imported config                                                    |
-| `lmst_lon`                 | number           | `—`                 | Longitude in decimal degrees (−180 to +180)                                             |
+| `lmst_longitude`           | number           | `—`                 | Longitude in decimal degrees (−180 to +180)                                             |
 | `lmst_mode`                | string           | `"off"`             | `"off"`, `"manual"`, `"locationAccess"`                                                 |
 | `locale`                   | string           | `"en"`              | `"en"` or `"de"`                                                                        |
 | `theme_mode`               | string           | `"system"`          | `"light"`, `"dark"`, `"night"`, `"system"`                                              |
 | `time_format`              | string           | `"HH:mm:ss"`        | Time display format (see tokens below)                                                  |
 | `thousands_sep`            | bool             | `true`              | Thousands separator in numbers (locale-dependent)                                       |
-| `zone_display`             | string           | `"full"`            | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"` |
+| `zone_display_mode`        | string           | `"full"`            | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"` |
 
 [^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
 
@@ -95,24 +95,28 @@ Note: The 12/24-hour setting applies to all time values uniformly.
 
 ### Predefined Tabs
 
-The Civil, Technical, Astronomical, and Curiosities tabs are built in and
-cannot currently be configured via the file format. \
-This will change soon. Custom tabs are already fully configurable.
+Civil, Technical, Astronomical, and Curiosities behave like any custom Watchlist tab – 
+fully configurable, with edit mode, reset-to-defaults, and full value-type picker. \
+The only real difference is that they cannot be renamed.
+They can be hidden and re-shown either via their own tab menu (long-press) or via Settings → Tab visibility. \
+Their built-in default entries are defined by the app; any user edits are persisted like on any other tab.
 
-### Custom Tabs
+### Tabs
 
-Custom tabs are stored as a JSON array under the key `custom_tabs`. \
+Tabs are stored as a JSON array under the key `all_tabs`. \
 Each entry is a tab string, its position in the array determines its place in the app.
 (It's currently not possible to reorder tabs in the app itself.) \
 The string consists of fields separated by tabulator characters (`\t`):
 
 ```
 "custom_tabs": [
-  "TAB_ID\tTab Name\tENTRY\tENTRY\t..."
+  TAB_ID\tCustomNameOrEmpty\tBuiltinKindOrEmpty\tVisible\tENTRY\tENTRY\t...
 ]
 ```
-
-**Tab ID:** Typically a numeric string (millisecond timestamp).
+- **`TAB_ID`**: a numeric string (millisecond timestamp, or timestamp + counter), must be *unique across all tabs in the file* – duplicate IDs cause entry updates and deletions to target the wrong tab.
+- **`CustomNameOrEmpty`**: the tab's name. Leave empty for a built-in tab (Civil/Technical/Astronomical/Curiosities) – its name is always shown localized in the app's current language and cannot be overridden. Required (non-empty) for Watchlist tabs.
+- **`BuiltinKindOrEmpty`**: one of `civil`, `technical`, `astronomical`, `curiosities` for a built-in tab, or empty for a Watchlist tab.
+- **`Visible`**: `1` (visible) or `0` (hidden). Hidden built-in tabs keep their entries in the file and can be re-shown via Settings → Tab visibility. Hidden Watchlist tabs are not currently reachable from the UI.
 
 **Entries** can be one of:
 - time value of a certain value type,
@@ -203,19 +207,31 @@ section:SECTION_ID:Section Title
 
 Renders a section heading above the following entries.
 
+> [!NOTE]
+> A section title starting with `@` is reserved for the app's own built-in, localized section headers (`unix`, `atomic`, `gps`, `sidereal`, `julian`, `internet`, `binaryClock`, `doomsdayClock` – these show translated names that follow the app's current language).
+> Your own section titles can start with `@` too; just make sure it does not exactly match one of these reserved keywords.
+
 ### Custom Tab Example
 
 ```json
 {
   "active_tab": 4,
-  "custom_tabs": [
-    "1000000000000\tMy Tab\tdateTime/local|Home\tdivider:2000000000001\tsection:2000000000002:Sidereal\tgmst/utc\tlmst/utc\tdivider:3000000000001\tsection:3000000000002:Julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc"
+  "all_tabs": [
+    "1000000000000\t\tcivil\t1",
+    "1000000000001\t\ttechnical\t0",
+    "1000000000002\t\tastronomical\t0",
+    "1000000000003\t\tcuriosities\t0",
+    "1000000000004\tMy Tab\t\t1\tdateTime/local|Home\tdivider:2000000000001\tsection:2000000000002:Sidereal\tgmst/utc\tlmst/utc\tdivider:3000000000001\tsection:3000000000002:Julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc"
   ],
   "date_format": "EEEE, YYYY-MM-DD",
-  "lmst_lon": 10.2339598,
+  "lmst_longitude": 10.2339598,
   "lmst_mode": "manual"
 }
 ```
+Note that the four built-in tabs above are shown with an empty entry list purely for brevity in this example (it's syntactically valid, Civil would show with defaults). 
+In a real config they typically carry their full default entries (cf. `epoch_settings_reference.json`), or your own customizations of them. \
+In case you have the `all_tabs` array in your config and want to see only your custom tabs in the app, you need to specify the builtin tabs explicitly with visibility off (0). Otherwise the app will try to restore missing tabs. 
+
 > [!TIP]
 > The app keeps JSON keys in alphabetical order.
 > Though not necessary technically, you might want to do the same when creating configs manually to facilitate comparing files. 

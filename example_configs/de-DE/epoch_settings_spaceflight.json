@@ -1,7 +1,11 @@
 {
-    "active_tab": 4,
-    "custom_tabs": [
-        "1782930589066\tRaumfahrt\tsection:1784745191776:Internationale Raumstation (ISS)\ttime/utc\tdivider:1786003557722\tsection:1782934224911:[NASA] Missionskontrollzentrum (MCC)\tdate/named:America/Chicago|Houston\ttime/named:America/Chicago|Houston\tsection:1782934445324:[NASA] Kennedy Space Center (KSC)\ttime/named:America/New_York|Merritt Island\tdivider:1784745146562\tsection:1786003582890:[ESA] Europäisches Raumflugkontrollzentrum (ESOC)\ttime/named:Europe/Berlin|Darmstadt\tsection:1786004924481:[ESA] Raumfahrtzentrum Guayana (CSG)\ttime/named:America/Cayenne|Kourou\tdivider:1786005172663\tsection:1786005664562:[ROSCOSMOS] Kosmodrom Baikonur\ttime/named:Asia/Oral|Baikonur"
-    ],
-    "locale": "de"
+  "active_tab": 4,
+  "all_tabs": [
+    "1787495484814_4\t\tcivil\t1\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\ttime/utc\tdaySecond/utc\tsevenSegmentClock/local",
+    "1787495484814_5\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
+    "1787495484814_6\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc",
+    "1787495484814_7\t\tcuriosities\t1\tsection:builtin_internet:@internet\tswatchBeats/utc\tdivider:builtin_divider_curio_1\tsection:builtin_binaryClock:@binaryClock\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
+    "1782930589066\tRaumfahrt\t\t1\tsection:1784745191776:Internationale Raumstation (ISS)\ttime/utc\tdivider:1786003557722\tsection:1782934224911:[NASA] Missionskontrollzentrum (MCC)\tdate/named:America/Chicago|Houston\ttime/named:America/Chicago|Houston\tsection:1782934445324:[NASA] Kennedy Space Center (KSC)\ttime/named:America/New_York|Merritt Island\tdivider:1784745146562\tsection:1786003582890:[ESA] Europäisches Raumflugkontrollzentrum (ESOC)\ttime/named:Europe/Berlin|Darmstadt\tsection:1786004924481:[ESA] Raumfahrtzentrum Guayana (CSG)\ttime/named:America/Cayenne|Kourou\tdivider:1786005172663\tsection:1786005664562:[ROSCOSMOS] Kosmodrom Baikonur\ttime/named:Asia/Oral|Baikonur"
+  ],
+  "locale": "de"
 }

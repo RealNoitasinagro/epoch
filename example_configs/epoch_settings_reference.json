@@ -1,7 +1,11 @@
 {
   "active_tab": 4,
-  "custom_tabs": [
-    "1784784052469\tWatchlist 1"
+  "all_tabs": [
+    "1787478081389_0\t\tcivil\t1\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\ttime/utc\tdaySecond/utc\tsevenSegmentClock/local",
+    "1787478081389_1\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
+    "1787478081389_2\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc",
+    "1787478081389_3\t\tcuriosities\t1\tsection:builtin_internet:@internet\tswatchBeats/utc\tdivider:builtin_divider_curio_1\tsection:builtin_binaryClock:@binaryClock\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
+    "1784784052469\tWatchlist 1\t\t1"
   ],
   "date_cw_doy": false,
   "date_format": "EEE, DD/MM/YYYY",
@@ -10,11 +14,11 @@
   "focus_color": 4278248959,
   "hour_format_24": false,
   "last_export_dir": "/home/username/epoch_settings",
-  "lmst_lon": 8.1427,
+  "lmst_longitude": 8.1427,
   "lmst_mode": "manual",
   "locale": "en",
   "theme_mode": "dark",
   "thousands_sep": false,
   "time_format": "HH:mm",
-  "zone_display": "abbreviation"
+  "zone_display_mode": "abbreviation"
 }
