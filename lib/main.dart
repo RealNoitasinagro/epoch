@@ -530,9 +530,18 @@ class _HomeScreenState extends State<HomeScreen>
           },
         ),
         title: GestureDetector(
-          child: Text(l10n.appName),
           onDoubleTap: _toggleFullscreen,
           onLongPress: () => _showBuildInfo(context),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!EpochApp.of(context).isNightMode) ...[
+                Image.asset('assets/icon/epoch_icon.png', height: 28),
+                const SizedBox(width: 8),
+              ],
+              Text(l10n.appName),
+            ],
+          ),
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
