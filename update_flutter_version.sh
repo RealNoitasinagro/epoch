@@ -17,4 +17,3 @@ sed -i -r "s/flutter-version: '$flutter_version_old'/flutter-version: '$flutter_
 sed -i -r "s/flutter-version: '$flutter_version_old'/flutter-version: '$flutter_version_new'/" $gh_workflow_deploy_web
 
 exit
-
