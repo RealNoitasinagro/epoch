@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,18 +54,30 @@ class _FocusScreenState extends State<FocusScreen> {
   Timer? _controlsHideTimer;
 
   bool _pixelShiftEnabled = kDefaultFocusPixelShift;
-  int _pixelShiftIndex = 3;  // start centered (index 2 of 5 levels)
+  int _pixelShiftDirection = 1;  // +1 or -1
+  int _pixelShiftIndex = 3;
   double _pixelShiftOffsetY = 0;
   Timer? _pixelShiftTimer;
 
-  static const _pixelShiftInterval = Duration(seconds: 10);  // minutes: 3
-  // Discrete vertical offsets (in logical pixels), symmetric around center.
-  // Cycling through discrete steps spreads wear across a handful
-  // of rows instead of a continuous range that still concentrates most
-  // dwell time near the middle.
-  static const _pixelShiftLevels = [-36.0, -24.0, -12.0, 0.0, 12.0, 24.0, 36.0];
+  static const _pixelShiftInterval = Duration(seconds: 10);  // TODO: minutes: 3 for production
 
-  bool get _showColorPicker => true;
+  List<double> get _pixelShiftLevels {
+    final isLandscape = _lastOrientation == Orientation.landscape;
+    final isGraphical = widget.timeValue.valueType.isGraphical;
+
+    // Graphical clocks (BCD/columns) already use most of the available
+    // space, especially the BCD clock in landscape and the columns clock
+    // in portrait – less room to shift without clipping or overlapping
+    // the exit hint/controls.
+    if (isGraphical) {
+      return isLandscape
+          ? const [-10.0, -6.0, 0.0, 6.0, 10.0]                                 // graphical landscape -> BCD
+          : const [-20.0, -13.0, 0.0, 13.0, 20.0];                              // graphical portrait  -> Columns
+    }
+    return isLandscape
+        ? const [-30.0, -20.0, -10.0, 0.0, 10.0, 20.0, 30.0]                    // string landscape -> line2 day percent/second  OK (very close)
+        : const [-42.0, -28.0, -14.0, 0.0, 14.0, 28.0, 42.0];                   // string portrait (uncritical?)
+  }
 
   bool get _showBrightnessSlider =>
       !kIsWeb && Platform.isAndroid && _brightness != null;
@@ -108,13 +119,18 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _rerollPixelShift() {
     if (!mounted) return;
-    final random = Random();
-    final atTop = _pixelShiftIndex == 0;
-    final atBottom = _pixelShiftIndex == _pixelShiftLevels.length - 1;
-    final step = atTop ? 1 : (atBottom ? -1 : (random.nextBool() ? 1 : -1));
+    final levels = _pixelShiftLevels;
+    var nextIndex = _pixelShiftIndex + _pixelShiftDirection;
+    if (nextIndex >= levels.length) {
+      nextIndex = levels.length - 2;
+      _pixelShiftDirection = -1;
+    } else if (nextIndex < 0) {
+      nextIndex = 1;
+      _pixelShiftDirection = 1;
+    }
     setState(() {
-      _pixelShiftIndex += step;
-      _pixelShiftOffsetY = _pixelShiftLevels[_pixelShiftIndex];
+      _pixelShiftIndex = nextIndex;
+      _pixelShiftOffsetY = levels[nextIndex];
     });
   }
 
@@ -270,6 +286,11 @@ class _FocusScreenState extends State<FocusScreen> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted) _scheduleControlsHide();
               });
+              // Level set may differ (graphical clocks have tighter
+              // portrait/landscape ranges) – recenter to stay safe:
+              _pixelShiftIndex = _pixelShiftLevels.length ~/ 2;
+              _pixelShiftOffsetY = 0;
+              _pixelShiftDirection = 1;
             }
             _lastOrientation = orientation;
             final isLandscape = orientation == Orientation.landscape;
@@ -311,7 +332,7 @@ class _FocusScreenState extends State<FocusScreen> {
       fit: StackFit.expand,
       children: [
         // Color swatches – top center:
-        if (_showColorPicker) Positioned(
+        Positioned(
           top: mediaPadding.top + 8,
           left: 0,
           right: 0,
@@ -352,7 +373,7 @@ class _FocusScreenState extends State<FocusScreen> {
       fit: StackFit.expand,
       children: [
         // Color swatches – left side, vertically centered:
-        if (_showColorPicker) Positioned(
+        Positioned(
           left: mediaPadding.left + 8,
           top: 0,
           bottom: 0,
@@ -361,7 +382,7 @@ class _FocusScreenState extends State<FocusScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _pixelShiftToggle(l10n),
-              const SizedBox(width: 16),
+              const SizedBox(height: 16),
               ..._colorSwatches(vertical: true),
             ]
           ),
