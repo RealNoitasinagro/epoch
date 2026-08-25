@@ -1,4 +1,3 @@
-import 'package:epoch/models/time_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import 'astronomical_tab_config.dart';
@@ -6,6 +5,7 @@ import 'civil_tab_config.dart';
 import 'curiosities_tab_config.dart';
 import 'tab_entry.dart';
 import 'technical_tab_config.dart';
+import 'time_value.dart';
 
 const _kAllTabsKey = 'all_tabs';
 const int maxCustomTabs = 4;  // limit on user-created (Watchlist) tabs

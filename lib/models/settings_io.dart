@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:epoch/models/prefs_migrations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import 'prefs_migrations.dart';
 
 const _extJson = 'json';
 final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
