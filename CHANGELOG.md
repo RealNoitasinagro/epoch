@@ -9,6 +9,7 @@
 
 ### Changed
 - all tabs now fully configurable (except rename for builtins), builtin tabs can be (un)hidden
+- LMST is no longer shown dynamically based on your longitude, needs to be (re)added explicitly
 - JSON config format, with backwards compatibility maintained (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
 - more informative date and time format subtitles and improved layout in Settings
 - improved copy-to-clipboard: long-press for value only, without label 

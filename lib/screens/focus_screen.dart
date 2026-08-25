@@ -53,30 +53,38 @@ class _FocusScreenState extends State<FocusScreen> {
   bool _controlsVisible = true;
   Timer? _controlsHideTimer;
 
+  final _valueDisplayKey = GlobalKey();
   bool _pixelShiftEnabled = kDefaultFocusPixelShift;
   int _pixelShiftDirection = 1;  // +1 or -1
-  int _pixelShiftIndex = 3;
+  int _pixelShiftIndex = 0;
+  bool _pixelShiftInitialized = false;
   double _pixelShiftOffsetY = 0;
   Timer? _pixelShiftTimer;
+  static const _pixelShiftInterval = Duration(seconds: 180);
+  static const _safetyMargin = 8.0;     // extra breathing room, both ends
 
-  static const _pixelShiftInterval = Duration(seconds: 10);  // TODO: minutes: 3 for production
+  double? _measuredContentHeight;
+  double get _topReservedForShift =>
+      _lastOrientation == Orientation.landscape ? 40.0 : 80.0;
+  double get _bottomReservedForShift =>
+      _lastOrientation == Orientation.landscape ? 56.0 : 64.0;
 
   List<double> get _pixelShiftLevels {
-    final isLandscape = _lastOrientation == Orientation.landscape;
-    final isGraphical = widget.timeValue.valueType.isGraphical;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final contentHeight = _measuredContentHeight ?? 0;
+    final available = screenHeight
+        - _topReservedForShift
+        - _bottomReservedForShift
+        - contentHeight;
+    final maxOffset = ((available / 2) - _safetyMargin).clamp(0.0, double.infinity);
 
-    // Graphical clocks (BCD/columns) already use most of the available
-    // space, especially the BCD clock in landscape and the columns clock
-    // in portrait – less room to shift without clipping or overlapping
-    // the exit hint/controls.
-    if (isGraphical) {
-      return isLandscape
-          ? const [-10.0, -6.0, 0.0, 6.0, 10.0]                                 // graphical landscape -> BCD
-          : const [-20.0, -13.0, 0.0, 13.0, 20.0];                              // graphical portrait  -> Columns
-    }
-    return isLandscape
-        ? const [-30.0, -20.0, -10.0, 0.0, 10.0, 20.0, 30.0]                    // string landscape -> line2 day percent/second  OK (very close)
-        : const [-42.0, -28.0, -14.0, 0.0, 14.0, 28.0, 42.0];                   // string portrait (uncritical?)
+    if (maxOffset < 2) return const [0.0];
+    // Fewer steps when there's little room, so even tight cases (landscape,
+    // graphical clocks, line2-heavy values) still get *some* protection
+    // instead of collapsing to a single fixed position:
+    final steps = maxOffset >= 20 ? 7 : (maxOffset >= 6 ? 3 : 2);
+    return List.generate(steps, (i) =>
+    -maxOffset + (steps == 1 ? 0 : 2 * maxOffset * i / (steps - 1)));
   }
 
   bool get _showBrightnessSlider =>
@@ -105,11 +113,28 @@ class _FocusScreenState extends State<FocusScreen> {
     _initBrightness();
   }
 
+  void _remeasureContent() {
+    final box = _valueDisplayKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null || !box.hasSize) return;
+    final height = (box.size.height / 4).round() * 4.0;  // quantize to 4px steps
+    if (height != _measuredContentHeight) {
+      setState(() {
+        _measuredContentHeight = height;
+        if (_pixelShiftEnabled && _pixelShiftInitialized) _resetPixelShiftPosition();
+      });
+    }
+  }
+
   Future<void> _initPixelShift() async {
     final enabled = await loadFocusPixelShift();
     if (!mounted) return;
     setState(() => _pixelShiftEnabled = enabled);
-    if (enabled) _startPixelShiftTimer();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _resetPixelShiftPosition();  // context/MediaQuery is safe here
+      _pixelShiftInitialized = true;
+      if (enabled) _startPixelShiftTimer();
+    });
   }
 
   void _startPixelShiftTimer() {
@@ -120,12 +145,13 @@ class _FocusScreenState extends State<FocusScreen> {
   void _rerollPixelShift() {
     if (!mounted) return;
     final levels = _pixelShiftLevels;
-    var nextIndex = _pixelShiftIndex + _pixelShiftDirection;
+    var currentIndex = _pixelShiftIndex.clamp(0, levels.length - 1);
+    var nextIndex = currentIndex + _pixelShiftDirection;
     if (nextIndex >= levels.length) {
-      nextIndex = levels.length - 2;
+      nextIndex = (levels.length - 2).clamp(0, levels.length - 1);
       _pixelShiftDirection = -1;
     } else if (nextIndex < 0) {
-      nextIndex = 1;
+      nextIndex = (levels.length > 1 ? 1 : 0);
       _pixelShiftDirection = 1;
     }
     setState(() {
@@ -140,7 +166,7 @@ class _FocusScreenState extends State<FocusScreen> {
       _pixelShiftEnabled = enabled;
       if (!enabled) {
         _pixelShiftOffsetY = 0;
-        _pixelShiftIndex = 3;
+        _resetPixelShiftPosition();
       }
     });
     saveFocusPixelShift(enabled);
@@ -150,6 +176,13 @@ class _FocusScreenState extends State<FocusScreen> {
       _pixelShiftTimer?.cancel();
     }
     _scheduleControlsHide();
+  }
+
+  void _resetPixelShiftPosition() {
+    final levels = _pixelShiftLevels;
+    _pixelShiftIndex = levels.length ~/ 2;
+    _pixelShiftOffsetY = levels[_pixelShiftIndex];
+    _pixelShiftDirection = 1;
   }
 
   Future<void> _initBrightness() async {
@@ -254,6 +287,8 @@ class _FocusScreenState extends State<FocusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
+
     final l10n = AppLocalizations.of(context)!;
     final display = _currentDisplay();
     final hasLine2 = display.line2.isNotEmpty
@@ -298,6 +333,7 @@ class _FocusScreenState extends State<FocusScreen> {
             return Stack(
               fit: StackFit.expand,
               children: [
+                _pixelShiftDebugOverlay(),
                 // Value display – ALWAYS visible, outside AnimatedOpacity:
                 Center(
                   child: AnimatedContainer(
@@ -597,7 +633,7 @@ class _FocusScreenState extends State<FocusScreen> {
       return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: hPadding, vertical: vPadding),
-        child: FittedBox(fit: BoxFit.contain, child: clock),
+        child: FittedBox(fit: BoxFit.contain, key: _valueDisplayKey, child: clock),
       );
     }
 
@@ -607,6 +643,7 @@ class _FocusScreenState extends State<FocusScreen> {
           horizontal: hPadding, vertical: vPadding),
       child: FittedBox(
         fit: BoxFit.contain,
+        key: _valueDisplayKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -636,6 +673,22 @@ class _FocusScreenState extends State<FocusScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _pixelShiftDebugOverlay() {
+    if (!kDebugMode) return const SizedBox.shrink();
+    return Positioned(
+      left: 8,
+      top: 100,
+      child:
+        Text(
+          'idx ${_pixelShiftIndex}/${_pixelShiftLevels.length - 1}  |  '
+          'off ${_pixelShiftOffsetY.toStringAsFixed(1)}  |  '
+          'dir ${_pixelShiftDirection > 0 ? "↓" : "↑"}   |  '
+           'h ${_measuredContentHeight?.toStringAsFixed(0) ?? "?"}',
+          style: const TextStyle(color: Colors.yellow, fontSize: 16),
+        ),
     );
   }
 }
