@@ -8,7 +8,7 @@ import 'tab_entry.dart';
 import 'technical_tab_config.dart';
 
 const _kAllTabsKey = 'all_tabs';
-const int maxCustomTabs = 4;  // unchanged limit on user-created (Watchlist) tabs
+const int maxCustomTabs = 4;  // limit on user-created (Watchlist) tabs
 
 // Identifies one of the four preinstalled tab categories.
 // Order here has no bearing on display order – that comes purely from
@@ -16,7 +16,6 @@ const int maxCustomTabs = 4;  // unchanged limit on user-created (Watchlist) tab
 enum BuiltinTabKind { civil, technical, astronomical, curiosities }
 
 class TabConfig {
-
   final String id;
   String? customName;           // null = use localized builtin name
   final BuiltinTabKind? builtinKind;  // null = user-created (Watchlist) tab

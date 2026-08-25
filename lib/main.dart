@@ -344,6 +344,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<TabConfig> get _visibleTabs =>
       _tabs.where((t) => t.isVisible).toList();
   int get _tabCount => _visibleTabs.length;
+  int get _watchlistCount => _visibleTabs.where((t) => !t.isBuiltin).length;
 
   Future<void> _loadData() async {
     final result = await loadOrSeedAllTabs();
@@ -395,11 +396,10 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _addCustomTab(AppLocalizations l10n) {
-    final watchlistCount = _tabs.where((t) => !t.isBuiltin).length;
-    if (watchlistCount >= maxCustomTabs) return;
+    if (_watchlistCount >= maxCustomTabs) return;
     final tab = TabConfig(
       id: generateId(),
-      customName: defaultTabName(watchlistCount),
+      customName: defaultTabName(_watchlistCount),
       entries: [],
     );
     _tabs.add(tab);
@@ -545,7 +545,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          if (_tabs.where((t) => !t.isBuiltin).length < maxCustomTabs)
+          if (_watchlistCount < maxCustomTabs)
             IconButton(
               icon: const Icon(Icons.add),
               tooltip: l10n.hintAddTab,
