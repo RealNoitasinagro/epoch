@@ -61,7 +61,7 @@ class _FocusScreenState extends State<FocusScreen> {
   double _pixelShiftOffsetY = 0;
   Timer? _pixelShiftTimer;
   static const _pixelShiftInterval = Duration(seconds: 180);
-  static const _safetyMargin = 8.0;     // extra breathing room, both ends
+  static const _safetyMargin = 8.0;  // extra breathing room, both ends
 
   double? _measuredContentHeight;
   double get _topReservedForShift =>
@@ -79,12 +79,12 @@ class _FocusScreenState extends State<FocusScreen> {
     final maxOffset = ((available / 2) - _safetyMargin).clamp(0.0, double.infinity);
 
     if (maxOffset < 2) return const [0.0];
-    // Fewer steps when there's little room, so even tight cases (landscape,
-    // graphical clocks, line2-heavy values) still get *some* protection
-    // instead of collapsing to a single fixed position:
-    final steps = maxOffset >= 20 ? 7 : (maxOffset >= 6 ? 3 : 2);
-    return List.generate(steps, (i) =>
-    -maxOffset + (steps == 1 ? 0 : 2 * maxOffset * i / (steps - 1)));
+    const targetStepSize = 18.0;  // aim for ~18px between adjacent levels
+    final halfSteps = (maxOffset / targetStepSize).floor().clamp(1, 6);
+    final steps = halfSteps * 2 + 1;  // odd count, always includes center (0.0)
+    return List.generate(
+        steps, (i) => -maxOffset + (2 * maxOffset * i / (steps - 1))
+    );
   }
 
   bool get _showBrightnessSlider =>
