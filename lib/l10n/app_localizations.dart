@@ -314,6 +314,18 @@ abstract class AppLocalizations {
   /// **'Automatic clock change disabled'**
   String get hintPinnedIndicator;
 
+  /// No description provided for @hintPixelShiftOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn-in protection off – tap to enable'**
+  String get hintPixelShiftOff;
+
+  /// No description provided for @hintPixelShiftOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn-in protection on – tap to disable'**
+  String get hintPixelShiftOn;
+
   /// No description provided for @hintRemoveSelected.
   ///
   /// In en, this message translates to:

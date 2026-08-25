@@ -31,6 +31,7 @@ Default values will show up in config files when a non-default value had been co
 | `day_quarter_color`        | bool             | `true`              | Show day quarter indicator in night red, cyan, amber, matrix green                      |
 | `focus_brightness`         | number           | `0.5`               | Focus screen brightness (0.01–1.0, mobile-only)                                         |
 | `focus_color`              | integer          | `4294967295`        | Focus screen text color as ARGB integer (see below)                                     |
+| `focus_pixel_shift`        | bool             | `true` (Android)    | Burn-in protection for Focus screen through regular pixel shift                         |
 | `hour_format_24`           | bool             | `true`              | 24-hour clock                                                                           |
 | `last_export_dir`          | string           | `""`                | Path to a folder (defaults platform-specific)                                           |
 | `last_imported_config`[^1] | string           | `""`                | Filename of the last imported config                                                    |

@@ -75,6 +75,8 @@
   "hintFocusScreenToggleToOneLine": "Hold for one line",
   "hintFocusScreenToggleToTwoLines": "Hold for two lines",
   "hintPinnedIndicator": "Automatic clock change disabled",
+  "hintPixelShiftOff": "Burn-in protection off – tap to enable",
+  "hintPixelShiftOn": "Burn-in protection on – tap to disable",
   "hintRemoveSelected": "Remove selected",
   "hintResetToDefaults": "Reset to defaults",
   "hintSelect": "Select",

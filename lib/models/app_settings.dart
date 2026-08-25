@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../layout_constants.dart';
@@ -16,6 +19,7 @@ const _kLmstLongitudeKey = 'lmst_longitude';  // double
 const _kActiveTabKey = 'active_tab';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
+const _kFocusPixelShiftKey = 'focus_pixel_shift';
 const _kLastImportedConfigKey = 'last_imported_config';
 
 const kDefaultLocale          = Locale('en');
@@ -29,6 +33,7 @@ const kDefaultLmstMode        = LmstMode.off;
 const kDefaultFocusBrightness = 0.5;
 const kFocusDefaultColorLight = kColorWhite;
 const kFocusDefaultColorNight = kColorNightRed;
+final kDefaultFocusPixelShift = !kIsWeb && Platform.isAndroid;
 
 const kDatePatternIso      = 'EEE, YYYY-MM-DD';  // Tue, 2026-07-29
 const kDatePatternDe       = 'EEE, DD.MM.YYYY';  // Di., 29.07.2026
@@ -227,6 +232,16 @@ Future<Color> loadFocusColor(bool isNightMode) async {
 Future<void> saveFocusColor(Color color) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kFocusColorKey, color.toARGB32());
+}
+
+Future<bool> loadFocusPixelShift() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kFocusPixelShiftKey) ?? kDefaultFocusPixelShift;
+}
+
+Future<void> saveFocusPixelShift(bool enabled) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kFocusPixelShiftKey, enabled);
 }
 
 Future<String?> loadLastImportedConfig() async {

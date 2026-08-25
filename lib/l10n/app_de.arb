@@ -75,6 +75,8 @@
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
   "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
+  "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren tippen",
+  "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren tippen",
   "hintRemoveSelected": "Markierte entfernen",
   "hintResetToDefaults": "Zurücksetzen",
   "hintSelect": "Auswählen",

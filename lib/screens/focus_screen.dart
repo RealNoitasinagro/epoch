@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,6 +54,18 @@ class _FocusScreenState extends State<FocusScreen> {
   bool _controlsVisible = true;
   Timer? _controlsHideTimer;
 
+  bool _pixelShiftEnabled = kDefaultFocusPixelShift;
+  int _pixelShiftIndex = 3;  // start centered (index 2 of 5 levels)
+  double _pixelShiftOffsetY = 0;
+  Timer? _pixelShiftTimer;
+
+  static const _pixelShiftInterval = Duration(seconds: 10);  // minutes: 3
+  // Discrete vertical offsets (in logical pixels), symmetric around center.
+  // Cycling through discrete steps spreads wear across a handful
+  // of rows instead of a continuous range that still concentrates most
+  // dwell time near the middle.
+  static const _pixelShiftLevels = [-36.0, -24.0, -12.0, 0.0, 12.0, 24.0, 36.0];
+
   bool get _showColorPicker => true;
 
   bool get _showBrightnessSlider =>
@@ -69,6 +82,7 @@ class _FocusScreenState extends State<FocusScreen> {
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = DateTime.now()));
     WakelockPlus.enable();
+    _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -78,6 +92,48 @@ class _FocusScreenState extends State<FocusScreen> {
     ]);
     _scheduleControlsHide();
     _initBrightness();
+  }
+
+  Future<void> _initPixelShift() async {
+    final enabled = await loadFocusPixelShift();
+    if (!mounted) return;
+    setState(() => _pixelShiftEnabled = enabled);
+    if (enabled) _startPixelShiftTimer();
+  }
+
+  void _startPixelShiftTimer() {
+    _pixelShiftTimer?.cancel();
+    _pixelShiftTimer = Timer.periodic(_pixelShiftInterval, (_) => _rerollPixelShift());
+  }
+
+  void _rerollPixelShift() {
+    if (!mounted) return;
+    final random = Random();
+    final atTop = _pixelShiftIndex == 0;
+    final atBottom = _pixelShiftIndex == _pixelShiftLevels.length - 1;
+    final step = atTop ? 1 : (atBottom ? -1 : (random.nextBool() ? 1 : -1));
+    setState(() {
+      _pixelShiftIndex += step;
+      _pixelShiftOffsetY = _pixelShiftLevels[_pixelShiftIndex];
+    });
+  }
+
+  void _togglePixelShift() {
+    final enabled = !_pixelShiftEnabled;
+    setState(() {
+      _pixelShiftEnabled = enabled;
+      if (!enabled) {
+        _pixelShiftOffsetY = 0;
+        _pixelShiftIndex = 3;
+      }
+    });
+    saveFocusPixelShift(enabled);
+    if (enabled) {
+      _startPixelShiftTimer();
+    } else {
+      _pixelShiftTimer?.cancel();
+    }
+    _scheduleControlsHide();
   }
 
   Future<void> _initBrightness() async {
@@ -176,6 +232,7 @@ class _FocusScreenState extends State<FocusScreen> {
     WakelockPlus.disable();
     if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    _pixelShiftTimer?.cancel();
     super.dispose();
   }
 
@@ -192,8 +249,9 @@ class _FocusScreenState extends State<FocusScreen> {
           ? 'isGraphical'
           : '';
 
-
-    if (_brightness == null) return const Scaffold(backgroundColor: Colors.black);
+    if (_brightness == null) {
+      return const Scaffold(backgroundColor: Colors.black);
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -220,8 +278,15 @@ class _FocusScreenState extends State<FocusScreen> {
               fit: StackFit.expand,
               children: [
                 // Value display – ALWAYS visible, outside AnimatedOpacity:
-                Center(child: _buildValueDisplay(isLandscape)),
-
+                Center(
+                  child: AnimatedContainer(
+                    duration: const Duration(seconds: 2),
+                    curve: Curves.easeInOut,
+                    transform: Matrix4.translationValues(
+                        0, _pixelShiftOffsetY, 0),
+                    child: _buildValueDisplay(isLandscape),
+                  ),
+                ),
                 // Controls overlay – fades in/out:
                 AnimatedOpacity(
                   opacity: _controlsVisible ? 1.0 : 0.0,
@@ -252,7 +317,11 @@ class _FocusScreenState extends State<FocusScreen> {
           right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _colorSwatches(),
+            children: [
+              ..._colorSwatches(),
+              const SizedBox(width: 16),
+              _pixelShiftToggle(l10n),
+            ],
           ),
         ),
         // Brightness slider – bottom, above hint:
@@ -290,7 +359,11 @@ class _FocusScreenState extends State<FocusScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: _colorSwatches(vertical: true),
+            children: [
+              _pixelShiftToggle(l10n),
+              const SizedBox(width: 16),
+              ..._colorSwatches(vertical: true),
+            ]
           ),
         ),
         // Brightness slider – right side, vertically centered:
@@ -312,6 +385,20 @@ class _FocusScreenState extends State<FocusScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _pixelShiftToggle(AppLocalizations l10n) {
+    return IconButton(
+      icon: Icon(
+        _pixelShiftEnabled ? Icons.blur_on : Icons.blur_off,
+        color: _textColor,
+        size: 28,
+      ),
+      tooltip: _pixelShiftEnabled
+          ? l10n.hintPixelShiftOn
+          : l10n.hintPixelShiftOff,
+      onPressed: _togglePixelShift,
     );
   }
 

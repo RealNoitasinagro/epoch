@@ -4,10 +4,12 @@
 
 ### Added
 - new popup menu for Settings, About and What's New
+- burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
 - import function shows last loaded config in Settings
 
 ### Changed
 - all tabs now fully configurable (except rename for builtins), builtin tabs can be (un)hidden
+- JSON config format, with backwards compatibility maintained (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
 - more informative date and time format subtitles and improved layout in Settings
 - improved copy-to-clipboard: long-press for value only, without label 
 

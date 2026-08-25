@@ -31,7 +31,6 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Configurable display
 - Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
-- Civil tab configurable with any timezone worldwide
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
 - 7-day advance clock change notice, display upcoming clock changes in the next few years
@@ -43,13 +42,14 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
-- Copy any value to clipboard with one tap
+- Copy any value to clipboard with one tap (with label) or long press (value only)
 
 ### Design
 - Night mode with red-on-black display — preserves dark adaptation for stargazing
 - Light, dark, and system themes
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
+- Burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
 - Android widgets planned

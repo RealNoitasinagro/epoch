@@ -142,6 +142,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override
+  String get hintPixelShiftOff => 'Einbrennschutz aus – zum Aktivieren tippen';
+
+  @override
+  String get hintPixelShiftOn => 'Einbrennschutz an – zum Deaktivieren tippen';
+
+  @override
   String get hintRemoveSelected => 'Markierte entfernen';
 
   @override

@@ -137,6 +137,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override
+  String get hintPixelShiftOff => 'Burn-in protection off – tap to enable';
+
+  @override
+  String get hintPixelShiftOn => 'Burn-in protection on – tap to disable';
+
+  @override
   String get hintRemoveSelected => 'Remove selected';
 
   @override
