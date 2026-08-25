@@ -345,14 +345,17 @@ class _FocusScreenState extends State<FocusScreen> {
                   ),
                 ),
                 // Controls overlay – fades in/out:
-                AnimatedOpacity(
-                  opacity: _controlsVisible ? 1.0 : 0.0,
-                  duration: _controlsHideDuration,
-                  child: isLandscape
-                      ? _buildLandscapeControls(
-                      l10n, hasLine2, handleSeconds, mediaPadding)
-                      : _buildPortraitControls(
-                      l10n, hasLine2, handleSeconds, mediaPadding),
+                IgnorePointer(
+                  ignoring: !_controlsVisible,
+                  child: AnimatedOpacity(
+                    opacity: _controlsVisible ? 1.0 : 0.0,
+                    duration: _controlsHideDuration,
+                    child: isLandscape
+                        ? _buildLandscapeControls(
+                        l10n, hasLine2, handleSeconds, mediaPadding)
+                        : _buildPortraitControls(
+                        l10n, hasLine2, handleSeconds, mediaPadding),
+                  ),
                 ),
               ],
             );
