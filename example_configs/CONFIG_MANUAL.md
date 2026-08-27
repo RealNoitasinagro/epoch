@@ -152,10 +152,14 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `julianDate`             | Julian Date                  |
 | `modifiedJulianDate`     | Modified Julian Date         |
 | `modifiedJulianDate2000` | MJD relative to J2000.0      |
-| `binaryClockString`      | Binary Time (string)         |
-| *`binaryClockColumns`*   | Binary Clock (columns)       |
-| *`binaryClockBcd`*       | Binary Clock (BCD)           |
+| `decimalTime`            | Decimal time                 |
 | `swatchBeats`            | Swatch Internet Time         |
+| `newEarthTime`           | New Earth Time               |
+| *`binaryClockBcd`*       | Binary Clock (BCD)           |
+| *`binaryClockColumns`*   | Binary Clock (columns)       |
+| `binaryClockString`      | Binary time (string)         |
+| `octalTime`              | Octal time                   |
+| `hexadecimalTime`        | Hexadecimal time             |
 | `doomsdayClock`          | Doomsday Clock               |
 
 *Graphical types* in italics.
@@ -183,9 +187,9 @@ The optional suffix is only for zones that have DST:
 | `dst:forceDst`      | Always show summer time               |
 | `dst:forceStandard` | Always show standard time             |
 
-##### Show seconds
+##### Show seconds / decimals
 
-The optional suffix is only for `binaryClockColumns`, `binaryClockBcd`, `sevenSegmentClock` and `swatchBeats`:
+The optional suffix is for `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `swatchBeats`, and `newEarthTime`:
 
 | Suffix    | Effect                  |
 |-----------|-------------------------|

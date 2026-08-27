@@ -185,6 +185,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
 
   @override
+  String get infoLinkDecimalTime =>
+      'https://de.wikipedia.org/wiki/Dezimalzeit#Frankreich';
+
+  @override
   String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
 
   @override
@@ -209,6 +213,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum';
 
   @override
+  String get infoLinkNewEarthTime =>
+      'https://en.wikipedia.org/wiki/New_Earth_Time';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://de.wikipedia.org/wiki/Swatch-Internetzeit';
 
@@ -221,15 +229,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextBinaryClockBcd =>
-      'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
+      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
 
   @override
   String get infoTextBinaryClockColumns =>
-      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
+      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Das oberste Bit hat den höchsten Wert.';
 
   @override
   String get infoTextBinaryClockString =>
-      'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+      'Die Sekunden seit Mitternacht in kompakter Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
 
   @override
   String get infoTextDate =>
@@ -248,6 +256,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
   @override
+  String get infoTextDecimalTime =>
+      'Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.';
+
+  @override
   String get infoTextDoomsdayClock =>
       'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
 
@@ -258,6 +270,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextGps =>
       'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+
+  @override
+  String get infoTextHexadecimalTime =>
+      'Die Sekunden seit Mitternacht im Hexadezimalsystem, mit Gruppierung für bessere Lesbarkeit.';
 
   @override
   String get infoTextJulianDate =>
@@ -274,6 +290,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+
+  @override
+  String get infoTextNewEarthTime =>
+      'New Earth Time (NET) teilt den Tag in 360 NET-Grad ein, wobei jedes Grad 60 NET-Minuten und jede NET-Minute 60 NET-Sekunden hat. Die einzige Zeitzone für die ganze Welt ist UTC.';
+
+  @override
+  String get infoTextOctalTime =>
+      'Die Sekunden seit Mitternacht im Oktalsystem.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -393,10 +417,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageSettings => 'Einstellungen';
 
   @override
-  String get sectionAtomic => 'Atomuhr';
+  String get sectionAlternative => 'Alternative Zeiteinteilung';
 
   @override
-  String get sectionBinaryClock => 'Binäruhr';
+  String get sectionAtomic => 'Atomuhr';
 
   @override
   String get sectionDoomsdayClock => 'Weltuntergangsuhr';
@@ -405,10 +429,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionGps => 'Global Positioning System';
 
   @override
-  String get sectionInternet => 'Internetzeit';
+  String get sectionJulian => 'Julianisches Datum';
 
   @override
-  String get sectionJulian => 'Julianisches Datum';
+  String get sectionLocal => 'Lokale Zeit';
+
+  @override
+  String get sectionNumberSystems => 'Zahlensysteme';
+
+  @override
+  String get sectionOther => 'Andere Zeitzonen';
 
   @override
   String get sectionSidereal => 'Sternzeit';
@@ -614,6 +644,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeDaySecond => 'Tagessekunde';
 
   @override
+  String get valueTypeDecimalTime => 'Dezimalzeit';
+
+  @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
 
   @override
@@ -621,6 +654,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeGps => 'GPS-Zeit (s)';
+
+  @override
+  String get valueTypeHexadecimalTime => 'Hexadezimalzeit';
 
   @override
   String get valueTypeJulianDate => 'Julianisches Datum';
@@ -634,6 +670,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get valueTypeModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000';
+
+  @override
+  String get valueTypeNewEarthTime => 'New Earth Time (NET)';
+
+  @override
+  String get valueTypeOctalTime => 'Oktalzeit';
 
   @override
   String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';

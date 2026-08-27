@@ -34,9 +34,10 @@ class TabDivider extends TabEntry {
 }
 
 enum BuiltinSectionKey {
-  unix, atomic, gps,                     // Technical
-  sidereal, julian,                      // Astronomical
-  internet, binaryClock, doomsdayClock,  // Curiosities
+  local, other,                               // Civil
+  unix, atomic, gps,                          // Technical
+  sidereal, julian,                           // Astronomical
+  alternative, numberSystems, doomsdayClock,  // Curiosities
 }
 
 class TabSection extends TabEntry {
@@ -58,13 +59,15 @@ class TabSection extends TabEntry {
   String localizedLabel(AppLocalizations l10n) {
     if (builtinKey == null) return label;
     return switch (builtinKey!) {
+      BuiltinSectionKey.local         => l10n.sectionLocal,
+      BuiltinSectionKey.other         => l10n.sectionOther,
       BuiltinSectionKey.unix          => l10n.sectionUnix,
       BuiltinSectionKey.atomic        => l10n.sectionAtomic,
       BuiltinSectionKey.gps           => l10n.sectionGps,
       BuiltinSectionKey.sidereal      => l10n.sectionSidereal,
       BuiltinSectionKey.julian        => l10n.sectionJulian,
-      BuiltinSectionKey.internet      => l10n.sectionInternet,
-      BuiltinSectionKey.binaryClock   => l10n.sectionBinaryClock,
+      BuiltinSectionKey.alternative   => l10n.sectionAlternative,
+      BuiltinSectionKey.numberSystems => l10n.sectionNumberSystems,
       BuiltinSectionKey.doomsdayClock => l10n.sectionDoomsdayClock,
     };
   }

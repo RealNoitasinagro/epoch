@@ -1,10 +1,10 @@
 {
   "active_tab": 4,
   "all_tabs": [
-    "1787478081389_0\t\tcivil\t1\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\ttime/utc\tdaySecond/utc\tsevenSegmentClock/local",
-    "1787478081389_1\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
-    "1787478081389_2\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc",
-    "1787478081389_3\t\tcuriosities\t1\tsection:builtin_internet:@internet\tswatchBeats/utc\tdivider:builtin_divider_curio_1\tsection:builtin_binaryClock:@binaryClock\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
+    "1787411099046_0\t\tcivil\t1\tsection:builtin_local:@local\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\tsevenSegmentClock/local\tdivider:builtin_divider_civil_1\tsection:builtin_other:@other\ttime/utc\tdaySecond/utc",
+    "1787411099046_1\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
+    "1787411099046_2\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tlmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\tmodifiedJulianDate/utc\tmodifiedJulianDate2000/utc",
+    "1787411099046_3\t\tcuriosities\t1\tsection:builtin_alternative:@alternative\tdecimalTime/local\tswatchBeats/utc\tnewEarthTime/utc\tdivider:builtin_divider_curio_1\tsection:builtin_numberSystems:@numberSystems\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\toctalTime/local\thexadecimalTime/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
     "1784784052469\tWatchlist 1\t\t1"
   ],
   "date_cw_doy": false,

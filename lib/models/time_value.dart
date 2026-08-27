@@ -25,11 +25,16 @@ enum ValueType {
   modifiedJulianDate,
   modifiedJulianDate2000,
   // Curiosities
+  decimalTime,
   swatchBeats,
-  binaryClockString,
-  binaryClockColumns,
+  newEarthTime,
   binaryClockBcd,
+  binaryClockColumns,
+  binaryClockString,
+  octalTime,
+  hexadecimalTime,
   doomsdayClock,
+
 }
 
 enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
@@ -241,10 +246,14 @@ class TimeValue implements TabEntry {
         ValueType.julianDate => l10n.valueTypeJulianDate,
         ValueType.modifiedJulianDate => l10n.valueTypeModifiedJulianDate,
         ValueType.modifiedJulianDate2000 => l10n.valueTypeModifiedJulianDate2000,
+        ValueType.decimalTime => l10n.valueTypeDecimalTime,
         ValueType.swatchBeats => l10n.valueTypeSwatchBeats,
-        ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
+        ValueType.newEarthTime => l10n.valueTypeNewEarthTime,
         ValueType.binaryClockBcd => l10n.valueTypeBinaryClockBcd,
+        ValueType.binaryClockColumns => l10n.valueTypeBinaryClockColumns,
         ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
+        ValueType.octalTime => l10n.valueTypeOctalTime,
+        ValueType.hexadecimalTime => l10n.valueTypeHexadecimalTime,
         ValueType.doomsdayClock => l10n.valueTypeDoomsdayClock,
       };
 
@@ -264,10 +273,14 @@ class TimeValue implements TabEntry {
     ValueType.julianDate => l10n.infoTextJulianDate,
     ValueType.modifiedJulianDate => l10n.infoTextModifiedJulianDate,
     ValueType.modifiedJulianDate2000 => l10n.infoTextModifiedJulianDate2000,
+    ValueType.decimalTime => l10n.infoTextDecimalTime,
     ValueType.swatchBeats => l10n.infoTextSwatchBeats,
-    ValueType.binaryClockColumns => l10n.infoTextBinaryClockColumns,
+    ValueType.newEarthTime => l10n.infoTextNewEarthTime,
     ValueType.binaryClockBcd => l10n.infoTextBinaryClockBcd,
+    ValueType.binaryClockColumns => l10n.infoTextBinaryClockColumns,
     ValueType.binaryClockString => l10n.infoTextBinaryClockString,
+    ValueType.octalTime => l10n.infoTextOctalTime,
+    ValueType.hexadecimalTime => l10n.infoTextHexadecimalTime,
     ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
   };
 
@@ -281,9 +294,11 @@ class TimeValue implements TabEntry {
     ValueType.julianDate => l10n.infoLinkJulianDate,
     ValueType.modifiedJulianDate => l10n.infoLinkModifiedJulianDate,
     ValueType.modifiedJulianDate2000 => l10n.infoLinkModifiedJulianDate2000,
+    ValueType.decimalTime => l10n.infoLinkDecimalTime,
     ValueType.swatchBeats => l10n.infoLinkSwatchBeats,
-    ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
+    ValueType.newEarthTime => l10n.infoLinkNewEarthTime,
     ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
+    ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
     ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
     ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
     _ => null,
@@ -306,15 +321,19 @@ extension ValueTypeProps on ValueType {
     ValueType.julianDate => true,
     ValueType.modifiedJulianDate => true,
     ValueType.modifiedJulianDate2000 => true,
+    ValueType.decimalTime => false,
     ValueType.swatchBeats => true,
-    ValueType.binaryClockString => false,
-    ValueType.binaryClockColumns => false,
+    ValueType.newEarthTime => true,
     ValueType.binaryClockBcd => false,
+    ValueType.binaryClockColumns => false,
+    ValueType.binaryClockString => false,
+    ValueType.octalTime => false,
+    ValueType.hexadecimalTime => false,
     ValueType.doomsdayClock => true,
   };
 
   bool get isGraphical =>
       this == ValueType.sevenSegmentClock ||
-      this == ValueType.binaryClockColumns ||
-      this == ValueType.binaryClockBcd;
+      this == ValueType.binaryClockBcd ||
+      this == ValueType.binaryClockColumns;
 }

@@ -257,12 +257,37 @@ class TimeUtils {
   static double modifiedJulianDate2000(DateTime utc) =>
       julianDate(utc.toUtc()) - 2451544.5;
 
+  /// Decimal time (French Revolutionary time): day = 10 decimal hours,
+  /// 1 decimal hour = 100 decimal minutes, 1 decimal minute = 100 decimal
+  /// seconds (100,000 decimal seconds per day total).
+  static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt) {
+    final totalDecimalSeconds =
+        (daySecond(dt) / 86400 * 100000).round() % 100000;
+    return (
+      hours:   totalDecimalSeconds ~/ 10000,
+      minutes: (totalDecimalSeconds % 10000) ~/ 100,
+      seconds: totalDecimalSeconds % 100,
+    );
+  }
+
+  /// Decimal time as "H:MM:SS", e.g. "7:52:19".
+  static String decimalTimeString(DateTime dt) {
+    final d = decimalTime(dt);
+    return '${d.hours}\u02b0'
+        '${d.minutes.toString().padLeft(2, '0')}\u1d50'
+        '${d.seconds.toString().padLeft(2, '0')}\u02e2';
+  }
+
   /// Swatch Internet Time (.beat): 1 day = 1000 beats, based on UTC+1.
   static double swatchBeats(DateTime utc) {
     final bmt = utc.toUtc().add(const Duration(hours: 1));
     final seconds = bmt.hour * 3600 + bmt.minute * 60 + bmt.second;
     return seconds / 86.4; // 86400s / 1000 beats
   }
+
+  /// New Earth Time (NET) / degree time: day expressed as 0–360°,
+  /// analogous to a compass. 1° = 240 seconds (86400s / 360).
+  static double newEarthTimeDegrees(DateTime dt) => dayPercent(dt) / 100 * 360;
 
   /// Binary clock representation: hours, minutes, seconds as binary strings.
   static ({String hours, String minutes, String seconds}) binaryTime(
@@ -295,9 +320,34 @@ class TimeUtils {
   }
 
   /// Binary clock string representation, e.g. "10:110000:10111".
-  static String binaryTimeString(DateTime dt) {
+  static String binaryTimeString(DateTime dt, {bool showSeconds = true}) {
     final bin = binaryTime(dt);
+    if (!showSeconds) return [bin.hours, bin.minutes].join(':');
     return [bin.hours, bin.minutes, bin.seconds].join(':');
+  }
+
+  /// Seconds since midnight (0–86399), represented in the given number
+  /// base, zero-padded to a fixed width. Used for octal/hexadecimal time.
+  static String daySecondInBase(DateTime dt, int base, int digits) {
+    return daySecond(dt).toRadixString(base).padLeft(digits, '0').toUpperCase();
+  }
+
+  /// Octal time: day second in base 8, e.g. "250577" (6 digits fit up to
+  /// 86399 = 0o250577, since 8^6 > 86400 > 8^5).
+  static String octalTimeString(DateTime dt) => daySecondInBase(dt, 8, 6);
+
+  /// Hexadecimal time: day second in base 16, grouped with underscores
+  /// every 2 digits for readability, e.g. "1_51_7F" (5 digits fit up to
+  /// 86399 = 0x1517F, since 16^5 > 86400 > 16^4).
+  static String hexadecimalTimeString(DateTime dt) {
+    final hex = daySecondInBase(dt, 16, 5);
+    // Group from the right in pairs, e.g. "1517F" -> "1_51_7F":
+    final buffer = StringBuffer();
+    for (int i = 0; i < hex.length; i++) {
+      if (i > 0 && (hex.length - i) % 2 == 0) buffer.write('_');
+      buffer.write(hex[i]);
+    }
+    return buffer.toString();
   }
 
   /// Returns the current Doomsday Clock time as of Jan 2026.

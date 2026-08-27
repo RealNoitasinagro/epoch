@@ -39,6 +39,8 @@ class FocusScreen extends StatefulWidget {
   State<FocusScreen> createState() => _FocusScreenState();
 }
 
+enum _SecondsToggleTypes { swatchBeats, newEarthTime, binaryClockString, isGraphical }
+
 class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
@@ -243,9 +245,11 @@ class _FocusScreenState extends State<FocusScreen> {
   ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
 
-    // For swatchBeats, override showSeconds with volatile _showSeconds:
+    // For non-graphical types, override showSeconds with volatile _showSeconds:
     final effectiveTimeValue = (
-        widget.timeValue.valueType == ValueType.swatchBeats
+        widget.timeValue.valueType == ValueType.swatchBeats ||
+        widget.timeValue.valueType == ValueType.newEarthTime ||
+        widget.timeValue.valueType == ValueType.binaryClockString
     ) ? widget.timeValue.withShowSeconds(_showSeconds)
         : widget.timeValue;
 
@@ -293,12 +297,18 @@ class _FocusScreenState extends State<FocusScreen> {
     final display = _currentDisplay();
     final hasLine2 = display.line2.isNotEmpty
         && !widget.timeValue.valueType.isGraphical;
-    final handleSeconds =
-      widget.timeValue.valueType == ValueType.swatchBeats
-        ? 'swatchBeats'
-        : widget.timeValue.valueType.isGraphical
-          ? 'isGraphical'
-          : '';
+    final _SecondsToggleTypes? handleSeconds;
+    if (widget.timeValue.valueType == ValueType.swatchBeats) {
+      handleSeconds = _SecondsToggleTypes.swatchBeats;
+    } else if (widget.timeValue.valueType == ValueType.newEarthTime) {
+      handleSeconds = _SecondsToggleTypes.newEarthTime;
+    } else if (widget.timeValue.valueType == ValueType.binaryClockString) {
+      handleSeconds = _SecondsToggleTypes.binaryClockString;
+    } else if (widget.timeValue.valueType.isGraphical) {
+        handleSeconds = _SecondsToggleTypes.isGraphical;
+    } else {
+        handleSeconds = null;
+    }
 
     if (_brightness == null) {
       return const Scaffold(backgroundColor: Colors.black);
@@ -310,8 +320,12 @@ class _FocusScreenState extends State<FocusScreen> {
         onDoubleTap: _exit,
         onTap: _showControls,
         onLongPress:
-          handleSeconds == 'swatchBeats' || handleSeconds == 'isGraphical'
-            ? _toggleSeconds : _toggleLine2,
+          handleSeconds == _SecondsToggleTypes.swatchBeats ||
+          handleSeconds == _SecondsToggleTypes.newEarthTime ||
+          handleSeconds == _SecondsToggleTypes.binaryClockString ||
+          handleSeconds == _SecondsToggleTypes.isGraphical
+          ? _toggleSeconds
+          : _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -366,7 +380,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, String handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -407,7 +421,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, String handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -563,20 +577,24 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _exitHint(
-        {required bool hasLine2, required String handleSeconds,
+        {required bool hasLine2, required _SecondsToggleTypes? handleSeconds,
          required AppLocalizations l10n}
       ) {
     final String text;
-    if (!hasLine2 && handleSeconds == 'swatchBeats') {
+    if (!hasLine2 &&
+        (handleSeconds == _SecondsToggleTypes.swatchBeats ||
+         handleSeconds == _SecondsToggleTypes.newEarthTime)) {
       text = !_showSeconds
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOn}'
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOff}';
-    } else if (!hasLine2 && handleSeconds == 'isGraphical') {
+    } else if (!hasLine2 &&
+        (handleSeconds == _SecondsToggleTypes.binaryClockString ||
+         handleSeconds == _SecondsToggleTypes.isGraphical)) {
       text = !_showSeconds
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOff}';
     }
-    else if (hasLine2 && handleSeconds.isEmpty) {
+    else if (hasLine2 && handleSeconds == null) {
       text = _showLine2
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';

@@ -27,7 +27,8 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Civil** – date, time, day second, day percent for any timezone
 - **Technical** – Unix time, TAI, GPS time
 - **Astronomical** – GMST, LMST, Julian Date, Modified Julian Date (MJD), MJD2000
-- **Curiosities** – Swatch Internet Time, seven-segment and binary clocks, Doomsday Clock
+- **Curiosities** – decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock,
+seven-segment and 3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
 
 ### Configurable display
 - Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
@@ -65,7 +66,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 19 different time values simultaneously, lets you pick exactly
+Epoch shows you 23 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
@@ -235,3 +236,7 @@ Found a bug or have a feature request?
 [![GPLv3+](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html.en) © 2026 RealEarthling
+
+---
+
+[^1]: These values use a 'seconds since midnight in base N' rather than a 'fraction of day in base N' approach.

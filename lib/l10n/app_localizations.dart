@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Binary_clock'**
   String get infoLinkBinaryClockString;
 
+  /// No description provided for @infoLinkDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Decimal_time'**
+  String get infoLinkDecimalTime;
+
   /// No description provided for @infoLinkDoomsdayClock.
   ///
   /// In en, this message translates to:
@@ -434,6 +440,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
   String get infoLinkModifiedJulianDate2000;
 
+  /// No description provided for @infoLinkNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/New_Earth_Time'**
+  String get infoLinkNewEarthTime;
+
   /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -455,19 +467,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
+  /// **'Seconds since midnight in binary representation: each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
   String get infoTextBinaryClockBcd;
 
   /// No description provided for @infoTextBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  /// **'Seconds since midnight in binary representation: each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
   String get infoTextBinaryClockColumns;
 
   /// No description provided for @infoTextBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
+  /// **'Seconds since midnight in compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoTextBinaryClockString;
 
   /// No description provided for @infoTextDate.
@@ -494,6 +506,12 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
   String get infoTextDaySecond;
 
+  /// No description provided for @infoTextDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.'**
+  String get infoTextDecimalTime;
+
   /// No description provided for @infoTextDoomsdayClock.
   ///
   /// In en, this message translates to:
@@ -511,6 +529,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextGps;
+
+  /// No description provided for @infoTextHexadecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds since midnight, shown in base 16 (hexadecimal), grouped in pairs for readability.'**
+  String get infoTextHexadecimalTime;
 
   /// No description provided for @infoTextJulianDate.
   ///
@@ -535,6 +559,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
+
+  /// No description provided for @infoTextNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Earth Time (or NET), also called degree time, splits a day into 360 NET degrees, where each NET degree has 60 NET minutes and each NET minute 60 NET seconds. UTC is the only time zone.'**
+  String get infoTextNewEarthTime;
+
+  /// No description provided for @infoTextOctalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds since midnight, shown in base 8 (octal).'**
+  String get infoTextOctalTime;
 
   /// No description provided for @infoTextSevenSegmentTime.
   ///
@@ -728,17 +764,17 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get pageSettings;
 
+  /// No description provided for @sectionAlternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative Time Scales'**
+  String get sectionAlternative;
+
   /// No description provided for @sectionAtomic.
   ///
   /// In en, this message translates to:
   /// **'Atomic Clock'**
   String get sectionAtomic;
-
-  /// No description provided for @sectionBinaryClock.
-  ///
-  /// In en, this message translates to:
-  /// **'Binary Clock'**
-  String get sectionBinaryClock;
 
   /// No description provided for @sectionDoomsdayClock.
   ///
@@ -752,17 +788,29 @@ abstract class AppLocalizations {
   /// **'Global Positioning System'**
   String get sectionGps;
 
-  /// No description provided for @sectionInternet.
-  ///
-  /// In en, this message translates to:
-  /// **'Internet Time'**
-  String get sectionInternet;
-
   /// No description provided for @sectionJulian.
   ///
   /// In en, this message translates to:
   /// **'Julian Date'**
   String get sectionJulian;
+
+  /// No description provided for @sectionLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Time'**
+  String get sectionLocal;
+
+  /// No description provided for @sectionNumberSystems.
+  ///
+  /// In en, this message translates to:
+  /// **'Number Systems'**
+  String get sectionNumberSystems;
+
+  /// No description provided for @sectionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Time Zones'**
+  String get sectionOther;
 
   /// No description provided for @sectionSidereal.
   ///
@@ -1160,6 +1208,12 @@ abstract class AppLocalizations {
   /// **'Day Second'**
   String get valueTypeDaySecond;
 
+  /// No description provided for @valueTypeDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal time'**
+  String get valueTypeDecimalTime;
+
   /// No description provided for @valueTypeDoomsdayClock.
   ///
   /// In en, this message translates to:
@@ -1177,6 +1231,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPS time (s)'**
   String get valueTypeGps;
+
+  /// No description provided for @valueTypeHexadecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Hexadecimal time'**
+  String get valueTypeHexadecimalTime;
 
   /// No description provided for @valueTypeJulianDate.
   ///
@@ -1201,6 +1261,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modified Julian Date 2000'**
   String get valueTypeModifiedJulianDate2000;
+
+  /// No description provided for @valueTypeNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Earth Time (NET)'**
+  String get valueTypeNewEarthTime;
+
+  /// No description provided for @valueTypeOctalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Octal time'**
+  String get valueTypeOctalTime;
 
   /// No description provided for @valueTypeSevenSegmentTime.
   ///

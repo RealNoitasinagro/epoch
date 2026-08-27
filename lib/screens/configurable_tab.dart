@@ -297,13 +297,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 ),
               ],
               if (timeValue.valueType.isGraphical ||
-                  timeValue.valueType == ValueType.swatchBeats) ...<Widget>[
+                  timeValue.valueType == ValueType.swatchBeats ||
+                  timeValue.valueType == ValueType.newEarthTime ||
+                  timeValue.valueType == ValueType.binaryClockString) ...<Widget>[
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   title: Text(
-                      timeValue.valueType == ValueType.swatchBeats
+                      timeValue.valueType == ValueType.swatchBeats ||
+                      timeValue.valueType == ValueType.newEarthTime
                           ? l10n.labelShowDecimals
                           : l10n.labelShowSeconds
                   ),

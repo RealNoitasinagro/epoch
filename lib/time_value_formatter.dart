@@ -62,9 +62,14 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return "@${timeValue.showSeconds
+        return '@${timeValue.showSeconds
             ? swatchBeats.toStringAsFixed(2)
-            : swatchBeats.toInt()}";
+            : swatchBeats.toInt()}';
+      case ValueType.newEarthTime:
+        final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
+        return '${timeValue.showSeconds
+            ? formatDecimal(deg, locale, 2, thousandsSep:  false)
+            : deg.toInt()}°';
       case ValueType.doomsdayClock:
         return TimeUtils.doomsDayClockString(hourFormat24);
       default:
@@ -134,11 +139,19 @@ class TimeValueFormatter {
         formattedValue += ' $tzSuffix';
         return formattedValue;
       // Curiosities
+      case ValueType.decimalTime:
+        String formattedValue =  TimeUtils.decimalTimeString(dt);
+        formattedValue += ' $tzSuffix';
+        return formattedValue;
       case ValueType.binaryClockString:
-        return TimeUtils.binaryTimeString(dt);
-      case ValueType.sevenSegmentClock:
-      case ValueType.binaryClockColumns:
+        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showSeconds);
+      case ValueType.octalTime:
+        return TimeUtils.octalTimeString(dt);
+      case ValueType.hexadecimalTime:
+        return TimeUtils.hexadecimalTimeString(dt);
       case ValueType.binaryClockBcd:
+      case ValueType.binaryClockColumns:
+      case ValueType.sevenSegmentClock:
       default:
         return '';
     }

@@ -226,6 +226,17 @@ void main() {
 
   // Curiosities
 
+  group('TimeUtils.decimalTime', () {
+    test('midnight = 0:00:00', () {
+      final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 0, 0, 0));
+      expect(d, equals((hours: 0, minutes: 0, seconds: 0)));
+    });
+    test('noon = 5:00:00 (half the day)', () {
+      final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 12, 0, 0));
+      expect(d, equals((hours: 5, minutes: 0, seconds: 0)));
+    });
+  });
+
   group('TimeUtils.swatchBeats', () {
     test('returns value between 0 and 1000', () {
       final dt = DateTime.utc(2026, 5, 1, 12, 0, 0);
@@ -241,6 +252,26 @@ void main() {
     });
   });
 
+  group('TimeUtils.newEarthTimeDegrees', () {
+    test('midnight = 0°', () {
+      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 0, 0, 0)),
+          closeTo(0.0, 0.001));
+    });
+    test('noon = 180°', () {
+      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 12, 0, 0)),
+          closeTo(180.0, 0.001));
+    });
+    test('one second before midnight ≈ 360°', () {
+      final deg = TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 23, 59, 59));
+      expect(deg, greaterThan(359.9));
+      expect(deg, lessThan(360.0));
+    });
+    test('quarter day = 90°', () {
+      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 6, 0, 0)),
+          closeTo(90.0, 0.001));
+    });
+  });
+
   group('TimeUtils.binaryTimeString', () {
     test('midnight = 00000:000000:000000', () {
       final dt = DateTime(2026, 1, 1, 0, 0, 0);
@@ -252,9 +283,22 @@ void main() {
       final result = TimeUtils.binaryTimeString(dt);
       final parts = result.split(':');
       expect(parts.length, equals(3));
-      expect(parts[0].length, equals(5)); // hours: 5 bits
-      expect(parts[1].length, equals(6)); // minutes: 6 bits
-      expect(parts[2].length, equals(6)); // seconds: 6 bits
+      expect(parts[0].length, equals(5));  // hours: 5 bits
+      expect(parts[1].length, equals(6));  // minutes: 6 bits
+      expect(parts[2].length, equals(6));  // seconds: 6 bits
+    });
+  });
+
+  group('TimeUtils.octalTimeString / hexadecimalTimeString', () {
+    test('midnight is all zeros', () {
+      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
+      expect(TimeUtils.octalTimeString(dt), equals('000000'));
+      expect(TimeUtils.hexadecimalTimeString(dt), equals('0_00_00'));
+    });
+    test('one second before midnight (daySecond 86399)', () {
+      final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
+      expect(TimeUtils.octalTimeString(dt), equals('250577'));
+      expect(TimeUtils.hexadecimalTimeString(dt), equals('1_51_7F'));
     });
   });
 
