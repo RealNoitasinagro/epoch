@@ -543,6 +543,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsPreferencesResetBackupTitle => 'Save backup before reset';
 
   @override
+  String get settingsStartupFocusValue => 'App start in Focus mode';
+
+  @override
+  String get settingsStartupFocusValueClear => 'Clear selection';
+
+  @override
+  String get settingsStartupFocusValueNone =>
+      'Not set – app opens with active tab';
+
+  @override
   String get settingsTabVisibility => 'Tab visibility';
 
   @override

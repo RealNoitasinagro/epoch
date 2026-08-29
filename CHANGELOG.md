@@ -4,12 +4,13 @@
 
 ### Added
 - new Curiosities time value types: decimal time, octal time, hexadecimal time, New Earth Time (NET)
+- all tabs now fully configurable (except rename for builtins), builtin tabs can be (un)hidden
 - new popup menu for Settings, About and What's New
+- option to start the app in Focus mode
 - burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
 - import function shows last loaded config in Settings
 
 ### Changed
-- all tabs now fully configurable (except rename for builtins), builtin tabs can be (un)hidden
 - LMST no longer shown dynamically based on your longitude, needs to be (re)added explicitly
 - JSON config format, with backwards compatibility maintained (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
 - more informative date and time format subtitles and improved layout in Settings

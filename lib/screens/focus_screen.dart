@@ -273,7 +273,15 @@ class _FocusScreenState extends State<FocusScreen> {
     WakelockPlus.disable();
     if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    Navigator.of(context).pop();
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    } else {
+      // FocusScreen was the initial route (startup focus value set) –
+      // there's nothing to pop back to, so replace with HomeScreen instead:
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
   }
 
   @override

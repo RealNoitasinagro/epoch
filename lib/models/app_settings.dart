@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../layout_constants.dart';
+import 'time_value.dart';
 
 const _kLocaleKey = 'locale';
 const _kThemeModeKey = 'theme_mode';
@@ -21,6 +21,7 @@ const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
 const _kFocusPixelShiftKey = 'focus_pixel_shift';
 const _kLastImportedConfigKey = 'last_imported_config';
+const _kStartupFocusValueKey = 'startup_focus_value';
 
 const kDefaultLocale          = Locale('en');
 const kDefaultThemeMode       = AppThemeMode.system;
@@ -252,4 +253,20 @@ Future<String?> loadLastImportedConfig() async {
 Future<void> saveLastImportedConfig(String filename) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(_kLastImportedConfigKey, filename);
+}
+
+Future<TimeValue?> loadStartupFocusValue() async {
+  final prefs = await SharedPreferences.getInstance();
+  final s = prefs.getString(_kStartupFocusValueKey);
+  if (s == null) return null;
+  return TimeValue.fromPrefsString(s);
+}
+
+Future<void> saveStartupFocusValue(TimeValue? value) async {
+  final prefs = await SharedPreferences.getInstance();
+  if (value == null) {
+    await prefs.remove(_kStartupFocusValueKey);
+  } else {
+    await prefs.setString(_kStartupFocusValueKey, value.toPrefsString());
+  }
 }

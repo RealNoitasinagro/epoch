@@ -51,6 +51,7 @@ seven-segment and 3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
 - Full-screen toggle (double-tap on the app's name in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
 - Burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
+- Optionally start the app in Focus mode
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
 - Android widgets planned

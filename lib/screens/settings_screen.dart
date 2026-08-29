@@ -6,9 +6,11 @@ import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/settings_io.dart';
 import '../models/tab_config.dart';
+import '../models/time_value.dart';
 import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
+import 'entry_picker.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -35,6 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   ValueNotifier<int>? _settingsReloadNotifier;
   bool _ioInProgress = false;
   late String? _lastImportedConfig;
+  TimeValue? _startupFocusValue;
 
   bool get _isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -77,6 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
       _lastImportedConfig = app.lastImportedConfig;
     });
+    _loadStartupFocusValue();
     _loadTabs();
   }
 
@@ -106,6 +110,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _longitudeController.text = longitude.toStringAsFixed(4);
   }
 
+  Future<void> _loadStartupFocusValue() async {
+    final value = await loadStartupFocusValue();
+    if (!mounted) return;
+    setState(() => _startupFocusValue = value);
+  }
+
   Future<void> _loadTabs() async {
     final result = await loadOrSeedAllTabs();
     if (!mounted) return;
@@ -127,347 +137,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } finally {
       if (mounted) setState(() => _ioInProgress = false);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final app = EpochApp.of(context);
-    final l10n = AppLocalizations.of(context)!;
-    final isNight = app.themeMode == AppThemeMode.night;
-
-    final dateFormatString = _dateWithDetails ? l10n.settingsOn : l10n.settingsOff;
-    final subTitleDateFormat = _dateFormat
-        + ' | ' + l10n.settingsDateWithDetails + ': ' + dateFormatString;
-
-    final hourFormatString = _hourFormat24 ? l10n.settingsOn : l10n.settingsOff;
-    final subTitleTimeFormat = _timeFormat
-        + ' | ' + l10n.settingsHourFormat + ': ' + hourFormatString;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.pageSettings),
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsThemeLanguage),
-          ),
-          ListTile(
-            leading: const Icon(Icons.brightness_6),
-            title: Text(l10n.settingsTheme),
-            trailing: DropdownButton<AppThemeMode>(
-              value: _themeMode,
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: [
-                DropdownMenuItem(
-                  value: AppThemeMode.system,
-                  child: Text(l10n.settingsThemeSystem),
-                ),
-                DropdownMenuItem(
-                  value: AppThemeMode.light,
-                  child: Text(l10n.settingsThemeLight),
-                ),
-                DropdownMenuItem(
-                  value: AppThemeMode.dark,
-                  child: Text(l10n.settingsThemeDark),
-                ),
-                DropdownMenuItem(
-                  value: AppThemeMode.night,
-                  child: Text(l10n.settingsThemeNight),
-                ),
-              ],
-              onChanged: (mode) {
-                if (mode == null) return;
-                setState(() => _themeMode = mode);
-                app.setThemeMode(mode);
-              },
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(l10n.settingsLanguage),
-            trailing: DropdownButton<String>(
-              value: _locale?.languageCode ?? 'en',
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: const [
-                DropdownMenuItem(value: 'en', child: Text('English')),
-                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
-              ],
-              onChanged: (code) {
-                if (code == null) return;
-                final locale = Locale(code);
-                setState(() => _locale = locale);
-                app.setLocale(locale);
-              },
-            ),
-          ),
-          const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsValueDisplay),
-          ),
-          SwitchListTile(
-            secondary: const Icon(Icons.tag),
-            title: Text(l10n.settingsThousandsSep),
-            subtitle: Text(l10n.settingsThousandsSepSub),
-            value: _thousandsSep,
-            onChanged: (val) {
-              setState(() => _thousandsSep = val);
-              app.setThousandsSep(val);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.calendar_today),
-            title: Text(l10n.settingsDateFormat),
-            subtitle: Text(subTitleDateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
-            onTap: () => _showFormatPicker(context, l10n, isDate: true),
-          ),
-          ListTile(
-            leading: const Icon(Icons.access_time),
-            title: Text(l10n.settingsTimeFormat),
-            subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
-            onTap: () => _showFormatPicker(context, l10n, isDate: false),
-          ),
-          ListTile(
-            leading: const Icon(Icons.format_list_numbered),
-            title: Text(l10n.settingsZoneDisplayMode),
-            subtitle: Text(l10n.settingsZoneDisplayModeSub),
-            trailing: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 184),
-              child: DropdownButton<ZoneDisplayMode>(
-                isExpanded: true,
-                value: _zoneDisplayMode,
-                underline: const SizedBox.shrink(),
-                iconEnabledColor: Theme.of(context).colorScheme.primary,
-                items: [
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.full,
-                    child: Text(l10n.settingsZoneDisplayModeFull),
-                  ),
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.abbreviation,
-                    child: Text(l10n.settingsZoneDisplayModeAbbreviation),
-                  ),
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.offsetLong,
-                    child: Text(l10n.settingsZoneDisplayModeOffsetLong),
-                  ),
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.offsetShort,
-                    child: Text(l10n.settingsZoneDisplayModeOffsetShort),
-                  ),
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.offsetMini,
-                    child: Text(l10n.settingsZoneDisplayModeOffsetMini),
-                  ),
-                  DropdownMenuItem(
-                    value: ZoneDisplayMode.hidden,
-                    child: Text(l10n.settingsZoneDisplayModeHidden),
-                  ),
-                ],
-                onChanged: (mode) {
-                  if (mode == null) return;
-                  setState(() => _zoneDisplayMode = mode);
-                  app.setZoneDisplayMode(mode);
-                },
-              ),
-            ),
-          ),
-          SwitchListTile(
-            secondary: const Icon(Icons.palette),
-            title: Text(l10n.settingsDayQuarterColor),
-            subtitle: Row(
-              children: [
-                Text(l10n.settingsDayQuarterColorSub1st,
-                    style: TextStyle(color: isNight ? null : kColorNightRed)),
-                Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub2nd,
-                    style: TextStyle(color: isNight ? null : kColorCyan)),
-                Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub3rd,
-                    style: TextStyle(color: isNight ? null : kColorAmber)),
-                Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub4th,
-                    style: TextStyle(color: isNight ? null : kColorMatrixGreen)),
-              ],
-            ),
-            value: _dayQuarterColor,
-            onChanged: (val) {
-              setState(() => _dayQuarterColor = val);
-              app.setDayQuarterColor(val);
-            },
-          ),
-          const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-                kTabHorizontalPadding, 0,
-                kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsLmst),
-          ),
-          RadioGroup<LmstMode>(
-            groupValue: _lmstMode,
-            onChanged: (v) {
-              if (v == null) return;
-              setState(() => _lmstMode = v);
-              app.setLmstMode(v);
-            },
-            child: Column(
-              children: [
-                RadioListTile(
-                  value: LmstMode.off,
-                  title: Text(l10n.settingsLmstOff),
-                  secondary: const Icon(Icons.visibility_off_outlined),
-                ),
-                RadioListTile(
-                  value: LmstMode.manual,
-                  title: Text(l10n.settingsLmstLongitudeManual),
-                  subtitle: Text(l10n.settingsLmstLongitudeManualSub),
-                  secondary: const Icon(Icons.edit_location_outlined),
-                ),
-                if (_lmstMode == LmstMode.manual)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: true, decimal: true),
-                            decoration: InputDecoration(
-                              labelText: l10n.labelLongitude,
-                              suffixText: '°',
-                              hintText: TimeValueFormatter.formatDecimal(
-                                  8.6821,
-                                  _locale.toString(),
-                                  4,
-                                  thousandsSep: false
-                              ),
-                              isDense: true,
-                            ),
-                            controller: _longitudeController,
-                            onSubmitted: (v) {
-                              final normalized = v.replaceAll(',', '.');
-                              final lon = double.tryParse(normalized);
-                              if (lon != null && lon >= -180 && lon <= 180) {
-                                setState(() => _lmstLongitude = lon);
-                                app.setLmstLongitude(lon);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                if (!_isDesktop) ...[
-                  RadioListTile<LmstMode>(
-                    value: LmstMode.locationAccess,
-                    title: Text(l10n.settingsLmstLongitudeAuto),
-                    subtitle: Text(l10n.settingsLmstLongitudeAutoSub),
-                    secondary: const Icon(Icons.my_location),
-                  ),
-                  if (_lmstMode == LmstMode.locationAccess)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-                      child: Row(
-                        children: [
-                          if (_locationLoading)
-                            const SizedBox(
-                              width: 20, height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          else if (_lmstLongitude != null)
-                            Text(
-                                TimeValueFormatter.formatDecimal(
-                                    _lmstLongitude!,
-                                    _locale.toString(),
-                                    4,
-                                    thousandsSep: false
-                                ),
-                                style: Theme.of(context).textTheme.bodyMedium
-                            )
-                          else
-                            Text(l10n.settingsLmstLongitudeNotYetDetermined,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
-                          const SizedBox(width: 12),
-                          TextButton.icon(
-                            icon: const Icon(Icons.refresh, size: 16),
-                            label: Text(l10n.settingsLmstLongitudeDetermineLocation),
-                            onPressed: _locationLoading ? null
-                                : () => _determineLocation(),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ],
-            )
-          ),
-          const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsTabVisibility),
-          ),
-          ...BuiltinTabKind.values.map((kind) {
-            final tab = _tabs.where((t) => t.builtinKind == kind).firstOrNull;
-            return SwitchListTile(
-              secondary: const Icon(Icons.tab),
-              title: Text(
-                  _tabLabel(kind, l10n),
-                  style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-              value: tab?.isVisible ?? true,
-              onChanged: tab == null
-                  ? null  // tabs not loaded yet
-                  : (val) => _toggleTabVisibility(kind, val),
-            );
-          }),
-          const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsExportImportReset),
-          ),
-          ListTile(
-            leading: const Icon(Icons.download),
-            title: Text(l10n.settingsPreferencesExport),
-            enabled: !_ioInProgress,
-            onTap: () => _guardedIO(() => exportSettings(context)),
-          ),
-          ListTile(
-            leading: const Icon(Icons.upload_file),
-            title: Text(l10n.settingsPreferencesImport),
-            enabled: !_ioInProgress,
-            subtitle: _lastImportedConfig != null
-                ? Text(_lastImportedConfig!,
-                    style: TextStyle(fontFamily: fontFamilyDefault))
-                : null,
-            onTap: () => _guardedIO(() => importSettings(context)),
-          ),
-          ListTile(
-            leading: const Icon(Icons.restart_alt),
-            title: Text(l10n.settingsPreferencesReset),
-            enabled: !_ioInProgress,
-            onTap: () => _guardedIO(() => resetSettings(context)),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _showFormatPicker(BuildContext context,
@@ -842,4 +511,378 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BuiltinTabKind.astronomical => l10n.tabAstronomical,
     BuiltinTabKind.curiosities  => l10n.tabCuriosities,
   };
+
+  Future<void> _pickStartupFocusValue(BuildContext context) async {
+    final app = EpochApp.of(context);
+    final result = await showEntryPicker(
+      context,
+      lmstMode: app.lmstMode,
+      lmstLongitude: app.lmstLongitude,
+      valueTypesOnly: true,
+    );
+    if (result is! TimeValue) return;  // safety net, should not trigger
+    setState(() => _startupFocusValue = result);
+    saveStartupFocusValue(result);
+  }
+
+  void _clearStartupFocusValue() {
+    setState(() => _startupFocusValue = null);
+    saveStartupFocusValue(null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final app = EpochApp.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isNight = app.themeMode == AppThemeMode.night;
+
+    final dateFormatString = _dateWithDetails ? l10n.settingsOn : l10n.settingsOff;
+    final subTitleDateFormat = _dateFormat
+        + ' | ' + l10n.settingsDateWithDetails + ': ' + dateFormatString;
+
+    final hourFormatString = _hourFormat24 ? l10n.settingsOn : l10n.settingsOff;
+    final subTitleTimeFormat = _timeFormat
+        + ' | ' + l10n.settingsHourFormat + ': ' + hourFormatString;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.pageSettings),
+      ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsThemeLanguage),
+          ),
+          ListTile(
+            leading: const Icon(Icons.brightness_6),
+            title: Text(l10n.settingsTheme),
+            trailing: DropdownButton<AppThemeMode>(
+              value: _themeMode,
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: [
+                DropdownMenuItem(
+                  value: AppThemeMode.system,
+                  child: Text(l10n.settingsThemeSystem),
+                ),
+                DropdownMenuItem(
+                  value: AppThemeMode.light,
+                  child: Text(l10n.settingsThemeLight),
+                ),
+                DropdownMenuItem(
+                  value: AppThemeMode.dark,
+                  child: Text(l10n.settingsThemeDark),
+                ),
+                DropdownMenuItem(
+                  value: AppThemeMode.night,
+                  child: Text(l10n.settingsThemeNight),
+                ),
+              ],
+              onChanged: (mode) {
+                if (mode == null) return;
+                setState(() => _themeMode = mode);
+                app.setThemeMode(mode);
+              },
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(l10n.settingsLanguage),
+            trailing: DropdownButton<String>(
+              value: _locale?.languageCode ?? 'en',
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
+              ],
+              onChanged: (code) {
+                if (code == null) return;
+                final locale = Locale(code);
+                setState(() => _locale = locale);
+                app.setLocale(locale);
+              },
+            ),
+          ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsValueDisplay),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.tag),
+            title: Text(l10n.settingsThousandsSep),
+            subtitle: Text(l10n.settingsThousandsSepSub),
+            value: _thousandsSep,
+            onChanged: (val) {
+              setState(() => _thousandsSep = val);
+              app.setThousandsSep(val);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_today),
+            title: Text(l10n.settingsDateFormat),
+            subtitle: Text(subTitleDateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: true),
+          ),
+          ListTile(
+            leading: const Icon(Icons.access_time),
+            title: Text(l10n.settingsTimeFormat),
+            subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            onTap: () => _showFormatPicker(context, l10n, isDate: false),
+          ),
+          ListTile(
+            leading: const Icon(Icons.format_list_numbered),
+            title: Text(l10n.settingsZoneDisplayMode),
+            subtitle: Text(l10n.settingsZoneDisplayModeSub),
+            trailing: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 184),
+              child: DropdownButton<ZoneDisplayMode>(
+                isExpanded: true,
+                value: _zoneDisplayMode,
+                underline: const SizedBox.shrink(),
+                iconEnabledColor: Theme.of(context).colorScheme.primary,
+                items: [
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.full,
+                    child: Text(l10n.settingsZoneDisplayModeFull),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.abbreviation,
+                    child: Text(l10n.settingsZoneDisplayModeAbbreviation),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetLong,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetLong),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetShort,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetShort),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.offsetMini,
+                    child: Text(l10n.settingsZoneDisplayModeOffsetMini),
+                  ),
+                  DropdownMenuItem(
+                    value: ZoneDisplayMode.hidden,
+                    child: Text(l10n.settingsZoneDisplayModeHidden),
+                  ),
+                ],
+                onChanged: (mode) {
+                  if (mode == null) return;
+                  setState(() => _zoneDisplayMode = mode);
+                  app.setZoneDisplayMode(mode);
+                },
+              ),
+            ),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.palette),
+            title: Text(l10n.settingsDayQuarterColor),
+            subtitle: Row(
+              children: [
+                Text(l10n.settingsDayQuarterColorSub1st,
+                    style: TextStyle(color: isNight ? null : kColorNightRed)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub2nd,
+                    style: TextStyle(color: isNight ? null : kColorCyan)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub3rd,
+                    style: TextStyle(color: isNight ? null : kColorAmber)),
+                Text(' | '),
+                Text(l10n.settingsDayQuarterColorSub4th,
+                    style: TextStyle(color: isNight ? null : kColorMatrixGreen)),
+              ],
+            ),
+            value: _dayQuarterColor,
+            onChanged: (val) {
+              setState(() => _dayQuarterColor = val);
+              app.setDayQuarterColor(val);
+            },
+          ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsLmst),
+          ),
+          RadioGroup<LmstMode>(
+              groupValue: _lmstMode,
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _lmstMode = v);
+                app.setLmstMode(v);
+              },
+              child: Column(
+                children: [
+                  RadioListTile(
+                    value: LmstMode.off,
+                    title: Text(l10n.settingsLmstOff),
+                    secondary: const Icon(Icons.visibility_off_outlined),
+                  ),
+                  RadioListTile(
+                    value: LmstMode.manual,
+                    title: Text(l10n.settingsLmstLongitudeManual),
+                    subtitle: Text(l10n.settingsLmstLongitudeManualSub),
+                    secondary: const Icon(Icons.edit_location_outlined),
+                  ),
+                  if (_lmstMode == LmstMode.manual)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              keyboardType: const TextInputType.numberWithOptions(
+                                  signed: true, decimal: true),
+                              decoration: InputDecoration(
+                                labelText: l10n.labelLongitude,
+                                suffixText: '°',
+                                hintText: TimeValueFormatter.formatDecimal(
+                                    8.6821,
+                                    _locale.toString(),
+                                    4,
+                                    thousandsSep: false
+                                ),
+                                isDense: true,
+                              ),
+                              controller: _longitudeController,
+                              onSubmitted: (v) {
+                                final normalized = v.replaceAll(',', '.');
+                                final lon = double.tryParse(normalized);
+                                if (lon != null && lon >= -180 && lon <= 180) {
+                                  setState(() => _lmstLongitude = lon);
+                                  app.setLmstLongitude(lon);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (!_isDesktop) ...[
+                    RadioListTile<LmstMode>(
+                      value: LmstMode.locationAccess,
+                      title: Text(l10n.settingsLmstLongitudeAuto),
+                      subtitle: Text(l10n.settingsLmstLongitudeAutoSub),
+                      secondary: const Icon(Icons.my_location),
+                    ),
+                    if (_lmstMode == LmstMode.locationAccess)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                        child: Row(
+                          children: [
+                            if (_locationLoading)
+                              const SizedBox(
+                                width: 20, height: 20,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            else if (_lmstLongitude != null)
+                              Text(
+                                  TimeValueFormatter.formatDecimal(
+                                      _lmstLongitude!,
+                                      _locale.toString(),
+                                      4,
+                                      thousandsSep: false
+                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                              )
+                            else
+                              Text(l10n.settingsLmstLongitudeNotYetDetermined,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
+                            const SizedBox(width: 12),
+                            TextButton.icon(
+                              icon: const Icon(Icons.refresh, size: 16),
+                              label: Text(l10n.settingsLmstLongitudeDetermineLocation),
+                              onPressed: _locationLoading ? null
+                                  : () => _determineLocation(),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ],
+              )
+          ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsTabVisibility),
+          ),
+          ...BuiltinTabKind.values.map((kind) {
+            final tab = _tabs.where((t) => t.builtinKind == kind).firstOrNull;
+            return SwitchListTile(
+              secondary: const Icon(Icons.tab),
+              title: Text(
+                _tabLabel(kind, l10n),
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              value: tab?.isVisible ?? true,
+              onChanged: tab == null
+                  ? null  // tabs not loaded yet
+                  : (val) => _toggleTabVisibility(kind, val),
+            );
+          }),
+          ListTile(
+            leading: const Icon(Icons.fullscreen),
+            title: Text(l10n.settingsStartupFocusValue),
+            subtitle: Text(_startupFocusValue == null
+                ? l10n.settingsStartupFocusValueNone
+                : _startupFocusValue!.localizedDisplayLabel(l10n)),
+            trailing: _startupFocusValue != null
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    tooltip: l10n.settingsStartupFocusValueClear,
+                    onPressed: _clearStartupFocusValue,
+                  )
+                : null,
+            onTap: () => _pickStartupFocusValue(context),
+          ),
+          const Divider(height: kDividerHeight),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              kTabHorizontalPadding, 0,
+              kTabHorizontalPadding, 0,
+            ),
+            child: SectionHeader(label: l10n.settingsExportImportReset),
+          ),
+          ListTile(
+            leading: const Icon(Icons.download),
+            title: Text(l10n.settingsPreferencesExport),
+            enabled: !_ioInProgress,
+            onTap: () => _guardedIO(() => exportSettings(context)),
+          ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: Text(l10n.settingsPreferencesImport),
+            enabled: !_ioInProgress,
+            subtitle: _lastImportedConfig != null
+                ? Text(_lastImportedConfig!,
+                style: TextStyle(fontFamily: fontFamilyDefault))
+                : null,
+            onTap: () => _guardedIO(() => importSettings(context)),
+          ),
+          ListTile(
+            leading: const Icon(Icons.restart_alt),
+            title: Text(l10n.settingsPreferencesReset),
+            enabled: !_ioInProgress,
+            onTap: () => _guardedIO(() => resetSettings(context)),
+          ),
+        ],
+      ),
+    );
+  }
 }

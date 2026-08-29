@@ -550,6 +550,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Backup vor dem Zurücksetzen speichern';
 
   @override
+  String get settingsStartupFocusValue => 'App-Start im Fokus-Modus';
+
+  @override
+  String get settingsStartupFocusValueClear => 'Auswahl zurücksetzen';
+
+  @override
+  String get settingsStartupFocusValueNone =>
+      'Nicht gesetzt – App öffnet mit aktivem Tab';
+
+  @override
   String get settingsTabVisibility => 'Tab-Sichtbarkeit';
 
   @override

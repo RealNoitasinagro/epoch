@@ -17,6 +17,7 @@ import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
 import 'models/time_value.dart';
 import 'screens/configurable_tab.dart';
+import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 
 void main(List<String> args) async {
@@ -120,6 +121,7 @@ class EpochAppState extends State<EpochApp> {
   LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
   String? _lastImportedConfig;
+  TimeValue? _startupFocusValue;
 
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
@@ -151,6 +153,7 @@ class EpochAppState extends State<EpochApp> {
     final lmstMode           = await loadLmstMode();
     final lmstLongitude      = await loadLmstLongitude();
     final lastImportedConfig = await loadLastImportedConfig();
+    final startupFocusValue = await loadStartupFocusValue();
 
     String localZone = 'UTC';
     try {
@@ -174,6 +177,7 @@ class EpochAppState extends State<EpochApp> {
       _lmstMode           = lmstMode;
       _lmstLongitude      = lmstLongitude;
       _lastImportedConfig = lastImportedConfig;
+      _startupFocusValue  = startupFocusValue;
       _settingsLoaded     = true;
     });
   }
@@ -284,7 +288,12 @@ class EpochAppState extends State<EpochApp> {
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: HomeScreen(key: _homeKey),
+      home: _startupFocusValue != null
+          ? FocusScreen(
+              timeValue: _startupFocusValue!,
+              locale: _locale.languageCode,
+            )
+          : HomeScreen(key: _homeKey),
     );
   }
 }

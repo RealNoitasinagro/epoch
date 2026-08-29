@@ -1022,6 +1022,24 @@ abstract class AppLocalizations {
   /// **'Save backup before reset'**
   String get settingsPreferencesResetBackupTitle;
 
+  /// No description provided for @settingsStartupFocusValue.
+  ///
+  /// In en, this message translates to:
+  /// **'App start in Focus mode'**
+  String get settingsStartupFocusValue;
+
+  /// No description provided for @settingsStartupFocusValueClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear selection'**
+  String get settingsStartupFocusValueClear;
+
+  /// No description provided for @settingsStartupFocusValueNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set – app opens with active tab'**
+  String get settingsStartupFocusValueNone;
+
   /// No description provided for @settingsTabVisibility.
   ///
   /// In en, this message translates to:
