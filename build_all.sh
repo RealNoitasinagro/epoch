@@ -76,6 +76,7 @@ esac
 
 
 # +++ CONFIGURATION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+useOffline=0
 skipClean=1
 skipAnalyze=0
 skipTest=0
@@ -95,24 +96,35 @@ checksum='/usr/bin/sha256sum'
 build_timestamp=$(date -u '+%Y%m%d_%H%M%S_%Z')
 dir_logs='.logs'
 build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
+
+timezone_url='https://pub.dev/api/packages/timezone'
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 flutter_version=$($flutter_active --version)
+
 installed_timezone_version=$(dart pub deps --json | python3 -c "import json,sys; deps=json.load(sys.stdin); print(next(p['version'] for p in deps['packages'] if p['name']=='timezone'))")
-latest_timezone_version=$(curl -s "https://pub.dev/api/packages/timezone" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
-file_to_check="${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+
+if [ "$useOffline" -eq "1" ] ; then
+    latest_timezone_version='???'
+    timezone_latest_dart="${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/timezone-"${installed_timezone_version}"/lib/data/latest.dart
+else
+    latest_timezone_version=$(curl -s "$timezone_url" | python3 -c "import json,sys; print(json.load(sys.stdin)['latest']['version'])")
+    timezone_latest_dart="${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/timezone-"${latest_timezone_version}"/lib/data/latest.dart
+fi
+
+if [ -e "$timezone_latest_dart" ] ; then
+    installed_iana_database=$(grep 'Timezone data version' "$timezone_latest_dart" | cut -d':' -f 2 | sed -r 's/^\s+//')
+else
+    echo "Could not find $timezone_latest_dart -- timezone package upgrade needed!"
+    echo "(installed: $installed_timezone_version, latest: $latest_timezone_version)"
+    exit 1;
+fi
+
 if [ "$cwd" == "$GL_Epoch" ] ; then
     repo_status=''
 else
     repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
-fi
-if [ -e "$file_to_check" ] ; then
-    iana_database=$(grep 'Timezone data version' "$file_to_check" | cut -d':' -f 2 | sed -r 's/^\s+//')
-else
-    echo "Could not find $file_to_check -- timezone package upgrade needed!"
-    echo "(installed: $installed_timezone_version, latest: $latest_timezone_version)"
-    exit 1;
 fi
 
 
@@ -127,10 +139,10 @@ function run_flutter_build {
     )
 
     if [ "$cwd" == "$GL_Epoch" ] ; then
-        build_info=$(printf '%s | %s' "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        build_info=$(printf '%s | %s | %s' "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $installed_iana_database")
         # flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")  # would require metadata update + MR
     elif [ "$cwd" == "$GH_Epoch" ] ; then
-        build_info=$(printf '%s | %s | %s | %s' "Build: $build_timestamp" "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $iana_database")
+        build_info=$(printf '%s | %s | %s | %s' "Build: $build_timestamp" "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $installed_iana_database")
         flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")
     fi
 
@@ -149,10 +161,10 @@ tee "$build_all_log" << EOF
 Flutter: $flutter_active
 $flutter_version
 Installed timezone: $installed_timezone_version | latest: $latest_timezone_version
-Installed IANA database: $iana_database
+Installed IANA database: $installed_iana_database
 Logfile: $build_all_log
 Workspace: $cwd | $repo_status
-skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
+useOffline : $useOffline | skipClean: $skipClean | skipAnalyze: $skipAnalyze | skipTest: $skipTest | skipApk: $skipApk | skipWeb: $skipWeb | skipLinux: $skipLinux | skipSplit: $skipSplit | skipChecksums: $skipChecksums | skipCopy: $skipCopy | useLogging: $useLogging
 ----
 
 EOF
@@ -168,10 +180,14 @@ fi
 echo
 
 echo "# pub get"
-flutter_command="$flutter_active pub get"
-echo "# $flutter_command" | tee -a "$build_all_log"
-if [ ! "$dryRun" -eq "1" ] ; then
-    $flutter_command
+if [ ! "$useOffline" -eq "1" ]; then
+    flutter_command="$flutter_active pub get"
+    echo "# $flutter_command" | tee -a "$build_all_log"
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
+else
+    echo "Skipped."
 fi
 echo
 

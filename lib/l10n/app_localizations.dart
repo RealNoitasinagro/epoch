@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.'**
   String get infoTextDoomsdayClock;
 
   /// No description provided for @infoTextGmst.
@@ -527,7 +527,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextGps;
 
   /// No description provided for @infoTextHexadecimalTime.
@@ -539,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
   String get infoTextJulianDate;
 
   /// No description provided for @infoTextLmst.
@@ -551,13 +551,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
+  /// **'Modified Julian Date (MJD) = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
   String get infoTextModifiedJulianDate;
 
   /// No description provided for @infoTextModifiedJulianDate2000.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
+  /// **'Modified Julian Date 2000 (MJD2000) = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
 
   /// No description provided for @infoTextNewEarthTime.
@@ -587,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'International Atomic Time (Temps Atomique International in French, TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.
@@ -1283,7 +1283,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeNewEarthTime.
   ///
   /// In en, this message translates to:
-  /// **'New Earth Time (NET)'**
+  /// **'New Earth Time'**
   String get valueTypeNewEarthTime;
 
   /// No description provided for @valueTypeOctalTime.

@@ -187,7 +187,7 @@ class TimeUtils {
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
   /// TAI: UTC + leap seconds (currently 37).
-  /// Last check for accuracy of hardcoded values: 2026-05-20.
+  /// Last check for accuracy of hardcoded values: 2026-09-01.
   static int taiSeconds(DateTime utc) {
     const leapSeconds = 37;
     return utc.toUtc().millisecondsSinceEpoch ~/ 1000 + leapSeconds;
@@ -195,7 +195,7 @@ class TimeUtils {
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
   /// GPS time does not have leap seconds, currently 18s ahead of UTC.
-  /// Last check for accuracy of hardcoded values: 2026-05-20.
+  /// Last check for accuracy of hardcoded values: 2026-09-01.
   static int gpsTime(DateTime utc) {
     const leapSeconds = 18;
     final gpsEpoch = DateTime.utc(1980, 1, 6);
@@ -350,8 +350,8 @@ class TimeUtils {
     return buffer.toString();
   }
 
-  /// Returns the current Doomsday Clock time as of Jan 2026.
-  /// Last check for accuracy of hardcoded values: 2026-05-20.
+  /// Returns the current Doomsday Clock time.
+  /// Last check for accuracy of hardcoded values: 2026-09-01.
   static String doomsDayClockString(bool hourFormat24) {
     int hh = 23; int mm = 58; int ss = 35;
     return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);

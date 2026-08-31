@@ -257,11 +257,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextDecimalTime =>
-      'Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.';
+      'Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.';
 
   @override
   String get infoTextDoomsdayClock =>
-      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Im Januar 2026 auf 85 Sekunden vor Mitternacht gestellt.';
 
   @override
   String get infoTextGmst =>
@@ -269,15 +269,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTextHexadecimalTime =>
-      'Die Sekunden seit Mitternacht im Hexadezimalsystem, mit Gruppierung für bessere Lesbarkeit.';
+      'Die Sekunden seit Mitternacht zur Basis 16 (Hexadezimalsystem), mit Gruppierung für bessere Lesbarkeit.';
 
   @override
   String get infoTextJulianDate =>
-      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+      'Das Julianische Datum (JD) zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
 
   @override
   String get infoTextLmst =>
@@ -285,11 +285,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextModifiedJulianDate =>
-      'Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
+      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
 
   @override
   String get infoTextModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
   String get infoTextNewEarthTime =>
@@ -297,7 +297,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextOctalTime =>
-      'Die Sekunden seit Mitternacht im Oktalsystem.';
+      'Die Sekunden seit Mitternacht zur Basis 8 (Oktalsystem).';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -309,7 +309,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'Internationale Atomzeit (französisch Temps Atomique International, TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
@@ -682,7 +682,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Modifiziertes Julianisches Datum 2000';
 
   @override
-  String get valueTypeNewEarthTime => 'New Earth Time (NET)';
+  String get valueTypeNewEarthTime => 'New Earth Time';
 
   @override
   String get valueTypeOctalTime => 'Oktalzeit';

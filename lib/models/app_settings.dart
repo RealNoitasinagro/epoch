@@ -258,7 +258,7 @@ Future<void> saveLastImportedConfig(String filename) async {
 Future<TimeValue?> loadStartupFocusValue() async {
   final prefs = await SharedPreferences.getInstance();
   final s = prefs.getString(_kStartupFocusValueKey);
-  if (s == null) return null;
+  if (s == null || s.isEmpty) return null;
   return TimeValue.fromPrefsString(s);
 }
 

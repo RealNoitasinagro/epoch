@@ -5,13 +5,13 @@
 import 'timezone_search.dart';
 import 'timezone_search_terms.dart';
 
-const List<TzEntry> tzDatabase = [          // 88 entries in total
+const List<TzEntry> tzDatabase = [          // 127 entries in total
   ...tzEntries_Africa,                      //  8 entries
-  ...tzEntries_Americas,                    // 14 entries
-  ...tzEntries_Asia,                        // 20 entries
+  ...tzEntries_Americas,                    // 17 entries
+  ...tzEntries_Asia,                        // 36 entries
   ...tzEntries_Atlantic_Arctic_Antarctica,  //  6 entries
-  ...tzEntries_Australia_Pacific,           // 21 entries
-  ...tzEntries_Europe,                      // 19 entries
+  ...tzEntries_Australia_Pacific,           // 31 entries
+  ...tzEntries_Europe,                      // 29 entries
 ];
 
 // ── Africa ───────────────────────────────────────────────────────────
@@ -143,21 +143,21 @@ const List<TzEntry> tzEntries_Americas = [
     ],
   ),
   TzEntry(
-      ianaZone: 'America/Cayenne',
-      offsetWinter: '-03:00', offsetSummer: '-03:00',
-      abbrWinter: '-03', abbrSummer: '-03',
-      terms: [
-        ...['french guiana time', 'GFT', 'guyane', 'kourou'],
-        ...['französisch-guayana'],
-      ]
+    ianaZone: 'America/Cayenne',
+    offsetWinter: '-03:00', offsetSummer: '-03:00',
+    abbrWinter: '-03', abbrSummer: '-03',
+    terms: [
+      ...['french guiana time', 'GFT', 'guyane', 'kourou'],
+      ...['französisch-guayana'],
+    ],
   ),
   TzEntry(
     ianaZone: 'America/Chicago',
     offsetWinter: '-06:00', offsetSummer: '-05:00',
     abbrWinter: 'CST', abbrSummer: 'CDT',
     terms: [...tCST_CDT,
-      ...['dallas', 'houston', 'minneapolis'],
-      ...[],
+      ...['dallas', 'houston', 'minneapolis', 'united states of america', 'usa'],
+      ...['vereinigte staaten von amerika'],
     ],
   ),
   TzEntry(
@@ -169,8 +169,9 @@ const List<TzEntry> tzEntries_Americas = [
         'mountain daylight saving time', 'phoenix', 'salt lake city', 'MT',
         'north american mountain standard time', 'NAMST',
         'north american mountain daylight time', 'NAMDT',
-        'shiprock'],
-      ...['rocky-mountain-normalzeit', 'rocky-mountain-sommerzeit'],
+        'shiprock', 'united states of america', 'usa'],
+      ...['rocky-mountain-normalzeit', 'rocky-mountain-sommerzeit',
+        'vereinigte staaten von amerika'],
     ],
   ),
   TzEntry(
@@ -186,21 +187,22 @@ const List<TzEntry> tzEntries_Americas = [
     ],
   ),
   TzEntry(
-      ianaZone: 'America/Lima',
-      offsetWinter: '-05:00', offsetSummer: '-05:00',
-      abbrWinter: '-05', abbrSummer: '-05',
-      terms: [
-        ...['peru time', 'peru standard time', 'PET'],
-        ...[],
-      ]
+    ianaZone: 'America/Lima',
+    offsetWinter: '-05:00', offsetSummer: '-05:00',
+    abbrWinter: '-05', abbrSummer: '-05',
+    terms: [
+      ...['peru time', 'peru standard time', 'PET'],
+      ...[],
+    ],
   ),
   TzEntry(
     ianaZone: 'America/Los_Angeles',
     offsetWinter: '-08:00', offsetSummer: '-07:00',
     abbrWinter: 'PST', abbrSummer: 'PDT',
     terms: [...tPST_PDT,
-      ...['las vegas', 'portland', 'san francisco', 'seattle', 'usa west'],
-      ...['westküste usa'],
+      ...['las vegas', 'portland', 'san francisco', 'seattle',
+        'united states of america', 'usa west'],
+      ...['vereinigte staaten von amerika', 'westküste usa'],
     ],
   ),
   TzEntry(
@@ -218,8 +220,9 @@ const List<TzEntry> tzEntries_Americas = [
     abbrWinter: 'EST', abbrSummer: 'EDT',
     terms: [...tEST_EDT,
       ...['usa east', 'new york city', 'atlanta', 'boston', 'miami',
-        'philadelphia', 'washington, d.c.', 'washington dc', 'washington'],
-      ...['ostküste usa'],
+        'philadelphia', 'washington, d.c.', 'washington dc', 'washington',
+        'united states of america'],
+      ...['ostküste usa', 'vereinigte staaten von america'],
     ],
   ),
   TzEntry(
@@ -1176,7 +1179,7 @@ const List<TzEntry> tzEntries_Europe = [
     offsetWinter: '+01:00', offsetSummer: '+02:00',
     abbrWinter: 'CET', abbrSummer: 'CEST',
     terms: [
-      ...['czechia', 'slovakia', 'bratislava'],
+      ...['czechia', 'czech republic', 'slovakia', 'bratislava'],
       ...['tschechien', 'slowakei', 'prag'],
     ],
   ),
