@@ -9,6 +9,7 @@
 - option to start the app in Focus mode
 - burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
 - import function shows last loaded config in Settings
+- splash screen with logo and version info, logo in title bar
 
 ### Changed
 - LMST no longer shown dynamically based on your longitude, needs to be (re)added explicitly

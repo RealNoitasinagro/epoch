@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
-import '../main.dart';
 
 class ValueTile extends StatelessWidget {
   final String label;

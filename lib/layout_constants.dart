@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
+
 const Color kColorWhite       = Color(0xFFFFFFFF);  // 4294967295
 const Color kColorNightRed    = Color(0xFFCC1010);  // 4291563536
 const Color kColorNightRedDim = Color(0xFF7A0000);

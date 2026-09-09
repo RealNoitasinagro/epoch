@@ -19,6 +19,7 @@ import 'models/time_value.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +52,6 @@ void main(List<String> args) async {
   runApp(const EpochApp());
 }
 
-const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
 const _nightRed = kColorNightRed;
 const _nightRedDim = kColorNightRedDim;
 
@@ -108,6 +108,7 @@ class EpochApp extends StatefulWidget {
 
 class EpochAppState extends State<EpochApp> {
   bool _settingsLoaded             = false;
+  bool _splashMinDurationElapsed   = false;
   String _localIanaZone            = 'UTC';
   Locale _locale                   = kDefaultLocale;
   AppThemeMode _themeMode          = kDefaultThemeMode;
@@ -130,6 +131,9 @@ class EpochAppState extends State<EpochApp> {
   void initState() {
     super.initState();
     _loadPreferences();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      if (mounted) setState(() => _splashMinDurationElapsed = true);
+    });
   }
 
   Future<void> reloadPreferences() async {
@@ -153,7 +157,7 @@ class EpochAppState extends State<EpochApp> {
     final lmstMode           = await loadLmstMode();
     final lmstLongitude      = await loadLmstLongitude();
     final lastImportedConfig = await loadLastImportedConfig();
-    final startupFocusValue = await loadStartupFocusValue();
+    final startupFocusValue  = await loadStartupFocusValue();
 
     String localZone = 'UTC';
     try {
@@ -265,11 +269,7 @@ class EpochAppState extends State<EpochApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_settingsLoaded) {
-      return const MaterialApp(
-        home: Scaffold(body: Center(child: CircularProgressIndicator())),
-      );
-    }
+    final showSplash = !_settingsLoaded || !_splashMinDurationElapsed;
     return MaterialApp(
       title: 'Epoch',
       debugShowCheckedModeBanner: false,
@@ -284,16 +284,15 @@ class EpochAppState extends State<EpochApp> {
         ),
         useMaterial3: true,
       ),
-      themeMode: _flutterThemeMode,
-      locale: _locale,
+      themeMode: showSplash ? ThemeMode.dark : _flutterThemeMode,
+      locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: _startupFocusValue != null
-          ? FocusScreen(
-              timeValue: _startupFocusValue!,
-              locale: _locale.languageCode,
-            )
-          : HomeScreen(key: _homeKey),
+      home: showSplash
+          ? const SplashScreen()
+          : (_startupFocusValue != null
+            ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
+            : HomeScreen(key: _homeKey)),
     );
   }
 }
@@ -507,8 +506,8 @@ class _HomeScreenState extends State<HomeScreen>
     final l10n = AppLocalizations.of(context)!;
 
     if (!_loaded) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      return Scaffold(
+        backgroundColor: Colors.black,
       );
     }
     if (_tabController == null) {
@@ -653,7 +652,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  // main.dart – new method:
   Widget _buildNoTabsScreen(BuildContext context, AppLocalizations l10n) {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.appName)),

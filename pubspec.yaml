@@ -51,16 +51,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
-
-flutter_launcher_icons:
-  android: true
-  ios: false
-  linux: true
-  image_path: "assets/icon/epoch_icon.png"
-  min_sdk_android: 21
-  web:
-    generate: true
-    image_path: "assets/icon/epoch_icon.png"
+  flutter_native_splash: ^2.4.8
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,6 +60,25 @@ flutter_launcher_icons:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   test: ^1.30.0
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  linux: true
+  image_path: assets/icon/epoch_icon.png
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: assets/icon/epoch_icon.png
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/icon/epoch_icon_splash.png
+  color_dark: "#000000"
+  image_dark: assets/icon/epoch_icon_splash.png
+  android_12:
+    color: "#000000"
+    image: assets/icon/epoch_icon_splash.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -88,6 +98,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/icon/epoch_icon.png
+    - assets/icon/epoch_icon_splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
