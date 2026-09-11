@@ -56,18 +56,30 @@ class TzEntry {
   }
 }
 
-// Parses UTC offset queries like "UTC+05:30", "+5:30", "-3".
+// Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
 List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
   final q = query.trim().toUpperCase().replaceAll(' ', '');
-  final pattern = RegExp(r'^(?:UTC)?([+-])(\d{1,2})(?::?(\d{2}))?$');
-  final m = pattern.firstMatch(q);
-  if (m == null) return [];
-  final sign = m.group(1)!;
-  final hours = int.parse(m.group(2)!);
-  final minutes = int.parse(m.group(3) ?? '0');
-  final target = '$sign${hours.toString().padLeft(2, '0')}:'
-      '${minutes.toString().padLeft(2, '0')}';
-  return db
-      .where((e) => e.offsetWinter == target || e.offsetSummer == target)
-      .toList();
+
+  final decimalMatch = RegExp(r'^(?:UTC)?([+-])(\d{1,2})[.,](50?|75|25)$').firstMatch(q);
+  final String target;
+  if (decimalMatch != null) {
+    final sign = decimalMatch.group(1)!;
+    final hours = int.parse(decimalMatch.group(2)!);
+    final minutes = switch (decimalMatch.group(3)!) {
+      '5' || '50' => 30,
+      '75' => 45,
+      '25' => 15,
+      _ => 0,  // unreachable given the current regex
+    };
+    target = '$sign${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  } else {
+    final hoursMinutesMatch = RegExp(r'^(?:UTC)?([+-])(\d{1,2})(?::?(\d{2}))?$').firstMatch(q);
+    if (hoursMinutesMatch == null) return [];
+    final sign = hoursMinutesMatch.group(1)!;
+    final hours = int.parse(hoursMinutesMatch.group(2)!);
+    final minutes = int.parse(hoursMinutesMatch.group(3) ?? '0');
+    target = '$sign${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  }
+
+  return db.where((e) => e.offsetWinter == target || e.offsetSummer == target).toList();
 }

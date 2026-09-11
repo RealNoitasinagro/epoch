@@ -17,6 +17,7 @@
 - more informative date and time format subtitles and improved layout in Settings
 - binaryClockString now allows to turn seconds off (on tabs and Focus screen)
 - improved copy-to-clipboard: long-press for value only, without label
+- improved timezone search by offset to allow decimals: +5.5/5,5 (= +5:30), +8.75/8,75 (= +8:45) etc.
 
 ### Fixed
 - Settings not always showing correct state immediately after import (previous fix for reset insufficient) 
