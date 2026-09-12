@@ -197,9 +197,9 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 > However, if you'd like to build Epoch yourself with an up-to-date IANA db, check out the script
 > `update_timezone_to_latest_iana_db.sh` in the repo's root. \
 > It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
-> Current (2026-08) versions:
+> Current (2026-09) versions:
 > - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
-> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026c](https://www.iana.org/time-zones/releases/2026c)
+> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026d](https://www.iana.org/time-zones/releases/2026d)
 
 ### Linux
 
