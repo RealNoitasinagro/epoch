@@ -15,6 +15,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionDeleteTab => 'Tab löschen';
 
   @override
+  String get actionHideTab => 'Tab ausblenden';
+
+  @override
   String get actionRenameTab => 'Tab umbenennen';
 
   @override
@@ -77,7 +80,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintBack => 'Zurück';
 
   @override
-  String get hintCopyToClipboard => 'In Zwischenablage kopieren';
+  String get hintCopyToClipboard =>
+      'Kopieren · Gedrückt halten: nur Wert, kein Label';
 
   @override
   String get hintDeselect => 'Abwählen';
@@ -112,6 +116,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Doppelt antippen zum Wechsel in den Fokus-Screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff =>
+      'Gedrückt halten für Anzeige ohne Dezimalstellen';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn =>
+      'Gedrückt halten für Anzeige mit Dezimalstellen';
+
+  @override
   String get hintFocusScreenToggleSecondsOff =>
       'Gedrückt halten für Anzeige ohne Sekunden';
 
@@ -128,6 +140,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
+
+  @override
+  String get hintPixelShiftOff => 'Einbrennschutz aus – zum Aktivieren tippen';
+
+  @override
+  String get hintPixelShiftOn => 'Einbrennschutz an – zum Deaktivieren tippen';
 
   @override
   String get hintRemoveSelected => 'Markierte entfernen';
@@ -167,6 +185,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
 
   @override
+  String get infoLinkDecimalTime =>
+      'https://de.wikipedia.org/wiki/Dezimalzeit#Frankreich';
+
+  @override
   String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
 
   @override
@@ -191,6 +213,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum';
 
   @override
+  String get infoLinkNewEarthTime =>
+      'https://en.wikipedia.org/wiki/New_Earth_Time';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://de.wikipedia.org/wiki/Swatch-Internetzeit';
 
@@ -203,15 +229,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextBinaryClockBcd =>
-      'Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
+      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
 
   @override
   String get infoTextBinaryClockColumns =>
-      'Zeit in binärer Darstellung. Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Oberstes Bit ist das mit dem höchsten Wert.';
+      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Das oberste Bit hat den höchsten Wert.';
 
   @override
   String get infoTextBinaryClockString =>
-      'Kompakte Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+      'Die Sekunden seit Mitternacht in kompakter Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
 
   @override
   String get infoTextDate =>
@@ -230,8 +256,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
   @override
+  String get infoTextDecimalTime =>
+      'Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.';
+
+  @override
   String get infoTextDoomsdayClock =>
-      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Aktuell auf 85 Sekunden vor Mitternacht gestellt (Stand Jan. 2026).';
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Im Januar 2026 auf 85 Sekunden vor Mitternacht gestellt.';
 
   @override
   String get infoTextGmst =>
@@ -239,11 +269,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 18 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+
+  @override
+  String get infoTextHexadecimalTime =>
+      'Die Sekunden seit Mitternacht zur Basis 16 (Hexadezimalsystem), mit Gruppierung für bessere Lesbarkeit.';
 
   @override
   String get infoTextJulianDate =>
-      'Das Julianische Datum zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+      'Das Julianische Datum (JD) zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
 
   @override
   String get infoTextLmst =>
@@ -251,11 +285,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextModifiedJulianDate =>
-      'Modifiziertes Julianisches Datum = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
+      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
 
   @override
   String get infoTextModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+
+  @override
+  String get infoTextNewEarthTime =>
+      'New Earth Time (NET) teilt den Tag in 360 NET-Grad ein, wobei jedes Grad 60 NET-Minuten und jede NET-Minute 60 NET-Sekunden hat. Die einzige Zeitzone für die ganze Welt ist UTC.';
+
+  @override
+  String get infoTextOctalTime =>
+      'Die Sekunden seit Mitternacht zur Basis 8 (Oktalsystem).';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -267,7 +309,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'Internationale Atomzeit (TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell, im Mai 2026, 37 Sekunden vor UTC. Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'Internationale Atomzeit (französisch Temps Atomique International, TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
@@ -315,7 +357,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelNewTabName => 'Tab-Name';
 
   @override
+  String get labelNextClockChanges => 'Nächste Zeitumstellungen';
+
+  @override
   String get labelSeconds => 'Sek';
+
+  @override
+  String get labelShowDecimals => 'Dezimalstellen anzeigen';
 
   @override
   String get labelShowSeconds => 'Sekunden anzeigen';
@@ -338,6 +386,14 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get messageMissingTabsRestored =>
+      'Einige eingebaute Tabs fehlten in der geladenen Konfiguration und wurden wiederhergestellt.';
+
+  @override
+  String get messageNoTabsVisible =>
+      'Alle Tabs sind ausgeblendet.\nAktiviere einen Tab in Einstellungen, oder lege einen neuen an.';
+
+  @override
   String get messageNoTimezone => 'Keine passende Zeitzone gefunden.';
 
   @override
@@ -354,13 +410,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageSettingsReset => 'Einstellungen zurückgesetzt';
 
   @override
+  String get messageTabReactivated =>
+      'Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.';
+
+  @override
   String get pageSettings => 'Einstellungen';
 
   @override
-  String get sectionAtomic => 'Atomuhr';
+  String get sectionAlternative => 'Alternative Zeiteinteilung';
 
   @override
-  String get sectionBinaryClock => 'Binäruhr';
+  String get sectionAtomic => 'Atomuhr';
 
   @override
   String get sectionDoomsdayClock => 'Weltuntergangsuhr';
@@ -369,10 +429,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sectionGps => 'Global Positioning System';
 
   @override
-  String get sectionInternet => 'Internetzeit';
+  String get sectionJulian => 'Julianisches Datum';
 
   @override
-  String get sectionJulian => 'Julianisches Datum';
+  String get sectionLocal => 'Lokale Zeit';
+
+  @override
+  String get sectionNumberSystems => 'Zahlensysteme';
+
+  @override
+  String get sectionOther => 'Andere Zeitzonen';
 
   @override
   String get sectionSidereal => 'Sternzeit';
@@ -384,11 +450,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAbout => 'Über die App';
 
   @override
+  String get settingsCustomFormat => 'Benutzerdefiniert…';
+
+  @override
+  String get settingsDateFormat => 'Datumsformat';
+
+  @override
   String get settingsDateWithDetails => 'Erweitertes Datum';
 
   @override
-  String get settingsDateWithDetailsSub =>
-      'Ein = mit ISO-Kalenderwoche, Tag des Jahres';
+  String get settingsDateWithDetailsSub => 'Kalenderwoche, Tag des Jahres';
+
+  @override
+  String get settingsDayQuarterColor => 'Tagesviertel-Farbe';
+
+  @override
+  String get settingsDayQuarterColorSub1st => '1. rot';
+
+  @override
+  String get settingsDayQuarterColorSub2nd => '2. zyan';
+
+  @override
+  String get settingsDayQuarterColorSub3rd => '3. gelb';
+
+  @override
+  String get settingsDayQuarterColorSub4th => '4. grün';
 
   @override
   String get settingsDstAlwaysOff => 'Immer Normalzeit';
@@ -401,6 +487,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsDstMode => 'Sommerzeit';
+
+  @override
+  String get settingsExportImportReset => 'Export, Import und Reset';
 
   @override
   String get settingsHourFormat => '24-Stunden-Format';
@@ -442,6 +531,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLmstOff => 'Nicht anzeigen';
 
   @override
+  String get settingsOff => 'aus';
+
+  @override
+  String get settingsOn => 'an';
+
+  @override
   String get settingsPreferencesExport => 'Einstellungen exportieren';
 
   @override
@@ -455,10 +550,26 @@ class AppLocalizationsDe extends AppLocalizations {
       'Backup vor dem Zurücksetzen speichern';
 
   @override
+  String get settingsStartupFocusValue => 'App-Start im Fokus-Modus';
+
+  @override
+  String get settingsStartupFocusValueClear => 'Auswahl zurücksetzen';
+
+  @override
+  String get settingsStartupFocusValueNone =>
+      'Nicht gesetzt – App öffnet mit aktivem Tab';
+
+  @override
+  String get settingsTabVisibility => 'Tab-Sichtbarkeit';
+
+  @override
   String get settingsTheme => 'Design';
 
   @override
   String get settingsThemeDark => 'Dunkel';
+
+  @override
+  String get settingsThemeLanguage => 'Design und Sprache';
 
   @override
   String get settingsThemeLight => 'Hell';
@@ -476,17 +587,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsThousandsSepSub => 'z. B. 1.746.000 statt 1746000';
 
   @override
+  String get settingsTimeFormat => 'Zeitformat';
+
+  @override
+  String get settingsValueDisplay => 'Wertanzeige';
+
+  @override
   String get settingsWhatsNew => 'Was ist neu';
 
   @override
   String get settingsZoneDisplayMode => 'Zeitzonenangabe';
 
   @override
-  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [CEST]';
+  String get settingsZoneDisplayModeAbbreviation => 'Kürzel\n  [MESZ]';
 
   @override
   String get settingsZoneDisplayModeFull =>
-      'Kürzel + Offset\n  [CEST (UTC+02:00)]';
+      'Kürzel + Offset\n  [MESZ (UTC+02:00)]';
 
   @override
   String get settingsZoneDisplayModeHidden => 'Ausgeblendet';
@@ -537,6 +654,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeDaySecond => 'Tagessekunde';
 
   @override
+  String get valueTypeDecimalTime => 'Dezimalzeit';
+
+  @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
 
   @override
@@ -544,6 +664,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeGps => 'GPS-Zeit (s)';
+
+  @override
+  String get valueTypeHexadecimalTime => 'Hexadezimalzeit';
 
   @override
   String get valueTypeJulianDate => 'Julianisches Datum';
@@ -557,6 +680,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get valueTypeModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000';
+
+  @override
+  String get valueTypeNewEarthTime => 'New Earth Time';
+
+  @override
+  String get valueTypeOctalTime => 'Oktalzeit';
 
   @override
   String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';

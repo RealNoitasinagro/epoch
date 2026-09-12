@@ -9,6 +9,7 @@ class BinaryCodedDecimalClock extends StatelessWidget {
   final AppLocalizations l10n;
   final double dotSize;
   final bool showLabels;
+  final bool showSeconds;
 
   const BinaryCodedDecimalClock({
     super.key,
@@ -16,6 +17,7 @@ class BinaryCodedDecimalClock extends StatelessWidget {
     required this.l10n,
     this.dotSize = kGraphicalBinaryClockDotSizeDefault,
     this.showLabels = true,
+    this.showSeconds = true,
   });
 
   @override
@@ -70,8 +72,10 @@ class BinaryCodedDecimalClock extends StatelessWidget {
             SizedBox(width: 50, child: groupLabel(l10n.labelHours)),
             const SizedBox(width: 8),
             SizedBox(width: 50, child: groupLabel(l10n.labelMinutes)),
-            const SizedBox(width: 8),
-            SizedBox(width: 50, child: groupLabel(l10n.labelSeconds)),
+            if (showSeconds) ...[
+              const SizedBox(width: 8),
+              SizedBox(width: 50, child: groupLabel(l10n.labelSeconds)),
+            ],
           ],
         ),
         const SizedBox(height: 4),
@@ -85,10 +89,12 @@ class BinaryCodedDecimalClock extends StatelessWidget {
             bitColumn(bcd.minTens,  3),
             SizedBox(width: dotSize * 0.25),
             bitColumn(bcd.minUnits,  4),
-            SizedBox(width: dotSize * 0.75),
-            bitColumn(bcd.secTens,  3),
-            SizedBox(width: dotSize * 0.25),
-            bitColumn(bcd.secUnits, 4),
+            if (showSeconds) ...[
+              SizedBox(width: dotSize * 0.75),
+              bitColumn(bcd.secTens,  3),
+              SizedBox(width: dotSize * 0.25),
+              bitColumn(bcd.secUnits, 4),
+            ],
           ],
         ),
       ],

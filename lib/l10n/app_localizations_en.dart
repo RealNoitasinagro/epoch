@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionDeleteTab => 'Delete tab';
 
   @override
+  String get actionHideTab => 'Hide tab';
+
+  @override
   String get actionRenameTab => 'Rename tab';
 
   @override
@@ -77,7 +80,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintBack => 'Back';
 
   @override
-  String get hintCopyToClipboard => 'Copy to clipboard';
+  String get hintCopyToClipboard =>
+      'Copy · Long-press for value only, no label';
 
   @override
   String get hintDeselect => 'Deselect';
@@ -112,6 +116,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenOpen => 'Double-tap to switch to focus screen';
 
   @override
+  String get hintFocusScreenToggleDecimalsOff => 'Hold to suppress decimals';
+
+  @override
+  String get hintFocusScreenToggleDecimalsOn => 'Hold to display decimals';
+
+  @override
   String get hintFocusScreenToggleSecondsOff => 'Hold to suppress seconds';
 
   @override
@@ -125,6 +135,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
+
+  @override
+  String get hintPixelShiftOff => 'Burn-in protection off – tap to enable';
+
+  @override
+  String get hintPixelShiftOn => 'Burn-in protection on – tap to disable';
 
   @override
   String get hintRemoveSelected => 'Remove selected';
@@ -164,6 +180,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'https://en.wikipedia.org/wiki/Binary_clock';
 
   @override
+  String get infoLinkDecimalTime =>
+      'https://en.wikipedia.org/wiki/Decimal_time';
+
+  @override
   String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
 
   @override
@@ -188,6 +208,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
+  String get infoLinkNewEarthTime =>
+      'https://en.wikipedia.org/wiki/New_Earth_Time';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://en.wikipedia.org/wiki/Swatch_Internet_Time';
 
@@ -200,15 +224,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextBinaryClockBcd =>
-      'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
+      'Seconds since midnight in binary representation: each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
 
   @override
   String get infoTextBinaryClockColumns =>
-      'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
+      'Seconds since midnight in binary representation: each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.';
 
   @override
   String get infoTextBinaryClockString =>
-      'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
+      'Seconds since midnight in compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.';
 
   @override
   String get infoTextDate =>
@@ -227,8 +251,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
 
   @override
+  String get infoTextDecimalTime =>
+      'Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.';
+
+  @override
   String get infoTextDoomsdayClock =>
-      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).';
+      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.';
 
   @override
   String get infoTextGmst =>
@@ -236,11 +264,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
+      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
+
+  @override
+  String get infoTextHexadecimalTime =>
+      'Seconds since midnight, shown in base 16 (hexadecimal), grouped in pairs for readability.';
 
   @override
   String get infoTextJulianDate =>
-      'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.';
+      'Julian Date (JD) counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.';
 
   @override
   String get infoTextLmst =>
@@ -248,11 +280,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextModifiedJulianDate =>
-      'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.';
+      'Modified Julian Date (MJD) = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.';
 
   @override
   String get infoTextModifiedJulianDate2000 =>
-      'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
+      'Modified Julian Date 2000 (MJD2000) = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
+
+  @override
+  String get infoTextNewEarthTime =>
+      'New Earth Time (or NET), also called degree time, splits a day into 360 NET degrees, where each NET degree has 60 NET minutes and each NET minute 60 NET seconds. UTC is the only time zone.';
+
+  @override
+  String get infoTextOctalTime =>
+      'Seconds since midnight, shown in base 8 (octal).';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -264,7 +304,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
+      'International Atomic Time (Temps Atomique International in French, TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
 
   @override
   String get infoTextTime => 'The current time in the selected timezone.';
@@ -312,7 +352,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNewTabName => 'Tab name';
 
   @override
+  String get labelNextClockChanges => 'Next clock changes';
+
+  @override
   String get labelSeconds => 'SS';
+
+  @override
+  String get labelShowDecimals => 'Show decimals';
 
   @override
   String get labelShowSeconds => 'Show seconds';
@@ -335,6 +381,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get messageMissingTabsRestored =>
+      'Some built-in tabs were missing from the loaded configuration and have been restored.';
+
+  @override
+  String get messageNoTabsVisible =>
+      'All tabs are hidden.\nActivate a tab in Settings, or add a new one.';
+
+  @override
   String get messageNoTimezone => 'No matching timezone found.';
 
   @override
@@ -350,13 +404,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSettingsReset => 'Settings reset to defaults';
 
   @override
+  String get messageTabReactivated =>
+      'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.';
+
+  @override
   String get pageSettings => 'Settings';
 
   @override
-  String get sectionAtomic => 'Atomic Clock';
+  String get sectionAlternative => 'Alternative Time Scales';
 
   @override
-  String get sectionBinaryClock => 'Binary Clock';
+  String get sectionAtomic => 'Atomic Clock';
 
   @override
   String get sectionDoomsdayClock => 'Doomsday Clock';
@@ -365,10 +423,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionGps => 'Global Positioning System';
 
   @override
-  String get sectionInternet => 'Internet Time';
+  String get sectionJulian => 'Julian Date';
 
   @override
-  String get sectionJulian => 'Julian Date';
+  String get sectionLocal => 'Local Time';
+
+  @override
+  String get sectionNumberSystems => 'Number Systems';
+
+  @override
+  String get sectionOther => 'Other Time Zones';
 
   @override
   String get sectionSidereal => 'Sidereal Time';
@@ -380,11 +444,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsCustomFormat => 'Custom…';
+
+  @override
+  String get settingsDateFormat => 'Date format';
+
+  @override
   String get settingsDateWithDetails => 'Expanded date';
 
   @override
-  String get settingsDateWithDetailsSub =>
-      'On = with ISO calender week, day of the year';
+  String get settingsDateWithDetailsSub => 'calender week, day of the year';
+
+  @override
+  String get settingsDayQuarterColor => 'Day quarter color';
+
+  @override
+  String get settingsDayQuarterColorSub1st => '1st red';
+
+  @override
+  String get settingsDayQuarterColorSub2nd => '2nd cyan';
+
+  @override
+  String get settingsDayQuarterColorSub3rd => '3rd amber';
+
+  @override
+  String get settingsDayQuarterColorSub4th => '4th green';
 
   @override
   String get settingsDstAlwaysOff => 'Always standard time';
@@ -397,6 +481,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsDstMode => 'Daylight saving time (DST)';
+
+  @override
+  String get settingsExportImportReset => 'Export, import and reset';
 
   @override
   String get settingsHourFormat => '24-hour format';
@@ -438,6 +525,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLmstOff => 'Do not show';
 
   @override
+  String get settingsOff => 'off';
+
+  @override
+  String get settingsOn => 'on';
+
+  @override
   String get settingsPreferencesExport => 'Export preferences';
 
   @override
@@ -450,10 +543,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsPreferencesResetBackupTitle => 'Save backup before reset';
 
   @override
+  String get settingsStartupFocusValue => 'App start in Focus mode';
+
+  @override
+  String get settingsStartupFocusValueClear => 'Clear selection';
+
+  @override
+  String get settingsStartupFocusValueNone =>
+      'Not set – app opens with active tab';
+
+  @override
+  String get settingsTabVisibility => 'Tab visibility';
+
+  @override
   String get settingsTheme => 'Theme';
 
   @override
   String get settingsThemeDark => 'Dark';
+
+  @override
+  String get settingsThemeLanguage => 'Theme and language';
 
   @override
   String get settingsThemeLight => 'Light';
@@ -469,6 +578,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThousandsSepSub => 'e. g. 1,746,000 instead of 1746000';
+
+  @override
+  String get settingsTimeFormat => 'Time format';
+
+  @override
+  String get settingsValueDisplay => 'Value display';
 
   @override
   String get settingsWhatsNew => 'What\'s New';
@@ -511,13 +626,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabTechnical => 'Technical';
 
   @override
-  String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
+  String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';
 
   @override
-  String get valueTypeBinaryClockColumns => 'Binary clock (columns)';
+  String get valueTypeBinaryClockColumns => 'Binary Clock (columns)';
 
   @override
-  String get valueTypeBinaryClockString => 'Binary time (string)';
+  String get valueTypeBinaryClockString => 'Binary Time (string)';
 
   @override
   String get valueTypeDate => 'Date';
@@ -526,10 +641,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeDateTime => 'Date & Time';
 
   @override
-  String get valueTypeDayPercent => 'Day percent';
+  String get valueTypeDayPercent => 'Day Percent';
 
   @override
-  String get valueTypeDaySecond => 'Day second';
+  String get valueTypeDaySecond => 'Day Second';
+
+  @override
+  String get valueTypeDecimalTime => 'Decimal time';
 
   @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
@@ -539,6 +657,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeGps => 'GPS time (s)';
+
+  @override
+  String get valueTypeHexadecimalTime => 'Hexadecimal time';
 
   @override
   String get valueTypeJulianDate => 'Julian Date';
@@ -553,7 +674,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeModifiedJulianDate2000 => 'Modified Julian Date 2000';
 
   @override
-  String get valueTypeSevenSegmentTime => 'Seven-segment clock';
+  String get valueTypeNewEarthTime => 'New Earth Time';
+
+  @override
+  String get valueTypeOctalTime => 'Octal time';
+
+  @override
+  String get valueTypeSevenSegmentTime => 'Seven-segment Clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';
@@ -565,5 +692,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeTime => 'Time';
 
   @override
-  String get valueTypeUnixSeconds => 'Unix time (s)';
+  String get valueTypeUnixSeconds => 'Unix Time (s)';
 }

@@ -1,0 +1,11 @@
+Substantial UI refinements and new features
+
+- All tabs (Civil, Technical, Astronomical, Curiosities) now fully configurable
+- New Curiosities values: decimal time, octal time, hexadecimal time, New Earth Time
+- Option to start the app directly in Focus mode
+- Burn-in protection for Focus screen (pixel shift)
+- Splash screen
+- Improved timezone search: offsets can now include decimals (e.g. +5.5, +8.75)
+- Improved Settings layout and copy-to-clipboard behavior
+
++ other improvements

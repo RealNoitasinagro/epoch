@@ -1,28 +1,52 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../layout_constants.dart';
+import 'time_value.dart';
 
 const _kLocaleKey = 'locale';
 const _kThemeModeKey = 'theme_mode';
 const _kHourFormatKey = 'hour_format_24';
 const _kThousandsSepKey = 'thousands_sep';
 const _kDateWithDetails = 'date_cw_doy';
-const _kZoneDisplayModeKey = 'zone_display';
+const _kDateFormatKey = 'date_format';
+const _kTimeFormatKey = 'time_format';
+const _kZoneDisplayModeKey = 'zone_display_mode';
+const _kDayQuarterColorKey = 'day_quarter_color';
 const _kLmstModeKey = 'lmst_mode';
-const _kLmstLongitudeKey = 'lmst_lon';  // double
+const _kLmstLongitudeKey = 'lmst_longitude';  // double
 const _kActiveTabKey = 'active_tab';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
+const _kFocusPixelShiftKey = 'focus_pixel_shift';
+const _kLastImportedConfigKey = 'last_imported_config';
+const _kStartupFocusValueKey = 'startup_focus_value';
 
-const kDefaultLocale = Locale('en');
-const kDefaultThemeMode = AppThemeMode.system;
-const kDefaultHourFormat24 = true;
-const kDefaultThousandsSep = true;
+const kDefaultLocale          = Locale('en');
+const kDefaultThemeMode       = AppThemeMode.system;
+const kDefaultHourFormat24    = true;
+const kDefaultThousandsSep    = true;
 const kDefaultDateWithDetails = true;
 const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
-const kDefaultLmstMode = LmstMode.off;
+const kDefaultDayQuarterColor = true;
+const kDefaultLmstMode        = LmstMode.off;
 const kDefaultFocusBrightness = 0.5;
-const kFocusDefaultColorLight = 0xFFFFFFFF;  // white
-const kFocusDefaultColorNight = 0xFFCC1010;  // night red (= _nightRed)
+const kFocusDefaultColorLight = kColorWhite;
+const kFocusDefaultColorNight = kColorNightRed;
+final kDefaultFocusPixelShift = !kIsWeb && Platform.isAndroid;
+
+const kDatePatternIso      = 'EEE, YYYY-MM-DD';  // Tue, 2026-07-29
+const kDatePatternDe       = 'EEE, DD.MM.YYYY';  // Di., 29.07.2026
+const kDatePatternUk       = 'EEE, DD/MM/YYYY';  // Tue, 29/07/2026
+const kDatePatternUs       = 'EEE, MM/DD/YYYY';  // Tue, 07/29/2026
+const kDatePatternIsoTight = 'YYYY-MM-DD';       // 2026-07-29
+const kDatePatternCompact  = 'YYYYMMDD';         // 20260729
+
+const kTimePatternFull          = 'HH:mm:ss';    // 14:05:09
+const kTimePatternNoSeconds     = 'HH:mm';       // 14:05
+const kTimePatternNoLeadingZero = 'H:mm:ss';     // 9:05:09 -> 14:05:09
+const kTimePatternCompact       = 'HHmm';        // 1405
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
@@ -98,6 +122,36 @@ Future<void> saveThousandsSep(bool enabled) async {
   await prefs.setBool(_kThousandsSepKey, enabled);
 }
 
+Future<bool> loadDateWithDetails() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kDateWithDetails) ?? kDefaultDateWithDetails;
+}
+
+Future<void> saveDateWithDetails(bool showDetails) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kDateWithDetails, showDetails);
+}
+
+Future<String> loadDateFormat() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(_kDateFormatKey) ?? kDatePatternIso;
+}
+
+Future<void> saveDateFormat(String pattern) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kDateFormatKey, pattern);
+}
+
+Future<String> loadTimeFormat() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(_kTimeFormatKey) ?? kTimePatternFull;
+}
+
+Future<void> saveTimeFormat(String pattern) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kTimeFormatKey, pattern);
+}
+
 Future<ZoneDisplayMode> loadZoneDisplayMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.getString(_kZoneDisplayModeKey)) {
@@ -115,14 +169,14 @@ Future<void> saveZoneDisplayMode(ZoneDisplayMode mode) async {
   await prefs.setString(_kZoneDisplayModeKey, mode.name);
 }
 
-Future<bool> loadDateWithDetails() async {
+Future<bool> loadDayQuarterColor() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kDateWithDetails) ?? kDefaultDateWithDetails;
+  return prefs.getBool(_kDayQuarterColorKey) ?? kDefaultDayQuarterColor;
 }
 
-Future<void> saveDateWithDetails(bool showDetails) async {
+Future<void> saveDayQuarterColor(bool enabled) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setBool(_kDateWithDetails, showDetails);
+  await prefs.setBool(_kDayQuarterColorKey, enabled);
 }
 
 Future<LmstMode> loadLmstMode() async {
@@ -173,10 +227,46 @@ Future<Color> loadFocusColor(bool isNightMode) async {
   final prefs = await SharedPreferences.getInstance();
   final value = prefs.getInt(_kFocusColorKey);
   if (value != null) return Color(value);
-  return Color(isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight);
+  return isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight;
 }
 
 Future<void> saveFocusColor(Color color) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kFocusColorKey, color.toARGB32());
+}
+
+Future<bool> loadFocusPixelShift() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kFocusPixelShiftKey) ?? kDefaultFocusPixelShift;
+}
+
+Future<void> saveFocusPixelShift(bool enabled) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kFocusPixelShiftKey, enabled);
+}
+
+Future<String?> loadLastImportedConfig() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(_kLastImportedConfigKey);
+}
+
+Future<void> saveLastImportedConfig(String filename) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kLastImportedConfigKey, filename);
+}
+
+Future<TimeValue?> loadStartupFocusValue() async {
+  final prefs = await SharedPreferences.getInstance();
+  final s = prefs.getString(_kStartupFocusValueKey);
+  if (s == null || s.isEmpty) return null;
+  return TimeValue.fromPrefsString(s);
+}
+
+Future<void> saveStartupFocusValue(TimeValue? value) async {
+  final prefs = await SharedPreferences.getInstance();
+  if (value == null) {
+    await prefs.remove(_kStartupFocusValueKey);
+  } else {
+    await prefs.setString(_kStartupFocusValueKey, value.toPrefsString());
+  }
 }

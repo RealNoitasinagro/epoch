@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:epoch/models/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
 import '../widgets/clocks/binary_coded_decimal_clock.dart';
@@ -17,12 +17,12 @@ import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/time_string_row.dart';
 
 const _colorOptions = [
-  Color(0xFFFFFFFF),  // white
-  Color(0xFFCC1010),  // night red
-  Color(0xFF00FF41),  // matrix green
-  Color(0xFFFFB300),  // amber
-  Color(0xFF00E5FF),  // cyan
-  Color(0xFFB0B0B0),  // grey
+  kColorWhite,
+  kColorNightRed,
+  kColorMatrixGreen,
+  kColorAmber,
+  kColorCyan,
+  kColorGrey,
 ];
 
 class FocusScreen extends StatefulWidget {
@@ -39,6 +39,8 @@ class FocusScreen extends StatefulWidget {
   State<FocusScreen> createState() => _FocusScreenState();
 }
 
+enum _SecondsToggleTypes { swatchBeats, newEarthTime, binaryClockString, isGraphical }
+
 class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
@@ -53,7 +55,39 @@ class _FocusScreenState extends State<FocusScreen> {
   bool _controlsVisible = true;
   Timer? _controlsHideTimer;
 
-  bool get _showColorPicker => true;
+  final _valueDisplayKey = GlobalKey();
+  bool _pixelShiftEnabled = kDefaultFocusPixelShift;
+  int _pixelShiftDirection = 1;  // +1 or -1
+  int _pixelShiftIndex = 0;
+  bool _pixelShiftInitialized = false;
+  double _pixelShiftOffsetY = 0;
+  Timer? _pixelShiftTimer;
+  static const _pixelShiftInterval = Duration(seconds: 180);
+  static const _safetyMargin = 8.0;  // extra breathing room, both ends
+
+  double? _measuredContentHeight;
+  double get _topReservedForShift =>
+      _lastOrientation == Orientation.landscape ? 40.0 : 80.0;
+  double get _bottomReservedForShift =>
+      _lastOrientation == Orientation.landscape ? 56.0 : 64.0;
+
+  List<double> get _pixelShiftLevels {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final contentHeight = _measuredContentHeight ?? 0;
+    final available = screenHeight
+        - _topReservedForShift
+        - _bottomReservedForShift
+        - contentHeight;
+    final maxOffset = ((available / 2) - _safetyMargin).clamp(0.0, double.infinity);
+
+    if (maxOffset < 2) return const [0.0];
+    const targetStepSize = 18.0;  // aim for ~18px between adjacent levels
+    final halfSteps = (maxOffset / targetStepSize).floor().clamp(1, 6);
+    final steps = halfSteps * 2 + 1;  // odd count, always includes center (0.0)
+    return List.generate(
+        steps, (i) => -maxOffset + (2 * maxOffset * i / (steps - 1))
+    );
+  }
 
   bool get _showBrightnessSlider =>
       !kIsWeb && Platform.isAndroid && _brightness != null;
@@ -69,6 +103,7 @@ class _FocusScreenState extends State<FocusScreen> {
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = DateTime.now()));
     WakelockPlus.enable();
+    _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -78,6 +113,78 @@ class _FocusScreenState extends State<FocusScreen> {
     ]);
     _scheduleControlsHide();
     _initBrightness();
+  }
+
+  void _remeasureContent() {
+    final box = _valueDisplayKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null || !box.hasSize) return;
+    final height = (box.size.height / 4).round() * 4.0;  // quantize to 4px steps
+    if (height != _measuredContentHeight) {
+      setState(() {
+        _measuredContentHeight = height;
+        if (_pixelShiftEnabled && _pixelShiftInitialized) _resetPixelShiftPosition();
+      });
+    }
+  }
+
+  Future<void> _initPixelShift() async {
+    final enabled = await loadFocusPixelShift();
+    if (!mounted) return;
+    setState(() => _pixelShiftEnabled = enabled);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _resetPixelShiftPosition();  // context/MediaQuery is safe here
+      _pixelShiftInitialized = true;
+      if (enabled) _startPixelShiftTimer();
+    });
+  }
+
+  void _startPixelShiftTimer() {
+    _pixelShiftTimer?.cancel();
+    _pixelShiftTimer = Timer.periodic(_pixelShiftInterval, (_) => _rerollPixelShift());
+  }
+
+  void _rerollPixelShift() {
+    if (!mounted) return;
+    final levels = _pixelShiftLevels;
+    var currentIndex = _pixelShiftIndex.clamp(0, levels.length - 1);
+    var nextIndex = currentIndex + _pixelShiftDirection;
+    if (nextIndex >= levels.length) {
+      nextIndex = (levels.length - 2).clamp(0, levels.length - 1);
+      _pixelShiftDirection = -1;
+    } else if (nextIndex < 0) {
+      nextIndex = (levels.length > 1 ? 1 : 0);
+      _pixelShiftDirection = 1;
+    }
+    setState(() {
+      _pixelShiftIndex = nextIndex;
+      _pixelShiftOffsetY = levels[nextIndex];
+    });
+  }
+
+  void _togglePixelShift() {
+    final enabled = !_pixelShiftEnabled;
+    setState(() {
+      _pixelShiftEnabled = enabled;
+      if (!enabled) {
+        _pixelShiftOffsetY = 0;
+        _resetPixelShiftPosition();
+      }
+    });
+    saveFocusPixelShift(enabled);
+    if (enabled) {
+      _startPixelShiftTimer();
+    } else {
+      _pixelShiftTimer?.cancel();
+    }
+    _scheduleControlsHide();
+  }
+
+  void _resetPixelShiftPosition() {
+    final levels = _pixelShiftLevels;
+    _pixelShiftIndex = levels.length ~/ 2;
+    _pixelShiftOffsetY = levels[_pixelShiftIndex];
+    _pixelShiftDirection = 1;
   }
 
   Future<void> _initBrightness() async {
@@ -94,10 +201,10 @@ class _FocusScreenState extends State<FocusScreen> {
       } else {
         initial = (!kIsWeb && !Platform.isLinux)
             ? await ScreenBrightness().application
-            : 1.0;
+            : kDefaultFocusBrightness;
       }
     } catch (_) {
-      initial = 1.0;
+      initial = kDefaultFocusBrightness;
     }
     if (mounted) setState(() {
       _brightness = initial;
@@ -137,8 +244,17 @@ class _FocusScreenState extends State<FocusScreen> {
 
   ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
+
+    // For non-graphical types, override showSeconds with volatile _showSeconds:
+    final effectiveTimeValue = (
+        widget.timeValue.valueType == ValueType.swatchBeats ||
+        widget.timeValue.valueType == ValueType.newEarthTime ||
+        widget.timeValue.valueType == ValueType.binaryClockString
+    ) ? widget.timeValue.withShowSeconds(_showSeconds)
+        : widget.timeValue;
+
     return TimeStringRow.computeDisplay(
-      widget.timeValue,
+      effectiveTimeValue,
       _now,
       widget.locale,
       AppLocalizations.of(context)!,
@@ -146,6 +262,8 @@ class _FocusScreenState extends State<FocusScreen> {
       hourFormat24: app.hourFormat24,
       thousandsSep: app.thousandsSep,
       showDateDetails: app.dateWithDetails,
+      dateFormat: app.dateFormat,
+      timeFormat: app.timeFormat,
       zoneDisplayMode: app.zoneDisplayMode,
       longitude: app.lmstLongitude,
     );
@@ -155,7 +273,15 @@ class _FocusScreenState extends State<FocusScreen> {
     WakelockPlus.disable();
     if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    Navigator.of(context).pop();
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    } else {
+      // FocusScreen was the initial route (startup focus value set) –
+      // there's nothing to pop back to, so replace with HomeScreen instead:
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
   }
 
   @override
@@ -167,26 +293,47 @@ class _FocusScreenState extends State<FocusScreen> {
     WakelockPlus.disable();
     if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    _pixelShiftTimer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
+
     final l10n = AppLocalizations.of(context)!;
     final display = _currentDisplay();
-    final hasLine2 = display.line2.isNotEmpty &&
-        !widget.timeValue.valueType.isGraphical;
-    final handleSeconds = widget.timeValue.valueType
-        == ValueType.sevenSegmentClock;
+    final hasLine2 = display.line2.isNotEmpty
+        && !widget.timeValue.valueType.isGraphical;
+    final _SecondsToggleTypes? handleSeconds;
+    if (widget.timeValue.valueType == ValueType.swatchBeats) {
+      handleSeconds = _SecondsToggleTypes.swatchBeats;
+    } else if (widget.timeValue.valueType == ValueType.newEarthTime) {
+      handleSeconds = _SecondsToggleTypes.newEarthTime;
+    } else if (widget.timeValue.valueType == ValueType.binaryClockString) {
+      handleSeconds = _SecondsToggleTypes.binaryClockString;
+    } else if (widget.timeValue.valueType.isGraphical) {
+        handleSeconds = _SecondsToggleTypes.isGraphical;
+    } else {
+        handleSeconds = null;
+    }
 
-    if (_brightness == null) return const Scaffold(backgroundColor: Colors.black);
+    if (_brightness == null) {
+      return const Scaffold(backgroundColor: Colors.black);
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress: handleSeconds ? _toggleSeconds : _toggleLine2,
+        onLongPress:
+          handleSeconds == _SecondsToggleTypes.swatchBeats ||
+          handleSeconds == _SecondsToggleTypes.newEarthTime ||
+          handleSeconds == _SecondsToggleTypes.binaryClockString ||
+          handleSeconds == _SecondsToggleTypes.isGraphical
+          ? _toggleSeconds
+          : _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -196,6 +343,11 @@ class _FocusScreenState extends State<FocusScreen> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted) _scheduleControlsHide();
               });
+              // Level set may differ (graphical clocks have tighter
+              // portrait/landscape ranges) – recenter to stay safe:
+              _pixelShiftIndex = _pixelShiftLevels.length ~/ 2;
+              _pixelShiftOffsetY = 0;
+              _pixelShiftDirection = 1;
             }
             _lastOrientation = orientation;
             final isLandscape = orientation == Orientation.landscape;
@@ -203,18 +355,29 @@ class _FocusScreenState extends State<FocusScreen> {
             return Stack(
               fit: StackFit.expand,
               children: [
+                _pixelShiftDebugOverlay(),
                 // Value display – ALWAYS visible, outside AnimatedOpacity:
-                Center(child: _buildValueDisplay(isLandscape)),
-
+                Center(
+                  child: AnimatedContainer(
+                    duration: const Duration(seconds: 2),
+                    curve: Curves.easeInOut,
+                    transform: Matrix4.translationValues(
+                        0, _pixelShiftOffsetY, 0),
+                    child: _buildValueDisplay(isLandscape),
+                  ),
+                ),
                 // Controls overlay – fades in/out:
-                AnimatedOpacity(
-                  opacity: _controlsVisible ? 1.0 : 0.0,
-                  duration: _controlsHideDuration,
-                  child: isLandscape
-                      ? _buildLandscapeControls(
-                      l10n, hasLine2, handleSeconds, mediaPadding)
-                      : _buildPortraitControls(
-                      l10n, hasLine2, handleSeconds, mediaPadding),
+                IgnorePointer(
+                  ignoring: !_controlsVisible,
+                  child: AnimatedOpacity(
+                    opacity: _controlsVisible ? 1.0 : 0.0,
+                    duration: _controlsHideDuration,
+                    child: isLandscape
+                        ? _buildLandscapeControls(
+                        l10n, hasLine2, handleSeconds, mediaPadding)
+                        : _buildPortraitControls(
+                        l10n, hasLine2, handleSeconds, mediaPadding),
+                  ),
                 ),
               ],
             );
@@ -225,18 +388,22 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
         // Color swatches – top center:
-        if (_showColorPicker) Positioned(
+        Positioned(
           top: mediaPadding.top + 8,
           left: 0,
           right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _colorSwatches(),
+            children: [
+              ..._colorSwatches(),
+              const SizedBox(width: 16),
+              _pixelShiftToggle(l10n),
+            ],
           ),
         ),
         // Brightness slider – bottom, above hint:
@@ -262,19 +429,23 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, bool handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
         // Color swatches – left side, vertically centered:
-        if (_showColorPicker) Positioned(
+        Positioned(
           left: mediaPadding.left + 8,
           top: 0,
           bottom: 0,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: _colorSwatches(vertical: true),
+            children: [
+              _pixelShiftToggle(l10n),
+              const SizedBox(height: 16),
+              ..._colorSwatches(vertical: true),
+            ]
           ),
         ),
         // Brightness slider – right side, vertically centered:
@@ -296,6 +467,20 @@ class _FocusScreenState extends State<FocusScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _pixelShiftToggle(AppLocalizations l10n) {
+    return IconButton(
+      icon: Icon(
+        _pixelShiftEnabled ? Icons.blur_on : Icons.blur_off,
+        color: _textColor,
+        size: 28,
+      ),
+      tooltip: _pixelShiftEnabled
+          ? l10n.hintPixelShiftOn
+          : l10n.hintPixelShiftOff,
+      onPressed: _togglePixelShift,
     );
   }
 
@@ -400,18 +585,27 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _exitHint(
-        {required bool hasLine2, required bool handleSeconds,
+        {required bool hasLine2, required _SecondsToggleTypes? handleSeconds,
          required AppLocalizations l10n}
       ) {
     final String text;
-    if (hasLine2 && !handleSeconds) {
-      text = _showLine2
-          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
-          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
-    } else if (handleSeconds && !hasLine2) {
+    if (!hasLine2 &&
+        (handleSeconds == _SecondsToggleTypes.swatchBeats ||
+         handleSeconds == _SecondsToggleTypes.newEarthTime)) {
+      text = !_showSeconds
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOn}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOff}';
+    } else if (!hasLine2 &&
+        (handleSeconds == _SecondsToggleTypes.binaryClockString ||
+         handleSeconds == _SecondsToggleTypes.isGraphical)) {
       text = !_showSeconds
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOff}';
+    }
+    else if (hasLine2 && handleSeconds == null) {
+      text = _showLine2
+          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
+          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
     } else {
       text = l10n.hintFocusScreenExit;
     }
@@ -451,6 +645,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showSeconds: _showSeconds,
             showLabels: false,
           ),
         ValueType.binaryClockBcd =>
@@ -458,6 +653,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
+            showSeconds: _showSeconds,
             showLabels: false,
           ),
         _ => throw StateError(
@@ -466,7 +662,7 @@ class _FocusScreenState extends State<FocusScreen> {
       return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: hPadding, vertical: vPadding),
-        child: FittedBox(fit: BoxFit.contain, child: clock),
+        child: FittedBox(fit: BoxFit.contain, key: _valueDisplayKey, child: clock),
       );
     }
 
@@ -476,6 +672,7 @@ class _FocusScreenState extends State<FocusScreen> {
           horizontal: hPadding, vertical: vPadding),
       child: FittedBox(
         fit: BoxFit.contain,
+        key: _valueDisplayKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -505,6 +702,22 @@ class _FocusScreenState extends State<FocusScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _pixelShiftDebugOverlay() {
+    if (!kDebugMode) return const SizedBox.shrink();
+    return Positioned(
+      left: 8,
+      top: 100,
+      child:
+        Text(
+          'idx ${_pixelShiftIndex}/${_pixelShiftLevels.length - 1}  |  '
+          'off ${_pixelShiftOffsetY.toStringAsFixed(1)}  |  '
+          'dir ${_pixelShiftDirection > 0 ? "↓" : "↑"}   |  '
+           'h ${_measuredContentHeight?.toStringAsFixed(0) ?? "?"}',
+          style: const TextStyle(color: Colors.yellow, fontSize: 16),
+        ),
     );
   }
 }

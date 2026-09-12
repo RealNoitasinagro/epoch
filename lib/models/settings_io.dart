@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import 'prefs_migrations.dart';
 
 const _extJson = 'json';
 final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
@@ -68,7 +70,12 @@ Future<void> importSettings(BuildContext context) async {
   } else return;
 
   try {
-    await _importSettingsJson(json);
+    await importSettingsJson(json);
+    if (file.path != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_imported_config', file.name);
+    }
+
   } on FormatException {
     if (!context.mounted) return;
     _showSnackBar(context, l10n.messageSettingsImportFailed);
@@ -96,15 +103,33 @@ Future<void> resetSettings(BuildContext context) async {
   // reload
   if (!context.mounted) return;
   await EpochApp.of(context).reloadPreferences();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (context.mounted) {
-      (context as Element).markNeedsBuild();
-    }
-  });
 
   // report
   if (!context.mounted) return;
   _showSnackBar(context, l10n.messageSettingsReset);
+}
+
+Future<void> importSettingsJson(String json) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Parse first – throws FormatException before any changes if invalid:
+  final map = jsonDecode(json) as Map<String, dynamic>;
+
+  // Snapshot for rollback:
+  final backup = <String, dynamic>{
+    for (final key in prefs.getKeys()) key: prefs.get(key),
+  };
+
+  await prefs.clear();
+
+  try {
+    await _writeMapToPrefs(prefs, map);
+    await runPrefsMigrations();  // handle configs exported before 1.5.0
+  } catch (e) {
+    await prefs.clear();
+    await _writeMapToPrefs(prefs, backup);
+    rethrow;
+  }
 }
 
 // ── Private helpers ──────────────────────────────────────────────────────────
@@ -142,29 +167,7 @@ Future<String> _exportSettingsJson() async {
     for (final key in sortedKeys) key: prefs.get(key),
   };
   const encoder = JsonEncoder.withIndent('  ');
-  return encoder.convert(map);
-}
-
-Future<void> _importSettingsJson(String json) async {
-  final prefs = await SharedPreferences.getInstance();
-
-  // Parse first – throws FormatException before any changes if invalid:
-  final map = jsonDecode(json) as Map<String, dynamic>;
-
-  // Snapshot for rollback:
-  final backup = <String, dynamic>{
-    for (final key in prefs.getKeys()) key: prefs.get(key),
-  };
-
-  await prefs.clear();
-
-  try {
-    await _writeMapToPrefs(prefs, map);
-  } catch (e) {
-    await prefs.clear();
-    await _writeMapToPrefs(prefs, backup);
-    rethrow;
-  }
+  return '${encoder.convert(map)}\n';
 }
 
 Future<void> _writeMapToPrefs(

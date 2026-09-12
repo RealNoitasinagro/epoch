@@ -19,35 +19,39 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## Features
 
 ### Time systems
-- **Civil** – date, time, day second, day percent for any timezone
-- **Technical** – Unix time, TAI, GPS time
-- **Astronomical** – GMST, LMST, Julian Date, Modified Julian Date (MJD), MJD2000
-- **Curiosities** – Swatch Internet Time, 3 binary clocks, Doomsday Clock
+- **Civil** – date, time, day second, day percent, seven-segment clock for any timezone
+- **Technical** – Unix time, International Atomic Time (TAI), GPS time
+- **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST), 
+Julian Date (JD), Modified Julian Date (MJD), MJD2000
+- **Curiosities** – decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock,
+3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
 
 ### Configurable display
-- Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
-- Civil tab configurable with any timezone worldwide
+- Fully customizable tabs — any values from any category, in any order, plus custom tab labels
+- Built-in tab visibility toggles in Settings; hidden tabs can be restored to their original position
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
-- 7-day advance clock change notice
+- 7-day advance clock change notice, display upcoming clock changes in the next few years
+- Customizable date and time formats, 12/24-hour format toggle
+- Timezone details (abbreviation and UTC offset) configurable
+- Expanded date toggle
+- Thousands separator toggle
+- Day quarter color toggle
 - Drag-and-drop reordering, swipe to remove
 - Custom labels for individual values
 - Custom section headers and dividers
-- Copy any value to clipboard with one tap
+- Copy any value to clipboard with one tap (with label) or long press (value only)
 
 ### Design
 - Night mode with red-on-black display — preserves dark adaptation for stargazing
 - Light, dark, and system themes
-- Full-screen toggle (double-tap on the app's name in the top-left corner)
+- Full-screen toggle (double-tap on the app's name or logo icon in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
-- 12 / 24-hour format toggle
-- Thousands separator toggle
-- Expanded date toggle
-- Timezone details (abbreviation and UTC offset) configurable
+- Burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
+- Optionally start the app in Focus mode
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
-- Android widgets coming soon
-- Not yet: conversions between time systems
+- Android widgets and value conversion between time systems: planned for future releases
 
 ### Privacy & permissions
 - **No ads. No notifications. No tracking. No analytics. No network requests.**
@@ -59,7 +63,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 19 different time values simultaneously, lets you pick exactly
+Epoch shows you 23 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
@@ -75,10 +79,16 @@ Epoch is built around flexibility:
 rather than making choices for you, it gives you the building blocks
 to assemble exactly the time display you need — and nothing you don't.
 
+> [!TIP]
+> Check out the `example_configs` folder with (partly) localized pre-made configurations 
+> that you might like to fine-tune for your needs. \
+> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots (see next section).
+
 
 ## Screenshots
 
-Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
+Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}/images/phoneScreenshots/`. \
+There are slight differences between the two sets to highlight different aspects and details.
 
 <details>
 <summary>Click to expand (English)</summary>
@@ -122,6 +132,40 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 
 </details>
 
+Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
+
+<details>
+<summary>Click to expand (English)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_home.png" width="180" alt="en epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_spaceflight.png" width="180" alt="en epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_special_timezones.png" width="180" alt="en epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_uno.png" width="180" alt="en epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/en-US/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
+</p>
+
+</details>
+
+<details>
+<summary>Click to expand (German)</summary>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_home.png" width="180" alt="de epoch_settings_home.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_spaceflight.png" width="180" alt="de epoch_settings_spaceflight.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_special_timezones.png" width="180" alt="de epoch_settings_special_timezones.json">
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_uno.png" width="180" alt="de epoch_settings_uno.json">
+</p>
+
+<p>
+  <img src="https://raw.githubusercontent.com/RealNoitasinagro/epoch/main/example_configs/de-DE/screenshots/epoch_settings_world_clock.png" width="180" alt="en epoch_settings_world_clock.json">
+</p>
+
+</details>
+
 ---
 
 ## Platforms
@@ -136,6 +180,21 @@ Android screenshots are in `fastlane/metadata/android/{en-US,de-DE}`.
 | Windows  | ❌ Not supported |                                                                                                                                                |
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="24%" align="center">](https://f-droid.org/packages/io.github.RealEarthling.epoch)
+
+### Timeliness of the Timezone Data
+
+> [!NOTE]
+> Epoch uses the [timezone](https://pub.dev/packages/timezone) package,
+> which bundles the [IANA Time Zone Database](https://www.iana.org/time-zones). \
+> The timezone package may not have the latest available IANA database, and politically motivated
+> changes may not yet be reflected. \
+> For most use cases, this makes no difference. \
+> However, if you'd like to build Epoch yourself with an up-to-date IANA db, check out the script
+> `update_timezone_to_latest_iana_db.sh` in the repo's root. \
+> It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
+> Current (2026-09) versions:
+> - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
+> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026d](https://www.iana.org/time-zones/releases/2026d)
 
 ### Linux
 
@@ -174,3 +233,7 @@ Found a bug or have a feature request?
 [![GPLv3+](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html.en) © 2026 RealEarthling
+
+---
+
+[^1]: These values use a 'seconds since midnight in base N' rather than a 'fraction of day in base N' approach.

@@ -1,30 +1,59 @@
 import 'dart:async';
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/screens/civil_tab.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
+import 'layout_constants.dart';
 import 'models/app_settings.dart';
-import 'models/civil_tab_config.dart';
-import 'models/custom_tab_model.dart';
+import 'models/prefs_migrations.dart';
+import 'models/settings_io.dart';
+import 'models/tab_config.dart';
+import 'models/tab_entry.dart';
 import 'models/time_value.dart';
-import 'screens/astronomical_tab.dart';
 import 'screens/configurable_tab.dart';
-import 'screens/curiosities_tab.dart';
+import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
-import 'screens/technical_tab.dart';
+import 'screens/splash_screen.dart';
 
-void main() {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await runPrefsMigrations();
   tz.initializeTimeZones();
+
+  if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
+    if (args.contains('--help') || args.contains('-h')) {
+      stdout.writeln('Usage: epoch [config.json]');
+      exit(0);
+    }
+    final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+    if (configPath != null) {
+      final file = File(configPath);
+      if (file.existsSync()) {
+        try {
+          final json = await file.readAsString();
+          await importSettingsJson(json);
+        } catch (e) {
+          stderr.writeln('Failed to load config: $e');
+          exit(1);
+        }
+      } else {
+        stderr.writeln('Config file not found: $configPath');
+        exit(1);
+      }
+    }
+  }
+
   runApp(const EpochApp());
 }
 
-const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
-const _nightRed = Color(0xFFCC1010);
-const _nightRedDim = Color(0xFF7A0000);
+const _nightRed = kColorNightRed;
+const _nightRedDim = kColorNightRedDim;
 
 ThemeData _nightTheme() => ThemeData(
   brightness: Brightness.dark,
@@ -79,38 +108,56 @@ class EpochApp extends StatefulWidget {
 
 class EpochAppState extends State<EpochApp> {
   bool _settingsLoaded             = false;
+  bool _splashMinDurationElapsed   = false;
   String _localIanaZone            = 'UTC';
   Locale _locale                   = kDefaultLocale;
   AppThemeMode _themeMode          = kDefaultThemeMode;
   bool _hourFormat24               = kDefaultHourFormat24;
   bool _thousandsSep               = kDefaultThousandsSep;
   bool _dateWithDetails            = kDefaultDateWithDetails;
+  String _dateFormat               = kDatePatternIso;
+  String _timeFormat               = kTimePatternFull;
   ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
+  bool _dayQuarterColor            = kDefaultDayQuarterColor;
   LmstMode _lmstMode               = kDefaultLmstMode;
   double? _lmstLongitude;
+  String? _lastImportedConfig;
+  TimeValue? _startupFocusValue;
 
   Key _homeKey = UniqueKey();
+  final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
 
   @override
   void initState() {
     super.initState();
     _loadPreferences();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      if (mounted) setState(() => _splashMinDurationElapsed = true);
+    });
   }
 
   Future<void> reloadPreferences() async {
     await _loadPreferences();
-    if (mounted) setState(() => _homeKey = UniqueKey());
+    if (mounted) {
+      setState(() => _homeKey = UniqueKey());
+      settingsReloadNotifier.value++;  // signals SettingsScreen to refresh
+    }
   }
 
   Future<void> _loadPreferences() async {
-    final locale          = await loadLocale() ?? kDefaultLocale;
-    final theme           = await loadThemeMode();
-    final hour24          = await loadHourFormat24();
-    final thousands       = await loadThousandsSep();
-    final dateWithDetails = await loadDateWithDetails();
-    final zoneDisplayMode = await loadZoneDisplayMode();
-    final lmstMode        = await loadLmstMode();
-    final lmstLongitude   = await loadLmstLongitude();
+    final locale             = await loadLocale() ?? kDefaultLocale;
+    final theme              = await loadThemeMode();
+    final hour24             = await loadHourFormat24();
+    final thousands          = await loadThousandsSep();
+    final dateWithDetails    = await loadDateWithDetails();
+    final dateFormat         = await loadDateFormat();
+    final timeFormat         = await loadTimeFormat();
+    final zoneDisplayMode    = await loadZoneDisplayMode();
+    final dayQuarterColor    = await loadDayQuarterColor();
+    final lmstMode           = await loadLmstMode();
+    final lmstLongitude      = await loadLmstLongitude();
+    final lastImportedConfig = await loadLastImportedConfig();
+    final startupFocusValue  = await loadStartupFocusValue();
 
     String localZone = 'UTC';
     try {
@@ -119,18 +166,23 @@ class EpochAppState extends State<EpochApp> {
     } catch (_) {
       localZone = 'UTC';
     }
-    
+
     setState(() {
-      _localIanaZone   = localZone;
-      _locale          = locale;
-      _themeMode       = theme;
-      _hourFormat24    = hour24;
-      _thousandsSep    = thousands;
-      _dateWithDetails = dateWithDetails;
-      _zoneDisplayMode = zoneDisplayMode;
-      _lmstMode        = lmstMode;
-      _lmstLongitude   = lmstLongitude;
-      _settingsLoaded  = true;
+      _localIanaZone      = localZone;
+      _locale             = locale;
+      _themeMode          = theme;
+      _hourFormat24       = hour24;
+      _thousandsSep       = thousands;
+      _dateWithDetails    = dateWithDetails;
+      _dateFormat         = dateFormat;
+      _timeFormat         = timeFormat;
+      _zoneDisplayMode    = zoneDisplayMode;
+      _dayQuarterColor    = dayQuarterColor;
+      _lmstMode           = lmstMode;
+      _lmstLongitude      = lmstLongitude;
+      _lastImportedConfig = lastImportedConfig;
+      _startupFocusValue  = startupFocusValue;
+      _settingsLoaded     = true;
     });
   }
 
@@ -159,9 +211,24 @@ class EpochAppState extends State<EpochApp> {
     saveDateWithDetails(v);
   }
 
+  void setDateFormat(String pattern) {
+    setState(() => _dateFormat = pattern);
+    saveDateFormat(pattern);
+  }
+
+  void setTimeFormat(String pattern) {
+    setState(() => _timeFormat = pattern);
+    saveTimeFormat(pattern);
+  }
+
   void setZoneDisplayMode(ZoneDisplayMode mode) {
     setState(() => _zoneDisplayMode = mode);
     saveZoneDisplayMode(mode);
+  }
+
+  void setDayQuarterColor(bool v) {
+    setState(() => _dayQuarterColor = v);
+    saveDayQuarterColor(v);
   }
 
   void setLmstMode(LmstMode mode) {
@@ -172,6 +239,11 @@ class EpochAppState extends State<EpochApp> {
   void setLmstLongitude(double? lon) {
     setState(() => _lmstLongitude = lon);
     if (lon != null) saveLmstLongitude(lon);
+  }
+
+  void setLastImportedConfig(String filename) {
+    setState(() => _lastImportedConfig = filename);
+    saveLastImportedConfig(filename);
   }
 
   String get localIanaZone => _localIanaZone;
@@ -187,17 +259,17 @@ class EpochAppState extends State<EpochApp> {
   bool get hourFormat24               => _hourFormat24;
   bool get thousandsSep               => _thousandsSep;
   bool get dateWithDetails            => _dateWithDetails;
+  String get dateFormat               => _dateFormat;
+  String get timeFormat               => _timeFormat;
   ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
+  bool get dayQuarterColor            => _dayQuarterColor;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
+  String? get lastImportedConfig      => _lastImportedConfig;
 
   @override
   Widget build(BuildContext context) {
-    if (!_settingsLoaded) {
-      return const MaterialApp(
-        home: Scaffold(body: Center(child: CircularProgressIndicator())),
-      );
-    }
+    final showSplash = !_settingsLoaded || !_splashMinDurationElapsed;
     return MaterialApp(
       title: 'Epoch',
       debugShowCheckedModeBanner: false,
@@ -212,11 +284,15 @@ class EpochAppState extends State<EpochApp> {
         ),
         useMaterial3: true,
       ),
-      themeMode: _flutterThemeMode,
-      locale: _locale,
+      themeMode: showSplash ? ThemeMode.dark : _flutterThemeMode,
+      locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: HomeScreen(key: _homeKey),
+      home: showSplash
+          ? const SplashScreen()
+          : (_startupFocusValue != null
+            ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
+            : HomeScreen(key: _homeKey)),
     );
   }
 }
@@ -233,10 +309,27 @@ class _HomeScreenState extends State<HomeScreen>
   late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
-  List<TabEntry> _civilEntries = [];
-  List<CustomTabData> _customTabs = [];
+  List<TabConfig> _tabs = [];
+  ValueNotifier<int>? _settingsReloadNotifier;
   bool _loaded = false;
   bool _isFullscreen = false;
+
+  static const _fallbackVersion = '0.0.0';
+  static const _fallbackBuildNumber = '0';
+  static const changelogLink = 'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
+    _settingsReloadNotifier = EpochApp.of(context).settingsReloadNotifier;
+    _settingsReloadNotifier!.addListener(_onExternalReload);
+  }
+
+  void _onExternalReload() {
+    if (!mounted) return;
+    _loadData();
+  }
 
   @override
   void initState() {
@@ -252,19 +345,21 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _timer.cancel();
     _tabController?.dispose();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }
 
-  int get _tabCount => 4 + _customTabs.length;
+  List<TabConfig> get _visibleTabs =>
+      _tabs.where((t) => t.isVisible).toList();
+  int get _tabCount => _visibleTabs.length;
+  int get _watchlistCount => _visibleTabs.where((t) => !t.isBuiltin).length;
 
   Future<void> _loadData() async {
-    final civil      = await loadCivilEntries();
-    final customTabs = await loadCustomTabs();
-    final activeTab  = await loadActiveTab();
+    final result = await loadOrSeedAllTabs();
+    final activeTab = await loadActiveTab();
     setState(() {
-      _civilEntries = civil;
-      _customTabs   = customTabs;
-      _loaded       = true;
+      _tabs   = result.tabs;
+      _loaded = true;
     });
     _updateTabController(initialIndex: activeTab);
   }
@@ -278,25 +373,24 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  // ── Civil tab callbacks ──────────────────────────────────────────────
-
-  void _onCivilChanged(List<TabEntry> entries) {
-    setState(() => _civilEntries = entries);
-    saveCivilEntries(entries);
+  void _onTabEntriesChanged(String id, List<TabEntry> entries) {
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    tab.entries = entries;
+    saveAllTabs(_tabs);
+    setState(() {});
   }
-
-  // ── Custom tab management ────────────────────────────────────────────
 
   void _updateTabController({int? initialIndex}) {
     final newCount = _tabCount;
     final oldIndex = initialIndex ?? _tabController?.index ?? 0;
     final oldController = _tabController;
-    _tabController = TabController(
+    _tabController = newCount == 0
+        ? null
+        : (TabController(
       length: newCount,
       vsync: this,
       initialIndex: oldIndex.clamp(0, newCount - 1),
-    );
-    _tabController!.addListener(_onTabChanged);
+    )..addListener(_onTabChanged));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       oldController?.dispose();
     });
@@ -310,46 +404,39 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _addCustomTab(AppLocalizations l10n) {
-    if (_customTabs.length >= maxCustomTabs) return;
-    final tab = CustomTabData(
-      id:      generateId(),
-      name:    defaultTabName(_customTabs.length),
+    if (_watchlistCount >= maxCustomTabs) return;
+    final tab = TabConfig(
+      id: generateId(),
+      customName: defaultTabName(_watchlistCount),
       entries: [],
     );
-    _customTabs.add(tab);
-    saveCustomTabs(_customTabs);
+    _tabs.add(tab);
+    saveAllTabs(_tabs);
     _updateTabController();
-    // Navigate to the newly created tab.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _tabController?.animateTo(4 + _customTabs.length - 1);
+      _tabController?.animateTo(_visibleTabs.length - 1);
     });
   }
 
   void _deleteCustomTab(String id) {
-    final idx = _customTabs.indexWhere((t) => t.id == id);
-    _customTabs.removeWhere((t) => t.id == id);
-    saveCustomTabs(_customTabs);
-    // Navigate to tab left of the deleted one, minimum index 0.
-    final targetIndex = (idx + 3).clamp(0, _tabCount - 1);
+    final idx = _visibleTabs.indexWhere((t) => t.id == id);
+    _tabs.removeWhere((t) => t.id == id);
+    saveAllTabs(_tabs);
+    final newCount = _tabCount;  // recomputed after removal
     _updateTabController();
+    if (newCount == 0) return;   // nothing left to animate to
+    final targetIndex = (idx - 1).clamp(0, newCount - 1);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _tabController?.animateTo(targetIndex);
     });
   }
 
-  void _onCustomTabEntriesChanged(String id, List<TabEntry> entries) {
-    final tab = _customTabs.firstWhere((t) => t.id == id);
-    tab.entries = entries;
-    saveCustomTabs(_customTabs);
-    setState(() {});
-  }
-
   Future<void> _renameCustomTab(
       BuildContext context, AppLocalizations l10n, String id) async {
-    final tab = _customTabs.firstWhere((t) => t.id == id);
-    final controller = TextEditingController(text: tab.name);
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    final controller = TextEditingController(text: tab.customName);
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -376,10 +463,15 @@ class _HomeScreenState extends State<HomeScreen>
     // post-frame assertion on Linux when the dialog rebuilds after pop.
     // The GC will collect it correctly since no further references exist.
     if (result == null || result.isEmpty) return;
-    setState(() => tab.name = result);
-    saveCustomTabs(_customTabs);
+    setState(() => tab.customName = result);
+    saveAllTabs(_tabs);
   }
 
+  // The listener now keeps _tabs live-synced regardless of Settings being
+  // open/closed or Home being rebuilt in between, so the explicit reload here
+  // is no longer needed –
+  // only the LMST cleanup still belongs here (it's tied to leaving Settings,
+  // not to a tab-data change as such):
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
@@ -393,33 +485,38 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _removeLmstFromAllTabs() {
-    for (final tab in _customTabs) {
+    var anyChanged = false;
+    for (final tab in _tabs) {
       final newEntries = tab.entries
           .where((e) => e.valueType != ValueType.lmst)
           .toList();
       if (newEntries.length != tab.entries.length) {
         tab.entries = newEntries;
+        anyChanged = true;
       }
     }
-    saveCustomTabs(_customTabs);
+    if (!anyChanged) return;  // avoid pointless/harmful writes
+    saveAllTabs(_tabs);
     setState(() {});
   }
 
-  // ── Build ────────────────────────────────────────────────────────────
-
   @override
   Widget build(BuildContext context) {
-    if (!_loaded || _tabController == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     final app  = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
 
+    if (!_loaded) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+      );
+    }
+    if (_tabController == null) {
+      return _buildNoTabsScreen(context, l10n);
+    }
+
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: NavigationToolbar.kMiddleSpacing,
         flexibleSpace: Builder(
           builder: (context) {
             final isNight = EpochApp.of(context).isNightMode;
@@ -443,11 +540,20 @@ class _HomeScreenState extends State<HomeScreen>
         title: GestureDetector(
           onDoubleTap: _toggleFullscreen,
           onLongPress: () => _showBuildInfo(context),
-          child: Text(l10n.appName),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!EpochApp.of(context).isNightMode) ...[
+                Image.asset('assets/icon/epoch_icon.png', height: 28),
+                const SizedBox(width: 8),
+              ],
+              Text(l10n.appName),
+            ],
+          ),
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          if (_customTabs.length < maxCustomTabs)
+          if (_watchlistCount < maxCustomTabs)
             IconButton(
               icon: const Icon(Icons.add),
               tooltip: l10n.hintAddTab,
@@ -456,67 +562,134 @@ class _HomeScreenState extends State<HomeScreen>
                 _addCustomTab(l10n);
               },
             ),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: l10n.pageSettings,
-            onPressed: () => _openSettings(context),
+          // If we still need a direct shortcut...
+          // IconButton(
+          //   icon: const Icon(Icons.settings),
+          //   tooltip: l10n.pageSettings,
+          //   onPressed: () => _openSettings(context),
+          // ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              switch (value) {
+                case 'settings':
+                  _openSettings(context);
+                case 'about':
+                  _showAbout(context, l10n);
+                case 'whats_new':
+                  launchUrl(
+                    Uri.parse(changelogLink),
+                    mode: LaunchMode.externalApplication
+                  );
+              }
+            },
+            itemBuilder: (context) {
+              final l10n = AppLocalizations.of(context)!;
+              return [
+                PopupMenuItem(
+                  value: 'settings',
+                  child: ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: Text(l10n.pageSettings),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuDivider(),
+                PopupMenuItem(
+                  value: 'about',
+                  child: ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: Text(l10n.settingsAbout),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'whats_new',
+                  child: ListTile(
+                    leading: const Icon(Icons.new_releases_outlined),
+                    title: Text(l10n.settingsWhatsNew),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+              ];
+            },
           ),
+          const SizedBox(width: 8),
         ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           tabAlignment: TabAlignment.start,
-          tabs: [
-            Tab(child: Text(l10n.tabCivil)),
-            Tab(child: Text(l10n.tabTechnical)),
-            Tab(child: Text(l10n.tabAstronomical)),
-            Tab(child: Text(l10n.tabCuriosities)),
-            ..._customTabs.map((tab) => _CustomTab(
-              name: tab.name,
-              onRename: () => _renameCustomTab(context, l10n, tab.id),
-              onDelete: () => _deleteCustomTab(tab.id),
-            )),
-          ],
+          tabs: _visibleTabs.map((tab) => _AppTab(
+            tabConfig: tab,
+            onRename: tab.isBuiltin
+                ? null
+                : () => _renameCustomTab(context, l10n, tab.id),
+            onHideOrDelete: tab.isBuiltin
+                ? () => _hideBuiltinTab(tab.id)
+                : () => _deleteCustomTab(tab.id),
+          )).toList(),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          CivilTab(
-            now: _now,
-            entries: _civilEntries,
-            thousandsSep: app.thousandsSep,
-            hourFormat24: app.hourFormat24,
-            showDateDetails: app.dateWithDetails,
-            onEntriesChanged: _onCivilChanged,
-          ),
-          TechnicalTab(
-              now: _now,
-              thousandsSep: app.thousandsSep
-          ),
-          AstronomicalTab(
-              now: _now,
-              thousandsSep: app.thousandsSep,
-              lmstMode: app.lmstMode,
-              lmstLongitude: app.lmstLongitude,
-          ),
-          CuriositiesTab(
-              now: _now,
-              hourFormat24:
-              app.hourFormat24
-          ),
-          ..._customTabs.map((tab) => ConfigurableTab(
-            now: _now,
-            entries: tab.entries,
-            thousandsSep: app.thousandsSep,
-            hourFormat24: app.hourFormat24,
-            showDateDetails: app.dateWithDetails,
-            onEntriesChanged: (e) =>
-                _onCustomTabEntriesChanged(tab.id, e),
-          )),
-        ],
+        children: _visibleTabs.map((tab) => ConfigurableTab(
+          key: ValueKey(tab.id),
+          now: _now,
+          entries: tab.entries,
+          defaultEntries: tab.isBuiltin
+              ? defaultEntriesFor(tab.builtinKind!)
+              : List.of(defaultWatchlistEntries),
+          thousandsSep: app.thousandsSep,
+          hourFormat24: app.hourFormat24,
+          showDateDetails: app.dateWithDetails,
+          onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
+        )).toList(),
       ),
     );
+  }
+
+  Widget _buildNoTabsScreen(BuildContext context, AppLocalizations l10n) {
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.appName)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.visibility_off_outlined, size: 48,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(120)),
+              const SizedBox(height: 16),
+              Text(l10n.messageNoTabsVisible, textAlign: TextAlign.center),
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                icon: const Icon(Icons.settings),
+                label: Text(l10n.pageSettings),
+                onPressed: () => _openSettings(context),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                label: Text(l10n.hintAddTab),
+                onPressed: () => _addCustomTab(l10n),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _hideBuiltinTab(String id) {
+    final idx = _tabs.indexWhere((t) => t.id == id);
+    _tabs[idx] = _tabs[idx].copyWith(isVisible: false);
+    saveAllTabs(_tabs);
+    _updateTabController();
+    setState(() {});
   }
 
   void _showBuildInfo(BuildContext context) {
@@ -525,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (ctx) => AlertDialog(
         title: const Text('Build info'),
         content: Text(
-          kBuildTimestamp,
+          kBuildInfo,
           style: const TextStyle(fontFamily: fontFamilyDefault),
         ),
         actions: [
@@ -537,19 +710,41 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
+  Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
+    String version;
+    String build;
+    try {
+      final PackageInfo info = await PackageInfo.fromPlatform();
+      version = info.version.isNotEmpty ? info.version : _fallbackVersion;
+      build = info.buildNumber.isNotEmpty ? info.buildNumber : _fallbackBuildNumber;
+    } catch (_) {
+      version = _fallbackVersion;
+      build = _fallbackBuildNumber;
+    }
+    if (!context.mounted) return;
+    showAboutDialog(
+      context: context,
+      applicationName: l10n.appName,
+      applicationVersion: '$version (build $build)',
+      applicationLegalese: l10n.dialogueAboutLegalese,
+      children: [
+        SizedBox(height: 16),
+        Text(l10n.dialogueAbout),
+      ],
+    );
+  }
 }
 
-// ── Custom tab label with long-press and delete ───────────────────────────────
+class _AppTab extends StatelessWidget {
+  final TabConfig tabConfig;
+  final VoidCallback? onRename;  // null for builtin tabs (no rename)
+  final VoidCallback onHideOrDelete;
 
-class _CustomTab extends StatelessWidget {
-  final String name;
-  final VoidCallback onRename;
-  final VoidCallback onDelete;
-
-  const _CustomTab({
-    required this.name,
+  const _AppTab({
+    required this.tabConfig,
     required this.onRename,
-    required this.onDelete,
+    required this.onHideOrDelete,
   });
 
   void _showOptions(BuildContext context, AppLocalizations l10n) {
@@ -559,22 +754,27 @@ class _CustomTab extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (onRename != null)
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: Text(l10n.actionRenameTab),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  onRename!();
+                },
+              ),
             ListTile(
-              leading: const Icon(Icons.edit),
-              title: Text(l10n.actionRenameTab),
+              leading: Icon(
+                tabConfig.isBuiltin ? Icons.visibility_off_outlined : Icons.delete_outline,
+                color: Colors.redAccent,
+              ),
+              title: Text(
+                tabConfig.isBuiltin ? l10n.actionHideTab : l10n.actionDeleteTab,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
-                onRename();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.close,
-                  color: Colors.redAccent),
-              title: Text(l10n.actionDeleteTab,
-                  style: const TextStyle(color: Colors.redAccent)),
-              onTap: () {
-                Navigator.pop(ctx);
-                onDelete();
+                onHideOrDelete();
               },
             ),
           ],
@@ -590,8 +790,10 @@ class _CustomTab extends StatelessWidget {
       child: GestureDetector(
         onLongPress: () => _showOptions(context, l10n),
         child: Text(
-          name,
-          style: const TextStyle(fontStyle: FontStyle.italic),
+          tabConfig.displayName(l10n),
+          style: tabConfig.isBuiltin
+              ? const TextStyle(fontStyle: FontStyle.italic)
+              : null,
         ),
       ),
     );

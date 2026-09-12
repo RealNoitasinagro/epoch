@@ -14,20 +14,20 @@ const tGMT = [
 
 const tCET_CEST = [
   ...['central europe time', 'central european time', 'central european summer time',
-    'central european daylight time', 'central european daylight saving time', 'cedt',
-    'middle european time', 'middle european summer time', 'met', 'mest',
+    'central european daylight time', 'central european daylight saving time', 'CEDT',
+    'middle european time', 'middle european summer time', 'MET', 'MEST',
     'european central time', 'european central summer time'],
-  ...['mitteleuropäische zeit', 'mitteleuropäische sommerzeit', 'mez', 'mesz'],
+  ...['mitteleuropäische zeit', 'mitteleuropäische sommerzeit', 'MEZ', 'MESZ'],
 ];
 
 const tEET_EEST = [
   ...['eastern european time', 'eastern european daylight time', 'eastern european summer time'],
-  ...['osteuropäische zeit', 'osteuropäische sommerzeit', 'oez', 'oesz'],
+  ...['osteuropäische zeit', 'osteuropäische sommerzeit', 'OEZ', 'OESZ'],
 ];
 
 const tWET_WEST = [
   ...['western european time', 'western european daylight time', 'western european summer time'],
-  ...['westeuropäische zeit', 'westeuropäische sommerzeit', 'wez', 'wesz'],
+  ...['westeuropäische zeit', 'westeuropäische sommerzeit', 'WEZ', 'WESZ'],
 ];
 
 

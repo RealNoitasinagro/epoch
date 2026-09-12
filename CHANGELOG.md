@@ -4,6 +4,55 @@
 
 ---
 
+## [1.5.0] - 2026-09-12
+
+### Added
+- new Curiosities time value types: decimal time, octal time, hexadecimal time, New Earth Time (NET)
+- all tabs now fully configurable (except rename for built-ins), built-in tabs can be hidden
+- tab visibility toggles in Settings; hidden built-in tabs can be restored to their original position
+- new popup menu for Settings, About and What's New
+- option to start the app in Focus mode
+- burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
+- import function shows last loaded config in Settings
+- splash screen with logo and version info, logo in title bar
+
+### Changed
+- LMST no longer shown dynamically based on your longitude, needs to be (re)added explicitly
+- JSON config format, with backwards compatibility maintained (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md));
+keys renamed for clarity: `lmst_lon` → `lmst_longitude`, `zone_display` → `zone_display_mode`
+- more informative date and time format subtitles and improved layout in Settings
+- binaryClockString now allows to turn seconds off (on tabs and Focus screen)
+- improved copy-to-clipboard: long-press for value only, without label
+- improved timezone search by offset to allow decimals: +5.5/5,5 (= +5:30), +8.75/8,75 (= +8:45) etc.
+
+### Fixed
+- Settings not always showing correct state immediately after import (previous fix for reset insufficient) 
+
+---
+
+## [1.4.0] - 2026-08-08
+
+### Added
+- display the next four clock changes for configured time values with (unpinned) DST in info
+- date and time formats configurable (preset and custom options)
+- day quarter indicator in different colors (on/off-switch in Settings)
+- support for direct config loading on Linux command line
+- `example_configs` and [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) on GitHub
+
+### Changed
+- a few common timezone abbreviations localized for German (MEZ, MESZ, OEZ, OESZ, WEZ, WESZ)
+- much better timezone search keyword coverage (still WIP)
+- graphical binary clocks now allow to turn seconds off, like seven-segment clock
+- Swatch beats now show two decimals by default (with option for no decimals)
+- max (time value) entries per configurable tab increased from 20 to 30 (sections, dividers don't count)
+
+### Fixed
+- Swatch beats were up to half a .beat off (because of unwanted rounding)
+- custom labels were reset to default labels on repeated edits
+- Curiosities tab scroll issue after immersive mode (final value was not fully visible)
+
+---
+
 ## [1.3.0] - 2026-07-20
 
 ### Added

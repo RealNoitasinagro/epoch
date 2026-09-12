@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Delete tab'**
   String get actionDeleteTab;
 
+  /// No description provided for @actionHideTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide tab'**
+  String get actionHideTab;
+
   /// No description provided for @actionRenameTab.
   ///
   /// In en, this message translates to:
@@ -203,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintCopyToClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Copy to clipboard'**
+  /// **'Copy · Long-press for value only, no label'**
   String get hintCopyToClipboard;
 
   /// No description provided for @hintDeselect.
@@ -266,6 +272,18 @@ abstract class AppLocalizations {
   /// **'Double-tap to switch to focus screen'**
   String get hintFocusScreenOpen;
 
+  /// No description provided for @hintFocusScreenToggleDecimalsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to suppress decimals'**
+  String get hintFocusScreenToggleDecimalsOff;
+
+  /// No description provided for @hintFocusScreenToggleDecimalsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to display decimals'**
+  String get hintFocusScreenToggleDecimalsOn;
+
   /// No description provided for @hintFocusScreenToggleSecondsOff.
   ///
   /// In en, this message translates to:
@@ -295,6 +313,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatic clock change disabled'**
   String get hintPinnedIndicator;
+
+  /// No description provided for @hintPixelShiftOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn-in protection off – tap to enable'**
+  String get hintPixelShiftOff;
+
+  /// No description provided for @hintPixelShiftOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn-in protection on – tap to disable'**
+  String get hintPixelShiftOn;
 
   /// No description provided for @hintRemoveSelected.
   ///
@@ -362,6 +392,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Binary_clock'**
   String get infoLinkBinaryClockString;
 
+  /// No description provided for @infoLinkDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Decimal_time'**
+  String get infoLinkDecimalTime;
+
   /// No description provided for @infoLinkDoomsdayClock.
   ///
   /// In en, this message translates to:
@@ -404,6 +440,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
   String get infoLinkModifiedJulianDate2000;
 
+  /// No description provided for @infoLinkNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/New_Earth_Time'**
+  String get infoLinkNewEarthTime;
+
   /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -425,19 +467,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
+  /// **'Seconds since midnight in binary representation: each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
   String get infoTextBinaryClockBcd;
 
   /// No description provided for @infoTextBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Time displayed in binary. Each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  /// **'Seconds since midnight in binary representation: each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
   String get infoTextBinaryClockColumns;
 
   /// No description provided for @infoTextBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
+  /// **'Seconds since midnight in compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoTextBinaryClockString;
 
   /// No description provided for @infoTextDate.
@@ -464,10 +506,16 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
   String get infoTextDaySecond;
 
+  /// No description provided for @infoTextDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.'**
+  String get infoTextDecimalTime;
+
   /// No description provided for @infoTextDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Currently set to 85 seconds to midnight (as of Jan 2026).'**
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.'**
   String get infoTextDoomsdayClock;
 
   /// No description provided for @infoTextGmst.
@@ -479,13 +527,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 18 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextGps;
+
+  /// No description provided for @infoTextHexadecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds since midnight, shown in base 16 (hexadecimal), grouped in pairs for readability.'**
+  String get infoTextHexadecimalTime;
 
   /// No description provided for @infoTextJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Julian Date counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
   String get infoTextJulianDate;
 
   /// No description provided for @infoTextLmst.
@@ -497,14 +551,26 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
+  /// **'Modified Julian Date (MJD) = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
   String get infoTextModifiedJulianDate;
 
   /// No description provided for @infoTextModifiedJulianDate2000.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date 2000 = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
+  /// **'Modified Julian Date 2000 (MJD2000) = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
+
+  /// No description provided for @infoTextNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Earth Time (or NET), also called degree time, splits a day into 360 NET degrees, where each NET degree has 60 NET minutes and each NET minute 60 NET seconds. UTC is the only time zone.'**
+  String get infoTextNewEarthTime;
+
+  /// No description provided for @infoTextOctalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds since midnight, shown in base 8 (octal).'**
+  String get infoTextOctalTime;
 
   /// No description provided for @infoTextSevenSegmentTime.
   ///
@@ -521,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently, in May 2026, 37 seconds ahead of UTC. The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'International Atomic Time (Temps Atomique International in French, TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.
@@ -596,11 +662,23 @@ abstract class AppLocalizations {
   /// **'Tab name'**
   String get labelNewTabName;
 
+  /// No description provided for @labelNextClockChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Next clock changes'**
+  String get labelNextClockChanges;
+
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
   /// **'SS'**
   String get labelSeconds;
+
+  /// No description provided for @labelShowDecimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Show decimals'**
+  String get labelShowDecimals;
 
   /// No description provided for @labelShowSeconds.
   ///
@@ -632,6 +710,18 @@ abstract class AppLocalizations {
   /// **'Maximum of {count} values reached.'**
   String messageMaxValues(int count);
 
+  /// No description provided for @messageMissingTabsRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Some built-in tabs were missing from the loaded configuration and have been restored.'**
+  String get messageMissingTabsRestored;
+
+  /// No description provided for @messageNoTabsVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'All tabs are hidden.\nActivate a tab in Settings, or add a new one.'**
+  String get messageNoTabsVisible;
+
   /// No description provided for @messageNoTimezone.
   ///
   /// In en, this message translates to:
@@ -662,23 +752,29 @@ abstract class AppLocalizations {
   /// **'Settings reset to defaults'**
   String get messageSettingsReset;
 
+  /// No description provided for @messageTabReactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.'**
+  String get messageTabReactivated;
+
   /// No description provided for @pageSettings.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
   String get pageSettings;
 
+  /// No description provided for @sectionAlternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative Time Scales'**
+  String get sectionAlternative;
+
   /// No description provided for @sectionAtomic.
   ///
   /// In en, this message translates to:
   /// **'Atomic Clock'**
   String get sectionAtomic;
-
-  /// No description provided for @sectionBinaryClock.
-  ///
-  /// In en, this message translates to:
-  /// **'Binary Clock'**
-  String get sectionBinaryClock;
 
   /// No description provided for @sectionDoomsdayClock.
   ///
@@ -692,17 +788,29 @@ abstract class AppLocalizations {
   /// **'Global Positioning System'**
   String get sectionGps;
 
-  /// No description provided for @sectionInternet.
-  ///
-  /// In en, this message translates to:
-  /// **'Internet Time'**
-  String get sectionInternet;
-
   /// No description provided for @sectionJulian.
   ///
   /// In en, this message translates to:
   /// **'Julian Date'**
   String get sectionJulian;
+
+  /// No description provided for @sectionLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Time'**
+  String get sectionLocal;
+
+  /// No description provided for @sectionNumberSystems.
+  ///
+  /// In en, this message translates to:
+  /// **'Number Systems'**
+  String get sectionNumberSystems;
+
+  /// No description provided for @sectionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Time Zones'**
+  String get sectionOther;
 
   /// No description provided for @sectionSidereal.
   ///
@@ -722,6 +830,18 @@ abstract class AppLocalizations {
   /// **'About'**
   String get settingsAbout;
 
+  /// No description provided for @settingsCustomFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom…'**
+  String get settingsCustomFormat;
+
+  /// No description provided for @settingsDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get settingsDateFormat;
+
   /// No description provided for @settingsDateWithDetails.
   ///
   /// In en, this message translates to:
@@ -731,8 +851,38 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'On = with ISO calender week, day of the year'**
+  /// **'calender week, day of the year'**
   String get settingsDateWithDetailsSub;
+
+  /// No description provided for @settingsDayQuarterColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Day quarter color'**
+  String get settingsDayQuarterColor;
+
+  /// No description provided for @settingsDayQuarterColorSub1st.
+  ///
+  /// In en, this message translates to:
+  /// **'1st red'**
+  String get settingsDayQuarterColorSub1st;
+
+  /// No description provided for @settingsDayQuarterColorSub2nd.
+  ///
+  /// In en, this message translates to:
+  /// **'2nd cyan'**
+  String get settingsDayQuarterColorSub2nd;
+
+  /// No description provided for @settingsDayQuarterColorSub3rd.
+  ///
+  /// In en, this message translates to:
+  /// **'3rd amber'**
+  String get settingsDayQuarterColorSub3rd;
+
+  /// No description provided for @settingsDayQuarterColorSub4th.
+  ///
+  /// In en, this message translates to:
+  /// **'4th green'**
+  String get settingsDayQuarterColorSub4th;
 
   /// No description provided for @settingsDstAlwaysOff.
   ///
@@ -757,6 +907,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Daylight saving time (DST)'**
   String get settingsDstMode;
+
+  /// No description provided for @settingsExportImportReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Export, import and reset'**
+  String get settingsExportImportReset;
 
   /// No description provided for @settingsHourFormat.
   ///
@@ -830,6 +986,18 @@ abstract class AppLocalizations {
   /// **'Do not show'**
   String get settingsLmstOff;
 
+  /// No description provided for @settingsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'off'**
+  String get settingsOff;
+
+  /// No description provided for @settingsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'on'**
+  String get settingsOn;
+
   /// No description provided for @settingsPreferencesExport.
   ///
   /// In en, this message translates to:
@@ -854,6 +1022,30 @@ abstract class AppLocalizations {
   /// **'Save backup before reset'**
   String get settingsPreferencesResetBackupTitle;
 
+  /// No description provided for @settingsStartupFocusValue.
+  ///
+  /// In en, this message translates to:
+  /// **'App start in Focus mode'**
+  String get settingsStartupFocusValue;
+
+  /// No description provided for @settingsStartupFocusValueClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear selection'**
+  String get settingsStartupFocusValueClear;
+
+  /// No description provided for @settingsStartupFocusValueNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set – app opens with active tab'**
+  String get settingsStartupFocusValueNone;
+
+  /// No description provided for @settingsTabVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab visibility'**
+  String get settingsTabVisibility;
+
   /// No description provided for @settingsTheme.
   ///
   /// In en, this message translates to:
@@ -865,6 +1057,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settingsThemeDark;
+
+  /// No description provided for @settingsThemeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme and language'**
+  String get settingsThemeLanguage;
 
   /// No description provided for @settingsThemeLight.
   ///
@@ -895,6 +1093,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e. g. 1,746,000 instead of 1746000'**
   String get settingsThousandsSepSub;
+
+  /// No description provided for @settingsTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time format'**
+  String get settingsTimeFormat;
+
+  /// No description provided for @settingsValueDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Value display'**
+  String get settingsValueDisplay;
 
   /// No description provided for @settingsWhatsNew.
   ///
@@ -977,19 +1187,19 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (BCD)'**
+  /// **'Binary Clock (BCD)'**
   String get valueTypeBinaryClockBcd;
 
   /// No description provided for @valueTypeBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Binary clock (columns)'**
+  /// **'Binary Clock (columns)'**
   String get valueTypeBinaryClockColumns;
 
   /// No description provided for @valueTypeBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Binary time (string)'**
+  /// **'Binary Time (string)'**
   String get valueTypeBinaryClockString;
 
   /// No description provided for @valueTypeDate.
@@ -1007,14 +1217,20 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Day percent'**
+  /// **'Day Percent'**
   String get valueTypeDayPercent;
 
   /// No description provided for @valueTypeDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Day second'**
+  /// **'Day Second'**
   String get valueTypeDaySecond;
+
+  /// No description provided for @valueTypeDecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal time'**
+  String get valueTypeDecimalTime;
 
   /// No description provided for @valueTypeDoomsdayClock.
   ///
@@ -1033,6 +1249,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPS time (s)'**
   String get valueTypeGps;
+
+  /// No description provided for @valueTypeHexadecimalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Hexadecimal time'**
+  String get valueTypeHexadecimalTime;
 
   /// No description provided for @valueTypeJulianDate.
   ///
@@ -1058,10 +1280,22 @@ abstract class AppLocalizations {
   /// **'Modified Julian Date 2000'**
   String get valueTypeModifiedJulianDate2000;
 
+  /// No description provided for @valueTypeNewEarthTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Earth Time'**
+  String get valueTypeNewEarthTime;
+
+  /// No description provided for @valueTypeOctalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Octal time'**
+  String get valueTypeOctalTime;
+
   /// No description provided for @valueTypeSevenSegmentTime.
   ///
   /// In en, this message translates to:
-  /// **'Seven-segment clock'**
+  /// **'Seven-segment Clock'**
   String get valueTypeSevenSegmentTime;
 
   /// No description provided for @valueTypeSwatchBeats.
@@ -1085,7 +1319,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Unix time (s)'**
+  /// **'Unix Time (s)'**
   String get valueTypeUnixSeconds;
 }
 

@@ -1,13 +1,13 @@
-import 'package:epoch/models/astronomical_tab_config.dart';
-import 'package:epoch/models/civil_tab_config.dart';
-import 'package:epoch/models/curiosities_tab_config.dart';
-import 'package:epoch/models/tab_entry.dart';
-import 'package:epoch/models/technical_tab_config.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../models/app_settings.dart';
+import '../models/astronomical_tab_config.dart';
+import '../models/civil_tab_config.dart';
+import '../models/curiosities_tab_config.dart';
+import '../models/tab_entry.dart';
+import '../models/technical_tab_config.dart';
 import '../models/time_value.dart';
-import '../l10n/app_localizations.dart';
 import 'timezone_search_screen.dart';
 
 // Displays a two-step dialog: value type → timezone (if zone-dependent).
@@ -18,6 +18,7 @@ Future<TabEntry?> showEntryPicker(
       List<TabEntry> existingEntries = const [],
       LmstMode lmstMode = LmstMode.off,
       double? lmstLongitude,
+      bool valueTypesOnly = false,  // hide divider/section options, e.g. for startup focus value
     }) {
   return showDialog<TabEntry>(
     context: context,
@@ -26,6 +27,7 @@ Future<TabEntry?> showEntryPicker(
       existingEntries: existingEntries,
       lmstMode: lmstMode,
       lmstLongitude: lmstLongitude,
+      valueTypesOnly: valueTypesOnly,
     ),
   );
 }
@@ -35,12 +37,14 @@ class _EntryPicker extends StatefulWidget {
   final List<TabEntry> existingEntries;
   final LmstMode lmstMode;
   final double? lmstLongitude;
+  final bool valueTypesOnly;
 
   const _EntryPicker({
     this.allowedTypes,
     this.existingEntries = const [],
     required this.lmstMode,
     this.lmstLongitude,
+    this.valueTypesOnly = false,
   });
 
   @override
@@ -201,25 +205,40 @@ class _EntryPickerState extends State<_EntryPicker> {
         ],
         const Divider(),
         SimpleDialogOption(
-          onPressed: () =>
-              Navigator.pop(context, TabDivider.generateDividerId()),
+          onPressed: widget.valueTypesOnly
+              ? null
+              : () => Navigator.pop(context, TabDivider.generateDividerId()),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.horizontal_rule, size: 16),
+              Icon(Icons.horizontal_rule, size: 16,
+                  color: widget.valueTypesOnly
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
+                      : null),
               const SizedBox(width: 8),
-              Text(l10n.hintAddDivider),
+              Text(l10n.hintAddDivider,
+                  style: TextStyle(color: widget.valueTypesOnly
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
+                      : null)),
             ],
           ),
         ),
         SimpleDialogOption(
-          onPressed: () => _addSection(context, l10n),
+          onPressed: widget.valueTypesOnly
+              ? null
+              : () => _addSection(context, l10n),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.title, size: 16),
+              Icon(Icons.title, size: 16,
+                  color: widget.valueTypesOnly
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
+                      : null),
               const SizedBox(width: 8),
-              Text(l10n.hintAddSectionHeader),
+              Text(l10n.hintAddSectionHeader,
+                  style: TextStyle(color: widget.valueTypesOnly
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
+                      : null)),
             ],
           ),
         ),
