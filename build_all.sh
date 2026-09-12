@@ -181,7 +181,7 @@ echo
 
 echo "# pub get"
 if [ ! "$useOffline" -eq "1" ]; then
-    flutter_command="$flutter_active pub get"
+    flutter_command="$flutter_active pub get --enforce-lockfile"
     echo "# $flutter_command" | tee -a "$build_all_log"
     if [ ! "$dryRun" -eq "1" ] ; then
         $flutter_command

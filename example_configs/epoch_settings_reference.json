@@ -18,6 +18,7 @@
   "lmst_longitude": 8.1427,
   "lmst_mode": "manual",
   "locale": "en",
+  "startup_focus_value": "unixSeconds/utc",
   "theme_mode": "dark",
   "thousands_sep": false,
   "time_format": "HH:mm",

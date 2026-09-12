@@ -1,0 +1,11 @@
+Wesentliche UI-Verbesserungen, neue Funktionen
+
+- Alle Tabs (Bürgerlich, Technisch, Astronomisch, Kurioses) voll konfigurierbar
+- Neue Kurioses-Zeitwerte: Dezimal-, Oktal-, Hexadezimal-Zeit, New Earth Time
+- Option zum Starten der App im Fokus-Modus
+- Einbrennschutz für Fokus-Modus (pixel shift)
+- Splash-Screen
+- Zeitzonensuche: Offsets unterstützen Dezimalstellen (z. B. +5,5, +8,75)
+- Verbessertes Einstellungen-Layout und Kopieren-in-Zwischenablage-Verhalten
+
++ weitere Verbesserungen

@@ -2,17 +2,18 @@ Epoch zeigt die aktuelle Zeit in einer Vielzahl von Zeitsystemen an —
 jede Sekunde aktualisiert, alles auf einen Blick.
 
 <b>Was Epoch bietet</b>
-- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent — für jede Zeitzone
+- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent, Sieben-Segment-Uhr — für jede Zeitzone
 - Technisch: Unix-Zeit, Internationale Atomzeit (TAI), GPS-Zeit
 - Astronomisch: Greenwich und Local Mean Sidereal Time (GMST, LMST), Julianisches Datum in mehreren Varianten
-- Kurioses: Swatch-Internetzeit, Sieben-Segment- und Binäruhren, Weltuntergangsuhr
-Alle Zeitwerte können in die Zwischenablage kopiert werden.
+- Kurioses: Dezimalzeit, Swatch-Internetzeit, New Earth Time, Doomsday Clock, 3 Binäruhren, Oktal- und Hexadezimalzeit
+Alle Zeitwerte können mit kurzem oder langem Knopfdruck in die Zwischenablage kopiert werden.
 
 <b>Konfigurierbar</b>
 - Erstelle deine eigenen Watchlist-Tabs – kombiniere beliebige Werte aus beliebigen Kategorien, in beliebiger Reihenfolge.
+- Alle eingebauten Tabs (Bürgerlich, Technisch, Astronomisch, Kurioses) sind voll anpassbar und können ausgeblendet und wiederhergestellt werden.
 - Eigene Labels, Abschnittsüberschriften und Trennlinien einfügen
 - Mit drag-and-drop sortieren, per Wischgeste entfernen
-- Datum- und Zeitformate sowie Zeitzoneninfos konfigurierbar
+- Datum- und Zeitformate sowie Zeitzonen-Infos konfigurierbar
 - Option, Zeitzonen unabhängig vom Datum dauerhaft auf Normalzeit oder Sommerzeit zu fixieren
 - Ankündigung von Zeitumstellungen 7 Tage im Voraus, Anzeige von Zeitumstellungen der nächsten Jahre im Info-Dialog des Zeitwerts
 - Alle Einstellungen exportierbar, importierbar und zurücksetzbar
@@ -21,6 +22,8 @@ Alle Zeitwerte können in die Zwischenablage kopiert werden.
 - Jeder Wert doppelt antippbar zum Wechsel in den Vollbildmodus — ideal als Nachttischuhr
 - Helligkeitseinstellung (Android) und Farbauswahl
 - Zusatzinformationen mittels Gedrückthalten
+- Einbrennschutz durch sanfte, periodische Pixelverschiebung (insbesondere für OLED-Displays)
+- Option zum Starten der App im Fokus-Modus
 
 <b>Nachtmodus für Astronomen</b>
 Der Nachtmodus zeigt roten Text auf schwarzem Hintergrund – schützt die Dunkeladaption deiner Augen beim Sternegucken.

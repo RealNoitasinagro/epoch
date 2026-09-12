@@ -24,14 +24,16 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## Features
 
 ### Time systems
-- **Civil** – date, time, day second, day percent for any timezone
-- **Technical** – Unix time, TAI, GPS time
-- **Astronomical** – GMST, LMST, Julian Date, Modified Julian Date (MJD), MJD2000
+- **Civil** – date, time, day second, day percent, seven-segment clock for any timezone
+- **Technical** – Unix time, International Atomic Time (TAI), GPS time
+- **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST), 
+Julian Date (JD), Modified Julian Date (MJD), MJD2000
 - **Curiosities** – decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock,
-seven-segment and 3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
+3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
 
 ### Configurable display
-- Fully customizable tabs (*Watchlist*) — any values from any category, in any order, plus custom tab labels
+- Fully customizable tabs — any values from any category, in any order, plus custom tab labels
+- Built-in tab visibility toggles in Settings; hidden tabs can be restored to their original position
 - Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
 - Optionally force standard or summer time for zoned time values all year round
 - 7-day advance clock change notice, display upcoming clock changes in the next few years
@@ -48,14 +50,13 @@ seven-segment and 3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
 ### Design
 - Night mode with red-on-black display — preserves dark adaptation for stargazing
 - Light, dark, and system themes
-- Full-screen toggle (double-tap on the app's name in the top-left corner)
+- Full-screen toggle (double-tap on the app's name or logo icon in the top-left corner)
 - Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
 - Burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
 - Optionally start the app in Focus mode
 - Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
 - Available in English and German
-- Android widgets planned
-- Not yet: conversions between time systems
+- Android widgets and value conversion between time systems: planned for future releases
 
 ### Privacy & permissions
 - **No ads. No notifications. No tracking. No analytics. No network requests.**
