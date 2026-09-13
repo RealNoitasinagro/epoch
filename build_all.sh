@@ -173,7 +173,9 @@ echo "# clean"
 if [[ ! "$skipClean" -eq "1" || "$cwd" == "$GL_Epoch" ]] ; then
     flutter_command="$flutter_active clean"
     echo "# $flutter_command" | tee -a "$build_all_log"
-    $flutter_command
+    if [ ! "$dryRun" -eq "1" ] ; then
+        $flutter_command
+    fi
 else
     echo "Skipped."
 fi
@@ -252,9 +254,11 @@ echo | tee -a "$build_all_log"
 
 echo "# Calculating $checksum checksums..."
 if [[ ! "$skipChecksums" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
-    for f in "$apk_output_path"/*.apk ; do
-        $checksum "$f" | tee -a "$build_all_log"
-    done
+    if [ ! "$dryRun" -eq "1" ] ; then
+        for f in "$apk_output_path"/*.apk ; do
+            $checksum "$f" | tee -a "$build_all_log"
+        done
+    fi
 else
     echo "Skipped."
 fi
@@ -262,17 +266,21 @@ echo | tee -a "$build_all_log"
 
 if [[ ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
     echo "# Listing output files in $apk_output_path..."
-    # shellcheck disable=SC2012
-    ls -l "$apk_output_path" | tee -a "$build_all_log"
-    echo | tee -a "$build_all_log"
+    if [ ! "$dryRun" -eq "1" ] ; then
+        # shellcheck disable=SC2012
+        ls -l "$apk_output_path" | tee -a "$build_all_log"
+    fi
 fi
+echo | tee -a "$build_all_log"
 
 if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
-  echo "# Copying output files..."
-  # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
-  cp -v $apk_output_path/*.apk $destination_path
-  echo
+    echo "# Copying output files..."
+    # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
+    if [ ! "$dryRun" -eq "1" ] ; then
+        cp -v $apk_output_path/*.apk $destination_path
+    fi
 fi
+echo | tee -a "$build_all_log"
 
 if [[ ( "$cwd" == "$GL_Epoch" && "$dryRun" -eq "0" && ("$mode" != "release" || ! -e "${GL_Epoch}/.git-commit") ) ||
       ( "$cwd" != "$GL_Epoch" && "$what" == "all" && "$dryRun" -eq "0" ) ]] ; then
