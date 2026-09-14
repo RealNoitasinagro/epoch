@@ -6,7 +6,7 @@ set -euo pipefail
 
 repo_status=$(git rev-parse --short HEAD)
 
-timezone_version=$("$FLUTTER_BIN/dart" --json | python3 -c "
+timezone_version=$("$FLUTTER_BIN/dart" pub deps --json | python3 -c "
 import json, sys
 deps = json.load(sys.stdin)
 print(next(p['version'] for p in deps['packages'] if p['name'] == 'timezone'))
