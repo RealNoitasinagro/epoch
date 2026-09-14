@@ -41,6 +41,7 @@
   },
   "actionCancel": "Cancel",
   "actionDeleteTab": "Delete tab",
+  "actionExitApp": "Exit",
   "actionHideTab": "Hide tab",
   "actionRenameTab": "Rename tab",
   "actionZoneLocal": "Local (system timezone)",

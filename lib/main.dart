@@ -16,6 +16,7 @@ import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
 import 'models/time_value.dart';
+import 'platform_utils.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
@@ -581,6 +582,8 @@ class _HomeScreenState extends State<HomeScreen>
                     Uri.parse(changelogLink),
                     mode: LaunchMode.externalApplication
                   );
+                case 'exit':
+                  SystemNavigator.pop();
               }
             },
             itemBuilder: (context) {
@@ -614,6 +617,18 @@ class _HomeScreenState extends State<HomeScreen>
                     dense: true,
                   ),
                 ),
+                if (! isDesktopPlatform) ...[
+                  PopupMenuDivider(),
+                  PopupMenuItem(
+                    value: 'exit',
+                    child: ListTile(
+                      leading: const Icon(Icons.exit_to_app_outlined),
+                      title: Text(l10n.actionExitApp),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                    ),
+                  ),
+                ],
               ];
             },
           ),

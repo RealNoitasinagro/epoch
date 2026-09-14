@@ -41,6 +41,7 @@
   },
   "actionCancel": "Abbrechen",
   "actionDeleteTab": "Tab löschen",
+  "actionExitApp": "Beenden",
   "actionHideTab": "Tab ausblenden",
   "actionRenameTab": "Tab umbenennen",
   "actionZoneLocal": "Lokal (Systemzeitzone)",

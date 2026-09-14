@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- exit app button in popup menu
+
 ---
 
 ## [1.5.0] - 2026-09-12

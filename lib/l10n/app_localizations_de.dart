@@ -15,6 +15,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionDeleteTab => 'Tab löschen';
 
   @override
+  String get actionExitApp => 'Beenden';
+
+  @override
   String get actionHideTab => 'Tab ausblenden';
 
   @override
