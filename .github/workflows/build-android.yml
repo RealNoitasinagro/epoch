@@ -53,7 +53,7 @@ jobs:
           bash fastlane/build_info.sh
 
       - name: Build APKs (split per ABI)
-        run: flutter build apk --release --split-per-abi --dart-define=BUILD_INFO="CI build" --no-pub
+        run: flutter build apk --release --split-per-abi --dart-define-from-file=.build_info.env --no-pub
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v7.0.1
