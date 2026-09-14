@@ -60,6 +60,24 @@ case "$what" in
         skipLinux=1
         skipSplit=0
     ;;
+    'apkweb')
+        skipApk=0
+        skipWeb=0
+        skipLinux=1
+        skipSplit=1
+    ;;
+    'apklinux')
+        skipApk=0
+        skipWeb=1
+        skipLinux=0
+        skipSplit=1
+    ;;
+    'weblinux')
+        skipApk=1
+        skipWeb=0
+        skipLinux=0
+        skipSplit=1
+    ;;
     'most')
         skipApk=0
         skipWeb=0
