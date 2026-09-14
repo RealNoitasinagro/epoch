@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
@@ -7,6 +6,7 @@ import '../models/app_settings.dart';
 import '../models/settings_io.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';
+import '../platform_utils.dart';
 import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
@@ -38,11 +38,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _ioInProgress = false;
   late String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
-
-  bool get _isDesktop =>
-      defaultTargetPlatform == TargetPlatform.linux ||
-      defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.macOS;
 
   @override
   void initState() {
@@ -769,7 +764,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ],
                       ),
                     ),
-                  if (!_isDesktop) ...[
+                  if (! isDesktopPlatform) ...[
                     RadioListTile<LmstMode>(
                       value: LmstMode.locationAccess,
                       title: Text(l10n.settingsLmstLongitudeAuto),

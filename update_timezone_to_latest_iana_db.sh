@@ -36,12 +36,22 @@ fi
 # Backup directory:
 BAKDIR="$HOME/Temp"
 mkdir -p "$BAKDIR"
-TZPKG_BAK="$BAKDIR/timezone-${installed_timezone_version}_${timestamp}"
+
+# Grab the IANA version *currently* in the live package, before touching it:
+current_iana_in_pkg=$(grep 'Timezone data version' "$TZPKG/lib/data/latest.dart" 2>/dev/null | cut -d':' -f 2 | sed -r 's/^\s+//' || echo "unknown")
+echo "Installed IANA db version: $current_iana_in_pkg"
+
+# Two SEPARATE directories: one untouched backup (never written to after
+# creation), one disposable working copy that tool/refresh.sh is allowed
+# to modify however it likes:
+TZPKG_BAK="$BAKDIR/timezone-${installed_timezone_version}_iana-${current_iana_in_pkg}_${timestamp}"
+TZPKG_WORK="/tmp/tz-work-${installed_timezone_version}-$$"
 
 # Save original PUB_CACHE for cleanup:
 original_pub_cache="${PUB_CACHE:-}"
 
-# Restore PUB_CACHE and working directory on exit (success or failure):
+# Restore PUB_CACHE and working directory on exit (success or failure),
+# and always remove the disposable working copy:
 cleanup() {
     echo "Restoring environment..."
     if [ -z "$original_pub_cache" ]; then
@@ -50,19 +60,25 @@ cleanup() {
         export PUB_CACHE="$original_pub_cache"
     fi
     cd "$cwd"
+    rm -rf "$TZPKG_WORK"
 }
 trap cleanup EXIT
 
-# Remove older backups (glob must be unquoted for expansion):
+# Remove old backups (only prune ones older than 30 days, never the one
+# we're about to create):
 echo "Removing old backups from $BAKDIR..."
-find "$BAKDIR" -maxdepth 1 -name "timezone-${installed_timezone_version}_*" -exec rm -rf {} +
+find "$BAKDIR" -maxdepth 1 -name "timezone-*" -mtime +30 -exec rm -rf {} +
 
-# Back up the current package before modifying it:
+# Create the untouched backup first, from the still-pristine live package:
 echo "Backing up $TZPKG -> $TZPKG_BAK"
 cp -r "$TZPKG" "$TZPKG_BAK"
 
-# Work in the backup copy (not the live package):
-cd "$TZPKG_BAK"
+# Create a SEPARATE disposable working copy for refresh.sh to run in –
+# never the backup itself, so the backup stays pristine no matter what
+# refresh.sh does internally:
+echo "Creating disposable working copy at $TZPKG_WORK"
+cp -r "$TZPKG" "$TZPKG_WORK"
+cd "$TZPKG_WORK"
 
 # Point PUB_CACHE to a temp dir so dart pub get inside refresh.sh
 # doesn't try to write to the real cache:
@@ -73,17 +89,14 @@ mkdir -p "$PUB_CACHE"
 echo "Running tool/refresh.sh..."
 tool/refresh.sh
 
-# Copy generated files back to the live package:
+# Copy generated files from the working copy back to the live package:
 echo "Copying updated IANA data to $TZPKG..."
 cp -v lib/data/* "$TZPKG/lib/data/"
 cp -v lib/src/common_locations.dart "$TZPKG/lib/src/"
 
-# Clean up temp pub cache:
-rm -rf "$PUB_CACHE"
-
 echo ""
 echo "Done. IANA database updated in $TZPKG"
-echo "Backup at: $TZPKG_BAK"
+echo "Backup (untouched, pristine) at: $TZPKG_BAK"
 echo ""
 echo "To restore the original IANA database:"
 echo "  rm -rf \"$TZPKG\" && cp -r \"$TZPKG_BAK\" \"$TZPKG\""

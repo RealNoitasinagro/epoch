@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Delete tab'**
   String get actionDeleteTab;
 
+  /// No description provided for @actionExitApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get actionExitApp;
+
   /// No description provided for @actionHideTab.
   ///
   /// In en, this message translates to:

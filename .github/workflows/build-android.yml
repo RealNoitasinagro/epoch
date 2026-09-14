@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
 
       - name: Set up Java
         uses: actions/setup-java@v5.2.0
@@ -29,13 +29,13 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Analyze code
-        run: flutter analyze
+        run: flutter analyze --no-pub
 
       - name: Run tests
-        run: flutter test
+        run: flutter test --no-pub
 
       - name: Set up signing
         run: |
@@ -47,18 +47,14 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Build APK (universal)
-        run: flutter build apk --release --dart-define=BUILD_INFO="CI build"
-
       - name: Build APKs (split per ABI)
-        run: flutter build apk --release --split-per-abi --dart-define=BUILD_INFO="CI build"
+        run: flutter build apk --release --split-per-abi --dart-define=BUILD_INFO="CI build" --no-pub
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v7.0.1
         with:
           name: epoch-release-apks
           path: |
-            build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
             build/app/outputs/flutter-apk/app-x86_64-release.apk
