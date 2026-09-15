@@ -152,7 +152,11 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `gmst`                   | Greenwich Mean Sidereal Time |
 | `lmst`                   | Local Mean Sidereal Time     |
 | `julianDate`             | Julian Date                  |
+| `reducedJulianDate`      | Reduced Julian Date          |
 | `modifiedJulianDate`     | Modified Julian Date         |
+| `dublinJulianDate`       | Dublin Julian Date           |
+| `cnesJulianDate`         | CNES Julian Date             |
+| `ccsdsJulianDate`        | CCSDS Julian Date            |
 | `modifiedJulianDate2000` | MJD relative to J2000.0      |
 | `decimalTime`            | Decimal time                 |
 | `swatchBeats`            | Swatch Internet Time         |

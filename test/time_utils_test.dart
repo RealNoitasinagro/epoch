@@ -116,7 +116,7 @@ void main() {
     test('TAI is 37 seconds ahead of Unix', () {
       final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
       final unix = TimeUtils.unixTimestamp(dt);
-      final tai = TimeUtils.taiSeconds(dt);
+      final tai = TimeUtils.taiUnixTimestamp(dt);
       expect(tai - unix, equals(37));
     });
   });
@@ -199,12 +199,48 @@ void main() {
     });
   });
 
+  group('TimeUtils.reducedJulianDate', () {
+    test('RJD = JD - 2400000', () {
+      final dt = DateTime.utc(2000, 1, 1, 12, 0, 0);
+      final jd = TimeUtils.julianDate(dt);
+      final rjd = TimeUtils.reducedJulianDate(dt);
+      expect(rjd, closeTo(jd - 2400000, 0.0001));
+    });
+  });
+
   group('TimeUtils.modifiedJulianDate', () {
     test('MJD = JD - 2400000.5', () {
       final dt = DateTime.utc(2000, 1, 1, 12, 0, 0);
       final jd = TimeUtils.julianDate(dt);
       final mjd = TimeUtils.modifiedJulianDate(dt);
       expect(mjd, closeTo(jd - 2400000.5, 0.0001));
+    });
+  });
+
+  group('TimeUtils.dublinJulianDate', () {
+    test('DJD = JD - 2415020', () {
+      final dt = DateTime.utc(2000, 1, 1, 12, 0, 0);
+      final jd = TimeUtils.julianDate(dt);
+      final djd = TimeUtils.dublinJulianDate(dt);
+      expect(djd, closeTo(jd - 2415020, 0.0001));
+    });
+  });
+
+  group('TimeUtils.cnesJulianDate', () {
+    test('CNES JD = JD - 2433282.5', () {
+      final dt = DateTime.utc(2000, 1, 1, 12, 0, 0);
+      final jd = TimeUtils.julianDate(dt);
+      final cnesjd = TimeUtils.cnesJulianDate(dt);
+      expect(cnesjd, closeTo(jd - 2433282.5, 0.0001));
+    });
+  });
+
+  group('TimeUtils.ccsdsJulianDate', () {
+    test('CCSDS JD = JD - 2436204.5', () {
+      final dt = DateTime.utc(2000, 1, 1, 12, 0, 0);
+      final jd = TimeUtils.julianDate(dt);
+      final ccsdsjd = TimeUtils.ccsdsJulianDate(dt);
+      expect(ccsdsjd, closeTo(jd - 2436204.5, 0.0001));
     });
   });
 

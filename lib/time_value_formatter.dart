@@ -32,7 +32,7 @@ class TimeValueFormatter {
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
       case ValueType.tai:
-        final v = TimeUtils.taiSeconds(utcNow);
+        final v = TimeUtils.taiUnixTimestamp(utcNow);
         return thousandsSep
             ? NumberFormat.decimalPattern(locale).format(v)
             : v.toString();
@@ -51,9 +51,25 @@ class TimeValueFormatter {
         return formatDecimal(
             TimeUtils.julianDate(utcNow), locale, 5,
             thousandsSep: thousandsSep);
+      case ValueType.reducedJulianDate:
+        return formatDecimal(
+            TimeUtils.reducedJulianDate(utcNow), locale, 5,
+            thousandsSep: thousandsSep);
       case ValueType.modifiedJulianDate:
         return formatDecimal(
             TimeUtils.modifiedJulianDate(utcNow), locale, 5,
+            thousandsSep: thousandsSep);
+      case ValueType.dublinJulianDate:
+        return formatDecimal(
+            TimeUtils.dublinJulianDate(utcNow), locale, 5,
+            thousandsSep: thousandsSep);
+      case ValueType.cnesJulianDate:
+        return formatDecimal(
+            TimeUtils.cnesJulianDate(utcNow), locale, 5,
+            thousandsSep: thousandsSep);
+      case ValueType.ccsdsJulianDate:
+        return formatDecimal(
+            TimeUtils.ccsdsJulianDate(utcNow), locale, 5,
             thousandsSep: thousandsSep);
       case ValueType.modifiedJulianDate2000:
         return formatDecimal(

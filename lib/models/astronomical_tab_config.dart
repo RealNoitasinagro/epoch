@@ -5,7 +5,11 @@ const astronomicalTypes = [
   ValueType.gmst,
   ValueType.lmst,
   ValueType.julianDate,
+  ValueType.reducedJulianDate,
   ValueType.modifiedJulianDate,
+  ValueType.dublinJulianDate,
+  ValueType.cnesJulianDate,
+  ValueType.ccsdsJulianDate,
   ValueType.modifiedJulianDate2000,
 ];
 
@@ -18,6 +22,10 @@ const defaultAstronomicalEntries = [
   TabDivider(id: 'builtin_divider_astro_1'),
   TabSection(id: 'builtin_julian', label: '', builtinKey: BuiltinSectionKey.julian),
   TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.reducedJulianDate, zone: ZoneUtc()),
   TimeValue(valueType: ValueType.modifiedJulianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.dublinJulianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.cnesJulianDate, zone: ZoneUtc()),
+  TimeValue(valueType: ValueType.ccsdsJulianDate, zone: ZoneUtc()),
   TimeValue(valueType: ValueType.modifiedJulianDate2000, zone: ZoneUtc()),
 ];

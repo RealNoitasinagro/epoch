@@ -398,6 +398,18 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Binary_clock'**
   String get infoLinkBinaryClockString;
 
+  /// No description provided for @infoLinkCcsdsJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkCcsdsJulianDate;
+
+  /// No description provided for @infoLinkCnesJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkCnesJulianDate;
+
   /// No description provided for @infoLinkDecimalTime.
   ///
   /// In en, this message translates to:
@@ -409,6 +421,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'https://thebulletin.org/doomsday-clock/'**
   String get infoLinkDoomsdayClock;
+
+  /// No description provided for @infoLinkDublinJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkDublinJulianDate;
 
   /// No description provided for @infoLinkGmst.
   ///
@@ -452,6 +470,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/New_Earth_Time'**
   String get infoLinkNewEarthTime;
 
+  /// No description provided for @infoLinkReducedJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
+  String get infoLinkReducedJulianDate;
+
   /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -487,6 +511,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seconds since midnight in compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
   String get infoTextBinaryClockString;
+
+  /// No description provided for @infoTextCcsdsJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'CCSDS Julian Date (CCSDS JD) = JD − 2,436,204.5 (epoch: 1958-01-01 00:00 UT). Introduced by the Consultative Committee for Space Data Systems (CCSDS) for standardized spacecraft time codes, using 1958 as the historical reference date of International Atomic Time (TAI).'**
+  String get infoTextCcsdsJulianDate;
+
+  /// No description provided for @infoTextCnesJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: 1950-01-01 00:00 UT). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.'**
+  String get infoTextCnesJulianDate;
 
   /// No description provided for @infoTextDate.
   ///
@@ -524,6 +560,12 @@ abstract class AppLocalizations {
   /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.'**
   String get infoTextDoomsdayClock;
 
+  /// No description provided for @infoTextDublinJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.'**
+  String get infoTextDublinJulianDate;
+
   /// No description provided for @infoTextGmst.
   ///
   /// In en, this message translates to:
@@ -533,7 +575,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. Currently 18 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is currently 18 seconds ahead of UTC (2026-09).'**
   String get infoTextGps;
 
   /// No description provided for @infoTextHexadecimalTime.
@@ -545,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC (-4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC (epoch: -4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
   String get infoTextJulianDate;
 
   /// No description provided for @infoTextLmst.
@@ -557,13 +599,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextModifiedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date (MJD) = JD − 2,400,000.5 (1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 to record the orbit of Sputnik.'**
+  /// **'Modified Julian Date (MJD) = JD − 2,400,000.5 (epoch: 1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 for satellite tracking, including the orbit of Sputnik.'**
   String get infoTextModifiedJulianDate;
 
   /// No description provided for @infoTextModifiedJulianDate2000.
   ///
   /// In en, this message translates to:
-  /// **'Modified Julian Date 2000 (MJD2000) = JD – 2,451,544.5 or MJD – 51,544 (2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
+  /// **'Modified Julian Date 2000 (MJD2000) = JD − 2,451,544.5 or MJD − 51,544 (epoch: 2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
   String get infoTextModifiedJulianDate2000;
 
   /// No description provided for @infoTextNewEarthTime.
@@ -577,6 +619,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seconds since midnight, shown in base 8 (octal).'**
   String get infoTextOctalTime;
+
+  /// No description provided for @infoTextReducedJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.'**
+  String get infoTextReducedJulianDate;
 
   /// No description provided for @infoTextSevenSegmentTime.
   ///
@@ -593,7 +641,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (Temps Atomique International in French, TAI) counts seconds since 1977-01-01 00:00:00 UTC and does not include leap seconds. Currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.
@@ -1208,6 +1256,18 @@ abstract class AppLocalizations {
   /// **'Binary Time (string)'**
   String get valueTypeBinaryClockString;
 
+  /// No description provided for @valueTypeCcsdsJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'CCSDS Julian Date'**
+  String get valueTypeCcsdsJulianDate;
+
+  /// No description provided for @valueTypeCnesJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'CNES Julian Date'**
+  String get valueTypeCnesJulianDate;
+
   /// No description provided for @valueTypeDate.
   ///
   /// In en, this message translates to:
@@ -1223,13 +1283,13 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Day Percent'**
+  /// **'Day percent'**
   String get valueTypeDayPercent;
 
   /// No description provided for @valueTypeDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Day Second'**
+  /// **'Day second'**
   String get valueTypeDaySecond;
 
   /// No description provided for @valueTypeDecimalTime.
@@ -1243,6 +1303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Doomsday Clock'**
   String get valueTypeDoomsdayClock;
+
+  /// No description provided for @valueTypeDublinJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Dublin Julian Date'**
+  String get valueTypeDublinJulianDate;
 
   /// No description provided for @valueTypeGmst.
   ///
@@ -1298,6 +1364,12 @@ abstract class AppLocalizations {
   /// **'Octal time'**
   String get valueTypeOctalTime;
 
+  /// No description provided for @valueTypeReducedJulianDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduced Julian Date'**
+  String get valueTypeReducedJulianDate;
+
   /// No description provided for @valueTypeSevenSegmentTime.
   ///
   /// In en, this message translates to:
@@ -1313,7 +1385,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeTai.
   ///
   /// In en, this message translates to:
-  /// **'TAI (s)'**
+  /// **'Unix time (TAI) (s)'**
   String get valueTypeTai;
 
   /// No description provided for @valueTypeTime.
@@ -1325,7 +1397,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Unix Time (s)'**
+  /// **'Unix time (s)'**
   String get valueTypeUnixSeconds;
 }
 

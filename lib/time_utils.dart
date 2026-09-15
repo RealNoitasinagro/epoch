@@ -7,6 +7,9 @@ import 'models/timezone_search_zones.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
+  static const leapSecondsSince1972 = 27;
+  static const leapSecondsSince1980 = leapSecondsSince1972 - 9;
+
   static int dayOfYear(DateTime dt) => dt.ordinalDate;
 
   static int isoWeekNumber(DateTime dt) => dt.weekNumber;
@@ -187,19 +190,15 @@ class TimeUtils {
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
   /// TAI: UTC + leap seconds (currently 37).
-  /// Last check for accuracy of hardcoded values: 2026-09-01.
-  static int taiSeconds(DateTime utc) {
-    const leapSeconds = 37;
-    return utc.toUtc().millisecondsSinceEpoch ~/ 1000 + leapSeconds;
+  static int taiUnixTimestamp(DateTime utc) {
+    return unixTimestamp(utc) + 10 + leapSecondsSince1972;
   }
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
   /// GPS time does not have leap seconds, currently 18s ahead of UTC.
-  /// Last check for accuracy of hardcoded values: 2026-09-01.
   static int gpsTime(DateTime utc) {
-    const leapSeconds = 18;
     final gpsEpoch = DateTime.utc(1980, 1, 6);
-    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSeconds;
+    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSince1980;
   }
 
   /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).
@@ -249,11 +248,27 @@ class TimeUtils {
         32045;
   }
 
-  /// Modified Julian Date: JD − 2400000.5
+  /// Reduced Julian Date: RJD = JD - 2400000
+  static double reducedJulianDate(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2400000;
+
+  /// Modified Julian Date: MJD = JD - 2400000.5
   static double modifiedJulianDate(DateTime utc) =>
       julianDate(utc.toUtc()) - 2400000.5;
 
-  /// Modified Julian Date 2000: JD − 2451544.5
+  /// Dublin Julian Date: DJD = JD - 2415020
+  static double dublinJulianDate(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2415020;
+
+  /// CNES Julian Date: CNES JD = JD - 2433282.5
+  static double cnesJulianDate(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2433282.5;
+
+  /// CCSDS Julian Date: CCSDS JD = JD - 2436204.5
+  static double ccsdsJulianDate(DateTime utc) =>
+      julianDate(utc.toUtc()) - 2436204.5;
+
+  /// Modified Julian Date 2000: MJD2000 = JD - 2451544.5 / MJD - 51544
   static double modifiedJulianDate2000(DateTime utc) =>
       julianDate(utc.toUtc()) - 2451544.5;
 

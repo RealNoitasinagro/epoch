@@ -188,11 +188,23 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
 
   @override
+  String get infoLinkCcsdsJulianDate =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
+
+  @override
+  String get infoLinkCnesJulianDate =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
+
+  @override
   String get infoLinkDecimalTime =>
       'https://de.wikipedia.org/wiki/Dezimalzeit#Frankreich';
 
   @override
   String get infoLinkDoomsdayClock => 'https://thebulletin.org/doomsday-clock/';
+
+  @override
+  String get infoLinkDublinJulianDate =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
   String get infoLinkGmst => 'https://de.wikipedia.org/wiki/Sternzeit';
@@ -220,6 +232,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://en.wikipedia.org/wiki/New_Earth_Time';
 
   @override
+  String get infoLinkReducedJulianDate =>
+      'https://en.wikipedia.org/wiki/Julian_day#Variants';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://de.wikipedia.org/wiki/Swatch-Internetzeit';
 
@@ -241,6 +257,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextBinaryClockString =>
       'Die Sekunden seit Mitternacht in kompakter Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+
+  @override
+  String get infoTextCcsdsJulianDate =>
+      'Julianisches Datum CCSDS (CCSDS JD) = JD − 2.436.204,5 (Epoche: 1958-01-01 00:00 UT). Vom Consultative Committee for Space Data Systems (CCSDS) für standardisierte Zeitcodes in der Raumfahrt eingeführt, mit 1958 als historischem Referenzdatum der Internationalen Atomzeit (TAI).';
+
+  @override
+  String get infoTextCnesJulianDate =>
+      'Julianisches Datum CNES (CNES JD) = JD − 2.433.282,5 (Epoche: 1950-01-01 00:00 UT). Vom französischen Raumfahrtzentrum CNES als kompakte Tageszählung für Raumfahrtberechnungen eingeführt, mit dem Beginn des Jahres 1950 als Referenzepoche.';
 
   @override
   String get infoTextDate =>
@@ -267,12 +291,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Im Januar 2026 auf 85 Sekunden vor Mitternacht gestellt.';
 
   @override
+  String get infoTextDublinJulianDate =>
+      'Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: 1899-12-31 12:00 UT). 1955 von der Internationalen Astronomischen Union (IAU) auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.';
+
+  @override
   String get infoTextGmst =>
       'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
 
   @override
   String get infoTextGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Aktuell 18 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt aktuell 18 Sekunden vor UTC (2026-09).';
 
   @override
   String get infoTextHexadecimalTime =>
@@ -280,7 +308,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextJulianDate =>
-      'Das Julianische Datum (JD) zählt Tage seit dem Mittag des 1. Januar 4713 v. Chr. (-4712-01-01 12:00:00 UT). Standardreferenz in der Astronomie für Zeitintervalle zwischen Ereignissen.';
+      'Das Julianische Datum (JD) zählt die Tage seit dem Mittag des 1. Januar 4713 v. Chr. (Epoche: -4712-01-01 12:00:00 UT). Die Standard-Zeitreferenz in der Astronomie zur Berechnung von Zeitintervallen zwischen Ereignissen.';
 
   @override
   String get infoTextLmst =>
@@ -288,11 +316,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextModifiedJulianDate =>
-      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (1858-11-17 00:00:00 UT). Beginnt um Mitternacht statt mittags und hat kleinere Zahlen. Wurde 1957 vom Smithsonian Astrophysical Observatory eingeführt, um die Erdumlaufbahn von Sputnik aufzuzeichnen.';
+      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (Epoche: 1858-11-17 00:00:00 UT). Beginnt statt um Mittag um Mitternacht und verwendet kleinere Zahlen. 1957 vom Smithsonian Astrophysical Observatory für die Verfolgung von Satelliten, darunter die Umlaufbahn von Sputnik, eingeführt.';
 
   @override
   String get infoTextModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD – 51.544 (2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD − 51.544 (Epoche: 2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
   String get infoTextNewEarthTime =>
@@ -301,6 +329,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextOctalTime =>
       'Die Sekunden seit Mitternacht zur Basis 8 (Oktalsystem).';
+
+  @override
+  String get infoTextReducedJulianDate =>
+      'Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -312,7 +344,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'Internationale Atomzeit (französisch Temps Atomique International, TAI) zählt Sekunden seit 1977-01-01 00:00:00 UTC ohne Schaltsekunden. Aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
@@ -645,6 +677,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeBinaryClockString => 'Binärzeit (String)';
 
   @override
+  String get valueTypeCcsdsJulianDate => 'Julianisches Datum CCSDS';
+
+  @override
+  String get valueTypeCnesJulianDate => 'Julianisches Datum CNES';
+
+  @override
   String get valueTypeDate => 'Datum';
 
   @override
@@ -661,6 +699,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeDoomsdayClock => 'Doomsday Clock';
+
+  @override
+  String get valueTypeDublinJulianDate => 'Dubliner Julianisches Datum';
 
   @override
   String get valueTypeGmst => 'GMST';
@@ -691,13 +732,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeOctalTime => 'Oktalzeit';
 
   @override
+  String get valueTypeReducedJulianDate => 'Reduziertes Julianisches Datum';
+
+  @override
   String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch-Internetzeit';
 
   @override
-  String get valueTypeTai => 'TAI (s)';
+  String get valueTypeTai => 'Unix-Zeit (TAI) (s)';
 
   @override
   String get valueTypeTime => 'Uhrzeit';

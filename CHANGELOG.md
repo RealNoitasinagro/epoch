@@ -3,7 +3,11 @@
 ## [Unreleased]
 
 ### Added
+- four new astronomical value types: more JD variants (Reduced JD, Dublin JD, CNES JD, CCSDS JD)
 - exit app button in popup menu
+
+### Fixed
+- info text for TAI (continuous time scale, not an epoch starting at 1977-01-01)
 
 ---
 
