@@ -25,6 +25,7 @@ mode=${2:-release};
 dryRun=${DRY_RUN:-0}
 
 if [[ ! ( "$what" == "apk" || "$what" == "web" || "$what" == "linux" || "$what" == "abisplit" ||
+          "$what" == "apkweb" || "$what" == "apklinux" || "$what" == "weblinux" ||
           "$what" == "most" || "$what" == "all" ) ]] ; then
     echo "Invalid variant '$what' (must be 'apk', 'web', 'linux', 'abisplit', 'most' or 'all')"
     exit 1
