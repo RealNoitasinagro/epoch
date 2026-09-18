@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../layout_constants.dart';
+import '../platform_utils.dart';
 import 'time_value.dart';
 
 const _kLocaleKey = 'locale';
@@ -181,11 +182,19 @@ Future<void> saveDayQuarterColor(bool enabled) async {
 
 Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
-  return switch (prefs.getString(_kLmstModeKey)) {
+  LmstMode mode = switch (prefs.getString(_kLmstModeKey)) {
     'manual'         => LmstMode.manual,
     'locationAccess' => LmstMode.locationAccess,
     _                => kDefaultLmstMode,
   };
+  // locationAccess has no meaning on desktop platforms (no location API) –
+  // silently degrade to manual so the longitude field is at least visible,
+  // rather than leaving the radio group with no selection at all:
+  if (mode == LmstMode.locationAccess && isDesktopPlatform) {
+    mode = LmstMode.manual;
+    await saveLmstMode(mode);
+  }
+  return mode;
 }
 
 Future<void> saveLmstMode(LmstMode mode) async {

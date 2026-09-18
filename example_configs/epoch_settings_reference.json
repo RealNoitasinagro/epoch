@@ -3,7 +3,7 @@
   "all_tabs": [
     "1789478713462_4\t\tcivil\t1\tsection:builtin_local:@local\tdate/local\ttime/local\tdaySecond/local\tdayPercent/local\tsevenSegmentClock/local\tdivider:builtin_divider_civil_1\tsection:builtin_other:@other\ttime/utc\tdaySecond/utc",
     "1789478713462_5\t\ttechnical\t1\tsection:builtin_unix:@unix\tunixSeconds/utc\tdivider:builtin_divider_tech_1\tsection:builtin_atomic:@atomic\ttai/utc\tdivider:builtin_divider_tech_2\tsection:builtin_gps:@gps\tgps/utc",
-    "1789478713462_6\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\treducedJulianDate/utc\tmodifiedJulianDate/utc\tdublinJulianDate/utc\tcnesJulianDate/utc\tccsdsJulianDate/utc\tmodifiedJulianDate2000/utc",
+    "1789478713462_6\t\tastronomical\t1\tsection:builtin_sidereal:@sidereal\tgmst/utc\tlmst/utc\tdivider:builtin_divider_astro_1\tsection:builtin_julian:@julian\tjulianDate/utc\treducedJulianDate/utc\tmodifiedJulianDate/utc\tdublinJulianDate/utc\tcnesJulianDate/utc\tccsdsJulianDate/utc\tmodifiedJulianDate2000/utc",
     "1789478713462_7\t\tcuriosities\t1\tsection:builtin_alternative:@alternative\tdecimalTime/local\tswatchBeats/utc\tnewEarthTime/utc\tdivider:builtin_divider_curio_1\tsection:builtin_numberSystems:@numberSystems\tbinaryClockColumns/local\tbinaryClockBcd/local\tbinaryClockString/local\toctalTime/local\thexadecimalTime/local\tdivider:builtin_divider_curio_2\tsection:builtin_doomsdayClock:@doomsdayClock\tdoomsdayClock/utc",
     "1784784052469\tWatchlist 1\t\t1"
   ],
