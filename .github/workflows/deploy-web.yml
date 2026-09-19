@@ -22,8 +22,13 @@ jobs:
       - name: Install dependencies
         run: flutter pub get --enforce-lockfile
 
+      - name: Collect build information
+        run: |
+          export FLUTTER_BIN=$(dirname $(which flutter))
+          bash fastlane/build_info.sh
+
       - name: Build web
-        run: flutter build web --release --base-href /epoch/ --no-pub
+        run: flutter build web --release --base-href /epoch/ --dart-define-from-file=.build_info.env --no-pub
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4.1.0
