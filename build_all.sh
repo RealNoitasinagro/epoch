@@ -141,7 +141,7 @@ else
 fi
 
 if [ "$cwd" == "$GL_Epoch" ] ; then
-    repo_status=$(cut -c1-7 .git-commit)
+    repo_status=$(tail -1 .git-commit | cut -c1-7)
 else
     repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
 fi
