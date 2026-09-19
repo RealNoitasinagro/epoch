@@ -2,12 +2,21 @@
 
 ## [Unreleased]
 
+---
+
+## [1.5.1] - 2026-09-19
+
 ### Added
-- four new astronomical value types: more JD variants (Reduced JD, Dublin JD, CNES JD, CCSDS JD)
+- new Astronomical value types: four more JD variants (Reduced JD, Dublin JD, CNES JD, CCSDS JD)
 - exit app button in popup menu
 
+### Changed
+- build info now shows Git commit, timezone and IANA database versions (long press on logo or title)
+
 ### Fixed
-- info text for TAI (continuous time scale, not an epoch starting at 1977-01-01)
+- config with "locationAccess" imported on desktop showed LMST, but no longitude in Settings 
+- `update_timezone_to_latest_iana_db.sh` did not keep a clean timezone backup copy
+- info text for TAI (continuous timescale, not an epoch starting at 1977-01-01)
 
 ---
 

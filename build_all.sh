@@ -27,7 +27,7 @@ dryRun=${DRY_RUN:-0}
 if [[ ! ( "$what" == "apk" || "$what" == "web" || "$what" == "linux" || "$what" == "abisplit" ||
           "$what" == "apkweb" || "$what" == "apklinux" || "$what" == "weblinux" ||
           "$what" == "most" || "$what" == "all" ) ]] ; then
-    echo "Invalid variant '$what' (must be 'apk', 'web', 'linux', 'abisplit', 'most' or 'all')"
+    echo "Invalid variant '$what' (must be 'apk', 'web', 'linux', 'abisplit', 'most', 'apkweb', 'apklinux', 'weblinux' or 'all')"
     exit 1
 fi
 
@@ -141,7 +141,7 @@ else
 fi
 
 if [ "$cwd" == "$GL_Epoch" ] ; then
-    repo_status=''
+    repo_status=$(cut -c1-7 .git-commit)
 else
     repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
 fi
@@ -159,7 +159,7 @@ function run_flutter_build {
 
     if [ "$cwd" == "$GL_Epoch" ] ; then
         build_info=$(printf '%s | %s | %s' "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $installed_iana_database")
-        # flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")  # would require metadata update + MR
+        flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")
     elif [ "$cwd" == "$GH_Epoch" ] ; then
         build_info=$(printf '%s | %s | %s | %s' "Build: $build_timestamp" "Repo: $repo_status" "timezone: $installed_timezone_version" "IANA db: $installed_iana_database")
         flutter_command_build+=("--dart-define=BUILD_INFO=$build_info")

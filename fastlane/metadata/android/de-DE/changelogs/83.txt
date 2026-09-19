@@ -1,0 +1,9 @@
+Verbesserte Build-info-Anzeige, vier weitere Varianten des Julianischen Datums
+
+- Build info zeigt jetzt den Git-Commit und die Versionen von timezone und der IANA-Datenbank
+- Neue Astronomisch-Zeitwerte: Reduziertes JD, Dubliner JD, JD CNES, JD CCSDS
+- Beenden-Knopf im Popup-Menü
+
+Behoben
+- Auf Desktop geladene Config mit "locationAccess" zeigte keinen Längengrad in den Einstellungen an
+- update_timezone_to_latest_iana_db.sh veränderte die timezone-Sicherungskopie

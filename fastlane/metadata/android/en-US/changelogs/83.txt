@@ -1,0 +1,9 @@
+Better build info and four more Julian Date variants
+
+- Build info now shows Git commit, timezone and IANA database versions (long press on logo or title)
+- New Astronomical values: Reduced JD, Dublin JD, CNES JD, CCSDS JD
+- Exit button in popup menu
+
+Fixed
+- Config with "locationAccess" imported on desktop showed LMST, but no longitude in Settings
+- update_timezone_to_latest_iana_db.sh modified timezone backup copy
