@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- build info now has links to Git commit, timezone and IANA websites
+
 ---
 
 ## [1.5.1] - 2026-09-19

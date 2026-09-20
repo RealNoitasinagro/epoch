@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
+import 'link_constants.dart';
 import 'models/app_settings.dart';
 import 'models/prefs_migrations.dart';
 import 'models/settings_io.dart';
@@ -317,7 +318,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   static const _fallbackVersion = '0.0.0';
   static const _fallbackBuildNumber = '0';
-  static const changelogLink = 'https://github.com/RealNoitasinagro/epoch/blob/main/CHANGELOG.md';
 
   @override
   void didChangeDependencies() {
@@ -708,13 +708,32 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _showBuildInfo(BuildContext context) {
+    RegExpMatch? commitId =
+        RegExp(r'Repo: (?:\w+ @ )?([0-9a-f]{7,40})').firstMatch(kBuildInfo);
+    String commitLink = commitId != null
+        ? '$repoLink/commit/${commitId.group(1)!}' : '';
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Build info'),
-        content: Text(
-          kBuildInfo,
-          style: const TextStyle(fontFamily: fontFamilyDefault),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              kBuildInfo,
+              style: const TextStyle(fontFamily: fontFamilyDefault),
+            ),
+            const Divider(height: kDividerHeight),
+            if (commitLink.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              _linkTile(ctx, 'Commit (GitHub)', commitLink),
+              const SizedBox(height: 24),
+            ],
+            _linkTile(ctx, 'timezone package website', timezoneLink),
+            const SizedBox(height: 24),
+            _linkTile(ctx, 'IANA Time Zones website', ianaLink),
+          ],
         ),
         actions: [
           TextButton(
@@ -722,6 +741,18 @@ class _HomeScreenState extends State<HomeScreen>
             child: const Text('OK'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _linkTile(BuildContext context, String label, String url) {
+    return InkWell(
+      onTap: () async => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+      child: Text(label,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          decoration: TextDecoration.underline,
+        ),
       ),
     );
   }
