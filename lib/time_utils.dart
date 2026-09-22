@@ -39,7 +39,7 @@ class TimeUtils {
   /// Returns true/false for a given time zone independently of current date.
   static bool hasDaylightSavingTime(String ianaZone) {
     final entry = tzDatabase
-        .where((e) => e.ianaZone == ianaZone)
+        .where((e) => e.ianaZoneId == ianaZone)
         .firstOrNull;
     if (entry != null) return entry.hasDst;
     return false;
@@ -48,7 +48,7 @@ class TimeUtils {
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
       String ianaZone, bool dst) {
-    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
+    final entry = tzDatabase.where((e) => e.ianaZoneId == ianaZone).firstOrNull;
     if (entry == null || !entry.hasDst) return null;
     String offset = dst ? entry.offsetSummer : entry.offsetWinter;
     String abbreviation = dst ? entry.abbrSummer : entry.abbrWinter;

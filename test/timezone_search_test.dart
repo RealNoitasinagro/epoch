@@ -2,14 +2,14 @@ import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest.dart' as tzd;
+import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
 
 void _printDetails(String searchTerm, List<TzEntry> loc, showDetails) {
   if (!showDetails) return;
   debugPrint("# $searchTerm: " + loc.length.toString());
   for (final te in loc) {
-    debugPrint("    " + te.ianaZone
+    debugPrint("    " + te.ianaZoneId
         + " | oW: " + te.offsetWinter
         + " | oS: " + te.offsetSummer
         + " | aW: " + te.abbrWinter
@@ -19,7 +19,7 @@ void _printDetails(String searchTerm, List<TzEntry> loc, showDetails) {
 }
 
 void main() {
-  const skip = true;
+  const skip = false;
   const showDetails = false;
 
   group('IANA 2025c timezones canonical available', () {
@@ -2088,7 +2088,7 @@ void main() {
       var searchTerm = "Accra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Addis Ababa", () {
@@ -2096,7 +2096,7 @@ void main() {
       var searchTerm = "Addis Ababa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Asmara", () {
@@ -2104,7 +2104,7 @@ void main() {
       var searchTerm = "Asmara";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Asmera", () {
@@ -2112,7 +2112,7 @@ void main() {
       var searchTerm = "Asmera";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Bamako", () {
@@ -2120,7 +2120,7 @@ void main() {
       var searchTerm = "Bamako";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Bangui", () {
@@ -2128,7 +2128,7 @@ void main() {
       var searchTerm = "Bangui";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Banjul", () {
@@ -2136,7 +2136,7 @@ void main() {
       var searchTerm = "Banjul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Blantyre", () {
@@ -2144,7 +2144,7 @@ void main() {
       var searchTerm = "Blantyre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Brazzaville", () {
@@ -2152,7 +2152,7 @@ void main() {
       var searchTerm = "Brazzaville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Bujumbura", () {
@@ -2160,7 +2160,7 @@ void main() {
       var searchTerm = "Bujumbura";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Conakry", () {
@@ -2168,7 +2168,7 @@ void main() {
       var searchTerm = "Conakry";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Dakar", () {
@@ -2176,7 +2176,7 @@ void main() {
       var searchTerm = "Dakar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Dar es Salaam", () {
@@ -2184,7 +2184,7 @@ void main() {
       var searchTerm = "Dar es Salaam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Djibouti", () {
@@ -2192,7 +2192,7 @@ void main() {
       var searchTerm = "Djibouti";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Douala", () {
@@ -2200,7 +2200,7 @@ void main() {
       var searchTerm = "Douala";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Freetown", () {
@@ -2208,7 +2208,7 @@ void main() {
       var searchTerm = "Freetown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Gaborone", () {
@@ -2216,7 +2216,7 @@ void main() {
       var searchTerm = "Gaborone";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Harare", () {
@@ -2224,7 +2224,7 @@ void main() {
       var searchTerm = "Harare";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kampala", () {
@@ -2232,7 +2232,7 @@ void main() {
       var searchTerm = "Kampala";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kigali", () {
@@ -2240,7 +2240,7 @@ void main() {
       var searchTerm = "Kigali";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kinshasa", () {
@@ -2248,7 +2248,7 @@ void main() {
       var searchTerm = "Kinshasa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Libreville", () {
@@ -2256,7 +2256,7 @@ void main() {
       var searchTerm = "Libreville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Lome", () {
@@ -2264,7 +2264,7 @@ void main() {
       var searchTerm = "Lome";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Luanda", () {
@@ -2272,7 +2272,7 @@ void main() {
       var searchTerm = "Luanda";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Lubumbashi", () {
@@ -2280,7 +2280,7 @@ void main() {
       var searchTerm = "Lubumbashi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Lusaka", () {
@@ -2288,7 +2288,7 @@ void main() {
       var searchTerm = "Lusaka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Malabo", () {
@@ -2296,7 +2296,7 @@ void main() {
       var searchTerm = "Malabo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Maseru", () {
@@ -2304,7 +2304,7 @@ void main() {
       var searchTerm = "Maseru";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mbabane", () {
@@ -2312,7 +2312,7 @@ void main() {
       var searchTerm = "Mbabane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mogadishu", () {
@@ -2320,7 +2320,7 @@ void main() {
       var searchTerm = "Mogadishu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Niamey", () {
@@ -2328,7 +2328,7 @@ void main() {
       var searchTerm = "Niamey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Nouakchott", () {
@@ -2336,7 +2336,7 @@ void main() {
       var searchTerm = "Nouakchott";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ouagadougou", () {
@@ -2344,7 +2344,7 @@ void main() {
       var searchTerm = "Ouagadougou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Porto-Novo", () {
@@ -2352,7 +2352,7 @@ void main() {
       var searchTerm = "Porto-Novo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Timbuktu", () {
@@ -2360,7 +2360,7 @@ void main() {
       var searchTerm = "Timbuktu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Anguilla", () {
@@ -2368,7 +2368,7 @@ void main() {
       var searchTerm = "Anguilla";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Antigua", () {
@@ -2376,7 +2376,7 @@ void main() {
       var searchTerm = "Antigua";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("ComodRivadavia", () {
@@ -2384,7 +2384,7 @@ void main() {
       var searchTerm = "ComodRivadavia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Aruba", () {
@@ -2392,7 +2392,7 @@ void main() {
       var searchTerm = "Aruba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Atikokan", () {
@@ -2400,7 +2400,7 @@ void main() {
       var searchTerm = "Atikokan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Atka", () {
@@ -2408,7 +2408,7 @@ void main() {
       var searchTerm = "Atka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Blanc-Sablon", () {
@@ -2416,7 +2416,7 @@ void main() {
       var searchTerm = "Blanc-Sablon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Buenos Aires", () {
@@ -2424,7 +2424,7 @@ void main() {
       var searchTerm = "Buenos Aires";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Catamarca", () {
@@ -2432,7 +2432,7 @@ void main() {
       var searchTerm = "Catamarca";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Cayman", () {
@@ -2440,7 +2440,7 @@ void main() {
       var searchTerm = "Cayman";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Coral Harbour", () {
@@ -2448,7 +2448,7 @@ void main() {
       var searchTerm = "Coral Harbour";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Cordoba", () {
@@ -2456,7 +2456,7 @@ void main() {
       var searchTerm = "Cordoba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Creston", () {
@@ -2464,7 +2464,7 @@ void main() {
       var searchTerm = "Creston";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Curacao", () {
@@ -2472,7 +2472,7 @@ void main() {
       var searchTerm = "Curacao";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Dominica", () {
@@ -2480,7 +2480,7 @@ void main() {
       var searchTerm = "Dominica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ensenada", () {
@@ -2488,7 +2488,7 @@ void main() {
       var searchTerm = "Ensenada";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Fort Wayne", () {
@@ -2496,7 +2496,7 @@ void main() {
       var searchTerm = "Fort Wayne";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Godthab", () {
@@ -2504,7 +2504,7 @@ void main() {
       var searchTerm = "Godthab";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Grenada", () {
@@ -2512,7 +2512,7 @@ void main() {
       var searchTerm = "Grenada";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Guadeloupe", () {
@@ -2520,7 +2520,7 @@ void main() {
       var searchTerm = "Guadeloupe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Indianapolis", () {
@@ -2528,7 +2528,7 @@ void main() {
       var searchTerm = "Indianapolis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Jujuy", () {
@@ -2536,7 +2536,7 @@ void main() {
       var searchTerm = "Jujuy";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Knox IN", () {
@@ -2544,7 +2544,7 @@ void main() {
       var searchTerm = "Knox IN";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kralendijk", () {
@@ -2552,7 +2552,7 @@ void main() {
       var searchTerm = "Kralendijk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Louisville", () {
@@ -2560,7 +2560,7 @@ void main() {
       var searchTerm = "Louisville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Lower Princes", () {
@@ -2568,7 +2568,7 @@ void main() {
       var searchTerm = "Lower Princes";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Marigot", () {
@@ -2576,7 +2576,7 @@ void main() {
       var searchTerm = "Marigot";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mendoza", () {
@@ -2584,7 +2584,7 @@ void main() {
       var searchTerm = "Mendoza";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Montreal", () {
@@ -2592,7 +2592,7 @@ void main() {
       var searchTerm = "Montreal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Montserrat", () {
@@ -2600,7 +2600,7 @@ void main() {
       var searchTerm = "Montserrat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Nassau", () {
@@ -2608,7 +2608,7 @@ void main() {
       var searchTerm = "Nassau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Nipigon", () {
@@ -2616,7 +2616,7 @@ void main() {
       var searchTerm = "Nipigon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Pangnirtung", () {
@@ -2624,7 +2624,7 @@ void main() {
       var searchTerm = "Pangnirtung";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Porto Acre", () {
@@ -2632,7 +2632,7 @@ void main() {
       var searchTerm = "Porto Acre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Port of Spain", () {
@@ -2640,7 +2640,7 @@ void main() {
       var searchTerm = "Port of Spain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Rainy River", () {
@@ -2648,7 +2648,7 @@ void main() {
       var searchTerm = "Rainy River";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Rosario", () {
@@ -2656,7 +2656,7 @@ void main() {
       var searchTerm = "Rosario";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Santa Isabel", () {
@@ -2664,7 +2664,7 @@ void main() {
       var searchTerm = "Santa Isabel";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Shiprock", () {
@@ -2672,7 +2672,7 @@ void main() {
       var searchTerm = "Shiprock";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Barthelemy", () {
@@ -2680,7 +2680,7 @@ void main() {
       var searchTerm = "St Barthelemy";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Kitts", () {
@@ -2688,7 +2688,7 @@ void main() {
       var searchTerm = "St Kitts";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Lucia", () {
@@ -2696,7 +2696,7 @@ void main() {
       var searchTerm = "St Lucia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Thomas", () {
@@ -2704,7 +2704,7 @@ void main() {
       var searchTerm = "St Thomas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Vincent", () {
@@ -2712,7 +2712,7 @@ void main() {
       var searchTerm = "St Vincent";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Thunder Bay", () {
@@ -2720,7 +2720,7 @@ void main() {
       var searchTerm = "Thunder Bay";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Tortola", () {
@@ -2728,7 +2728,7 @@ void main() {
       var searchTerm = "Tortola";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Virgin", () {
@@ -2736,7 +2736,7 @@ void main() {
       var searchTerm = "Virgin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Yellowknife", () {
@@ -2744,7 +2744,7 @@ void main() {
       var searchTerm = "Yellowknife";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("DumontDUrville", () {
@@ -2752,7 +2752,7 @@ void main() {
       var searchTerm = "DumontDUrville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("McMurdo", () {
@@ -2760,7 +2760,7 @@ void main() {
       var searchTerm = "McMurdo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("South Pole", () {
@@ -2768,7 +2768,7 @@ void main() {
       var searchTerm = "South Pole";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Syowa", () {
@@ -2776,7 +2776,7 @@ void main() {
       var searchTerm = "Syowa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Longyearbyen", () {
@@ -2784,7 +2784,7 @@ void main() {
       var searchTerm = "Longyearbyen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Aden", () {
@@ -2792,7 +2792,7 @@ void main() {
       var searchTerm = "Aden";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ashkhabad", () {
@@ -2800,7 +2800,7 @@ void main() {
       var searchTerm = "Ashkhabad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Bahrain", () {
@@ -2808,7 +2808,7 @@ void main() {
       var searchTerm = "Bahrain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Brunei", () {
@@ -2816,7 +2816,7 @@ void main() {
       var searchTerm = "Brunei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Calcutta", () {
@@ -2824,7 +2824,7 @@ void main() {
       var searchTerm = "Calcutta";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Choibalsan", () {
@@ -2832,7 +2832,7 @@ void main() {
       var searchTerm = "Choibalsan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Chongqing", () {
@@ -2840,7 +2840,7 @@ void main() {
       var searchTerm = "Chongqing";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Chungking", () {
@@ -2848,7 +2848,7 @@ void main() {
       var searchTerm = "Chungking";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Dacca", () {
@@ -2856,7 +2856,7 @@ void main() {
       var searchTerm = "Dacca";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Harbin", () {
@@ -2864,7 +2864,7 @@ void main() {
       var searchTerm = "Harbin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Istanbul", () {
@@ -2872,7 +2872,7 @@ void main() {
       var searchTerm = "Istanbul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kashgar", () {
@@ -2880,7 +2880,7 @@ void main() {
       var searchTerm = "Kashgar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Katmandu", () {
@@ -2888,7 +2888,7 @@ void main() {
       var searchTerm = "Katmandu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kuala Lumpur", () {
@@ -2896,7 +2896,7 @@ void main() {
       var searchTerm = "Kuala Lumpur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kuwait", () {
@@ -2904,7 +2904,7 @@ void main() {
       var searchTerm = "Kuwait";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Macao", () {
@@ -2912,7 +2912,7 @@ void main() {
       var searchTerm = "Macao";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Muscat", () {
@@ -2920,7 +2920,7 @@ void main() {
       var searchTerm = "Muscat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Phnom Penh", () {
@@ -2928,7 +2928,7 @@ void main() {
       var searchTerm = "Phnom Penh";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Rangoon", () {
@@ -2936,7 +2936,7 @@ void main() {
       var searchTerm = "Rangoon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Saigon", () {
@@ -2944,7 +2944,7 @@ void main() {
       var searchTerm = "Saigon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Tel Aviv", () {
@@ -2952,7 +2952,7 @@ void main() {
       var searchTerm = "Tel Aviv";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Thimbu", () {
@@ -2960,7 +2960,7 @@ void main() {
       var searchTerm = "Thimbu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ujung Pandang", () {
@@ -2968,7 +2968,7 @@ void main() {
       var searchTerm = "Ujung Pandang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ulan Bator", () {
@@ -2976,7 +2976,7 @@ void main() {
       var searchTerm = "Ulan Bator";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Vientiane", () {
@@ -2984,7 +2984,7 @@ void main() {
       var searchTerm = "Vientiane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Faeroe", () {
@@ -2992,7 +2992,7 @@ void main() {
       var searchTerm = "Faeroe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Jan Mayen", () {
@@ -3000,7 +3000,7 @@ void main() {
       var searchTerm = "Jan Mayen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Reykjavik", () {
@@ -3008,7 +3008,7 @@ void main() {
       var searchTerm = "Reykjavik";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("St Helena", () {
@@ -3016,7 +3016,7 @@ void main() {
       var searchTerm = "St Helena";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("ACT", () {
@@ -3024,7 +3024,7 @@ void main() {
       var searchTerm = "ACT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Canberra", () {
@@ -3032,7 +3032,7 @@ void main() {
       var searchTerm = "Canberra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Currie", () {
@@ -3040,7 +3040,7 @@ void main() {
       var searchTerm = "Currie";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("LHI", () {
@@ -3048,7 +3048,7 @@ void main() {
       var searchTerm = "LHI";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("North", () {
@@ -3056,7 +3056,7 @@ void main() {
       var searchTerm = "North";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("NSW", () {
@@ -3064,7 +3064,7 @@ void main() {
       var searchTerm = "NSW";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Queensland", () {
@@ -3072,7 +3072,7 @@ void main() {
       var searchTerm = "Queensland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("South", () {
@@ -3080,7 +3080,7 @@ void main() {
       var searchTerm = "South";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Tasmania", () {
@@ -3088,7 +3088,7 @@ void main() {
       var searchTerm = "Tasmania";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Victoria", () {
@@ -3096,7 +3096,7 @@ void main() {
       var searchTerm = "Victoria";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("West", () {
@@ -3104,7 +3104,7 @@ void main() {
       var searchTerm = "West";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Yancowinna", () {
@@ -3112,7 +3112,7 @@ void main() {
       var searchTerm = "Yancowinna";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Acre", () {
@@ -3120,7 +3120,7 @@ void main() {
       var searchTerm = "Acre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("DeNoronha", () {
@@ -3128,7 +3128,7 @@ void main() {
       var searchTerm = "DeNoronha";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("East", () {
@@ -3136,7 +3136,7 @@ void main() {
       var searchTerm = "East";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("West", () {
@@ -3144,7 +3144,7 @@ void main() {
       var searchTerm = "West";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Atlantic", () {
@@ -3152,7 +3152,7 @@ void main() {
       var searchTerm = "Atlantic";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Central", () {
@@ -3160,7 +3160,7 @@ void main() {
       var searchTerm = "Central";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Eastern", () {
@@ -3168,7 +3168,7 @@ void main() {
       var searchTerm = "Eastern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mountain", () {
@@ -3176,7 +3176,7 @@ void main() {
       var searchTerm = "Mountain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Newfoundland", () {
@@ -3184,7 +3184,7 @@ void main() {
       var searchTerm = "Newfoundland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Pacific", () {
@@ -3192,7 +3192,7 @@ void main() {
       var searchTerm = "Pacific";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Saskatchewan", () {
@@ -3200,7 +3200,7 @@ void main() {
       var searchTerm = "Saskatchewan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Yukon", () {
@@ -3208,7 +3208,7 @@ void main() {
       var searchTerm = "Yukon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("CET", () {
@@ -3216,7 +3216,7 @@ void main() {
       var searchTerm = "CET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Continental", () {
@@ -3224,7 +3224,7 @@ void main() {
       var searchTerm = "Continental";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("EasterIsland", () {
@@ -3232,7 +3232,7 @@ void main() {
       var searchTerm = "EasterIsland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("CST6CDT", () {
@@ -3240,7 +3240,7 @@ void main() {
       var searchTerm = "CST6CDT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Cuba", () {
@@ -3248,7 +3248,7 @@ void main() {
       var searchTerm = "Cuba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("EET", () {
@@ -3256,7 +3256,7 @@ void main() {
       var searchTerm = "EET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Egypt", () {
@@ -3264,7 +3264,7 @@ void main() {
       var searchTerm = "Egypt";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Eire", () {
@@ -3272,7 +3272,7 @@ void main() {
       var searchTerm = "Eire";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("EST5EDT", () {
@@ -3280,7 +3280,7 @@ void main() {
       var searchTerm = "EST5EDT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("EST", () {
@@ -3288,7 +3288,7 @@ void main() {
       var searchTerm = "EST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT+0", () {
@@ -3296,7 +3296,7 @@ void main() {
       var searchTerm = "GMT+0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT-0", () {
@@ -3304,7 +3304,7 @@ void main() {
       var searchTerm = "GMT-0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT0", () {
@@ -3312,7 +3312,7 @@ void main() {
       var searchTerm = "GMT0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Greenwich", () {
@@ -3320,7 +3320,7 @@ void main() {
       var searchTerm = "Greenwich";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("UCT", () {
@@ -3328,7 +3328,7 @@ void main() {
       var searchTerm = "UCT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Universal", () {
@@ -3336,7 +3336,7 @@ void main() {
       var searchTerm = "Universal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Zulu", () {
@@ -3344,7 +3344,7 @@ void main() {
       var searchTerm = "Zulu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Amsterdam", () {
@@ -3352,7 +3352,7 @@ void main() {
       var searchTerm = "Amsterdam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Belfast", () {
@@ -3360,7 +3360,7 @@ void main() {
       var searchTerm = "Belfast";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Bratislava", () {
@@ -3368,7 +3368,7 @@ void main() {
       var searchTerm = "Bratislava";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Busingen", () {
@@ -3376,7 +3376,7 @@ void main() {
       var searchTerm = "Busingen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Copenhagen", () {
@@ -3384,7 +3384,7 @@ void main() {
       var searchTerm = "Copenhagen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Guernsey", () {
@@ -3392,7 +3392,7 @@ void main() {
       var searchTerm = "Guernsey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Isle of Man", () {
@@ -3400,7 +3400,7 @@ void main() {
       var searchTerm = "Isle of Man";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Jersey", () {
@@ -3408,7 +3408,7 @@ void main() {
       var searchTerm = "Jersey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kiev", () {
@@ -3416,7 +3416,7 @@ void main() {
       var searchTerm = "Kiev";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ljubljana", () {
@@ -3424,7 +3424,7 @@ void main() {
       var searchTerm = "Ljubljana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Luxembourg", () {
@@ -3432,7 +3432,7 @@ void main() {
       var searchTerm = "Luxembourg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mariehamn", () {
@@ -3440,7 +3440,7 @@ void main() {
       var searchTerm = "Mariehamn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Monaco", () {
@@ -3448,7 +3448,7 @@ void main() {
       var searchTerm = "Monaco";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Nicosia", () {
@@ -3456,7 +3456,7 @@ void main() {
       var searchTerm = "Nicosia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Oslo", () {
@@ -3464,7 +3464,7 @@ void main() {
       var searchTerm = "Oslo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Podgorica", () {
@@ -3472,7 +3472,7 @@ void main() {
       var searchTerm = "Podgorica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("San Marino", () {
@@ -3480,7 +3480,7 @@ void main() {
       var searchTerm = "San Marino";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Sarajevo", () {
@@ -3488,7 +3488,7 @@ void main() {
       var searchTerm = "Sarajevo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Skopje", () {
@@ -3496,7 +3496,7 @@ void main() {
       var searchTerm = "Skopje";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Stockholm", () {
@@ -3504,7 +3504,7 @@ void main() {
       var searchTerm = "Stockholm";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Tiraspol", () {
@@ -3512,7 +3512,7 @@ void main() {
       var searchTerm = "Tiraspol";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Uzhgorod", () {
@@ -3520,7 +3520,7 @@ void main() {
       var searchTerm = "Uzhgorod";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Vaduz", () {
@@ -3528,7 +3528,7 @@ void main() {
       var searchTerm = "Vaduz";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Vatican", () {
@@ -3536,7 +3536,7 @@ void main() {
       var searchTerm = "Vatican";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Zagreb", () {
@@ -3544,7 +3544,7 @@ void main() {
       var searchTerm = "Zagreb";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Zaporozhye", () {
@@ -3552,7 +3552,7 @@ void main() {
       var searchTerm = "Zaporozhye";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GB-Eire", () {
@@ -3560,7 +3560,7 @@ void main() {
       var searchTerm = "GB-Eire";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GB", () {
@@ -3568,7 +3568,7 @@ void main() {
       var searchTerm = "GB";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT+0", () {
@@ -3576,7 +3576,7 @@ void main() {
       var searchTerm = "GMT+0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT-0", () {
@@ -3584,7 +3584,7 @@ void main() {
       var searchTerm = "GMT-0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT0", () {
@@ -3592,7 +3592,7 @@ void main() {
       var searchTerm = "GMT0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("GMT", () {
@@ -3600,7 +3600,7 @@ void main() {
       var searchTerm = "GMT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Greenwich", () {
@@ -3608,7 +3608,7 @@ void main() {
       var searchTerm = "Greenwich";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Hongkong", () {
@@ -3616,7 +3616,7 @@ void main() {
       var searchTerm = "Hongkong";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("HST", () {
@@ -3624,7 +3624,7 @@ void main() {
       var searchTerm = "HST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Iceland", () {
@@ -3632,7 +3632,7 @@ void main() {
       var searchTerm = "Iceland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Antananarivo", () {
@@ -3640,7 +3640,7 @@ void main() {
       var searchTerm = "Antananarivo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Christmas", () {
@@ -3648,7 +3648,7 @@ void main() {
       var searchTerm = "Christmas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Cocos", () {
@@ -3656,7 +3656,7 @@ void main() {
       var searchTerm = "Cocos";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Comoro", () {
@@ -3664,7 +3664,7 @@ void main() {
       var searchTerm = "Comoro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kerguelen", () {
@@ -3672,7 +3672,7 @@ void main() {
       var searchTerm = "Kerguelen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mahe", () {
@@ -3680,7 +3680,7 @@ void main() {
       var searchTerm = "Mahe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mayotte", () {
@@ -3688,7 +3688,7 @@ void main() {
       var searchTerm = "Mayotte";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Reunion", () {
@@ -3696,7 +3696,7 @@ void main() {
       var searchTerm = "Reunion";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Iran", () {
@@ -3704,7 +3704,7 @@ void main() {
       var searchTerm = "Iran";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Israel", () {
@@ -3712,7 +3712,7 @@ void main() {
       var searchTerm = "Israel";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Jamaica", () {
@@ -3720,7 +3720,7 @@ void main() {
       var searchTerm = "Jamaica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Japan", () {
@@ -3728,7 +3728,7 @@ void main() {
       var searchTerm = "Japan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Kwajalein", () {
@@ -3736,7 +3736,7 @@ void main() {
       var searchTerm = "Kwajalein";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Libya", () {
@@ -3744,7 +3744,7 @@ void main() {
       var searchTerm = "Libya";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("MET", () {
@@ -3752,7 +3752,7 @@ void main() {
       var searchTerm = "MET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("BajaNorte", () {
@@ -3760,7 +3760,7 @@ void main() {
       var searchTerm = "BajaNorte";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("BajaSur", () {
@@ -3768,7 +3768,7 @@ void main() {
       var searchTerm = "BajaSur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("General", () {
@@ -3776,7 +3776,7 @@ void main() {
       var searchTerm = "General";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("MST7MDT", () {
@@ -3784,7 +3784,7 @@ void main() {
       var searchTerm = "MST7MDT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("MST", () {
@@ -3792,7 +3792,7 @@ void main() {
       var searchTerm = "MST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Navajo", () {
@@ -3800,7 +3800,7 @@ void main() {
       var searchTerm = "Navajo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("NZ-CHAT", () {
@@ -3808,7 +3808,7 @@ void main() {
       var searchTerm = "NZ-CHAT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("NZ", () {
@@ -3816,7 +3816,7 @@ void main() {
       var searchTerm = "NZ";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Chuuk", () {
@@ -3824,7 +3824,7 @@ void main() {
       var searchTerm = "Chuuk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Enderbury", () {
@@ -3832,7 +3832,7 @@ void main() {
       var searchTerm = "Enderbury";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Funafuti", () {
@@ -3840,7 +3840,7 @@ void main() {
       var searchTerm = "Funafuti";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Johnston", () {
@@ -3848,7 +3848,7 @@ void main() {
       var searchTerm = "Johnston";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Majuro", () {
@@ -3856,7 +3856,7 @@ void main() {
       var searchTerm = "Majuro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Midway", () {
@@ -3864,7 +3864,7 @@ void main() {
       var searchTerm = "Midway";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Pohnpei", () {
@@ -3872,7 +3872,7 @@ void main() {
       var searchTerm = "Pohnpei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Ponape", () {
@@ -3880,7 +3880,7 @@ void main() {
       var searchTerm = "Ponape";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Saipan", () {
@@ -3888,7 +3888,7 @@ void main() {
       var searchTerm = "Saipan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Samoa", () {
@@ -3896,7 +3896,7 @@ void main() {
       var searchTerm = "Samoa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Truk", () {
@@ -3904,7 +3904,7 @@ void main() {
       var searchTerm = "Truk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Wake", () {
@@ -3912,7 +3912,7 @@ void main() {
       var searchTerm = "Wake";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Wallis", () {
@@ -3920,7 +3920,7 @@ void main() {
       var searchTerm = "Wallis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Yap", () {
@@ -3928,7 +3928,7 @@ void main() {
       var searchTerm = "Yap";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Poland", () {
@@ -3936,7 +3936,7 @@ void main() {
       var searchTerm = "Poland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Portugal", () {
@@ -3944,7 +3944,7 @@ void main() {
       var searchTerm = "Portugal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("PRC", () {
@@ -3952,7 +3952,7 @@ void main() {
       var searchTerm = "PRC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("PST8PDT", () {
@@ -3960,7 +3960,7 @@ void main() {
       var searchTerm = "PST8PDT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("ROC", () {
@@ -3968,7 +3968,7 @@ void main() {
       var searchTerm = "ROC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("ROK", () {
@@ -3976,7 +3976,7 @@ void main() {
       var searchTerm = "ROK";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Singapore", () {
@@ -3984,7 +3984,7 @@ void main() {
       var searchTerm = "Singapore";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Turkey", () {
@@ -3992,7 +3992,7 @@ void main() {
       var searchTerm = "Turkey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("UCT", () {
@@ -4000,7 +4000,7 @@ void main() {
       var searchTerm = "UCT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Universal", () {
@@ -4008,7 +4008,7 @@ void main() {
       var searchTerm = "Universal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Alaska", () {
@@ -4016,7 +4016,7 @@ void main() {
       var searchTerm = "Alaska";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Aleutian", () {
@@ -4024,7 +4024,7 @@ void main() {
       var searchTerm = "Aleutian";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Arizona", () {
@@ -4032,7 +4032,7 @@ void main() {
       var searchTerm = "Arizona";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Central", () {
@@ -4040,7 +4040,7 @@ void main() {
       var searchTerm = "Central";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Eastern", () {
@@ -4048,7 +4048,7 @@ void main() {
       var searchTerm = "Eastern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("East-Indiana", () {
@@ -4056,7 +4056,7 @@ void main() {
       var searchTerm = "East-Indiana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Hawaii", () {
@@ -4064,7 +4064,7 @@ void main() {
       var searchTerm = "Hawaii";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Indiana-Starke", () {
@@ -4072,7 +4072,7 @@ void main() {
       var searchTerm = "Indiana-Starke";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Michigan", () {
@@ -4080,7 +4080,7 @@ void main() {
       var searchTerm = "Michigan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Mountain", () {
@@ -4088,7 +4088,7 @@ void main() {
       var searchTerm = "Mountain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Pacific", () {
@@ -4096,7 +4096,7 @@ void main() {
       var searchTerm = "Pacific";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Samoa", () {
@@ -4104,7 +4104,7 @@ void main() {
       var searchTerm = "Samoa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("UTC", () {
@@ -4112,7 +4112,7 @@ void main() {
       var searchTerm = "UTC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("WET", () {
@@ -4120,7 +4120,7 @@ void main() {
       var searchTerm = "WET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("W-SU", () {
@@ -4128,7 +4128,7 @@ void main() {
       var searchTerm = "W-SU";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
 
     test("Zulu", () {
@@ -4136,7 +4136,7 @@ void main() {
       var searchTerm = "Zulu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       expect(loc.length, equals(1));
-      expect(loc[0].ianaZone, equals(ianaZone));
+      expect(loc[0].ianaZoneId, equals(ianaZone));
     });
   }, skip: skip);
 
@@ -5237,16 +5237,16 @@ void main() {
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, equals(3));
-      expect(loc.any((tzE) => tzE.ianaZone == 'Asia/Jerusalem'), isTrue); // israel standard time
-      expect(loc.any((tzE) => tzE.ianaZone == 'Asia/Kolkata'), isTrue);   // india standard time
-      expect(loc.any((tzE) => tzE.ianaZone == 'Europe/Dublin'), isTrue);  // irish standard time
-      expect(loc.any((tzE) => tzE.ianaZone == 'Europe/Istanbul'), isFalse);
+      expect(loc.any((tzE) => tzE.ianaZoneId == 'Asia/Jerusalem'), isTrue); // israel standard time
+      expect(loc.any((tzE) => tzE.ianaZoneId == 'Asia/Kolkata'), isTrue);   // india standard time
+      expect(loc.any((tzE) => tzE.ianaZoneId == 'Europe/Dublin'), isTrue);  // irish standard time
+      expect(loc.any((tzE) => tzE.ianaZoneId == 'Europe/Istanbul'), isFalse);
 
       searchTerm = 'ist';  // This should match Istanbul.
       loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
-      expect(loc.any((tzE) => tzE.ianaZone == 'Europe/Istanbul'), isTrue);
+      expect(loc.any((tzE) => tzE.ianaZoneId == 'Europe/Istanbul'), isTrue);
     });
 
     test('JST', () {

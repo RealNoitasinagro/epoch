@@ -194,7 +194,7 @@ class TimeValue implements TabEntry {
       ZoneUtc() => '', // UTC never has DST
       ZoneNamed(ianaZone: final z) => z,
     };
-    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
+    final entry = tzDatabase.where((e) => e.ianaZoneId == ianaZone).firstOrNull;
     if (entry == null || !entry.hasDst) return null;
     // Use the timezone package to check the actual current DST status:
     try {

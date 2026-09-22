@@ -3,8 +3,16 @@
 
 // ── Data class ───────────────────────────────────────────────────────────────
 
+import 'generated/cldr_country_names_de.g.dart';
+import 'generated/iso3166_country_names_en.g.dart';
+import 'generated/zone1970_countries.g.dart';
+
 class TzEntry {
-  final String ianaZone;
+  /// The identifier for this zone -- almost always a canonical IANA tz
+  /// identifier (e.g. "Europe/Berlin"). A small number of curated
+  /// exceptions use a synthetic, non-IANA identifier instead, when no
+  /// IANA zone captures the concept precisely (e.g. "Anywhere on Earth").
+  final String ianaZoneId;
   final String offsetWinter;
   final String offsetSummer;
   final String abbrWinter;
@@ -12,7 +20,7 @@ class TzEntry {
   final List<String> terms; // lowercase; includes shared + city-specific
 
   const TzEntry({
-    required this.ianaZone,
+    required this.ianaZoneId,
     required this.offsetWinter,
     required this.offsetSummer,
     required this.abbrWinter,
@@ -27,7 +35,18 @@ class TzEntry {
       : '$abbrWinter  UTC$offsetWinter';
 
   String get cityName =>
-      ianaZone.split('/').last.replaceAll('_', ' ');
+      ianaZoneId.split('/').last.replaceAll('_', ' ');
+
+  /// English and German country names for the countries assigned to this
+  /// zone (via zone1970.tab / ISO 3166-1). Computed on demand rather than
+  /// stored, to avoid duplicating the generated country data per entry.
+  Iterable<String> get countryNames {
+    final codes = zoneCountryCodes[ianaZoneId] ?? const [];
+    return codes.expand((code) => [
+      if (countryNamesEn[code] != null) countryNamesEn[code]!,
+      if (countryNamesDe[code] != null) countryNamesDe[code]!,
+    ]);
+  }
 
   bool matches(String query) {
     final query_orig = query.trim();
@@ -47,11 +66,14 @@ class TzEntry {
       return terms.any((t) => t == query_orig);
     }
     else {
-      if (ianaZone.toLowerCase().contains(query_lower) ||
-          ianaZone.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
+      if (ianaZoneId.toLowerCase().contains(query_lower) ||
+          ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
         return true;
       }
-      return terms.any((t) => t.startsWith(query_lower));
+      if (terms.any((t) => t.startsWith(query_lower))) {
+        return true;
+      }
+      return countryNames.any((name) => name.toLowerCase().startsWith(query_lower));
     }
   }
 }

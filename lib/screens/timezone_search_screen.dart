@@ -82,10 +82,10 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
           return ListTile(
             title: Text(entry.cityName),
             subtitle: Text(
-              '${entry.ianaZone}  ·  ${entry.offsetLabel}',
+              '${entry.ianaZoneId}  ·  ${entry.offsetLabel}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
-            onTap: () => Navigator.pop(context, entry.ianaZone),
+            onTap: () => Navigator.pop(context, entry.ianaZoneId),
           );
         },
       ),
