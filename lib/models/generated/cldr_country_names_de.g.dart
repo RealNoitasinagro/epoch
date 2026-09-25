@@ -1,10 +1,10 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-localenames-full, main/de/territories.json
 // Regenerate with: python3 tools/generate_cldr_country_names.py
-// Last generated: 2026-09-21
+// Last generated: 2026-09-25
 
-// German country names by ISO 3166-1 alpha-2 code.
-const Map<String, String> countryNamesDe = {
+// Country names by ISO 3166-1 alpha-2 code.
+const Map<String, String> cldrCountryNamesDe = {
   'AC': 'Ascension',
   'AD': 'Andorra',
   'AE': 'Vereinigte Arabische Emirate',

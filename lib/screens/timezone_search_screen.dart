@@ -28,7 +28,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
       return;
     }
     // Try offset search first (UTC+05:30 etc).
-    final byOffset = searchByOffset(q, tzDatabase);
+    final byOffset = searchTimezones(q, tzDatabase);
     if (byOffset.isNotEmpty) {
       setState(() => _results = byOffset);
       return;

@@ -51,14 +51,6 @@ def _require(d, key, context_path):
 
 def _collect_zone_metazones(node, prefix, out):
     """
-    Recursively walks the CLDR metazoneInfo.timezone tree (same
-    Area/Location/... nesting as the exemplarCity tree). A "leaf" is
-    identified by having child values that themselves contain a
-    "usesMetazone" key (the ordinal-indexed historical assignments,
-    e.g. {"0": {"usesMetazone": {...}}, "1": {...}}).
-    """
-def _collect_zone_metazones(node, prefix, out):
-    """
     Recursively walks the CLDR metazoneInfo.timezone tree. A leaf is a
     JSON array of (possibly historical) {"usesMetazone": {...}} entries;
     anything else (a dict) is a further path segment (continent, or a

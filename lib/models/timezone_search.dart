@@ -1,11 +1,34 @@
-// Curated timezone database with multilingual search terms.
-// Shared term sets avoid redundancy across entries with the same offset/zone.
-
-// ── Data class ───────────────────────────────────────────────────────────────
-
 import 'generated/cldr_country_names_de.g.dart';
+import 'generated/cldr_country_names_en.g.dart';
+import 'generated/cldr_exemplar_cities_de.g.dart';
+import 'generated/cldr_exemplar_cities_en.g.dart';
+import 'generated/cldr_metazone_names_de.g.dart';
+import 'generated/cldr_metazone_names_en.g.dart';
+import 'generated/cldr_windows_zone_names.g.dart';
+import 'generated/cldr_zone_metazone.g.dart';
 import 'generated/iso3166_country_names_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
+
+const _diacriticsFoldMap = {
+  'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
+  'ç':'c',
+  'é':'e','è':'e','ê':'e','ë':'e',
+  'í':'i','ì':'i','î':'i','ï':'i',
+  'ñ':'n',
+  'ó':'o','ò':'o','ô':'o','õ':'o','ö':'o',
+  'ú':'u','ù':'u','û':'u','ü':'u',
+  'ý':'y','ÿ':'y',
+  'ß':'ss',
+};
+
+String foldDiacritics(String input) {
+  final buffer = StringBuffer();
+  for (final rune in input.runes) {
+    final ch = String.fromCharCode(rune);
+    buffer.write(_diacriticsFoldMap[ch] ?? ch);
+  }
+  return buffer.toString();
+}
 
 class TzEntry {
   /// The identifier for this zone -- almost always a canonical IANA tz
@@ -38,19 +61,47 @@ class TzEntry {
       ianaZoneId.split('/').last.replaceAll('_', ' ');
 
   /// English and German country names for the countries assigned to this
-  /// zone (via zone1970.tab / ISO 3166-1). Computed on demand rather than
-  /// stored, to avoid duplicating the generated country data per entry.
+  /// zone (via zone1970.tab / ISO 3166-1 / CLDR). Computed on demand
+  /// rather than stored, to avoid duplicating the generated country data
+  /// per entry.
   Iterable<String> get countryNames {
     final codes = zoneCountryCodes[ianaZoneId] ?? const [];
     return codes.expand((code) => [
       if (countryNamesEn[code] != null) countryNamesEn[code]!,
-      if (countryNamesDe[code] != null) countryNamesDe[code]!,
+      if (cldrCountryNamesEn[code] != null) cldrCountryNamesEn[code]!,
+      if (cldrCountryNamesDe[code] != null) cldrCountryNamesDe[code]!,
     ]);
+  }
+
+  /// CLDR exemplar city for this zone (EN + DE), where available.
+  Iterable<String> get exemplarCityNames => [
+    if (cityNamesEn[ianaZoneId] != null) cityNamesEn[ianaZoneId]!,
+    if (cityNamesDe[ianaZoneId] != null) cityNamesDe[ianaZoneId]!,
+  ];
+
+  /// Windows-style display name(s) (English only, per CLDR).
+  Iterable<String> get windowsNames => windowsZoneNames[ianaZoneId] ?? const [];
+
+  /// Localized metazone names (generic/standard always; daylight only if
+  /// THIS zone currently observes DST -- metazone membership alone does
+  /// not imply that. E.g. Africa/Tunis shares the "Europe_Central"
+  /// metazone with Europe/Berlin but no longer observes DST itself, so
+  /// it must not match "CEST"/"Sommerzeit"-style daylight terms.
+  Iterable<String> get metazoneTerms {
+    final metaId = zoneMetaZone[ianaZoneId];
+    if (metaId == null) return const [];
+    final en = metazoneNamesEn[metaId];
+    final de = metazoneNamesDe[metaId];
+    return [
+      en?.generic, en?.standard,
+      de?.generic, de?.standard,
+      if (hasDst) ...[en?.daylight, de?.daylight],
+    ].whereType<String>();
   }
 
   bool matches(String query) {
     final query_orig = query.trim();
-    final query_lower = query.toLowerCase().trim();
+    final query_lower = foldDiacritics(query.toLowerCase().trim());
     if (query_lower.isEmpty) return true;
     if (offsetWinter.contains(query_lower) ||
         offsetSummer.contains(query_lower) ||
@@ -70,16 +121,20 @@ class TzEntry {
           ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
         return true;
       }
-      if (terms.any((t) => t.startsWith(query_lower))) {
-        return true;
-      }
-      return countryNames.any((name) => name.toLowerCase().startsWith(query_lower));
+      final candidates = [
+        ...terms,
+        ...countryNames,
+        ...exemplarCityNames,
+        ...windowsNames,
+        ...metazoneTerms,
+      ];
+      return candidates.any(
+              (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
     }
   }
 }
-
 // Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
-List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
+List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
   final q = query.trim().toUpperCase().replaceAll(' ', '');
 
   final decimalMatch = RegExp(r'^(?:UTC)?([+-])(\d{1,2})[.,](50?|75|25)$').firstMatch(q);
@@ -104,4 +159,10 @@ List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
   }
 
   return db.where((e) => e.offsetWinter == target || e.offsetSummer == target).toList();
+}
+
+List<TzEntry> searchTimezones(String query, List<TzEntry> db) {
+  final byOffset = _searchByOffset(query, db);
+  if (byOffset.isNotEmpty) return byOffset;
+  return db.where((e) => e.matches(query)).toList();
 }

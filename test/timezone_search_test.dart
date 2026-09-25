@@ -4144,430 +4144,430 @@ void main() {
 
     test('UTC+0', () {
       var searchTerm = 'UTC+0';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+1', () {
       var searchTerm = 'UTC+1';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-1', () {
       var searchTerm = 'UTC-1';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+10', () {
       var searchTerm = 'UTC+10';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-10', () {
       var searchTerm = 'UTC-10';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+10:30', () {
       var searchTerm = 'UTC+10:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+11', () {
       var searchTerm = 'UTC+11';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-11', () {
       var searchTerm = 'UTC-11';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+12', () {
       var searchTerm = 'UTC+12';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-12', () {
       var searchTerm = 'UTC-12';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+12:45', () {
       var searchTerm = 'UTC+12:45';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+13', () {
       var searchTerm = 'UTC+13';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+13:45', () {
       var searchTerm = 'UTC+13:45';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+14', () {
       var searchTerm = 'UTC+14';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+2', () {
       var searchTerm = 'UTC+2';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-2', () {
       var searchTerm = 'UTC-2';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-2:30', () {
       var searchTerm = 'UTC-2:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+3', () {
       var searchTerm = 'UTC+3';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-3', () {
       var searchTerm = 'UTC-3';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+3:30', () {
       var searchTerm = 'UTC+3:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-3:30', () {
       var searchTerm = 'UTC-3:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+4', () {
       var searchTerm = 'UTC+4';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-4', () {
       var searchTerm = 'UTC-4';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+4:30', () {
       var searchTerm = 'UTC+4:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+5', () {
       var searchTerm = 'UTC+5';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-5', () {
       var searchTerm = 'UTC-5';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+5:30', () {
       var searchTerm = 'UTC+5:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+5:45', () {
       var searchTerm = 'UTC+5:45';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+6', () {
       var searchTerm = 'UTC+6';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-6', () {
       var searchTerm = 'UTC-6';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+6:30', () {
       var searchTerm = 'UTC+6:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+7', () {
       var searchTerm = 'UTC+7';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-7', () {
       var searchTerm = 'UTC-7';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+8', () {
       var searchTerm = 'UTC+8';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-8', () {
       var searchTerm = 'UTC-8';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+8:30 -- unused', () {  // https://en.wikipedia.org/wiki/UTC%2B08:30
       var searchTerm = 'UTC+8:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, equals(0));  // no longer in use!
     });
 
     test('UTC+8:45 -- unofficial', () {  // https://en.wikipedia.org/wiki/UTC%2B08:45
       var searchTerm = 'UTC+8:45';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+9', () {
       var searchTerm = 'UTC+9';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-9', () {
       var searchTerm = 'UTC-9';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+9:30', () {
       var searchTerm = 'UTC+9:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-9:30', () {
       var searchTerm = 'UTC-9:30';
-      final loc = searchByOffset(searchTerm, tzDatabase);
+      final loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+10.50', () {
       var searchTerm = 'UTC+10.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+12.75', () {
       var searchTerm = 'UTC+12.75';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+13.75', () {
       var searchTerm = 'UTC+13.75';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-2.50', () {
       var searchTerm = 'UTC-2.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+3.50', () {
       var searchTerm = 'UTC+3.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-3.50', () {
       var searchTerm = 'UTC-3.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+4.50', () {
       var searchTerm = 'UTC+4.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+5.50', () {
       var searchTerm = 'UTC+5.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+5.75', () {
       var searchTerm = 'UTC+5.75';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+6.50', () {
       var searchTerm = 'UTC+6.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+8.75', () {
       var searchTerm = 'UTC+8.75';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC+9.50', () {
       var searchTerm = 'UTC+9.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
     test('UTC-9.50', () {
       var searchTerm = 'UTC-9.50';
-      var loc = searchByOffset(searchTerm, tzDatabase);
+      var loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
       searchTerm = searchTerm.replaceFirst('.', ',');
-      loc = searchByOffset(searchTerm, tzDatabase);
+      loc = searchTimezones(searchTerm, tzDatabase);
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
