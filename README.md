@@ -194,7 +194,7 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 > It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
 > Current (2026-09) versions:
 > - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
-> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026d](https://www.iana.org/time-zones/releases/2026d)
+> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026e](https://www.iana.org/time-zones/releases/2026e)
 
 ### Linux
 
