@@ -1,10 +1,10 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-dates-full, main/en/timeZoneNames.json
 // Regenerate with: python3 tools/generate_cldr_exemplar_cities.py
-// Last generated: 2026-09-23
+// Last generated: 2026-10-01
 
 // City names by IANA zone identifier.
-const Map<String, String> cityNamesEn = {
+const Map<String, String> cldrCityNamesEn = {
   'Africa/Asmera': 'Asmara',
   'Africa/El_Aaiun': 'El Aaiún',
   'Africa/Lome': 'Lomé',

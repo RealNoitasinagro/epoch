@@ -61,7 +61,7 @@ def load_cities(cldr_json_dir, locale):
 
 def write_city_names(path, names, locale):
     locale_capitalized = locale.capitalize()
-    dart_variable = 'cityNames' + locale_capitalized
+    dart_variable = 'cldrCityNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
         now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")

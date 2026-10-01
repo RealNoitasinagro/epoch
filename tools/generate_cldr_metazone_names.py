@@ -128,14 +128,15 @@ def write_zone_metazone(path, zone_metazones):
         f.write("// Regenerate with: python3 tools/generate_cldr_metazone_names.py\n")
         f.write(f"// Last generated: {now}\n\n")
         f.write("// Current CLDR metazone assignment by IANA zone identifier.\n")
-        f.write("const Map<String, String> zoneMetaZone = {\n")
+        f.write("const Map<String, String> cldrZoneMetaZone = {\n")
         for zone_id in sorted(zone_metazones):
             f.write(f"  '{zone_id}': '{zone_metazones[zone_id]}',\n")
         f.write("};\n")
 
 
 def write_metazone_names(path, names, locale):
-    dart_variable = "metazoneNamesEn" if locale == "en" else "metazoneNamesDe"
+    locale_capitalized = locale.capitalize()
+    dart_variable = 'cldrMetazoneNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
         now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")

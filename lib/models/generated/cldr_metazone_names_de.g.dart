@@ -1,12 +1,12 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-dates-full, main/de/timeZoneNames.json (metazone/long)
 // Regenerate with: python3 tools/generate_cldr_metazone_names.py
-// Last generated: 2026-09-24
+// Last generated: 2026-10-01
 
 // Localized long generic/standard/daylight names by CLDR
 // metazone identifier. Any of the three may be null if CLDR
 // has no name for that variant in this locale.
-const Map<String, ({String? generic, String? standard, String? daylight})> metazoneNamesDe = {
+const Map<String, ({String? generic, String? standard, String? daylight})> cldrMetazoneNamesDe = {
   'Acre': (generic: 'Acre-Zeit', standard: 'Acre-Normalzeit', daylight: 'Acre-Sommerzeit'),
   'Afghanistan': (generic: null, standard: 'Afghanistan-Zeit', daylight: null),
   'Africa_Central': (generic: null, standard: 'Zentralafrikanische Zeit', daylight: null),

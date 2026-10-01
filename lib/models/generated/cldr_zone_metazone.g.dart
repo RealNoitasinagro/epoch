@@ -1,10 +1,10 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-core, supplemental/metaZones.json
 // Regenerate with: python3 tools/generate_cldr_metazone_names.py
-// Last generated: 2026-09-24
+// Last generated: 2026-10-01
 
 // Current CLDR metazone assignment by IANA zone identifier.
-const Map<String, String> zoneMetaZone = {
+const Map<String, String> cldrZoneMetaZone = {
   'Africa/Abidjan': 'GMT',
   'Africa/Accra': 'GMT',
   'Africa/Addis_Ababa': 'Africa_Eastern',

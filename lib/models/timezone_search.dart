@@ -6,8 +6,10 @@ import 'generated/cldr_metazone_names_de.g.dart';
 import 'generated/cldr_metazone_names_en.g.dart';
 import 'generated/cldr_windows_zone_names.g.dart';
 import 'generated/cldr_zone_metazone.g.dart';
+import 'generated/iana_links_snapshot.g.dart';
 import 'generated/iso3166_country_names_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
+import 'timezone_search_country_aliases.dart';
 
 const _diacriticsFoldMap = {
   'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
@@ -40,7 +42,7 @@ class TzEntry {
   final String offsetSummer;
   final String abbrWinter;
   final String abbrSummer;
-  final List<String> terms; // lowercase; includes shared + city-specific
+  final List<String> terms;  // legacy escape hatch for rare hand-curated cases
 
   const TzEntry({
     required this.ianaZoneId,
@@ -48,7 +50,7 @@ class TzEntry {
     required this.offsetSummer,
     required this.abbrWinter,
     required this.abbrSummer,
-    required this.terms,
+    this.terms = const [],
   });
 
   bool get hasDst => offsetWinter != offsetSummer;
@@ -60,6 +62,13 @@ class TzEntry {
   String get cityName =>
       ianaZoneId.split('/').last.replaceAll('_', ' ');
 
+  /// City-style names derived from deprecated/alias IANA identifiers
+  /// (Links) that point at this zone, e.g. "Africa/Accra" -> "Accra"
+  /// for the canonical Africa/Abidjan.
+  Iterable<String> get linkCityNames => ianaLinksSnapshot.entries
+      .where((e) => e.value == ianaZoneId)
+      .map((e) => e.key.split('/').last.replaceAll('_', ' '));
+
   /// English and German country names for the countries assigned to this
   /// zone (via zone1970.tab / ISO 3166-1 / CLDR). Computed on demand
   /// rather than stored, to avoid duplicating the generated country data
@@ -70,13 +79,15 @@ class TzEntry {
       if (countryNamesEn[code] != null) countryNamesEn[code]!,
       if (cldrCountryNamesEn[code] != null) cldrCountryNamesEn[code]!,
       if (cldrCountryNamesDe[code] != null) cldrCountryNamesDe[code]!,
+      if (countryNameAliasesEn[code] != null) ...countryNameAliasesEn[code]!,
+      if (countryNameAliasesDe[code] != null) ...countryNameAliasesDe[code]!,
     ]);
   }
 
   /// CLDR exemplar city for this zone (EN + DE), where available.
   Iterable<String> get exemplarCityNames => [
-    if (cityNamesEn[ianaZoneId] != null) cityNamesEn[ianaZoneId]!,
-    if (cityNamesDe[ianaZoneId] != null) cityNamesDe[ianaZoneId]!,
+    if (cldrCityNamesEn[ianaZoneId] != null) cldrCityNamesEn[ianaZoneId]!,
+    if (cldrCityNamesDe[ianaZoneId] != null) cldrCityNamesDe[ianaZoneId]!,
   ];
 
   /// Windows-style display name(s) (English only, per CLDR).
@@ -88,10 +99,10 @@ class TzEntry {
   /// metazone with Europe/Berlin but no longer observes DST itself, so
   /// it must not match "CEST"/"Sommerzeit"-style daylight terms.
   Iterable<String> get metazoneTerms {
-    final metaId = zoneMetaZone[ianaZoneId];
+    final metaId = cldrZoneMetaZone[ianaZoneId];
     if (metaId == null) return const [];
-    final en = metazoneNamesEn[metaId];
-    final de = metazoneNamesDe[metaId];
+    final en = cldrMetazoneNamesEn[metaId];
+    final de = cldrMetazoneNamesDe[metaId];
     return [
       en?.generic, en?.standard,
       de?.generic, de?.standard,
@@ -103,6 +114,7 @@ class TzEntry {
     final query_orig = query.trim();
     final query_lower = foldDiacritics(query.toLowerCase().trim());
     if (query_lower.isEmpty) return true;
+    // offsets
     if (offsetWinter.contains(query_lower) ||
         offsetSummer.contains(query_lower) ||
         offsetWinter.replaceAll(':', '').contains(query_lower) ||
@@ -110,26 +122,33 @@ class TzEntry {
     ) {
       return true;
     }
+    // (IANA) abbreviations (letters-only or offset numbers)
     if (abbrWinter == query_orig || abbrSummer == query_orig) {
       return true;
     }
+    // uppercase-only: (non-IANA) zone abbreviations in terms
     if (query_orig == query_orig.toUpperCase()) {
-      return terms.any((t) => t == query_orig);
+      return terms.any((t) => t == query_orig) ||
+          linkCityNames.any((name) => name.toUpperCase() == query_orig);
     }
+    // text strings
     else {
+      // locations or whole area/location identifiers
       if (ianaZoneId.toLowerCase().contains(query_lower) ||
           ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
         return true;
       }
+      // cities, countries, zone names, zone abbreviations, ...
       final candidates = [
         ...terms,
+        ...linkCityNames,
         ...countryNames,
         ...exemplarCityNames,
         ...windowsNames,
         ...metazoneTerms,
       ];
       return candidates.any(
-              (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
+          (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
     }
   }
 }

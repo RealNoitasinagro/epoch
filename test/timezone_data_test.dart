@@ -1,3 +1,6 @@
+import 'package:epoch/models/generated/cldr_metazone_names_de.g.dart';
+import 'package:epoch/models/generated/cldr_metazone_names_en.g.dart';
+import 'package:epoch/models/generated/cldr_zone_metazone.g.dart';
 import 'package:epoch/models/generated/iana_canonical_zones_snapshot.g.dart';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
@@ -67,6 +70,19 @@ void main() {
           final matches = tzDatabase.where((e) => e.matches(name));
           expect(matches.map((e) => e.ianaZoneId), contains(entry.ianaZoneId));
         });
+      }
+    }
+  });
+
+  test('zones without current DST never match a DST-only metazone term', () {
+    for (final entry in tzDatabase) {
+      if (entry.hasDst) continue;
+      final metaId = cldrZoneMetaZone[entry.ianaZoneId];
+      if (metaId == null) continue;
+      for (final term in [cldrMetazoneNamesEn[metaId]?.daylight,
+        cldrMetazoneNamesDe[metaId]?.daylight].whereType<String>()) {
+        expect(entry.matches(term), isFalse,
+            reason: '${entry.ianaZoneId} has no DST but matched daylight term "$term"');
       }
     }
   });
