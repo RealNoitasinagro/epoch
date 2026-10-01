@@ -8,6 +8,8 @@ import 'generated/cldr_windows_zone_names.g.dart';
 import 'generated/cldr_zone_metazone.g.dart';
 import 'generated/iana_links_snapshot.g.dart';
 import 'generated/iso3166_country_names_en.g.dart';
+import 'generated/wikidata_capitals_de.g.dart';
+import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
 import 'timezone_search_country_aliases.dart';
 
@@ -84,6 +86,16 @@ class TzEntry {
     ]);
   }
 
+  /// English and German country names for the countries assigned to this
+  /// zone (potentially more than pne per county, e.g. South Africa).
+  Iterable<String> get capitalNames {
+    final codes = zoneCountryCodes[ianaZoneId] ?? const [];
+    return codes.expand((code) => [
+      ...?wikidataCapitalsEn[code],
+      ...?wikidataCapitalsDe[code],
+    ]);
+  }
+
   /// CLDR exemplar city for this zone (EN + DE), where available.
   Iterable<String> get exemplarCityNames => [
     if (cldrCityNamesEn[ianaZoneId] != null) cldrCityNamesEn[ianaZoneId]!,
@@ -114,7 +126,7 @@ class TzEntry {
     final query_orig = query.trim();
     final query_lower = foldDiacritics(query.toLowerCase().trim());
     if (query_lower.isEmpty) return true;
-    // offsets
+    // offsets, fixed format: [+-]\d\d:\d\d
     if (offsetWinter.contains(query_lower) ||
         offsetSummer.contains(query_lower) ||
         offsetWinter.replaceAll(':', '').contains(query_lower) ||
@@ -126,32 +138,35 @@ class TzEntry {
     if (abbrWinter == query_orig || abbrSummer == query_orig) {
       return true;
     }
+
+    final candidates = [
+      ...terms,
+      ...linkCityNames,
+      ...countryNames,
+      ...capitalNames,
+      ...exemplarCityNames,
+      ...windowsNames,
+      ...metazoneTerms,
+    ];
+
     // uppercase-only: (non-IANA) zone abbreviations in terms
     if (query_orig == query_orig.toUpperCase()) {
-      return terms.any((t) => t == query_orig) ||
-          linkCityNames.any((name) => name.toUpperCase() == query_orig);
+      // All-caps: exact match only (case-insensitive), to avoid false
+      // positives from short/ambiguous strings matching as a prefix of
+      // unrelated longer words.
+      return candidates.any((t) => t.toUpperCase() == query_orig);
     }
-    // text strings
-    else {
-      // locations or whole area/location identifiers
-      if (ianaZoneId.toLowerCase().contains(query_lower) ||
-          ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
-        return true;
-      }
-      // cities, countries, zone names, zone abbreviations, ...
-      final candidates = [
-        ...terms,
-        ...linkCityNames,
-        ...countryNames,
-        ...exemplarCityNames,
-        ...windowsNames,
-        ...metazoneTerms,
-      ];
-      return candidates.any(
-          (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
+    // locations or whole area/location identifiers
+    if (ianaZoneId.toLowerCase().contains(query_lower) ||
+        ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
+      return true;
     }
+    // cities, countries, zone names, zone abbreviations, ...
+    return candidates.any(
+        (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
   }
 }
+
 // Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
 List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
   final q = query.trim().toUpperCase().replaceAll(' ', '');

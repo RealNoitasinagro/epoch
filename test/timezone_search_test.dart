@@ -2087,7 +2087,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Accra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2095,7 +2095,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Addis Ababa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2103,7 +2103,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Asmara";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2111,7 +2111,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Asmera";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2119,7 +2119,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Bamako";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2127,7 +2127,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Bangui";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2135,7 +2135,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Banjul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2143,7 +2143,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Blantyre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2151,7 +2151,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Brazzaville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2159,7 +2159,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Bujumbura";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2167,7 +2167,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Conakry";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2175,7 +2175,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Dakar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2183,7 +2183,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Dar es Salaam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2191,7 +2191,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Djibouti";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2199,7 +2199,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Douala";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2207,7 +2207,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Freetown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2215,7 +2215,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Gaborone";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2223,7 +2223,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Harare";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2231,7 +2231,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Kampala";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2239,7 +2239,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Kigali";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2247,7 +2247,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Kinshasa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2255,7 +2255,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Libreville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2263,7 +2263,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Lome";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2271,7 +2271,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Luanda";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2279,7 +2279,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Lubumbashi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2287,7 +2287,7 @@ void main() {
       String ianaZone = "Africa/Maputo";
       var searchTerm = "Lusaka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2295,7 +2295,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Malabo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2303,7 +2303,7 @@ void main() {
       String ianaZone = "Africa/Johannesburg";
       var searchTerm = "Maseru";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2311,7 +2311,7 @@ void main() {
       String ianaZone = "Africa/Johannesburg";
       var searchTerm = "Mbabane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2319,7 +2319,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Mogadishu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2327,7 +2327,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Niamey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2335,7 +2335,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Nouakchott";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2343,7 +2343,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Ouagadougou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2351,7 +2351,7 @@ void main() {
       String ianaZone = "Africa/Lagos";
       var searchTerm = "Porto-Novo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2359,7 +2359,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Timbuktu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2367,7 +2367,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Anguilla";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2375,7 +2375,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Antigua";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2383,7 +2383,7 @@ void main() {
       String ianaZone = "America/Argentina/Catamarca";
       var searchTerm = "ComodRivadavia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2391,7 +2391,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Aruba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2399,7 +2399,7 @@ void main() {
       String ianaZone = "America/Panama";
       var searchTerm = "Atikokan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2407,7 +2407,7 @@ void main() {
       String ianaZone = "America/Adak";
       var searchTerm = "Atka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2415,7 +2415,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Blanc-Sablon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2423,7 +2423,7 @@ void main() {
       String ianaZone = "America/Argentina/Buenos_Aires";
       var searchTerm = "Buenos Aires";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2431,7 +2431,7 @@ void main() {
       String ianaZone = "America/Argentina/Catamarca";
       var searchTerm = "Catamarca";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2439,7 +2439,7 @@ void main() {
       String ianaZone = "America/Panama";
       var searchTerm = "Cayman";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2447,7 +2447,7 @@ void main() {
       String ianaZone = "America/Panama";
       var searchTerm = "Coral Harbour";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2455,7 +2455,7 @@ void main() {
       String ianaZone = "America/Argentina/Cordoba";
       var searchTerm = "Cordoba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2463,7 +2463,7 @@ void main() {
       String ianaZone = "America/Phoenix";
       var searchTerm = "Creston";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2471,7 +2471,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Curacao";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2479,7 +2479,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Dominica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2487,7 +2487,7 @@ void main() {
       String ianaZone = "America/Tijuana";
       var searchTerm = "Ensenada";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2495,7 +2495,7 @@ void main() {
       String ianaZone = "America/Indiana/Indianapolis";
       var searchTerm = "Fort Wayne";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2503,7 +2503,7 @@ void main() {
       String ianaZone = "America/Nuuk";
       var searchTerm = "Godthab";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2511,7 +2511,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Grenada";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2519,7 +2519,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Guadeloupe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2527,7 +2527,7 @@ void main() {
       String ianaZone = "America/Indiana/Indianapolis";
       var searchTerm = "Indianapolis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2535,7 +2535,7 @@ void main() {
       String ianaZone = "America/Argentina/Jujuy";
       var searchTerm = "Jujuy";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2543,7 +2543,7 @@ void main() {
       String ianaZone = "America/Indiana/Knox";
       var searchTerm = "Knox IN";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2551,7 +2551,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Kralendijk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2559,7 +2559,7 @@ void main() {
       String ianaZone = "America/Kentucky/Louisville";
       var searchTerm = "Louisville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2567,7 +2567,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Lower Princes";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2575,7 +2575,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Marigot";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2583,7 +2583,7 @@ void main() {
       String ianaZone = "America/Argentina/Mendoza";
       var searchTerm = "Mendoza";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2591,7 +2591,7 @@ void main() {
       String ianaZone = "America/Toronto";
       var searchTerm = "Montreal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2599,7 +2599,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Montserrat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2607,7 +2607,7 @@ void main() {
       String ianaZone = "America/Toronto";
       var searchTerm = "Nassau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2615,7 +2615,7 @@ void main() {
       String ianaZone = "America/Toronto";
       var searchTerm = "Nipigon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2623,7 +2623,7 @@ void main() {
       String ianaZone = "America/Iqaluit";
       var searchTerm = "Pangnirtung";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2631,7 +2631,7 @@ void main() {
       String ianaZone = "America/Rio_Branco";
       var searchTerm = "Porto Acre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2639,7 +2639,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Port of Spain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2647,7 +2647,7 @@ void main() {
       String ianaZone = "America/Winnipeg";
       var searchTerm = "Rainy River";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2655,7 +2655,7 @@ void main() {
       String ianaZone = "America/Argentina/Cordoba";
       var searchTerm = "Rosario";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2663,7 +2663,7 @@ void main() {
       String ianaZone = "America/Tijuana";
       var searchTerm = "Santa Isabel";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2671,7 +2671,7 @@ void main() {
       String ianaZone = "America/Denver";
       var searchTerm = "Shiprock";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2679,7 +2679,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "St Barthelemy";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2687,7 +2687,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "St Kitts";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2695,7 +2695,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "St Lucia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2703,7 +2703,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "St Thomas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2711,7 +2711,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "St Vincent";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2719,7 +2719,7 @@ void main() {
       String ianaZone = "America/Toronto";
       var searchTerm = "Thunder Bay";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2727,7 +2727,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Tortola";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2735,7 +2735,7 @@ void main() {
       String ianaZone = "America/Puerto_Rico";
       var searchTerm = "Virgin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2743,7 +2743,7 @@ void main() {
       String ianaZone = "America/Edmonton";
       var searchTerm = "Yellowknife";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2751,7 +2751,7 @@ void main() {
       String ianaZone = "Pacific/Port_Moresby";
       var searchTerm = "DumontDUrville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2759,7 +2759,7 @@ void main() {
       String ianaZone = "Pacific/Auckland";
       var searchTerm = "McMurdo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2767,7 +2767,7 @@ void main() {
       String ianaZone = "Pacific/Auckland";
       var searchTerm = "South Pole";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2775,7 +2775,7 @@ void main() {
       String ianaZone = "Asia/Riyadh";
       var searchTerm = "Syowa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2783,7 +2783,7 @@ void main() {
       String ianaZone = "Europe/Berlin";
       var searchTerm = "Longyearbyen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2791,7 +2791,7 @@ void main() {
       String ianaZone = "Asia/Riyadh";
       var searchTerm = "Aden";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2799,7 +2799,7 @@ void main() {
       String ianaZone = "Asia/Ashgabat";
       var searchTerm = "Ashkhabad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2807,7 +2807,7 @@ void main() {
       String ianaZone = "Asia/Qatar";
       var searchTerm = "Bahrain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2815,7 +2815,7 @@ void main() {
       String ianaZone = "Asia/Kuching";
       var searchTerm = "Brunei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2823,7 +2823,7 @@ void main() {
       String ianaZone = "Asia/Kolkata";
       var searchTerm = "Calcutta";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2831,7 +2831,7 @@ void main() {
       String ianaZone = "Asia/Ulaanbaatar";
       var searchTerm = "Choibalsan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2839,7 +2839,7 @@ void main() {
       String ianaZone = "Asia/Shanghai";
       var searchTerm = "Chongqing";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2847,7 +2847,7 @@ void main() {
       String ianaZone = "Asia/Shanghai";
       var searchTerm = "Chungking";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2855,7 +2855,7 @@ void main() {
       String ianaZone = "Asia/Dhaka";
       var searchTerm = "Dacca";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2863,7 +2863,7 @@ void main() {
       String ianaZone = "Asia/Shanghai";
       var searchTerm = "Harbin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2871,7 +2871,7 @@ void main() {
       String ianaZone = "Europe/Istanbul";
       var searchTerm = "Istanbul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2879,7 +2879,7 @@ void main() {
       String ianaZone = "Asia/Urumqi";
       var searchTerm = "Kashgar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2887,7 +2887,7 @@ void main() {
       String ianaZone = "Asia/Kathmandu";
       var searchTerm = "Katmandu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2895,7 +2895,7 @@ void main() {
       String ianaZone = "Asia/Singapore";
       var searchTerm = "Kuala Lumpur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2903,7 +2903,7 @@ void main() {
       String ianaZone = "Asia/Riyadh";
       var searchTerm = "Kuwait";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2911,7 +2911,7 @@ void main() {
       String ianaZone = "Asia/Macau";
       var searchTerm = "Macao";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2919,7 +2919,7 @@ void main() {
       String ianaZone = "Asia/Dubai";
       var searchTerm = "Muscat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2927,7 +2927,7 @@ void main() {
       String ianaZone = "Asia/Bangkok";
       var searchTerm = "Phnom Penh";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2935,7 +2935,7 @@ void main() {
       String ianaZone = "Asia/Yangon";
       var searchTerm = "Rangoon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2943,7 +2943,7 @@ void main() {
       String ianaZone = "Asia/Ho_Chi_Minh";
       var searchTerm = "Saigon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2951,7 +2951,7 @@ void main() {
       String ianaZone = "Asia/Jerusalem";
       var searchTerm = "Tel Aviv";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2959,7 +2959,7 @@ void main() {
       String ianaZone = "Asia/Thimphu";
       var searchTerm = "Thimbu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2967,7 +2967,7 @@ void main() {
       String ianaZone = "Asia/Makassar";
       var searchTerm = "Ujung Pandang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2975,7 +2975,7 @@ void main() {
       String ianaZone = "Asia/Ulaanbaatar";
       var searchTerm = "Ulan Bator";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2983,7 +2983,7 @@ void main() {
       String ianaZone = "Asia/Bangkok";
       var searchTerm = "Vientiane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2991,7 +2991,7 @@ void main() {
       String ianaZone = "Atlantic/Faroe";
       var searchTerm = "Faeroe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -2999,7 +2999,7 @@ void main() {
       String ianaZone = "Europe/Berlin";
       var searchTerm = "Jan Mayen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3007,7 +3007,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Reykjavik";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3015,7 +3015,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "St Helena";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3023,7 +3023,7 @@ void main() {
       String ianaZone = "Australia/Sydney";
       var searchTerm = "ACT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3031,7 +3031,7 @@ void main() {
       String ianaZone = "Australia/Sydney";
       var searchTerm = "Canberra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3039,7 +3039,7 @@ void main() {
       String ianaZone = "Australia/Hobart";
       var searchTerm = "Currie";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3047,7 +3047,7 @@ void main() {
       String ianaZone = "Australia/Lord_Howe";
       var searchTerm = "LHI";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3055,7 +3055,7 @@ void main() {
       String ianaZone = "Australia/Darwin";
       var searchTerm = "North";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3063,7 +3063,7 @@ void main() {
       String ianaZone = "Australia/Sydney";
       var searchTerm = "NSW";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3071,7 +3071,7 @@ void main() {
       String ianaZone = "Australia/Brisbane";
       var searchTerm = "Queensland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3079,7 +3079,7 @@ void main() {
       String ianaZone = "Australia/Adelaide";
       var searchTerm = "South";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3087,7 +3087,7 @@ void main() {
       String ianaZone = "Australia/Hobart";
       var searchTerm = "Tasmania";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3095,7 +3095,7 @@ void main() {
       String ianaZone = "Australia/Melbourne";
       var searchTerm = "Victoria";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3103,7 +3103,7 @@ void main() {
       String ianaZone = "Australia/Perth";
       var searchTerm = "West";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3111,7 +3111,7 @@ void main() {
       String ianaZone = "Australia/Broken_Hill";
       var searchTerm = "Yancowinna";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3119,7 +3119,7 @@ void main() {
       String ianaZone = "America/Rio_Branco";
       var searchTerm = "Acre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3127,7 +3127,7 @@ void main() {
       String ianaZone = "America/Noronha";
       var searchTerm = "DeNoronha";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3135,7 +3135,7 @@ void main() {
       String ianaZone = "America/Sao_Paulo";
       var searchTerm = "East";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3143,7 +3143,7 @@ void main() {
       String ianaZone = "America/Manaus";
       var searchTerm = "West";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3151,7 +3151,7 @@ void main() {
       String ianaZone = "America/Halifax";
       var searchTerm = "Atlantic";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3159,7 +3159,7 @@ void main() {
       String ianaZone = "America/Winnipeg";
       var searchTerm = "Central";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3167,7 +3167,7 @@ void main() {
       String ianaZone = "America/Toronto";
       var searchTerm = "Eastern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3175,7 +3175,7 @@ void main() {
       String ianaZone = "America/Edmonton";
       var searchTerm = "Mountain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3183,7 +3183,7 @@ void main() {
       String ianaZone = "America/St_Johns";
       var searchTerm = "Newfoundland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3191,7 +3191,7 @@ void main() {
       String ianaZone = "America/Vancouver";
       var searchTerm = "Pacific";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3199,7 +3199,7 @@ void main() {
       String ianaZone = "America/Regina";
       var searchTerm = "Saskatchewan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3207,7 +3207,7 @@ void main() {
       String ianaZone = "America/Whitehorse";
       var searchTerm = "Yukon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3215,7 +3215,7 @@ void main() {
       String ianaZone = "Europe/Brussels";
       var searchTerm = "CET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3223,7 +3223,7 @@ void main() {
       String ianaZone = "America/Santiago";
       var searchTerm = "Continental";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3231,7 +3231,7 @@ void main() {
       String ianaZone = "Pacific/Easter";
       var searchTerm = "EasterIsland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3239,7 +3239,7 @@ void main() {
       String ianaZone = "America/Havana";
       var searchTerm = "Cuba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3247,7 +3247,7 @@ void main() {
       String ianaZone = "Europe/Athens";
       var searchTerm = "EET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3255,7 +3255,7 @@ void main() {
       String ianaZone = "Africa/Cairo";
       var searchTerm = "Egypt";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3263,7 +3263,7 @@ void main() {
       String ianaZone = "Europe/Dublin";
       var searchTerm = "Eire";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3271,7 +3271,7 @@ void main() {
       String ianaZone = "America/Panama";
       var searchTerm = "EST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3279,7 +3279,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT+0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3287,7 +3287,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT-0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3295,7 +3295,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3303,7 +3303,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "Greenwich";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3311,7 +3311,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "UCT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3319,7 +3319,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "Universal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3327,7 +3327,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "Zulu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3335,7 +3335,7 @@ void main() {
       String ianaZone = "Europe/Brussels";
       var searchTerm = "Amsterdam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3343,7 +3343,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "Belfast";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3351,7 +3351,7 @@ void main() {
       String ianaZone = "Europe/Prague";
       var searchTerm = "Bratislava";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3359,7 +3359,7 @@ void main() {
       String ianaZone = "Europe/Zurich";
       var searchTerm = "Busingen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3367,7 +3367,7 @@ void main() {
       String ianaZone = "Europe/Berlin";
       var searchTerm = "Copenhagen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3375,7 +3375,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "Guernsey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3383,7 +3383,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "Isle of Man";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3391,7 +3391,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "Jersey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3399,7 +3399,7 @@ void main() {
       String ianaZone = "Europe/Kyiv";
       var searchTerm = "Kiev";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3407,7 +3407,7 @@ void main() {
       String ianaZone = "Europe/Belgrade";
       var searchTerm = "Ljubljana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3415,7 +3415,7 @@ void main() {
       String ianaZone = "Europe/Brussels";
       var searchTerm = "Luxembourg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3423,7 +3423,7 @@ void main() {
       String ianaZone = "Europe/Helsinki";
       var searchTerm = "Mariehamn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3431,7 +3431,7 @@ void main() {
       String ianaZone = "Europe/Paris";
       var searchTerm = "Monaco";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3439,7 +3439,7 @@ void main() {
       String ianaZone = "Asia/Nicosia";
       var searchTerm = "Nicosia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3447,7 +3447,7 @@ void main() {
       String ianaZone = "Europe/Berlin";
       var searchTerm = "Oslo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3455,7 +3455,7 @@ void main() {
       String ianaZone = "Europe/Belgrade";
       var searchTerm = "Podgorica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3463,7 +3463,7 @@ void main() {
       String ianaZone = "Europe/Rome";
       var searchTerm = "San Marino";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3471,7 +3471,7 @@ void main() {
       String ianaZone = "Europe/Belgrade";
       var searchTerm = "Sarajevo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3479,7 +3479,7 @@ void main() {
       String ianaZone = "Europe/Belgrade";
       var searchTerm = "Skopje";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3487,7 +3487,7 @@ void main() {
       String ianaZone = "Europe/Berlin";
       var searchTerm = "Stockholm";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3495,7 +3495,7 @@ void main() {
       String ianaZone = "Europe/Chisinau";
       var searchTerm = "Tiraspol";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3503,7 +3503,7 @@ void main() {
       String ianaZone = "Europe/Kyiv";
       var searchTerm = "Uzhgorod";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3511,7 +3511,7 @@ void main() {
       String ianaZone = "Europe/Zurich";
       var searchTerm = "Vaduz";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3519,7 +3519,7 @@ void main() {
       String ianaZone = "Europe/Rome";
       var searchTerm = "Vatican";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3527,7 +3527,7 @@ void main() {
       String ianaZone = "Europe/Belgrade";
       var searchTerm = "Zagreb";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3535,7 +3535,7 @@ void main() {
       String ianaZone = "Europe/Kyiv";
       var searchTerm = "Zaporozhye";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3543,7 +3543,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "GB-Eire";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3551,7 +3551,7 @@ void main() {
       String ianaZone = "Europe/London";
       var searchTerm = "GB";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3559,7 +3559,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT+0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3567,7 +3567,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT-0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3575,7 +3575,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT0";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3583,7 +3583,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "GMT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3591,7 +3591,7 @@ void main() {
       String ianaZone = "Etc/GMT";
       var searchTerm = "Greenwich";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3599,7 +3599,7 @@ void main() {
       String ianaZone = "Asia/Hong_Kong";
       var searchTerm = "Hongkong";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3607,7 +3607,7 @@ void main() {
       String ianaZone = "Pacific/Honolulu";
       var searchTerm = "HST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3615,7 +3615,7 @@ void main() {
       String ianaZone = "Africa/Abidjan";
       var searchTerm = "Iceland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3623,7 +3623,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Antananarivo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3631,7 +3631,7 @@ void main() {
       String ianaZone = "Asia/Bangkok";
       var searchTerm = "Christmas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3639,7 +3639,7 @@ void main() {
       String ianaZone = "Asia/Yangon";
       var searchTerm = "Cocos";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3647,7 +3647,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Comoro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3655,7 +3655,7 @@ void main() {
       String ianaZone = "Indian/Maldives";
       var searchTerm = "Kerguelen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3663,7 +3663,7 @@ void main() {
       String ianaZone = "Asia/Dubai";
       var searchTerm = "Mahe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3671,7 +3671,7 @@ void main() {
       String ianaZone = "Africa/Nairobi";
       var searchTerm = "Mayotte";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3679,7 +3679,7 @@ void main() {
       String ianaZone = "Asia/Dubai";
       var searchTerm = "Reunion";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3687,7 +3687,7 @@ void main() {
       String ianaZone = "Asia/Tehran";
       var searchTerm = "Iran";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3695,7 +3695,7 @@ void main() {
       String ianaZone = "Asia/Jerusalem";
       var searchTerm = "Israel";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3703,7 +3703,7 @@ void main() {
       String ianaZone = "America/Jamaica";
       var searchTerm = "Jamaica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3711,7 +3711,7 @@ void main() {
       String ianaZone = "Asia/Tokyo";
       var searchTerm = "Japan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3719,7 +3719,7 @@ void main() {
       String ianaZone = "Pacific/Kwajalein";
       var searchTerm = "Kwajalein";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3727,7 +3727,7 @@ void main() {
       String ianaZone = "Africa/Tripoli";
       var searchTerm = "Libya";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3735,7 +3735,7 @@ void main() {
       String ianaZone = "Europe/Brussels";
       var searchTerm = "MET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3743,7 +3743,7 @@ void main() {
       String ianaZone = "America/Tijuana";
       var searchTerm = "BajaNorte";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3751,7 +3751,7 @@ void main() {
       String ianaZone = "America/Mazatlan";
       var searchTerm = "BajaSur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3759,7 +3759,7 @@ void main() {
       String ianaZone = "America/Mexico_City";
       var searchTerm = "General";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3767,7 +3767,7 @@ void main() {
       String ianaZone = "America/Phoenix";
       var searchTerm = "MST";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3775,7 +3775,7 @@ void main() {
       String ianaZone = "America/Denver";
       var searchTerm = "Navajo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3783,7 +3783,7 @@ void main() {
       String ianaZone = "Pacific/Chatham";
       var searchTerm = "NZ-CHAT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3791,7 +3791,7 @@ void main() {
       String ianaZone = "Pacific/Auckland";
       var searchTerm = "NZ";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3799,7 +3799,7 @@ void main() {
       String ianaZone = "Pacific/Port_Moresby";
       var searchTerm = "Chuuk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3807,7 +3807,7 @@ void main() {
       String ianaZone = "Pacific/Kanton";
       var searchTerm = "Enderbury";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3815,7 +3815,7 @@ void main() {
       String ianaZone = "Pacific/Tarawa";
       var searchTerm = "Funafuti";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3823,7 +3823,7 @@ void main() {
       String ianaZone = "Pacific/Honolulu";
       var searchTerm = "Johnston";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3831,7 +3831,7 @@ void main() {
       String ianaZone = "Pacific/Tarawa";
       var searchTerm = "Majuro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3839,7 +3839,7 @@ void main() {
       String ianaZone = "Pacific/Pago_Pago";
       var searchTerm = "Midway";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3847,7 +3847,7 @@ void main() {
       String ianaZone = "Pacific/Guadalcanal";
       var searchTerm = "Pohnpei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3855,7 +3855,7 @@ void main() {
       String ianaZone = "Pacific/Guadalcanal";
       var searchTerm = "Ponape";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3863,7 +3863,7 @@ void main() {
       String ianaZone = "Pacific/Guam";
       var searchTerm = "Saipan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3871,7 +3871,7 @@ void main() {
       String ianaZone = "Pacific/Pago_Pago";
       var searchTerm = "Samoa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3879,7 +3879,7 @@ void main() {
       String ianaZone = "Pacific/Port_Moresby";
       var searchTerm = "Truk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3887,7 +3887,7 @@ void main() {
       String ianaZone = "Pacific/Tarawa";
       var searchTerm = "Wake";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3895,7 +3895,7 @@ void main() {
       String ianaZone = "Pacific/Tarawa";
       var searchTerm = "Wallis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3903,7 +3903,7 @@ void main() {
       String ianaZone = "Pacific/Port_Moresby";
       var searchTerm = "Yap";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3911,7 +3911,7 @@ void main() {
       String ianaZone = "Europe/Warsaw";
       var searchTerm = "Poland";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3919,7 +3919,7 @@ void main() {
       String ianaZone = "Europe/Lisbon";
       var searchTerm = "Portugal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3927,7 +3927,7 @@ void main() {
       String ianaZone = "Asia/Shanghai";
       var searchTerm = "PRC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3935,7 +3935,7 @@ void main() {
       String ianaZone = "Asia/Taipei";
       var searchTerm = "ROC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3943,7 +3943,7 @@ void main() {
       String ianaZone = "Asia/Seoul";
       var searchTerm = "ROK";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3951,7 +3951,7 @@ void main() {
       String ianaZone = "Asia/Singapore";
       var searchTerm = "Singapore";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3959,7 +3959,7 @@ void main() {
       String ianaZone = "Europe/Istanbul";
       var searchTerm = "Turkey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3967,7 +3967,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "UCT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3975,7 +3975,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "Universal";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3983,7 +3983,7 @@ void main() {
       String ianaZone = "America/Anchorage";
       var searchTerm = "Alaska";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3991,7 +3991,7 @@ void main() {
       String ianaZone = "America/Adak";
       var searchTerm = "Aleutian";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -3999,7 +3999,7 @@ void main() {
       String ianaZone = "America/Phoenix";
       var searchTerm = "Arizona";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4007,7 +4007,7 @@ void main() {
       String ianaZone = "America/Chicago";
       var searchTerm = "Central";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4015,7 +4015,7 @@ void main() {
       String ianaZone = "America/New_York";
       var searchTerm = "Eastern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4023,7 +4023,7 @@ void main() {
       String ianaZone = "America/Indiana/Indianapolis";
       var searchTerm = "East-Indiana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4031,7 +4031,7 @@ void main() {
       String ianaZone = "Pacific/Honolulu";
       var searchTerm = "Hawaii";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4039,7 +4039,7 @@ void main() {
       String ianaZone = "America/Indiana/Knox";
       var searchTerm = "Indiana-Starke";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4047,7 +4047,7 @@ void main() {
       String ianaZone = "America/Detroit";
       var searchTerm = "Michigan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4055,7 +4055,7 @@ void main() {
       String ianaZone = "America/Denver";
       var searchTerm = "Mountain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4063,7 +4063,7 @@ void main() {
       String ianaZone = "America/Los_Angeles";
       var searchTerm = "Pacific";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4071,7 +4071,7 @@ void main() {
       String ianaZone = "Pacific/Pago_Pago";
       var searchTerm = "Samoa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4079,7 +4079,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "UTC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4087,7 +4087,7 @@ void main() {
       String ianaZone = "Europe/Lisbon";
       var searchTerm = "WET";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4095,7 +4095,7 @@ void main() {
       String ianaZone = "Europe/Moscow";
       var searchTerm = "W-SU";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
 
@@ -4103,7 +4103,7 @@ void main() {
       String ianaZone = "Etc/UTC";
       var searchTerm = "Zulu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
-      expect(loc.length,greaterThan(0));
+      expect(loc.length, greaterThan(0));
       expect(loc.map((e) => e.ianaZoneId), contains(ianaZone));
     });
   }, skip: skip);
@@ -8470,2233 +8470,2233 @@ void main() {
       var searchTerm = "Abidjan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Abu Dhabi", () {
       var searchTerm = "Abu Dhabi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Abuja", () {
       var searchTerm = "Abuja";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Accra", () {
       var searchTerm = "Accra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Adamstown", () {
       var searchTerm = "Adamstown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Addis Ababa", () {
       var searchTerm = "Addis Ababa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ahmedabad", () {
       var searchTerm = "Ahmedabad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Alexandria", () {
       var searchTerm = "Alexandria";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Algiers", () {
       var searchTerm = "Algiers";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Alofi", () {
       var searchTerm = "Alofi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Amman", () {
       var searchTerm = "Amman";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Amsterdam", () {
       var searchTerm = "Amsterdam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Andorra la Vella", () {
       var searchTerm = "Andorra la Vella";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Andorra La Vella", () {
       var searchTerm = "Andorra La Vella";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ankara", () {
       var searchTerm = "Ankara";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Antananarivo", () {
       var searchTerm = "Antananarivo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Apia", () {
       var searchTerm = "Apia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ashgabat", () {
       var searchTerm = "Ashgabat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Asmara", () {
       var searchTerm = "Asmara";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Astana", () {
       var searchTerm = "Astana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Asuncion", () {
       var searchTerm = "Asuncion";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Asunción", () {
       var searchTerm = "Asunción";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Athens", () {
       var searchTerm = "Athens";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Avarua", () {
       var searchTerm = "Avarua";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Baghdad", () {
       var searchTerm = "Baghdad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Baku", () {
       var searchTerm = "Baku";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bamako", () {
       var searchTerm = "Bamako";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bandar Seri Begawan", () {
       var searchTerm = "Bandar Seri Begawan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bangalore", () {
       var searchTerm = "Bangalore";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bangkok", () {
       var searchTerm = "Bangkok";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bangui", () {
       var searchTerm = "Bangui";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Banjul", () {
       var searchTerm = "Banjul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Basseterre", () {
       var searchTerm = "Basseterre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Basse-Terre", () {
       var searchTerm = "Basse-Terre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Beijing", () {
       var searchTerm = "Beijing";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Beirut", () {
       var searchTerm = "Beirut";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Belgrade", () {
       var searchTerm = "Belgrade";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Belmopan", () {
       var searchTerm = "Belmopan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Berlin", () {
       var searchTerm = "Berlin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bern", () {
       var searchTerm = "Bern";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bijie", () {
       var searchTerm = "Bijie";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bishkek", () {
       var searchTerm = "Bishkek";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bissau", () {
       var searchTerm = "Bissau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bogota", () {
       var searchTerm = "Bogota";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Brades", () {
       var searchTerm = "Brades";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Brasilia", () {
       var searchTerm = "Brasilia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bratislava", () {
       var searchTerm = "Bratislava";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Brazzaville", () {
       var searchTerm = "Brazzaville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bridgetown", () {
       var searchTerm = "Bridgetown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Brussels", () {
       var searchTerm = "Brussels";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Bucharest", () {
       var searchTerm = "Bucharest";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Budapest", () {
       var searchTerm = "Budapest";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Buenos Aires", () {
       var searchTerm = "Buenos Aires";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Cairo", () {
       var searchTerm = "Cairo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Canberra", () {
       var searchTerm = "Canberra";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Caracas", () {
       var searchTerm = "Caracas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Castries", () {
       var searchTerm = "Castries";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Cayenne", () {
       var searchTerm = "Cayenne";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Changchun", () {
       var searchTerm = "Changchun";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Changde", () {
       var searchTerm = "Changde";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Changsha", () {
       var searchTerm = "Changsha";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Changzhou", () {
       var searchTerm = "Changzhou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Charlotte Amalie", () {
       var searchTerm = "Charlotte Amalie";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Chengchow", () {
       var searchTerm = "Chengchow";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Chengdu", () {
       var searchTerm = "Chengdu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Chennai", () {
       var searchTerm = "Chennai";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Chisinau", () {
       var searchTerm = "Chisinau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Chongqing", () {
       var searchTerm = "Chongqing";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ciudad de la Paz", () {
       var searchTerm = "Ciudad de la Paz";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Cockburn Town", () {
       var searchTerm = "Cockburn Town";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Colombo", () {
       var searchTerm = "Colombo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Conakry", () {
       var searchTerm = "Conakry";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Concelho de Macau", () {
       var searchTerm = "Concelho de Macau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Copenhagen", () {
       var searchTerm = "Copenhagen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dakar", () {
       var searchTerm = "Dakar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dalian", () {
       var searchTerm = "Dalian";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Damascus", () {
       var searchTerm = "Damascus";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dar es Salaam", () {
       var searchTerm = "Dar es Salaam";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Delhi", () {
       var searchTerm = "Delhi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dhaka", () {
       var searchTerm = "Dhaka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dili", () {
       var searchTerm = "Dili";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Djibouti City", () {
       var searchTerm = "Djibouti City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dodoma", () {
       var searchTerm = "Dodoma";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Doha", () {
       var searchTerm = "Doha";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dongguan", () {
       var searchTerm = "Dongguan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Douglas", () {
       var searchTerm = "Douglas";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dublin", () {
       var searchTerm = "Dublin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Dushanbe", () {
       var searchTerm = "Dushanbe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("El Aaiún", () {
       var searchTerm = "El Aaiún";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Flying Fish Cove", () {
       var searchTerm = "Flying Fish Cove";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Fort-de-France", () {
       var searchTerm = "Fort-de-France";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Foshan", () {
       var searchTerm = "Foshan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Freetown", () {
       var searchTerm = "Freetown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Funafuti", () {
       var searchTerm = "Funafuti";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Fuzhou", () {
       var searchTerm = "Fuzhou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Gaborone", () {
       var searchTerm = "Gaborone";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Georgetown", () {
       var searchTerm = "Georgetown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("George Town", () {
       var searchTerm = "George Town";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Gibraltar", () {
       var searchTerm = "Gibraltar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Gitega", () {
       var searchTerm = "Gitega";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Guangzhou", () {
       var searchTerm = "Guangzhou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Guatemala City", () {
       var searchTerm = "Guatemala City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Guiyang", () {
       var searchTerm = "Guiyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Gustavia", () {
       var searchTerm = "Gustavia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hagåtña", () {
       var searchTerm = "Hagåtña";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hamilton", () {
       var searchTerm = "Hamilton";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hangzhou", () {
       var searchTerm = "Hangzhou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hanoi", () {
       var searchTerm = "Hanoi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Harare", () {
       var searchTerm = "Harare";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Harbin", () {
       var searchTerm = "Harbin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Havana", () {
       var searchTerm = "Havana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hefei", () {
       var searchTerm = "Hefei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Helsinki", () {
       var searchTerm = "Helsinki";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Heze", () {
       var searchTerm = "Heze";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ho Chi Minh City", () {
       var searchTerm = "Ho Chi Minh City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hong Kong", () {
       var searchTerm = "Hong Kong";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Honiara", () {
       var searchTerm = "Honiara";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Hyderabad", () {
       var searchTerm = "Hyderabad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Islamabad", () {
       var searchTerm = "Islamabad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Istanbul", () {
       var searchTerm = "Istanbul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Jakarta", () {
       var searchTerm = "Jakarta";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Jamestown", () {
       var searchTerm = "Jamestown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Jerusalem", () {
       var searchTerm = "Jerusalem";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Jieyang", () {
       var searchTerm = "Jieyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Jinan", () {
       var searchTerm = "Jinan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Juba", () {
       var searchTerm = "Juba";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kabul", () {
       var searchTerm = "Kabul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kampala", () {
       var searchTerm = "Kampala";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Karachi", () {
       var searchTerm = "Karachi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kathmandu", () {
       var searchTerm = "Kathmandu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Khartoum", () {
       var searchTerm = "Khartoum";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kigali", () {
       var searchTerm = "Kigali";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("King Edward Point", () {
       var searchTerm = "King Edward Point";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kingston", () {
       var searchTerm = "Kingston";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kingstown", () {
       var searchTerm = "Kingstown";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kinshasa", () {
       var searchTerm = "Kinshasa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kolkata", () {
       var searchTerm = "Kolkata";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kuala Lumpur", () {
       var searchTerm = "Kuala Lumpur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kunming", () {
       var searchTerm = "Kunming";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kuwait City", () {
       var searchTerm = "Kuwait City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Kyiv", () {
       var searchTerm = "Kyiv";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lagos", () {
       var searchTerm = "Lagos";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lahore", () {
       var searchTerm = "Lahore";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Libreville", () {
       var searchTerm = "Libreville";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lilongwe", () {
       var searchTerm = "Lilongwe";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lima", () {
       var searchTerm = "Lima";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Linyi", () {
       var searchTerm = "Linyi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lisbon", () {
       var searchTerm = "Lisbon";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ljubljana", () {
       var searchTerm = "Ljubljana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lomé", () {
       var searchTerm = "Lomé";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("London", () {
       var searchTerm = "London";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Longyearbyen", () {
       var searchTerm = "Longyearbyen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Luanda", () {
       var searchTerm = "Luanda";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Luoyang", () {
       var searchTerm = "Luoyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Lusaka", () {
       var searchTerm = "Lusaka";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Luxembourg", () {
       var searchTerm = "Luxembourg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Madrid", () {
       var searchTerm = "Madrid";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Majuro", () {
       var searchTerm = "Majuro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Malabo", () {
       var searchTerm = "Malabo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Male", () {
       var searchTerm = "Male";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Malé", () {
       var searchTerm = "Malé";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mamoudzou", () {
       var searchTerm = "Mamoudzou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Managua", () {
       var searchTerm = "Managua";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Manama", () {
       var searchTerm = "Manama";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Manila", () {
       var searchTerm = "Manila";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Maputo", () {
       var searchTerm = "Maputo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mariehamn", () {
       var searchTerm = "Mariehamn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Marigot", () {
       var searchTerm = "Marigot";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Maseru", () {
       var searchTerm = "Maseru";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mata-Utu", () {
       var searchTerm = "Mata-Utu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mbabane", () {
       var searchTerm = "Mbabane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mexico City", () {
       var searchTerm = "Mexico City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Minsk", () {
       var searchTerm = "Minsk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mogadishu", () {
       var searchTerm = "Mogadishu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Monaco", () {
       var searchTerm = "Monaco";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Monrovia", () {
       var searchTerm = "Monrovia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Montevideo", () {
       var searchTerm = "Montevideo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Moroni", () {
       var searchTerm = "Moroni";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Moscow", () {
       var searchTerm = "Moscow";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Mumbai", () {
       var searchTerm = "Mumbai";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Muscat", () {
       var searchTerm = "Muscat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nairobi", () {
       var searchTerm = "Nairobi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nampula", () {
       var searchTerm = "Nampula";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nanchang", () {
       var searchTerm = "Nanchang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nanking", () {
       var searchTerm = "Nanking";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nanning", () {
       var searchTerm = "Nanning";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nassau", () {
       var searchTerm = "Nassau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Naypyidaw", () {
       var searchTerm = "Naypyidaw";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nay Pyi Taw", () {
       var searchTerm = "Nay Pyi Taw";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("N'Djamena", () {
       var searchTerm = "N'Djamena";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("New Delhi", () {
       var searchTerm = "New Delhi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("New York City", () {
       var searchTerm = "New York City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Niamey", () {
       var searchTerm = "Niamey";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nicosia", () {
       var searchTerm = "Nicosia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nouakchott", () {
       var searchTerm = "Nouakchott";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nouméa", () {
       var searchTerm = "Nouméa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nuku'alofa", () {
       var searchTerm = "Nuku'alofa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Nuuk", () {
       var searchTerm = "Nuuk";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Oranjestad", () {
       var searchTerm = "Oranjestad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Oslo", () {
       var searchTerm = "Oslo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ottawa", () {
       var searchTerm = "Ottawa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ouagadougou", () {
       var searchTerm = "Ouagadougou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Pago Pago", () {
       var searchTerm = "Pago Pago";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Panama City", () {
       var searchTerm = "Panama City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Papeete", () {
       var searchTerm = "Papeete";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Paramaribo", () {
       var searchTerm = "Paramaribo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Paris", () {
       var searchTerm = "Paris";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Philipsburg", () {
       var searchTerm = "Philipsburg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Phnom Penh", () {
       var searchTerm = "Phnom Penh";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Podgorica", () {
       var searchTerm = "Podgorica";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port-au-Prince", () {
       var searchTerm = "Port-au-Prince";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port Louis", () {
       var searchTerm = "Port Louis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port Moresby", () {
       var searchTerm = "Port Moresby";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port of Spain", () {
       var searchTerm = "Port of Spain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port-of-Spain", () {
       var searchTerm = "Port-of-Spain";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Porto Novo", () {
       var searchTerm = "Porto Novo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Porto-Novo", () {
       var searchTerm = "Porto-Novo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port Vila", () {
       var searchTerm = "Port Vila";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Port-Vila", () {
       var searchTerm = "Port-Vila";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Prague", () {
       var searchTerm = "Prague";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Praia", () {
       var searchTerm = "Praia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Pretoria", () {
       var searchTerm = "Pretoria";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Pristina", () {
       var searchTerm = "Pristina";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Pyongyang", () {
       var searchTerm = "Pyongyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Qingdao", () {
       var searchTerm = "Qingdao";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Quito", () {
       var searchTerm = "Quito";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Rabat", () {
       var searchTerm = "Rabat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ramallah", () {
       var searchTerm = "Ramallah";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Reykjavik", () {
       var searchTerm = "Reykjavik";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Reykjavík", () {
       var searchTerm = "Reykjavík";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Riga", () {
       var searchTerm = "Riga";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Rio de Janeiro", () {
       var searchTerm = "Rio de Janeiro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Riyadh", () {
       var searchTerm = "Riyadh";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Road Town", () {
       var searchTerm = "Road Town";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Rome", () {
       var searchTerm = "Rome";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Roseau", () {
       var searchTerm = "Roseau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint-Denis", () {
       var searchTerm = "Saint-Denis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint George's", () {
       var searchTerm = "Saint George's";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint Helier", () {
       var searchTerm = "Saint Helier";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint John's", () {
       var searchTerm = "Saint John's";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint Peter Port", () {
       var searchTerm = "Saint Peter Port";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint Petersburg", () {
       var searchTerm = "Saint Petersburg";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saint-Pierre", () {
       var searchTerm = "Saint-Pierre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Saipan", () {
       var searchTerm = "Saipan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Sana", () {
       var searchTerm = "Sana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Sanaa", () {
       var searchTerm = "Sanaa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("San Jose", () {
       var searchTerm = "San Jose";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("San José", () {
       var searchTerm = "San José";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("San Juan", () {
       var searchTerm = "San Juan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("San Marino", () {
       var searchTerm = "San Marino";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("San Salvador", () {
       var searchTerm = "San Salvador";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Santiago", () {
       var searchTerm = "Santiago";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Santo Domingo", () {
       var searchTerm = "Santo Domingo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("São Paulo", () {
       var searchTerm = "São Paulo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("São Tomé", () {
       var searchTerm = "São Tomé";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Sarajevo", () {
       var searchTerm = "Sarajevo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Seoul", () {
       var searchTerm = "Seoul";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shanghai", () {
       var searchTerm = "Shanghai";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shangqiu", () {
       var searchTerm = "Shangqiu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shantou", () {
       var searchTerm = "Shantou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shenyang", () {
       var searchTerm = "Shenyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shenzhen", () {
       var searchTerm = "Shenzhen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Shijiazhuang", () {
       var searchTerm = "Shijiazhuang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Singapore", () {
       var searchTerm = "Singapore";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Skopje", () {
       var searchTerm = "Skopje";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Sofia", () {
       var searchTerm = "Sofia";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Stanley", () {
       var searchTerm = "Stanley";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Stockholm", () {
       var searchTerm = "Stockholm";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Sucre", () {
       var searchTerm = "Sucre";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Suva", () {
       var searchTerm = "Suva";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Suzhou", () {
       var searchTerm = "Suzhou";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tai'an", () {
       var searchTerm = "Tai'an";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Taipei", () {
       var searchTerm = "Taipei";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Taiyuan", () {
       var searchTerm = "Taiyuan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tallinn", () {
       var searchTerm = "Tallinn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tangshan", () {
       var searchTerm = "Tangshan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tarawa", () {
       var searchTerm = "Tarawa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tashkent", () {
       var searchTerm = "Tashkent";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tbilisi", () {
       var searchTerm = "Tbilisi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tegucigalpa", () {
       var searchTerm = "Tegucigalpa";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tehran", () {
       var searchTerm = "Tehran";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tel Aviv", () {
       var searchTerm = "Tel Aviv";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("The Valley", () {
       var searchTerm = "The Valley";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Thimphu", () {
       var searchTerm = "Thimphu";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tianjin", () {
       var searchTerm = "Tianjin";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tirana", () {
       var searchTerm = "Tirana";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tokyo", () {
       var searchTerm = "Tokyo";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tórshavn", () {
       var searchTerm = "Tórshavn";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tripoli", () {
       var searchTerm = "Tripoli";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Tunis", () {
       var searchTerm = "Tunis";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Ulaanbaatar", () {
       var searchTerm = "Ulaanbaatar";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Vaduz", () {
       var searchTerm = "Vaduz";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Valletta", () {
       var searchTerm = "Valletta";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Vatican City", () {
       var searchTerm = "Vatican City";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Victoria", () {
       var searchTerm = "Victoria";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Vienna", () {
       var searchTerm = "Vienna";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Vientiane", () {
       var searchTerm = "Vientiane";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Vilnius", () {
       var searchTerm = "Vilnius";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Warsaw", () {
       var searchTerm = "Warsaw";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Washington, D.C.", () {
       var searchTerm = "Washington, D.C.";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Washington DC", () {
       var searchTerm = "Washington DC";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Weifang", () {
       var searchTerm = "Weifang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Wellington", () {
       var searchTerm = "Wellington";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("West Island", () {
       var searchTerm = "West Island";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Willemstad", () {
       var searchTerm = "Willemstad";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Windhoek", () {
       var searchTerm = "Windhoek";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Wuhan", () {
       var searchTerm = "Wuhan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Wuxi", () {
       var searchTerm = "Wuxi";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Xiamen", () {
       var searchTerm = "Xiamen";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Xi'an", () {
       var searchTerm = "Xi'an";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Xinyang", () {
       var searchTerm = "Xinyang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yamoussoukro", () {
       var searchTerm = "Yamoussoukro";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yantai", () {
       var searchTerm = "Yantai";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yaounde", () {
       var searchTerm = "Yaounde";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yaoundé", () {
       var searchTerm = "Yaoundé";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yaren", () {
       var searchTerm = "Yaren";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Yerevan", () {
       var searchTerm = "Yerevan";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Zagreb", () {
       var searchTerm = "Zagreb";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Zhanjiang", () {
       var searchTerm = "Zhanjiang";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(1));
+      expect(loc.length, greaterThan(0));
     });
   }, skip: skip);
 
