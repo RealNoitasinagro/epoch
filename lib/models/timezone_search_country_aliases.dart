@@ -13,6 +13,7 @@ const Map<String, List<String>> countryNameAliasesDe = {
   'MD': ['Moldau'],
   'PS': ['Palästina'],
   'US': ['Vereinigte Staaten von Amerika'],
+  'TW': ['Republik China'],
   'WF': ['Wallis und Futuna'],
 };
 
@@ -36,6 +37,7 @@ const Map<String, List<String>> countryNameAliasesEn = {
   'ST': ['São Tomé and Príncipe'],
   'TC': ['Turks and Caicos Islands'],
   'TT': ['Trinidad and Tobago'],
+  'TW': ['Republic of China', 'ROC'],  // a.k.a Taiwan
   'US': ['United States of America', 'USA'],
   'VC': ['Saint Vincent and the Grenadines'],
   'WF': ['Wallis and Futuna'],

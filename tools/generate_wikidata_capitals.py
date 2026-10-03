@@ -25,8 +25,7 @@ WIKIDATA_ENDPOINT = "https://query.wikidata.org/sparql"
 
 QUERY = """
 SELECT ?countryCode ?capitalLabelEn ?capitalLabelDe WHERE {
-  ?country wdt:P31 wd:Q6256;
-           wdt:P297 ?countryCode;
+  ?country wdt:P297 ?countryCode;
            wdt:P36 ?capital.
   ?capital rdfs:label ?capitalLabelEn .
   FILTER(LANG(?capitalLabelEn) = "en")

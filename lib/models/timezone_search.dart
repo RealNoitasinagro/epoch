@@ -12,6 +12,7 @@ import 'generated/wikidata_capitals_de.g.dart';
 import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
 import 'timezone_search_country_aliases.dart';
+import 'timezone_search_major_cities.dart';
 
 const _diacriticsFoldMap = {
   'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
@@ -32,6 +33,34 @@ String foldDiacritics(String input) {
     buffer.write(_diacriticsFoldMap[ch] ?? ch);
   }
   return buffer.toString();
+}
+
+String stripCombiningMarks(String input) =>
+    input.replaceAll(RegExp(r'\p{Mn}', unicode: true), '');
+
+String foldApostrophes(String input) => input.replaceAll(
+    RegExp('[\u2018\u2019\u201B\u02B9\u02BC\u02BB\u02BD\u0060\u00B4]'), "'");
+
+String foldHyphens(String input) =>
+    input.replaceAll('-', ' ');
+
+String foldPunctuation(String input) =>
+    input.replaceAll(RegExp(r'[,.]'), '');
+
+String foldSaintAbbreviation(String input) => input
+    .replaceAll(RegExp(r'\bsankt\b', caseSensitive: false), 'st')
+    .replaceAll(RegExp(r'\bsaint\b', caseSensitive: false), 'st')
+    .replaceAll(RegExp(r'\bst\.', caseSensitive: false), 'st');
+
+String _normalize(String s) {
+  var result = s.toLowerCase();
+  result = foldDiacritics(result);
+  result = stripCombiningMarks(result);
+  result = foldApostrophes(result);
+  result = foldSaintAbbreviation(result);
+  result = foldHyphens(result);
+  result = foldPunctuation(result);
+  return result;
 }
 
 class TzEntry {
@@ -96,6 +125,13 @@ class TzEntry {
     ]);
   }
 
+  /// Megacities for this zone (EN + DE), where available -- and not part of the
+  /// zone identifier.
+  Iterable<String> get megacityNames => [
+    if (megacityNamesEn[ianaZoneId] != null) ...megacityNamesEn[ianaZoneId]!,
+    if (megacityNamesDe[ianaZoneId] != null) ...megacityNamesDe[ianaZoneId]!,
+  ];
+
   /// CLDR exemplar city for this zone (EN + DE), where available.
   Iterable<String> get exemplarCityNames => [
     if (cldrCityNamesEn[ianaZoneId] != null) cldrCityNamesEn[ianaZoneId]!,
@@ -124,14 +160,15 @@ class TzEntry {
 
   bool matches(String query) {
     final query_orig = query.trim();
-    final query_lower = foldDiacritics(query.toLowerCase().trim());
-    if (query_lower.isEmpty) return true;
+    if (query_orig.isEmpty) return true;
+    final query_plain = query_orig.toLowerCase();  // for offsets, not normalised
+    final query_norm = _normalize(query_orig);
+
     // offsets, fixed format: [+-]\d\d:\d\d
-    if (offsetWinter.contains(query_lower) ||
-        offsetSummer.contains(query_lower) ||
-        offsetWinter.replaceAll(':', '').contains(query_lower) ||
-        offsetSummer.replaceAll(':', '').contains(query_lower)
-    ) {
+    if (offsetWinter.contains(query_plain) ||
+        offsetSummer.contains(query_plain) ||
+        offsetWinter.replaceAll(':', '').contains(query_plain) ||
+        offsetSummer.replaceAll(':', '').contains(query_plain)) {
       return true;
     }
     // (IANA) abbreviations (letters-only or offset numbers)
@@ -144,6 +181,7 @@ class TzEntry {
       ...linkCityNames,
       ...countryNames,
       ...capitalNames,
+      ...megacityNames,
       ...exemplarCityNames,
       ...windowsNames,
       ...metazoneTerms,
@@ -151,19 +189,19 @@ class TzEntry {
 
     // uppercase-only: (non-IANA) zone abbreviations in terms
     if (query_orig == query_orig.toUpperCase()) {
-      // All-caps: exact match only (case-insensitive), to avoid false
-      // positives from short/ambiguous strings matching as a prefix of
-      // unrelated longer words.
-      return candidates.any((t) => t.toUpperCase() == query_orig);
+      // All-caps query: require an exact match (after normalization) rather
+      // than startsWith, to avoid short/ambiguous abbreviations incorrectly
+      // matching as a prefix of an unrelated longer word.
+      return candidates.any((t) => _normalize(t) == query_norm);
     }
     // locations or whole area/location identifiers
-    if (ianaZoneId.toLowerCase().contains(query_lower) ||
-        ianaZoneId.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
+    if (ianaZoneId.toLowerCase().contains(query_norm) ||
+        ianaZoneId.toLowerCase().contains(query_norm.replaceAll(' ', '_'))) {
       return true;
     }
     // cities, countries, zone names, zone abbreviations, ...
     return candidates.any(
-        (t) => foldDiacritics(t.toLowerCase()).startsWith(query_lower));
+        (t) => _normalize(t).startsWith(query_norm));
   }
 }
 
