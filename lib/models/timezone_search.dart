@@ -13,6 +13,7 @@ import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
 import 'timezone_search_country_aliases.dart';
 import 'timezone_search_major_cities.dart';
+import 'timezone_search_metazone_aliases.dart';
 
 const _diacriticsFoldMap = {
   'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
@@ -61,6 +62,49 @@ String _normalize(String s) {
   result = foldHyphens(result);
   result = foldPunctuation(result);
   return result;
+}
+
+/// Time-zone-name-specific spelling variants (not general text
+/// normalization) -- lets alias/metazone data store ONE canonical form
+/// per concept instead of every colloquial suffix variant by hand.
+Iterable<String> _expandTimeZoneNameVariants(String term) {
+  final lower = term.toLowerCase();
+  final variants = <String>{term};
+  if (lower.endsWith('normalzeit')) {
+    variants.add(
+        '${term.substring(0, term.length - 'normalzeit'.length)}Normal-Zeit'
+    );
+    variants.add(
+        '${term.substring(0, term.length - 'normalzeit'.length)}Standardzeit'
+    );
+    variants.add(
+        '${term.substring(0, term.length - 'normalzeit'.length)}Standard-Zeit'
+    );
+    variants.add(
+        '${term.substring(0, term.length - 'normalzeit'.length)}Winterzeit'
+    );
+    variants.add(
+        '${term.substring(0, term.length - 'normalzeit'.length)}Winter-Zeit'
+    );
+  }
+  else if (lower.endsWith('sommerzeit')) {
+    variants.add(
+        '${term.substring(0, term.length - 'sommerzeit'.length)}Sommer-Zeit'
+    );
+  }
+  else if (lower.endsWith('daylight time')) {
+    final stem = term.substring(0, term.length - 'daylight time'.length);
+    variants.add('${stem}Daylight Saving Time');
+    variants.add('${stem}Daylight Savings Time');
+    variants.add('${stem}Summer Time');
+  }
+  else if (lower.endsWith('summer time')) {
+    final stem = term.substring(0, term.length - 'summer time'.length);
+    variants.add('${stem}Daylight Time');
+    variants.add('${stem}Daylight Saving Time');
+    variants.add('${stem}Daylight Savings Time');
+  }
+  return variants;
 }
 
 class TzEntry {
@@ -151,11 +195,26 @@ class TzEntry {
     if (metaId == null) return const [];
     final en = cldrMetazoneNamesEn[metaId];
     final de = cldrMetazoneNamesDe[metaId];
-    return [
-      en?.generic, en?.standard,
-      de?.generic, de?.standard,
-      if (hasDst) ...[en?.daylight, de?.daylight],
-    ].whereType<String>();
+    final enAliases = metazoneNameAliasesEn[metaId];
+    final deAliases = metazoneNameAliasesDe[metaId];
+
+    final rawTerms = [
+      if (en?.generic != null) en!.generic!,
+      if (en?.standard != null) en!.standard!,
+      if (de?.generic != null) de!.generic!,
+      if (de?.standard != null) de!.standard!,
+      ...?enAliases?.generic,
+      ...?enAliases?.standard,
+      ...?deAliases?.generic,
+      ...?deAliases?.standard,
+      if (hasDst) ...[
+        if (en?.daylight != null) en!.daylight!,
+        if (de?.daylight != null) de!.daylight!,
+        ...?enAliases?.daylight,
+        ...?deAliases?.daylight,
+      ],
+    ];
+    return rawTerms.expand(_expandTimeZoneNameVariants);
   }
 
   bool matches(String query) {

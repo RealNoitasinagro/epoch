@@ -6325,11 +6325,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Arabia Daylight Time", () {
+    test("Arabia Daylight Time -- unused", () {
       var searchTerm = "Arabia Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Arabia Standard Time", () {
@@ -6339,11 +6339,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Arabia Summer Time", () {
+    test("Arabia Summer Time -- unused", () {
       var searchTerm = "Arabia Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Arabic Standard Time", () {
@@ -6360,18 +6360,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Armenia Daylight Time", () {
+    test("Armenia Daylight Time -- unused", () {
       var searchTerm = "Armenia Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Armenia Summer Time", () {
+    test("Armenia Summer Time -- unused", () {
       var searchTerm = "Armenia Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Armenia Time", () {
@@ -6864,16 +6864,16 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Coordinated Universal Time -- not needed", () {  // No need to handle this in the search.
+    test("Coordinated Universal Time", () {
       var searchTerm = "Coordinated Universal Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
 
       searchTerm = "Universal Time Coordinated";
       loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test("Cuba Daylight Time", () {
@@ -8970,11 +8970,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Concelho de Macau", () {
+    test("Concelho de Macau -- not a capital", () {
       var searchTerm = "Concelho de Macau";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Copenhagen", () {
