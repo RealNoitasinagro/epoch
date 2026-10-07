@@ -55,6 +55,7 @@ String foldSaintAbbreviation(String input) => input
 
 String _normalize(String s) {
   var result = s.toLowerCase();
+  result = result.replaceAll(' & ', ' and ');
   result = foldDiacritics(result);
   result = stripCombiningMarks(result);
   result = foldApostrophes(result);
@@ -86,6 +87,7 @@ T? _resolveViaLinks<T>(Map<String, T> lookup, String ianaZoneId) {
 Iterable<String> _expandTimeZoneNameVariants(String term) {
   final lower = term.toLowerCase();
   final variants = <String>{term};
+  // German
   if (lower.endsWith('normalzeit')) {
     final stem = term.substring(0, term.length - 'normalzeit'.length);
     variants.add('${stem}Normal-Zeit');
@@ -98,6 +100,7 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
     final stem = term.substring(0, term.length - 'sommerzeit'.length);
     variants.add('${stem}Sommer-Zeit');
   }
+  // English
   else if (lower.endsWith('daylight time')) {
     final stem = term.substring(0, term.length - 'daylight time'.length);
     variants.add('${stem}Daylight Saving Time');
@@ -110,10 +113,22 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
     variants.add('${stem}Daylight Saving Time');
     variants.add('${stem}Daylight Savings Time');
   }
-  else if (lower.endsWith('time')) {
+  else if (RegExp(r'(?<!standard )time').hasMatch(lower)) {
     final stem = term.substring(0, term.length - 'time'.length);
     variants.add('${stem}Standard Time');
   }
+
+  if (lower.startsWith('eastern ')) {
+    variants.add('East ${term.substring('Eastern '.length)}');
+  } else if (lower.startsWith('east ')) {
+    variants.add('Eastern ${term.substring('East '.length)}');
+  }
+  if (lower.startsWith('western ')) {
+    variants.add('West ${term.substring('Western '.length)}');
+  } else if (lower.startsWith('west ')) {
+    variants.add('Western ${term.substring('West '.length)}');
+  }
+
   return variants;
 }
 
@@ -159,14 +174,35 @@ class TzEntry {
   /// rather than stored, to avoid duplicating the generated country data
   /// per entry.
   Iterable<String> get countryNames {
+    return [..._countryNamesEnOnly, ..._countryNamesDeOnly];
+  }
+
+  Iterable<String> get _countryNamesEnOnly {
     final codes = zoneCountryCodes[ianaZoneId] ?? const [];
     return codes.expand((code) => [
       if (countryNamesEn[code] != null) countryNamesEn[code]!,
       if (cldrCountryNamesEn[code] != null) cldrCountryNamesEn[code]!,
-      if (cldrCountryNamesDe[code] != null) cldrCountryNamesDe[code]!,
-      if (countryNameAliasesEn[code] != null) ...countryNameAliasesEn[code]!,
-      if (countryNameAliasesDe[code] != null) ...countryNameAliasesDe[code]!,
+      ...?countryNameAliasesEn[code],
     ]);
+  }
+
+  Iterable<String> get _countryNamesDeOnly {
+    final codes = zoneCountryCodes[ianaZoneId] ?? const [];
+    return codes.expand((code) => [
+      if (cldrCountryNamesDe[code] != null) cldrCountryNamesDe[code]!,
+      ...?countryNameAliasesDe[code],
+    ]);
+  }
+
+  Iterable<String> get countryTimeSuffixTerms {
+    final enSuffixes = ['Time', 'Standard Time', if (hasDst) 'Daylight Time'];
+    final deSuffixes = ['Zeit', 'Normalzeit', if (hasDst) 'Sommerzeit'];
+    return [
+      for (final name in _countryNamesEnOnly)
+        for (final s in enSuffixes) '$name $s',
+      for (final name in _countryNamesDeOnly)
+        for (final s in deSuffixes) '$name-$s',
+    ];
   }
 
   /// English and German country names for the countries assigned to this
@@ -251,6 +287,7 @@ class TzEntry {
       ...terms,
       ...linkCityNames,
       ...countryNames,
+      ...countryTimeSuffixTerms,
       ...capitalNames,
       ...megacityNames,
       ...exemplarCityNames,

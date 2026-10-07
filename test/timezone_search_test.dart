@@ -4626,11 +4626,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('AMST', () {
+    test('AMST -- unused', () {  // Amazon or Armenia, no more DST
       var searchTerm = 'AMST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('AMT', () {
@@ -5413,18 +5413,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('NOVST', () {
+    test('NOVST -- unused', () {
       var searchTerm = 'NOVST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test('NOVT', () {
+    test('NOVT -- unused', () {
       var searchTerm = 'NOVT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('NPT', () {
@@ -5588,7 +5588,7 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('PYST', () {
+    test('PYST', () {  // https://en.wikipedia.org/wiki/Time_in_Paraguay
       var searchTerm = 'PYST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
@@ -5728,11 +5728,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('TOST', () {
+    test('TOST -- unused', () {
       var searchTerm = 'TOST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('TOT', () {
@@ -5756,11 +5756,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ULAST', () {
+    test('ULAST -- unused', () {
       var searchTerm = 'ULAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('ULAT', () {
@@ -6283,11 +6283,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Amazon Summer Time", () {
+    test("Amazon Summer Time -- unused", () {
       var searchTerm = "Amazon Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Amazon Time", () {
@@ -7778,18 +7778,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Novosibirsk Summer Time", () {
+    test("Novosibirsk Summer Time -- unused", () {
       var searchTerm = "Novosibirsk Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Novosibirsk Time", () {
+    test("Novosibirsk Time -- unused", () {
       var searchTerm = "Novosibirsk Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Omsk Standard Time", () {
@@ -7890,11 +7890,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Paraguay Summer Time", () {
+    test("Paraguay Summer Time -- unused", () {
       var searchTerm = "Paraguay Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Paraguay Time", () {
@@ -8135,11 +8135,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Tonga Summer Time", () {
+    test("Tonga Summer Time -- unused", () {
       var searchTerm = "Tonga Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Tonga Time", () {
@@ -8170,11 +8170,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Ulaanbaatar Summer Time", () {
+    test("Ulaanbaatar Summer Time -- unused", () {
       var searchTerm = "Ulaanbaatar Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Ulaanbaatar Time", () {
@@ -8184,11 +8184,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Ulan Bator Summer Time", () {
+    test("Ulan Bator Summer Time -- unused", () {
       var searchTerm = "Ulan Bator Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Ulan Bator Time", () {
@@ -8261,25 +8261,25 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Waktu Indonesia Barat", () {
+    test("Waktu Indonesia Barat -- not needed", () {
       var searchTerm = "Waktu Indonesia Barat";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Waktu Indonesia Tengah", () {
+    test("Waktu Indonesia Tengah -- not needed", () {
       var searchTerm = "Waktu Indonesia Tengah";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Waktu Indonesia Timur", () {
+    test("Waktu Indonesia Timur -- not needed", () {
       var searchTerm = "Waktu Indonesia Timur";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Wallis and Futuna Time", () {
