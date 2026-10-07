@@ -64,6 +64,22 @@ String _normalize(String s) {
   return result;
 }
 
+/// Resolves `lookup[ianaZoneId]`, falling back to any entry keyed by a
+/// deprecated/link identifier that currently resolves to this zone.
+/// CLDR data sometimes still uses an identifier IANA has since renamed
+/// (e.g. "Asia/Katmandu" instead of today's canonical "Asia/Kathmandu").
+T? _resolveViaLinks<T>(Map<String, T> lookup, String ianaZoneId) {
+  final direct = lookup[ianaZoneId];
+  if (direct != null) return direct;
+  for (final entry in ianaLinksSnapshot.entries) {
+    if (entry.value == ianaZoneId) {
+      final viaLink = lookup[entry.key];
+      if (viaLink != null) return viaLink;
+    }
+  }
+  return null;
+}
+
 /// Time-zone-name-specific spelling variants (not general text
 /// normalization) -- lets alias/metazone data store ONE canonical form
 /// per concept instead of every colloquial suffix variant by hand.
@@ -71,26 +87,16 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
   final lower = term.toLowerCase();
   final variants = <String>{term};
   if (lower.endsWith('normalzeit')) {
-    variants.add(
-        '${term.substring(0, term.length - 'normalzeit'.length)}Normal-Zeit'
-    );
-    variants.add(
-        '${term.substring(0, term.length - 'normalzeit'.length)}Standardzeit'
-    );
-    variants.add(
-        '${term.substring(0, term.length - 'normalzeit'.length)}Standard-Zeit'
-    );
-    variants.add(
-        '${term.substring(0, term.length - 'normalzeit'.length)}Winterzeit'
-    );
-    variants.add(
-        '${term.substring(0, term.length - 'normalzeit'.length)}Winter-Zeit'
-    );
+    final stem = term.substring(0, term.length - 'normalzeit'.length);
+    variants.add('${stem}Normal-Zeit');
+    variants.add('${stem}Standardzeit');
+    variants.add('${stem}Standard-Zeit');
+    variants.add('${stem}Winterzeit');   // not always correct, but not harmful
+    variants.add('${stem}Winter-Zeit');  // not always correct, but not harmful
   }
   else if (lower.endsWith('sommerzeit')) {
-    variants.add(
-        '${term.substring(0, term.length - 'sommerzeit'.length)}Sommer-Zeit'
-    );
+    final stem = term.substring(0, term.length - 'sommerzeit'.length);
+    variants.add('${stem}Sommer-Zeit');
   }
   else if (lower.endsWith('daylight time')) {
     final stem = term.substring(0, term.length - 'daylight time'.length);
@@ -103,6 +109,10 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
     variants.add('${stem}Daylight Time');
     variants.add('${stem}Daylight Saving Time');
     variants.add('${stem}Daylight Savings Time');
+  }
+  else if (lower.endsWith('time')) {
+    final stem = term.substring(0, term.length - 'time'.length);
+    variants.add('${stem}Standard Time');
   }
   return variants;
 }
@@ -177,13 +187,15 @@ class TzEntry {
   ];
 
   /// CLDR exemplar city for this zone (EN + DE), where available.
-  Iterable<String> get exemplarCityNames => [
-    if (cldrCityNamesEn[ianaZoneId] != null) cldrCityNamesEn[ianaZoneId]!,
-    if (cldrCityNamesDe[ianaZoneId] != null) cldrCityNamesDe[ianaZoneId]!,
-  ];
+  Iterable<String> get exemplarCityNames {
+    final en = _resolveViaLinks(cldrCityNamesEn, ianaZoneId);
+    final de = _resolveViaLinks(cldrCityNamesDe, ianaZoneId);
+    return [if (en != null) en, if (de != null) de];
+  }
 
   /// Windows-style display name(s) (English only, per CLDR).
-  Iterable<String> get windowsNames => windowsZoneNames[ianaZoneId] ?? const [];
+  Iterable<String> get windowsNames =>
+      _resolveViaLinks(windowsZoneNames, ianaZoneId) ?? const [];
 
   /// Localized metazone names (generic/standard always; daylight only if
   /// THIS zone currently observes DST -- metazone membership alone does
@@ -191,7 +203,7 @@ class TzEntry {
   /// metazone with Europe/Berlin but no longer observes DST itself, so
   /// it must not match "CEST"/"Sommerzeit"-style daylight terms.
   Iterable<String> get metazoneTerms {
-    final metaId = cldrZoneMetaZone[ianaZoneId];
+    final metaId = _resolveViaLinks(cldrZoneMetaZone, ianaZoneId);
     if (metaId == null) return const [];
     final en = cldrMetazoneNamesEn[metaId];
     final de = cldrMetazoneNamesDe[metaId];

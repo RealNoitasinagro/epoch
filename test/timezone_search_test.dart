@@ -5770,11 +5770,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('UTC -- not needed', () {    // No need to handle this in the search.
+    test('UTC', () {
       var searchTerm = 'UTC';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('UYST', () {
@@ -5973,11 +5973,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('-00 -- not needed', () {  // Why this test? No result expected.
+    test('-00', () {  // Why this test? -> Factory
       var searchTerm = '-00';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, equals(1));
     });
 
     test('+01', () {

@@ -8,10 +8,15 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: null,
     daylight: null,
   ),
+  'Chatham':  (
+    generic: null,
+    standard: ['Chatham Island Standard Time'],
+    daylight: ['Chatham Island Daylight Time'],
+  ),
   'Europe_Central':  (
-    generic: ['Central Europe Time', 'European Central Time', 'European Middle Time', 'Europe Central Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time',],
+    generic: ['Central Europe Time', 'European Central Time', 'European Middle Time', 'Europe Central Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time', 'MET',],
     standard: ['Central Europe Standard Time', 'European Central Standard Time', 'European Middle Standard Time', 'Europe Central Standard Time', 'Europe Middle Standard Time', 'Middle European Standard Time', 'Middle Europe Standard Time',],
-    daylight: ['Central European Daylight Time', 'Central Europe Daylight Time', 'European Central Daylight Time', 'European Middle Daylight Time', 'Europe Central Daylight Time', 'Europe Middle Daylight Time', 'Middle European Daylight Time', 'Middle Europe Daylight Time', 'CEDT', 'MET', 'MEST']
+    daylight: ['Central European Daylight Time', 'Central Europe Daylight Time', 'European Central Daylight Time', 'European Middle Daylight Time', 'Europe Central Daylight Time', 'Europe Middle Daylight Time', 'Middle European Daylight Time', 'Middle Europe Daylight Time', 'CEDT', 'MEST']
   ),
   'Europe_Eastern': (
     generic: ['Eastern European Time', 'Eastern Europe Time', 'East European Time', 'East Europe Time',],
