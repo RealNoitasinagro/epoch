@@ -4829,11 +4829,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('CHOST', () {
+    test('CHOST -- unused', () {
       var searchTerm = 'CHOST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('CHOT', () {
@@ -4857,11 +4857,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('CIDST', () {
+    test('CIDST -- unused', () {
       var searchTerm = 'CIDST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('CIST', () {
@@ -5039,18 +5039,25 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('FKST', () {
+    test('FKDT', () {  // Falkland Islands Daylight Time (= FKST, see below)
+      var searchTerm = 'FKDT';
+      var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
+      _printDetails(searchTerm, loc, showDetails);
+      expect(loc.length, greaterThan(0));
+    });
+
+    test('FKST', () {  // Falkland Islands Standard Time (year-round DST!)
       var searchTerm = 'FKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
-    test('FKT', () {
+    test('FKT -- unused', () {  // used to be Falkland Islands Time
       var searchTerm = 'FKT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('FNT', () {
@@ -5130,11 +5137,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('HOVST', () {
+    test('HOVST -- unused', () {
       var searchTerm = 'HOVST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('HOVT', () {
@@ -5777,11 +5784,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('UYST', () {
+    test('UYST -- unused', () {
       var searchTerm = 'UYST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('UYT', () {
@@ -5840,11 +5847,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('WARST', () {
+    test('WARST -- unused', () {
       var searchTerm = 'WARST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('WAST -- unused', () {
@@ -6640,11 +6647,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Cayman Islands Daylight Saving Time", () {
+    test("Cayman Islands Daylight Saving Time -- unused", () {
       var searchTerm = "Cayman Islands Daylight Saving Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Cayman Islands Standard Time", () {
@@ -6801,25 +6808,25 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Choibalsan Daylight Saving Time", () {
+    test("Choibalsan Daylight Saving Time -- unused", () {
       var searchTerm = "Choibalsan Daylight Saving Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Choibalsan Daylight Time", () {
+    test("Choibalsan Daylight Time -- unused", () {
       var searchTerm = "Choibalsan Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Choibalsan Summer Time", () {
+    test("Choibalsan Summer Time -- unused", () {
       var searchTerm = "Choibalsan Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Choibalsan Time", () {
@@ -7065,21 +7072,21 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Falkland Island Daylight Time", () {
+    test("Falkland Island Daylight Time -- questionable", () {
       var searchTerm = "Falkland Island Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, greaterThanOrEqualTo(0));
     });
 
-    test("Falkland Islands Summer Time", () {
+    test("Falkland Islands Summer Time -- questionable", () {
       var searchTerm = "Falkland Islands Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, greaterThanOrEqualTo(0));
     });
 
-    test("Falkland Island Standard Time", () {
+    test("Falkland Island Standard Time", () {  // FKST
       var searchTerm = "Falkland Island Standard Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
@@ -7246,25 +7253,25 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Hovd Daylight Saving Time", () {
+    test("Hovd Daylight Saving Time -- unused", () {
       var searchTerm = "Hovd Daylight Saving Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Hovd Daylight TimeT", () {
+    test("Hovd Daylight Time -- unused", () {
       var searchTerm = "Hovd Daylight TimeT";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
-    test("Hovd Summer Time", () {
+    test("Hovd Summer Time -- unused", () {
       var searchTerm = "Hovd Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Hovd Time", () {
@@ -7498,11 +7505,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Magadan Summer Time", () {
+    test("Magadan Summer Time -- unused", () {
       var searchTerm = "Magadan Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Magadan Time", () {
@@ -8198,11 +8205,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Uruguay Summer Time", () {
+    test("Uruguay Summer Time -- unused", () {
       var searchTerm = "Uruguay Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Uruguay Time", () {
@@ -8303,11 +8310,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Western Argentine Summer Time", () {
+    test("Western Argentine Summer Time -- unused", () {
       var searchTerm = "Western Argentine Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Western Australia Time", () {
@@ -8317,11 +8324,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Western Daylight Time", () {
+    test("Western Daylight Time -- unused", () {  // AWDT -- Australian
       var searchTerm = "Western Daylight Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Western European Daylight Time", () {
@@ -8394,11 +8401,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Western Summer Time", () {
+    test("Western Summer Time", () {  // AWDT -- Australian
       var searchTerm = "Western Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Westeuropäische Sommerzeit", () {

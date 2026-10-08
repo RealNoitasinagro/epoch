@@ -20,7 +20,6 @@ const Map<String, List<String>> countryNameAliasesDe = {
 const Map<String, List<String>> countryNameAliasesEn = {
   'AG': ['Antigua and Barbuda'],
   'BA': ['Bosnia', 'Bosnia and Herzegovina', 'Bosnia-Herzegovina'],
-  'BL': ['Saint Barthélemy', 'St. Barts', 'St. Barths'],
   'CC': ['Cocos Islands', 'Keeling Islands'],
   'CD': ['Congo (DRC)', 'Democratic Republic of the Congo', 'DR Congo', 'DRC'],
   'CG': ['Congo (Republic)', 'Congo Republic', 'Republic of the Congo'],
@@ -29,16 +28,11 @@ const Map<String, List<String>> countryNameAliasesEn = {
   'EH': ['Sahrawi Arab Democratic Republic', 'SADR', 'Sahrawi Republic'],
   'FM': ['Federated States of Micronesia'],
   'GB': ['Britain', 'United Kingdom of Great Britain and Northern Ireland', 'UK', 'England', 'Scotland', 'Wales'],
-  'KN': ['St. Kitts and Nevis', 'Saint Kitts and Nevis'],
-  'LC': ['Saint Lucia'],
   'MP': ['Northern Marianas'],
-  'PM': ['St. Pierre and Miquelon', 'Saint Pierre and Miquelon'],
-  'SH': ['Saint Helena'],
   'ST': ['São Tomé and Príncipe'],
   'TC': ['Turks and Caicos Islands'],
   'TT': ['Trinidad and Tobago'],
   'TW': ['Republic of China', 'ROC'],  // a.k.a Taiwan
   'US': ['United States of America', 'USA'],
-  'VC': ['Saint Vincent and the Grenadines'],
   'WF': ['Wallis and Futuna'],
 };

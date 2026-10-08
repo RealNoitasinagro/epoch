@@ -1,4 +1,9 @@
 const Map<String, ({List<String>? generic, List<String>? standard, List<String>? daylight})> metazoneNameAliasesEn = {
+  'Africa_Southern': (
+    generic: null,
+    standard: ['South African Standard Time'],
+    daylight: null
+  ),
   'America_Central': (  // CST/CDT
     generic: null,
     standard: ['North American Central Standard Time'],
@@ -22,10 +27,16 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
   'Arabian': (
     generic: ['Arabia Time', 'Arabic Time', 'Arab Time'],
     standard: ['Arabia Standard Time', 'Arabic Standard Time', 'Arab Standard Time'],
-    daylight: ['Arabia Daylight Time', 'Arabic Daylight Time', 'Arab daylight Time']),
+    daylight: ['Arabia Daylight Time', 'Arabic Daylight Time', 'Arab daylight Time']
+  ),
+  'Australia_Western': (
+    generic: null,
+    standard: ['Western Australia Time', 'Western Standard Time'],
+    daylight: null,
+  ),
   'Brasilia': (
-    generic: ['Brazilian Time', 'Brazil Time',],
-    standard: null,
+    generic: null,
+    standard: ['Brazilian Time', 'Brazil Time',],
     daylight: null,
   ),
   'Chatham':  (
@@ -48,10 +59,50 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['Western European Standard Time', 'Western Europe Standard Time', 'West European Standard Time', 'West Europe Standard Time',],
     daylight: ['Western European Daylight Time', 'Western Europe Daylight Time', 'West European Daylight Time', 'West Europe Daylight Time',]
   ),
+  'India': (
+    generic: null,
+    standard: ['Indian Standard Time'],
+    daylight: null
+  ),
+  'Indonesia_Central': (
+    generic: null,
+    standard: ['Central Indonesian Time'],
+    daylight: null
+  ),
+  'Indonesia_Eastern': (
+    generic: null,
+    standard: ['Eastern Indonesian Time'],
+    daylight: null
+  ),
+  'Indonesia_Western': (
+    generic: null,
+    standard: ['Western Indonesian Time'],
+    daylight: null
+  ),
+  'Malaysia': (
+    generic: null,
+    standard: ['Malaysian Standard Time'],
+    daylight: null
+  ),
+  'Magadan': (
+    generic: null,
+    standard: ['Magadan Island Time'],
+    daylight: null
+  ),
+  'Pierre_Miquelon': (
+    generic: ['Pierre & Miquelon Time'],
+    standard: ['Pierre & Miquelon Standard Time'],
+    daylight: ['Pierre & Miquelon Daylight Time']
+  ),
+  'Venezuela': (
+    generic: null,
+    standard: ['Venezuelan Standard Time'],
+    daylight: null
+  ),
 };
 
 const Map<String, ({List<String>? generic, List<String>? standard, List<String>? daylight})> metazoneNameAliasesDe = {
-  'Brasilia': (generic: ['Brasilianische Zeit'], standard: null, daylight: null),
+  'Brasilia': (generic: null, standard: ['Brasilianische Zeit'], daylight: null),
   'Europe_Central': (generic: null, standard: ['MEZ'], daylight: ['MESZ']),
   'Europe_Eastern': (generic: null, standard: ['OEZ'], daylight: ['OESZ']),
   'Europe_Western': (generic: null, standard: ['WEZ'], daylight: ['WESZ']),
