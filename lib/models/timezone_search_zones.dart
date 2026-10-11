@@ -3994,8 +3994,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: 'EAT', abbrSummer: 'EAT',
     terms: [
-      ...['somaliland', 'hargeisa'],
-      ...['hargeysa'],
+      ...['Somaliland', 'Hargeisa'],
+      ...['Hargeysa'],
     ],
   ),
   TzEntry(
@@ -4883,8 +4883,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+02:00', offsetSummer: '+03:00',
     abbrWinter: 'EET', abbrSummer: 'EEST',
     terms: [
-      ...['northern cyprus', 'turkish republic of northern cyprus', 'TRNC'],
-      ...['nord-zypern', 'türkische republik nordzypern', 'TRNZ'],
+      ...['Northern Cyprus', 'Turkish Republic of Northern Cyprus', 'TRNC'],
+      ...['Nord-Zypern', 'Türkische Republik Nordzypern', 'TRNZ'],
     ],
   ),
   TzEntry(
@@ -5152,8 +5152,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+00:00', offsetSummer: '+00:00',
     abbrWinter: 'GMT', abbrSummer: 'GMT',
     terms: [
-      ...['greenwich time'],
-      ...['greenwich-zeit'],
+      ...['Greenwich Time'],
+      ...['Greenwich-Zeit'],
     ]
   ),
   TzEntry(
@@ -5176,8 +5176,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '-12:00', offsetSummer: '-12:00',
     abbrWinter: '-12', abbrSummer: '-12',
     terms: [
-      ...['anywhere on earth', 'AOE', 'dateline standard time'],
-      ...['datumsgrenze', 'datumslinie'],
+      ...['Anywhere on Earth', 'AOE', 'Dateline Standard Time'],
+      ...['Datumsgrenze', 'Datumslinie'],
     ],
   ),
   TzEntry(
@@ -5260,8 +5260,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: '+03', abbrSummer: '+03',
     terms: [
-      ...['abkhazia', 'sukhumi', 'south ossetia', 'tskhinvali'],
-      ...['abchasien', 'sochumi', 'südossetien', 'zchinwali'],
+      ...['Abkhazia', 'Sukhumi', 'South Ossetia', 'Tskhinvali'],
+      ...['Abchasien', 'Sochumi', 'Südossetien', 'Zchinwali'],
     ]
   ),
   TzEntry(
@@ -5299,8 +5299,7 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+00:00', offsetSummer: '+00:00',
     abbrWinter: 'UTC', abbrSummer: 'UTC',
     terms: [
-      ...['coordinated universal time', 'universal time coordinated'],
-      ...['koordinierte weltzeit'],
+      ...['Universal Time Coordinated'],
     ]
   ),
   TzEntry(
@@ -5322,7 +5321,7 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     ianaZoneId: 'Europe/Belgrade',
     offsetWinter: '+01:00', offsetSummer: '+02:00',
     abbrWinter: 'CET', abbrSummer: 'CEST',
-    terms: ['kosovo', 'pristina'],
+    terms: ['Kosovo', 'Pristina'],
   ),
   TzEntry(
     ianaZoneId: 'Europe/Berlin',
@@ -5349,16 +5348,19 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+02:00', offsetSummer: '+03:00',
     abbrWinter: 'EET', abbrSummer: 'EEST',
     terms: [
-      ...['transnistria', 'tiraspol', 'pridnestrovian moldavian republic', 'PMR', 'pridnestrovie'],
-      ...['transnistrien', 'transnistrische moldauische republik', 'transnistrische moldawische republik',
-        'cisnistrische moldauische republik', 'cisnistrien',
-        'pridnestrowische moldauische republik', 'pridnestrowische moldawische republik', 'pridnestrowien'],
+      ...['Transnistria', 'Tiraspol', 'Pridnestrovian Moldavian Republic', 'PMR', 'Pridnestrovie'],
+      ...['Transnistrien', 'Transnistrische Moldauische Republik', 'Transnistrische Moldawische Republik',
+        'Cisnistrische Moldauische Republik', 'Cisnistrien',
+        'Pridnestrowische Moldauische Republik', 'Pridnestrowische Moldawische Republik', 'Pridnestrowien'],
     ],
   ),
   TzEntry(
     ianaZoneId: 'Europe/Dublin',
     offsetWinter: '+00:00', offsetSummer: '+01:00',
     abbrWinter: 'GMT', abbrSummer: 'IST',
+    terms: [
+      ...['Irish Summer Time'],
+    ]
   ),
   TzEntry(
     ianaZoneId: 'Europe/Gibraltar',
