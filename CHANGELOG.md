@@ -2,8 +2,15 @@
 
 ## [Unreleased]
 
+---
+
+## [1.5.2] - 2026-10-12
+
 ### Added
 - build info now has links to Git commit, timezone and IANA websites
+
+### Changed
+- dependencies upgraded, most importantly timezone 0.11.1 (IANA db 2025c) -> 0.11.2 (IANA db 2026e)
 
 ---
 

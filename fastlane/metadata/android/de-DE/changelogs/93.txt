@@ -1,0 +1,2 @@
+- Zeitzonendatenbank (IANA 2026e) für anstehende Zeitumstellungen aktualisiert
+- Build-Informationen verbessert
