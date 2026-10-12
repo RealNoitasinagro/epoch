@@ -11,7 +11,6 @@ const Map<String, List<String>> megacityNamesEn = {
   'Asia/Kolkata': ['Ahmedabad', 'Bangalore', 'Chennai', 'Delhi', 'Hyderabad', 'Mumbai'],
   'Asia/Shanghai': ['Beijing', 'Bijie', 'Changchun', 'Changde', 'Changsha', 'Changzhou', 'Chengchow', 'Chengdu', 'Chongqing', 'Dalian', 'Dongguan', 'Foshan', 'Fuzhou', 'Guangzhou', 'Guiyang', 'Hangzhou', 'Harbin', 'Hefei', 'Heze', 'Jieyang', 'Jinan', 'Kunming', 'Linyi', 'Luoyang', 'Nanchang', 'Nanking', 'Nanning', 'Qingdao', 'Shanghai', 'Shangqiu', 'Shantou', 'Shenyang', 'Shenzhen', 'Shijiazhuang', 'Suzhou', 'Tai\'an', 'Taiyuan', 'Tangshan', 'Tianjin', 'Weifang', 'Wuhan', 'Wuxi', 'Xi\'an', 'Xiamen', 'Xinyang', 'Yantai', 'Zhanjiang'],
   'Asia/Yangon': ['Nay Pyi Taw'],
-  'Europe/Istanbul': ['Ankara'],
   'Europe/Moscow': ['Saint Petersburg'],
 };
 
