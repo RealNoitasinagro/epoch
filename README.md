@@ -69,6 +69,7 @@ which ones you care about, and explains what each one means.
 **Epoch is for you if you...**
 - are curious about different time systems in use around the world
 - want to compare local times across many timezones at a glance (e. g. friends/colleagues abroad)
+- need up-to-date time zone data (latest IANA db) if your phone's system no longer receives upgrades 
 - enjoy unusual time representations like Swatch Internet Time, day seconds, or binary clocks
 - do amateur astronomy and want a single app for sidereal time, LMST, and Julian Date —
   without blue light ruining your dark adaptation
@@ -192,9 +193,9 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 > However, if you'd like to build Epoch yourself with an up-to-date IANA db, check out the script
 > `update_timezone_to_latest_iana_db.sh` in the repo's root. \
 > It's a wrapper around the `tool/refresh.sh` script provided by the timezone package. \
-> Current (2026-09) versions:
-> - timezone [0.11.1](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.1),
-> - IANA database in timezone: [2025c](https://www.iana.org/time-zones/releases/2025c), latest available: [2026e](https://www.iana.org/time-zones/releases/2026e)
+> Current (2026-10) versions:
+> - timezone [0.11.2](https://github.com/dart-lang/labs/releases/tag/timezone-v0.11.2),
+> - IANA database in timezone: [2026e](https://www.iana.org/time-zones/releases/2026e), latest available: [2026e](https://www.iana.org/time-zones/releases/2026e)
 
 ### Linux
 

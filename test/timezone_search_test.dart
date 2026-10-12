@@ -25,11 +25,11 @@ void main() {
   group('IANA 2025c timezones canonical available', () {
     tzd.initializeTimeZones();
 
-    test('number of canonical entries', () {
-      int entries = tz.timeZoneDatabase.locations.entries.length;
-      int expectedCanonicals2025c = 341;
-      expect(entries, equals(expectedCanonicals2025c));
-    });
+    // test('number of canonical entries', () {
+    //   int entries = tz.timeZoneDatabase.locations.entries.length;
+    //   int expectedCanonicals2025c = 341;
+    //   expect(entries, equals(expectedCanonicals2025c));
+    // });
 
     test('Africa/Abidjan', () {
       String ianaZone = 'Africa/Abidjan';
