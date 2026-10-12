@@ -24,9 +24,14 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['North American Pacific Standard Time'],
     daylight: ['North American Pacific Daylight Time'],
   ),
+  'Apia': (
+    generic: null,
+    standard: ['West Samoa Time'],
+    daylight: null
+  ),
   'Arabian': (
     generic: ['Arabia Time', 'Arabic Time', 'Arab Time'],
-    standard: ['Arabia Standard Time', 'Arabic Standard Time', 'Arab Standard Time'],
+    standard: ['Arabia Standard Time', 'Arabic Standard Time', 'Arab Standard Time', 'Al Manamah Standard Time'],
     daylight: ['Arabia Daylight Time', 'Arabic Daylight Time', 'Arab daylight Time']
   ),
   'Australia_Western': (
@@ -54,9 +59,24 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['Western European Standard Time', 'Western Europe Standard Time', 'West European Standard Time', 'West Europe Standard Time',],
     daylight: ['Western European Daylight Time', 'Western Europe Daylight Time', 'West European Daylight Time', 'West Europe Daylight Time',]
   ),
+  'French_Southern': (
+    generic: null,
+    standard: ['Kerguelen (Islands) Time'],
+    daylight: null
+  ),
+  'Gambier': (
+    generic: null,
+    standard: ['Gambier Islands Time'],
+    daylight: null
+  ),
   'India': (
     generic: null,
     standard: ['Indian Standard Time'],
+    daylight: null
+  ),
+  'Indian_Ocean': (
+    generic: null,
+    standard: ['Indian Chagos Time'],
     daylight: null
   ),
   'Indonesia_Central': (
@@ -72,6 +92,11 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
   'Indonesia_Western': (
     generic: null,
     standard: ['Western Indonesian Time'],
+    daylight: null
+  ),
+  'Kamchatka': (
+    generic: null,
+    standard: ['Petropavlovsk-Kamchatski Time', 'Petropavlovsk-Kamchatsky Time'],
     daylight: null
   ),
   'Malaysia': (
@@ -101,5 +126,6 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
   'Europe_Central': (generic: null, standard: ['MEZ'], daylight: ['MESZ']),
   'Europe_Eastern': (generic: null, standard: ['OEZ'], daylight: ['OESZ']),
   'Europe_Western': (generic: null, standard: ['WEZ'], daylight: ['WESZ']),
+  'Kamchatka': (generic: null, standard: ['Petropawlowsk-Kamtschatski-Zeit'], daylight: null),
   'Nepal': (generic: null, standard: ['Nepalesische Normalzeit'], daylight: null),
 };

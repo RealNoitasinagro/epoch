@@ -4482,6 +4482,10 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     ianaZoneId: 'America/Nuuk',
     offsetWinter: '-02:00', offsetSummer: '-01:00',
     abbrWinter: '-02', abbrSummer: '-01',
+    terms: [
+      ...['West Greenland Time', 'West Greenland Summer Time'],
+      ...['Westgrönland-Zeit', 'Westgrönland-Sommerzeit'],
+    ],
   ),
   TzEntry(
     ianaZoneId: 'America/Ojinaga',
@@ -4572,6 +4576,10 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     ianaZoneId: 'America/Scoresbysund',
     offsetWinter: '-02:00', offsetSummer: '-01:00',
     abbrWinter: '-02', abbrSummer: '-01',
+    terms: [
+      ...['East Greenland Time', 'East Greenland Summer Time'],
+      ...['Ostgrönland-Zeit', 'Ostgrönland-Sommerzeit'],
+    ],
   ),
   TzEntry(
     ianaZoneId: 'America/Sitka',
@@ -5260,7 +5268,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+03:00', offsetSummer: '+03:00',
     abbrWinter: '+03', abbrSummer: '+03',
     terms: [
-      ...['Abkhazia', 'Sukhumi', 'South Ossetia', 'Tskhinvali'],
+      ...['Abkhazia', 'Sukhumi', 'South Ossetia', 'Tskhinvali',
+        'Further-Eastern European Time', 'FET'],
       ...['Abchasien', 'Sochumi', 'Südossetien', 'Zchinwali'],
     ]
   ),

@@ -4635,11 +4635,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ALMT', () {
+    test('ALMT -- unused', () {
       var searchTerm = 'ALMT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('AMST -- unused', () {  // Amazon or Armenia, no more DST
@@ -5282,11 +5282,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('KUYT', () {
+    test('KUYT -- unused', () {
       var searchTerm = 'KUYT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('LHDT', () {
@@ -6292,11 +6292,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Alma-Ata Time", () {
+    test("Alma-Ata Time -- unused", () {
       var searchTerm = "Alma-Ata Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Al Manamah Standard Time", () {
@@ -7472,11 +7472,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Kuybyshev Time", () {
+    test("Kuybyshev Time -- unused", () {
       var searchTerm = "Kuybyshev Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Kyrgyzstan Time", () {

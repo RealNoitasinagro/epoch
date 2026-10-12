@@ -120,7 +120,7 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
     variants.add('${stem}Daylight Saving Time');
     variants.add('${stem}Daylight Savings Time');
   }
-  else if (RegExp(r'(?<!standard )time').hasMatch(lower)) {
+  else if (lower.endsWith('time') && !lower.endsWith('standard time')) {
     final stem = term.substring(0, term.length - 'time'.length);
     variants.add('${stem}Standard Time');
   }
@@ -138,7 +138,6 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
 
   return variants;
 }
-
 
 class TzEntry {
   /// The identifier for this zone -- almost always a canonical IANA tz
@@ -176,58 +175,6 @@ class TzEntry {
   Iterable<String> get linkCityNames => ianaLinksSnapshot.entries
       .where((e) => e.value == ianaZoneId)
       .map((e) => e.key.split('/').last.replaceAll('_', ' '));
-
-  // /// English and German country names for the countries assigned to this
-  // /// zone (via zone1970.tab / ISO 3166-1 / CLDR). Computed on demand
-  // /// rather than stored, to avoid duplicating the generated country data
-  // /// per entry.
-  // Iterable<String> get countryNames {
-  //   return [..._countryNamesEnOnly, ..._countryNamesDeOnly];  // add aliases?
-  // }
-  //
-  // Iterable<String> get _countryNamesEnOnly {
-  //   final codes = zoneCountryCodes[ianaZoneId] ?? const [];
-  //   return codes.expand((code) => [
-  //     if (countryNamesEn[code] != null) countryNamesEn[code]!,
-  //     if (cldrCountryNamesEn[code] != null) cldrCountryNamesEn[code]!,
-  //     // ...?countryNameAliasesEn[code],
-  //   ]);
-  // }
-  //
-  // Iterable<String> get _countryNamesDeOnly {
-  //   final codes = zoneCountryCodes[ianaZoneId] ?? const [];
-  //   return codes.expand((code) => [
-  //     if (cldrCountryNamesDe[code] != null) cldrCountryNamesDe[code]!,
-  //     //...?countryNameAliasesDe[code],
-  //   ]);
-  // }
-  //
-  // Iterable<String> get _countryNamesGenerated {
-  //   final codes = zoneCountryCodes[ianaZoneId] ?? const [];
-  //   return codes.expand((code) => [
-  //     ..._countryNamesEnOnly,
-  //     ..._countryNamesDeOnly
-  //   ]);
-  // }
-  //
-  // Iterable<String> get _countryNamesAliases {
-  //   final codes = zoneCountryCodes[ianaZoneId] ?? const [];
-  //   return codes.expand((code) => [
-  //     ...?countryNameAliasesEn[code],
-  //     ...?countryNameAliasesDe[code]
-  //   ]);
-  // }
-  //
-  // Iterable<String> get countryTimeSuffixTerms {
-  //   final enSuffixes = ['Time', 'Standard Time', if (hasDst) 'Daylight Time'];
-  //   final deSuffixes = ['Zeit', 'Normalzeit', if (hasDst) 'Sommerzeit'];
-  //   return [
-  //     for (final name in _countryNamesEnOnly)
-  //       for (final s in enSuffixes) '$name $s',
-  //     for (final name in _countryNamesDeOnly)
-  //       for (final s in deSuffixes) '$name-$s',
-  //   ];
-  // }
 
   List<String> get _countryCodes => zoneCountryCodes[ianaZoneId] ?? const [];
 
@@ -307,34 +254,38 @@ class TzEntry {
       if (e.value == ianaZoneId) ?cldrZoneMetaZone[e.key],
   };
 
-  Iterable<String> get metazoneTerms =>
-      [..._metazoneGenerated, ..._metazoneAliasTerms];
+  Iterable<String> get metazoneTerms => [
+    ..._metazoneIds.expand(_generatedBaseTermsFor),
+    ..._metazoneIds.expand(_aliasBaseTermsFor),
+  ].expand(_expandTimeZoneNameVariants);
 
-  Iterable<String> get _metazoneGenerated =>
-      _metazoneIds.expand(_generatedTermsFor);
-
-  Iterable<String> get _metazoneAliasTerms =>
-      _metazoneIds.expand(_aliasTermsFor);
-
-  Iterable<String> _generatedTermsFor(String metaId) {
+  Iterable<String> _generatedBaseTermsFor(String metaId) {
     final en = cldrMetazoneNamesEn[metaId];
     final de = cldrMetazoneNamesDe[metaId];
     return [
-      en?.generic, en?.standard,
-      de?.generic, de?.standard,
+      en?.generic, en?.standard, de?.generic, de?.standard,
       if (hasDst) ...[en?.daylight, de?.daylight],
-    ].whereType<String>().expand(_expandTimeZoneNameVariants);
+    ].whereType<String>();
   }
 
-  Iterable<String> _aliasTermsFor(String metaId) {
+  Iterable<String> _aliasBaseTermsFor(String metaId) {
     final en = metazoneNameAliasesEn[metaId];
     final de = metazoneNameAliasesDe[metaId];
     return [
-      ...?en?.generic, ...?en?.standard,
-      ...?de?.generic, ...?de?.standard,
+      ...?en?.generic, ...?en?.standard, ...?de?.generic, ...?de?.standard,
       if (hasDst) ...[...?en?.daylight, ...?de?.daylight],
-    ].expand(_expandTimeZoneNameVariants);
+    ];
   }
+
+  /// Label '~' marks terms produced by _expandTimeZoneNameVariants.
+  Iterable<({String source, String term})> _tagged(
+      String source, Iterable<String> bases) =>
+      [
+        for (final base in bases)
+          for (final v in _expandTimeZoneNameVariants(base))
+            (source: v == base ? source : '$source~', term: v),
+      ];
+
 
   Iterable<String> get zoneSpecificTerms {
     final en = _resolveViaLinks(cldrZoneLongNamesEn, ianaZoneId);
@@ -346,18 +297,23 @@ class TzEntry {
   }
 
   Iterable<({String source, String term})> get candidatesWithSource => [
-    for (final t in terms) (source: 'terms', term: normalize(t)),
     for (final t in linkCityNames) (source: 'iana_links', term: t),
-    for (final t in _countryNamesGenerated) (source: 'country_names', term: t),
-    for (final t in _countryNamesAliases) (source: 'country_aliases', term: t),
+    for (final t in _countryNamesEnOnly) (source: 'country_names_EN', term: t),
+    for (final t in _countryNamesDeOnly) (source: 'country_names_DE', term: t),
+    for (final t in _countryAliasesEn) (source: 'country_aliases_EN', term: t),
+    for (final t in _countryAliasesDe) (source: 'country_aliases_DE', term: t),
     for (final t in timeSuffixTerms) (source: 'rule:timeSuffix', term: t),
-    for (final t in exemplarCityNames) (source: 'cldr_exemplar_cities', term: t),
     for (final t in windowsNames) (source: 'cldr_windows_zone_names', term: t),
-    for (final t in _metazoneGenerated) (source: 'cldr_metazone_names', term: t),
-    for (final t in _metazoneAliasTerms) (source: 'metazone_aliases', term: t),
     for (final t in zoneSpecificTerms) (source: 'cldr_zone_long_names', term: t),
-    for (final t in megacityNames) (source: 'major_cities', term: t),
+    for (final t in exemplarCityNames) (source: 'cldr_exemplar_cities', term: t),
     for (final t in capitalNames) (source: 'wikidata_capitals', term: t),
+    for (final t in megacityNames) (source: 'major_cities', term: t),
+    ..._tagged('cldr_metazone_names', _metazoneIds.expand(_generatedBaseTermsFor)),
+    ..._tagged('metazone_aliases', _metazoneIds.expand(_aliasBaseTermsFor)),
+    ..._tagged('terms', terms),
+    // for (final t in terms) (source: 'terms', term: normalize(t)),
+    // for (final t in _metazoneGenerated) (source: 'cldr_metazone_names', term: t),
+    // for (final t in _metazoneAliasTerms) (source: 'metazone_aliases', term: t),
   ];
 
   ({String rule, String source, String term})? matchReason(String query) {
