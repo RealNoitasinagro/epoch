@@ -1,5 +1,5 @@
 const Map<String, List<String>> countryNameAliasesDe = {
-  'BA': ['Bosnien', 'Bosnien-Herzegowina', 'Bosnien und Herzegowina'],
+  'BA': ['Bosnien', 'Bosnien-Herzegowina'],
   'CC': ['Keelinginseln'],
   'CD': ['Demokratische Republik Kongo', 'DR Kongo', 'DRK'],
   'CG': ['Republik Kongo'],
@@ -14,26 +14,20 @@ const Map<String, List<String>> countryNameAliasesDe = {
   'PS': ['Palästina'],
   'US': ['Vereinigte Staaten von Amerika'],
   'TW': ['Republik China'],
-  'WF': ['Wallis und Futuna'],
 };
 
 const Map<String, List<String>> countryNameAliasesEn = {
-  'AG': ['Antigua and Barbuda'],
-  'BA': ['Bosnia', 'Bosnia and Herzegovina', 'Bosnia-Herzegovina'],
+  'BA': ['Bosnia', 'Bosnia-Herzegovina'],
   'BN': ['Brunei Darussalam'],
   'CC': ['Cocos Islands', 'Keeling Islands'],
   'CD': ['Congo (DRC)', 'Democratic Republic of the Congo', 'DR Congo', 'DRC'],
   'CG': ['Congo (Republic)', 'Congo Republic', 'Republic of the Congo'],
   'CI': ['Ivory Coast'],
-  'CN': ["People's Republic of China", 'PRC'],
+  'CN': ["People's Republic of China"],
   'EH': ['Sahrawi Arab Democratic Republic', 'SADR', 'Sahrawi Republic'],
   'FM': ['Federated States of Micronesia'],
   'GB': ['Britain', 'United Kingdom of Great Britain and Northern Ireland', 'UK', 'England', 'Scotland', 'Wales'],
   'MP': ['Northern Marianas'],
-  'ST': ['São Tomé and Príncipe'],
-  'TC': ['Turks and Caicos Islands'],
-  'TT': ['Trinidad and Tobago'],
-  'TW': ['Republic of China', 'ROC'],  // a.k.a Taiwan
+  'TW': ['Republic of China'],
   'US': ['United States of America', 'USA'],
-  'WF': ['Wallis and Futuna'],
 };

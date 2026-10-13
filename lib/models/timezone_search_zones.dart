@@ -5160,7 +5160,6 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+00:00', offsetSummer: '+00:00',
     abbrWinter: 'GMT', abbrSummer: 'GMT',
     terms: [
-      ...['Greenwich Time'],
       ...['Greenwich-Zeit'],
     ]
   ),
@@ -5184,7 +5183,7 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '-12:00', offsetSummer: '-12:00',
     abbrWinter: '-12', abbrSummer: '-12',
     terms: [
-      ...['Anywhere on Earth', 'AOE', 'Dateline Standard Time'],
+      ...['Anywhere on Earth', 'AOE'],
       ...['Datumsgrenze', 'Datumslinie'],
     ],
   ),
@@ -5357,7 +5356,7 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
     offsetWinter: '+02:00', offsetSummer: '+03:00',
     abbrWinter: 'EET', abbrSummer: 'EEST',
     terms: [
-      ...['Transnistria', 'Tiraspol', 'Pridnestrovian Moldavian Republic', 'PMR', 'Pridnestrovie'],
+      ...['Transnistria', 'Pridnestrovian Moldavian Republic', 'PMR', 'Pridnestrovie'],
       ...['Transnistrien', 'Transnistrische Moldauische Republik', 'Transnistrische Moldawische Republik',
         'Cisnistrische Moldauische Republik', 'Cisnistrien',
         'Pridnestrowische Moldauische Republik', 'Pridnestrowische Moldawische Republik', 'Pridnestrowien'],
