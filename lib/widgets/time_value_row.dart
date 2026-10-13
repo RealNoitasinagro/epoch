@@ -80,7 +80,6 @@ abstract class TimeValueRow extends StatelessWidget {
   List<Widget> _buildDstTransitionsSection(
       String ianaZone, BuildContext context, AppLocalizations l10n) {
     final app = EpochApp.of(context);
-    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return [];
     final transitions = TimeUtils.nextDstTransitions(
         ianaZone, DateTime.now().toUtc(), count: 4);
     if (transitions.isEmpty) return [];

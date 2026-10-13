@@ -1280,7 +1280,7 @@ const List<TzEntry> tzEntries_Europe = [
 
 
 // Experimental, to be removed later
-
+/*
 const List<TzEntry> tzEntries_NewEntries312 = [
   TzEntry(
     ianaZoneId: 'Africa/Algiers',
@@ -3916,7 +3916,7 @@ const List<TzEntry> tzEntries_ExistingWithReducedTerms = [
     abbrWinter: '+13', abbrSummer: '+13',
     terms: ["TOT", "nuku'alofa", "tonga standard time", "tonga time", "tongaische normalzeit"],
   ),
-];
+];*/
 
 
 
@@ -4225,8 +4225,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
   ),
   TzEntry(
     ianaZoneId: 'America/Edmonton',
-    offsetWinter: '-07:00', offsetSummer: '-06:00',
-    abbrWinter: 'MST', abbrSummer: 'MDT',
+    offsetWinter: '-06:00', offsetSummer: '-06:00',
+    abbrWinter: 'CST', abbrSummer: 'MDT',
   ),
   TzEntry(
     ianaZoneId: 'America/Eirunepe',
@@ -4335,8 +4335,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
   ),
   TzEntry(
     ianaZoneId: 'America/Inuvik',
-    offsetWinter: '-07:00', offsetSummer: '-06:00',
-    abbrWinter: 'MST', abbrSummer: 'MDT',
+    offsetWinter: '-06:00', offsetSummer: '-06:00',
+    abbrWinter: 'CST', abbrSummer: 'MDT',
   ),
   TzEntry(
     ianaZoneId: 'America/Iqaluit',
@@ -4618,8 +4618,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
   ),
   TzEntry(
     ianaZoneId: 'America/Vancouver',
-    offsetWinter: '-08:00', offsetSummer: '-07:00',
-    abbrWinter: 'PST', abbrSummer: 'PDT',
+    offsetWinter: '-07:00', offsetSummer: '-07:00',
+    abbrWinter: 'MST', abbrSummer: 'PDT',
   ),
   TzEntry(
     ianaZoneId: 'America/Whitehorse',
@@ -4628,8 +4628,8 @@ const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
   ),
   TzEntry(
     ianaZoneId: 'America/Winnipeg',
-    offsetWinter: '-06:00', offsetSummer: '-05:00',
-    abbrWinter: 'CST', abbrSummer: 'CDT',
+    offsetWinter: '-05:00', offsetSummer: '-05:00',
+    abbrWinter: 'EST', abbrSummer: 'CDT',
   ),
   TzEntry(
     ianaZoneId: 'America/Yakutat',

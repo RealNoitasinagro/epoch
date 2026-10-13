@@ -117,7 +117,6 @@ class TimeStringRow extends TimeValueRow {
 
   static String? _dstWarning(
       String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
-    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return null;
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
