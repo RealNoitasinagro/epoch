@@ -298,8 +298,8 @@ class TzEntry {
 
   Iterable<({String source, String term})> get candidatesWithSource => [
     for (final t in linkCityNames) (source: 'iana_links', term: t),
-    for (final t in _countryNamesEnOnly) (source: 'country_names_EN', term: t),
-    for (final t in _countryNamesDeOnly) (source: 'country_names_DE', term: t),
+    for (final t in _countryNamesGeneratedEn) (source: 'country_names_EN', term: t),
+    for (final t in _countryNamesGeneratedDe) (source: 'country_names_DE', term: t),
     for (final t in _countryAliasesEn) (source: 'country_aliases_EN', term: t),
     for (final t in _countryAliasesDe) (source: 'country_aliases_DE', term: t),
     for (final t in timeSuffixTerms) (source: 'rule:timeSuffix', term: t),

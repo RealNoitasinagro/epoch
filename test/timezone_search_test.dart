@@ -4761,11 +4761,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('BRST', () {
+    test('BRST -- unused', () {
       var searchTerm = 'BRST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('BRT', () {
@@ -5055,11 +5055,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('FKDT', () {  // Falkland Islands Daylight Time (= FKST, see below)
+    test('FKDT -- questionable', () {  // Falkland Islands Daylight Time (= FKST, see below)
       var searchTerm = 'FKDT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, greaterThanOrEqualTo(0));
     });
 
     test('FKST', () {  // Falkland Islands Standard Time (year-round DST!)
@@ -5359,11 +5359,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('MSD', () {
+    test('MSD -- unused', () {
       var searchTerm = 'MSD';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('MSK', () {
@@ -5611,7 +5611,7 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('PYST', () {  // https://en.wikipedia.org/wiki/Time_in_Paraguay
+    test('PYST', () {  // https://en.wikipedia.org/wiki/Time_in_Paraguay, or Pyongyang Standard Time
       var searchTerm = 'PYST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);

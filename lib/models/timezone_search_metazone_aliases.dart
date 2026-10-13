@@ -41,7 +41,7 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
   ),
   'Australia_Western': (
     generic: null,
-    standard: ['Western Australia Time'],
+    standard: ['Western Australia Time', 'Western Standard Time'],
     daylight: null,
   ),
   'Brasilia': (

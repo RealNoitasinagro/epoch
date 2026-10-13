@@ -12,11 +12,15 @@ import 'package:epoch/models/timezone_search_zones.dart';
 /// Hand-maintained sources. Keep in sync with the labels used in
 /// TzEntry.candidatesWithSource.
 const manualSources = {
-  'terms', 'country_aliases_DE', 'country_aliases_EN', 'metazone_aliases', 'major_cities',
+  'terms', 'country_aliases_EN', 'country_aliases_DE',
+  'metazone_aliases', 'major_cities',
 };
 
 bool isManual(String source) =>
     manualSources.contains(source.replaceAll('~', ''));
+
+bool isRule(String s) => s.startsWith('rule:') || s.endsWith('~');
+
 
 /// Accepts canonical ids and link ids (Asia/Brunei -> Asia/Kuching).
 TzEntry? findEntry(String zoneId) {
@@ -44,20 +48,47 @@ TzEntry? findEntry(String zoneId) {
   return (exact: exact, prefix: prefix);
 }
 
+
+({String how, List<({String source, String term})> hits}) strongestHits(
+    TzEntry entry, String query) {
+  final queryNorm = normalize(query);
+  final allCaps = query.trim() == query.trim().toUpperCase();
+  final exact = <({String source, String term})>[];
+  final prefix = <({String source, String term})>[];
+  for (final c in entry.candidatesWithSource) {
+    final t = normalize(c.term);
+    if (t == queryNorm) {
+      exact.add(c);
+    } else if (!allCaps && t.startsWith(queryNorm)) {
+      prefix.add(c);
+    }
+  }
+  return exact.isNotEmpty
+      ? (how: 'exact', hits: exact)
+      : (how: 'prefix', hits: prefix);
+}
+
 void explainQuery(String query) {
-  var hits = 0;
+  var count = 0;
   for (final entry in tzDatabase) {
     final reason = entry.matchReason(query);
     if (reason == null) continue;
-    hits++;
-    final s = matchingSources(entry, query);
-    final all = {...s.exact, ...s.prefix};
-    final manualOnly = all.isNotEmpty && all.every(isManual);
-    print('TZ-MATCH q="$query" zone=${entry.ianaZoneId} rule=${reason.rule} '
-        'exact=${s.exact.join(',')} prefix=${s.prefix.join(',')}'
-        '${manualOnly ? ' MANUAL-ONLY' : ''}');
+    count++;
+    final line = StringBuffer('TZ-MATCH q="$query" zone=${entry.ianaZoneId}');
+    final strongest = strongestHits(entry, query);
+    if ((reason.rule == 'exact' || reason.rule == 'prefix') &&
+        strongest.hits.isNotEmpty) {
+      final sources = strongest.hits.map((h) => h.source).toSet();
+      line.write(' by=${strongest.how} term="${strongest.hits.first.term}"'
+          ' via=${sources.join(',')}');
+      if (sources.every(isRule)) line.write(' DERIVED');
+      if (sources.every(manualSources.contains)) line.write(' MANUAL-ONLY');
+    } else {
+      line.write(' by=${reason.rule} term="${reason.term}"');
+    }
+    print(line);
   }
-  if (hits == 0) {
+  if (count == 0) {
     print('TZ-MISS q="$query" norm="${normalize(query)}"');
   }
 }
@@ -84,11 +115,17 @@ void listRedundant() {
           .add(c.source);
     }
     sourcesByTerm.forEach((term, sources) {
-      final manual = sources.where(isManual).toSet();
-      final generated = sources.where((s) => !isManual(s)).toSet();
-      if (manual.isNotEmpty && generated.isNotEmpty) {
+      final manual = sources.where(manualSources.contains).toSet();
+      final generated = sources
+          .where((s) => !manualSources.contains(s.replaceAll('~', '')))
+          .toSet();
+      final shown = generated
+          .where((s) =>
+      !(s.endsWith('~') && generated.contains(s.substring(0, s.length - 1))))
+          .toSet();
+      if (manual.isNotEmpty && shown.isNotEmpty) {
         print('TZ-REDUNDANT zone=${entry.ianaZoneId} term="$term" '
-            'manual=${manual.join(',')} also=${generated.join(',')}');
+            'manual=${manual.join(',')} also=${shown.join(',')}');
       }
     });
   }
