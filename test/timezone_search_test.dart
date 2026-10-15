@@ -5940,11 +5940,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('WST', () {
+    test('WST -- unused', () {
       var searchTerm = 'WST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test('WT', () {
@@ -8396,11 +8396,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test("Western Sahara Summer Time", () {
+    test("Western Sahara Summer Time -- unused", () {
       var searchTerm = "Western Sahara Summer Time";
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThan(0));
+      expect(loc.length, equals(0));
     });
 
     test("Western Sahara Time", () {

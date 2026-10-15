@@ -33,7 +33,7 @@ String formatUtcOffset(Duration offset) {
   return '$sign$hh:$mm';
 }
 
-const _windowDays = 400;
+const _lookaheadDays = 400;
 const _maxCacheEntries = 4096;
 final _cache = <String, ZoneRules>{};
 
@@ -57,17 +57,15 @@ ZoneRules? zoneRulesAt(String ianaZoneId, DateTime referenceUtc) {
     return null;
   }
 
-  final startMs =
-      ref.subtract(const Duration(days: _windowDays)).millisecondsSinceEpoch;
+  final refMs = ref.millisecondsSinceEpoch;
   final endMs =
-      ref.add(const Duration(days: _windowDays)).millisecondsSinceEpoch;
+      ref.add(const Duration(days: _lookaheadDays)).millisecondsSinceEpoch;
   final samples = <tz.TZDateTime>[
     tz.TZDateTime.from(ref, location),
     for (final t in location.transitionAt)
-      if (t >= startMs && t <= endMs)
+      if (t > refMs && t <= endMs)
         tz.TZDateTime.from(
-            DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true),
-            location),
+            DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true), location),
   ];
 
   tz.TZDateTime closest(Iterable<tz.TZDateTime> list) => list.reduce(

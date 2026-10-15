@@ -28,4 +28,14 @@ void main() {
   test('unknown zone yields null', () {
     expect(zoneRulesAt('Nowhere/Land', reference), isNull);
   });
+
+  test('Vancouver after 2026-11-01: no more clock changes', () {
+    final r = zoneRulesAt('America/Vancouver', DateTime.utc(2026, 11, 15))!;
+    expect(r.hasDst, isFalse);
+    expect([r.standardAbbr, r.dstAbbr], ['MST', 'MST']);
+  });
+
+  test('Berlin in November: spring change still ahead', () {
+    expect(zoneRulesAt('Europe/Berlin', DateTime.utc(2026, 11, 15))!.hasDst, isTrue);
+  });
 }
