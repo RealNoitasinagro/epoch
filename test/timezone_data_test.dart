@@ -3,6 +3,7 @@ import 'package:epoch/models/generated/cldr_metazone_names_en.g.dart';
 import 'package:epoch/models/generated/cldr_zone_metazone.g.dart';
 import 'package:epoch/models/generated/iana_canonical_zones_snapshot.g.dart';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
+import 'package:epoch/models/generated/legacy_abbreviations.g.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
@@ -72,6 +73,17 @@ void main() {
         });
       }
     }
+  });
+
+  group('legacy abbreviations resolve to their zone', () {
+    legacyAbbreviationsByZone.forEach((zoneId, abbrs) {
+      final canonical = ianaLinksSnapshot[zoneId] ?? zoneId;
+      final entry = tzDatabase.where((e) => e.ianaZoneId == canonical).firstOrNull;
+      if (entry == null) return;
+      for (final abbr in abbrs) {
+        test('$abbr -> $canonical', () => expect(entry.matches(abbr), isTrue));
+      }
+    });
   });
 
   test('zones without current DST never match a DST-only metazone term', () {

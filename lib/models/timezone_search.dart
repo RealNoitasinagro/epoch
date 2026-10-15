@@ -4,12 +4,14 @@ import 'generated/cldr_exemplar_cities_de.g.dart';
 import 'generated/cldr_exemplar_cities_en.g.dart';
 import 'generated/cldr_metazone_names_de.g.dart';
 import 'generated/cldr_metazone_names_en.g.dart';
+import 'generated/cldr_metazone_short_names.g.dart';
 import 'generated/cldr_windows_zone_names.g.dart';
 import 'generated/cldr_zone_long_names_de.g.dart';
 import 'generated/cldr_zone_long_names_en.g.dart';
 import 'generated/cldr_zone_metazone.g.dart';
 import 'generated/iana_links_snapshot.g.dart';
 import 'generated/iso3166_country_names_en.g.dart';
+import 'generated/legacy_abbreviations.g.dart';
 import 'generated/wikidata_capitals_de.g.dart';
 import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
@@ -139,6 +141,15 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
 
   return variants;
 }
+
+/// Built once: legacy abbreviations of a zone and of every link pointing at it.
+final Map<String, Set<String>> _legacyAbbreviationsByCanonical = () {
+  final result = <String, Set<String>>{};
+  legacyAbbreviationsByZone.forEach((zoneId, abbrs) {
+    result.putIfAbsent(ianaLinksSnapshot[zoneId] ?? zoneId, () => {}).addAll(abbrs);
+  });
+  return result;
+}();
 
 class TzEntry {
   const TzEntry({required this.ianaZoneId, this.terms = const []});
@@ -283,7 +294,6 @@ class TzEntry {
             (source: v == base ? source : '$source~', term: v),
       ];
 
-
   Iterable<String> get zoneSpecificTerms {
     final en = _resolveViaLinks(cldrZoneLongNamesEn, ianaZoneId);
     final de = _resolveViaLinks(cldrZoneLongNamesDe, ianaZoneId);
@@ -292,6 +302,18 @@ class TzEntry {
       if (hasDst) ...[en?.daylight, de?.daylight],
     ].whereType<String>().expand(_expandTimeZoneNameVariants);
   }
+
+  Iterable<String> _shortNames(String metaId) {
+    final s = cldrMetazoneShortNames[metaId];
+    return [s?.generic, s?.standard, if (hasDst) s?.daylight].whereType<String>();
+  }
+
+  /// Exact, case-sensitive matches beyond abbrWinter/abbrSummer. Legacy ones
+  /// are deliberately not gated by hasDst (users still type BRST, PYST).
+  Set<String> get abbreviationAliases => {
+    ...?_legacyAbbreviationsByCanonical[ianaZoneId],
+    for (final id in _metazoneIds) ..._shortNames(id),
+  };
 
   Iterable<({String source, String term})> get candidatesWithSource => [
     for (final t in linkCityNames) (source: 'iana_links', term: t),
@@ -326,6 +348,9 @@ class TzEntry {
     if (abbrWinter == queryOrig || abbrSummer == queryOrig) {
       return (rule: 'abbr', source: '-', term: '$abbrWinter/$abbrSummer');
     }
+    if (abbreviationAliases.contains(queryOrig)) {
+      return (rule: 'abbrAlias', source: '-', term: queryOrig);
+    }
     final allCaps = queryOrig == queryOrig.toUpperCase();
     if (!allCaps &&
         (ianaZoneId.toLowerCase().contains(queryNorm) ||
@@ -342,40 +367,43 @@ class TzEntry {
   }
 
   bool matches(String query) {
-    final query_orig = query.trim();
-    if (query_orig.isEmpty) return true;
-    final query_plain = query_orig.toLowerCase();  // for offsets, not normalised
-    final query_norm = normalize(query_orig);
+    final queryOrig = query.trim();
+    if (queryOrig.isEmpty) return true;
+    final queryPlain = queryOrig.toLowerCase();  // for offsets, not normalised
+    final queryNorm = normalize(queryOrig);
 
     // offsets, fixed format: [+-]\d\d:\d\d
-    if (offsetWinter.contains(query_plain) ||
-        offsetSummer.contains(query_plain) ||
-        offsetWinter.replaceAll(':', '').contains(query_plain) ||
-        offsetSummer.replaceAll(':', '').contains(query_plain)) {
+    if (offsetWinter.contains(queryPlain) ||
+        offsetSummer.contains(queryPlain) ||
+        offsetWinter.replaceAll(':', '').contains(queryPlain) ||
+        offsetSummer.replaceAll(':', '').contains(queryPlain)) {
       return true;
     }
     // (IANA) abbreviations (letters-only or offset numbers)
-    if (abbrWinter == query_orig || abbrSummer == query_orig) {
+    if (abbrWinter == queryOrig || abbrSummer == queryOrig) {
+      return true;
+    }
+    if (abbreviationAliases.contains(queryOrig)) {
       return true;
     }
 
     final candidates = candidatesWithSource.map((c) => c.term).toList();
 
     // uppercase-only: (non-IANA) zone abbreviations in terms
-    if (query_orig == query_orig.toUpperCase()) {
+    if (queryOrig == queryOrig.toUpperCase()) {
       // All-caps query: require an exact match (after normalization) rather
       // than startsWith, to avoid short/ambiguous abbreviations incorrectly
       // matching as a prefix of an unrelated longer word.
-      return candidates.any((t) => normalize(t) == query_norm);
+      return candidates.any((t) => normalize(t) == queryNorm);
     }
     // locations or whole area/location identifiers
-    if (ianaZoneId.toLowerCase().contains(query_norm) ||
-        ianaZoneId.toLowerCase().contains(query_norm.replaceAll(' ', '_'))) {
+    if (ianaZoneId.toLowerCase().contains(queryNorm) ||
+        ianaZoneId.toLowerCase().contains(queryNorm.replaceAll(' ', '_'))) {
       return true;
     }
     // cities, countries, zone names, zone abbreviations, ...
     return candidates.any(
-        (t) => normalize(t).startsWith(query_norm));
+        (t) => normalize(t).startsWith(queryNorm));
   }
 }
 

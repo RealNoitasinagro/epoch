@@ -94,7 +94,7 @@ def load_zone_metazones(cldr_json_dir):
     return result
 
 
-def load_metazone_names(cldr_json_dir, locale):
+def load_metazone_names(cldr_json_dir, locale, kind="long"):
     """Returns {metazone_id: {'generic': ..., 'standard': ..., 'daylight': ...}}."""
     path = os.path.join(cldr_json_dir, "cldr-dates-full", "main", locale, "timeZoneNames.json")
     if not os.path.isfile(path):
@@ -110,12 +110,11 @@ def load_metazone_names(cldr_json_dir, locale):
 
     result = {}
     for mz_id, mz_data in metazones.items():
-        long_names = mz_data.get("long", {})
-        result[mz_id] = {
-            "generic": long_names.get("generic"),
-            "standard": long_names.get("standard"),
-            "daylight": long_names.get("daylight"),
-        }
+        block = mz_data.get(kind, {})
+        names = {k: block.get(k) for k in ("generic", "standard", "daylight")}
+        if kind == "short" and not any(names.values()):
+            continue    # most metazones have no short names
+        result[mz_id] = names
     return result
 
 
@@ -134,9 +133,10 @@ def write_zone_metazone(path, zone_metazones):
         f.write("};\n")
 
 
-def write_metazone_names(path, names, locale):
-    locale_capitalized = locale.capitalize()
-    dart_variable = 'cldrMetazoneNames' + locale_capitalized
+def write_metazone_names(path, names, locale, dart_variable = None):
+    if dart_variable is None:
+        locale_capitalized = locale.capitalize()
+        dart_variable = 'cldrMetazoneNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
         now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
@@ -179,8 +179,21 @@ def main():
     for locale in ("en", "de"):
         names = load_metazone_names(args.cldr_json_dir, locale)
         out_file = f"cldr_metazone_names_{locale}.g.dart"
-        write_metazone_names(os.path.join(args.out_dir, out_file), names, locale)
+        write_metazone_names(
+            os.path.join(args.out_dir, out_file),
+            names,
+            locale,
+        )
         print(f"Metazones with {locale} names: {len(names)}")
+    short_names = load_metazone_names(args.cldr_json_dir, "en", kind="short")
+    out_file = "cldr_metazone_short_names.g.dart"
+    write_metazone_names(
+        os.path.join(args.out_dir, out_file),
+        short_names,
+        "en",
+        dart_variable="cldrMetazoneShortNames"
+    )
+    print(f"Metazones with short names: {len(short_names)}")
 
 
 if __name__ == "__main__":

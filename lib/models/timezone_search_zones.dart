@@ -3,7 +3,7 @@ import 'timezone_search.dart';
 //import 'timezone_search_terms.dart';
 
 const Map<String, List<String>> manualTerms = {
-  // output of dump_manual_terms.dart; 'Anywhere on Earth' moves to 'Etc/GMT+12'
+  // names
   'Africa/Nairobi': ['Somaliland', 'Hargeisa', 'Hargeysa'],
   'America/Nuuk': ['West Greenland Time', 'West Greenland Summer Time', 'Westgrönland-Zeit', 'Westgrönland-Sommerzeit'],
   'America/Scoresbysund': ['East Greenland Time', 'East Greenland Summer Time', 'Ostgrönland-Zeit', 'Ostgrönland-Sommerzeit'],
@@ -15,6 +15,17 @@ const Map<String, List<String>> manualTerms = {
   'Europe/Belgrade': ['Kosovo', 'Pristina'],
   'Europe/Chisinau': ['Transnistria', 'Pridnestrovian Moldavian Republic', 'PMR', 'Pridnestrovie', 'Transnistrien', 'Transnistrische Moldauische Republik', 'Transnistrische Moldawische Republik', 'Cisnistrische Moldauische Republik', 'Cisnistrien', 'Pridnestrowische Moldauische Republik', 'Pridnestrowische Moldawische Republik', 'Pridnestrowien'],
   'Europe/Dublin': ['Irish Summer Time'],
+  // abbreviations
+  'America/Panama': ['CIST'],            // Cayman is a link to it
+  'Atlantic/Stanley': ['FKDT'],
+  'Australia/Brisbane': ['AET'],
+  'Australia/Hobart': ['AET'],
+  'Australia/Melbourne': ['AET'],
+  'Australia/Perth': ['WST'],
+  'Australia/Sydney': ['AET'],
+  'Pacific/Apia': ['WST'],
+  'Pacific/Norfolk': ['NFDT'],
+  'Pacific/Port_Moresby': ['YAPT'],      // Yap is a link to it
 };
 
 final List<TzEntry> tzDatabase = [          // 127 entries in total
