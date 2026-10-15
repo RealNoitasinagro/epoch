@@ -4,10 +4,11 @@
 //   dart run tools/explain_tz_search.dart --zone Asia/Brunei | grep -i brunei
 //   dart run tools/explain_tz_search.dart --redundant
 import 'dart:io';
-
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
+import 'package:epoch/models/zone_rules.dart';
+import 'package:timezone/data/latest_all.dart' as tzd;
 
 /// Hand-maintained sources. Keep in sync with the labels used in
 /// TzEntry.candidatesWithSource.
@@ -47,7 +48,6 @@ TzEntry? findEntry(String zoneId) {
   }
   return (exact: exact, prefix: prefix);
 }
-
 
 ({String how, List<({String source, String term})> hits}) strongestHits(
     TzEntry entry, String query) {
@@ -99,6 +99,10 @@ void dumpZone(String zoneId) {
     print('TZ-NOZONE zone=$zoneId');
     return;
   }
+  final rules = entry.rules;
+  print('TZ-RULES zone=${entry.ianaZoneId} hasDst=${rules.hasDst} '
+      'std=${rules.standardAbbr}/${formatUtcOffset(rules.standardOffset)} '
+      'dst=${rules.dstAbbr}/${formatUtcOffset(rules.dstOffset)}');
   for (final c in entry.candidatesWithSource) {
     print('TZ-CAND zone=${entry.ianaZoneId} src=${c.source} term="${c.term}"');
   }
@@ -132,6 +136,7 @@ void listRedundant() {
 }
 
 void main(List<String> args) {
+  tzd.initializeTimeZones();
   if (args.isEmpty ||
       (['--zone', '--file'].contains(args.first) && args.length < 2)) {
     stderr.writeln('usage: see header comment');

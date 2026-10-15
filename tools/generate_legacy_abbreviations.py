@@ -131,7 +131,7 @@ def main():
                         help="Extracted tzdata2016a source directory")
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     parser.add_argument("--zic", default=None)
-    parser.add_argument("--from-year", type=int, default=2005)
+    parser.add_argument("--from-year", type=int, default=1970)
     parser.add_argument("--to-year", type=int, default=2016)
     parser.add_argument("--show-collisions", action="store_true",
                         help="List abbreviations used by more than one zone")

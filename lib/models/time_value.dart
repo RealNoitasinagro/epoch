@@ -3,7 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
 import 'tab_entry.dart';
-import 'timezone_search_zones.dart';
+import 'zone_rules.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -191,18 +191,12 @@ class TimeValue implements TabEntry {
     if (isZoneIndependent) return null;
     final ianaZone = switch (zone) {
       ZoneLocal() => localIanaZone,
-      ZoneUtc() => '', // UTC never has DST
+      ZoneUtc() => '',
       ZoneNamed(ianaZone: final z) => z,
     };
-    final entry = tzDatabase.where((e) => e.ianaZoneId == ianaZone).firstOrNull;
-    if (entry == null || !entry.hasDst) return null;
-    // Use the timezone package to check the actual current DST status:
-    try {
-      final tzDt = TimeUtils.inZone(nowUtc, ianaZone);
-      return tzDt.timeZone.isDst;
-    } catch (_) {
-      return null;
-    }
+    final rules = zoneRulesAt(ianaZone, nowUtc);
+    if (rules == null || !rules.hasDst) return null;
+    return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {

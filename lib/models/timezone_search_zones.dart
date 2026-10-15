@@ -1,7 +1,23 @@
+import 'generated/iana_canonical_zones_snapshot.g.dart';
 import 'timezone_search.dart';
 //import 'timezone_search_terms.dart';
 
-const List<TzEntry> tzDatabase = [          // 127 entries in total
+const Map<String, List<String>> manualTerms = {
+  // output of dump_manual_terms.dart; 'Anywhere on Earth' moves to 'Etc/GMT+12'
+  'Africa/Nairobi': ['Somaliland', 'Hargeisa', 'Hargeysa'],
+  'America/Nuuk': ['West Greenland Time', 'West Greenland Summer Time', 'Westgrönland-Zeit', 'Westgrönland-Sommerzeit'],
+  'America/Scoresbysund': ['East Greenland Time', 'East Greenland Summer Time', 'Ostgrönland-Zeit', 'Ostgrönland-Sommerzeit'],
+  'Asia/Nicosia': ['Northern Cyprus', 'Turkish Republic of Northern Cyprus', 'TRNC', 'Nord-Zypern', 'Türkische Republik Nordzypern', 'TRNZ'],
+  'Etc/GMT': ['Greenwich-Zeit'],
+  'Etc/GMT+12': ['Anywhere on Earth', 'AOE', 'Datumsgrenze', 'Datumslinie'],
+  'Etc/GMT-3': ['Abkhazia', 'Sukhumi', 'South Ossetia', 'Tskhinvali', 'Further-Eastern European Time', 'FET', 'Abchasien', 'Sochumi', 'Südossetien', 'Zchinwali'],
+  'Etc/UTC': ['Universal Time Coordinated'],
+  'Europe/Belgrade': ['Kosovo', 'Pristina'],
+  'Europe/Chisinau': ['Transnistria', 'Pridnestrovian Moldavian Republic', 'PMR', 'Pridnestrovie', 'Transnistrien', 'Transnistrische Moldauische Republik', 'Transnistrische Moldawische Republik', 'Cisnistrische Moldauische Republik', 'Cisnistrien', 'Pridnestrowische Moldauische Republik', 'Pridnestrowische Moldawische Republik', 'Pridnestrowien'],
+  'Europe/Dublin': ['Irish Summer Time'],
+};
+
+final List<TzEntry> tzDatabase = [          // 127 entries in total
   // ...tzEntries_Africa,                      //  8 entries
   // ...tzEntries_Americas,                    // 17 entries
   // ...tzEntries_Asia,                        // 36 entries
@@ -11,8 +27,11 @@ const List<TzEntry> tzDatabase = [          // 127 entries in total
   // ...tzEntries_NewEntries312,
   //...tzEntries_ExistingWithoutTerms,
   //...tzEntries_ExistingWithReducedTerms,
-  ...tzEntries_NewCanonicalEntries345,
+  //...tzEntries_NewCanonicalEntries345,
   //...tzEntries_Testing,
+
+  for (final zoneId in ianaCanonicalZonesSnapshot)
+    TzEntry(ianaZoneId: zoneId, terms: manualTerms[zoneId] ?? const []),
 ];
 
 // ── Africa ───────────────────────────────────────────────────────────
@@ -3922,7 +3941,7 @@ const List<TzEntry> tzEntries_ExistingWithReducedTerms = [
 
 
 // entries to be moved directly under tzDatabase
-
+/*
 const List<TzEntry> tzEntries_NewCanonicalEntries345 = [
   TzEntry(
     ianaZoneId: 'Africa/Abidjan',
@@ -5705,4 +5724,4 @@ const List<TzEntry> tzEntries_Testing = [
     offsetWinter: '-06:00', offsetSummer: '-06:00',
     abbrWinter: 'CST', abbrSummer: 'CST',
   ),
-];
+];*/

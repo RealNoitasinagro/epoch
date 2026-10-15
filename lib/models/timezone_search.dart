@@ -16,6 +16,7 @@ import 'generated/zone1970_countries.g.dart';
 import 'timezone_search_country_aliases.dart';
 import 'timezone_search_major_cities.dart';
 import 'timezone_search_metazone_aliases.dart';
+import 'zone_rules.dart';
 
 const _diacriticsFoldMap = {
   'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
@@ -140,31 +141,27 @@ Iterable<String> _expandTimeZoneNameVariants(String term) {
 }
 
 class TzEntry {
-  /// The identifier for this zone -- almost always a canonical IANA tz
-  /// identifier (e.g. "Europe/Berlin"). A small number of curated
-  /// exceptions use a synthetic, non-IANA identifier instead, when no
-  /// IANA zone captures the concept precisely (e.g. "Anywhere on Earth").
+  const TzEntry({required this.ianaZoneId, this.terms = const []});
+
   final String ianaZoneId;
-  final String offsetWinter;
-  final String offsetSummer;
-  final String abbrWinter;
-  final String abbrSummer;
-  final List<String> terms;  // legacy escape hatch for rare hand-curated cases
+  final List<String> terms; // hand-curated rare cases only
 
-  const TzEntry({
-    required this.ianaZoneId,
-    required this.offsetWinter,
-    required this.offsetSummer,
-    required this.abbrWinter,
-    required this.abbrSummer,
-    this.terms = const [],
-  });
+  ZoneRules get rules =>
+      zoneRulesAt(ianaZoneId, DateTime.now().toUtc()) ??
+          (throw StateError('No zone data for $ianaZoneId -- initializeTimeZones() first'));
 
-  bool get hasDst => offsetWinter != offsetSummer;
+  bool get hasDst => rules.hasDst;
+  String get offsetWinter => formatUtcOffset(rules.standardOffset);
+  String get offsetSummer => formatUtcOffset(rules.dstOffset);
+  String get abbrWinter => rules.standardAbbr;
+  String get abbrSummer => rules.dstAbbr;
 
-  String get offsetLabel => hasDst
-      ? '$abbrWinter/$abbrSummer  UTC$offsetWinter/UTC$offsetSummer'
-      : '$abbrWinter  UTC$offsetWinter';
+  String get offsetLabel {
+    if (!hasDst) return '$abbrWinter  UTC$offsetWinter';
+    final offsets = offsetWinter == offsetSummer
+        ? 'UTC$offsetWinter' : 'UTC$offsetWinter/UTC$offsetSummer';
+    return '$abbrWinter/$abbrSummer  $offsets';
+  }
 
   String get cityName =>
       ianaZoneId.split('/').last.replaceAll('_', ' ');

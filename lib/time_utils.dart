@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 import 'layout_constants.dart';
 import 'models/time_value.dart';
-import 'models/timezone_search_zones.dart';
+import 'models/zone_rules.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
@@ -37,35 +37,17 @@ class TimeUtils {
   }
 
   /// Returns true/false for a given time zone independently of current date.
-  static bool hasDaylightSavingTime(String ianaZone) {
-    final entry = tzDatabase
-        .where((e) => e.ianaZoneId == ianaZone)
-        .firstOrNull;
-    if (entry != null) return entry.hasDst;
-    return false;
-  }
+  static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>
+      zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc())?.hasDst ?? false;
 
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
-      String ianaZone, bool dst) {
-    final entry = tzDatabase.where((e) => e.ianaZoneId == ianaZone).firstOrNull;
-    if (entry == null || !entry.hasDst) return null;
-    String offset = dst ? entry.offsetSummer : entry.offsetWinter;
-    String abbreviation = dst ? entry.abbrSummer : entry.abbrWinter;
-    return (
-      offset: _parseOffset(offset),
-      abbreviation: abbreviation,
-    );
-  }
-
-  static Duration _parseOffset(String s) {
-    // Format: "+02:00" or "-05:00"
-    final sign = s.startsWith('-') ? -1 : 1;
-    final parts = s.substring(1).split(':');
-    return Duration(
-      hours: sign * int.parse(parts[0]),
-      minutes: sign * int.parse(parts[1]),
-    );
+      String ianaZone, bool dst, {DateTime? referenceUtc}) {
+    final rules = zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc());
+    if (rules == null || !rules.hasDst) return null;
+    return dst
+        ? (offset: rules.dstOffset, abbreviation: rules.dstAbbr)
+        : (offset: rules.standardOffset, abbreviation: rules.standardAbbr);
   }
 
   /// Converts a UTC DateTime to local time for the given TimeValue,
