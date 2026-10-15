@@ -476,6 +476,12 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Julian_day#Variants'**
   String get infoLinkReducedJulianDate;
 
+  /// No description provided for @infoLinkRomanNumeralsTime.
+  ///
+  /// In en, this message translates to:
+  /// **'https://en.wikipedia.org/wiki/Roman_numerals'**
+  String get infoLinkRomanNumeralsTime;
+
   /// No description provided for @infoLinkSwatchBeats.
   ///
   /// In en, this message translates to:
@@ -625,6 +631,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.'**
   String get infoTextReducedJulianDate;
+
+  /// No description provided for @infoTextRomanNumeralsTime.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
+  String get infoTextRomanNumeralsTime;
 
   /// No description provided for @infoTextSevenSegmentTime.
   ///
@@ -1253,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Binary Time (string)'**
+  /// **'Binary time (string)'**
   String get valueTypeBinaryClockString;
 
   /// No description provided for @valueTypeCcsdsJulianDate.
@@ -1369,6 +1381,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reduced Julian Date'**
   String get valueTypeReducedJulianDate;
+
+  /// No description provided for @valueTypeRomanNumeralsTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Roman numerals time'**
+  String get valueTypeRomanNumeralsTime;
 
   /// No description provided for @valueTypeSevenSegmentTime.
   ///

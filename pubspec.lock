@@ -421,6 +421,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  numerus:
+    dependency: "direct main"
+    description:
+      name: numerus
+      sha256: "0324b50768c821a742d5838aa40ebf09521a0f9b87562f20950b15ba7e999f6b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   package_config:
     dependency: transitive
     description:

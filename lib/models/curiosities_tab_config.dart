@@ -10,6 +10,7 @@ const curiosityTypes = [
   ValueType.binaryClockString,
   ValueType.octalTime,
   ValueType.hexadecimalTime,
+  ValueType.romanNumeralsTime,
   ValueType.doomsdayClock,
 ];
 
@@ -25,6 +26,7 @@ const defaultCuriositiesEntries = [
   TimeValue(valueType: ValueType.binaryClockString, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.octalTime, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.hexadecimalTime, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.romanNumeralsTime, zone: ZoneLocal()),
   TabDivider(id: 'builtin_divider_curio_2'),
   TabSection(id: 'builtin_doomsdayClock', label: '', builtinKey: BuiltinSectionKey.doomsdayClock),
   TimeValue(valueType: ValueType.doomsdayClock, zone: ZoneUtc()),

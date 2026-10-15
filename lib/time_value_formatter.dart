@@ -165,6 +165,8 @@ class TimeValueFormatter {
         return TimeUtils.octalTimeString(dt);
       case ValueType.hexadecimalTime:
         return TimeUtils.hexadecimalTimeString(dt);
+      case ValueType.romanNumeralsTime:
+        return TimeUtils.romanNumeralsTime(hourFormat24, dt, showSeconds: timeValue.showSeconds);
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
       case ValueType.sevenSegmentClock:

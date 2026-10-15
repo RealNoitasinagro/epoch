@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
+
 ---
 
 ## [1.5.1] - 2026-09-19

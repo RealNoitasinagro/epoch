@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:numerus/numerus.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 import 'layout_constants.dart';
@@ -345,6 +346,20 @@ class TimeUtils {
       buffer.write(hex[i]);
     }
     return buffer.toString();
+  }
+
+  /// Roman numerals time: time shown in Roman numerals.
+  static String romanNumeralsTime(bool hourFormat24, DateTime dt, {bool showSeconds = true}) {
+    RomanNumerals.romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
+    int hh = dt.hour; int mm = dt.minute; int ss = dt.second;
+    final int displayHour = !hourFormat24
+        ? (dt.hour % 12 == 0 ? 12 : dt.hour % 12)
+        : dt.hour;
+    final String period = !hourFormat24 ? (hh < 12 ? ' AM' : ' PM') : '';
+    String rhh = displayHour.toRomanNumeralString()!.padLeft(5, ' ');
+    String rmm = mm.toRomanNumeralString()!.padLeft(7, ' ');
+    String rss = ss.toRomanNumeralString()!.padLeft(7, ' ');
+    return !showSeconds ? '$rhh:$rmm$period' : '$rhh:$rmm:$rss$period';
   }
 
   /// Returns the current Doomsday Clock time.

@@ -166,6 +166,7 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `binaryClockString`      | Binary time (string)         |
 | `octalTime`              | Octal time                   |
 | `hexadecimalTime`        | Hexadecimal time             |
+| `romanNumeralsTime`      | Roman numerals time          |
 | `doomsdayClock`          | Doomsday Clock               |
 
 *Graphical types* in italics.
@@ -195,7 +196,9 @@ The optional suffix is only for zones that have DST:
 
 ##### Show seconds / decimals
 
-The optional suffix is for `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `swatchBeats`, and `newEarthTime`:
+The optional suffix is for
+- graphical clocks (`sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`),
+- as well as `binaryClockString`, `romanNumeralsTime`, `swatchBeats`, and `newEarthTime`:
 
 | Suffix    | Effect                  |
 |-----------|-------------------------|
