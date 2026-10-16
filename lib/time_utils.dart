@@ -356,9 +356,9 @@ class TimeUtils {
         ? (dt.hour % 12 == 0 ? 12 : dt.hour % 12)
         : dt.hour;
     final String period = !hourFormat24 ? (hh < 12 ? ' AM' : ' PM') : '';
-    String rhh = displayHour.toRomanNumeralString()!.padLeft(5, ' ');
-    String rmm = mm.toRomanNumeralString()!.padLeft(7, ' ');
-    String rss = ss.toRomanNumeralString()!.padLeft(7, ' ');
+    String rhh = displayHour.toRomanNumeralString() ?? '--';
+    String rmm = mm.toRomanNumeralString() ?? '--';
+    String rss = ss.toRomanNumeralString() ?? '--';
     return !showSeconds ? '$rhh:$rmm$period' : '$rhh:$rmm:$rss$period';
   }
 

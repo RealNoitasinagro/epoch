@@ -156,7 +156,7 @@ class TimeValueFormatter {
         return formattedValue;
       // Curiosities
       case ValueType.decimalTime:
-        String formattedValue =  TimeUtils.decimalTimeString(dt);
+        String formattedValue = TimeUtils.decimalTimeString(dt);
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.binaryClockString:
@@ -166,7 +166,11 @@ class TimeValueFormatter {
       case ValueType.hexadecimalTime:
         return TimeUtils.hexadecimalTimeString(dt);
       case ValueType.romanNumeralsTime:
-        return TimeUtils.romanNumeralsTime(hourFormat24, dt, showSeconds: timeValue.showSeconds);
+        String formattedValue = TimeUtils.romanNumeralsTime(
+            hourFormat24, dt, showSeconds: timeValue.showSeconds
+        );
+        formattedValue = alignRomanNumerals(formattedValue);
+        return formattedValue;
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
       case ValueType.sevenSegmentClock:
@@ -339,5 +343,25 @@ class TimeValueFormatter {
         .toSet();
     if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
     return null;
+  }
+
+  static String alignRomanNumerals(String formattedValue) {
+    final parts = formattedValue.split(':');
+    String hours = parts[0];    // max length 4 (12h) or 5 (24h)
+    String minutes = parts[1];  // max length 7 (38)
+    String seconds = parts[2];  // max length 7 (38)
+
+    minutes = switch(minutes.length) {
+      1 => ' ' * 3 + minutes + ' ' * 3,
+      2 => ' ' * 3 + minutes + ' ' * 2,
+      3 => ' ' * 2 + minutes + ' ' * 2,
+      4 => ' ' * 2 + minutes + ' ' * 1,
+      5 => ' ' * 1 + minutes + ' ' * 1,
+      6 => ' ' * 1 + minutes,
+      _ => minutes
+    };
+
+    formattedValue = [hours, minutes, seconds].join(':');
+    return formattedValue;
   }
 }
