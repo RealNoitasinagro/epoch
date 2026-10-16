@@ -171,13 +171,13 @@ class TimeUtils {
   static int unixTimestamp(DateTime utc) =>
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
-  /// TAI: UTC + leap seconds (currently 37).
+  /// TAI: UTC + 37 leap seconds.
   static int taiUnixTimestamp(DateTime utc) {
     return unixTimestamp(utc) + 10 + leapSecondsSince1972;
   }
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS time does not have leap seconds, currently 18s ahead of UTC.
+  /// GPS time does not have leap seconds, 18s ahead of UTC.
   static int gpsTime(DateTime utc) {
     final gpsEpoch = DateTime.utc(1980, 1, 6);
     return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSince1980;

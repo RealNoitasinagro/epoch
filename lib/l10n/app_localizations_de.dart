@@ -300,7 +300,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt aktuell 18 Sekunden vor UTC (2026-09).';
+      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt 18 Sekunden vor UTC.';
 
   @override
   String get infoTextHexadecimalTime =>
@@ -344,7 +344,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist 37 Sekunden vor UTC. Letztmalig wurde eine Schaltsekunde am 2016-12-31 um 23:59:60 UTC eingefügt.';
 
   @override
   String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';

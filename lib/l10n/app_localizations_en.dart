@@ -295,7 +295,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is currently 18 seconds ahead of UTC (2026-09).';
+      'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is 18 seconds ahead of UTC.';
 
   @override
   String get infoTextHexadecimalTime =>
@@ -339,7 +339,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.';
+      'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is 37 seconds ahead of UTC. The last, and final, leap second was added on 2016-12-31 at 23:59:60 UTC.';
 
   @override
   String get infoTextTime => 'The current time in the selected timezone.';
