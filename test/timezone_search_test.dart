@@ -22,21 +22,21 @@ void main() {
   const skip = false;
   const showDetails = false;
 
-  // test('matches() and matchReason() agree', () {
-  //   final queries = <String>{'UK', 'uk', 'CET', 'Berlin', 'utc', '+2', 'UTC+5:30'};
-  //   var i = 0;
-  //   for (final e in tzDatabase) {
-  //     for (final c in e.candidatesWithSource) {
-  //       if (i++ % 50 != 0) continue;
-  //       queries..add(c.term)..add(c.term.toUpperCase());
-  //     }
-  //   }
-  //   for (final q in queries) {
-  //     for (final e in tzDatabase) {
-  //       expect(e.matchReason(q) != null, e.matches(q), reason: '"$q" @ ${e.ianaZoneId}');
-  //     }
-  //   }
-  // });
+  test('matches() and matchReason() agree', () {
+    final queries = <String>{'UK', 'uk', 'CET', 'Berlin', 'utc', '+2', 'UTC+5:30'};
+    var i = 0;
+    for (final e in tzDatabase) {
+      for (final c in e.candidatesWithSource) {
+        if (i++ % 50 != 0) continue;
+        queries..add(c.term)..add(c.term.toUpperCase());
+      }
+    }
+    for (final q in queries) {
+      for (final e in tzDatabase) {
+        expect(e.matchReason(q) != null, e.matches(q), reason: '"$q" @ ${e.ianaZoneId}');
+      }
+    }
+  });
 
   group('IANA 2025c timezones canonical available', () {
     tzd.initializeTimeZones();
@@ -4635,18 +4635,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ALMT -- unused', () {
+    test('ALMT', () {
       var searchTerm = 'ALMT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
-    test('AMST -- unused', () {  // Amazon or Armenia, no more DST
+    test('AMST', () {  // Amazon or Armenia, no more DST
       var searchTerm = 'AMST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('AMT', () {
@@ -4656,11 +4656,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ANAST -- unused', () {
+    test('ANAST', () {
       var searchTerm = 'ANAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('ANAT', () {
@@ -4705,11 +4705,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('AWDT -- unused', () {
+    test('AWDT', () {
       var searchTerm = 'AWDT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('AWST', () {
@@ -4733,11 +4733,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('AZST -- unused', () {
+    test('AZST', () {
       var searchTerm = 'AZST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('AZT', () {
@@ -4761,11 +4761,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('BRST -- unused', () {
+    test('BRST', () {
       var searchTerm = 'BRST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('BRT', () {
@@ -4845,11 +4845,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('CHOST -- unused', () {
+    test('CHOST', () {
       var searchTerm = 'CHOST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('CHOT', () {
@@ -4873,11 +4873,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('CIDST -- unused', () {
+    test('CIDST -- unused', () {  // non-IANA?
       var searchTerm = 'CIDST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('CIST', () {
@@ -5041,11 +5041,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('FJST -- unused', () {
+    test('FJST', () {
       var searchTerm = 'FJST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('FJT', () {
@@ -5059,7 +5059,7 @@ void main() {
       var searchTerm = 'FKDT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, greaterThanOrEqualTo(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('FKST', () {  // Falkland Islands Standard Time (year-round DST!)
@@ -5069,11 +5069,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('FKT -- unused', () {  // used to be Falkland Islands Time
+    test('FKT', () {  // used to be Falkland Islands Time
       var searchTerm = 'FKT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('FNT', () {
@@ -5153,11 +5153,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('HOVST -- unused', () {
+    test('HOVST', () {
       var searchTerm = 'HOVST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('HOVT', () {
@@ -5195,18 +5195,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('IRDT -- unused', () {  // Iran Daylight Time
+    test('IRDT', () {  // Iran Daylight Time
       var searchTerm = 'IRDT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
-    test('IRKST -- unused', () {
+    test('IRKST', () {
       var searchTerm = 'IRKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('IRKT', () {
@@ -5227,7 +5227,7 @@ void main() {
       var searchTerm = 'IST';  // This should not match Istanbul.
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(3));
+      expect(loc.length, greaterThanOrEqualTo(3));
       expect(loc.any((tzE) => tzE.ianaZoneId == 'Asia/Jerusalem'), isTrue); // israel standard time
       expect(loc.any((tzE) => tzE.ianaZoneId == 'Asia/Kolkata'), isTrue);   // india standard time
       expect(loc.any((tzE) => tzE.ianaZoneId == 'Europe/Dublin'), isTrue);  // irish standard time
@@ -5261,11 +5261,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('KRAST -- unused', () {
+    test('KRAST', () {
       var searchTerm = 'KRAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('KRAT', () {
@@ -5282,11 +5282,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('KUYT -- unused', () {
+    test('KUYT', () {
       var searchTerm = 'KUYT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('LHDT', () {
@@ -5310,11 +5310,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('MAGST -- unused', () {
+    test('MAGST', () {
       var searchTerm = 'MAGST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('MAGT', () {
@@ -5359,11 +5359,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('MSD -- unused', () {
+    test('MSD', () {
       var searchTerm = 'MSD';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('MSK', () {
@@ -5436,18 +5436,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('NOVST -- unused', () {
+    test('NOVST', () {
       var searchTerm = 'NOVST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
-    test('NOVT -- unused', () {
+    test('NOVT', () {
       var searchTerm = 'NOVT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('NPT', () {
@@ -5492,11 +5492,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('OMSST -- unused', () {
+    test('OMSST', () {
       var searchTerm = 'OMSST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('OMST', () {
@@ -5527,11 +5527,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('PETST -- unused', () {
+    test('PETST', () {
       var searchTerm = 'PETST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('PETT', () {
@@ -5681,11 +5681,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('SRET -- unused', () {
+    test('SRET', () {
       var searchTerm = 'SRET';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('SRT', () {
@@ -5751,11 +5751,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('TOST -- unused', () {
+    test('TOST', () {
       var searchTerm = 'TOST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('TOT', () {
@@ -5779,11 +5779,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('ULAST -- unused', () {
+    test('ULAST', () {
       var searchTerm = 'ULAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('ULAT', () {
@@ -5800,11 +5800,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('UYST -- unused', () {
+    test('UYST', () {
       var searchTerm = 'UYST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('UYT', () {
@@ -5828,11 +5828,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('VLAST -- unused', () {
+    test('VLAST', () {
       var searchTerm = 'VLAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('VLAT', () {
@@ -5863,18 +5863,18 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('WARST -- unused', () {
+    test('WARST', () {
       var searchTerm = 'WARST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
-    test('WAST -- unused', () {
+    test('WAST', () {
       var searchTerm = 'WAST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('WAT', () {
@@ -5940,25 +5940,25 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('WST -- unused', () {
+    test('WST', () {
       var searchTerm = 'WST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
-    test('WT', () {
+    test('WT', () {  // non-IANA?
       var searchTerm = 'WT';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
       expect(loc.length, greaterThan(0));
     });
 
-    test('YAKST -- unused', () {
+    test('YAKST', () {
       var searchTerm = 'YAKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('YAKT', () {
@@ -5975,11 +5975,11 @@ void main() {
       expect(loc.length, greaterThan(0));
     });
 
-    test('YEKST -- unused', () {
+    test('YEKST', () {
       var searchTerm = 'YEKST';
       var loc = tzDatabase.where( (e) => e.matches(searchTerm) ).toList();
       _printDetails(searchTerm, loc, showDetails);
-      expect(loc.length, equals(0));
+      expect(loc.length, greaterThan(0));
     });
 
     test('YEKT', () {

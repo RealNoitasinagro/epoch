@@ -2,6 +2,7 @@
 //   dart run tools/explain_tz_search.dart "Korea Time"
 //   dart run tools/explain_tz_search.dart --file names_failing.txt | grep TZ-MISS
 //   dart run tools/explain_tz_search.dart --zone Asia/Brunei | grep -i brunei
+//   dart run tools/explain_tz_search.dart --transitions Africa/El_Aaiun
 //   dart run tools/explain_tz_search.dart --redundant
 import 'dart:io';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
@@ -9,6 +10,7 @@ import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:epoch/models/zone_rules.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
+import 'package:timezone/timezone.dart' as tz;
 
 /// Hand-maintained sources. Keep in sync with the labels used in
 /// TzEntry.candidatesWithSource.
@@ -108,6 +110,21 @@ void dumpZone(String zoneId) {
   }
 }
 
+void dumpTransitions(String zoneId) {
+  final location = tz.getLocation(ianaLinksSnapshot[zoneId] ?? zoneId);
+  final nowMs = DateTime.now().toUtc().millisecondsSinceEpoch;
+  var shown = 0;
+  for (final t in location.transitionAt) {
+    if (t <= nowMs) continue;
+    final s = tz.TZDateTime.from(
+        DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true), location);
+    print('TZ-TRANS zone=$zoneId at=${s.toIso8601String()} '
+        'abbr=${s.timeZone.abbreviation} '
+        'offset=${formatUtcOffset(s.timeZone.offset)} isDst=${s.timeZone.isDst}');
+    if (++shown == 6) break;
+  }
+}
+
 /// Manual entries whose (normalized) term is also produced by a generated
 /// source -- candidates for deletion.
 void listRedundant() {
@@ -138,13 +155,15 @@ void listRedundant() {
 void main(List<String> args) {
   tzd.initializeTimeZones();
   if (args.isEmpty ||
-      (['--zone', '--file'].contains(args.first) && args.length < 2)) {
+      (['--zone', '--transitions', '--file'].contains(args.first) && args.length < 2)) {
     stderr.writeln('usage: see header comment');
     exit(64);
   }
   switch (args.first) {
     case '--zone':
       dumpZone(args[1]);
+    case '--transitions':
+      dumpTransitions(args[1]);
     case '--redundant':
       listRedundant();
     case '--file':
