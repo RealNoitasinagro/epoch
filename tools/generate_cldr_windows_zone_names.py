@@ -11,6 +11,7 @@ Writes:
 
 Usage:
   python3 tools/generate_cldr_windows_zone_names.py
+  python3 tools/generate_cldr_windows_zone_names.py --cldr-json-dir /other/path
 """
 
 import argparse

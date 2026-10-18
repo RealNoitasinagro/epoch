@@ -3,7 +3,7 @@
 // query, not part of the routine IANA/CLDR regeneration
 // cycle (capitals essentially never change).
 // Regenerate with: python3 tools/generate_wikidata_capitals.py
-// Last generated: 2026-10-02
+// Last generated: 2026-10-18
 
 // National capital city name(s) by ISO 3166-1 alpha-2 code.
 // A list, not a single value: some countries have more than
@@ -155,7 +155,7 @@ const Map<String, List<String>> wikidataCapitalsDe = {
   'MP': ['Saipan'],
   'MQ': ['Fort-de-France'],
   'MR': ['Nouakchott'],
-  'MS': ['Plymouth', 'Brades'],
+  'MS': ['Brades', 'Plymouth'],
   'MT': ['Valletta'],
   'MU': ['Port Louis'],
   'MV': ['Malé'],
@@ -180,7 +180,7 @@ const Map<String, List<String>> wikidataCapitalsDe = {
   'PF': ['Papeete'],
   'PG': ['Port Moresby'],
   'PH': ['Manila'],
-  'PK': ['Islamabad', 'Rawalpindi'],
+  'PK': ['Islamabad'],
   'PL': ['Warschau'],
   'PM': ['Saint-Pierre'],
   'PN': ['Adamstown'],

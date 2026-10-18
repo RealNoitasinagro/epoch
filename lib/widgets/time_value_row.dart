@@ -6,7 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
-import '../models/timezone_abbr_localization.dart';
+import '../models/timezone_abbreviation_localization.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';

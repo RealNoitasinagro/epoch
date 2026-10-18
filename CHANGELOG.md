@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Changed
+- time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
+name, abbreviation or offset, in English and German
+- offsets, abbreviations and clock changes are derived from the time zone data
+
+### Fixed
+
 ---
 
 ## [1.5.1] - 2026-09-19

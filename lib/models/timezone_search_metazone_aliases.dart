@@ -29,11 +29,6 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['West Samoa Time'],
     daylight: null
   ),
-  // 'Arabian': (
-  //   generic: ['Arabia Time', 'Arabic Time', 'Arab Time'],
-  //   standard: ['Arabia Standard Time', 'Arabic Standard Time', 'Arab Standard Time', 'Al Manamah Standard Time'],
-  //   daylight: ['Arabia Daylight Time', 'Arabic Daylight Time', 'Arab daylight Time']
-  // ),
   'Arabian': (
     generic: ['Arabia Time', 'Arabic Time', 'Arab Time'],
     standard: ['Al Manamah Standard Time'],
@@ -49,11 +44,6 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['Brazilian Time',],
     daylight: null,
   ),
-  // 'Europe_Central':  (  // CET/CEST
-  //   generic: ['Central Europe Time', 'European Central Time', 'European Middle Time', 'Europe Central Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time', 'MET',],
-  //   standard: ['Central Europe Standard Time', 'European Central Standard Time', 'European Middle Standard Time', 'Europe Central Standard Time', 'Europe Middle Standard Time', 'Middle European Standard Time', 'Middle Europe Standard Time',],
-  //   daylight: ['Central European Daylight Time', 'Central Europe Daylight Time', 'European Central Daylight Time', 'European Middle Daylight Time', 'Europe Central Daylight Time', 'Europe Middle Daylight Time', 'Middle European Daylight Time', 'Middle Europe Daylight Time', 'CEDT', 'MEST']
-  // ),
   'Europe_Central':  (  // CET/CEST
     generic: ['Central Europe Time', 'European Central Time', 'Europe Central Time', 'European Middle Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time'],
     standard: [],
