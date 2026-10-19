@@ -159,18 +159,18 @@ class TimeValue implements TabEntry {
     return TimeValue(
       valueType: valueType,
       zone: zone,
-      customLabel: labelPart,
+      customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
       timezoneClockChangeMode: timezoneClockChangeMode,
       showSeconds: showSeconds,
     );
   }
 
   // Returns a copy with a different custom label (null to clear).
-  TimeValue withCustomLabel(String? label) =>
+  TimeValue withCustomLabel(String? customLabel) =>
       TimeValue(
         valueType: valueType,
         zone: zone,
-        customLabel: label
+        customLabel: customLabel
       );
 
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>

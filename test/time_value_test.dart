@@ -46,6 +46,12 @@ void main() {
     test('invalid string returns null', () {
       expect(TimeValue.fromPrefsString('garbage'), isNull);
     });
+
+    test('empty label slot (||) means no custom label', () {
+      final tv = TimeValue.fromPrefsString('time/named:Europe/Kiev||dst:forceStandard')!;
+      expect(tv.customLabel, isNull);
+      expect(tv.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+    });
   });
 
   group('TimeValue.isZoneIndependent', () {

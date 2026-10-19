@@ -97,13 +97,26 @@ class TimeUtils {
       final afterUtcMs = afterUtc.millisecondsSinceEpoch;
       final result = <DateTime>[];
       for (final t in loc.transitionAt) {
-        if (t > afterUtcMs) {
-          result.add(DateTime.fromMillisecondsSinceEpoch(t, isUtc: true));
-          if (result.length >= count) break;
-        }
+        if (t <= afterUtcMs) continue;
+        final at = DateTime.fromMillisecondsSinceEpoch(t, isUtc: true);
+        if (!_changesClock(loc, at)) continue;
+        result.add(at);
+        if (result.length >= count) break;
       }
       return result;
     } catch (_) { return []; }
+  }
+
+
+  /// The package data ends with a pseudo-transition (2038-01-19 03:14:08 UTC)
+  /// into the very same state; real changes alter offset, DST flag or abbreviation.
+  static bool _changesClock(tz.Location loc, DateTime transitionUtc) {
+    final before = tz.TZDateTime.from(
+        transitionUtc.subtract(const Duration(seconds: 1)), loc).timeZone;
+    final after = tz.TZDateTime.from(transitionUtc, loc).timeZone;
+    return before.offset != after.offset ||
+        before.isDst != after.isDst ||
+        before.abbreviation != after.abbreviation;
   }
 
   /// Returns the timezone abbreviations immediately before and after
