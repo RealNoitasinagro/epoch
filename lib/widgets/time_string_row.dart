@@ -231,7 +231,7 @@ class TimeStringRow extends TimeValueRow {
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
+      showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,

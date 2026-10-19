@@ -186,6 +186,20 @@ class TimeValue implements TabEntry {
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
 
+  TimezoneClockChangeMode effectiveClockChangeMode(
+      DateTime nowUtc, String localIanaZone) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
+      return TimezoneClockChangeMode.auto;
+    }
+    final ianaZone = TimeUtils.resolveIanaZone(this, localIanaZone);
+    final hasDst = ianaZone != null &&
+        TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
+    return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;
+  }
+
+  bool isPinned(DateTime nowUtc, String localIanaZone) =>
+      effectiveClockChangeMode(nowUtc, localIanaZone) != TimezoneClockChangeMode.auto;
+
   // Returns whether DST is currently active for this value's zone,
   // or null if the zone has no DST or is zone-independent.
   // Used to show a summer/winter time indicator icon.
@@ -202,11 +216,10 @@ class TimeValue implements TabEntry {
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceDst) {
-      return kIconDstActive;
-    }
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceStandard) {
-      return kIconDstInactive;
+    switch (effectiveClockChangeMode(nowUtc, localIanaZone)) {
+      case TimezoneClockChangeMode.forceDst: return kIconDstActive;
+      case TimezoneClockChangeMode.forceStandard: return kIconDstInactive;
+      case TimezoneClockChangeMode.auto: break;
     }
     // auto: determine actual current DST status:
     return switch (isDstCurrentlyActive(nowUtc, localIanaZone)) {

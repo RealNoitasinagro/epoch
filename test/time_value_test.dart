@@ -71,6 +71,12 @@ void main() {
       const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       expect(e.isZoneIndependent, isFalse);
     });
+
+    test('zones without clock change are treated as unpinned', () {
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Asia/Tokyo'),
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard);
+      expect(e.isPinned(DateTime.utc(2026), 'UTC'), isFalse);
+    });
   });
 
   group('TimeValueFormatter.hoursToHms', () {
