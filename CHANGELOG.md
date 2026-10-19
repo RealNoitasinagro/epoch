@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- LMST was still shown after deactivation if the app was closed before leaving Settings
+
 ---
 
 ## [1.5.2] - 2026-10-12
