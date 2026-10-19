@@ -29,12 +29,8 @@ class TimeUtils {
   static String tzAbbr(tz.TZDateTime dt) => dt.timeZone.abbreviation;
 
   /// UTC offset as a formatted string, e. g. "UTC+02:00".
-  static String utcOffsetString(Duration offset) {
-    final sign = offset.isNegative ? '−' : '+';
-    final hh = offset.inHours.abs().toString().padLeft(2, '0');
-    final mm = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
-    return 'UTC$sign$hh:$mm';
-  }
+  static String utcOffsetString(Duration offset) =>
+      formatUtcOffset(offset, withUtcPrefix: true, typographicMinus: true);
 
   /// Returns true/false for a given time zone independently of current date.
   static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>

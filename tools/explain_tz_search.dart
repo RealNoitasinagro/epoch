@@ -6,8 +6,9 @@
 //   dart run tools/explain_tz_search.dart --redundant
 import 'dart:io';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
-import 'package:epoch/models/timezone_search.dart';
+import 'package:epoch/models/timezone_search_normalize.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
+import 'package:epoch/models/tz_entry.dart';
 import 'package:epoch/models/zone_rules.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
@@ -23,7 +24,6 @@ bool isManual(String source) =>
     manualSources.contains(source.replaceAll('~', ''));
 
 bool isRule(String s) => s.startsWith('rule:') || s.endsWith('~');
-
 
 /// Accepts canonical ids and link ids (Asia/Brunei -> Asia/Kuching).
 TzEntry? findEntry(String zoneId) {
@@ -73,7 +73,7 @@ TzEntry? findEntry(String zoneId) {
 void explainQuery(String query) {
   var count = 0;
   for (final entry in tzDatabase) {
-    final reason = entry.matchReason(query);
+    final reason = entry.match(query);
     if (reason == null) continue;
     count++;
     final line = StringBuffer('TZ-MATCH q="$query" zone=${entry.ianaZoneId}');

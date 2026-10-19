@@ -26,11 +26,12 @@ class ZoneRules {
 }
 
 /// "+05:30" / "-07:00" (ASCII sign, as users type it).
-String formatUtcOffset(Duration offset) {
-  final sign = offset.isNegative ? '-' : '+';
+String formatUtcOffset(Duration offset,
+    {bool withUtcPrefix = false, bool typographicMinus = false}) {
+  final sign = offset.isNegative ? (typographicMinus ? '\u2212' : '-') : '+';
   final hh = offset.inHours.abs().toString().padLeft(2, '0');
   final mm = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
-  return '$sign$hh:$mm';
+  return '${withUtcPrefix ? 'UTC' : ''}$sign$hh:$mm';
 }
 
 const _lookaheadDays = 400;

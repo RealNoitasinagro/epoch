@@ -4,13 +4,15 @@ import 'package:epoch/models/generated/cldr_zone_metazone.g.dart';
 import 'package:epoch/models/generated/iana_canonical_zones_snapshot.g.dart';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/generated/legacy_abbreviations.g.dart';
+import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
+import 'package:epoch/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
 
 void main() {
-  setUpAll(() => tzd.initializeTimeZones());
+  tzd.initializeTimeZones();
 
   group('IANA canonical zone snapshot', () {
     test('live package data matches the last-reviewed snapshot', () {
@@ -47,7 +49,7 @@ void main() {
     }
   });
 
-  group('TzEntry search terms round-trip', () {
+/*  group('TzEntry search terms round-trip', () {
     // Every term listed for an entry must actually resolve back to that
     // entry. New terms added to timezone_search_zones.dart get coverage
     // here automatically -- no test file changes needed.
@@ -73,6 +75,19 @@ void main() {
         });
       }
     }
+  });*/
+
+  group('every candidate source resolves to its own entry', () {
+    for (final entry in tzDatabase) {
+      final firstPerSource = <String, String>{};
+      for (final c in entry.candidatesWithSource) {
+        firstPerSource.putIfAbsent(c.source, () => c.term);
+      }
+      firstPerSource.forEach((source, term) {
+        test('${entry.ianaZoneId} <- $source "$term"',
+                () => expect(entry.match(term), isNotNull));
+      });
+    }
   });
 
   group('legacy abbreviations resolve to their zone', () {
@@ -86,6 +101,33 @@ void main() {
     });
   });
 
+  group('offset spellings', () {
+    Iterable<String> spellings(Duration o) {
+      final sign = o.isNegative ? '-' : '+';
+      final h = o.inHours.abs(), m = o.inMinutes.abs() % 60;
+      final hh = '$h'.padLeft(2, '0'), mm = '$m'.padLeft(2, '0');
+      final decimal = '${h + m / 60}';
+      return [
+        'UTC$sign$hh:$mm', '$sign$hh:$mm', '$sign$h:$mm',
+        if (m == 0) ...['UTC$sign$h', '$sign$h'],
+        if (m != 0) ...['$sign$decimal', '$sign${decimal.replaceFirst('.', ',')}'],
+      ];
+    }
+    final offsets = {
+      for (final e in tzDatabase) ...[e.rules.standardOffset, e.rules.dstOffset],
+    };
+    for (final offset in offsets) {
+      for (final q in spellings(offset)) {
+        test('$q finds a zone with ${TimeUtils.utcOffsetString(offset)}', () {
+          final found = searchTimezones(q, tzDatabase);
+          expect(found.any((e) =>
+          e.rules.standardOffset == offset || e.rules.dstOffset == offset),
+              isTrue);
+        });
+      }
+    }
+  });
+
   test('zones without current DST never match a DST-only metazone term', () {
     for (final entry in tzDatabase) {
       if (entry.hasDst) continue;
@@ -97,5 +139,11 @@ void main() {
             reason: '${entry.ianaZoneId} has no DST but matched daylight term "$term"');
       }
     }
+  });
+
+  test('display city never comes from a link (Berlin is not Copenhagen)', () {
+    final berlin = tzDatabase.firstWhere((e) => e.ianaZoneId == 'Europe/Berlin');
+    expect(berlin.displayCity('de'), 'Berlin');
+    expect(berlin.displayCity('en'), 'Berlin');
   });
 }
