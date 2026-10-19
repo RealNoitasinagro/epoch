@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
+import 'generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
 import 'zone_rules.dart';
 
@@ -60,6 +61,12 @@ class ZoneNamed extends ZoneSpec {
   const ZoneNamed(this.ianaZone);
 }
 
+ZoneSpec canonicalZoneSpec(ZoneSpec zone) {
+  if (zone is! ZoneNamed) return zone;
+  final canonical = ianaLinksSnapshot[zone.ianaZone] ?? zone.ianaZone;
+  return canonical == 'Etc/UTC' ? const ZoneUtc() : zone;
+}
+
 // A single displayable entry: type + zone + optional custom label.
 class TimeValue implements TabEntry {
   final ValueType valueType;
@@ -75,14 +82,6 @@ class TimeValue implements TabEntry {
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showSeconds = true,
   });
-
-  TimeValue withShowSeconds(bool value) => TimeValue(
-    valueType: valueType,
-    zone: zone,
-    customLabel: customLabel,
-    timezoneClockChangeMode: timezoneClockChangeMode,
-    showSeconds: value,
-  );
 
   // Unique key for deduplication within a tab.
   // Custom label does not affect the key.
@@ -165,21 +164,24 @@ class TimeValue implements TabEntry {
     );
   }
 
-  // Returns a copy with a different custom label (null to clear).
-  TimeValue withCustomLabel(String? customLabel) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: customLabel
-      );
+  TimeValue copyWith({
+    String? customLabel,
+    bool clearCustomLabel = false,
+    TimezoneClockChangeMode? timezoneClockChangeMode,
+    bool? showSeconds,
+  }) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
+    timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
+    showSeconds: showSeconds ?? this.showSeconds,
+  );
 
+  TimeValue withCustomLabel(String? label) =>
+      copyWith(customLabel: label, clearCustomLabel: label == null);
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: customLabel,
-        timezoneClockChangeMode: mode,
-      );
+      copyWith(timezoneClockChangeMode: mode);
+  TimeValue withShowSeconds(bool value) => copyWith(showSeconds: value);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;

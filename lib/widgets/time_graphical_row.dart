@@ -65,8 +65,7 @@ class TimeGraphicalRow extends TimeValueRow {
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
         ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
         : null;
 

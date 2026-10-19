@@ -52,6 +52,13 @@ void main() {
       expect(tv.customLabel, isNull);
       expect(tv.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
     });
+
+    test('UTC aliases collapse to ZoneUtc, everything else stays', () {
+      expect(canonicalZoneSpec(const ZoneNamed('Etc/UTC')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Zulu')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Europe/Berlin')), isA<ZoneNamed>());
+      expect(canonicalZoneSpec(const ZoneLocal()), isA<ZoneLocal>());
+    });
   });
 
   group('TimeValue.isZoneIndependent', () {
