@@ -358,10 +358,12 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> _loadData() async {
     final result = await loadOrSeedAllTabs();
     final activeTab = await loadActiveTab();
+    if (!mounted) return;
     setState(() {
       _tabs   = result.tabs;
       _loaded = true;
     });
+    if (EpochApp.of(context).lmstMode == LmstMode.off) _removeLmstFromAllTabs();
     _updateTabController(initialIndex: activeTab);
   }
 
