@@ -1,5 +1,5 @@
 import 'generated/iana_canonical_zones_snapshot.g.dart';
-import 'timezone_search.dart';
+import 'tz_entry.dart';
 
 const Map<String, List<String>> manualTerms = {
   // names

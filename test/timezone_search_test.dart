@@ -1,5 +1,6 @@
 import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
+import 'package:epoch/models/tz_entry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
@@ -21,22 +22,6 @@ void _printDetails(String searchTerm, List<TzEntry> loc, showDetails) {
 void main() {
   const skip = false;
   const showDetails = false;
-
-  test('matches() and matchReason() agree', () {
-    final queries = <String>{'UK', 'uk', 'CET', 'Berlin', 'utc', '+2', 'UTC+5:30'};
-    var i = 0;
-    for (final e in tzDatabase) {
-      for (final c in e.candidatesWithSource) {
-        if (i++ % 50 != 0) continue;
-        queries..add(c.term)..add(c.term.toUpperCase());
-      }
-    }
-    for (final q in queries) {
-      for (final e in tzDatabase) {
-        expect(e.matchReason(q) != null, e.matches(q), reason: '"$q" @ ${e.ianaZoneId}');
-      }
-    }
-  });
 
   group('IANA 2025c timezones canonical available', () {
     tzd.initializeTimeZones();

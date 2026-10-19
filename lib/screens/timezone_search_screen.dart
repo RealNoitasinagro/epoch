@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
+import '../models/app_settings.dart';
 import '../models/timezone_search.dart';
 import '../models/timezone_search_zones.dart';
+import '../models/tz_entry.dart';
+import '../time_utils.dart';
+import '../time_value_formatter.dart';
 
 // Full-screen timezone search, returns selected IANA zone string or null.
 class TimezoneSearchScreen extends StatefulWidget {
@@ -79,12 +84,16 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
         itemCount: _results.length,
         itemBuilder: (context, index) {
           final entry = _results[index];
+          final locale = Localizations.localeOf(context).languageCode;
+          final app = EpochApp.of(context);
+          final local = TimeUtils.inZone(DateTime.now().toUtc(), entry.ianaZoneId);
+          final time = TimeValueFormatter.formatTime(
+              app.hourFormat24, local.hour, local.minute, 0,
+              pattern: kTimePatternNoSeconds);
           return ListTile(
-            title: Text(entry.cityName),
-            subtitle: Text(
-              '${entry.ianaZoneId}  ·  ${entry.offsetLabel}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            title: Text(entry.displayTitle(locale)),
+            subtitle: Text('${entry.ianaZoneId}  ·  $time  ·  ${entry.offsetLabel}',
+                style: Theme.of(context).textTheme.bodySmall),
             onTap: () => Navigator.pop(context, entry.ianaZoneId),
           );
         },
