@@ -340,7 +340,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextRomanNumeralsTime =>
-      'Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für \'nicht etwas\' oder \'nichts\') wird für die Darstellung von Nullen verwendet.';
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für \'nicht etwas\' oder \'nichts\'), wird für die Darstellung von Nullen verwendet.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -743,7 +743,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get valueTypeReducedJulianDate => 'Reduziertes Julianisches Datum';
 
   @override
-  String get valueTypeRomanNumeralsTime => 'Römische-Zahlen-Zeiit';
+  String get valueTypeRomanNumeralsTime => 'Römische-Zahlen-Zeit';
 
   @override
   String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';

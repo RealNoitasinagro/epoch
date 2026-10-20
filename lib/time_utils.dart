@@ -10,6 +10,7 @@ import 'time_value_formatter.dart';
 class TimeUtils {
   static const leapSecondsSince1972 = 27;
   static const leapSecondsSince1980 = leapSecondsSince1972 - 9;
+  static const CommonRomanNumeralsConfig _romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
 
   static int dayOfYear(DateTime dt) => dt.ordinalDate;
 
@@ -348,18 +349,23 @@ class TimeUtils {
     return buffer.toString();
   }
 
-  /// Roman numerals time: time shown in Roman numerals.
-  static String romanNumeralsTime(bool hourFormat24, DateTime dt, {bool showSeconds = true}) {
-    RomanNumerals.romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
-    int hh = dt.hour; int mm = dt.minute; int ss = dt.second;
-    final int displayHour = !hourFormat24
-        ? (dt.hour % 12 == 0 ? 12 : dt.hour % 12)
-        : dt.hour;
-    final String period = !hourFormat24 ? (hh < 12 ? ' AM' : ' PM') : '';
-    String rhh = displayHour.toRomanNumeralString() ?? '--';
-    String rmm = mm.toRomanNumeralString() ?? '--';
-    String rss = ss.toRomanNumeralString() ?? '--';
-    return !showSeconds ? '$rhh:$rmm$period' : '$rhh:$rmm:$rss$period';
+  /// Roman numerals time: time shown in Roman numerals. N for zeros.
+  static String romanNumeralsTime(bool hourFormat24, DateTime dt,
+      {bool showSeconds = true}) {
+    final displayHour = hourFormat24
+        ? dt.hour
+        : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
+    final period = hourFormat24 ? '' : (dt.hour < 12 ? ' AM' : ' PM');
+    final fields = [displayHour, dt.minute, if (showSeconds) dt.second]
+        .map((value) => _centered(value.toRomanNumeralString(config: _romanNumeralsConfig) ?? '--'));
+    return '${fields.join(':')}$period';
+  }
+
+  // Fixed width (longest numeral: XXXVIII = 7), centered; extra space goes left.
+  static String _centered(String text, {int width = 7}) {
+    final padding = width - text.length;
+    if (padding <= 0) return text;
+    return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
   }
 
   /// Returns the current Doomsday Clock time.
