@@ -137,6 +137,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
 
   @override
+  String hintMatchAlsoCity(String name) {
+    return 'Same time zone as $name';
+  }
+
+  @override
+  String hintMatchAlsoCountry(String name) {
+    return 'Time zone also used in $name';
+  }
+
+  @override
   String get hintPinnedIndicator => 'Automatic clock change disabled';
 
   @override

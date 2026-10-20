@@ -142,6 +142,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gedrückt halten für zwei Zeilen';
 
   @override
+  String hintMatchAlsoCity(String name) {
+    return 'Gleiche Zeitzone wie $name';
+  }
+
+  @override
+  String hintMatchAlsoCountry(String name) {
+    return 'Zeitzone gilt auch in $name';
+  }
+
+  @override
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override

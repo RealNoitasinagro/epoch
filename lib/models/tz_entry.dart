@@ -1,4 +1,3 @@
-import '../time_utils.dart';
 import 'generated/cldr_country_names_de.g.dart';
 import 'generated/cldr_country_names_en.g.dart';
 import 'generated/cldr_exemplar_cities_de.g.dart';
@@ -17,28 +16,25 @@ import 'generated/wikidata_capitals_de.g.dart';
 import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
 import 'timezone_abbreviation_localization.dart';
-import 'timezone_search.dart';
 import 'timezone_search_country_aliases.dart';
 import 'timezone_search_major_cities.dart';
 import 'timezone_search_metazone_aliases.dart';
 import 'timezone_search_normalize.dart';
 import 'zone_rules.dart';
 
-/// Resolves `lookup[ianaZoneId]`, falling back to any entry keyed by a
-/// deprecated/link identifier that currently resolves to this zone.
-/// CLDR data sometimes still uses an identifier IANA has since renamed
-/// (e.g. "Asia/Katmandu" instead of today's canonical "Asia/Kathmandu").
-T? _resolveViaLinks<T>(Map<String, T> lookup, String ianaZoneId) {
-  final direct = lookup[ianaZoneId];
-  if (direct != null) return direct;
-  for (final entry in ianaLinksSnapshot.entries) {
-    if (entry.value == ianaZoneId) {
-      final viaLink = lookup[entry.key];
-      if (viaLink != null) return viaLink;
-    }
-  }
-  return null;
+typedef TzMatch = ({String rule, String source, String term});
+
+extension TzMatchRank on TzMatch {
+  int get rank => rule == 'zoneId' ? 0 : switch (source) {
+    'cldr_exemplar_cities' || 'iana_links' => 1,
+    'wikidata_capitals' || 'major_cities' => 2,
+    'iso3166_names_EN' || 'cldr_country_names_EN' || 'country_names_DE' ||
+    'country_aliases_EN' || 'country_aliases_DE' => 3,
+    _ => 4,
+  };
 }
+
+typedef NormalizedCandidate = ({String source, String term, String normalized});
 
 /// Built once: legacy abbreviations of a zone and of every link pointing at it.
 final Map<String, Set<String>> _legacyAbbreviationsByCanonical = () {
@@ -52,6 +48,21 @@ final Map<String, Set<String>> _legacyAbbreviationsByCanonical = () {
 class TzEntry {
   const TzEntry({required this.ianaZoneId, this.terms = const []});
 
+  static final Expando<({String day, List<NormalizedCandidate> items})> _candidateCache = Expando();
+
+  List<NormalizedCandidate> get normalizedCandidates {
+    // hasDst (and thus the daylight names) can change with the date.
+    final today = DateTime.now().toUtc().toIso8601String().substring(0, 10);
+    final cached = _candidateCache[this];
+    if (cached != null && cached.day == today) return cached.items;
+    final items = [
+      for (final c in candidatesWithSource)
+        (source: c.source, term: c.term, normalized: normalize(c.term)),
+    ];
+    _candidateCache[this] = (day: today, items: items);
+    return items;
+  }
+
   final String ianaZoneId;
   final List<String> terms; // hand-curated rare cases only
 
@@ -60,8 +71,8 @@ class TzEntry {
           (throw StateError('No zone data for $ianaZoneId -- initializeTimeZones() first'));
 
   bool get hasDst => rules.hasDst;
-  String get offsetWinter => TimeUtils.utcOffsetString(rules.standardOffset);
-  String get offsetSummer => TimeUtils.utcOffsetString(rules.dstOffset);
+  String get offsetWinter => formatUtcOffset(rules.standardOffset);
+  String get offsetSummer => formatUtcOffset(rules.dstOffset);
   String get abbrWinter => rules.standardAbbr;
   String get abbrSummer => rules.dstAbbr;
 
@@ -75,20 +86,44 @@ class TzEntry {
   String get cityName =>
       ianaZoneId.split('/').last.replaceAll('_', ' ');
 
+  Iterable<String> get ownCountryNames {
+    if (_countryCodes.isEmpty) return const [];
+    final c = _countryCodes.first;
+    return [?countryNamesEn[c], ?cldrCountryNamesEn[c], ?cldrCountryNamesDe[c],
+      ...?countryNameAliasesEn[c], ...?countryNameAliasesDe[c]];
+  }
+
+  /// Resolves `lookup[ianaZoneId]`, falling back to any entry keyed by a
+  /// deprecated/link identifier that currently resolves to this zone.
+  /// CLDR data sometimes still uses an identifier IANA has since renamed
+  /// (e.g. "Asia/Katmandu" instead of today's canonical "Asia/Kathmandu").
+  T? _resolveViaLinks<T>(Map<String, T> lookup, String ianaZoneId) {
+    final direct = lookup[ianaZoneId];
+    if (direct != null) return direct;
+    for (final entry in ianaLinksSnapshot.entries) {
+      if (entry.value == ianaZoneId) {
+        final viaLink = lookup[entry.key];
+        if (viaLink != null) return viaLink;
+      }
+    }
+    return null;
+  }
+
+  String? displayCountry(String locale) {
+    if (_countryCodes.isEmpty) return null;
+    final c = _countryCodes.first;     // zone1970.tab: the location's own country first
+    return locale.startsWith('de')
+        ? cldrCountryNamesDe[c] : (cldrCountryNamesEn[c] ?? countryNamesEn[c]);
+  }
+
+  String displayTitle(String locale) {
+    final country = displayCountry(locale);
+    return country == null ? displayCity(locale) : '${displayCity(locale)} ($country)';
+  }
+
   String displayCity(String locale) =>
       (locale.startsWith('de') ? cldrCityNamesDe : cldrCityNamesEn)[ianaZoneId] ??
           cityName;
-
-  String displayTitle(String locale) {
-    final codes = zoneCountryCodes[ianaZoneId];
-    if (codes == null || codes.isEmpty) return displayCity(locale);
-    final code = codes.first;
-    final name = locale.startsWith('de')
-        ? cldrCountryNamesDe[code]
-        : (cldrCountryNamesEn[code] ?? countryNamesEn[code]);
-    final more = codes.length > 1 ? ' +${codes.length - 1}' : '';
-    return '${displayCity(locale)} (${name ?? code}, $code$more)';
-  }
 
   /// City-style names derived from deprecated/alias IANA identifiers
   /// (Links) that point at this zone, e.g. "Africa/Accra" -> "Accra"
@@ -144,20 +179,11 @@ class TzEntry {
 
   /// English and German country names for the countries assigned to this
   /// zone (potentially more than pne per county, e.g. South Africa).
-  // Iterable<String> get capitalNames {
-  //   final codes = zoneCountryCodes[ianaZoneId] ?? const [];
-  //   return codes.expand((code) => [
-  //     ...?wikidataCapitalsEn[code],
-  //     ...?wikidataCapitalsDe[code],
-  //   ]);
-  // }
-
   Iterable<String> get capitalNames =>
       _countryCodes.expand((code) => [
         ...?wikidataCapitalsEn[code],
         ...?wikidataCapitalsDe[code],
       ]);
-
 
   /// Megacities for this zone (EN + DE), where available -- and not part of the
   /// zone identifier.
@@ -250,9 +276,9 @@ class TzEntry {
 
   Iterable<({String source, String term})> get candidatesWithSource => [
     for (final t in linkCityNames) (source: 'iana_links', term: t),
-    // for (final t in _countryNamesIsoEn) (source: 'iso3166_names_EN', term: t),
-    // for (final t in _countryNamesCldrEn) (source: 'cldr_country_names_EN', term: t),
-    for (final t in _countryNamesGeneratedEn) (source: 'country_names_DE', term: t),
+    for (final t in _countryNamesIsoEn) (source: 'iso3166_names_EN', term: t),
+    for (final t in _countryNamesCldrEn) (source: 'cldr_country_names_EN', term: t),
+    // for (final t in _countryNamesGeneratedEn) (source: 'country_names_DE', term: t),
     for (final t in _countryNamesGeneratedDe) (source: 'country_names_DE', term: t),
     for (final t in _countryAliasesEn) (source: 'country_aliases_EN', term: t),
     for (final t in _countryAliasesDe) (source: 'country_aliases_DE', term: t),
@@ -270,11 +296,11 @@ class TzEntry {
     // for (final t in _metazoneAliasTerms) (source: 'metazone_aliases', term: t),
   ];
 
-  TzMatch? match(String query) {
+  TzMatch? match(String query, {String? normalizedQuery}) {
     final queryOrig = query.trim();
     if (queryOrig.isEmpty) return (rule: 'empty', source: '-', term: '');
     final queryPlain = queryOrig.toLowerCase();
-    final queryNorm = normalize(queryOrig);
+    final queryNorm = normalizedQuery ?? normalize(queryOrig);
     if (offsetWinter.contains(queryPlain) || offsetSummer.contains(queryPlain) ||
         offsetWinter.replaceAll(':', '').contains(queryPlain) ||
         offsetSummer.replaceAll(':', '').contains(queryPlain)) {
@@ -292,8 +318,8 @@ class TzEntry {
             ianaZoneId.toLowerCase().contains(queryNorm.replaceAll(' ', '_')))) {
       return (rule: 'zoneId', source: '-', term: ianaZoneId);
     }
-    for (final c in candidatesWithSource) {
-      final t = normalize(c.term);
+    for (final c in normalizedCandidates) {
+      final t = c.normalized;
       if (allCaps ? t == queryNorm : t.startsWith(queryNorm)) {
         return (rule: allCaps ? 'exact' : 'prefix', source: c.source, term: c.term);
       }

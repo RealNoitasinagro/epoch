@@ -121,11 +121,41 @@ void main() {
         test('$q finds a zone with ${TimeUtils.utcOffsetString(offset)}', () {
           final found = searchTimezones(q, tzDatabase);
           expect(found.any((e) =>
-          e.rules.standardOffset == offset || e.rules.dstOffset == offset),
+            e.rules.standardOffset == offset || e.rules.dstOffset == offset),
               isTrue);
         });
       }
     }
+  });
+
+  group('searchTimezonesRanked', () {
+    test('searchTimezones returns the same entries, unranked', () {
+      final plain = searchTimezones('Berlin', tzDatabase).map((e) => e.ianaZoneId).toSet();
+      final ranked = searchTimezonesRanked('Berlin', tzDatabase, locale: 'en')
+          .map((r) => r.entry.ianaZoneId).toSet();
+      expect(plain, equals(ranked));
+    });
+
+    test('own zone ranks before zones that merely share the capital', () {
+      final ids = searchTimezonesRanked('Berlin', tzDatabase, locale: 'en')
+          .map((r) => r.entry.ianaZoneId).toList();
+      expect(ids.first, 'Europe/Berlin');
+      expect(ids, contains('Europe/Zurich'));  // Büsingen
+    });
+
+    test('empty query lists every zone', () {
+      expect(searchTimezonesRanked('', tzDatabase, locale: 'de').length,
+          tzDatabase.length);
+    });
+
+    test('Etc zones are ordered by offset, not alphabetically', () {
+      final ids = searchTimezonesRanked('Etc/GMT', tzDatabase, locale: 'en')
+          .map((r) => r.entry.ianaZoneId).toList();
+      expect(ids.indexOf('Etc/GMT+12'), lessThan(ids.indexOf('Etc/GMT+2')));
+      expect(ids.indexOf('Etc/GMT+2'), lessThan(ids.indexOf('Etc/GMT')));
+      expect(ids.indexOf('Etc/GMT'), lessThan(ids.indexOf('Etc/GMT-2')));
+      expect(ids.indexOf('Etc/GMT-2'), lessThan(ids.indexOf('Etc/GMT-14')));
+    });
   });
 
   test('zones without current DST never match a DST-only metazone term', () {

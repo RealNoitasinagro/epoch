@@ -18,6 +18,20 @@
       }
     }
   },
+  "@hintMatchAlsoCity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintMatchAlsoCountry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -75,6 +89,8 @@
   "hintFocusScreenToggleSecondsOn": "Hold to display seconds",
   "hintFocusScreenToggleToOneLine": "Hold for one line",
   "hintFocusScreenToggleToTwoLines": "Hold for two lines",
+  "hintMatchAlsoCity": "Same time zone as {name}",
+  "hintMatchAlsoCountry": "Time zone also used in {name}",
   "hintPinnedIndicator": "Automatic clock change disabled",
   "hintPixelShiftOff": "Burn-in protection off – tap to enable",
   "hintPixelShiftOn": "Burn-in protection on – tap to disable",

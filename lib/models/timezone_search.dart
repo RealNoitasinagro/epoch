@@ -1,31 +1,24 @@
+import 'package:timezone/timezone.dart' as tz;
 import 'timezone_search_normalize.dart';
-import 'timezone_search_zones.dart';
 import 'tz_entry.dart';
 
-typedef TzMatch = ({String rule, String source, String term});
+typedef TzResult = ({TzEntry entry, TzMatch? match});
 
-// extension TzMatchRank on TzMatch {
-//   int get rank => rule == 'zoneId' ? 0 : switch (source) {
-//     'cldr_exemplar_cities' || 'iana_links' => 1,
-//     'wikidata_capitals' || 'major_cities' => 2,
-//     'iso3166_names_EN' || 'cldr_country_names_EN' || 'country_names_DE' ||
-//     'country_aliases_EN' || 'country_aliases_DE' => 3,
-//     _ => 4,
-//   };
-// }
-
-// List<TzEntry> rankedResults(String q, String locale) {
-//   final scored = <(TzEntry, int)>[
-//     for (final e in tzDatabase)
-//       if (e.match(q) case final m?) (e, m.rank),
-//   ];
-//   scored.sort((a, b) {
-//     final byRank = a.$2.compareTo(b.$2);
-//     return byRank != 0 ? byRank : normalize(a.$1.displayCity(locale))
-//         .compareTo(normalize(b.$1.displayCity(locale)));
-//   });
-//   return [for (final s in scored) s.$1];
-// }
+// The one place that decides what matches (unordered).
+// Normalize the query once per search, not per entry.
+List<TzResult> _findHits(String query, List<TzEntry> db) {
+  final trimmed = query.trim();
+  final byOffset = _searchByOffset(trimmed, db);
+  if (byOffset.isNotEmpty) {
+    return [for (final e in byOffset) (entry: e, match: null)];
+  }
+  final normalizedQuery = normalize(trimmed);
+  return [
+    for (final e in db)
+      if (e.match(trimmed, normalizedQuery: normalizedQuery)
+        case final m?) (entry: e, match: m),
+  ];
+}
 
 // Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
 List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
@@ -55,8 +48,30 @@ List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
   return db.where((e) => e.offsetWinter == target || e.offsetSummer == target).toList();
 }
 
-List<TzEntry> searchTimezones(String query, List<TzEntry> db) {
-  final byOffset = _searchByOffset(query, db);
-  if (byOffset.isNotEmpty) return byOffset;
-  return db.where((e) => e.matches(query)).toList();
+// Etc zones sort by their real offset, everything else by displayed city.
+String _sortKey(TzEntry entry, String locale) {
+  if (entry.ianaZoneId.startsWith('Etc/')) {
+    final offsetMinutes = tz.TZDateTime.now(tz.getLocation(entry.ianaZoneId))
+        .timeZoneOffset.inMinutes;
+    return 'etc ${(offsetMinutes + 1000).toString().padLeft(5, '0')}';
+  }
+  return normalize(entry.displayCity(locale));
+}
+
+/// Plain hit list (tests, tools).
+List<TzEntry> searchTimezones(String query, List<TzEntry> db) =>
+    [for (final hit in _findHits(query, db)) hit.entry];
+
+/// Hit list ordered for people (search screen).
+List<TzResult> searchTimezonesRanked(String query, List<TzEntry> db,
+    {required String locale}) {
+  final keyed = [
+    for (final hit in _findHits(query, db))
+      (hit: hit, rank: hit.match?.rank ?? 0, key: _sortKey(hit.entry, locale)),
+  ];
+  keyed.sort((a, b) {
+    final byRank = a.rank.compareTo(b.rank);
+    return byRank != 0 ? byRank : a.key.compareTo(b.key);
+  });
+  return [for (final k in keyed) k.hit];
 }

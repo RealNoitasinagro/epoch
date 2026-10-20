@@ -314,6 +314,18 @@ abstract class AppLocalizations {
   /// **'Hold for two lines'**
   String get hintFocusScreenToggleToTwoLines;
 
+  /// No description provided for @hintMatchAlsoCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Same time zone as {name}'**
+  String hintMatchAlsoCity(String name);
+
+  /// No description provided for @hintMatchAlsoCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone also used in {name}'**
+  String hintMatchAlsoCountry(String name);
+
   /// No description provided for @hintPinnedIndicator.
   ///
   /// In en, this message translates to:

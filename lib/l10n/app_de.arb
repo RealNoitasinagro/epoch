@@ -18,6 +18,20 @@
       }
     }
   },
+  "@hintMatchAlsoCity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintMatchAlsoCountry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -75,6 +89,8 @@
   "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
   "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
+  "hintMatchAlsoCity": "Gleiche Zeitzone wie {name}",
+  "hintMatchAlsoCountry": "Zeitzone gilt auch in {name}",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
   "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren tippen",
   "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren tippen",
