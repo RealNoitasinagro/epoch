@@ -96,7 +96,7 @@ void main() {
       final entry = tzDatabase.where((e) => e.ianaZoneId == canonical).firstOrNull;
       if (entry == null) return;
       for (final abbr in abbrs) {
-        test('$abbr -> $canonical', () => expect(entry.matches(abbr), isTrue));
+        test('$abbr -> $canonical', () => expect(entry.match(abbr) != null, isTrue));
       }
     });
   });
@@ -165,7 +165,7 @@ void main() {
       if (metaId == null) continue;
       for (final term in [cldrMetazoneNamesEn[metaId]?.daylight,
         cldrMetazoneNamesDe[metaId]?.daylight].whereType<String>()) {
-        expect(entry.matches(term), isFalse,
+        expect(entry.match(term) != null, isFalse,
             reason: '${entry.ianaZoneId} has no DST but matched daylight term "$term"');
       }
     }

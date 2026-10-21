@@ -22,7 +22,7 @@ const _citySources = {
   'iana_links', 'cldr_exemplar_cities', 'wikidata_capitals', 'major_cities',
 };
 const _countrySources = {
-  'iso3166_names_EN', 'cldr_country_names_EN', 'country_names_DE',
+  'iso3166_names_EN', 'cldr_country_names_EN', 'cldr_country_names_DE',
   'country_aliases_EN', 'country_aliases_DE',
 };
 
@@ -57,10 +57,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
   List<TzResult> _resultsFor(String locale) {
     final key = '$locale|$_query';
     if (key != _memoKey) {
-      //_memoResults = searchTimezonesRanked(_query, tzDatabase, locale: locale);
-      final stopwatch = Stopwatch()..start();
       _memoResults = searchTimezonesRanked(_query, tzDatabase, locale: locale);
-      debugPrint('search "$_query": ${stopwatch.elapsedMilliseconds} ms, ${_memoResults.length} hits');
       _memoKey = key;
     }
     return _memoResults;
