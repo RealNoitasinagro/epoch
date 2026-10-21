@@ -1,4 +1,6 @@
+import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_utils.dart';
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
@@ -267,6 +269,7 @@ void main() {
       final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 0, 0, 0));
       expect(d, equals((hours: 0, minutes: 0, seconds: 0)));
     });
+
     test('noon = 5:00:00 (half the day)', () {
       final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 12, 0, 0));
       expect(d, equals((hours: 5, minutes: 0, seconds: 0)));
@@ -293,15 +296,18 @@ void main() {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 0, 0, 0)),
           closeTo(0.0, 0.001));
     });
+
     test('noon = 180°', () {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 12, 0, 0)),
           closeTo(180.0, 0.001));
     });
+
     test('one second before midnight ≈ 360°', () {
       final deg = TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 23, 59, 59));
       expect(deg, greaterThan(359.9));
       expect(deg, lessThan(360.0));
     });
+
     test('quarter day = 90°', () {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 6, 0, 0)),
           closeTo(90.0, 0.001));
@@ -331,6 +337,7 @@ void main() {
       expect(TimeUtils.octalTimeString(dt), equals('000000'));
       expect(TimeUtils.hexadecimalTimeString(dt), equals('0_00_00'));
     });
+
     test('one second before midnight (daySecond 86399)', () {
       final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
       expect(TimeUtils.octalTimeString(dt), equals('250577'));
@@ -338,6 +345,44 @@ void main() {
     });
   });
 
+  group('TimeUtils.romanNumeralsTime', () {
+    test('midnight uses N for zero, all fields 7 wide', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 0, 0, 0)),
+          equals('   N   :   N   :   N   '));
+    });
+
+    test('24h with the longest numeral', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58)),
+          equals(' XVIII :XXXVIII: LVIII '));
+    });
+
+    test('seconds off keeps the field width', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58),
+          showSeconds: false), equals(' XVIII :XXXVIII'));
+    });
+
+    test('12h appends the period after the padded field', () {
+      expect(TimeUtils.romanNumeralsTime(false, DateTime(2026, 1, 1, 14, 5, 9)),
+          equals('   II  :   V   :   IX   PM'));
+    });
+
+    test('width is constant for every second of the day', () {
+      for (var s = 0; s < 86400; s += 7) {
+        final dt = DateTime(2026, 1, 1).add(Duration(seconds: s));
+        expect(TimeUtils.romanNumeralsTime(true, dt).length, 23);
+      }
+    });
+
+    test('roman numerals clipboard value has no padding', () {
+      const timeValue = TimeValue(
+          valueType: ValueType.romanNumeralsTime, zone: ZoneLocal());
+      expect(
+        TimeStringRow.computeClipboardDisplay(
+            timeValue, (line1: '  XIV  :XXXVIII:   V    PM', line2: '')),
+        equals('XIV:XXXVIII:V PM'),
+      );
+    });
+  });
 
   // Other
 

@@ -38,6 +38,7 @@ enum ValueType {
   binaryClockString,
   octalTime,
   hexadecimalTime,
+  romanNumeralsTime,
   doomsdayClock,
 }
 
@@ -270,6 +271,7 @@ class TimeValue implements TabEntry {
         ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
         ValueType.octalTime => l10n.valueTypeOctalTime,
         ValueType.hexadecimalTime => l10n.valueTypeHexadecimalTime,
+        ValueType.romanNumeralsTime => l10n.valueTypeRomanNumeralsTime,
         ValueType.doomsdayClock => l10n.valueTypeDoomsdayClock,
       };
 
@@ -301,6 +303,7 @@ class TimeValue implements TabEntry {
     ValueType.binaryClockString => l10n.infoTextBinaryClockString,
     ValueType.octalTime => l10n.infoTextOctalTime,
     ValueType.hexadecimalTime => l10n.infoTextHexadecimalTime,
+    ValueType.romanNumeralsTime => l10n.infoTextRomanNumeralsTime,
     ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
   };
 
@@ -324,6 +327,7 @@ class TimeValue implements TabEntry {
     ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
     ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
     ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
+    ValueType.romanNumeralsTime => l10n.infoLinkRomanNumeralsTime,
     ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
     _ => null,
   };
@@ -357,6 +361,7 @@ extension ValueTypeProps on ValueType {
     ValueType.binaryClockString => false,
     ValueType.octalTime => false,
     ValueType.hexadecimalTime => false,
+    ValueType.romanNumeralsTime => false,
     ValueType.doomsdayClock => true,
   };
 

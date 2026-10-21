@@ -241,6 +241,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
+  String get infoLinkRomanNumeralsTime =>
+      'https://en.wikipedia.org/wiki/Roman_numerals';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://en.wikipedia.org/wiki/Swatch_Internet_Time';
 
@@ -338,6 +342,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoTextReducedJulianDate =>
       'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.';
+
+  @override
+  String get infoTextRomanNumeralsTime =>
+      'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -677,7 +685,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeBinaryClockColumns => 'Binary Clock (columns)';
 
   @override
-  String get valueTypeBinaryClockString => 'Binary Time (string)';
+  String get valueTypeBinaryClockString => 'Binary time (string)';
 
   @override
   String get valueTypeCcsdsJulianDate => 'CCSDS Julian Date';
@@ -735,6 +743,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeReducedJulianDate => 'Reduced Julian Date';
+
+  @override
+  String get valueTypeRomanNumeralsTime => 'Roman numerals time';
 
   @override
   String get valueTypeSevenSegmentTime => 'Seven-segment Clock';

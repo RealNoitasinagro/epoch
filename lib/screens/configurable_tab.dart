@@ -299,7 +299,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               if (timeValue.valueType.isGraphical ||
                   timeValue.valueType == ValueType.swatchBeats ||
                   timeValue.valueType == ValueType.newEarthTime ||
-                  timeValue.valueType == ValueType.binaryClockString) ...<Widget>[
+                  timeValue.valueType == ValueType.binaryClockString ||
+                  timeValue.valueType == ValueType.romanNumeralsTime) ...<Widget>[
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,

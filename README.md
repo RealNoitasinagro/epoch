@@ -24,7 +24,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST), 
 Julian Date (JD), Modified Julian Date (MJD), MJD2000 + 4 other JD variants
 - **Curiosities** – decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock,
-3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
+3 binary clocks[^1], octal time[^1], hexadecimal time[^1] and romanNumeralsTime.
 
 ### Configurable display
 - Fully customizable tabs — any values from any category, in any order, plus custom tab labels
@@ -63,7 +63,7 @@ Julian Date (JD), Modified Julian Date (MJD), MJD2000 + 4 other JD variants
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 27 different time values simultaneously, lets you pick exactly
+Epoch shows you 28 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**

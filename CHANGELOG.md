@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
+
 ### Changed
 - time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
 name, abbreviation or offset, in English and German

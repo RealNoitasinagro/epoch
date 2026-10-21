@@ -246,6 +246,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://en.wikipedia.org/wiki/Julian_day#Variants';
 
   @override
+  String get infoLinkRomanNumeralsTime =>
+      'https://de.wikipedia.org/wiki/R%C3%B6mische_Zahlschrift';
+
+  @override
   String get infoLinkSwatchBeats =>
       'https://de.wikipedia.org/wiki/Swatch-Internetzeit';
 
@@ -343,6 +347,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get infoTextReducedJulianDate =>
       'Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.';
+
+  @override
+  String get infoTextRomanNumeralsTime =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für \'nicht etwas\' oder \'nichts\'), wird für die Darstellung von Nullen verwendet.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -743,6 +751,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeReducedJulianDate => 'Reduziertes Julianisches Datum';
+
+  @override
+  String get valueTypeRomanNumeralsTime => 'Römische-Zahlen-Zeit';
 
   @override
   String get valueTypeSevenSegmentTime => 'Sieben-Segment-Uhr';

@@ -156,7 +156,7 @@ class TimeValueFormatter {
         return formattedValue;
       // Curiosities
       case ValueType.decimalTime:
-        String formattedValue =  TimeUtils.decimalTimeString(dt);
+        String formattedValue = TimeUtils.decimalTimeString(dt);
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.binaryClockString:
@@ -165,6 +165,10 @@ class TimeValueFormatter {
         return TimeUtils.octalTimeString(dt);
       case ValueType.hexadecimalTime:
         return TimeUtils.hexadecimalTimeString(dt);
+      case ValueType.romanNumeralsTime:
+        String formattedValue = TimeUtils.romanNumeralsTime(
+            hourFormat24, dt, showSeconds: timeValue.showSeconds);
+        return formattedValue;
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
       case ValueType.sevenSegmentClock:

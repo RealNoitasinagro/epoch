@@ -39,7 +39,10 @@ class FocusScreen extends StatefulWidget {
   State<FocusScreen> createState() => _FocusScreenState();
 }
 
-enum _SecondsToggleTypes { swatchBeats, newEarthTime, binaryClockString, isGraphical }
+enum _SecondsToggleTypes {
+  swatchBeats, newEarthTime, binaryClockString, romanNumeralsTime,
+  isGraphical
+}
 
 class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
@@ -249,7 +252,8 @@ class _FocusScreenState extends State<FocusScreen> {
     final effectiveTimeValue = (
         widget.timeValue.valueType == ValueType.swatchBeats ||
         widget.timeValue.valueType == ValueType.newEarthTime ||
-        widget.timeValue.valueType == ValueType.binaryClockString
+        widget.timeValue.valueType == ValueType.binaryClockString ||
+        widget.timeValue.valueType == ValueType.romanNumeralsTime
     ) ? widget.timeValue.withShowSeconds(_showSeconds)
         : widget.timeValue;
 
@@ -312,6 +316,8 @@ class _FocusScreenState extends State<FocusScreen> {
       handleSeconds = _SecondsToggleTypes.newEarthTime;
     } else if (widget.timeValue.valueType == ValueType.binaryClockString) {
       handleSeconds = _SecondsToggleTypes.binaryClockString;
+    } else if (widget.timeValue.valueType == ValueType.romanNumeralsTime) {
+      handleSeconds = _SecondsToggleTypes.romanNumeralsTime;
     } else if (widget.timeValue.valueType.isGraphical) {
         handleSeconds = _SecondsToggleTypes.isGraphical;
     } else {
@@ -331,6 +337,7 @@ class _FocusScreenState extends State<FocusScreen> {
           handleSeconds == _SecondsToggleTypes.swatchBeats ||
           handleSeconds == _SecondsToggleTypes.newEarthTime ||
           handleSeconds == _SecondsToggleTypes.binaryClockString ||
+          handleSeconds == _SecondsToggleTypes.romanNumeralsTime ||
           handleSeconds == _SecondsToggleTypes.isGraphical
           ? _toggleSeconds
           : _toggleLine2,
@@ -597,6 +604,7 @@ class _FocusScreenState extends State<FocusScreen> {
           : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOff}';
     } else if (!hasLine2 &&
         (handleSeconds == _SecondsToggleTypes.binaryClockString ||
+         handleSeconds == _SecondsToggleTypes.romanNumeralsTime ||
          handleSeconds == _SecondsToggleTypes.isGraphical)) {
       text = !_showSeconds
           ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
