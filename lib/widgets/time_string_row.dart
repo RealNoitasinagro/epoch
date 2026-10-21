@@ -5,7 +5,7 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
-import '../models/timezone_abbr_localization.dart';
+import '../models/timezone_abbreviation_localization.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
@@ -117,7 +117,6 @@ class TimeStringRow extends TimeValueRow {
 
   static String? _dstWarning(
       String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
-    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return null;
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
@@ -232,7 +231,7 @@ class TimeStringRow extends TimeValueRow {
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
+      showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,

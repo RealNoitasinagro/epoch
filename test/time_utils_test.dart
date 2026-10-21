@@ -1,6 +1,6 @@
 import 'package:epoch/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest.dart' as tzl;
+import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
 
 void main() {
@@ -430,6 +430,13 @@ void main() {
       expect(transition, isNotNull);
       final daysUntil = transition!.difference(sameDay).inDays;
       expect(daysUntil, equals(0));
+    });
+
+    test('zones without upcoming changes report none (no 2038 end marker)', () {
+      for (final zone in ['Asia/Kathmandu', 'Pacific/Kiritimati', 'Asia/Colombo']) {
+        expect(TimeUtils.nextDstTransitions(zone, DateTime.utc(2026, 10, 18)), isEmpty,
+            reason: zone);
+      }
     });
   });
 

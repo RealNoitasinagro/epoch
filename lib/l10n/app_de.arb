@@ -18,6 +18,20 @@
       }
     }
   },
+  "@hintMatchAlsoCity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintMatchAlsoCountry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -75,6 +89,8 @@
   "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
   "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
+  "hintMatchAlsoCity": "Gleiche Zeitzone wie {name}",
+  "hintMatchAlsoCountry": "Zeitzone gilt auch in {name}",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
   "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren tippen",
   "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren tippen",
@@ -118,7 +134,7 @@
   "infoTextDoomsdayClock": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Im Januar 2026 auf 85 Sekunden vor Mitternacht gestellt.",
   "infoTextDublinJulianDate": "Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: 1899-12-31 12:00 UT). 1955 von der Internationalen Astronomischen Union (IAU) auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.",
   "infoTextGmst": "Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
-  "infoTextGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt aktuell 18 Sekunden vor UTC (2026-09).",
+  "infoTextGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt 18 Sekunden vor UTC.",
   "infoTextHexadecimalTime": "Die Sekunden seit Mitternacht zur Basis 16 (Hexadezimalsystem), mit Gruppierung für bessere Lesbarkeit.",
   "infoTextJulianDate": "Das Julianische Datum (JD) zählt die Tage seit dem Mittag des 1. Januar 4713 v. Chr. (Epoche: -4712-01-01 12:00:00 UT). Die Standard-Zeitreferenz in der Astronomie zur Berechnung von Zeitintervallen zwischen Ereignissen.",
   "infoTextLmst": "Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.",
@@ -129,7 +145,7 @@
   "infoTextReducedJulianDate": "Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.",
   "infoTextSevenSegmentTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone im Radiowecker-Design.",
   "infoTextSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
-  "infoTextTai": "Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
+  "infoTextTai": "Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist 37 Sekunden vor UTC. Letztmalig wurde eine Schaltsekunde am 2016-12-31 um 23:59:60 UTC eingefügt.",
   "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
   "labelDstChangeInDays": "in {days} {days, plural, one{Tag} other{Tagen}}",

@@ -92,9 +92,9 @@ class _EntryPickerState extends State<_EntryPicker> {
     });
   }
 
-  void _confirm(ZoneSpec zone) {
-    Navigator.pop(context, TimeValue(valueType: _type!, zone: zone));
-  }
+  void _confirm(ZoneSpec zone) =>
+      Navigator.pop(context,
+          TimeValue(valueType: _type!, zone: canonicalZoneSpec(zone)));
 
   @override
   Widget build(BuildContext context) {

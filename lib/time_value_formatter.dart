@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/time_value.dart';
-import 'models/timezone_abbr_localization.dart';
+import 'models/timezone_abbreviation_localization.dart';
 import 'time_utils.dart';
 
 class TimeValueFormatter {

@@ -314,6 +314,18 @@ abstract class AppLocalizations {
   /// **'Hold for two lines'**
   String get hintFocusScreenToggleToTwoLines;
 
+  /// No description provided for @hintMatchAlsoCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Same time zone as {name}'**
+  String hintMatchAlsoCity(String name);
+
+  /// No description provided for @hintMatchAlsoCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone also used in {name}'**
+  String hintMatchAlsoCountry(String name);
+
   /// No description provided for @hintPinnedIndicator.
   ///
   /// In en, this message translates to:
@@ -575,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is currently 18 seconds ahead of UTC (2026-09).'**
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is 18 seconds ahead of UTC.'**
   String get infoTextGps;
 
   /// No description provided for @infoTextHexadecimalTime.
@@ -641,7 +653,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is 37 seconds ahead of UTC. The last, and final, leap second was added on 2016-12-31 at 23:59:60 UTC.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.

@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
 import 'layout_constants.dart';
 import 'models/time_value.dart';
-import 'models/timezone_search_zones.dart';
+import 'models/zone_rules.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
@@ -29,43 +29,21 @@ class TimeUtils {
   static String tzAbbr(tz.TZDateTime dt) => dt.timeZone.abbreviation;
 
   /// UTC offset as a formatted string, e. g. "UTC+02:00".
-  static String utcOffsetString(Duration offset) {
-    final sign = offset.isNegative ? '−' : '+';
-    final hh = offset.inHours.abs().toString().padLeft(2, '0');
-    final mm = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
-    return 'UTC$sign$hh:$mm';
-  }
+  static String utcOffsetString(Duration offset) =>
+      formatUtcOffset(offset, withUtcPrefix: true, typographicMinus: true);
 
   /// Returns true/false for a given time zone independently of current date.
-  static bool hasDaylightSavingTime(String ianaZone) {
-    final entry = tzDatabase
-        .where((e) => e.ianaZone == ianaZone)
-        .firstOrNull;
-    if (entry != null) return entry.hasDst;
-    return false;
-  }
+  static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>
+      zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc())?.hasDst ?? false;
 
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
-      String ianaZone, bool dst) {
-    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
-    if (entry == null || !entry.hasDst) return null;
-    String offset = dst ? entry.offsetSummer : entry.offsetWinter;
-    String abbreviation = dst ? entry.abbrSummer : entry.abbrWinter;
-    return (
-      offset: _parseOffset(offset),
-      abbreviation: abbreviation,
-    );
-  }
-
-  static Duration _parseOffset(String s) {
-    // Format: "+02:00" or "-05:00"
-    final sign = s.startsWith('-') ? -1 : 1;
-    final parts = s.substring(1).split(':');
-    return Duration(
-      hours: sign * int.parse(parts[0]),
-      minutes: sign * int.parse(parts[1]),
-    );
+      String ianaZone, bool dst, {DateTime? referenceUtc}) {
+    final rules = zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc());
+    if (rules == null || !rules.hasDst) return null;
+    return dst
+        ? (offset: rules.dstOffset, abbreviation: rules.dstAbbr)
+        : (offset: rules.standardOffset, abbreviation: rules.standardAbbr);
   }
 
   /// Converts a UTC DateTime to local time for the given TimeValue,
@@ -115,13 +93,26 @@ class TimeUtils {
       final afterUtcMs = afterUtc.millisecondsSinceEpoch;
       final result = <DateTime>[];
       for (final t in loc.transitionAt) {
-        if (t > afterUtcMs) {
-          result.add(DateTime.fromMillisecondsSinceEpoch(t, isUtc: true));
-          if (result.length >= count) break;
-        }
+        if (t <= afterUtcMs) continue;
+        final at = DateTime.fromMillisecondsSinceEpoch(t, isUtc: true);
+        if (!_changesClock(loc, at)) continue;
+        result.add(at);
+        if (result.length >= count) break;
       }
       return result;
     } catch (_) { return []; }
+  }
+
+
+  /// The package data ends with a pseudo-transition (2038-01-19 03:14:08 UTC)
+  /// into the very same state; real changes alter offset, DST flag or abbreviation.
+  static bool _changesClock(tz.Location loc, DateTime transitionUtc) {
+    final before = tz.TZDateTime.from(
+        transitionUtc.subtract(const Duration(seconds: 1)), loc).timeZone;
+    final after = tz.TZDateTime.from(transitionUtc, loc).timeZone;
+    return before.offset != after.offset ||
+        before.isDst != after.isDst ||
+        before.abbreviation != after.abbreviation;
   }
 
   /// Returns the timezone abbreviations immediately before and after
@@ -189,13 +180,13 @@ class TimeUtils {
   static int unixTimestamp(DateTime utc) =>
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
-  /// TAI: UTC + leap seconds (currently 37).
+  /// TAI: UTC + 37 leap seconds.
   static int taiUnixTimestamp(DateTime utc) {
     return unixTimestamp(utc) + 10 + leapSecondsSince1972;
   }
 
   /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS time does not have leap seconds, currently 18s ahead of UTC.
+  /// GPS time does not have leap seconds, 18s ahead of UTC.
   static int gpsTime(DateTime utc) {
     final gpsEpoch = DateTime.utc(1980, 1, 6);
     return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSince1980;

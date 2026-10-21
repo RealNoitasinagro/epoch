@@ -46,6 +46,19 @@ void main() {
     test('invalid string returns null', () {
       expect(TimeValue.fromPrefsString('garbage'), isNull);
     });
+
+    test('empty label slot (||) means no custom label', () {
+      final tv = TimeValue.fromPrefsString('time/named:Europe/Kiev||dst:forceStandard')!;
+      expect(tv.customLabel, isNull);
+      expect(tv.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+    });
+
+    test('UTC aliases collapse to ZoneUtc, everything else stays', () {
+      expect(canonicalZoneSpec(const ZoneNamed('Etc/UTC')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Zulu')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Europe/Berlin')), isA<ZoneNamed>());
+      expect(canonicalZoneSpec(const ZoneLocal()), isA<ZoneLocal>());
+    });
   });
 
   group('TimeValue.isZoneIndependent', () {
@@ -57,6 +70,12 @@ void main() {
     test('time is zone-dependent', () {
       const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       expect(e.isZoneIndependent, isFalse);
+    });
+
+    test('zones without clock change are treated as unpinned', () {
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Asia/Tokyo'),
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard);
+      expect(e.isPinned(DateTime.utc(2026), 'UTC'), isFalse);
     });
   });
 

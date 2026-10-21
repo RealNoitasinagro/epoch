@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
+import 'generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
-import 'timezone_search_zones.dart';
+import 'zone_rules.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -60,6 +61,12 @@ class ZoneNamed extends ZoneSpec {
   const ZoneNamed(this.ianaZone);
 }
 
+ZoneSpec canonicalZoneSpec(ZoneSpec zone) {
+  if (zone is! ZoneNamed) return zone;
+  final canonical = ianaLinksSnapshot[zone.ianaZone] ?? zone.ianaZone;
+  return canonical == 'Etc/UTC' ? const ZoneUtc() : zone;
+}
+
 // A single displayable entry: type + zone + optional custom label.
 class TimeValue implements TabEntry {
   final ValueType valueType;
@@ -75,14 +82,6 @@ class TimeValue implements TabEntry {
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showSeconds = true,
   });
-
-  TimeValue withShowSeconds(bool value) => TimeValue(
-    valueType: valueType,
-    zone: zone,
-    customLabel: customLabel,
-    timezoneClockChangeMode: timezoneClockChangeMode,
-    showSeconds: value,
-  );
 
   // Unique key for deduplication within a tab.
   // Custom label does not affect the key.
@@ -159,30 +158,47 @@ class TimeValue implements TabEntry {
     return TimeValue(
       valueType: valueType,
       zone: zone,
-      customLabel: labelPart,
+      customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
       timezoneClockChangeMode: timezoneClockChangeMode,
       showSeconds: showSeconds,
     );
   }
 
-  // Returns a copy with a different custom label (null to clear).
-  TimeValue withCustomLabel(String? label) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: label
-      );
+  TimeValue copyWith({
+    String? customLabel,
+    bool clearCustomLabel = false,
+    TimezoneClockChangeMode? timezoneClockChangeMode,
+    bool? showSeconds,
+  }) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
+    timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
+    showSeconds: showSeconds ?? this.showSeconds,
+  );
 
+  TimeValue withCustomLabel(String? label) =>
+      copyWith(customLabel: label, clearCustomLabel: label == null);
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: customLabel,
-        timezoneClockChangeMode: mode,
-      );
+      copyWith(timezoneClockChangeMode: mode);
+  TimeValue withShowSeconds(bool value) => copyWith(showSeconds: value);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
+
+  TimezoneClockChangeMode effectiveClockChangeMode(
+      DateTime nowUtc, String localIanaZone) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
+      return TimezoneClockChangeMode.auto;
+    }
+    final ianaZone = TimeUtils.resolveIanaZone(this, localIanaZone);
+    final hasDst = ianaZone != null &&
+        TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
+    return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;
+  }
+
+  bool isPinned(DateTime nowUtc, String localIanaZone) =>
+      effectiveClockChangeMode(nowUtc, localIanaZone) != TimezoneClockChangeMode.auto;
 
   // Returns whether DST is currently active for this value's zone,
   // or null if the zone has no DST or is zone-independent.
@@ -191,26 +207,19 @@ class TimeValue implements TabEntry {
     if (isZoneIndependent) return null;
     final ianaZone = switch (zone) {
       ZoneLocal() => localIanaZone,
-      ZoneUtc() => '', // UTC never has DST
+      ZoneUtc() => '',
       ZoneNamed(ianaZone: final z) => z,
     };
-    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
-    if (entry == null || !entry.hasDst) return null;
-    // Use the timezone package to check the actual current DST status:
-    try {
-      final tzDt = TimeUtils.inZone(nowUtc, ianaZone);
-      return tzDt.timeZone.isDst;
-    } catch (_) {
-      return null;
-    }
+    final rules = zoneRulesAt(ianaZone, nowUtc);
+    if (rules == null || !rules.hasDst) return null;
+    return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceDst) {
-      return kIconDstActive;
-    }
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceStandard) {
-      return kIconDstInactive;
+    switch (effectiveClockChangeMode(nowUtc, localIanaZone)) {
+      case TimezoneClockChangeMode.forceDst: return kIconDstActive;
+      case TimezoneClockChangeMode.forceStandard: return kIconDstInactive;
+      case TimezoneClockChangeMode.auto: break;
     }
     // auto: determine actual current DST status:
     return switch (isDstCurrentlyActive(nowUtc, localIanaZone)) {

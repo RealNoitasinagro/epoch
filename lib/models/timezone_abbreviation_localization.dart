@@ -11,9 +11,9 @@ const _deAbbreviations = <String, String>{
 
 /// Returns the localized timezone abbreviation for the given locale.
 /// Falls back to the original abbreviation if no localization exists.
-String localizeTimezoneAbbr(String abbr, String locale) {
+String localizeTimezoneAbbr(String abbreviation, String locale) {
   if (locale.startsWith('de')) {
-    return _deAbbreviations[abbr] ?? abbr;
+    return _deAbbreviations[abbreviation] ?? abbreviation;
   }
-  return abbr;
+  return abbreviation;
 }

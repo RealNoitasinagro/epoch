@@ -1,63 +1,27 @@
-// Curated timezone database with multilingual search terms.
-// Shared term sets avoid redundancy across entries with the same offset/zone.
+import 'package:timezone/timezone.dart' as tz;
+import 'timezone_search_normalize.dart';
+import 'tz_entry.dart';
 
-// ── Data class ───────────────────────────────────────────────────────────────
+typedef TzResult = ({TzEntry entry, TzMatch? match});
 
-class TzEntry {
-  final String ianaZone;
-  final String offsetWinter;
-  final String offsetSummer;
-  final String abbrWinter;
-  final String abbrSummer;
-  final List<String> terms; // lowercase; includes shared + city-specific
-
-  const TzEntry({
-    required this.ianaZone,
-    required this.offsetWinter,
-    required this.offsetSummer,
-    required this.abbrWinter,
-    required this.abbrSummer,
-    required this.terms,
-  });
-
-  bool get hasDst => offsetWinter != offsetSummer;
-
-  String get offsetLabel => hasDst
-      ? '$abbrWinter/$abbrSummer  UTC$offsetWinter/UTC$offsetSummer'
-      : '$abbrWinter  UTC$offsetWinter';
-
-  String get cityName =>
-      ianaZone.split('/').last.replaceAll('_', ' ');
-
-  bool matches(String query) {
-    final query_orig = query.trim();
-    final query_lower = query.toLowerCase().trim();
-    if (query_lower.isEmpty) return true;
-    if (offsetWinter.contains(query_lower) ||
-        offsetSummer.contains(query_lower) ||
-        offsetWinter.replaceAll(':', '').contains(query_lower) ||
-        offsetSummer.replaceAll(':', '').contains(query_lower)
-    ) {
-      return true;
-    }
-    if (abbrWinter == query_orig || abbrSummer == query_orig) {
-      return true;
-    }
-    if (query_orig == query_orig.toUpperCase()) {
-      return terms.any((t) => t == query_orig);
-    }
-    else {
-      if (ianaZone.toLowerCase().contains(query_lower) ||
-          ianaZone.toLowerCase().contains(query_lower.replaceAll(' ', '_'))) {
-        return true;
-      }
-      return terms.any((t) => t.startsWith(query_lower));
-    }
+// The one place that decides what matches (unordered).
+// Normalize the query once per search, not per entry.
+List<TzResult> _findHits(String query, List<TzEntry> db) {
+  final trimmed = query.trim();
+  final byOffset = _searchByOffset(trimmed, db);
+  if (byOffset.isNotEmpty) {
+    return [for (final e in byOffset) (entry: e, match: null)];
   }
+  final normalizedQuery = normalize(trimmed);
+  return [
+    for (final e in db)
+      if (e.match(trimmed, normalizedQuery: normalizedQuery)
+        case final m?) (entry: e, match: m),
+  ];
 }
 
 // Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
-List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
+List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
   final q = query.trim().toUpperCase().replaceAll(' ', '');
 
   final decimalMatch = RegExp(r'^(?:UTC)?([+-])(\d{1,2})[.,](50?|75|25)$').firstMatch(q);
@@ -82,4 +46,32 @@ List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
   }
 
   return db.where((e) => e.offsetWinter == target || e.offsetSummer == target).toList();
+}
+
+// Etc zones sort by their real offset, everything else by displayed city.
+String _sortKey(TzEntry entry, String locale) {
+  if (entry.ianaZoneId.startsWith('Etc/')) {
+    final offsetMinutes = tz.TZDateTime.now(tz.getLocation(entry.ianaZoneId))
+        .timeZoneOffset.inMinutes;
+    return 'etc ${(offsetMinutes + 1000).toString().padLeft(5, '0')}';
+  }
+  return normalize(entry.displayCity(locale));
+}
+
+/// Plain hit list (tests, tools).
+List<TzEntry> searchTimezones(String query, List<TzEntry> db) =>
+    [for (final hit in _findHits(query, db)) hit.entry];
+
+/// Hit list ordered for people (search screen).
+List<TzResult> searchTimezonesRanked(String query, List<TzEntry> db,
+    {required String locale}) {
+  final keyed = [
+    for (final hit in _findHits(query, db))
+      (hit: hit, rank: hit.match?.rank ?? 0, key: _sortKey(hit.entry, locale)),
+  ];
+  keyed.sort((a, b) {
+    final byRank = a.rank.compareTo(b.rank);
+    return byRank != 0 ? byRank : a.key.compareTo(b.key);
+  });
+  return [for (final k in keyed) k.hit];
 }
