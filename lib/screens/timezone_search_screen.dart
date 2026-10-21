@@ -3,6 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
+import '../models/timezone_match_labels.dart';
 import '../models/timezone_search.dart';
 import '../models/timezone_search_normalize.dart';
 import '../models/timezone_search_zones.dart';
@@ -16,15 +17,6 @@ class TimezoneSearchScreen extends StatefulWidget {
   @override
   State<TimezoneSearchScreen> createState() => _TimezoneSearchScreenState();
 }
-
-// Sources whose hit is another city / another country of this zone.
-const _citySources = {
-  'iana_links', 'cldr_exemplar_cities', 'wikidata_capitals', 'major_cities',
-};
-const _countrySources = {
-  'iso3166_names_EN', 'cldr_country_names_EN', 'cldr_country_names_DE',
-  'country_aliases_EN', 'country_aliases_DE',
-};
 
 class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
   final _controller = TextEditingController();
@@ -66,11 +58,11 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
   // Why does this zone show up, if the reason is not already in the title?
   String? _matchHint(TzResult result, String locale, AppLocalizations l10n) {
     final match = result.match;
-    if (match == null || (match.rule != 'exact' && match.rule != 'prefix')) {
+    if (match == null || (match.rule != TzRule.exact && match.rule != TzRule.prefix)) {
       return null;
     }
-    final isCity = _citySources.contains(match.source);
-    final isCountry = _countrySources.contains(match.source);
+    final isCity = TzSource.otherCity.contains(match.source);
+    final isCountry = TzSource.otherCountry.contains(match.source);
     if (!isCity && !isCountry) return null;
     final ownNames = {
       result.entry.displayCity(locale),

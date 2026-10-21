@@ -6,6 +6,7 @@
 //   dart run tools/explain_tz_search.dart --redundant
 import 'dart:io';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
+import 'package:epoch/models/timezone_match_labels.dart';
 import 'package:epoch/models/timezone_search_normalize.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:epoch/models/tz_entry.dart';
@@ -13,17 +14,16 @@ import 'package:epoch/models/zone_rules.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
 
-/// Hand-maintained sources. Keep in sync with the labels used in
-/// TzEntry.candidatesWithSource.
+/// Hand-maintained sources.
 const manualSources = {
-  'terms', 'country_aliases_EN', 'country_aliases_DE',
-  'metazone_aliases', 'major_cities',
+  TzSource.terms, TzSource.countryAliasesEn, TzSource.countryAliasesDe,
+  TzSource.metazoneAliases, TzSource.majorCities,
 };
 
 bool isManual(String source) =>
-    manualSources.contains(source.replaceAll('~', ''));
+    manualSources.contains(source.replaceAll(TzSource.variantSuffix, ''));
 
-bool isRule(String s) => s.startsWith('rule:') || s.endsWith('~');
+bool isRule(String s) => s.startsWith(TzSource.rulePrefix) || s.endsWith(TzSource.variantSuffix);
 
 /// Accepts canonical ids and link ids (Asia/Brunei -> Asia/Kuching).
 TzEntry? findEntry(String zoneId) {
@@ -66,8 +66,8 @@ TzEntry? findEntry(String zoneId) {
     }
   }
   return exact.isNotEmpty
-      ? (how: 'exact', hits: exact)
-      : (how: 'prefix', hits: prefix);
+      ? (how: TzRule.exact, hits: exact)
+      : (how: TzRule.prefix, hits: prefix);
 }
 
 void explainQuery(String query) {
@@ -78,7 +78,7 @@ void explainQuery(String query) {
     count++;
     final line = StringBuffer('TZ-MATCH q="$query" zone=${entry.ianaZoneId}');
     final strongest = strongestHits(entry, query);
-    if ((reason.rule == 'exact' || reason.rule == 'prefix') &&
+    if ((reason.rule == TzRule.exact || reason.rule == TzRule.prefix) &&
         strongest.hits.isNotEmpty) {
       final sources = strongest.hits.map((h) => h.source).toSet();
       line.write(' by=${strongest.how} term="${strongest.hits.first.term}"'

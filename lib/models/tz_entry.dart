@@ -16,6 +16,7 @@ import 'generated/wikidata_capitals_de.g.dart';
 import 'generated/wikidata_capitals_en.g.dart';
 import 'generated/zone1970_countries.g.dart';
 import 'timezone_abbreviation_localization.dart';
+import 'timezone_match_labels.dart';
 import 'timezone_search_country_aliases.dart';
 import 'timezone_search_major_cities.dart';
 import 'timezone_search_metazone_aliases.dart';
@@ -26,11 +27,11 @@ import 'zone_rules.dart';
 typedef TzMatch = ({String rule, String source, String term});
 
 extension TzMatchRank on TzMatch {
-  int get rank => rule == 'zoneId' ? 0 : switch (source) {
-    'cldr_exemplar_cities' || 'iana_links' => 1,
-    'wikidata_capitals' || 'major_cities' => 2,
-    'iso3166_names_EN' || 'cldr_country_names_EN' || 'cldr_country_names_DE' ||
-    'country_aliases_EN' || 'country_aliases_DE' => 3,
+  int get rank => rule == TzRule.zoneId ? 0 : switch (source) {
+    TzSource.cldrExemplarCities || TzSource.ianaLinks => 1,
+    TzSource.wikidataCapitals || TzSource.majorCities => 2,
+    TzSource.iso3166NamesEn || TzSource.cldrCountryNamesEn || TzSource.cldrCountryNamesDe ||
+    TzSource.countryAliasesEn || TzSource.countryAliasesDe => 3,
     _ => 4,
   };
 }
@@ -147,7 +148,7 @@ class TzEntry {
   /// [normalizedQuery] saves normalizing the same query once per zone.
   TzMatch? match(String query, {String? normalizedQuery}) {
     final queryOrig = query.trim();
-    if (queryOrig.isEmpty) return (rule: 'empty', source: '-', term: '');
+    if (queryOrig.isEmpty) return (rule: TzRule.empty, source: TzSource.none, term: '');
     final queryPlain = queryOrig.toLowerCase();
     final queryNorm = normalizedQuery ?? normalize(queryOrig);
 
@@ -158,19 +159,19 @@ class TzEntry {
     if (winterOffset.contains(queryPlain) || summerOffset.contains(queryPlain) ||
         winterOffset.replaceAll(':', '').contains(queryPlain) ||
         summerOffset.replaceAll(':', '').contains(queryPlain)) {
-      return (rule: 'offset', source: '-', term: '$winterOffset/$summerOffset');
+      return (rule: TzRule.offset, source: TzSource.none, term: '$winterOffset/$summerOffset');
     }
     if (zoneRules.standardAbbr == queryOrig || zoneRules.dstAbbr == queryOrig) {
       return (
-        rule: 'abbr',
-        source: '-',
+        rule: TzRule.abbr,
+        source: TzSource.none,
         term: '${zoneRules.standardAbbr}/${zoneRules.dstAbbr}',
       );
     }
 
     final dailyData = _dailyData;
     if (dailyData.abbreviationAliases.contains(queryOrig)) {
-      return (rule: 'abbrAlias', source: '-', term: queryOrig);
+      return (rule: TzRule.abbrAlias, source: TzSource.none, term: queryOrig);
     }
 
     final allCaps = queryOrig == queryOrig.toUpperCase();
@@ -178,7 +179,7 @@ class TzEntry {
       final zoneIdLower = ianaZoneId.toLowerCase();
       if (zoneIdLower.contains(queryNorm) ||
           zoneIdLower.contains(queryNorm.replaceAll(' ', '_'))) {
-        return (rule: 'zoneId', source: '-', term: ianaZoneId);
+        return (rule: TzRule.zoneId, source: TzSource.none, term: ianaZoneId);
       }
     }
     for (final candidate in dailyData.candidates) {
@@ -187,7 +188,7 @@ class TzEntry {
           : candidate.normalized.startsWith(queryNorm);
       if (isHit) {
         return (
-          rule: allCaps ? 'exact' : 'prefix',
+          rule: allCaps ? TzRule.exact : TzRule.prefix,
           source: candidate.source,
           term: candidate.term,
         );
@@ -201,21 +202,21 @@ class TzEntry {
   Iterable<TzCandidate> get candidatesWithSource {
     final metazoneIds = _metazoneIds;
     return [
-      for (final t in linkCityNames) (source: 'iana_links', term: t),
-      for (final t in _countryNamesIsoEn) (source: 'iso3166_names_EN', term: t),
-      for (final t in _countryNamesCldrEn) (source: 'cldr_country_names_EN', term: t),
-      for (final t in _countryNamesCldrDe) (source: 'cldr_country_names_DE', term: t),
-      for (final t in _countryAliasesEn) (source: 'country_aliases_EN', term: t),
-      for (final t in _countryAliasesDe) (source: 'country_aliases_DE', term: t),
-      for (final t in _timeSuffixTerms) (source: 'rule:timeSuffix', term: t),
-      for (final t in _windowsNames) (source: 'cldr_windows_zone_names', term: t),
-      for (final t in _zoneSpecificTerms) (source: 'cldr_zone_long_names', term: t),
-      for (final t in _exemplarCityNames) (source: 'cldr_exemplar_cities', term: t),
-      for (final t in _capitalNames) (source: 'wikidata_capitals', term: t),
-      for (final t in _megacityNames) (source: 'major_cities', term: t),
-      ..._tagged('cldr_metazone_names', metazoneIds.expand(_generatedBaseTermsFor)),
-      ..._tagged('metazone_aliases', metazoneIds.expand(_aliasBaseTermsFor)),
-      ..._tagged('terms', terms),
+      for (final t in linkCityNames) (source: TzSource.ianaLinks, term: t),
+      for (final t in _countryNamesIsoEn) (source: TzSource.iso3166NamesEn, term: t),
+      for (final t in _countryNamesCldrEn) (source: TzSource.cldrCountryNamesEn, term: t),
+      for (final t in _countryNamesCldrDe) (source: TzSource.cldrCountryNamesDe, term: t),
+      for (final t in _countryAliasesEn) (source: TzSource.countryAliasesEn, term: t),
+      for (final t in _countryAliasesDe) (source: TzSource.countryAliasesDe, term: t),
+      for (final t in _timeSuffixTerms) (source: TzSource.timeSuffixRule, term: t),
+      for (final t in _windowsNames) (source: TzSource.cldrWindowsZoneNames, term: t),
+      for (final t in _zoneSpecificTerms) (source: TzSource.cldrZoneLongNames, term: t),
+      for (final t in _exemplarCityNames) (source: TzSource.cldrExemplarCities, term: t),
+      for (final t in _capitalNames) (source: TzSource.wikidataCapitals, term: t),
+      for (final t in _megacityNames) (source: TzSource.majorCities, term: t),
+      ..._tagged(TzSource.cldrMetazoneNames, metazoneIds.expand(_generatedBaseTermsFor)),
+      ..._tagged(TzSource.metazoneAliases, metazoneIds.expand(_aliasBaseTermsFor)),
+      ..._tagged(TzSource.terms, terms),
     ];
   }
 
@@ -386,6 +387,6 @@ class TzEntry {
   Iterable<TzCandidate> _tagged(String source, Iterable<String> bases) => [
     for (final base in bases)
       for (final variant in expandTimeZoneNameVariants(base))
-        (source: variant == base ? source : '$source~', term: variant),
+        (source: variant == base ? source : '$source${TzSource.variantSuffix}', term: variant),
   ];
 }
