@@ -24,11 +24,6 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     standard: ['North American Pacific Standard Time'],
     daylight: ['North American Pacific Daylight Time'],
   ),
-  'Apia': (
-    generic: null,
-    standard: ['West Samoa Time'],
-    daylight: null
-  ),
   'Arabian': (
     generic: ['Arabia Time', 'Arabic Time', 'Arab Time'],
     standard: ['Al Manamah Standard Time'],

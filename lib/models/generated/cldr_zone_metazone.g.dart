@@ -1,7 +1,7 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-core, supplemental/metaZones.json
 // Regenerate with: python3 tools/generate_cldr_metazone_names.py
-// Last generated: 2026-10-01
+// Last generated: 2026-10-22
 
 // Current CLDR metazone assignment by IANA zone identifier.
 const Map<String, String> cldrZoneMetaZone = {
@@ -330,19 +330,19 @@ const Map<String, String> cldrZoneMetaZone = {
   'Europe/Busingen': 'Europe_Central',
   'Europe/Chisinau': 'Europe_Eastern',
   'Europe/Copenhagen': 'Europe_Central',
-  'Europe/Dublin': 'GMT',
+  'Europe/Dublin': 'Irish',
   'Europe/Gibraltar': 'Europe_Central',
-  'Europe/Guernsey': 'GMT',
+  'Europe/Guernsey': 'British',
   'Europe/Helsinki': 'Europe_Eastern',
-  'Europe/Isle_of_Man': 'GMT',
+  'Europe/Isle_of_Man': 'British',
   'Europe/Istanbul': 'Turkey',
-  'Europe/Jersey': 'GMT',
+  'Europe/Jersey': 'British',
   'Europe/Kaliningrad': 'Europe_Eastern',
   'Europe/Kiev': 'Europe_Eastern',
   'Europe/Kirov': 'Moscow',
   'Europe/Lisbon': 'Europe_Western',
   'Europe/Ljubljana': 'Europe_Central',
-  'Europe/London': 'GMT',
+  'Europe/London': 'British',
   'Europe/Luxembourg': 'Europe_Central',
   'Europe/Madrid': 'Europe_Central',
   'Europe/Malta': 'Europe_Central',

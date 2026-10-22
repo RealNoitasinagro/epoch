@@ -1,7 +1,7 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-localenames-full, main/en/territories.json
 // Regenerate with: python3 tools/generate_cldr_country_names.py
-// Last generated: 2026-09-25
+// Last generated: 2026-10-22
 
 // Country names by ISO 3166-1 alpha-2 code.
 const Map<String, String> cldrCountryNamesEn = {
@@ -107,7 +107,7 @@ const Map<String, String> cldrCountryNamesEn = {
   'GW': 'Guinea-Bissau',
   'GY': 'Guyana',
   'HK': 'Hong Kong SAR China',
-  'HM': 'Heard & McDonald Islands',
+  'HM': 'Heard Island & McDonald Islands',
   'HN': 'Honduras',
   'HR': 'Croatia',
   'HT': 'Haiti',
@@ -212,7 +212,7 @@ const Map<String, String> cldrCountryNamesEn = {
   'SD': 'Sudan',
   'SE': 'Sweden',
   'SG': 'Singapore',
-  'SH': 'St. Helena',
+  'SH': 'St. Helena, Ascension & Tristan da Cunha',
   'SI': 'Slovenia',
   'SJ': 'Svalbard & Jan Mayen',
   'SK': 'Slovakia',
@@ -230,7 +230,7 @@ const Map<String, String> cldrCountryNamesEn = {
   'TA': 'Tristan da Cunha',
   'TC': 'Turks & Caicos Islands',
   'TD': 'Chad',
-  'TF': 'French Southern Territories',
+  'TF': 'French Southern and Antarctic Lands',
   'TG': 'Togo',
   'TH': 'Thailand',
   'TJ': 'Tajikistan',

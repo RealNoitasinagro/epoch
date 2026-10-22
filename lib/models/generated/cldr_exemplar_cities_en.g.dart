@@ -1,7 +1,7 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-dates-full, main/en/timeZoneNames.json
 // Regenerate with: python3 tools/generate_cldr_exemplar_cities.py
-// Last generated: 2026-10-01
+// Last generated: 2026-10-22
 
 // City names by IANA zone identifier.
 const Map<String, String> cldrCityNamesEn = {

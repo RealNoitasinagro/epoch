@@ -1,7 +1,7 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-core, supplemental/windowsZones.json (territory=001)
 // Regenerate with: python3 tools/generate_cldr_windows_zone_names.py
-// Last generated: 2026-09-23
+// Last generated: 2026-10-22
 
 // Windows-style time zone display name(s) by IANA zone
 // identifier (English only -- CLDR's Windows mapping has
@@ -30,6 +30,7 @@ const Map<String, List<String>> windowsZoneNames = {
   'America/Chicago': ['Central Standard Time'],
   'America/Cuiaba': ['Central Brazilian Standard Time'],
   'America/Denver': ['Mountain Standard Time'],
+  'America/Edmonton': ['Alberta Standard Time'],
   'America/Godthab': ['Greenland Standard Time'],
   'America/Grand_Turk': ['Turks And Caicos Standard Time'],
   'America/Guatemala': ['Central America Standard Time'],
@@ -51,7 +52,9 @@ const Map<String, List<String>> windowsZoneNames = {
   'America/Sao_Paulo': ['E. South America Standard Time'],
   'America/St_Johns': ['Newfoundland Standard Time'],
   'America/Tijuana': ['Pacific Standard Time (Mexico)'],
+  'America/Vancouver': ['British Columbia Standard Time'],
   'America/Whitehorse': ['Yukon Standard Time'],
+  'America/Winnipeg': ['Manitoba Standard Time'],
   'Asia/Amman': ['Jordan Standard Time'],
   'Asia/Baghdad': ['Arabic Standard Time'],
   'Asia/Baku': ['Azerbaijan Standard Time'],
