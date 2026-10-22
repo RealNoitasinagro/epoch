@@ -42,7 +42,7 @@ class TimeGraphicalRow extends TimeValueRow {
           now: zonedNow,
           l10n: l10n,
           digitHeight: kGraphicalSegmentClockHeightDefault,
-          showSeconds: timeValue.showSeconds,
+          showSeconds: timeValue.showOptionalPart,
           hourFormat24: app.hourFormat24,
           color: segmentColor,
         ),
@@ -50,13 +50,13 @@ class TimeGraphicalRow extends TimeValueRow {
         BinaryColumnsClock(
             now: zonedNow,
             l10n: l10n,
-            showSeconds: timeValue.showSeconds,
+            showSeconds: timeValue.showOptionalPart,
         ),
       ValueType.binaryClockBcd =>
         BinaryCodedDecimalClock(
             now: zonedNow,
             l10n: l10n,
-            showSeconds: timeValue.showSeconds,
+            showSeconds: timeValue.showOptionalPart,
         ),
       _ => throw StateError(
           'Unhandled graphical ValueType: ${timeValue.valueType}'),

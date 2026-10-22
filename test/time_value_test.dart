@@ -182,4 +182,36 @@ void main() {
       expect(result, contains('74'));
     });
   });
+
+  group('ValueType.optionalPart', () {
+    test('every graphical type has an optional part', () {
+      for (final type in ValueType.values.where((t) => t.isGraphical)) {
+        expect(type.optionalPart, isNot(OptionalPart.none), reason: '$type');
+      }
+    });
+    test('decimals for Swatch beats and New Earth Time', () {
+      expect(ValueType.swatchBeats.optionalPart, OptionalPart.decimals);
+      expect(ValueType.newEarthTime.optionalPart, OptionalPart.decimals);
+    });
+    test('seconds for string-type values', () {
+      expect(ValueType.binaryClockString.optionalPart, OptionalPart.seconds);
+      expect(ValueType.romanNumeralsTime.optionalPart, OptionalPart.seconds);
+    });
+    test('all other types have none', () {
+      final withPart = {
+        ValueType.swatchBeats, ValueType.newEarthTime, ValueType.sevenSegmentClock,
+        ValueType.binaryClockBcd, ValueType.binaryClockColumns,
+        ValueType.binaryClockString, ValueType.romanNumeralsTime,
+      };
+      for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
+        expect(type.optionalPart, OptionalPart.none, reason: '$type');
+      }
+    });
+    test('|nosec roundtrip still works after the rename', () {
+      const value = TimeValue(
+          valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
+      expect(value.toPrefsString(), endsWith('|nosec'));
+      expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
+    });
+  });
 }

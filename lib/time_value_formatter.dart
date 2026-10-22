@@ -78,12 +78,12 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${timeValue.showSeconds
+        return '@${timeValue.showOptionalPart
             ? swatchBeats.toStringAsFixed(2)
             : swatchBeats.toInt()}';
       case ValueType.newEarthTime:
         final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${timeValue.showSeconds
+        return '${timeValue.showOptionalPart
             ? formatDecimal(deg, locale, 2, thousandsSep:  false)
             : deg.toInt()}°';
       case ValueType.doomsdayClock:
@@ -160,14 +160,14 @@ class TimeValueFormatter {
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.binaryClockString:
-        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showSeconds);
+        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showOptionalPart);
       case ValueType.octalTime:
         return TimeUtils.octalTimeString(dt);
       case ValueType.hexadecimalTime:
         return TimeUtils.hexadecimalTimeString(dt);
       case ValueType.romanNumeralsTime:
         String formattedValue = TimeUtils.romanNumeralsTime(
-            hourFormat24, dt, showSeconds: timeValue.showSeconds);
+            hourFormat24, dt, showSeconds: timeValue.showOptionalPart);
         return formattedValue;
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
