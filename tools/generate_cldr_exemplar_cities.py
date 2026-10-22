@@ -20,7 +20,7 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
-
+from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
 DEFAULT_OUT_FILE_CITIES_DE = "cldr_exemplar_cities_de.g.dart"
@@ -92,15 +92,13 @@ def load_zones(cldr_json_dir, locale, cities):
     return zone_names
 
 
-def write_city_names(path, names, locale):
+def write_city_names(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrCityNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-        f.write("// Source: unicode-org/cldr-json, cldr-dates-full, main/" + locale + "/timeZoneNames.json\n")
-        f.write("// Regenerate with: python3 tools/generate_cldr_exemplar_cities.py\n")
-        f.write(f"// Last generated: {now}\n\n")
+        source_description=f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_cldr_exemplar_cities.py", data_version)
         f.write("// City names by IANA zone identifier.\n")
         f.write(f"const Map<String, String> {dart_variable}" + " = {\n")
         for code in sorted(names):
@@ -109,18 +107,15 @@ def write_city_names(path, names, locale):
         f.write("};\n")
 
 
-def write_metazone_names(path, names, locale):
+def write_metazone_names(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrZoneLongNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-        f.write("// Source: unicode-org/cldr-json, cldr-dates-full, "
-                f"main/{locale}/timeZoneNames.json (metazone/long)\n")
-        f.write("// Regenerate with: python3 tools/generate_cldr_metazone_names.py\n")
-        f.write(f"// Last generated: {now}\n\n")
-        f.write("// Localized long generic/standard/daylight names by CLDR\n")
-        f.write("// metazone identifier. Any of the three may be null if CLDR\n")
+        source_description=f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json (metazone/long)"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_cldr_exemplar_cities.py", data_version)
+        f.write("// Localized long generic/standard/daylight names by IANA\n")
+        f.write("// zone identifier. Any of the three may be null if CLDR\n")
         f.write("// has no name for that variant in this locale.\n")
         f.write("const Map<String, ({String? generic, String? standard, String? daylight})> "
                 f"{dart_variable} = {{\n")
@@ -144,16 +139,17 @@ def main():
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     args = parser.parse_args()
 
+    data_version = cldr_data_version(args.cldr_json_dir)
     os.makedirs(args.out_dir, exist_ok=True)
     for locale in ("de", "en"):
         language = "German" if locale == "de" else "English"
         out_file_cities = DEFAULT_OUT_FILE_CITIES_DE if locale == "de" else DEFAULT_OUT_FILE_CITIES_EN
         cities = load_cities(args.cldr_json_dir, locale)
-        write_city_names(os.path.join(args.out_dir, out_file_cities), cities, locale)
+        write_city_names(os.path.join(args.out_dir, out_file_cities), cities, locale, data_version)
         print(f"{language} city names: {len(cities)}")
         out_file_zone_names = DEFAULT_OUT_FILE_ZONE_LONG_DE if locale == "de" else DEFAULT_OUT_FILE_ZONE_LONG_EN
         zone_names = load_zones(args.cldr_json_dir, locale, cities)
-        write_metazone_names(os.path.join(args.out_dir, out_file_zone_names), zone_names, locale)
+        write_metazone_names(os.path.join(args.out_dir, out_file_zone_names), zone_names, locale, data_version)
         print(f"{language} zone names: {len(zone_names)}")
 
 

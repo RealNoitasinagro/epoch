@@ -58,6 +58,7 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
+from generated_header import write_header, tzdata_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
 
@@ -151,17 +152,11 @@ def dart_string_list(items):
     return "[" + ", ".join(f"'{item}'" for item in items) + "]"
 
 
-def write_generated_header(f, source_description):
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-    f.write(f"// Source: {source_description}\n")
-    f.write("// Regenerate with: python3 tools/generate_iana_data.py\n")
-    f.write(f"// Last generated: {now}\n\n")
-
-
-def write_zone_countries(path, zone_countries):
+def write_zone_countries(path, zone_countries, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        write_generated_header(f, "zone1970.tab")
+        source_description="zone1970.tab"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_iana_data.py", data_version)
         f.write("// Maps an IANA zone identifier to the ISO 3166-1 country\n")
         f.write("// code(s) that use it, as assigned by zone1970.tab.\n")
         f.write("const Map<String, List<String>> zoneCountryCodes = {\n")
@@ -170,9 +165,11 @@ def write_zone_countries(path, zone_countries):
         f.write("};\n")
 
 
-def write_country_names_en(path, names):
+def write_country_names_en(path, names, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        write_generated_header(f, "iso3166.tab")
+        source_description="iso3166.tab"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_iana_data.py", data_version)
         f.write("// English country names by ISO 3166-1 alpha-2 code.\n")
         f.write("const Map<String, String> countryNamesEn = {\n")
         for code in sorted(names):
@@ -181,9 +178,11 @@ def write_country_names_en(path, names):
         f.write("};\n")
 
 
-def write_canonical_snapshot(path, canonical_ids):
+def write_canonical_snapshot(path, canonical_ids, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        write_generated_header(f, "tzdata source Zone directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")")
+        source_description="tzdata source Zone directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_iana_data.py", data_version)
         f.write("// Snapshot of canonical IANA zone identifiers at\n")
         f.write("// generation time. Compared against the live tz package\n")
         f.write("// data in tests to detect additions/removals across IANA\n")
@@ -197,9 +196,11 @@ def write_canonical_snapshot(path, canonical_ids):
         f.write("];\n")
 
 
-def write_links_snapshot(path, links):
+def write_links_snapshot(path, links, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        write_generated_header(f, "tzdata source Link directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")")
+        source_description="tzdata source Link directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_iana_data.py", data_version)
         f.write("// Maps a deprecated/alias IANA zone identifier (an IANA\n")
         f.write("// \"Link\" directive in the tzdata source) to the\n")
         f.write("// canonical identifier it resolves to. A Link is\n")
@@ -244,16 +245,28 @@ def main():
     zone_countries = parse_zone1970_countries(zone1970_path)
     country_names = parse_iso3166_names(iso3166_path)
 
+    data_version = tzdata_data_version(args.tzdata_source_dir)
     os.makedirs(args.out_dir, exist_ok=True)
-
     write_zone_countries(
-        os.path.join(args.out_dir, "zone1970_countries.g.dart"), zone_countries)
+        os.path.join(args.out_dir, "zone1970_countries.g.dart"),
+        zone_countries,
+        data_version
+    )
     write_country_names_en(
-        os.path.join(args.out_dir, "iso3166_country_names_en.g.dart"), country_names)
+        os.path.join(args.out_dir, "iso3166_country_names_en.g.dart"),
+        country_names,
+        data_version
+    )
     write_canonical_snapshot(
-        os.path.join(args.out_dir, "iana_canonical_zones_snapshot.g.dart"), canonical_ids)
+        os.path.join(args.out_dir, "iana_canonical_zones_snapshot.g.dart"),
+        canonical_ids,
+        data_version
+    )
     write_links_snapshot(
-        os.path.join(args.out_dir, "iana_links_snapshot.g.dart"), links)
+        os.path.join(args.out_dir, "iana_links_snapshot.g.dart"),
+        links,
+        data_version
+    )
 
     print(f"Canonical zones: {len(canonical_ids)}")
     print(f"Links: {len(links)}")

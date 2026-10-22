@@ -1,7 +1,8 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: tzdata source Link directives (africa, antarctica, asia, australasia, backward, etcetera, europe, factory, northamerica, southamerica)
+// Data version: tzdata 2026e
 // Regenerate with: python3 tools/generate_iana_data.py
-// Last generated: 2026-09-21
+// Last generated: 2026-10-22
 
 // Maps a deprecated/alias IANA zone identifier (an IANA
 // "Link" directive in the tzdata source) to the

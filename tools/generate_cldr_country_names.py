@@ -21,6 +21,7 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
+from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
 DEFAULT_OUT_FILE_DE = "cldr_country_names_de.g.dart"
@@ -41,15 +42,13 @@ def load_territories(cldr_json_dir, locale):
     return {code: name for code, name in territories.items() if ALPHA2_CODE.match(code)}
 
 
-def write_country_names_de(path, names, locale):
+def write_country_names_de(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrCountryNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-        f.write("// Source: unicode-org/cldr-json, cldr-localenames-full, main/" + locale + "/territories.json\n")
-        f.write("// Regenerate with: python3 tools/generate_cldr_country_names.py\n")
-        f.write(f"// Last generated: {now}\n\n")
+        source_description=f"unicode-org/cldr-json, cldr-localenames-full, main/{locale}/territories.json"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_cldr_country_names.py", data_version)
         f.write("// Country names by ISO 3166-1 alpha-2 code.\n")
         f.write(f"const Map<String, String> {dart_variable}" + " = {\n")
         for code in sorted(names):
@@ -66,12 +65,13 @@ def main():
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     args = parser.parse_args()
 
+    data_version = cldr_data_version(args.cldr_json_dir)
     os.makedirs(args.out_dir, exist_ok=True)
     for locale in ("de", "en"):
         language = "German" if locale == "de" else "English"
         out_file = DEFAULT_OUT_FILE_DE if locale == "de" else DEFAULT_OUT_FILE_EN
         names = load_territories(args.cldr_json_dir, locale)
-        write_country_names_de(os.path.join(args.out_dir, out_file), names, locale)
+        write_country_names_de(os.path.join(args.out_dir, out_file), names, locale, data_version)
         print(f"{language} country names: {len(names)}")
 
 

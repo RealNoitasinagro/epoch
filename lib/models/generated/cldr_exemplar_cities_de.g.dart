@@ -1,5 +1,6 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: unicode-org/cldr-json, cldr-dates-full, main/de/timeZoneNames.json
+// Data version: CLDR 49.0.0
 // Regenerate with: python3 tools/generate_cldr_exemplar_cities.py
 // Last generated: 2026-10-22
 

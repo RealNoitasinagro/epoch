@@ -1,7 +1,8 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: iso3166.tab
+// Data version: tzdata 2026e
 // Regenerate with: python3 tools/generate_iana_data.py
-// Last generated: 2026-09-21
+// Last generated: 2026-10-22
 
 // English country names by ISO 3166-1 alpha-2 code.
 const Map<String, String> countryNamesEn = {

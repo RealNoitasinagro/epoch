@@ -38,6 +38,7 @@ import json
 import os
 import sys
 from datetime import datetime, timezone
+from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
 DEFAULT_CLDR_JSON_DIR = os.path.expanduser("~/Work/cldr-json/cldr-json")
@@ -119,14 +120,11 @@ def load_metazone_names(cldr_json_dir, locale, kind="long"):
     return result
 
 
-def write_zone_metazone(path, zone_metazones):
+def write_zone_metazone(path, zone_metazones, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-        f.write("// Source: unicode-org/cldr-json, cldr-core, "
-                "supplemental/metaZones.json\n")
-        f.write("// Regenerate with: python3 tools/generate_cldr_metazone_names.py\n")
-        f.write(f"// Last generated: {now}\n\n")
+        source_description=f"unicode-org/cldr-json, cldr-core, supplemental/metaZones.json"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_cldr_metazone_names.py", data_version)
         f.write("// Current CLDR metazone assignment by IANA zone identifier.\n")
         f.write("const Map<String, String> cldrZoneMetaZone = {\n")
         for zone_id in sorted(zone_metazones):
@@ -134,18 +132,15 @@ def write_zone_metazone(path, zone_metazones):
         f.write("};\n")
 
 
-def write_metazone_names(path, names, locale, dart_variable = None):
+def write_metazone_names(path, names, locale, data_version, kind, dart_variable = None):
     if dart_variable is None:
         locale_capitalized = locale.capitalize()
         dart_variable = 'cldrMetazoneNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        f.write("// GENERATED FILE -- DO NOT EDIT BY HAND.\n")
-        f.write("// Source: unicode-org/cldr-json, cldr-dates-full, "
-                f"main/{locale}/timeZoneNames.json (metazone/long)\n")
-        f.write("// Regenerate with: python3 tools/generate_cldr_metazone_names.py\n")
-        f.write(f"// Last generated: {now}\n\n")
-        f.write("// Localized long generic/standard/daylight names by CLDR\n")
+        source_description=f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json (metazone/{kind})"
+        write_header(f, f"{source_description}",
+                     "python3 tools/generate_cldr_metazone_names.py", data_version)
+        f.write(f"// Localized {kind} generic/standard/daylight names by CLDR\n")
         f.write("// metazone identifier. Any of the three may be null if CLDR\n")
         f.write("// has no name for that variant in this locale.\n")
         f.write("const Map<String, ({String? generic, String? standard, String? daylight})> "
@@ -170,13 +165,18 @@ def main():
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     args = parser.parse_args()
 
+    data_version = cldr_data_version(args.cldr_json_dir)
     os.makedirs(args.out_dir, exist_ok=True)
 
     zone_metazones = load_zone_metazones(args.cldr_json_dir)
     write_zone_metazone(
-        os.path.join(args.out_dir, "cldr_zone_metazone.g.dart"), zone_metazones)
+        os.path.join(args.out_dir, "cldr_zone_metazone.g.dart"),
+        zone_metazones,
+        data_version
+    )
     print(f"Zones with a metazone assignment: {len(zone_metazones)}")
 
+    kind = 'long'
     for locale in ("en", "de"):
         names = load_metazone_names(args.cldr_json_dir, locale)
         out_file = f"cldr_metazone_names_{locale}.g.dart"
@@ -184,14 +184,20 @@ def main():
             os.path.join(args.out_dir, out_file),
             names,
             locale,
+            data_version,
+            kind
         )
         print(f"Metazones with {locale} names: {len(names)}")
     short_names = load_metazone_names(args.cldr_json_dir, "en", kind="short")
+
+    kind = 'short'
     out_file = "cldr_metazone_short_names.g.dart"
     write_metazone_names(
         os.path.join(args.out_dir, out_file),
         short_names,
         "en",
+        data_version,
+        kind,
         dart_variable="cldrMetazoneShortNames"
     )
     print(f"Metazones with short names: {len(short_names)}")
