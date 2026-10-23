@@ -18,7 +18,6 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime, timezone
 from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
@@ -57,8 +56,8 @@ def load_windows_zone_names(cldr_json_dir):
 
 def write_windows_zone_names(path, names, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        source_description="unicode-org/cldr-json, cldr-core, supplemental/windowsZones.json (territory=001)"
-        write_header(f, f"{source_description}",
+        source_description = "unicode-org/cldr-json, cldr-core, supplemental/windowsZones.json (territory=001)"
+        write_header(f, source_description,
                      "python3 tools/generate_cldr_windows_zone_names.py", data_version)
         f.write("// Windows-style time zone display name(s) by IANA zone\n")
         f.write("// identifier (English only -- CLDR's Windows mapping has\n")

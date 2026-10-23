@@ -17,9 +17,7 @@ Usage:
 import argparse
 import json
 import os
-import re
 import sys
-from datetime import datetime, timezone
 from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
@@ -96,8 +94,8 @@ def write_city_names(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrCityNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        source_description=f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json"
-        write_header(f, f"{source_description}",
+        source_description = f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json"
+        write_header(f, source_description,
                      "python3 tools/generate_cldr_exemplar_cities.py", data_version)
         f.write("// City names by IANA zone identifier.\n")
         f.write(f"const Map<String, String> {dart_variable}" + " = {\n")
@@ -107,12 +105,12 @@ def write_city_names(path, names, locale, data_version):
         f.write("};\n")
 
 
-def write_metazone_names(path, names, locale, data_version):
+def write_zone_long_names(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrZoneLongNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        source_description=f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json (metazone/long)"
-        write_header(f, f"{source_description}",
+        source_description = f"unicode-org/cldr-json, cldr-dates-full, main/{locale}/timeZoneNames.json (zone/long)"
+        write_header(f, source_description,
                      "python3 tools/generate_cldr_exemplar_cities.py", data_version)
         f.write("// Localized long generic/standard/daylight names by IANA\n")
         f.write("// zone identifier. Any of the three may be null if CLDR\n")
@@ -149,7 +147,7 @@ def main():
         print(f"{language} city names: {len(cities)}")
         out_file_zone_names = DEFAULT_OUT_FILE_ZONE_LONG_DE if locale == "de" else DEFAULT_OUT_FILE_ZONE_LONG_EN
         zone_names = load_zones(args.cldr_json_dir, locale, cities)
-        write_metazone_names(os.path.join(args.out_dir, out_file_zone_names), zone_names, locale, data_version)
+        write_zone_long_names(os.path.join(args.out_dir, out_file_zone_names), zone_names, locale, data_version)
         print(f"{language} zone names: {len(zone_names)}")
 
 

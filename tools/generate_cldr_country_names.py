@@ -20,7 +20,6 @@ import json
 import os
 import re
 import sys
-from datetime import datetime, timezone
 from generated_header import write_header, cldr_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
@@ -46,8 +45,8 @@ def write_country_names_de(path, names, locale, data_version):
     locale_capitalized = locale.capitalize()
     dart_variable = 'cldrCountryNames' + locale_capitalized
     with open(path, "w", encoding="utf-8") as f:
-        source_description=f"unicode-org/cldr-json, cldr-localenames-full, main/{locale}/territories.json"
-        write_header(f, f"{source_description}",
+        source_description = f"unicode-org/cldr-json, cldr-localenames-full, main/{locale}/territories.json"
+        write_header(f, source_description,
                      "python3 tools/generate_cldr_country_names.py", data_version)
         f.write("// Country names by ISO 3166-1 alpha-2 code.\n")
         f.write(f"const Map<String, String> {dart_variable}" + " = {\n")

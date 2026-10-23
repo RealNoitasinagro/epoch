@@ -57,7 +57,6 @@ import argparse
 import os
 import re
 import sys
-from datetime import datetime, timezone
 from generated_header import write_header, tzdata_data_version
 
 DEFAULT_OUT_DIR = "lib/models/generated"
@@ -154,8 +153,8 @@ def dart_string_list(items):
 
 def write_zone_countries(path, zone_countries, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        source_description="zone1970.tab"
-        write_header(f, f"{source_description}",
+        source_description = "zone1970.tab"
+        write_header(f, source_description,
                      "python3 tools/generate_iana_data.py", data_version)
         f.write("// Maps an IANA zone identifier to the ISO 3166-1 country\n")
         f.write("// code(s) that use it, as assigned by zone1970.tab.\n")
@@ -167,8 +166,8 @@ def write_zone_countries(path, zone_countries, data_version):
 
 def write_country_names_en(path, names, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        source_description="iso3166.tab"
-        write_header(f, f"{source_description}",
+        source_description = "iso3166.tab"
+        write_header(f, source_description,
                      "python3 tools/generate_iana_data.py", data_version)
         f.write("// English country names by ISO 3166-1 alpha-2 code.\n")
         f.write("const Map<String, String> countryNamesEn = {\n")
@@ -180,8 +179,8 @@ def write_country_names_en(path, names, data_version):
 
 def write_canonical_snapshot(path, canonical_ids, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        source_description="tzdata source Zone directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
-        write_header(f, f"{source_description}",
+        source_description = "tzdata source Zone directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
+        write_header(f, source_description,
                      "python3 tools/generate_iana_data.py", data_version)
         f.write("// Snapshot of canonical IANA zone identifiers at\n")
         f.write("// generation time. Compared against the live tz package\n")
@@ -198,8 +197,8 @@ def write_canonical_snapshot(path, canonical_ids, data_version):
 
 def write_links_snapshot(path, links, data_version):
     with open(path, "w", encoding="utf-8") as f:
-        source_description="tzdata source Link directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
-        write_header(f, f"{source_description}",
+        source_description = "tzdata source Link directives (" + ", ".join(DEFAULT_SOURCE_FILES) + ")"
+        write_header(f, source_description,
                      "python3 tools/generate_iana_data.py", data_version)
         f.write("// Maps a deprecated/alias IANA zone identifier (an IANA\n")
         f.write("// \"Link\" directive in the tzdata source) to the\n")
