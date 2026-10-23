@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
-    _settingsReloadNotifier?.removeListener(_onExternalReload);;
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
     _longitudeController.dispose();
     super.dispose();
   }

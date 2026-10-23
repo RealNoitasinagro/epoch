@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:numerus/numerus.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
+import 'effective_clock.dart';
 import 'layout_constants.dart';
 import 'models/time_value.dart';
 import 'models/zone_rules.dart';
@@ -36,12 +37,12 @@ class TimeUtils {
 
   /// Returns true/false for a given time zone independently of current date.
   static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>
-      zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc())?.hasDst ?? false;
+      zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc())?.hasDst ?? false;
 
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
       String ianaZone, bool dst, {DateTime? referenceUtc}) {
-    final rules = zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc());
+    final rules = zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc());
     if (rules == null || !rules.hasDst) return null;
     return dst
         ? (offset: rules.dstOffset, abbreviation: rules.dstAbbr)
@@ -56,7 +57,7 @@ class TimeUtils {
       String localIanaZone) {
     switch (timeValue.zone) {
       case ZoneLocal():
-        return DateTime.now();  // always auto for local
+        return utcNow.toLocal();  // always auto for local
       case ZoneUtc():
         return utcNow;
       case ZoneNamed(ianaZone: final zone):

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -97,9 +98,9 @@ class _FocusScreenState extends State<FocusScreen> {
   void initState() {
     super.initState();
     _showOptionalPart = widget.timeValue.showOptionalPart;
-    _now = DateTime.now();
+    _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
-            (_) => setState(() => _now = DateTime.now()));
+            (_) => setState(() => _now = EffectiveClock.now()));
     WakelockPlus.enable();
     _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);

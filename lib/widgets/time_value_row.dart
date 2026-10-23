@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:timezone/src/date_time.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -81,7 +81,7 @@ abstract class TimeValueRow extends StatelessWidget {
       String ianaZone, BuildContext context, AppLocalizations l10n) {
     final app = EpochApp.of(context);
     final transitions = TimeUtils.nextDstTransitions(
-        ianaZone, DateTime.now().toUtc(), count: 4);
+        ianaZone, EffectiveClock.now().toUtc(), count: 4);
     if (transitions.isEmpty) return [];
 
     final textTheme   = Theme.of(context).textTheme;
@@ -89,7 +89,7 @@ abstract class TimeValueRow extends StatelessWidget {
     final locale      = l10n.localeName;
 
     Widget transitionRow(DateTime utcTime) {
-      final TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
+      final tz.TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
       final DateTime localTime = utcTime.toLocal();  // time in device local time
 
       var zonedStr = TimeValueFormatter.formatDateTime(

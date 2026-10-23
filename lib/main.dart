@@ -8,6 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
+import 'effective_clock.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
@@ -335,9 +336,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _now = DateTime.now();
+    _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _now = DateTime.now());
+      setState(() => _now = EffectiveClock.now());
     });
     _loadData();
   }
