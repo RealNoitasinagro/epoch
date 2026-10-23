@@ -345,7 +345,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextRomanNumeralsTime =>
-      'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
+      'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -462,6 +462,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageSettings => 'Settings';
+
+  @override
+  String get pageTimeShift => 'Time Shift';
 
   @override
   String get sectionAlternative => 'Alternative Time Scales';
@@ -677,6 +680,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technical';
+
+  @override
+  String get timeShiftApply => 'Apply';
+
+  @override
+  String get timeShiftDate => 'Date';
+
+  @override
+  String get timeShiftFrozen => 'Freeze time';
+
+  @override
+  String get timeShiftFrozenSub => 'The clock stays at the set time.';
+
+  @override
+  String get timeShiftHours => 'Hours';
+
+  @override
+  String get timeShiftMinutes => 'Minutes';
+
+  @override
+  String get timeShiftOutOfRange =>
+      'Supported range: 1970-01-01 00:00:00 UTC to 2038-01-19 03:14:07 UTC';
+
+  @override
+  String get timeShiftReset => 'Back to system time';
+
+  @override
+  String get timeShiftSeconds => 'Seconds';
+
+  @override
+  String get timeShiftTime => 'Time';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';

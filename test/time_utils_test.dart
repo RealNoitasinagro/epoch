@@ -114,20 +114,43 @@ void main() {
     });
   });
 
-  group('TimeUtils.taiSeconds', () {
-    test('TAI is 37 seconds ahead of Unix', () {
-      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-      final unix = TimeUtils.unixTimestamp(dt);
-      final tai = TimeUtils.taiUnixTimestamp(dt);
-      expect(tai - unix, equals(37));
+  group('TimeUtils.taiMinusUtcSeconds', () {
+    test('10 s when UTC started in 1972', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 1, 1)), 10);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 6, 30, 23, 59, 59)), 10);
+    });
+    test('each inserted leap second adds one', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 7, 1)), 11);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1999, 1, 1)), 32);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2016, 12, 31, 23, 59, 59)), 36);
+    });
+    test('37 s since 2017-01-01 (all 27 leap seconds counted)', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2017, 1, 1)), 37);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2026, 10, 23)), 37);
+    });
+  });
+
+  group('TimeUtils.taiUnixTimestamp', () {
+    test('TAI is 37 seconds ahead of Unix today', () {
+      final dt = DateTime.utc(2026, 1, 1);
+      expect(TimeUtils.taiUnixTimestamp(dt) - TimeUtils.unixTimestamp(dt), 37);
     });
   });
 
   group('TimeUtils.gpsTime', () {
     test('GPS epoch = 0', () {
-      // GPS epoch: 1980-01-06 00:00:00 UTC, GPS is 18s ahead
-      final gpsEpoch = DateTime.utc(1980, 1, 6, 0, 0, 0);
-      expect(TimeUtils.gpsTime(gpsEpoch), equals(18));
+      expect(TimeUtils.gpsTime(DateTime.utc(1980, 1, 6)), equals(0));
+    });
+    test('GPS is 18 seconds ahead of Unix-based elapsed time today', () {
+      final dt = DateTime.utc(2026, 1, 1);
+      final elapsed = dt.difference(DateTime.utc(1980, 1, 6)).inSeconds;
+      expect(TimeUtils.gpsTime(dt) - elapsed, 18);
+    });
+    test('leap second in 1981 shifts GPS by one', () {
+      final before = DateTime.utc(1981, 6, 30, 23, 59, 59);
+      final after = DateTime.utc(1981, 7, 1);
+      final elapsedSeconds = after.difference(before).inSeconds;  // 1
+      expect(TimeUtils.gpsTime(after) - TimeUtils.gpsTime(before), elapsedSeconds + 1);
     });
   });
 

@@ -14,6 +14,7 @@ const IconData kIconTimeZoneIndicator = Icons.language_sharp;
 const IconData kIconPinnedIndicator   = Icons.push_pin_sharp;
 const IconData kIconDstActive         = Icons.more_time_sharp;
 const IconData kIconDstInactive       = Icons.update_disabled_sharp;
+const IconData kIconTimeShift         = Icons.manage_history_sharp;
 
 const double kTabHorizontalPadding               = 16.0;
 const double kTabVerticalPadding                 = 8.0;

@@ -9,8 +9,25 @@ import 'models/zone_rules.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
-  static const leapSecondsSince1972 = 27;
-  static const leapSecondsSince1980 = leapSecondsSince1972 - 9;
+  /// TAI − UTC at the start of 1972, when UTC was defined as it is today.
+  static const _taiMinusUtcAtStartOf1972 = 10;
+
+  /// TAI − GPS time, constant by definition.
+  static const _taiMinusGpsSeconds = 19;
+
+  /// First UTC moment after each inserted leap second (year, month).
+  /// All 27 insertions to date; none are scheduled, abolition in 2027.
+  static final List<DateTime> _leapSecondBoundaries = [
+    for (final (year, month) in const [
+      (1972, 7), (1973, 1), (1974, 1), (1975, 1), (1976, 1), (1977, 1),
+      (1978, 1), (1979, 1), (1980, 1), (1981, 7), (1982, 7), (1983, 7),
+      (1985, 7), (1988, 1), (1990, 1), (1991, 1), (1992, 7), (1993, 7),
+      (1994, 7), (1996, 1), (1997, 7), (1999, 1), (2006, 1), (2009, 1),
+      (2012, 7), (2015, 7), (2017, 1),
+    ])
+      DateTime.utc(year, month),
+  ];
+
   static const CommonRomanNumeralsConfig _romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
 
   static int dayOfYear(DateTime dt) => dt.ordinalDate;
@@ -183,16 +200,27 @@ class TimeUtils {
   static int unixTimestamp(DateTime utc) =>
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
-  /// TAI: UTC + 37 leap seconds.
-  static int taiUnixTimestamp(DateTime utc) {
-    return unixTimestamp(utc) + 10 + leapSecondsSince1972;
+  /// TAI − UTC in seconds at the given moment. Before 1972 UTC had no leap
+  /// seconds in today's sense; the 1972 value is used as an approximation.
+  static int taiMinusUtcSeconds(DateTime utc) {
+    final moment = utc.toUtc();
+    final insertedLeapSeconds = _leapSecondBoundaries
+        .where((boundary) => !boundary.isAfter(moment))
+        .length;
+    return _taiMinusUtcAtStartOf1972 + insertedLeapSeconds;
   }
 
-  /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS time does not have leap seconds, 18s ahead of UTC.
+  /// TAI: Unix time plus the leap seconds inserted so far.
+  static int taiUnixTimestamp(DateTime utc) =>
+      unixTimestamp(utc) + taiMinusUtcSeconds(utc);
+
+  /// GPS time: seconds since 1980-01-06 00:00:00 UTC, including the leap
+  /// seconds inserted since then (GPS itself has none).
   static int gpsTime(DateTime utc) {
     final gpsEpoch = DateTime.utc(1980, 1, 6);
-    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSince1980;
+    final leapSecondsSinceGpsEpoch =
+        taiMinusUtcSeconds(utc) - _taiMinusGpsSeconds;
+    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSinceGpsEpoch;
   }
 
   /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).

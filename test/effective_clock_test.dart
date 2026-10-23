@@ -51,4 +51,17 @@ void main() {
     expect(EffectiveClock.now(), equals(fakeSystemTime));
     expect(EffectiveClock.isShifted, isFalse);
   });
+
+  test('shifting to the current time is no shift (sub-second noise ignored)', () {
+    fakeSystemTime = fakeSystemTime.add(const Duration(milliseconds: 700));
+    EffectiveClock.shiftTo(EffectiveClock.now());
+    expect(EffectiveClock.isShifted, isFalse);
+  });
+
+  test('change notifier fires on shift and reset', () {
+    final before = EffectiveClock.changeNotifier.value;
+    EffectiveClock.shiftTo(DateTime.utc(2000).toLocal());
+    EffectiveClock.reset();
+    expect(EffectiveClock.changeNotifier.value, before + 2);
+  });
 }

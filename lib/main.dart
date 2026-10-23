@@ -23,6 +23,7 @@ import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/time_shift_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -333,6 +334,11 @@ class _HomeScreenState extends State<HomeScreen>
     _loadData();
   }
 
+  void _onClockChanged() {
+    if (!mounted) return;
+    setState(() => _now = EffectiveClock.now());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -340,6 +346,7 @@ class _HomeScreenState extends State<HomeScreen>
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() => _now = EffectiveClock.now());
     });
+    EffectiveClock.changeNotifier.addListener(_onClockChanged);
     _loadData();
   }
 
@@ -347,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _timer.cancel();
     _tabController?.dispose();
+    EffectiveClock.changeNotifier.removeListener(_onClockChanged);
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }
@@ -488,6 +496,13 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
+  void _openTimeShift(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const TimeShiftScreen()),
+    );
+  }
+
   void _removeLmstFromAllTabs() {
     var anyChanged = false;
     for (final tab in _tabs) {
@@ -576,6 +591,8 @@ class _HomeScreenState extends State<HomeScreen>
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               switch (value) {
+                case 'time_shift':
+                  _openTimeShift(context);
                 case 'settings':
                   _openSettings(context);
                 case 'about':
@@ -592,6 +609,15 @@ class _HomeScreenState extends State<HomeScreen>
             itemBuilder: (context) {
               final l10n = AppLocalizations.of(context)!;
               return [
+                PopupMenuItem(
+                  value: 'time_shift',
+                  child: ListTile(
+                    leading: const Icon(kIconTimeShift),
+                    title: Text(l10n.pageTimeShift),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
                 PopupMenuItem(
                   value: 'settings',
                   child: ListTile(

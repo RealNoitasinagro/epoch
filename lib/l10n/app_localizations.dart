@@ -647,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextRomanNumeralsTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
+  /// **'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
   String get infoTextRomanNumeralsTime;
 
   /// No description provided for @infoTextSevenSegmentTime.
@@ -841,6 +841,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get pageSettings;
+
+  /// No description provided for @pageTimeShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Shift'**
+  String get pageTimeShift;
 
   /// No description provided for @sectionAlternative.
   ///
@@ -1261,6 +1267,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Technical'**
   String get tabTechnical;
+
+  /// No description provided for @timeShiftApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get timeShiftApply;
+
+  /// No description provided for @timeShiftDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get timeShiftDate;
+
+  /// No description provided for @timeShiftFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze time'**
+  String get timeShiftFrozen;
+
+  /// No description provided for @timeShiftFrozenSub.
+  ///
+  /// In en, this message translates to:
+  /// **'The clock stays at the set time.'**
+  String get timeShiftFrozenSub;
+
+  /// No description provided for @timeShiftHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get timeShiftHours;
+
+  /// No description provided for @timeShiftMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get timeShiftMinutes;
+
+  /// No description provided for @timeShiftOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported range: 1970-01-01 00:00:00 UTC to 2038-01-19 03:14:07 UTC'**
+  String get timeShiftOutOfRange;
+
+  /// No description provided for @timeShiftReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to system time'**
+  String get timeShiftReset;
+
+  /// No description provided for @timeShiftSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds'**
+  String get timeShiftSeconds;
+
+  /// No description provided for @timeShiftTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeShiftTime;
 
   /// No description provided for @valueTypeBinaryClockBcd.
   ///

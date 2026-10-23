@@ -470,6 +470,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageSettings => 'Einstellungen';
 
   @override
+  String get pageTimeShift => 'Time Shift';
+
+  @override
   String get sectionAlternative => 'Alternative Zeiteinteilung';
 
   @override
@@ -684,6 +687,38 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technisch';
+
+  @override
+  String get timeShiftApply => 'Aktivieren';
+
+  @override
+  String get timeShiftDate => 'Datum';
+
+  @override
+  String get timeShiftFrozen => 'Zeit einfrieren';
+
+  @override
+  String get timeShiftFrozenSub =>
+      'Die Uhr bleibt bei der eingestellten Zeit stehen.';
+
+  @override
+  String get timeShiftHours => 'Stunden';
+
+  @override
+  String get timeShiftMinutes => 'Minuten';
+
+  @override
+  String get timeShiftOutOfRange =>
+      'Unterstützter Bereich: 1970-01-01 00:00:00 UTC bis 2038-01-19 03:14:07 UTC';
+
+  @override
+  String get timeShiftReset => 'Zurück zur Systemzeit';
+
+  @override
+  String get timeShiftSeconds => 'Sekunden';
+
+  @override
+  String get timeShiftTime => 'Uhrzeit';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binäruhr (BCD)';
