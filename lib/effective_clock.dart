@@ -33,10 +33,16 @@ class EffectiveClock {
         : system.add(_offsetFromSystem);
   }
 
+  /// The real system time, regardless of any shift (for the indicator).
+  static DateTime systemTime() => systemNow();
+
   /// True if the displayed time deviates from the system time.
   static bool get isShifted => isFrozen || _offsetFromSystem != Duration.zero;
 
   static bool get isFrozen => _frozenMoment != null;
+
+  /// True if the displayed time lies before the system time.
+  static bool get isShiftedIntoPast => deviationFromSystem.isNegative;
 
   /// Displayed time minus system time (positive = future).
   static Duration get deviationFromSystem => now().difference(systemNow());

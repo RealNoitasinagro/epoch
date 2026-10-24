@@ -380,6 +380,12 @@ abstract class AppLocalizations {
   /// **'Select value type'**
   String get hintSelectValueType;
 
+  /// No description provided for @hintTimeShiftIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Shift active · system date: {date}'**
+  String hintTimeShiftIndicator(String date);
+
   /// No description provided for @hintTimezoneSearch.
   ///
   /// In en, this message translates to:
@@ -1297,6 +1303,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date'**
   String get timeShiftDate;
+
+  /// No description provided for @timeShiftFocusIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Indicator in Focus screen'**
+  String get timeShiftFocusIndicator;
+
+  /// No description provided for @timeShiftFocusIndicatorSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows a small icon while the displayed time deviates from the system time'**
+  String get timeShiftFocusIndicatorSub;
 
   /// No description provided for @timeShiftFrozen.
   ///

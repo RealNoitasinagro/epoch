@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
+import '../models/app_settings.dart';
 import '../widgets/dial_picker.dart';
 import '../widgets/section_header.dart';
 
@@ -21,6 +22,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   late final Timer _ticker;
   late bool _frozen;
+  bool _focusIndicatorEnabled = kDefaultFocusTimeShiftIndicator;
 
   /// Null as long as the user has not edited anything: the shown values then
   /// follow the live clock. After the first edit they stay as configured.
@@ -201,6 +203,16 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                 : l10n.timeShiftFrozenSubOff),
             value: _frozen,
             onChanged: (value) => setState(() => _frozen = value),
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.fullscreen),
+            title: Text(l10n.timeShiftFocusIndicator),
+            subtitle: Text(l10n.timeShiftFocusIndicatorSub),
+            value: _focusIndicatorEnabled,
+            onChanged: (value) {
+              setState(() => _focusIndicatorEnabled = value);
+              saveFocusTimeShiftIndicator(value);
+            },
           ),
           const SizedBox(height: 16),
           Padding(

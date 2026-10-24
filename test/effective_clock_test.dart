@@ -65,4 +65,13 @@ void main() {
     EffectiveClock.reset();
     expect(EffectiveClock.changeNotifier.value, before + 2);
   });
+
+  test('direction of the shift', () {
+    EffectiveClock.shiftTo(fakeSystemTime.subtract(const Duration(hours: 1)));
+    expect(EffectiveClock.isShiftedIntoPast, isTrue);
+    EffectiveClock.shiftTo(fakeSystemTime.add(const Duration(hours: 1)));
+    expect(EffectiveClock.isShiftedIntoPast, isFalse);
+    EffectiveClock.reset();
+    expect(EffectiveClock.isShiftedIntoPast, isFalse);
+  });
 }

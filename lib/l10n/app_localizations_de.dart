@@ -179,6 +179,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintSelectValueType => 'Werttyp auswählen';
 
   @override
+  String hintTimeShiftIndicator(String date) {
+    return 'Time Shift aktiv · Systemdatum: $date';
+  }
+
+  @override
   String get hintTimezoneSearch =>
       'Stadt, Land, Zone oder Offset (z. B. UTC+5:30)';
 
@@ -702,6 +707,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftDate => 'Datum';
+
+  @override
+  String get timeShiftFocusIndicator => 'Indikator im Fokus-Screen';
+
+  @override
+  String get timeShiftFocusIndicatorSub =>
+      'Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht';
 
   @override
   String get timeShiftFrozen => 'Zeit einfrieren';

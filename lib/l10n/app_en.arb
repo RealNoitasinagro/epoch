@@ -32,6 +32,13 @@
       }
     }
   },
+  "@hintTimeShiftIndicator": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -100,6 +107,7 @@
   "hintSelectAll": "Select all",
   "hintSelectTimezone": "Select timezone",
   "hintSelectValueType": "Select value type",
+  "hintTimeShiftIndicator": "Time Shift active · system date: {date}",
   "hintTimezoneSearch": "City, country, zone or offset (e.g. UTC+5:30)",
   "hintZoneIndicator": "Timezone-dependent value",
   "infoLinkBinaryClockBcd": "https://en.wikipedia.org/wiki/Binary_clock",
@@ -253,6 +261,8 @@
   "tabTechnical": "Technical",
   "timeShiftApply": "Apply",
   "timeShiftDate": "Date",
+  "timeShiftFocusIndicator": "Indicator in Focus screen",
+  "timeShiftFocusIndicatorSub": "Shows a small icon while the displayed time deviates from the system time",
   "timeShiftFrozen": "Freeze time",
   "timeShiftFrozenSubOff": "The clock keeps running from the set time.",
   "timeShiftFrozenSubOn": "The clock stays at the set time.",

@@ -24,6 +24,7 @@ import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/time_shift_screen.dart';
+import 'widgets/time_shift_indicator.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -556,19 +557,30 @@ class _HomeScreenState extends State<HomeScreen>
             );
           },
         ),
-        title: GestureDetector(
-          onDoubleTap: _toggleFullscreen,
-          onLongPress: () => _showBuildInfo(context),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (!EpochApp.of(context).isNightMode) ...[
-                Image.asset('assets/icon/epoch_icon.png', height: 28),
-                const SizedBox(width: 8),
-              ],
-              Text(l10n.appName),
-            ],
-          ),
+        title: Row(
+          children: [
+            GestureDetector(
+              onDoubleTap: _toggleFullscreen,
+              onLongPress: () => _showBuildInfo(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!EpochApp.of(context).isNightMode) ...[
+                    Image.asset('assets/icon/epoch_icon.png', height: 28),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(l10n.appName),
+                ],
+              ),
+            ),
+            if (EffectiveClock.isShifted)
+              Expanded(
+                child: Center(
+                  child: TimeShiftIndicator(
+                      onTap: () => _openTimeShift(context)),
+                ),
+              ),
+          ],
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [

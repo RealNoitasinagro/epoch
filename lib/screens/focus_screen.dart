@@ -63,6 +63,7 @@ class _FocusScreenState extends State<FocusScreen> {
   Timer? _pixelShiftTimer;
   static const _pixelShiftInterval = Duration(seconds: 180);
   static const _safetyMargin = 8.0;  // extra breathing room, both ends
+  bool _showTimeShiftIndicator = kDefaultFocusTimeShiftIndicator;
 
   double? _measuredContentHeight;
   double get _topReservedForShift =>
@@ -112,6 +113,7 @@ class _FocusScreenState extends State<FocusScreen> {
     ]);
     _scheduleControlsHide();
     _initBrightness();
+    _initTimeShiftIndicator();
   }
 
   void _remeasureContent() {
@@ -217,6 +219,13 @@ class _FocusScreenState extends State<FocusScreen> {
       await saveFocusBrightness(value);
     } catch (_) {}
   }
+
+  Future<void> _initTimeShiftIndicator() async {
+    final enabled = await loadFocusTimeShiftIndicator();
+    if (mounted) setState(() => _showTimeShiftIndicator = enabled);
+  }
+
+  double _horizontalPadding(bool isLandscape) => isLandscape ? 80.0 : 24.0;
 
   void _scheduleControlsHide() {
     _controlsHideTimer?.cancel();
@@ -597,10 +606,36 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildValueDisplay(bool isLandscape) {
+    final valueContent = _buildValueContent(isLandscape);
+    if (!_showTimeShiftIndicator || !EffectiveClock.isShifted) {
+      return valueContent;
+    }
+    // The badge sits above the value and moves with it, so the pixel shift
+    // protects it from burn-in as well.
+    const badgeSize = kIconSizeDefault + 8;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        valueContent,
+        Positioned(
+          top: -badgeSize,
+          left: _horizontalPadding(isLandscape),
+          child: Icon(
+            EffectiveClock.isShiftedIntoPast
+                ? kIconTimeShiftPast : kIconTimeShiftFuture,
+            size: badgeSize,
+            color: _textColor.withAlpha(150),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildValueContent(bool isLandscape) {
     final app = EpochApp.of(context);
 
     // Horizontal padding: make room for side controls in landscape:
-    final hPadding = isLandscape ? 80.0 : 24.0;
+    final hPadding = _horizontalPadding(isLandscape);
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {

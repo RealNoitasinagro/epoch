@@ -32,6 +32,13 @@
       }
     }
   },
+  "@hintTimeShiftIndicator": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -100,6 +107,7 @@
   "hintSelectAll": "Alle auswählen",
   "hintSelectTimezone": "Zeitzone auswählen",
   "hintSelectValueType": "Werttyp auswählen",
+  "hintTimeShiftIndicator": "Time Shift aktiv · Systemdatum: {date}",
   "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "hintZoneIndicator": "Zeitzonen-abhängiger Wert",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -253,6 +261,8 @@
   "tabTechnical": "Technisch",
   "timeShiftApply": "Aktivieren",
   "timeShiftDate": "Datum",
+  "timeShiftFocusIndicator": "Indikator im Fokus-Screen",
+  "timeShiftFocusIndicatorSub": "Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht",
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die Uhr läuft ab der eingestellten Zeit weiter.",
   "timeShiftFrozenSubOn": "Die Uhr bleibt bei der eingestellten Zeit stehen.",

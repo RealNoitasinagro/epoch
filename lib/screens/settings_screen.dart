@@ -389,11 +389,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Table(
                         columnWidths: const {
-                          0: FixedColumnWidth(52),   // Token links
-                          1: FixedColumnWidth(48),   // Beispiel links
-                          2: FixedColumnWidth(16),   // Abstand
-                          3: FixedColumnWidth(52),   // Token rechts
-                          4: FlexColumnWidth(),      // Beispiel rechts
+                          0: FixedColumnWidth(52),   // Token left
+                          1: FixedColumnWidth(48),   // Example left
+                          2: FixedColumnWidth(16),   // Distance
+                          3: FixedColumnWidth(52),   // Token right
+                          4: FlexColumnWidth(),      // Example right
                         },
                         children: List.generate(rowCount, (i) {
                           final l = leftRows[i];
