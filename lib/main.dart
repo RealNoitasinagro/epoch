@@ -51,6 +51,12 @@ void main(List<String> args) async {
     }
   }
 
+  LicenseRegistry.addLicense(() async* {
+    final licenseText = await rootBundle.loadString('assets/licenses/unicode_cldr.txt');
+    yield LicenseEntryWithLineBreaks(
+        ['Unicode CLDR (country, city and time zone names)'], licenseText);
+  });
+
   runApp(const EpochApp());
 }
 
