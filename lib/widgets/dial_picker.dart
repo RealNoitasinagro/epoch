@@ -21,6 +21,24 @@ int hourFromDialPosition(int clockPosition, {required bool isInnerRing}) {
 ({int clockPosition, bool isInnerRing}) dialPositionOfHour(int hour) =>
     (clockPosition: hour % 12, isInnerRing: hour == 0 || hour > 12);
 
+/// The value selected by a touch at [offsetFromCenter] (screen coordinates:
+/// x to the right, y downwards, origin at the dial's center).
+int dialValueAtOffset(Offset offsetFromCenter, DialScale scale) {
+  // Clockwise angle from the top, in [0, 2π):
+  final angle =
+      (math.atan2(offsetFromCenter.dx, -offsetFromCenter.dy) + 2 * math.pi) %
+          (2 * math.pi);
+  switch (scale) {
+    case DialScale.hours24:
+      return hourFromDialPosition(
+        (angle / (math.pi / 6)).round() % 12,
+        isInnerRing: offsetFromCenter.distance < _dialSize / 2 * _ringSwitchFraction,
+      );
+    case DialScale.sixty:
+      return (angle / (math.pi / 30)).round() % 60;
+  }
+}
+
 /// Shows a circular picker; returns the chosen value or null if cancelled.
 Future<int?> showDialPicker(
     BuildContext context, {
@@ -54,20 +72,10 @@ class _DialPickerDialogState extends State<_DialPickerDialog> {
   late int _value = widget.initialValue;
 
   void _selectAt(Offset localPosition) {
-    final fromCenter = localPosition - const Offset(_dialSize / 2, _dialSize / 2);
-    // Clockwise angle from the top, in [0, 2π):
-    final angle =
-        (math.atan2(fromCenter.dx, -fromCenter.dy) + 2 * math.pi) % (2 * math.pi);
-    final int newValue;
-    switch (widget.scale) {
-      case DialScale.hours24:
-        newValue = hourFromDialPosition(
-          (angle / (math.pi / 6)).round() % 12,
-          isInnerRing: fromCenter.distance < _dialSize / 2 * _ringSwitchFraction,
-        );
-      case DialScale.sixty:
-        newValue = (angle / (math.pi / 30)).round() % 60;
-    }
+    final newValue = dialValueAtOffset(
+      localPosition - const Offset(_dialSize / 2, _dialSize / 2),
+      widget.scale,
+    );
     if (newValue != _value) setState(() => _value = newValue);
   }
 

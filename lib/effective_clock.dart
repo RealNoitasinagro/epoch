@@ -51,12 +51,10 @@ class EffectiveClock {
   /// The offset is a whole number of seconds (sub-second parts are dropped on
   /// both sides), so "shifting" to the current time is no shift at all.
   static void shiftTo(DateTime target, {bool frozen = false}) {
-    final targetLocal = target.toLocal();
-    // _offsetFromSystem = _truncateToSeconds(targetLocal)
-    //     .difference(_truncateToSeconds(systemNow()));
-    // _frozenMoment = frozen ? _truncateToSeconds(targetLocal) : null;
-    _offsetFromSystem = targetLocal.difference(systemNow());
-    _frozenMoment = frozen ? targetLocal : null;
+    final targetWholeSecond = _truncateToSeconds(target.toLocal());
+    _offsetFromSystem =
+        targetWholeSecond.difference(_truncateToSeconds(systemNow()));
+    _frozenMoment = frozen ? targetWholeSecond : null;
     changeNotifier.value++;
   }
 

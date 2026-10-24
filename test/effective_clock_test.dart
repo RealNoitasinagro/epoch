@@ -52,9 +52,10 @@ void main() {
     expect(EffectiveClock.isShifted, isFalse);
   });
 
-  test('shifting to the current time is no shift (sub-second noise ignored)', () {
-    fakeSystemTime = fakeSystemTime.add(const Duration(milliseconds: 700));
-    EffectiveClock.shiftTo(EffectiveClock.now());
+  test('shifting to the current whole second is no shift', () {
+    DateTime target = DateTime(2026, 10, 23, 14, 5, 33);
+    fakeSystemTime = target.add(const Duration(milliseconds: 700));
+    EffectiveClock.shiftTo(target);
     expect(EffectiveClock.isShifted, isFalse);
   });
 
