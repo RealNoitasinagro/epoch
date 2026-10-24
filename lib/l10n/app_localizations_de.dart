@@ -372,6 +372,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
 
   @override
+  String get labelDay => 'TT';
+
+  @override
   String labelDstChangeInDays(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -401,6 +404,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelMinutes => 'Min';
 
   @override
+  String get labelMonth => 'MM';
+
+  @override
   String get labelNewLabel => 'Bezeichnung';
 
   @override
@@ -420,6 +426,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelShowSeconds => 'Sekunden anzeigen';
+
+  @override
+  String get labelYear => 'JJJJ';
 
   @override
   String get messageAlreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';
@@ -698,7 +707,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get timeShiftFrozen => 'Zeit einfrieren';
 
   @override
-  String get timeShiftFrozenSub =>
+  String get timeShiftFrozenSubOff =>
+      'Die Uhr läuft ab der eingestellten Zeit weiter.';
+
+  @override
+  String get timeShiftFrozenSubOn =>
       'Die Uhr bleibt bei der eingestellten Zeit stehen.';
 
   @override
@@ -706,6 +719,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftMinutes => 'Minuten';
+
+  @override
+  String get timeShiftNow => 'Jetzt';
 
   @override
   String get timeShiftOutOfRange =>

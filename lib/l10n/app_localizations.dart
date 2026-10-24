@@ -680,6 +680,12 @@ abstract class AppLocalizations {
   /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
   String get infoTextUnixSeconds;
 
+  /// No description provided for @labelDay.
+  ///
+  /// In en, this message translates to:
+  /// **'DD'**
+  String get labelDay;
+
   /// No description provided for @labelDstChangeInDays.
   ///
   /// In en, this message translates to:
@@ -719,8 +725,14 @@ abstract class AppLocalizations {
   /// No description provided for @labelMinutes.
   ///
   /// In en, this message translates to:
-  /// **'MM'**
+  /// **'mm'**
   String get labelMinutes;
+
+  /// No description provided for @labelMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'MM'**
+  String get labelMonth;
 
   /// No description provided for @labelNewLabel.
   ///
@@ -749,7 +761,7 @@ abstract class AppLocalizations {
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
-  /// **'SS'**
+  /// **'ss'**
   String get labelSeconds;
 
   /// No description provided for @labelShowDecimals.
@@ -763,6 +775,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show seconds'**
   String get labelShowSeconds;
+
+  /// No description provided for @labelYear.
+  ///
+  /// In en, this message translates to:
+  /// **'YYYY'**
+  String get labelYear;
 
   /// No description provided for @messageAlreadyDisplayed.
   ///
@@ -1286,11 +1304,17 @@ abstract class AppLocalizations {
   /// **'Freeze time'**
   String get timeShiftFrozen;
 
-  /// No description provided for @timeShiftFrozenSub.
+  /// No description provided for @timeShiftFrozenSubOff.
+  ///
+  /// In en, this message translates to:
+  /// **'The clock keeps running from the set time.'**
+  String get timeShiftFrozenSubOff;
+
+  /// No description provided for @timeShiftFrozenSubOn.
   ///
   /// In en, this message translates to:
   /// **'The clock stays at the set time.'**
-  String get timeShiftFrozenSub;
+  String get timeShiftFrozenSubOn;
 
   /// No description provided for @timeShiftHours.
   ///
@@ -1303,6 +1327,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minutes'**
   String get timeShiftMinutes;
+
+  /// No description provided for @timeShiftNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get timeShiftNow;
 
   /// No description provided for @timeShiftOutOfRange.
   ///

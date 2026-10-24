@@ -28,6 +28,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   DateTime get _displayedMoment => _editedMoment ?? EffectiveClock.now();
 
+  bool get _canReturnToSystemTime =>
+      EffectiveClock.isShifted || _editedMoment != null;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +70,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       firstDate: _firstSelectableDate,
       lastDate: _lastSelectableDate,
       initialDatePickerMode:
-      startWithYear ? DatePickerMode.year : DatePickerMode.day,
+        startWithYear ? DatePickerMode.year : DatePickerMode.day,
     );
     if (picked == null || !mounted) return;
     _updateMoment(year: picked.year, month: picked.month, day: picked.day);
@@ -127,6 +130,33 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     );
   }
 
+  /// Sets the date (or the time of day) back to the current system values,
+  /// leaving the other part as configured.
+  void _adoptSystemValues({required bool date}) {
+    final system = DateTime.now();
+    if (date) {
+      _updateMoment(year: system.year, month: system.month, day: system.day);
+    } else {
+      _updateMoment(
+          hour: system.hour, minute: system.minute, second: system.second);
+    }
+  }
+
+  Widget _sectionHeader(String label, {required bool date}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kTabHorizontalPadding),
+      child: Row(
+        children: [
+          Expanded(child: SectionHeader(label: label)),
+          TextButton(
+            onPressed: () => _adoptSystemValues(date: date),
+            child: Text(AppLocalizations.of(context)!.timeShiftNow),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -139,34 +169,36 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: kTabVerticalPadding),
         children: [
-          Padding(padding: sectionPadding,
-              child: SectionHeader(label: l10n.timeShiftDate)),
+          Text("<Explanation text>"),
+          const Divider(height: kDividerHeight),
+          _sectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
           _segmentRow([
-            _ValueSegment(caption: 'YYYY', value: moment.year.toString().padLeft(4, '0'),
+            _ValueSegment(caption: l10n.labelYear, value: moment.year.toString().padLeft(4, '0'),
                 width: 104, onPressed: () => _editDate(startWithYear: true)),
-            _ValueSegment(caption: 'MM', value: twoDigits(moment.month),
+            _ValueSegment(caption: l10n.labelMonth, value: twoDigits(moment.month),
                 onPressed: () => _editDate(startWithYear: false)),
-            _ValueSegment(caption: 'DD', value: twoDigits(moment.day),
+            _ValueSegment(caption: l10n.labelDay, value: twoDigits(moment.day),
                 onPressed: () => _editDate(startWithYear: false)),
           ], '-'),
           const Divider(height: kDividerHeight),
-          Padding(padding: sectionPadding,
-              child: SectionHeader(label: l10n.timeShiftTime)),
+          _sectionHeader(l10n.timeShiftTime, date: false),
           const SizedBox(height: 8),
           _segmentRow([
-            _ValueSegment(caption: 'HH', value: twoDigits(moment.hour),
+            _ValueSegment(caption: l10n.labelHours, value: twoDigits(moment.hour),
                 onPressed: () => _editTimeUnit(_TimeUnit.hour)),
-            _ValueSegment(caption: 'mm', value: twoDigits(moment.minute),
+            _ValueSegment(caption: l10n.labelMinutes, value: twoDigits(moment.minute),
                 onPressed: () => _editTimeUnit(_TimeUnit.minute)),
-            _ValueSegment(caption: 'ss', value: twoDigits(moment.second),
+            _ValueSegment(caption: l10n.labelSeconds, value: twoDigits(moment.second),
                 onPressed: () => _editTimeUnit(_TimeUnit.second)),
           ], ':'),
           const Divider(height: kDividerHeight),
           SwitchListTile(
             secondary: const Icon(Icons.pause_circle_outline),
             title: Text(l10n.timeShiftFrozen),
-            subtitle: Text(l10n.timeShiftFrozenSub),
+            subtitle: Text(_frozen
+                ? l10n.timeShiftFrozenSubOn
+                : l10n.timeShiftFrozenSubOff),
             value: _frozen,
             onChanged: (value) => setState(() => _frozen = value),
           ),
@@ -187,7 +219,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.restart_alt),
                     label: Text(l10n.timeShiftReset),
-                    onPressed: EffectiveClock.isShifted ? _resetToSystemTime : null,
+                    onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
                   ),
                 ),
               ],

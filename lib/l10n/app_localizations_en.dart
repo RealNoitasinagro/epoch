@@ -367,6 +367,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.';
 
   @override
+  String get labelDay => 'DD';
+
+  @override
   String labelDstChangeInDays(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -393,7 +396,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLongitude => 'Longitude (negative = West)';
 
   @override
-  String get labelMinutes => 'MM';
+  String get labelMinutes => 'mm';
+
+  @override
+  String get labelMonth => 'MM';
 
   @override
   String get labelNewLabel => 'Label';
@@ -408,13 +414,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNextClockChanges => 'Next clock changes';
 
   @override
-  String get labelSeconds => 'SS';
+  String get labelSeconds => 'ss';
 
   @override
   String get labelShowDecimals => 'Show decimals';
 
   @override
   String get labelShowSeconds => 'Show seconds';
+
+  @override
+  String get labelYear => 'YYYY';
 
   @override
   String get messageAlreadyDisplayed => 'This value is already displayed.';
@@ -691,13 +700,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeShiftFrozen => 'Freeze time';
 
   @override
-  String get timeShiftFrozenSub => 'The clock stays at the set time.';
+  String get timeShiftFrozenSubOff =>
+      'The clock keeps running from the set time.';
+
+  @override
+  String get timeShiftFrozenSubOn => 'The clock stays at the set time.';
 
   @override
   String get timeShiftHours => 'Hours';
 
   @override
   String get timeShiftMinutes => 'Minutes';
+
+  @override
+  String get timeShiftNow => 'Now';
 
   @override
   String get timeShiftOutOfRange =>
