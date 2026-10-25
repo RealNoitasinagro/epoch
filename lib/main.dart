@@ -8,6 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
+import 'bundled_licenses.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
@@ -25,6 +26,7 @@ import 'screens/splash_screen.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  registerBundledLicenses();
   await runPrefsMigrations();
   tz.initializeTimeZones();
 
@@ -50,12 +52,6 @@ void main(List<String> args) async {
       }
     }
   }
-
-  LicenseRegistry.addLicense(() async* {
-    final licenseText = await rootBundle.loadString('assets/licenses/unicode_cldr.txt');
-    yield LicenseEntryWithLineBreaks(
-        ['Unicode CLDR (country, city and time zone names)'], licenseText);
-  });
 
   runApp(const EpochApp());
 }

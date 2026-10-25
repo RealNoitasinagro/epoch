@@ -4,6 +4,7 @@
 
 ### Added
 - new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
+- (more) license texts (CLDR, JetBrains Mono) readable in the app
 
 ### Changed
 - time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
