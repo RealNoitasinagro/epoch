@@ -607,6 +607,31 @@ void main() {
     });
   });
 
+  group('TimeUtils.wallClockAroundTransition', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('Berlin autumn: 03:00 CEST becomes 02:00 CET (the hour repeats)', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Europe/Berlin', DateTime.utc(2026, 10, 25, 1));
+      expect(wall.before, equals(DateTime.utc(2026, 10, 25, 3)));
+      expect(wall.after, equals(DateTime.utc(2026, 10, 25, 2)));
+    });
+
+    test('Berlin spring: 02:00 CET becomes 03:00 CEST (the hour is skipped)', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Europe/Berlin', DateTime.utc(2027, 3, 28, 1));
+      expect(wall.before, equals(DateTime.utc(2027, 3, 28, 2)));
+      expect(wall.after, equals(DateTime.utc(2027, 3, 28, 3)));
+    });
+
+    test('Lord Howe: 30-minute change', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Australia/Lord_Howe', DateTime.utc(2026, 10, 3, 15, 30));
+      expect(wall.before, equals(DateTime.utc(2026, 10, 4, 2, 0)));
+      expect(wall.after, equals(DateTime.utc(2026, 10, 4, 2, 30)));
+    });
+  });
+
   group('TimeUtils.resolveLocalTime', () {
     test('local zone uses the given moment, not the system clock', () {
       const timeValue = TimeValue(valueType: ValueType.time, zone: ZoneLocal());

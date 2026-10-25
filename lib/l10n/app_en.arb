@@ -72,10 +72,10 @@
   },
   "@timeShiftHint": {
     "placeholders": {
-      "activate": {
+      "apply": {
         "type": "String"
       },
-      "deactivate": {
+      "reset": {
         "type": "String"
       }
     }
@@ -86,6 +86,20 @@
         "type": "String"
       },
       "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemDate": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemTime": {
+    "placeholders": {
+      "apply": {
         "type": "String"
       }
     }
@@ -308,10 +322,12 @@
   "timeShiftFrozen": "Freeze time",
   "timeShiftFrozenSubOff": "The time used in the app keeps running from the set moment.",
   "timeShiftFrozenSubOn": "The time used in the app stays at the set moment.",
-  "timeShiftHint": "\"{activate}\" sets the time Epoch uses for all time values – running or frozen – without changing your device's clock. You can return to the system time at any time with \"{deactivate}\". The setting is not saved: after a restart, Epoch always shows the system time.",
+  "timeShiftHint": "\"{apply}\" sets the time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.",
+  "timeShiftHintApply": "Applies the selected date and time to the whole app.",
   "timeShiftHintRange": "Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.",
-  "timeShiftHintResetToSystemDate": "Reset to system date, does not affect Epoch's time",
-  "timeShiftHintResetToSystemTime": "Reset to system time, does not affect Epoch's date",
+  "timeShiftHintReset": "Sets date and time in the whole app to the values of the system clock (the system's present).\nCloses this page.",
+  "timeShiftHintResetToSystemDate": "Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"{apply}\" button.",
+  "timeShiftHintResetToSystemTime": "Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"{apply}\" button.",
   "timeShiftHours": "Hours",
   "timeShiftMinutes": "Minutes",
   "timeShiftOutOfRange": "Supported range: {earliest} to {latest}",

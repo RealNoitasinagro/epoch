@@ -1349,8 +1349,14 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{activate}\" sets the time Epoch uses for all time values – running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{deactivate}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
-  String timeShiftHint(String activate, String deactivate);
+  /// **'\"{apply}\" sets the time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  String timeShiftHint(String apply, String reset);
+
+  /// No description provided for @timeShiftHintApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies the selected date and time to the whole app.'**
+  String get timeShiftHintApply;
 
   /// No description provided for @timeShiftHintRange.
   ///
@@ -1358,17 +1364,23 @@ abstract class AppLocalizations {
   /// **'Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.'**
   String timeShiftHintRange(String earliest, String latest);
 
+  /// No description provided for @timeShiftHintReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets date and time in the whole app to the values of the system clock (the system\'s present).\nCloses this page.'**
+  String get timeShiftHintReset;
+
   /// No description provided for @timeShiftHintResetToSystemDate.
   ///
   /// In en, this message translates to:
-  /// **'Reset to system date, does not affect Epoch\'s time'**
-  String get timeShiftHintResetToSystemDate;
+  /// **'Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"{apply}\" button.'**
+  String timeShiftHintResetToSystemDate(String apply);
 
   /// No description provided for @timeShiftHintResetToSystemTime.
   ///
   /// In en, this message translates to:
-  /// **'Reset to system time, does not affect Epoch\'s date'**
-  String get timeShiftHintResetToSystemTime;
+  /// **'Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"{apply}\" button.'**
+  String timeShiftHintResetToSystemTime(String apply);
 
   /// No description provided for @timeShiftHours.
   ///

@@ -727,9 +727,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'The time used in the app stays at the set moment.';
 
   @override
-  String timeShiftHint(String activate, String deactivate) {
-    return '\"$activate\" sets the time Epoch uses for all time values – running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$deactivate\". The setting is not saved: after a restart, Epoch always shows the system time.';
+  String timeShiftHint(String apply, String reset) {
+    return '\"$apply\" sets the time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved: after a restart, Epoch always shows the system time.';
   }
+
+  @override
+  String get timeShiftHintApply =>
+      'Applies the selected date and time to the whole app.';
 
   @override
   String timeShiftHintRange(String earliest, String latest) {
@@ -737,12 +741,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get timeShiftHintResetToSystemDate =>
-      'Reset to system date, does not affect Epoch\'s time';
+  String get timeShiftHintReset =>
+      'Sets date and time in the whole app to the values of the system clock (the system\'s present).\nCloses this page.';
 
   @override
-  String get timeShiftHintResetToSystemTime =>
-      'Reset to system time, does not affect Epoch\'s date';
+  String timeShiftHintResetToSystemDate(String apply) {
+    return 'Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"$apply\" button.';
+  }
+
+  @override
+  String timeShiftHintResetToSystemTime(String apply) {
+    return 'Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"$apply\" button.';
+  }
 
   @override
   String get timeShiftHours => 'Hours';

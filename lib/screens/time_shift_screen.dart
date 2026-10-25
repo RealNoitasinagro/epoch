@@ -155,8 +155,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
           Expanded(child: SectionHeader(label: label)),
           Tooltip(
             message: date
-                ? l10n.timeShiftHintResetToSystemDate
-                : l10n.timeShiftHintResetToSystemTime,
+                ? l10n.timeShiftHintResetToSystemDate(l10n.timeShiftApply)
+                : l10n.timeShiftHintResetToSystemTime(l10n.timeShiftApply),
             child: IconButton(
               icon: const Icon(Icons.restart_alt),
               onPressed: () => _adoptSystemValues(date: date),
@@ -236,6 +236,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
             _ValueSegment(caption: l10n.labelSeconds, value: twoDigits(moment.second),
                 onPressed: () => _editTimeUnit(_TimeUnit.second)),
           ], ':'),
+          const SizedBox(height: 16),
           SwitchListTile(
             secondary: const Icon(Icons.pause_circle_outline),
             title: Text(l10n.timeShiftFrozen),
@@ -251,18 +252,24 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: FilledButton.icon(
-                    icon: const Icon(kIconTimeShift),
-                    label: Text(l10n.timeShiftApply),
-                    onPressed: _apply,
+                  child: Tooltip(
+                    message: l10n.timeShiftHintApply,
+                    child: FilledButton.icon(
+                      icon: const Icon(kIconTimeShift),
+                      label: Text(l10n.timeShiftApply),
+                      onPressed: _apply,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: OutlinedButton.icon(
-                    icon: const Icon(Icons.restart_alt),
-                    label: Text(l10n.timeShiftReset),
-                    onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
+                  child: Tooltip(
+                    message: l10n.timeShiftHintReset,
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.restart_alt),
+                      label: Text(l10n.timeShiftReset),
+                      onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
+                    ),
                   ),
                 ),
               ],

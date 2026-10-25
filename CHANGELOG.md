@@ -3,12 +3,17 @@
 ## [Unreleased]
 
 ### Added
+- 🆒 Time Shift (new menu item): show any moment between 1970 and 2038 in all values, running or frozen,
+without touching the system clock; title bar shows the real system time meanwhile,
+Focus screen has an optional indicator
 - new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
 
 ### Changed
 - time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
 name, abbreviation or offset, in English and German
 - offsets, abbreviations and clock changes are derived from the time zone data
+- TAI and GPS time account for historical leap seconds; Doomsday Clock shows its historical settings
+- clock changes in the info dialog show the wall-clock time before and after the change
 
 ### Fixed
 - LMST was still shown after deactivation if the app was closed before leaving Settings

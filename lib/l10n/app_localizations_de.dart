@@ -736,9 +736,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.';
 
   @override
-  String timeShiftHint(String activate, String deactivate) {
-    return 'Mit „$activate“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$deactivate“ kehrst Du jederzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
+  String timeShiftHint(String apply, String reset) {
+    return 'Mit „$apply“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
   }
+
+  @override
+  String get timeShiftHintApply =>
+      'Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.';
 
   @override
   String timeShiftHintRange(String earliest, String latest) {
@@ -746,12 +750,18 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get timeShiftHintResetToSystemDate =>
-      'Auf Systemdatum zurücksetzen, Epochs Uhrzeit bleibt unverändert';
+  String get timeShiftHintReset =>
+      'Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr (Gegenwart des Systems).\nDiese Ansicht wird dabei geschlossen.';
 
   @override
-  String get timeShiftHintResetToSystemTime =>
-      'Auf Systemuhrzeit zurücksetzen, Epochs Datum bleibt unverändert';
+  String timeShiftHintResetToSystemDate(String apply) {
+    return 'Setzt das Time-Shift-Auswahl-Datum auf das Systemdatum, die Uhrzeit bleibt wie eingestellt.\nWird erst mit dem „$apply“-Knopf wirksam.';
+  }
+
+  @override
+  String timeShiftHintResetToSystemTime(String apply) {
+    return 'Setzt die Time-Shift-Auswahl-Uhrzeit auf die Systemzeit, das Datum bleibt wie eingestellt.\nWird erst mit dem „$apply“-Knopf wirksam.';
+  }
 
   @override
   String get timeShiftHours => 'Stunden';

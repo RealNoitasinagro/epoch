@@ -72,10 +72,10 @@
   },
   "@timeShiftHint": {
     "placeholders": {
-      "activate": {
+      "apply": {
         "type": "String"
       },
-      "deactivate": {
+      "reset": {
         "type": "String"
       }
     }
@@ -86,6 +86,20 @@
         "type": "String"
       },
       "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemDate": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemTime": {
+    "placeholders": {
+      "apply": {
         "type": "String"
       }
     }
@@ -308,10 +322,12 @@
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
   "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
-  "timeShiftHint": "Mit „{activate}“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{deactivate}“ kehrst Du jederzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHint": "Mit „{apply}“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHintApply": "Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.",
   "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
-  "timeShiftHintResetToSystemDate": "Auf Systemdatum zurücksetzen, Epochs Uhrzeit bleibt unverändert",
-  "timeShiftHintResetToSystemTime": "Auf Systemuhrzeit zurücksetzen, Epochs Datum bleibt unverändert",
+  "timeShiftHintReset": "Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr (Gegenwart des Systems).\nDiese Ansicht wird dabei geschlossen.",
+  "timeShiftHintResetToSystemDate": "Setzt das Time-Shift-Auswahl-Datum auf das Systemdatum, die Uhrzeit bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
+  "timeShiftHintResetToSystemTime": "Setzt die Time-Shift-Auswahl-Uhrzeit auf die Systemzeit, das Datum bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
   "timeShiftHours": "Stunden",
   "timeShiftMinutes": "Minuten",
   "timeShiftOutOfRange": "Unterstützter Bereich: {earliest} bis {latest}",
