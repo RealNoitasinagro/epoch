@@ -87,7 +87,7 @@ class TimeValueFormatter {
             ? formatDecimal(deg, locale, 2, thousandsSep:  false)
             : deg.toInt()}°';
       case ValueType.doomsdayClock:
-        return TimeUtils.doomsDayClockString(hourFormat24);
+        return TimeUtils.doomsDayClockString(hourFormat24, utcNow);
       default:
         break;
     }

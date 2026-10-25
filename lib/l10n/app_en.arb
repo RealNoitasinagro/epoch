@@ -182,7 +182,7 @@
   "infoTextDayPercent": "Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.",
   "infoTextDaySecond": "Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.",
   "infoTextDecimalTime": "Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.",
-  "infoTextDoomsdayClock": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.",
+  "infoTextDoomsdayClock": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Latest setting: 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.",
   "infoTextDublinJulianDate": "Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.",
   "infoTextGmst": "Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.",
   "infoTextGps": "GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is 18 seconds ahead of UTC.",

@@ -407,6 +407,25 @@ void main() {
     });
   });
 
+  group('TimeUtils.doomsdaySecondsToMidnight', () {
+    test('1970 still shows the setting of 1969 (10 minutes)', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(1970, 1, 1)), 600);
+    });
+    test('a setting applies from 1 January of its year', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2016, 12, 31)), 180);
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2017, 1, 1)), 150);
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2018, 1, 1)), 120);
+    });
+    test('the latest setting applies to all later dates', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2037, 6, 1)), 85);
+    });
+    test('clock string for today and for the 1991 maximum', () {
+      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(2026, 10, 24)), '23:58:35');
+      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(1991, 6, 1)), '23:43:00');
+      expect(TimeUtils.doomsDayClockString(false, DateTime.utc(1991, 6, 1)), '11:43:00 PM');
+    });
+  });
+
   // Other
 
   group('TimeUtils.nextDstTransition', () {

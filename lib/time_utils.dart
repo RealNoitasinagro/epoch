@@ -408,8 +408,42 @@ class TimeUtils {
 
   /// Returns the current Doomsday Clock time.
   /// Last check for accuracy of hardcoded values: 2026-09-01.
-  static String doomsDayClockString(bool hourFormat24) {
-    int hh = 23; int mm = 58; int ss = 35;
-    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
+  // static String doomsDayClockString(bool hourFormat24) {
+  //   int hh = 23; int mm = 58; int ss = 35;
+  //   return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
+  // }
+
+  /// Doomsday Clock settings: year -> seconds to midnight. A setting applies
+  /// from 1 January of its year until the next entry (simplification: changes
+  /// within a year are not modelled). Source: the timeline at
+  /// https://en.wikipedia.org/wiki/Doomsday_Clock – verify when adding entries.
+  /// Last check for accuracy of hardcoded values: 2026-09-01.
+  static const Map<int, int> _doomsdaySecondsToMidnightByYear = {
+    1969: 600,  1972: 720,  1974: 540,  1980: 420,  1981: 240,
+    1984: 180,  1988: 360,  1990: 600,  1991: 1020, 1995: 840,
+    1998: 540,  2002: 420,  2007: 300,  2010: 360,  2012: 300,
+    2015: 180,  2017: 150,  2018: 120,  2020: 100,  2023: 90,
+    2025: 89,   2026: 85,
+  };
+
+  /// Seconds to midnight at the given moment; the latest known setting
+  /// applies to all dates after the last table entry.
+  static int doomsdaySecondsToMidnight(DateTime utc) {
+    final year = utc.toUtc().year;
+    final settingYear = _doomsdaySecondsToMidnightByYear.keys.lastWhere(
+            (candidate) => candidate <= year,
+        orElse: () => _doomsdaySecondsToMidnightByYear.keys.first);
+    return _doomsdaySecondsToMidnightByYear[settingYear]!;
+  }
+
+  /// The Doomsday Clock as a time of day (23:5x:xx) for the given moment.
+  static String doomsDayClockString(bool hourFormat24, DateTime utc) {
+    final secondOfDay = 24 * 60 * 60 - doomsdaySecondsToMidnight(utc);
+    return TimeValueFormatter.formatTime(
+        hourFormat24,
+        secondOfDay ~/ 3600,
+        (secondOfDay % 3600) ~/ 60,
+        secondOfDay % 60,
+        tzSuffix: null);
   }
 }
