@@ -63,7 +63,6 @@ class _FocusScreenState extends State<FocusScreen> {
   Timer? _pixelShiftTimer;
   static const _pixelShiftInterval = Duration(seconds: 180);
   static const _safetyMargin = 8.0;  // extra breathing room, both ends
-  bool _showTimeShiftIndicator = kDefaultFocusTimeShiftIndicator;
 
   double? _measuredContentHeight;
   double get _topReservedForShift =>
@@ -95,6 +94,9 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Orientation? _lastOrientation;
 
+  bool get _showTimeShiftIndicator =>
+      EpochApp.of(context).focusTimeShiftIndicator;
+
   @override
   void initState() {
     super.initState();
@@ -113,7 +115,6 @@ class _FocusScreenState extends State<FocusScreen> {
     ]);
     _scheduleControlsHide();
     _initBrightness();
-    _initTimeShiftIndicator();
   }
 
   void _remeasureContent() {
@@ -218,11 +219,6 @@ class _FocusScreenState extends State<FocusScreen> {
       await ScreenBrightness().setApplicationScreenBrightness(value);
       await saveFocusBrightness(value);
     } catch (_) {}
-  }
-
-  Future<void> _initTimeShiftIndicator() async {
-    final enabled = await loadFocusTimeShiftIndicator();
-    if (mounted) setState(() => _showTimeShiftIndicator = enabled);
   }
 
   double _horizontalPadding(bool isLandscape) => isLandscape ? 80.0 : 24.0;

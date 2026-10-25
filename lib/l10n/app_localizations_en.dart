@@ -174,9 +174,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintSelectValueType => 'Select value type';
 
   @override
-  String hintTimeShiftIndicator(String date) {
-    return 'Time Shift active · system date: $date';
+  String get hintTimeShiftFuture => 'into the future';
+
+  @override
+  String hintTimeShiftIndicator(String date, String period) {
+    return 'Time Shift $period · system date: $date\nTap to change or reset';
   }
+
+  @override
+  String get hintTimeShiftPast => 'into the past';
 
   @override
   String get hintTimezoneSearch =>
@@ -471,8 +477,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSettingsReset => 'Settings reset to defaults';
 
   @override
-  String get messageTabReactivated =>
-      'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.';
+  String messageTabReactivated(String resetAction) {
+    return 'Tab reactivated – it may not match the default configuration anymore. Use \"$resetAction\" on the tab if needed.';
+  }
 
   @override
   String get pageSettings => 'Settings';
@@ -713,10 +720,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftFrozenSubOff =>
-      'The clock keeps running from the set time.';
+      'The time used in the app keeps running from the set moment.';
 
   @override
-  String get timeShiftFrozenSubOn => 'The clock stays at the set time.';
+  String get timeShiftFrozenSubOn =>
+      'The time used in the app stays at the set moment.';
+
+  @override
+  String timeShiftHint(String activate, String deactivate) {
+    return '\"$activate\" sets the time Epoch uses for all time values – running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$deactivate\". The setting is not saved: after a restart, Epoch always shows the system time.';
+  }
+
+  @override
+  String timeShiftHintRange(String earliest, String latest) {
+    return 'Supported range: $earliest to $latest, limited by Unix time and the available IANA time zone data.';
+  }
+
+  @override
+  String get timeShiftHintResetToSystemDate =>
+      'Reset to system date, does not affect Epoch\'s time';
+
+  @override
+  String get timeShiftHintResetToSystemTime =>
+      'Reset to system time, does not affect Epoch\'s date';
 
   @override
   String get timeShiftHours => 'Hours';
@@ -725,14 +751,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeShiftMinutes => 'Minutes';
 
   @override
-  String get timeShiftNow => 'Now';
+  String timeShiftOutOfRange(String earliest, String latest) {
+    return 'Supported range: $earliest to $latest';
+  }
 
   @override
-  String get timeShiftOutOfRange =>
-      'Supported range: 1970-01-01 00:00:00 UTC to 2038-01-19 03:14:07 UTC';
-
-  @override
-  String get timeShiftReset => 'Back to system time';
+  String get timeShiftReset => 'Reset to system clock';
 
   @override
   String get timeShiftSeconds => 'Seconds';

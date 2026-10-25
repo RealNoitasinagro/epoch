@@ -36,6 +36,9 @@
     "placeholders": {
       "date": {
         "type": "String"
+      },
+      "period": {
+        "type": "String"
       }
     }
   },
@@ -57,6 +60,43 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "@messageTabReactivated": {
+    "placeholders": {
+      "resetAction": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHint": {
+    "placeholders": {
+      "activate": {
+        "type": "String"
+      },
+      "deactivate": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftOutOfRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
       }
     }
   },
@@ -107,7 +147,9 @@
   "hintSelectAll": "Select all",
   "hintSelectTimezone": "Select timezone",
   "hintSelectValueType": "Select value type",
-  "hintTimeShiftIndicator": "Time Shift active · system date: {date}",
+  "hintTimeShiftFuture": "into the future",
+  "hintTimeShiftIndicator": "Time Shift {period} · system date: {date}\nTap to change or reset",
+  "hintTimeShiftPast": "into the past",
   "hintTimezoneSearch": "City, country, zone or offset (e.g. UTC+5:30)",
   "hintZoneIndicator": "Timezone-dependent value",
   "infoLinkBinaryClockBcd": "https://en.wikipedia.org/wiki/Binary_clock",
@@ -186,7 +228,7 @@
   "messageSettingsImportFailed": "Import failed – invalid file",
   "messageSettingsImported": "Settings imported",
   "messageSettingsReset": "Settings reset to defaults",
-  "messageTabReactivated": "Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.",
+  "messageTabReactivated": "Tab reactivated – it may not match the default configuration anymore. Use \"{resetAction}\" on the tab if needed.",
   "pageSettings": "Settings",
   "pageTimeShift": "Time Shift",
   "sectionAlternative": "Alternative Time Scales",
@@ -264,13 +306,16 @@
   "timeShiftFocusIndicator": "Indicator in Focus screen",
   "timeShiftFocusIndicatorSub": "Shows a small icon while the displayed time deviates from the system time",
   "timeShiftFrozen": "Freeze time",
-  "timeShiftFrozenSubOff": "The clock keeps running from the set time.",
-  "timeShiftFrozenSubOn": "The clock stays at the set time.",
+  "timeShiftFrozenSubOff": "The time used in the app keeps running from the set moment.",
+  "timeShiftFrozenSubOn": "The time used in the app stays at the set moment.",
+  "timeShiftHint": "\"{activate}\" sets the time Epoch uses for all time values – running or frozen – without changing your device's clock. You can return to the system time at any time with \"{deactivate}\". The setting is not saved: after a restart, Epoch always shows the system time.",
+  "timeShiftHintRange": "Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.",
+  "timeShiftHintResetToSystemDate": "Reset to system date, does not affect Epoch's time",
+  "timeShiftHintResetToSystemTime": "Reset to system time, does not affect Epoch's date",
   "timeShiftHours": "Hours",
   "timeShiftMinutes": "Minutes",
-  "timeShiftNow": "Now",
-  "timeShiftOutOfRange": "Supported range: 1970-01-01 00:00:00 UTC to 2038-01-19 03:14:07 UTC",
-  "timeShiftReset": "Back to system time",
+  "timeShiftOutOfRange": "Supported range: {earliest} to {latest}",
+  "timeShiftReset": "Reset to system clock",
   "timeShiftSeconds": "Seconds",
   "timeShiftTime": "Time",
   "valueTypeBinaryClockBcd": "Binary Clock (BCD)",

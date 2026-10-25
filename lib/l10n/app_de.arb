@@ -36,6 +36,9 @@
     "placeholders": {
       "date": {
         "type": "String"
+      },
+      "period": {
+        "type": "String"
       }
     }
   },
@@ -54,9 +57,46 @@
     }
   },
   "@messageMaxValues": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+  "@messageTabReactivated": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "resetAction": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHint": {
+    "placeholders": {
+      "activate": {
+        "type": "String"
+      },
+      "deactivate": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftOutOfRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
       }
     }
   },
@@ -99,15 +139,17 @@
   "hintMatchAlsoCity": "Gleiche Zeitzone wie {name}",
   "hintMatchAlsoCountry": "Zeitzone gilt auch in {name}",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
-  "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren tippen",
-  "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren tippen",
+  "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren antippen",
+  "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren antippen",
   "hintRemoveSelected": "Markierte entfernen",
   "hintResetToDefaults": "Zurücksetzen",
   "hintSelect": "Auswählen",
   "hintSelectAll": "Alle auswählen",
   "hintSelectTimezone": "Zeitzone auswählen",
   "hintSelectValueType": "Werttyp auswählen",
-  "hintTimeShiftIndicator": "Time Shift aktiv · Systemdatum: {date}",
+  "hintTimeShiftFuture": "in die Zukunft",
+  "hintTimeShiftIndicator": "Time Shift {period} · Systemdatum: {date}\nAntippen zum Ändern oder Aufheben",
+  "hintTimeShiftPast": "in die Vergangenheit",
   "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "hintZoneIndicator": "Zeitzonen-abhängiger Wert",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -186,7 +228,7 @@
   "messageSettingsImportFailed": "Import fehlgeschlagen – ungültige Datei",
   "messageSettingsImported": "Einstellungen importiert",
   "messageSettingsReset": "Einstellungen zurückgesetzt",
-  "messageTabReactivated": "Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.",
+  "messageTabReactivated": "Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „{resetAction}“ auf dem Tab wiederherstellen.",
   "pageSettings": "Einstellungen",
   "pageTimeShift": "Time Shift",
   "sectionAlternative": "Alternative Zeiteinteilung",
@@ -259,18 +301,21 @@
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
   "tabTechnical": "Technisch",
-  "timeShiftApply": "Aktivieren",
+  "timeShiftApply": "Anwenden",
   "timeShiftDate": "Datum",
   "timeShiftFocusIndicator": "Indikator im Fokus-Screen",
   "timeShiftFocusIndicatorSub": "Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht",
   "timeShiftFrozen": "Zeit einfrieren",
-  "timeShiftFrozenSubOff": "Die Uhr läuft ab der eingestellten Zeit weiter.",
-  "timeShiftFrozenSubOn": "Die Uhr bleibt bei der eingestellten Zeit stehen.",
+  "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
+  "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
+  "timeShiftHint": "Mit „{activate}“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{deactivate}“ kehrst Du jederzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
+  "timeShiftHintResetToSystemDate": "Auf Systemdatum zurücksetzen, Epochs Uhrzeit bleibt unverändert",
+  "timeShiftHintResetToSystemTime": "Auf Systemuhrzeit zurücksetzen, Epochs Datum bleibt unverändert",
   "timeShiftHours": "Stunden",
   "timeShiftMinutes": "Minuten",
-  "timeShiftNow": "Jetzt",
-  "timeShiftOutOfRange": "Unterstützter Bereich: 1970-01-01 00:00:00 UTC bis 2038-01-19 03:14:07 UTC",
-  "timeShiftReset": "Zurück zur Systemzeit",
+  "timeShiftOutOfRange": "Unterstützter Bereich: {earliest} bis {latest}",
+  "timeShiftReset": "Zurücksetzen auf Systemuhr",
   "timeShiftSeconds": "Sekunden",
   "timeShiftTime": "Uhrzeit",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",

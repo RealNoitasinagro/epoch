@@ -74,4 +74,9 @@ void main() {
     EffectiveClock.reset();
     expect(EffectiveClock.isShiftedIntoPast, isFalse);
   });
+
+  test('range texts', () {
+    expect(EffectiveClock.earliestMomentText, '1970-01-01 00:00:00 UTC');
+    expect(EffectiveClock.latestMomentText, '2038-01-19 03:14:07 UTC');
+  });
 }

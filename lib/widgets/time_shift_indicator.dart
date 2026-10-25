@@ -12,6 +12,9 @@ import '../time_value_formatter.dart';
 class TimeShiftIndicator extends StatelessWidget {
   final VoidCallback onTap;
 
+  /// Longer (custom) patterns could break the title bar layout.
+  static const _maxPatternLength = 11;
+
   const TimeShiftIndicator({super.key, required this.onTap});
 
   @override
@@ -22,7 +25,8 @@ class TimeShiftIndicator extends StatelessWidget {
     final textStyle = DefaultTextStyle.of(context).style.copyWith(
         fontFamily: fontFamilyDefault, fontSize: 14, fontWeight: FontWeight.w500);
 
-    String timePattern = app.timeFormat.length <= 11 ? app.timeFormat : kTimePatternFull;
+    final timePattern = app.timeFormat.length <= _maxPatternLength
+        ? app.timeFormat : kTimePatternFull;
     final timeText = TimeValueFormatter.formatTime(
         app.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
         pattern: timePattern
@@ -30,8 +34,19 @@ class TimeShiftIndicator extends StatelessWidget {
     final dateText = TimeValueFormatter.formatDate(
         l10n.localeName, systemTime, pattern: app.dateFormat);
 
+    IconData timeShiftIcon;
+    String timeRange;
+    if (EffectiveClock.isShiftedIntoPast) {
+      timeShiftIcon = kIconTimeShiftPast;
+      timeRange = l10n.hintTimeShiftPast;
+    }
+    else {
+      timeShiftIcon = kIconTimeShiftFuture;
+      timeRange = l10n.hintTimeShiftFuture;
+    }
+
     return Tooltip(
-      message: l10n.hintTimeShiftIndicator(dateText),
+      message: l10n.hintTimeShiftIndicator(dateText, timeRange),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(kTileBorderRadius),
@@ -43,8 +58,7 @@ class TimeShiftIndicator extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  EffectiveClock.isShiftedIntoPast
-                      ? kIconTimeShiftPast : kIconTimeShiftFuture,
+                  timeShiftIcon,
                   size: kIconSizeDefault,
                   color: textStyle.color,
                 ),

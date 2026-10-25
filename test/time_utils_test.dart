@@ -587,4 +587,13 @@ void main() {
       expect(single, equals(list.firstOrNull));
     });
   });
+
+  group('TimeUtils.resolveLocalTime', () {
+    test('local zone uses the given moment, not the system clock', () {
+      const timeValue = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
+      final moment = DateTime.utc(2001, 9, 9, 1, 46, 40);
+      expect(TimeUtils.resolveLocalTime(timeValue, moment, 'Europe/Berlin'),
+          equals(moment.toLocal()));
+    });
+  });
 }

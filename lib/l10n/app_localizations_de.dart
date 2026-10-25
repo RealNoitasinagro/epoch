@@ -155,10 +155,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintPinnedIndicator => 'Automatische Zeitumstellung deaktiviert';
 
   @override
-  String get hintPixelShiftOff => 'Einbrennschutz aus – zum Aktivieren tippen';
+  String get hintPixelShiftOff =>
+      'Einbrennschutz aus – zum Aktivieren antippen';
 
   @override
-  String get hintPixelShiftOn => 'Einbrennschutz an – zum Deaktivieren tippen';
+  String get hintPixelShiftOn =>
+      'Einbrennschutz an – zum Deaktivieren antippen';
 
   @override
   String get hintRemoveSelected => 'Markierte entfernen';
@@ -179,9 +181,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintSelectValueType => 'Werttyp auswählen';
 
   @override
-  String hintTimeShiftIndicator(String date) {
-    return 'Time Shift aktiv · Systemdatum: $date';
+  String get hintTimeShiftFuture => 'in die Zukunft';
+
+  @override
+  String hintTimeShiftIndicator(String date, String period) {
+    return 'Time Shift $period · Systemdatum: $date\nAntippen zum Ändern oder Aufheben';
   }
+
+  @override
+  String get hintTimeShiftPast => 'in die Vergangenheit';
 
   @override
   String get hintTimezoneSearch =>
@@ -477,8 +485,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageSettingsReset => 'Einstellungen zurückgesetzt';
 
   @override
-  String get messageTabReactivated =>
-      'Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.';
+  String messageTabReactivated(String resetAction) {
+    return 'Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „$resetAction“ auf dem Tab wiederherstellen.';
+  }
 
   @override
   String get pageSettings => 'Einstellungen';
@@ -703,7 +712,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tabTechnical => 'Technisch';
 
   @override
-  String get timeShiftApply => 'Aktivieren';
+  String get timeShiftApply => 'Anwenden';
 
   @override
   String get timeShiftDate => 'Datum';
@@ -720,11 +729,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftFrozenSubOff =>
-      'Die Uhr läuft ab der eingestellten Zeit weiter.';
+      'Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.';
 
   @override
   String get timeShiftFrozenSubOn =>
-      'Die Uhr bleibt bei der eingestellten Zeit stehen.';
+      'Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.';
+
+  @override
+  String timeShiftHint(String activate, String deactivate) {
+    return 'Mit „$activate“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$deactivate“ kehrst Du jederzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
+  }
+
+  @override
+  String timeShiftHintRange(String earliest, String latest) {
+    return 'Unterstützter Bereich: $earliest bis $latest, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.';
+  }
+
+  @override
+  String get timeShiftHintResetToSystemDate =>
+      'Auf Systemdatum zurücksetzen, Epochs Uhrzeit bleibt unverändert';
+
+  @override
+  String get timeShiftHintResetToSystemTime =>
+      'Auf Systemuhrzeit zurücksetzen, Epochs Datum bleibt unverändert';
 
   @override
   String get timeShiftHours => 'Stunden';
@@ -733,14 +760,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get timeShiftMinutes => 'Minuten';
 
   @override
-  String get timeShiftNow => 'Jetzt';
+  String timeShiftOutOfRange(String earliest, String latest) {
+    return 'Unterstützter Bereich: $earliest bis $latest';
+  }
 
   @override
-  String get timeShiftOutOfRange =>
-      'Unterstützter Bereich: 1970-01-01 00:00:00 UTC bis 2038-01-19 03:14:07 UTC';
-
-  @override
-  String get timeShiftReset => 'Zurück zur Systemzeit';
+  String get timeShiftReset => 'Zurücksetzen auf Systemuhr';
 
   @override
   String get timeShiftSeconds => 'Sekunden';

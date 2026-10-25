@@ -128,6 +128,7 @@ class EpochAppState extends State<EpochApp> {
   double? _lmstLongitude;
   String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
+  bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
 
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
@@ -150,19 +151,20 @@ class EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadPreferences() async {
-    final locale             = await loadLocale() ?? kDefaultLocale;
-    final theme              = await loadThemeMode();
-    final hour24             = await loadHourFormat24();
-    final thousands          = await loadThousandsSep();
-    final dateWithDetails    = await loadDateWithDetails();
-    final dateFormat         = await loadDateFormat();
-    final timeFormat         = await loadTimeFormat();
-    final zoneDisplayMode    = await loadZoneDisplayMode();
-    final dayQuarterColor    = await loadDayQuarterColor();
-    final lmstMode           = await loadLmstMode();
-    final lmstLongitude      = await loadLmstLongitude();
-    final lastImportedConfig = await loadLastImportedConfig();
-    final startupFocusValue  = await loadStartupFocusValue();
+    final locale                  = await loadLocale() ?? kDefaultLocale;
+    final theme                   = await loadThemeMode();
+    final hour24                  = await loadHourFormat24();
+    final thousands               = await loadThousandsSep();
+    final dateWithDetails         = await loadDateWithDetails();
+    final dateFormat              = await loadDateFormat();
+    final timeFormat              = await loadTimeFormat();
+    final zoneDisplayMode         = await loadZoneDisplayMode();
+    final dayQuarterColor         = await loadDayQuarterColor();
+    final lmstMode                = await loadLmstMode();
+    final lmstLongitude           = await loadLmstLongitude();
+    final lastImportedConfig      = await loadLastImportedConfig();
+    final startupFocusValue       = await loadStartupFocusValue();
+    final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
 
     String localZone = 'UTC';
     try {
@@ -173,21 +175,22 @@ class EpochAppState extends State<EpochApp> {
     }
 
     setState(() {
-      _localIanaZone      = localZone;
-      _locale             = locale;
-      _themeMode          = theme;
-      _hourFormat24       = hour24;
-      _thousandsSep       = thousands;
-      _dateWithDetails    = dateWithDetails;
-      _dateFormat         = dateFormat;
-      _timeFormat         = timeFormat;
-      _zoneDisplayMode    = zoneDisplayMode;
-      _dayQuarterColor    = dayQuarterColor;
-      _lmstMode           = lmstMode;
-      _lmstLongitude      = lmstLongitude;
-      _lastImportedConfig = lastImportedConfig;
-      _startupFocusValue  = startupFocusValue;
-      _settingsLoaded     = true;
+      _localIanaZone           = localZone;
+      _locale                  = locale;
+      _themeMode               = theme;
+      _hourFormat24            = hour24;
+      _thousandsSep            = thousands;
+      _dateWithDetails         = dateWithDetails;
+      _dateFormat              = dateFormat;
+      _timeFormat              = timeFormat;
+      _zoneDisplayMode         = zoneDisplayMode;
+      _dayQuarterColor         = dayQuarterColor;
+      _lmstMode                = lmstMode;
+      _lmstLongitude           = lmstLongitude;
+      _lastImportedConfig      = lastImportedConfig;
+      _startupFocusValue       = startupFocusValue;
+      _focusTimeShiftIndicator = focusTimeShiftIndicator;
+      _settingsLoaded          = true;
     });
   }
 
@@ -251,6 +254,11 @@ class EpochAppState extends State<EpochApp> {
     saveLastImportedConfig(filename);
   }
 
+  void setFocusTimeShiftIndicator(bool v) {
+    setState(() => _focusTimeShiftIndicator = v);
+    saveFocusTimeShiftIndicator(v);
+  }
+
   String get localIanaZone => _localIanaZone;
   Locale? get locale                  => _locale;
   AppThemeMode get themeMode          => _themeMode;
@@ -271,6 +279,7 @@ class EpochAppState extends State<EpochApp> {
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
   String? get lastImportedConfig      => _lastImportedConfig;
+  bool get focusTimeShiftIndicator    => _focusTimeShiftIndicator;
 
   @override
   Widget build(BuildContext context) {

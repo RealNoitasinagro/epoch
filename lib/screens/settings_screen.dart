@@ -493,7 +493,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final messenger = ScaffoldMessenger.of(context);
       messenger.clearSnackBars();  // drop any queued ones – show only the latest
       messenger.showSnackBar(SnackBar(
-        content: Text(l10n.messageTabReactivated),
+        content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
         duration: const Duration(seconds: 6),
         behavior: SnackBarBehavior.floating,
       ));

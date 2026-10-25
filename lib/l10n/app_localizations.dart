@@ -380,11 +380,23 @@ abstract class AppLocalizations {
   /// **'Select value type'**
   String get hintSelectValueType;
 
+  /// No description provided for @hintTimeShiftFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'into the future'**
+  String get hintTimeShiftFuture;
+
   /// No description provided for @hintTimeShiftIndicator.
   ///
   /// In en, this message translates to:
-  /// **'Time Shift active · system date: {date}'**
-  String hintTimeShiftIndicator(String date);
+  /// **'Time Shift {period} · system date: {date}\nTap to change or reset'**
+  String hintTimeShiftIndicator(String date, String period);
+
+  /// No description provided for @hintTimeShiftPast.
+  ///
+  /// In en, this message translates to:
+  /// **'into the past'**
+  String get hintTimeShiftPast;
 
   /// No description provided for @hintTimezoneSearch.
   ///
@@ -857,8 +869,8 @@ abstract class AppLocalizations {
   /// No description provided for @messageTabReactivated.
   ///
   /// In en, this message translates to:
-  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.'**
-  String get messageTabReactivated;
+  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"{resetAction}\" on the tab if needed.'**
+  String messageTabReactivated(String resetAction);
 
   /// No description provided for @pageSettings.
   ///
@@ -1325,14 +1337,38 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftFrozenSubOff.
   ///
   /// In en, this message translates to:
-  /// **'The clock keeps running from the set time.'**
+  /// **'The time used in the app keeps running from the set moment.'**
   String get timeShiftFrozenSubOff;
 
   /// No description provided for @timeShiftFrozenSubOn.
   ///
   /// In en, this message translates to:
-  /// **'The clock stays at the set time.'**
+  /// **'The time used in the app stays at the set moment.'**
   String get timeShiftFrozenSubOn;
+
+  /// No description provided for @timeShiftHint.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{activate}\" sets the time Epoch uses for all time values – running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{deactivate}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  String timeShiftHint(String activate, String deactivate);
+
+  /// No description provided for @timeShiftHintRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.'**
+  String timeShiftHintRange(String earliest, String latest);
+
+  /// No description provided for @timeShiftHintResetToSystemDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to system date, does not affect Epoch\'s time'**
+  String get timeShiftHintResetToSystemDate;
+
+  /// No description provided for @timeShiftHintResetToSystemTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to system time, does not affect Epoch\'s date'**
+  String get timeShiftHintResetToSystemTime;
 
   /// No description provided for @timeShiftHours.
   ///
@@ -1346,22 +1382,16 @@ abstract class AppLocalizations {
   /// **'Minutes'**
   String get timeShiftMinutes;
 
-  /// No description provided for @timeShiftNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Now'**
-  String get timeShiftNow;
-
   /// No description provided for @timeShiftOutOfRange.
   ///
   /// In en, this message translates to:
-  /// **'Supported range: 1970-01-01 00:00:00 UTC to 2038-01-19 03:14:07 UTC'**
-  String get timeShiftOutOfRange;
+  /// **'Supported range: {earliest} to {latest}'**
+  String timeShiftOutOfRange(String earliest, String latest);
 
   /// No description provided for @timeShiftReset.
   ///
   /// In en, this message translates to:
-  /// **'Back to system time'**
+  /// **'Reset to system clock'**
   String get timeShiftReset;
 
   /// No description provided for @timeShiftSeconds.

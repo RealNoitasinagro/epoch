@@ -47,6 +47,14 @@ class EffectiveClock {
   /// Displayed time minus system time (positive = future).
   static Duration get deviationFromSystem => now().difference(systemNow());
 
+  /// The supported range as locale-independent text, e.g.
+  /// "1970-01-01 00:00:00 UTC" – for messages shown to the user.
+  static String get earliestMomentText => _describeAsUtc(earliestMoment);
+  static String get latestMomentText => _describeAsUtc(latestMoment);
+
+  static String _describeAsUtc(DateTime moment) =>
+      '${moment.toUtc().toIso8601String().substring(0, 19).replaceFirst('T', ' ')} UTC';
+
   static bool isSupported(DateTime moment) {
     final utc = moment.toUtc();
     return !utc.isBefore(earliestMoment) && !utc.isAfter(latestMoment);

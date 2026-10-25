@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
-import '../models/app_settings.dart';
+import '../main.dart';
 import '../widgets/dial_picker.dart';
 import '../widgets/section_header.dart';
 
@@ -22,7 +22,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   late final Timer _ticker;
   late bool _frozen;
-  bool _focusIndicatorEnabled = kDefaultFocusTimeShiftIndicator;
+  late bool _focusIndicatorEnabled;
 
   /// Null as long as the user has not edited anything: the shown values then
   /// follow the live clock. After the first edit they stay as configured.
@@ -36,6 +36,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   @override
   void initState() {
     super.initState();
+    _focusIndicatorEnabled = EpochApp.of(context).focusTimeShiftIndicator;
     _frozen = EffectiveClock.isFrozen;
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted && _editedMoment == null) setState(() {});
@@ -100,7 +101,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final moment = _displayedMoment;
     if (!EffectiveClock.isSupported(moment)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.timeShiftOutOfRange),
+        content: Text(AppLocalizations.of(context)!.timeShiftOutOfRange(
+            EffectiveClock.earliestMomentText, EffectiveClock.latestMomentText)),
         behavior: SnackBarBehavior.floating,
       ));
       return;
@@ -145,14 +147,55 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   }
 
   Widget _sectionHeader(String label, {required bool date}) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kTabHorizontalPadding),
       child: Row(
         children: [
           Expanded(child: SectionHeader(label: label)),
-          TextButton(
-            onPressed: () => _adoptSystemValues(date: date),
-            child: Text(AppLocalizations.of(context)!.timeShiftNow),
+          Tooltip(
+            message: date
+                ? l10n.timeShiftHintResetToSystemDate
+                : l10n.timeShiftHintResetToSystemTime,
+            child: IconButton(
+              icon: const Icon(Icons.restart_alt),
+              onPressed: () => _adoptSystemValues(date: date),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHint(AppLocalizations l10n) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textStyle = Theme.of(context).textTheme.bodyMedium
+        ?.copyWith(color: colorScheme.onSurface.withAlpha(170));
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: kTabHorizontalPadding, vertical: kTabVerticalPadding),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline, size: kIconSizeDefault,
+              color: colorScheme.onSurface.withAlpha(150)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.timeShiftHint(l10n.timeShiftApply, l10n.timeShiftReset),
+                  style: textStyle
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.timeShiftHintRange(EffectiveClock.earliestMomentText,
+                      EffectiveClock.latestMomentText),
+                  style: textStyle,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -171,7 +214,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: kTabVerticalPadding),
         children: [
-          Text("<Explanation text>"),
+          _buildHint(l10n),
           const Divider(height: kDividerHeight),
           _sectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
@@ -183,7 +226,6 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
             _ValueSegment(caption: l10n.labelDay, value: twoDigits(moment.day),
                 onPressed: () => _editDate(startWithYear: false)),
           ], '-'),
-          const Divider(height: kDividerHeight),
           _sectionHeader(l10n.timeShiftTime, date: false),
           const SizedBox(height: 8),
           _segmentRow([
@@ -194,7 +236,6 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
             _ValueSegment(caption: l10n.labelSeconds, value: twoDigits(moment.second),
                 onPressed: () => _editTimeUnit(_TimeUnit.second)),
           ], ':'),
-          const Divider(height: kDividerHeight),
           SwitchListTile(
             secondary: const Icon(Icons.pause_circle_outline),
             title: Text(l10n.timeShiftFrozen),
@@ -203,16 +244,6 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                 : l10n.timeShiftFrozenSubOff),
             value: _frozen,
             onChanged: (value) => setState(() => _frozen = value),
-          ),
-          SwitchListTile(
-            secondary: const Icon(Icons.fullscreen),
-            title: Text(l10n.timeShiftFocusIndicator),
-            subtitle: Text(l10n.timeShiftFocusIndicatorSub),
-            value: _focusIndicatorEnabled,
-            onChanged: (value) {
-              setState(() => _focusIndicatorEnabled = value);
-              saveFocusTimeShiftIndicator(value);
-            },
           ),
           const SizedBox(height: 16),
           Padding(
@@ -236,6 +267,17 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                 ),
               ],
             ),
+          ),
+          const Divider(height: kDividerHeight),
+          SwitchListTile(
+            secondary: const Icon(Icons.fullscreen),
+            title: Text(l10n.timeShiftFocusIndicator),
+            subtitle: Text(l10n.timeShiftFocusIndicatorSub),
+            value: _focusIndicatorEnabled,
+            onChanged: (value) {
+              setState(() => _focusIndicatorEnabled = value);
+              EpochApp.of(context).setFocusTimeShiftIndicator(value);
+            },
           ),
         ],
       ),
