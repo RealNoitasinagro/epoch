@@ -49,15 +49,39 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     super.dispose();
   }
 
+  static String _wallClockText(DateTime moment) {
+    String twoDigits(int value) => value.toString().padLeft(2, '0');
+    return '${moment.year.toString().padLeft(4, '0')}-${twoDigits(moment.month)}-'
+        '${twoDigits(moment.day)} ${twoDigits(moment.hour)}:'
+        '${twoDigits(moment.minute)}:${twoDigits(moment.second)}';
+  }
+
   void _updateMoment({
     int? year, int? month, int? day, int? hour, int? minute, int? second,
   }) {
     final current = _displayedMoment;
+    // UTC has no clock changes, so this keeps exactly what was requested:
+    final requested = DateTime.utc(
+      year ?? current.year, month ?? current.month, day ?? current.day,
+      hour ?? current.hour, minute ?? current.minute, second ?? current.second,
+    );
+    final moment = DateTime(requested.year, requested.month, requested.day,
+        requested.hour, requested.minute, requested.second);
+    final requestedText = _wallClockText(requested);
+    final usedText = _wallClockText(moment);
     setState(() {
-      _editedMoment = DateTime(
-        year ?? current.year, month ?? current.month, day ?? current.day,
-        hour ?? current.hour, minute ?? current.minute, second ?? current.second,
-      );
+      _editedMoment = moment;
+      setState(() => _editedMoment = moment);
+      if (requestedText != usedText) {
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!
+                .timeShiftSkippedTime(requestedText, usedText)),
+            duration: const Duration(seconds: 6),
+            behavior: SnackBarBehavior.floating,
+          ));
+      }
     });
   }
 

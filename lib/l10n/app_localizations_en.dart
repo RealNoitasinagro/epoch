@@ -772,6 +772,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeShiftSeconds => 'Seconds';
 
   @override
+  String timeShiftSkippedTime(String requested, String used) {
+    return '$requested does not exist because of a clock change, using $used.';
+  }
+
+  @override
   String get timeShiftTime => 'Time';
 
   @override

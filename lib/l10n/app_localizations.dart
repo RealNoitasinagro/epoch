@@ -1412,6 +1412,12 @@ abstract class AppLocalizations {
   /// **'Seconds'**
   String get timeShiftSeconds;
 
+  /// No description provided for @timeShiftSkippedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{requested} does not exist because of a clock change, using {used}.'**
+  String timeShiftSkippedTime(String requested, String used);
+
   /// No description provided for @timeShiftTime.
   ///
   /// In en, this message translates to:

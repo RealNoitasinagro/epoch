@@ -114,6 +114,16 @@
       }
     }
   },
+  "@timeShiftSkippedTime": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "used": {
+        "type": "String"
+      }
+    }
+  },
   "actionCancel": "Abbrechen",
   "actionDeleteTab": "Tab löschen",
   "actionExitApp": "Beenden",
@@ -333,6 +343,7 @@
   "timeShiftOutOfRange": "Unterstützter Bereich: {earliest} bis {latest}",
   "timeShiftReset": "Zurücksetzen auf Systemuhr",
   "timeShiftSeconds": "Sekunden",
+  "timeShiftSkippedTime": "{requested} gibt es wegen einer Zeitumstellung nicht, verwendet wird {used}.",
   "timeShiftTime": "Uhrzeit",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",
   "valueTypeBinaryClockColumns": "Binäruhr (Spalten)",

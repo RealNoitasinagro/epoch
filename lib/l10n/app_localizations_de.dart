@@ -781,6 +781,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get timeShiftSeconds => 'Sekunden';
 
   @override
+  String timeShiftSkippedTime(String requested, String used) {
+    return '$requested gibt es wegen einer Zeitumstellung nicht, verwendet wird $used.';
+  }
+
+  @override
   String get timeShiftTime => 'Uhrzeit';
 
   @override
