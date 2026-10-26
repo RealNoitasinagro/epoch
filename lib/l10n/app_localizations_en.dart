@@ -742,7 +742,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftHintReset =>
-      'Sets date and time in the whole app to the values of the system clock (the system\'s present).\nCloses this page.';
+      'Sets date and time in the whole app to the values of the system clock.';
 
   @override
   String timeShiftHintResetToSystemDate(String apply) {

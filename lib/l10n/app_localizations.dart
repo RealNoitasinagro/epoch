@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHintReset.
   ///
   /// In en, this message translates to:
-  /// **'Sets date and time in the whole app to the values of the system clock (the system\'s present).\nCloses this page.'**
+  /// **'Sets date and time in the whole app to the values of the system clock.'**
   String get timeShiftHintReset;
 
   /// No description provided for @timeShiftHintResetToSystemDate.

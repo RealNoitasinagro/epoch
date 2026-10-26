@@ -9,6 +9,8 @@ import 'models/zone_rules.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
+  static const int secondsPerDay = 24 * 60 * 60;  // 86400
+
   /// TAI − UTC at the start of 1972, when UTC was defined as it is today.
   static const _taiMinusUtcAtStartOf1972 = 10;
 
@@ -123,7 +125,6 @@ class TimeUtils {
     } catch (_) { return []; }
   }
 
-
   /// The package data ends with a pseudo-transition (2038-01-19 03:14:08 UTC)
   /// into the very same state; real changes alter offset, DST flag or abbreviation.
   static bool _changesClock(tz.Location loc, DateTime transitionUtc) {
@@ -194,7 +195,6 @@ class TimeUtils {
 
   /// Percentage of the day elapsed.
   static double dayPercent(DateTime dt) {
-    int secondsPerDay = 24 * 60 * 60;  // 86400
     int currentDaySecond = daySecond(dt);
     var percent = currentDaySecond / secondsPerDay * 100;
     return percent;
@@ -316,7 +316,7 @@ class TimeUtils {
   /// seconds (100,000 decimal seconds per day total).
   static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt) {
     final totalDecimalSeconds =
-        (daySecond(dt) / 86400 * 100000).round() % 100000;
+        (daySecond(dt) / secondsPerDay * 100000).round() % 100000;
     return (
       hours:   totalDecimalSeconds ~/ 10000,
       minutes: (totalDecimalSeconds % 10000) ~/ 100,
@@ -422,13 +422,6 @@ class TimeUtils {
     if (padding <= 0) return text;
     return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
   }
-
-  /// Returns the current Doomsday Clock time.
-  /// Last check for accuracy of hardcoded values: 2026-09-01.
-  // static String doomsDayClockString(bool hourFormat24) {
-  //   int hh = 23; int mm = 58; int ss = 35;
-  //   return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
-  // }
 
   /// Doomsday Clock settings: year -> seconds to midnight. A setting applies
   /// from 1 January of its year until the next entry (simplification: changes
