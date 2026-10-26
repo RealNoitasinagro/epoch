@@ -16,6 +16,7 @@ name, abbreviation or offset, in English and German
 - clock changes in the info dialog show the wall-clock time before and after the change
 
 ### Fixed
+- day second, day percent, decimal/octal/hexadecimal time had the wrong standard day length on clock change days
 - LMST was still shown after deactivation if the app was closed before leaving Settings
 
 ---

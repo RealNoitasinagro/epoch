@@ -171,6 +171,36 @@ class TimeUtils {
     );
   }
 
+  /// Seconds elapsed since the start of the local day, and the real length of
+  /// that day in [ianaZone]: 82,800 or 90,000 on days with a clock change.
+  /// A midnight skipped by a clock change resolves to the transition instant,
+  /// so that day simply starts later.
+  static ({int elapsedSeconds, int lengthSeconds}) dayProgressInZone(
+      DateTime utc, String ianaZone) {
+    tz.Location location;
+    try {
+      location = tz.getLocation(ianaZone);
+    } catch (_) {
+      location = tz.UTC;  // same fallback as inZone()
+    }
+    final moment = tz.TZDateTime.from(utc, location);
+    final dayStart =
+    tz.TZDateTime(location, moment.year, moment.month, moment.day);
+    final nextDayStart =
+    tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
+    return (
+      elapsedSeconds: moment.difference(dayStart).inSeconds,
+      lengthSeconds: nextDayStart.difference(dayStart).inSeconds,
+    );
+  }
+
+  /// For fixed offsets (UTC, pinned standard or summer time) every day has
+  /// exactly 86,400 seconds.
+  static ({int elapsedSeconds, int lengthSeconds}) dayProgressFixedOffset(
+      DateTime wallClock) {
+    return (elapsedSeconds: daySecond(wallClock), lengthSeconds: secondsPerDay);
+  }
+
   /// Return a color depending on what quarter of the day it is.
   static Color dayQuarterColor(DateTime utc, String? ianaZone) {
     int hour;
@@ -314,9 +344,11 @@ class TimeUtils {
   /// Decimal time (French Revolutionary time): day = 10 decimal hours,
   /// 1 decimal hour = 100 decimal minutes, 1 decimal minute = 100 decimal
   /// seconds (100,000 decimal seconds per day total).
-  static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt) {
+  static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt,
+      {int? elapsedSeconds, int dayLengthSeconds = secondsPerDay}) {
     final totalDecimalSeconds =
-        (daySecond(dt) / secondsPerDay * 100000).round() % 100000;
+        ((elapsedSeconds ?? daySecond(dt)) / dayLengthSeconds * 100000)
+            .round() % 100000;
     return (
       hours:   totalDecimalSeconds ~/ 10000,
       minutes: (totalDecimalSeconds % 10000) ~/ 100,
@@ -325,8 +357,10 @@ class TimeUtils {
   }
 
   /// Decimal time as "H:MM:SS", e.g. "7:52:19".
-  static String decimalTimeString(DateTime dt) {
-    final d = decimalTime(dt);
+  static String decimalTimeString(DateTime dt,
+      {int? elapsedSeconds, int dayLengthSeconds = secondsPerDay}) {
+    final d = decimalTime(dt,
+        elapsedSeconds: elapsedSeconds, dayLengthSeconds: dayLengthSeconds);
     return '${d.hours}\u02b0'
         '${d.minutes.toString().padLeft(2, '0')}\u1d50'
         '${d.seconds.toString().padLeft(2, '0')}\u02e2';
@@ -382,19 +416,22 @@ class TimeUtils {
 
   /// Seconds since midnight (0–86399), represented in the given number
   /// base, zero-padded to a fixed width. Used for octal/hexadecimal time.
-  static String daySecondInBase(DateTime dt, int base, int digits) {
-    return daySecond(dt).toRadixString(base).padLeft(digits, '0').toUpperCase();
+  static String daySecondInBase(DateTime dt, int base, int digits,
+      {int? elapsedSeconds}) {
+    return (elapsedSeconds ?? daySecond(dt))
+          .toRadixString(base).padLeft(digits, '0').toUpperCase();
   }
 
   /// Octal time: day second in base 8, e.g. "250577" (6 digits fit up to
   /// 86399 = 0o250577, since 8^6 > 86400 > 8^5).
-  static String octalTimeString(DateTime dt) => daySecondInBase(dt, 8, 6);
+  static String octalTimeString(DateTime dt, {int? elapsedSeconds}) =>
+      daySecondInBase(dt, 8, 6, elapsedSeconds: elapsedSeconds);
 
   /// Hexadecimal time: day second in base 16, grouped with underscores
   /// every 2 digits for readability, e.g. "1_51_7F" (5 digits fit up to
   /// 86399 = 0x1517F, since 16^5 > 86400 > 16^4).
-  static String hexadecimalTimeString(DateTime dt) {
-    final hex = daySecondInBase(dt, 16, 5);
+  static String hexadecimalTimeString(DateTime dt, {int? elapsedSeconds}) {
+    final hex = daySecondInBase(dt, 16, 5, elapsedSeconds: elapsedSeconds);
     // Group from the right in pairs, e.g. "1517F" -> "1_51_7F":
     final buffer = StringBuffer();
     for (int i = 0; i < hex.length; i++) {

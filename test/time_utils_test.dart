@@ -632,6 +632,46 @@ void main() {
     });
   });
 
+  group('TimeUtils.dayProgressInZone', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('a normal day has 86,400 seconds', () {
+      final progress = TimeUtils.dayProgressInZone(
+          DateTime.utc(2026, 6, 15, 12), 'Europe/Berlin');  // 14:00 CEST
+      expect(progress, (elapsedSeconds: 50400, lengthSeconds: 86400));
+    });
+
+    test('autumn: 25-hour day, the count continues through the repeated hour', () {
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 0, 59, 59), 'Europe/Berlin'),
+          (elapsedSeconds: 10799, lengthSeconds: 90000));  // 02:59:59 CEST
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 1), 'Europe/Berlin'),
+          (elapsedSeconds: 10800, lengthSeconds: 90000));  // 02:00:00 CET
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 22, 59, 59), 'Europe/Berlin')
+              .elapsedSeconds, 89999);                       // 23:59:59 CET
+    });
+
+    test('spring: 23-hour day', () {
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2027, 3, 28, 1), 'Europe/Berlin'),
+          (elapsedSeconds: 7200, lengthSeconds: 82800));   // 03:00:00 CEST
+    });
+
+    test('skipped midnight: the day starts at the transition', () {
+      // São Paulo, 2018-11-04: 00:00 BRT became 01:00 BRST.
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2018, 11, 4, 3), 'America/Sao_Paulo'),
+          (elapsedSeconds: 0, lengthSeconds: 82800));
+    });
+
+    test('unknown zone falls back to UTC', () {
+      expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').lengthSeconds,
+          86400);
+    });
+  });
+
   group('TimeUtils.resolveLocalTime', () {
     test('local zone uses the given moment, not the system clock', () {
       const timeValue = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
