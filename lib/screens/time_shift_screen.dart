@@ -30,7 +30,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   DateTime get _displayedMoment => _editedMoment ?? EffectiveClock.now();
 
-  bool get _canReturnToSystemTime =>
+  bool get _canSetAppClock =>
       EffectiveClock.isShifted || _editedMoment != null;
 
   @override
@@ -281,7 +281,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                     child: FilledButton.icon(
                       icon: const Icon(kIconTimeShift),
                       label: Text(l10n.timeShiftApply),
-                      onPressed: _apply,
+                      onPressed: _canSetAppClock ? _apply : null,
                     ),
                   ),
                 ),
@@ -292,7 +292,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                     child: OutlinedButton.icon(
                       icon: const Icon(Icons.restart_alt),
                       label: Text(l10n.timeShiftReset),
-                      onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
+                      onPressed: _canSetAppClock ? _resetToSystemTime : null,
                     ),
                   ),
                 ),

@@ -737,7 +737,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return 'Mit „$apply“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
+    return 'Mit „$apply“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
   }
 
   @override

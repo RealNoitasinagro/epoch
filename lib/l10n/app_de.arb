@@ -332,7 +332,7 @@
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
   "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
-  "timeShiftHint": "Mit „{apply}“ legst Du die Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHint": "Mit „{apply}“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
   "timeShiftHintApply": "Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.",
   "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
   "timeShiftHintReset": "Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.",

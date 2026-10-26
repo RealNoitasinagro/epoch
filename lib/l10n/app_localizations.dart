@@ -1349,7 +1349,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{apply}\" sets the time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  /// **'\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
   String timeShiftHint(String apply, String reset);
 
   /// No description provided for @timeShiftHintApply.

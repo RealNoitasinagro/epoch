@@ -728,7 +728,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return '\"$apply\" sets the time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved: after a restart, Epoch always shows the system time.';
+    return '\"$apply\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved: after a restart, Epoch always shows the system time.';
   }
 
   @override
