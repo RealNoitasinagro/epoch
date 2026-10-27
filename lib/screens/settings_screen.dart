@@ -611,16 +611,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             child: SectionHeader(label: l10n.settingsValueDisplay),
           ),
-          SwitchListTile(
-            secondary: const Icon(Icons.tag),
-            title: Text(l10n.settingsThousandsSep),
-            subtitle: Text(l10n.settingsThousandsSepSub),
-            value: _thousandsSep,
-            onChanged: (val) {
-              setState(() => _thousandsSep = val);
-              app.setThousandsSep(val);
-            },
-          ),
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: Text(l10n.settingsDateFormat),
@@ -700,6 +690,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (val) {
               setState(() => _dayQuarterColor = val);
               app.setDayQuarterColor(val);
+            },
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.tag),
+            title: Text(l10n.settingsThousandsSep),
+            subtitle: Text(l10n.settingsThousandsSepSub),
+            value: _thousandsSep,
+            onChanged: (val) {
+              setState(() => _thousandsSep = val);
+              app.setThousandsSep(val);
             },
           ),
           const Divider(height: kDividerHeight),
