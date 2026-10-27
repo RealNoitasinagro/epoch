@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -93,13 +94,16 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Orientation? _lastOrientation;
 
+  bool get _showTimeShiftIndicator =>
+      EpochApp.of(context).focusTimeShiftIndicator;
+
   @override
   void initState() {
     super.initState();
     _showOptionalPart = widget.timeValue.showOptionalPart;
-    _now = DateTime.now();
+    _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
-            (_) => setState(() => _now = DateTime.now()));
+            (_) => setState(() => _now = EffectiveClock.now()));
     WakelockPlus.enable();
     _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -216,6 +220,8 @@ class _FocusScreenState extends State<FocusScreen> {
       await saveFocusBrightness(value);
     } catch (_) {}
   }
+
+  double _horizontalPadding(bool isLandscape) => isLandscape ? 80.0 : 24.0;
 
   void _scheduleControlsHide() {
     _controlsHideTimer?.cancel();
@@ -596,10 +602,36 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildValueDisplay(bool isLandscape) {
+    final valueContent = _buildValueContent(isLandscape);
+    if (!_showTimeShiftIndicator || !EffectiveClock.isShifted) {
+      return valueContent;
+    }
+    // The badge sits above the value and moves with it, so the pixel shift
+    // protects it from burn-in as well.
+    const badgeSize = kIconSizeDefault + 8;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        valueContent,
+        Positioned(
+          top: -badgeSize,
+          left: _horizontalPadding(isLandscape),
+          child: Icon(
+            EffectiveClock.isShiftedIntoPast
+                ? kIconTimeShiftPast : kIconTimeShiftFuture,
+            size: badgeSize,
+            color: _textColor.withAlpha(150),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildValueContent(bool isLandscape) {
     final app = EpochApp.of(context);
 
     // Horizontal padding: make room for side controls in landscape:
-    final hPadding = isLandscape ? 80.0 : 24.0;
+    final hPadding = _horizontalPadding(isLandscape);
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {

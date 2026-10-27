@@ -174,6 +174,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintSelectValueType => 'Select value type';
 
   @override
+  String get hintTimeShiftFuture => 'into the future';
+
+  @override
+  String hintTimeShiftIndicator(String date, String period) {
+    return 'Time Shift $period · system date: $date\nTap to change or reset';
+  }
+
+  @override
+  String get hintTimeShiftPast => 'into the past';
+
+  @override
   String get hintTimezoneSearch =>
       'City, country, zone or offset (e.g. UTC+5:30)';
 
@@ -297,7 +308,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextDoomsdayClock =>
-      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.';
+      'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Latest setting: 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.';
 
   @override
   String get infoTextDublinJulianDate =>
@@ -345,7 +356,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextRomanNumeralsTime =>
-      'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
+      'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
 
   @override
   String get infoTextSevenSegmentTime =>
@@ -365,6 +376,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get infoTextUnixSeconds =>
       'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.';
+
+  @override
+  String get labelDay => 'DD';
 
   @override
   String labelDstChangeInDays(int days) {
@@ -393,7 +407,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLongitude => 'Longitude (negative = West)';
 
   @override
-  String get labelMinutes => 'MM';
+  String get labelMinutes => 'mm';
+
+  @override
+  String get labelMonth => 'MM';
 
   @override
   String get labelNewLabel => 'Label';
@@ -408,13 +425,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNextClockChanges => 'Next clock changes';
 
   @override
-  String get labelSeconds => 'SS';
+  String get labelSeconds => 'ss';
 
   @override
   String get labelShowDecimals => 'Show decimals';
 
   @override
   String get labelShowSeconds => 'Show seconds';
+
+  @override
+  String get labelYear => 'YYYY';
 
   @override
   String get messageAlreadyDisplayed => 'This value is already displayed.';
@@ -457,11 +477,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSettingsReset => 'Settings reset to defaults';
 
   @override
-  String get messageTabReactivated =>
-      'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.';
+  String messageTabReactivated(String resetAction) {
+    return 'Tab reactivated – it may not match the default configuration anymore. Use \"$resetAction\" on the tab if needed.';
+  }
 
   @override
   String get pageSettings => 'Settings';
+
+  @override
+  String get pageTimeShift => 'Time Shift';
 
   @override
   String get sectionAlternative => 'Alternative Time Scales';
@@ -677,6 +701,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabTechnical => 'Technical';
+
+  @override
+  String get timeShiftApply => 'Apply';
+
+  @override
+  String get timeShiftDate => 'Date';
+
+  @override
+  String get timeShiftFocusIndicator => 'Indicator in Focus screen';
+
+  @override
+  String get timeShiftFocusIndicatorSub =>
+      'Shows a small icon while the displayed time deviates from the system time';
+
+  @override
+  String get timeShiftFrozen => 'Freeze time';
+
+  @override
+  String get timeShiftFrozenSubOff =>
+      'The time used in the app keeps running from the set moment.';
+
+  @override
+  String get timeShiftFrozenSubOn =>
+      'The time used in the app stays at the set moment.';
+
+  @override
+  String timeShiftHint(String apply, String reset) {
+    return '\"$apply\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved: after a restart, Epoch always shows the system time.';
+  }
+
+  @override
+  String get timeShiftHintApply =>
+      'Applies the selected date and time to the whole app.';
+
+  @override
+  String timeShiftHintRange(String earliest, String latest) {
+    return 'Supported range: $earliest to $latest, limited by Unix time and the available IANA time zone data.';
+  }
+
+  @override
+  String get timeShiftHintReset =>
+      'Sets date and time in the whole app to the values of the system clock.';
+
+  @override
+  String timeShiftHintResetToSystemDate(String apply) {
+    return 'Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"$apply\" button.';
+  }
+
+  @override
+  String timeShiftHintResetToSystemTime(String apply) {
+    return 'Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"$apply\" button.';
+  }
+
+  @override
+  String get timeShiftHours => 'Hours';
+
+  @override
+  String get timeShiftMinutes => 'Minutes';
+
+  @override
+  String timeShiftOutOfRange(String earliest, String latest) {
+    return 'Supported range: $earliest to $latest';
+  }
+
+  @override
+  String get timeShiftReset => 'Reset to system clock';
+
+  @override
+  String get timeShiftSeconds => 'Seconds';
+
+  @override
+  String timeShiftSkippedTime(String requested, String used) {
+    return '$requested does not exist because of a clock change, using $used.';
+  }
+
+  @override
+  String get timeShiftTime => 'Time';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';

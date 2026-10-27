@@ -9,6 +9,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 import 'build_info.dart';
 import 'bundled_licenses.dart';
+import 'effective_clock.dart';
 import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
@@ -23,6 +24,8 @@ import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/time_shift_screen.dart';
+import 'widgets/time_shift_indicator.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -127,6 +130,7 @@ class EpochAppState extends State<EpochApp> {
   double? _lmstLongitude;
   String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
+  bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
 
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
@@ -149,19 +153,20 @@ class EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadPreferences() async {
-    final locale             = await loadLocale() ?? kDefaultLocale;
-    final theme              = await loadThemeMode();
-    final hour24             = await loadHourFormat24();
-    final thousands          = await loadThousandsSep();
-    final dateWithDetails    = await loadDateWithDetails();
-    final dateFormat         = await loadDateFormat();
-    final timeFormat         = await loadTimeFormat();
-    final zoneDisplayMode    = await loadZoneDisplayMode();
-    final dayQuarterColor    = await loadDayQuarterColor();
-    final lmstMode           = await loadLmstMode();
-    final lmstLongitude      = await loadLmstLongitude();
-    final lastImportedConfig = await loadLastImportedConfig();
-    final startupFocusValue  = await loadStartupFocusValue();
+    final locale                  = await loadLocale() ?? kDefaultLocale;
+    final theme                   = await loadThemeMode();
+    final hour24                  = await loadHourFormat24();
+    final thousands               = await loadThousandsSep();
+    final dateWithDetails         = await loadDateWithDetails();
+    final dateFormat              = await loadDateFormat();
+    final timeFormat              = await loadTimeFormat();
+    final zoneDisplayMode         = await loadZoneDisplayMode();
+    final dayQuarterColor         = await loadDayQuarterColor();
+    final lmstMode                = await loadLmstMode();
+    final lmstLongitude           = await loadLmstLongitude();
+    final lastImportedConfig      = await loadLastImportedConfig();
+    final startupFocusValue       = await loadStartupFocusValue();
+    final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
 
     String localZone = 'UTC';
     try {
@@ -172,21 +177,22 @@ class EpochAppState extends State<EpochApp> {
     }
 
     setState(() {
-      _localIanaZone      = localZone;
-      _locale             = locale;
-      _themeMode          = theme;
-      _hourFormat24       = hour24;
-      _thousandsSep       = thousands;
-      _dateWithDetails    = dateWithDetails;
-      _dateFormat         = dateFormat;
-      _timeFormat         = timeFormat;
-      _zoneDisplayMode    = zoneDisplayMode;
-      _dayQuarterColor    = dayQuarterColor;
-      _lmstMode           = lmstMode;
-      _lmstLongitude      = lmstLongitude;
-      _lastImportedConfig = lastImportedConfig;
-      _startupFocusValue  = startupFocusValue;
-      _settingsLoaded     = true;
+      _localIanaZone           = localZone;
+      _locale                  = locale;
+      _themeMode               = theme;
+      _hourFormat24            = hour24;
+      _thousandsSep            = thousands;
+      _dateWithDetails         = dateWithDetails;
+      _dateFormat              = dateFormat;
+      _timeFormat              = timeFormat;
+      _zoneDisplayMode         = zoneDisplayMode;
+      _dayQuarterColor         = dayQuarterColor;
+      _lmstMode                = lmstMode;
+      _lmstLongitude           = lmstLongitude;
+      _lastImportedConfig      = lastImportedConfig;
+      _startupFocusValue       = startupFocusValue;
+      _focusTimeShiftIndicator = focusTimeShiftIndicator;
+      _settingsLoaded          = true;
     });
   }
 
@@ -250,6 +256,11 @@ class EpochAppState extends State<EpochApp> {
     saveLastImportedConfig(filename);
   }
 
+  void setFocusTimeShiftIndicator(bool v) {
+    setState(() => _focusTimeShiftIndicator = v);
+    saveFocusTimeShiftIndicator(v);
+  }
+
   String get localIanaZone => _localIanaZone;
   Locale? get locale                  => _locale;
   AppThemeMode get themeMode          => _themeMode;
@@ -270,6 +281,7 @@ class EpochAppState extends State<EpochApp> {
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
   String? get lastImportedConfig      => _lastImportedConfig;
+  bool get focusTimeShiftIndicator    => _focusTimeShiftIndicator;
 
   @override
   Widget build(BuildContext context) {
@@ -334,13 +346,19 @@ class _HomeScreenState extends State<HomeScreen>
     _loadData();
   }
 
+  void _onClockChanged() {
+    if (!mounted) return;
+    setState(() => _now = EffectiveClock.now());
+  }
+
   @override
   void initState() {
     super.initState();
-    _now = DateTime.now();
+    _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _now = DateTime.now());
+      setState(() => _now = EffectiveClock.now());
     });
+    EffectiveClock.changeNotifier.addListener(_onClockChanged);
     _loadData();
   }
 
@@ -348,6 +366,7 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _timer.cancel();
     _tabController?.dispose();
+    EffectiveClock.changeNotifier.removeListener(_onClockChanged);
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }
@@ -489,6 +508,13 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
+  void _openTimeShift(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const TimeShiftScreen()),
+    );
+  }
+
   void _removeLmstFromAllTabs() {
     var anyChanged = false;
     for (final tab in _tabs) {
@@ -542,19 +568,30 @@ class _HomeScreenState extends State<HomeScreen>
             );
           },
         ),
-        title: GestureDetector(
-          onDoubleTap: _toggleFullscreen,
-          onLongPress: () => _showBuildInfo(context),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (!EpochApp.of(context).isNightMode) ...[
-                Image.asset('assets/icon/epoch_icon.png', height: 28),
-                const SizedBox(width: 8),
-              ],
-              Text(l10n.appName),
-            ],
-          ),
+        title: Row(
+          children: [
+            GestureDetector(
+              onDoubleTap: _toggleFullscreen,
+              onLongPress: () => _showBuildInfo(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!EpochApp.of(context).isNightMode) ...[
+                    Image.asset('assets/icon/epoch_icon.png', height: 28),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(l10n.appName),
+                ],
+              ),
+            ),
+            if (EffectiveClock.isShifted)
+              Expanded(
+                child: Center(
+                  child: TimeShiftIndicator(
+                      onTap: () => _openTimeShift(context)),
+                ),
+              ),
+          ],
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
@@ -577,6 +614,8 @@ class _HomeScreenState extends State<HomeScreen>
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               switch (value) {
+                case 'time_shift':
+                  _openTimeShift(context);
                 case 'settings':
                   _openSettings(context);
                 case 'about':
@@ -593,6 +632,15 @@ class _HomeScreenState extends State<HomeScreen>
             itemBuilder: (context) {
               final l10n = AppLocalizations.of(context)!;
               return [
+                PopupMenuItem(
+                  value: 'time_shift',
+                  child: ListTile(
+                    leading: const Icon(kIconTimeShift),
+                    title: Text(l10n.pageTimeShift),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
                 PopupMenuItem(
                   value: 'settings',
                   child: ListTile(

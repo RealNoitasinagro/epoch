@@ -21,18 +21,20 @@ const _kActiveTabKey = 'active_tab';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
 const _kFocusPixelShiftKey = 'focus_pixel_shift';
+const _kFocusTimeShiftIndicatorKey = 'focus_time_shift_indicator';
 const _kLastImportedConfigKey = 'last_imported_config';
 const _kStartupFocusValueKey = 'startup_focus_value';
 
-const kDefaultLocale          = Locale('en');
-const kDefaultThemeMode       = AppThemeMode.system;
-const kDefaultHourFormat24    = true;
-const kDefaultThousandsSep    = true;
+const kDefaultLocale = Locale('en');
+const kDefaultThemeMode = AppThemeMode.system;
+const kDefaultHourFormat24 = true;
+const kDefaultThousandsSep = true;
 const kDefaultDateWithDetails = true;
 const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
 const kDefaultDayQuarterColor = true;
-const kDefaultLmstMode        = LmstMode.off;
+const kDefaultLmstMode = LmstMode.off;
 const kDefaultFocusBrightness = 0.5;
+const kDefaultFocusTimeShiftIndicator = true;
 const kFocusDefaultColorLight = kColorWhite;
 const kFocusDefaultColorNight = kColorNightRed;
 final kDefaultFocusPixelShift = !kIsWeb && Platform.isAndroid;
@@ -252,6 +254,17 @@ Future<bool> loadFocusPixelShift() async {
 Future<void> saveFocusPixelShift(bool enabled) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool(_kFocusPixelShiftKey, enabled);
+}
+
+Future<bool> loadFocusTimeShiftIndicator() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kFocusTimeShiftIndicatorKey) ??
+      kDefaultFocusTimeShiftIndicator;
+}
+
+Future<void> saveFocusTimeShiftIndicator(bool enabled) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kFocusTimeShiftIndicatorKey, enabled);
 }
 
 Future<String?> loadLastImportedConfig() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:timezone/src/date_time.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -81,7 +81,7 @@ abstract class TimeValueRow extends StatelessWidget {
       String ianaZone, BuildContext context, AppLocalizations l10n) {
     final app = EpochApp.of(context);
     final transitions = TimeUtils.nextDstTransitions(
-        ianaZone, DateTime.now().toUtc(), count: 4);
+        ianaZone, EffectiveClock.now().toUtc(), count: 4);
     if (transitions.isEmpty) return [];
 
     final textTheme   = Theme.of(context).textTheme;
@@ -89,23 +89,33 @@ abstract class TimeValueRow extends StatelessWidget {
     final locale      = l10n.localeName;
 
     Widget transitionRow(DateTime utcTime) {
-      final TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
       final DateTime localTime = utcTime.toLocal();  // time in device local time
+      final tz.TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
 
-      var zonedStr = TimeValueFormatter.formatDateTime(
-          app.hourFormat24, locale, zonedTime, null);
+      final wallClock = TimeUtils.wallClockAroundTransition(ianaZone, utcTime);
+      final sameDay = wallClock.before.year == wallClock.after.year &&
+          wallClock.before.month == wallClock.after.month &&
+          wallClock.before.day == wallClock.after.day;
+      String describeWallClock(DateTime wall) => sameDay
+          ? TimeValueFormatter.formatTime(
+          app.hourFormat24, wall.hour, wall.minute, wall.second)
+          : TimeValueFormatter.formatDateTime(
+          app.hourFormat24, locale, wall, null);
+      final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
+      final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
+      final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+      final arrow = '$before → $after';
+      final zonedStr = '$arrow  '
+          '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
+          '${describeWallClock(wallClock.before)} → '
+          '${describeWallClock(wallClock.after)}';
+
       final localStr = TimeValueFormatter.formatDateTime(
           app.hourFormat24, locale, localTime, null);
       // Only show local time if it differs from zoned time (different day or hour):
       final showLocal = zonedTime.day != localTime.day ||
           zonedTime.hour != localTime.hour ||
           zonedTime.month != localTime.month;
-
-      final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
-      final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
-      final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
-      final arrow = '$before → $after';
-      zonedStr = "$arrow  $zonedStr";
 
       final localAbbrAtTransition = () {
         try {

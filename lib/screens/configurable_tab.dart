@@ -651,7 +651,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         _ => throw StateError(
             'Unhandled graphical ValueType: ${timeValue.valueType}'),
       };
-    };
+    }
 
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 

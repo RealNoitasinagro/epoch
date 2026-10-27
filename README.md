@@ -69,7 +69,8 @@ which ones you care about, and explains what each one means.
 **Epoch is for you if you...**
 - are curious about different time systems in use around the world
 - want to compare local times across many timezones at a glance (e. g. friends/colleagues abroad)
-- need up-to-date time zone data (latest IANA db) if your phone's system no longer receives upgrades 
+- need up-to-date time zone data (latest IANA db) if your phone's system no longer receives upgrades
+- want to see any moment, past or future, in all time systems without touching your system clock
 - enjoy unusual time representations like Swatch Internet Time, day seconds, or binary clocks
 - do amateur astronomy and want a single app for sidereal time, LMST, and Julian Date —
   without blue light ruining your dark adaptation
@@ -171,8 +172,8 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 
 ## Platforms
 
-| Platform | Status          | Distribution                                                                                                                                   |
-|----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| Platform | Status           | Distribution                                                                                                                                   |
+|----------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | Android  | ✅ Supported     | [F-Droid](https://f-droid.org/packages/io.github.RealEarthling.epoch/) · [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases) |
 | Linux    | ✅ Supported     | [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases)                                                                          |
 | Web      | ✅ Supported     | [GitHub Pages](https://RealNoitasinagro.github.io/epoch) (possibly newer than latest release)                                                  |

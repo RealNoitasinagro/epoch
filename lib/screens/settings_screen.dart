@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
-    _settingsReloadNotifier?.removeListener(_onExternalReload);;
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
     _longitudeController.dispose();
     super.dispose();
   }
@@ -389,11 +389,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Table(
                         columnWidths: const {
-                          0: FixedColumnWidth(52),   // Token links
-                          1: FixedColumnWidth(48),   // Beispiel links
-                          2: FixedColumnWidth(16),   // Abstand
-                          3: FixedColumnWidth(52),   // Token rechts
-                          4: FlexColumnWidth(),      // Beispiel rechts
+                          0: FixedColumnWidth(52),   // Token left
+                          1: FixedColumnWidth(48),   // Example left
+                          2: FixedColumnWidth(16),   // Distance
+                          3: FixedColumnWidth(52),   // Token right
+                          4: FlexColumnWidth(),      // Example right
                         },
                         children: List.generate(rowCount, (i) {
                           final l = leftRows[i];
@@ -493,7 +493,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final messenger = ScaffoldMessenger.of(context);
       messenger.clearSnackBars();  // drop any queued ones – show only the latest
       messenger.showSnackBar(SnackBar(
-        content: Text(l10n.messageTabReactivated),
+        content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
         duration: const Duration(seconds: 6),
         behavior: SnackBarBehavior.floating,
       ));

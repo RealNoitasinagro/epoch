@@ -380,6 +380,24 @@ abstract class AppLocalizations {
   /// **'Select value type'**
   String get hintSelectValueType;
 
+  /// No description provided for @hintTimeShiftFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'into the future'**
+  String get hintTimeShiftFuture;
+
+  /// No description provided for @hintTimeShiftIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Shift {period} · system date: {date}\nTap to change or reset'**
+  String hintTimeShiftIndicator(String date, String period);
+
+  /// No description provided for @hintTimeShiftPast.
+  ///
+  /// In en, this message translates to:
+  /// **'into the past'**
+  String get hintTimeShiftPast;
+
   /// No description provided for @hintTimezoneSearch.
   ///
   /// In en, this message translates to:
@@ -575,7 +593,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.'**
+  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Latest setting: 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.'**
   String get infoTextDoomsdayClock;
 
   /// No description provided for @infoTextDublinJulianDate.
@@ -647,7 +665,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextRomanNumeralsTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone, shown in Roman numerals. N, the intial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
+  /// **'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
   String get infoTextRomanNumeralsTime;
 
   /// No description provided for @infoTextSevenSegmentTime.
@@ -679,6 +697,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
   String get infoTextUnixSeconds;
+
+  /// No description provided for @labelDay.
+  ///
+  /// In en, this message translates to:
+  /// **'DD'**
+  String get labelDay;
 
   /// No description provided for @labelDstChangeInDays.
   ///
@@ -719,8 +743,14 @@ abstract class AppLocalizations {
   /// No description provided for @labelMinutes.
   ///
   /// In en, this message translates to:
-  /// **'MM'**
+  /// **'mm'**
   String get labelMinutes;
+
+  /// No description provided for @labelMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'MM'**
+  String get labelMonth;
 
   /// No description provided for @labelNewLabel.
   ///
@@ -749,7 +779,7 @@ abstract class AppLocalizations {
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
-  /// **'SS'**
+  /// **'ss'**
   String get labelSeconds;
 
   /// No description provided for @labelShowDecimals.
@@ -763,6 +793,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show seconds'**
   String get labelShowSeconds;
+
+  /// No description provided for @labelYear.
+  ///
+  /// In en, this message translates to:
+  /// **'YYYY'**
+  String get labelYear;
 
   /// No description provided for @messageAlreadyDisplayed.
   ///
@@ -833,14 +869,20 @@ abstract class AppLocalizations {
   /// No description provided for @messageTabReactivated.
   ///
   /// In en, this message translates to:
-  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.'**
-  String get messageTabReactivated;
+  /// **'Tab reactivated – it may not match the default configuration anymore. Use \"{resetAction}\" on the tab if needed.'**
+  String messageTabReactivated(String resetAction);
 
   /// No description provided for @pageSettings.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
   String get pageSettings;
+
+  /// No description provided for @pageTimeShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Shift'**
+  String get pageTimeShift;
 
   /// No description provided for @sectionAlternative.
   ///
@@ -1261,6 +1303,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Technical'**
   String get tabTechnical;
+
+  /// No description provided for @timeShiftApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get timeShiftApply;
+
+  /// No description provided for @timeShiftDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get timeShiftDate;
+
+  /// No description provided for @timeShiftFocusIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Indicator in Focus screen'**
+  String get timeShiftFocusIndicator;
+
+  /// No description provided for @timeShiftFocusIndicatorSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows a small icon while the displayed time deviates from the system time'**
+  String get timeShiftFocusIndicatorSub;
+
+  /// No description provided for @timeShiftFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze time'**
+  String get timeShiftFrozen;
+
+  /// No description provided for @timeShiftFrozenSubOff.
+  ///
+  /// In en, this message translates to:
+  /// **'The time used in the app keeps running from the set moment.'**
+  String get timeShiftFrozenSubOff;
+
+  /// No description provided for @timeShiftFrozenSubOn.
+  ///
+  /// In en, this message translates to:
+  /// **'The time used in the app stays at the set moment.'**
+  String get timeShiftFrozenSubOn;
+
+  /// No description provided for @timeShiftHint.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  String timeShiftHint(String apply, String reset);
+
+  /// No description provided for @timeShiftHintApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies the selected date and time to the whole app.'**
+  String get timeShiftHintApply;
+
+  /// No description provided for @timeShiftHintRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.'**
+  String timeShiftHintRange(String earliest, String latest);
+
+  /// No description provided for @timeShiftHintReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets date and time in the whole app to the values of the system clock.'**
+  String get timeShiftHintReset;
+
+  /// No description provided for @timeShiftHintResetToSystemDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"{apply}\" button.'**
+  String timeShiftHintResetToSystemDate(String apply);
+
+  /// No description provided for @timeShiftHintResetToSystemTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"{apply}\" button.'**
+  String timeShiftHintResetToSystemTime(String apply);
+
+  /// No description provided for @timeShiftHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get timeShiftHours;
+
+  /// No description provided for @timeShiftMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get timeShiftMinutes;
+
+  /// No description provided for @timeShiftOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported range: {earliest} to {latest}'**
+  String timeShiftOutOfRange(String earliest, String latest);
+
+  /// No description provided for @timeShiftReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to system clock'**
+  String get timeShiftReset;
+
+  /// No description provided for @timeShiftSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds'**
+  String get timeShiftSeconds;
+
+  /// No description provided for @timeShiftSkippedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{requested} does not exist because of a clock change, using {used}.'**
+  String timeShiftSkippedTime(String requested, String used);
+
+  /// No description provided for @timeShiftTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeShiftTime;
 
   /// No description provided for @valueTypeBinaryClockBcd.
   ///

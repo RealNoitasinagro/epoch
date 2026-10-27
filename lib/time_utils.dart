@@ -2,14 +2,34 @@ import 'dart:ui';
 import 'package:numerus/numerus.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
+import 'effective_clock.dart';
 import 'layout_constants.dart';
 import 'models/time_value.dart';
 import 'models/zone_rules.dart';
 import 'time_value_formatter.dart';
 
 class TimeUtils {
-  static const leapSecondsSince1972 = 27;
-  static const leapSecondsSince1980 = leapSecondsSince1972 - 9;
+  static const int secondsPerDay = 24 * 60 * 60;  // 86400
+
+  /// TAI − UTC at the start of 1972, when UTC was defined as it is today.
+  static const _taiMinusUtcAtStartOf1972 = 10;
+
+  /// TAI − GPS time, constant by definition.
+  static const _taiMinusGpsSeconds = 19;
+
+  /// First UTC moment after each inserted leap second (year, month).
+  /// All 27 insertions to date; none are scheduled, abolition in 2027.
+  static final List<DateTime> _leapSecondBoundaries = [
+    for (final (year, month) in const [
+      (1972, 7), (1973, 1), (1974, 1), (1975, 1), (1976, 1), (1977, 1),
+      (1978, 1), (1979, 1), (1980, 1), (1981, 7), (1982, 7), (1983, 7),
+      (1985, 7), (1988, 1), (1990, 1), (1991, 1), (1992, 7), (1993, 7),
+      (1994, 7), (1996, 1), (1997, 7), (1999, 1), (2006, 1), (2009, 1),
+      (2012, 7), (2015, 7), (2017, 1),
+    ])
+      DateTime.utc(year, month),
+  ];
+
   static const CommonRomanNumeralsConfig _romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
 
   static int dayOfYear(DateTime dt) => dt.ordinalDate;
@@ -36,12 +56,12 @@ class TimeUtils {
 
   /// Returns true/false for a given time zone independently of current date.
   static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>
-      zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc())?.hasDst ?? false;
+      zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc())?.hasDst ?? false;
 
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
       String ianaZone, bool dst, {DateTime? referenceUtc}) {
-    final rules = zoneRulesAt(ianaZone, referenceUtc ?? DateTime.now().toUtc());
+    final rules = zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc());
     if (rules == null || !rules.hasDst) return null;
     return dst
         ? (offset: rules.dstOffset, abbreviation: rules.dstAbbr)
@@ -56,7 +76,7 @@ class TimeUtils {
       String localIanaZone) {
     switch (timeValue.zone) {
       case ZoneLocal():
-        return DateTime.now();  // always auto for local
+        return utcNow.toLocal();  // always auto for local
       case ZoneUtc():
         return utcNow;
       case ZoneNamed(ianaZone: final zone):
@@ -105,7 +125,6 @@ class TimeUtils {
     } catch (_) { return []; }
   }
 
-
   /// The package data ends with a pseudo-transition (2038-01-19 03:14:08 UTC)
   /// into the very same state; real changes alter offset, DST flag or abbreviation.
   static bool _changesClock(tz.Location loc, DateTime transitionUtc) {
@@ -135,6 +154,53 @@ class TimeUtils {
     }
   }
 
+  /// Wall-clock readings in [ianaZone] directly before and after a clock change
+  /// at [transitionUtc], e.g. 03:00:00 -> 02:00:00 for Berlin in autumn (so
+  /// 02:00:00-02:59:59 occurs twice) or 02:00:00 -> 03:00:00 in spring (so
+  /// 02:00:00-02:59:59 does not exist). The returned DateTimes are UTC-kind and
+  /// only carry the wall-clock fields.
+  static ({DateTime before, DateTime after}) wallClockAroundTransition(
+      String ianaZone, DateTime transitionUtc) {
+    final offsetBefore = inZone(
+        transitionUtc.subtract(const Duration(seconds: 1)), ianaZone)
+        .timeZoneOffset;
+    final offsetAfter = inZone(transitionUtc, ianaZone).timeZoneOffset;
+    return (
+      before: transitionUtc.add(offsetBefore),
+      after: transitionUtc.add(offsetAfter),
+    );
+  }
+
+  /// Seconds elapsed since the start of the local day, and the real length of
+  /// that day in [ianaZone]: 82,800 or 90,000 on days with a clock change.
+  /// A midnight skipped by a clock change resolves to the transition instant,
+  /// so that day simply starts later.
+  static ({int elapsedSeconds, int lengthSeconds}) dayProgressInZone(
+      DateTime utc, String ianaZone) {
+    tz.Location location;
+    try {
+      location = tz.getLocation(ianaZone);
+    } catch (_) {
+      location = tz.UTC;  // same fallback as inZone()
+    }
+    final moment = tz.TZDateTime.from(utc, location);
+    final dayStart =
+    tz.TZDateTime(location, moment.year, moment.month, moment.day);
+    final nextDayStart =
+    tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
+    return (
+      elapsedSeconds: moment.difference(dayStart).inSeconds,
+      lengthSeconds: nextDayStart.difference(dayStart).inSeconds,
+    );
+  }
+
+  /// For fixed offsets (UTC, pinned standard or summer time) every day has
+  /// exactly 86,400 seconds.
+  static ({int elapsedSeconds, int lengthSeconds}) dayProgressFixedOffset(
+      DateTime wallClock) {
+    return (elapsedSeconds: daySecond(wallClock), lengthSeconds: secondsPerDay);
+  }
+
   /// Return a color depending on what quarter of the day it is.
   static Color dayQuarterColor(DateTime utc, String? ianaZone) {
     int hour;
@@ -159,7 +225,6 @@ class TimeUtils {
 
   /// Percentage of the day elapsed.
   static double dayPercent(DateTime dt) {
-    int secondsPerDay = 24 * 60 * 60;  // 86400
     int currentDaySecond = daySecond(dt);
     var percent = currentDaySecond / secondsPerDay * 100;
     return percent;
@@ -182,16 +247,27 @@ class TimeUtils {
   static int unixTimestamp(DateTime utc) =>
       utc.toUtc().millisecondsSinceEpoch ~/ 1000;
 
-  /// TAI: UTC + 37 leap seconds.
-  static int taiUnixTimestamp(DateTime utc) {
-    return unixTimestamp(utc) + 10 + leapSecondsSince1972;
+  /// TAI − UTC in seconds at the given moment. Before 1972 UTC had no leap
+  /// seconds in today's sense; the 1972 value is used as an approximation.
+  static int taiMinusUtcSeconds(DateTime utc) {
+    final moment = utc.toUtc();
+    final insertedLeapSeconds = _leapSecondBoundaries
+        .where((boundary) => !boundary.isAfter(moment))
+        .length;
+    return _taiMinusUtcAtStartOf1972 + insertedLeapSeconds;
   }
 
-  /// GPS time: seconds since 1980-01-06 00:00:00 UTC.
-  /// GPS time does not have leap seconds, 18s ahead of UTC.
+  /// TAI: Unix time plus the leap seconds inserted so far.
+  static int taiUnixTimestamp(DateTime utc) =>
+      unixTimestamp(utc) + taiMinusUtcSeconds(utc);
+
+  /// GPS time: seconds since 1980-01-06 00:00:00 UTC, including the leap
+  /// seconds inserted since then (GPS itself has none).
   static int gpsTime(DateTime utc) {
     final gpsEpoch = DateTime.utc(1980, 1, 6);
-    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSince1980;
+    final leapSecondsSinceGpsEpoch =
+        taiMinusUtcSeconds(utc) - _taiMinusGpsSeconds;
+    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSinceGpsEpoch;
   }
 
   /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).
@@ -268,9 +344,11 @@ class TimeUtils {
   /// Decimal time (French Revolutionary time): day = 10 decimal hours,
   /// 1 decimal hour = 100 decimal minutes, 1 decimal minute = 100 decimal
   /// seconds (100,000 decimal seconds per day total).
-  static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt) {
+  static ({int hours, int minutes, int seconds}) decimalTime(DateTime dt,
+      {int? elapsedSeconds, int dayLengthSeconds = secondsPerDay}) {
     final totalDecimalSeconds =
-        (daySecond(dt) / 86400 * 100000).round() % 100000;
+        ((elapsedSeconds ?? daySecond(dt)) / dayLengthSeconds * 100000)
+            .round() % 100000;
     return (
       hours:   totalDecimalSeconds ~/ 10000,
       minutes: (totalDecimalSeconds % 10000) ~/ 100,
@@ -279,8 +357,10 @@ class TimeUtils {
   }
 
   /// Decimal time as "H:MM:SS", e.g. "7:52:19".
-  static String decimalTimeString(DateTime dt) {
-    final d = decimalTime(dt);
+  static String decimalTimeString(DateTime dt,
+      {int? elapsedSeconds, int dayLengthSeconds = secondsPerDay}) {
+    final d = decimalTime(dt,
+        elapsedSeconds: elapsedSeconds, dayLengthSeconds: dayLengthSeconds);
     return '${d.hours}\u02b0'
         '${d.minutes.toString().padLeft(2, '0')}\u1d50'
         '${d.seconds.toString().padLeft(2, '0')}\u02e2';
@@ -336,19 +416,22 @@ class TimeUtils {
 
   /// Seconds since midnight (0–86399), represented in the given number
   /// base, zero-padded to a fixed width. Used for octal/hexadecimal time.
-  static String daySecondInBase(DateTime dt, int base, int digits) {
-    return daySecond(dt).toRadixString(base).padLeft(digits, '0').toUpperCase();
+  static String daySecondInBase(DateTime dt, int base, int digits,
+      {int? elapsedSeconds}) {
+    return (elapsedSeconds ?? daySecond(dt))
+          .toRadixString(base).padLeft(digits, '0').toUpperCase();
   }
 
   /// Octal time: day second in base 8, e.g. "250577" (6 digits fit up to
   /// 86399 = 0o250577, since 8^6 > 86400 > 8^5).
-  static String octalTimeString(DateTime dt) => daySecondInBase(dt, 8, 6);
+  static String octalTimeString(DateTime dt, {int? elapsedSeconds}) =>
+      daySecondInBase(dt, 8, 6, elapsedSeconds: elapsedSeconds);
 
   /// Hexadecimal time: day second in base 16, grouped with underscores
   /// every 2 digits for readability, e.g. "1_51_7F" (5 digits fit up to
   /// 86399 = 0x1517F, since 16^5 > 86400 > 16^4).
-  static String hexadecimalTimeString(DateTime dt) {
-    final hex = daySecondInBase(dt, 16, 5);
+  static String hexadecimalTimeString(DateTime dt, {int? elapsedSeconds}) {
+    final hex = daySecondInBase(dt, 16, 5, elapsedSeconds: elapsedSeconds);
     // Group from the right in pairs, e.g. "1517F" -> "1_51_7F":
     final buffer = StringBuffer();
     for (int i = 0; i < hex.length; i++) {
@@ -377,10 +460,37 @@ class TimeUtils {
     return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
   }
 
-  /// Returns the current Doomsday Clock time.
+  /// Doomsday Clock settings: year -> seconds to midnight. A setting applies
+  /// from 1 January of its year until the next entry (simplification: changes
+  /// within a year are not modelled). Source: the timeline at
+  /// https://en.wikipedia.org/wiki/Doomsday_Clock – verify when adding entries.
   /// Last check for accuracy of hardcoded values: 2026-09-01.
-  static String doomsDayClockString(bool hourFormat24) {
-    int hh = 23; int mm = 58; int ss = 35;
-    return TimeValueFormatter.formatTime(hourFormat24, hh, mm, ss, tzSuffix: null);
+  static const Map<int, int> _doomsdaySecondsToMidnightByYear = {
+    1969: 600,  1972: 720,  1974: 540,  1980: 420,  1981: 240,
+    1984: 180,  1988: 360,  1990: 600,  1991: 1020, 1995: 840,
+    1998: 540,  2002: 420,  2007: 300,  2010: 360,  2012: 300,
+    2015: 180,  2017: 150,  2018: 120,  2020: 100,  2023: 90,
+    2025: 89,   2026: 85,
+  };
+
+  /// Seconds to midnight at the given moment; the latest known setting
+  /// applies to all dates after the last table entry.
+  static int doomsdaySecondsToMidnight(DateTime utc) {
+    final year = utc.toUtc().year;
+    final settingYear = _doomsdaySecondsToMidnightByYear.keys.lastWhere(
+            (candidate) => candidate <= year,
+        orElse: () => _doomsdaySecondsToMidnightByYear.keys.first);
+    return _doomsdaySecondsToMidnightByYear[settingYear]!;
+  }
+
+  /// The Doomsday Clock as a time of day (23:5x:xx) for the given moment.
+  static String doomsDayClockString(bool hourFormat24, DateTime utc) {
+    final secondOfDay = 24 * 60 * 60 - doomsdaySecondsToMidnight(utc);
+    return TimeValueFormatter.formatTime(
+        hourFormat24,
+        secondOfDay ~/ 3600,
+        (secondOfDay % 3600) ~/ 60,
+        secondOfDay % 60,
+        tzSuffix: null);
   }
 }
