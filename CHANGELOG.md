@@ -14,7 +14,7 @@ Focus screen has an optional indicator, new config key`focus_time_shift_indicato
 - time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
 name, abbreviation or offset, in English and German
 - offsets, abbreviations and clock changes are derived from the time zone data
-- search screen optimized: sorting/ranking, time, count of search results, 
+- search screen optimized: sorting/ranking, time, count of search results
 - TAI and GPS time account for historical leap seconds; Doomsday Clock shows its historical settings
 - clock changes in the info dialog show the wall-clock time before and after the change
 
