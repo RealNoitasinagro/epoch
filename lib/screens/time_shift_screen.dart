@@ -30,7 +30,14 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   DateTime get _displayedMoment => _editedMoment ?? EffectiveClock.now();
 
+  /// Apply would change something: values were edited, or the freeze
+  /// setting differs from the one currently in effect.
   bool get _canSetAppClock =>
+      _editedMoment != null || _frozen != EffectiveClock.isFrozen;
+
+  /// Reset would change something: the app clock is shifted, or the page
+  /// holds unapplied edits.
+  bool get _canReturnToSystemTime =>
       EffectiveClock.isShifted || _editedMoment != null;
 
   @override
@@ -292,7 +299,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                     child: OutlinedButton.icon(
                       icon: const Icon(Icons.restart_alt),
                       label: Text(l10n.timeShiftReset),
-                      onPressed: _canSetAppClock ? _resetToSystemTime : null,
+                      onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
                     ),
                   ),
                 ),
