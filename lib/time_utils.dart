@@ -464,7 +464,7 @@ class TimeUtils {
   /// from 1 January of its year until the next entry (simplification: changes
   /// within a year are not modelled). Source: the timeline at
   /// https://en.wikipedia.org/wiki/Doomsday_Clock – verify when adding entries.
-  /// Last check for accuracy of hardcoded values: 2026-09-01.
+  /// Last check for accuracy of hardcoded values: 2026-10-27.
   static const Map<int, int> _doomsdaySecondsToMidnightByYear = {
     1969: 600,  1972: 720,  1974: 540,  1980: 420,  1981: 240,
     1984: 180,  1988: 360,  1990: 600,  1991: 1020, 1995: 840,

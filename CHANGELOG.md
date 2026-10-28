@@ -2,10 +2,14 @@
 
 ## [Unreleased]
 
+---
+
+## [1.6.0] - 2026-10-28
+
 ### Added
 - 🆒 Time Shift (new menu item): show any moment between 1970 and 2038 in all values, running or frozen,
 without touching the system clock; title bar shows the real system time meanwhile,
-Focus screen has an optional indicator, new config key`focus_time_shift_indicator` (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
+Focus screen has an optional indicator, new config key `focus_time_shift_indicator` (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
 - new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
 - (more) license texts (CLDR, JetBrains Mono) readable in the app
 

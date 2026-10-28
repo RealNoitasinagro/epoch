@@ -1,41 +1,47 @@
-Epoch zeigt die aktuelle Zeit in einer Vielzahl von Zeitsystemen an —
-jede Sekunde aktualisiert, alles auf einen Blick.
+Epoch zeigt die aktuelle Zeit in einer Vielzahl von Zeitsystemen an — sekündlich aktualisiert, alles an einem Ort. 28 Werte, von Unix-Zeit und Sternzeit bis zu Swatch-Internetzeit und Doomsday Clock.
 
 <b>Was Epoch bietet</b>
 - Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesprozent, Sieben-Segment-Uhr — für jede Zeitzone
 - Technisch: Unix-Zeit, Internationale Atomzeit (TAI), GPS-Zeit
-- Astronomisch: Greenwich und Local Mean Sidereal Time (GMST, LMST), Julianisches Datum in mehreren Varianten
-- Kurioses: Dezimalzeit, Swatch-Internetzeit, New Earth Time, Doomsday Clock, 3 Binäruhren, Oktal- und Hexadezimalzeit
+- Astronomisch: Greenwicher und lokale mittlere Sternzeit (GMST, LMST), Julianisches Datum und sechs Varianten
+- Kurioses: Dezimalzeit, Swatch-Internetzeit, New Earth Time, Doomsday Clock, Römische-Zahlen-Zeit, 3 Binäruhren, Oktal- und Hexadezimalzeit
 Alle Zeitwerte können mit kurzem oder langem Knopfdruck in die Zwischenablage kopiert werden.
 
+<b>Zeitzonen</b>
+- Jede IANA-Zeitzone, auffindbar per Stadt, Land, Hauptstadt, Name, Kürzel oder UTC-Offset — auf Deutsch und Englisch.
+- Epoch bringt eigene, aktuelle Zeitzonendaten mit: Auch Smartphones ohne System-Updates zeigen die richtige Zeit und die richtigen Zeitumstellungen.
+- Zeitumstellungen werden 7 Tage im Voraus angekündigt, kommende Umstellungen stehen im Info-Dialog des Werts.
+- Zeitzonen können fest auf Normalzeit oder Sommerzeit eingestellt werden.
+
+<b>Time Shift</b>
+Jeder Zeitpunkt zwischen 1970 und 2038 in allen Zeitsystemen anzeigbar, fortlaufend oder eingefroren, ohne die Systemuhr zu verändern. Du kannst frühere Zeitumstellungsregeln, Schaltsekunden oder Stände der Doomsday Clock nachschauen, oder auch einfach die Zeit anhalten.
+
 <b>Konfigurierbar</b>
-- Erstelle deine eigenen Watchlist-Tabs – kombiniere beliebige Werte aus beliebigen Kategorien, in beliebiger Reihenfolge.
-- Alle eingebauten Tabs (Bürgerlich, Technisch, Astronomisch, Kurioses) sind voll anpassbar und können ausgeblendet und wiederhergestellt werden.
+- Eigene Watchlist-Tabs: beliebige Werte aus allen Kategorien in beliebiger Reihenfolge.
+- Auch alle eingebauten Tabs (Bürgerlich, Technisch, Astronomisch, Kurioses) sind vollständig anpassbar und lassen sich jederzeit aus- und wieder einblenden.
 - Eigene Labels, Abschnittsüberschriften und Trennlinien einfügen
 - Mit drag-and-drop sortieren, per Wischgeste entfernen
 - Datum- und Zeitformate sowie Zeitzonen-Infos konfigurierbar
-- Option, Zeitzonen unabhängig vom Datum dauerhaft auf Normalzeit oder Sommerzeit zu fixieren
-- Ankündigung von Zeitumstellungen 7 Tage im Voraus, Anzeige von Zeitumstellungen der nächsten Jahre im Info-Dialog des Zeitwerts
 - Alle Einstellungen exportierbar, importierbar und zurücksetzbar
 
 <b>Fokus-Modus</b>
-- Jeder Wert doppelt antippbar zum Wechsel in den Vollbildmodus — ideal als Nachttischuhr
+- Jeder Wert doppelt antippbar zum Wechsel in die Vollbildanzeige, die immer an bleibt — ideal als Nachttischuhr
 - Helligkeitseinstellung (Android) und Farbauswahl
 - Zusatzinformationen mittels Gedrückthalten
 - Einbrennschutz durch sanfte, periodische Pixelverschiebung (insbesondere für OLED-Displays)
 - Option zum Starten der App im Fokus-Modus
 
-<b>Nachtmodus für Astronomen</b>
+<b>Für die Nacht gemacht</b>
 Der Nachtmodus zeigt roten Text auf schwarzem Hintergrund – schützt die Dunkeladaption deiner Augen beim Sternegucken.
 
-<b>Beispiel-Konfigurationen</b>
-Importierbare <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">Beispiel-Konfigurationen</a> auf GitHub verfügbar,
-der Ordner enthält z. B. einen Raumfahrt-Tab, einen Zeitzonenexplorer sowie eine Konfigurations-Hilfeseite (in Englisch).
+<b>Beispielkonfigurationen und Dokumentation</b>
+Importfertige <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">Beispielkonfigurationen</a> (u. a. Raumfahrt, Weltzeituhr), ein Konfigurationshandbuch und die <a href="https://github.com/RealNoitasinagro/epoch/wiki/Time-Zone-Search">Anleitung zur Zeitzonensuche</a> gibt es auf GitHub (Englisch).
 
 <b>Datenschutz</b>
-Keine Werbung, Benachrichtigungen, Analysen, Netzwerkanfragen oder Tracking.
-Alle Einstellungen werden lokal auf deinem Gerät gespeichert.
+Keine Werbung, keine Benachrichtigungen, kein Tracking, keine Analysen, keine Netzwerkzugriffe.
+Alle Einstellungen werden lokal auf dem Gerät gespeichert.
 Keine besonderen Berechtigungen erforderlich.
-Für Local Mean Sidereal Time: einmalig Standortzugriff aktivieren und Berechtigung erteilen (kein GPS), oder Längengrad manuell eingeben.
+Für die lokale mittlere Sternzeit: optional einmalig Standortzugriff erlauben (grob, kein GPS) oder den Längengrad manuell eingeben.
+Freie Software (GPL-3.0-or-later), reproduzierbare Builds.
 
 Verfügbar auf Englisch und Deutsch.

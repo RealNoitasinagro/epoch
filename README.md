@@ -83,8 +83,9 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Formats and display options
 - Date and time formats: presets or custom patterns; 12/24-hour format
-- Expanded date (ISO week number, day of the year), thousands separator
+- Expanded date (ISO week number, day of the year)
 - Day quarter color on or off
+- Thousands separator switch
 
 ### Config files
 - Export, import and reset all preferences (cross-platform, with automatic
@@ -111,10 +112,10 @@ also happen to spell out **E**legant **p**resentation **o**f
 - All settings stored locally on your device
 - No permissions required – for LMST you can enter longitude manually, or
   temporarily grant ACCESS_COARSE_LOCATION permission (one-time setup step)
-- Free software (GPL), reproducible builds
+- Free software (GPL), F-Droid reproducible builds
 
 ### Planned
-- Android widgets and value conversion between time systems
+- Android widgets, value conversion between time systems, new value types, and more
 
 
 ## What makes Epoch different?
@@ -129,10 +130,9 @@ which ones you care about, and explains what each one means.
   friends or colleagues abroad), including their upcoming clock changes
 - need current time zone rules although your phone's system no longer
   receives updates: old devices keep outdated rules, Epoch ships its own
-  up-to-date IANA database (e. g. recent changes in Canada)
+  up-to-date IANA database (e. g. for recent changes in Canada)
 - want to see how any moment, past or future, looks in all time systems,
   without touching your system clock
-  - need the Unix timestamp, Julian Date, GPS or sidereal time of a given date
 - enjoy unusual time representations like Swatch Internet Time, day seconds,
   Roman numerals or binary clocks
 - do amateur astronomy and want a single app for sidereal time, LMST and
@@ -290,16 +290,14 @@ Check the file integrity (Linux):
 ```
 $ sha256sum --check --ignore-missing sha256sums.txt
 ```
-Check the signature (`apksigner` is part of the Android SDK build tools):
+Check the signature with `apksigner verify --print-certs <downloaded apk>` (`apksigner` is part of the Android SDK build tools):
 ```
-$ apksigner verify --print-certs app-arm64-v8a-release.apk
-V2 Signer: certificate DN: CN=RealEarthling, OU=Unknown, O=RealNoitasinagro, L=AC, ST=NRW, C=DE
+$ apksigner verify --print-certs app-arm64-v8a-release.apk | grep SHA-256
 V2 Signer: certificate SHA-256 digest: 7263c0bfce95b625839598b01fdcc695c04cdbe6dd4fa34a02a2d3ad2522c246
-V2 Signer: certificate SHA-1 digest: ba8cfe955430805cfe79d69660da4c15fb27a9b3
-V2 Signer: certificate MD5 digest: dfc7f26fc6b12cc29d6fc1751f25580e
 ```
-The `certificate SHA-256 digest` line must show: `7263c0bfce95b625839598b01fdcc695c04cdbe6dd4fa34a02a2d3ad2522c246`.
-
+The `certificate SHA-256 digest` line must show: `7263c0bfce95b625839598b01fdcc695c04cdbe6dd4fa34a02a2d3ad2522c246`. \
+The same fingerprint is published independently of this repository in F-Droid's [build metadata](https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/io.github.RealEarthling.epoch.yml) (`AllowedAPKSigningKeys`). \
+If the digest differs, or `apksigner` reports an error, do not install the APK.
 
 ## Contributing
 

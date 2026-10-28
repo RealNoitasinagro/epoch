@@ -1,0 +1,5 @@
+- Time Shift – show any moment between 1970 and 2038 in all values, running or frozen, without touching your system clock
+- Rebuilt time zone search: every IANA zone by city, country, capital, name, abbreviation or UTC offset, with up-to-date rules even on old phones
+- New value type: Roman numerals time
+- Clock changes now show the time before and after the jump
+- Correct day length on clock change days, historical leap seconds and Doomsday Clock values
