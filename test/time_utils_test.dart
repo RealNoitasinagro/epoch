@@ -1,6 +1,8 @@
+import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_utils.dart';
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest.dart' as tzl;
+import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
 
 void main() {
@@ -112,20 +114,43 @@ void main() {
     });
   });
 
-  group('TimeUtils.taiSeconds', () {
-    test('TAI is 37 seconds ahead of Unix', () {
-      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-      final unix = TimeUtils.unixTimestamp(dt);
-      final tai = TimeUtils.taiUnixTimestamp(dt);
-      expect(tai - unix, equals(37));
+  group('TimeUtils.taiMinusUtcSeconds', () {
+    test('10 s when UTC started in 1972', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 1, 1)), 10);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 6, 30, 23, 59, 59)), 10);
+    });
+    test('each inserted leap second adds one', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 7, 1)), 11);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1999, 1, 1)), 32);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2016, 12, 31, 23, 59, 59)), 36);
+    });
+    test('37 s since 2017-01-01 (all 27 leap seconds counted)', () {
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2017, 1, 1)), 37);
+      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2026, 10, 23)), 37);
+    });
+  });
+
+  group('TimeUtils.taiUnixTimestamp', () {
+    test('TAI is 37 seconds ahead of Unix today', () {
+      final dt = DateTime.utc(2026, 1, 1);
+      expect(TimeUtils.taiUnixTimestamp(dt) - TimeUtils.unixTimestamp(dt), 37);
     });
   });
 
   group('TimeUtils.gpsTime', () {
     test('GPS epoch = 0', () {
-      // GPS epoch: 1980-01-06 00:00:00 UTC, GPS is 18s ahead
-      final gpsEpoch = DateTime.utc(1980, 1, 6, 0, 0, 0);
-      expect(TimeUtils.gpsTime(gpsEpoch), equals(18));
+      expect(TimeUtils.gpsTime(DateTime.utc(1980, 1, 6)), equals(0));
+    });
+    test('GPS is 18 seconds ahead of Unix-based elapsed time today', () {
+      final dt = DateTime.utc(2026, 1, 1);
+      final elapsed = dt.difference(DateTime.utc(1980, 1, 6)).inSeconds;
+      expect(TimeUtils.gpsTime(dt) - elapsed, 18);
+    });
+    test('leap second in 1981 shifts GPS by one', () {
+      final before = DateTime.utc(1981, 6, 30, 23, 59, 59);
+      final after = DateTime.utc(1981, 7, 1);
+      final elapsedSeconds = after.difference(before).inSeconds;  // 1
+      expect(TimeUtils.gpsTime(after) - TimeUtils.gpsTime(before), elapsedSeconds + 1);
     });
   });
 
@@ -267,6 +292,7 @@ void main() {
       final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 0, 0, 0));
       expect(d, equals((hours: 0, minutes: 0, seconds: 0)));
     });
+
     test('noon = 5:00:00 (half the day)', () {
       final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 12, 0, 0));
       expect(d, equals((hours: 5, minutes: 0, seconds: 0)));
@@ -293,15 +319,18 @@ void main() {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 0, 0, 0)),
           closeTo(0.0, 0.001));
     });
+
     test('noon = 180°', () {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 12, 0, 0)),
           closeTo(180.0, 0.001));
     });
+
     test('one second before midnight ≈ 360°', () {
       final deg = TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 23, 59, 59));
       expect(deg, greaterThan(359.9));
       expect(deg, lessThan(360.0));
     });
+
     test('quarter day = 90°', () {
       expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 6, 0, 0)),
           closeTo(90.0, 0.001));
@@ -331,6 +360,7 @@ void main() {
       expect(TimeUtils.octalTimeString(dt), equals('000000'));
       expect(TimeUtils.hexadecimalTimeString(dt), equals('0_00_00'));
     });
+
     test('one second before midnight (daySecond 86399)', () {
       final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
       expect(TimeUtils.octalTimeString(dt), equals('250577'));
@@ -338,6 +368,63 @@ void main() {
     });
   });
 
+  group('TimeUtils.romanNumeralsTime', () {
+    test('midnight uses N for zero, all fields 7 wide', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 0, 0, 0)),
+          equals('   N   :   N   :   N   '));
+    });
+
+    test('24h with the longest numeral', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58)),
+          equals(' XVIII :XXXVIII: LVIII '));
+    });
+
+    test('seconds off keeps the field width', () {
+      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58),
+          showSeconds: false), equals(' XVIII :XXXVIII'));
+    });
+
+    test('12h appends the period after the padded field', () {
+      expect(TimeUtils.romanNumeralsTime(false, DateTime(2026, 1, 1, 14, 5, 9)),
+          equals('   II  :   V   :   IX   PM'));
+    });
+
+    test('width is constant for every second of the day', () {
+      for (var s = 0; s < 86400; s += 7) {
+        final dt = DateTime(2026, 1, 1).add(Duration(seconds: s));
+        expect(TimeUtils.romanNumeralsTime(true, dt).length, 23);
+      }
+    });
+
+    test('roman numerals clipboard value has no padding', () {
+      const timeValue = TimeValue(
+          valueType: ValueType.romanNumeralsTime, zone: ZoneLocal());
+      expect(
+        TimeStringRow.computeClipboardDisplay(
+            timeValue, (line1: '  XIV  :XXXVIII:   V    PM', line2: '')),
+        equals('XIV:XXXVIII:V PM'),
+      );
+    });
+  });
+
+  group('TimeUtils.doomsdaySecondsToMidnight', () {
+    test('1970 still shows the setting of 1969 (10 minutes)', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(1970, 1, 1)), 600);
+    });
+    test('a setting applies from 1 January of its year', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2016, 12, 31)), 180);
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2017, 1, 1)), 150);
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2018, 1, 1)), 120);
+    });
+    test('the latest setting applies to all later dates', () {
+      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2037, 6, 1)), 85);
+    });
+    test('clock string for today and for the 1991 maximum', () {
+      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(2026, 10, 24)), '23:58:35');
+      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(1991, 6, 1)), '23:43:00');
+      expect(TimeUtils.doomsDayClockString(false, DateTime.utc(1991, 6, 1)), '11:43:00 PM');
+    });
+  });
 
   // Other
 
@@ -431,6 +518,13 @@ void main() {
       final daysUntil = transition!.difference(sameDay).inDays;
       expect(daysUntil, equals(0));
     });
+
+    test('zones without upcoming changes report none (no 2038 end marker)', () {
+      for (final zone in ['Asia/Kathmandu', 'Pacific/Kiritimati', 'Asia/Colombo']) {
+        expect(TimeUtils.nextDstTransitions(zone, DateTime.utc(2026, 10, 18)), isEmpty,
+            reason: zone);
+      }
+    });
   });
 
   group('TimeUtils.dstTransitionAbbreviations', () {
@@ -510,6 +604,80 @@ void main() {
       final list     = TimeUtils.nextDstTransitions('Europe/Berlin', afterUtc,
           count: 1);
       expect(single, equals(list.firstOrNull));
+    });
+  });
+
+  group('TimeUtils.wallClockAroundTransition', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('Berlin autumn: 03:00 CEST becomes 02:00 CET (the hour repeats)', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Europe/Berlin', DateTime.utc(2026, 10, 25, 1));
+      expect(wall.before, equals(DateTime.utc(2026, 10, 25, 3)));
+      expect(wall.after, equals(DateTime.utc(2026, 10, 25, 2)));
+    });
+
+    test('Berlin spring: 02:00 CET becomes 03:00 CEST (the hour is skipped)', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Europe/Berlin', DateTime.utc(2027, 3, 28, 1));
+      expect(wall.before, equals(DateTime.utc(2027, 3, 28, 2)));
+      expect(wall.after, equals(DateTime.utc(2027, 3, 28, 3)));
+    });
+
+    test('Lord Howe: 30-minute change', () {
+      final wall = TimeUtils.wallClockAroundTransition(
+          'Australia/Lord_Howe', DateTime.utc(2026, 10, 3, 15, 30));
+      expect(wall.before, equals(DateTime.utc(2026, 10, 4, 2, 0)));
+      expect(wall.after, equals(DateTime.utc(2026, 10, 4, 2, 30)));
+    });
+  });
+
+  group('TimeUtils.dayProgressInZone', () {
+    setUpAll(() => tzl.initializeTimeZones());
+
+    test('a normal day has 86,400 seconds', () {
+      final progress = TimeUtils.dayProgressInZone(
+          DateTime.utc(2026, 6, 15, 12), 'Europe/Berlin');  // 14:00 CEST
+      expect(progress, (elapsedSeconds: 50400, lengthSeconds: 86400));
+    });
+
+    test('autumn: 25-hour day, the count continues through the repeated hour', () {
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 0, 59, 59), 'Europe/Berlin'),
+          (elapsedSeconds: 10799, lengthSeconds: 90000));  // 02:59:59 CEST
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 1), 'Europe/Berlin'),
+          (elapsedSeconds: 10800, lengthSeconds: 90000));  // 02:00:00 CET
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 22, 59, 59), 'Europe/Berlin')
+              .elapsedSeconds, 89999);                       // 23:59:59 CET
+    });
+
+    test('spring: 23-hour day', () {
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2027, 3, 28, 1), 'Europe/Berlin'),
+          (elapsedSeconds: 7200, lengthSeconds: 82800));   // 03:00:00 CEST
+    });
+
+    test('skipped midnight: the day starts at the transition', () {
+      // São Paulo, 2018-11-04: 00:00 BRT became 01:00 BRST.
+      expect(
+          TimeUtils.dayProgressInZone(DateTime.utc(2018, 11, 4, 3), 'America/Sao_Paulo'),
+          (elapsedSeconds: 0, lengthSeconds: 82800));
+    });
+
+    test('unknown zone falls back to UTC', () {
+      expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').lengthSeconds,
+          86400);
+    });
+  });
+
+  group('TimeUtils.resolveLocalTime', () {
+    test('local zone uses the given moment, not the system clock', () {
+      const timeValue = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
+      final moment = DateTime.utc(2001, 9, 9, 1, 46, 40);
+      expect(TimeUtils.resolveLocalTime(timeValue, moment, 'Europe/Berlin'),
+          equals(moment.toLocal()));
     });
   });
 }

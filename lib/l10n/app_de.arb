@@ -18,6 +18,30 @@
       }
     }
   },
+  "@hintMatchAlsoCity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintMatchAlsoCountry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintTimeShiftIndicator": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -36,6 +60,67 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "@messageTabReactivated": {
+    "placeholders": {
+      "resetAction": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHint": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      },
+      "reset": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemDate": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemTime": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftOutOfRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftSkippedTime": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "used": {
+        "type": "String"
       }
     }
   },
@@ -75,15 +160,20 @@
   "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
   "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
   "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
+  "hintMatchAlsoCity": "Gleiche Zeitzone wie {name}",
+  "hintMatchAlsoCountry": "Zeitzone gilt auch in {name}",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
-  "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren tippen",
-  "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren tippen",
+  "hintPixelShiftOff": "Einbrennschutz aus – zum Aktivieren antippen",
+  "hintPixelShiftOn": "Einbrennschutz an – zum Deaktivieren antippen",
   "hintRemoveSelected": "Markierte entfernen",
   "hintResetToDefaults": "Zurücksetzen",
   "hintSelect": "Auswählen",
   "hintSelectAll": "Alle auswählen",
   "hintSelectTimezone": "Zeitzone auswählen",
   "hintSelectValueType": "Werttyp auswählen",
+  "hintTimeShiftFuture": "in die Zukunft",
+  "hintTimeShiftIndicator": "Time Shift {period} · Systemdatum: {date}\nAntippen zum Ändern oder Aufheben",
+  "hintTimeShiftPast": "in die Vergangenheit",
   "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "hintZoneIndicator": "Zeitzonen-abhängiger Wert",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -102,6 +192,7 @@
   "infoLinkModifiedJulianDate2000": "https://de.wikipedia.org/wiki/Julianisches_Datum#Modifiziertes_Julianisches_Datum",
   "infoLinkNewEarthTime": "https://en.wikipedia.org/wiki/New_Earth_Time",
   "infoLinkReducedJulianDate": "https://en.wikipedia.org/wiki/Julian_day#Variants",
+  "infoLinkRomanNumeralsTime": "https://de.wikipedia.org/wiki/R%C3%B6mische_Zahlschrift",
   "infoLinkSwatchBeats": "https://de.wikipedia.org/wiki/Swatch-Internetzeit",
   "infoLinkTai": "https://de.wikipedia.org/wiki/Internationale_Atomzeit",
   "infoLinkUnixSeconds": "https://de.wikipedia.org/wiki/Unixzeit",
@@ -115,10 +206,10 @@
   "infoTextDayPercent": "Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoTextDaySecond": "Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoTextDecimalTime": "Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.",
-  "infoTextDoomsdayClock": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Im Januar 2026 auf 85 Sekunden vor Mitternacht gestellt.",
+  "infoTextDoomsdayClock": "Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Letzte Einstellung: 85 Sekunden vor Mitternacht (Januar 2026). Mit Time Shift werden historische Einstellungen angezeigt.",
   "infoTextDublinJulianDate": "Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: 1899-12-31 12:00 UT). 1955 von der Internationalen Astronomischen Union (IAU) auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.",
   "infoTextGmst": "Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.",
-  "infoTextGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt aktuell 18 Sekunden vor UTC (2026-09).",
+  "infoTextGps": "GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt 18 Sekunden vor UTC.",
   "infoTextHexadecimalTime": "Die Sekunden seit Mitternacht zur Basis 16 (Hexadezimalsystem), mit Gruppierung für bessere Lesbarkeit.",
   "infoTextJulianDate": "Das Julianische Datum (JD) zählt die Tage seit dem Mittag des 1. Januar 4713 v. Chr. (Epoche: -4712-01-01 12:00:00 UT). Die Standard-Zeitreferenz in der Astronomie zur Berechnung von Zeitintervallen zwischen Ereignissen.",
   "infoTextLmst": "Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.",
@@ -127,11 +218,13 @@
   "infoTextNewEarthTime": "New Earth Time (NET) teilt den Tag in 360 NET-Grad ein, wobei jedes Grad 60 NET-Minuten und jede NET-Minute 60 NET-Sekunden hat. Die einzige Zeitzone für die ganze Welt ist UTC.",
   "infoTextOctalTime": "Die Sekunden seit Mitternacht zur Basis 8 (Oktalsystem).",
   "infoTextReducedJulianDate": "Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.",
+  "infoTextRomanNumeralsTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für 'nicht etwas' oder 'nichts'), wird für die Darstellung von Nullen verwendet.",
   "infoTextSevenSegmentTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone im Radiowecker-Design.",
   "infoTextSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
-  "infoTextTai": "Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist aktuell 37 Sekunden vor UTC (2026-09). Die letzte Schaltsekunde wurde am 2016-12-31 um 23:59:60 UTC eingefügt.",
+  "infoTextTai": "Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist 37 Sekunden vor UTC. Letztmalig wurde eine Schaltsekunde am 2016-12-31 um 23:59:60 UTC eingefügt.",
   "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
+  "labelDay": "TT",
   "labelDstChangeInDays": "in {days} {days, plural, one{Tag} other{Tagen}}",
   "labelDstChangeToday": "heute",
   "labelDstChangeTomorrow": "morgen",
@@ -139,6 +232,7 @@
   "labelLocal": "Lokal",
   "labelLongitude": "Längengrad (negativ = West)",
   "labelMinutes": "Min",
+  "labelMonth": "MM",
   "labelNewLabel": "Bezeichnung",
   "labelNewSectionName": "Abschnittsname",
   "labelNewTabName": "Tab-Name",
@@ -146,6 +240,7 @@
   "labelSeconds": "Sek",
   "labelShowDecimals": "Dezimalstellen anzeigen",
   "labelShowSeconds": "Sekunden anzeigen",
+  "labelYear": "JJJJ",
   "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
   "messageCopiedToClipboard": "Kopiert: {label}",
   "messageEmptyTab": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
@@ -157,8 +252,9 @@
   "messageSettingsImportFailed": "Import fehlgeschlagen – ungültige Datei",
   "messageSettingsImported": "Einstellungen importiert",
   "messageSettingsReset": "Einstellungen zurückgesetzt",
-  "messageTabReactivated": "Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „Zurücksetzen“ auf dem Tab wiederherstellen.",
+  "messageTabReactivated": "Tab reaktiviert – entspricht evtl. nicht mehr der Standard-Konfiguration. Bei Bedarf per „{resetAction}“ auf dem Tab wiederherstellen.",
   "pageSettings": "Einstellungen",
+  "pageTimeShift": "Time Shift",
   "sectionAlternative": "Alternative Zeiteinteilung",
   "sectionAtomic": "Atomuhr",
   "sectionDoomsdayClock": "Weltuntergangsuhr",
@@ -229,6 +325,26 @@
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
   "tabTechnical": "Technisch",
+  "timeShiftApply": "Anwenden",
+  "timeShiftDate": "Datum",
+  "timeShiftFocusIndicator": "Indikator im Fokus-Screen",
+  "timeShiftFocusIndicatorSub": "Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht",
+  "timeShiftFrozen": "Zeit einfrieren",
+  "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
+  "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
+  "timeShiftHint": "Mit „{apply}“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHintApply": "Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.",
+  "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
+  "timeShiftHintReset": "Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.",
+  "timeShiftHintResetToSystemDate": "Setzt das Time-Shift-Auswahl-Datum auf das Systemdatum, die Uhrzeit bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
+  "timeShiftHintResetToSystemTime": "Setzt die Time-Shift-Auswahl-Uhrzeit auf die Systemzeit, das Datum bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
+  "timeShiftHours": "Stunden",
+  "timeShiftMinutes": "Minuten",
+  "timeShiftOutOfRange": "Unterstützter Bereich: {earliest} bis {latest}",
+  "timeShiftReset": "Zurücksetzen auf Systemuhr",
+  "timeShiftSeconds": "Sekunden",
+  "timeShiftSkippedTime": "{requested} gibt es wegen einer Zeitumstellung nicht, verwendet wird {used}.",
+  "timeShiftTime": "Uhrzeit",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",
   "valueTypeBinaryClockColumns": "Binäruhr (Spalten)",
   "valueTypeBinaryClockString": "Binärzeit (String)",
@@ -251,6 +367,7 @@
   "valueTypeNewEarthTime": "New Earth Time",
   "valueTypeOctalTime": "Oktalzeit",
   "valueTypeReducedJulianDate": "Reduziertes Julianisches Datum",
+  "valueTypeRomanNumeralsTime": "Römische-Zahlen-Zeit",
   "valueTypeSevenSegmentTime": "Sieben-Segment-Uhr",
   "valueTypeSwatchBeats": "Swatch-Internetzeit",
   "valueTypeTai": "Unix-Zeit (TAI) (s)",

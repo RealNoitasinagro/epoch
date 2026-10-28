@@ -16,74 +16,134 @@ also happen to spell out **E**legant **p**resentation **o**f
 **ch**ronometers — though the word came first.
 
 
+## Highlights
+
+- **28 time values in one app** – civil, technical, astronomical and curious:
+  from Unix time, TAI and GPS time to sidereal time, Julian Date variants,
+  Swatch Internet Time and the Doomsday Clock
+- **Your own time zone engine** – every IANA time zone, found by city, country,
+  capital, name, abbreviation or UTC offset (English and German), with its own
+  IANA database that does not depend on your device's system updates
+- **Time Shift** – see any moment between 1970 and 2038 in all time systems,
+  running or frozen, without touching your system clock
+- **Build your own displays** – combine any values on your own tabs or
+  customize the built-in ones; export your setup as a single config file
+- **Focus mode and night mode** – full-screen always-on display with burn-in
+  protection; red-on-black theme that preserves your dark adaptation
+- **Privacy first** – no ads, no tracking, no network requests, no permissions
+
+
 ## Features
 
 ### Time systems
-- **Civil** – date, time, day second, day percent, seven-segment clock for any timezone
+- **Civil** – date (with ISO week and day of the year), time, date & time,
+  day second, day percent, seven-segment clock; for any time zone
 - **Technical** – Unix time, International Atomic Time (TAI), GPS time
-- **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST), 
-Julian Date (JD), Modified Julian Date (MJD), MJD2000 + 4 other JD variants
-- **Curiosities** – decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock,
-3 binary clocks[^1], octal time[^1] and hexadecimal time[^1]
+  (with historical leap seconds)
+- **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST),
+  Julian Date (JD), Modified Julian Date (MJD), MJD2000 and 4 other JD variants
+  (Reduced, Dublin, CNES, CCSDS)
+- **Curiosities** – decimal time, Swatch Internet Time, New Earth Time,
+  3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals
+  time and the Doomsday Clock
+- On days with a clock change, day second, day percent and decimal/octal/hexadecimal
+  time use the real length of the day (23 or 25 hours, 23.5 or 24.5 for Lord Howe)
 
-### Configurable display
-- Fully customizable tabs — any values from any category, in any order, plus custom tab labels
-- Built-in tab visibility toggles in Settings; hidden tabs can be restored to their original position
-- Flexible timezone search (city, country, timezone name or abbreviation, UTC offset)
-- Optionally force standard or summer time for zoned time values all year round
-- 7-day advance clock change notice, display upcoming clock changes in the next few years
-- Customizable date and time formats, 12/24-hour format toggle
-- Timezone details (abbreviation and UTC offset) configurable
-- Expanded date toggle
-- Thousands separator toggle
-- Day quarter color toggle
-- Drag-and-drop reordering, swipe to remove
-- Custom labels for individual values
-- Custom section headers and dividers
-- Copy any value to clipboard with one tap (with label) or long press (value only)
+### Time zones
+- Search by city, country, capital, zone name or abbreviation (also historical
+  ones such as BRST) or UTC offset (e. g. +5:30), in English and German
+- Time zone details configurable: abbreviation, UTC offset, both, or hidden
+- Daylight saving handled from the zone data itself: the next clock changes
+  in a value's info dialog (with the wall-clock time before and after the
+  change), a 7-day advance notice on the value itself
+- Optionally pin a zone to standard or summer time all year round, or show
+  both variants side by side
+- Day quarter color: a colored edge shows which quarter of the day it is
+  in that zone
+- Always up-to-date rules: Epoch ships its own IANA database
+  (see [Timeliness of the Timezone Data](#timeliness-of-the-timezone-data))
 
-### Design
-- Night mode with red-on-black display — preserves dark adaptation for stargazing
-- Light, dark, and system themes
-- Full-screen toggle (double-tap on the app's name or logo icon in the top-left corner)
-- Focus mode: double-tap any value for full-screen, always-on display; adjustable brightness and color
-- Burn-in protection for Focus screen through regular pixel shift (esp. for newer Android devices)
-- Optionally start the app in Focus mode
-- Export, import, and reset all preferences (cross-platform, with automatic backup on reset)
+### Time Shift
+- Show any moment from 1970-01-01 to 2038-01-19 (UTC; the limits of Unix time
+  and of the available IANA data) in all values – running from there, or frozen
+- Date and time are set separately, with calendar and dial pickers
+- Your system clock stays untouched; the title bar shows the real system time
+  while Time Shift is active, the Focus screen has an optional indicator
+- Past values are historically correct: leap seconds for TAI and GPS time,
+  the Doomsday Clock's earlier settings, the time zone rules of that time
+- Not saved: the app always starts with the system time
+
+### Your layout
+- Up to 4 own tabs (Watchlists) with up to 30 values each; all built-in tabs
+  (Civil, Technical, Astronomical, Curiosities) are fully editable, can be
+  hidden and restored to their original position
+- Drag-and-drop reordering, swipe to remove, reset to defaults per tab
+- Custom labels for values, custom section headers and dividers
+- Copy any value to the clipboard: one tap with label, long press value only
+
+### Formats and display options
+- Date and time formats: presets or custom patterns; 12/24-hour format
+- Expanded date (ISO week number, day of the year)
+- Day quarter color on or off
+- Thousands separator switch
+
+### Config files
+- Export, import and reset all preferences (cross-platform, with automatic
+  backup on reset); plain JSON that you can edit by hand
+- Load a config directly from the Linux command line
+- Ready-made [example configs](example_configs) and a
+  [config manual](example_configs/CONFIG_MANUAL.md)
+
+### Focus mode
+- Double-tap any value for a full-screen, always-on display
+- Adjustable color (all platforms) and brightness (Android)
+- Long press toggles details (seconds, decimals, time zone line)
+- Burn-in protection through regular pixel shift (especially on OLED screens)
+- Optionally start the app directly in Focus mode
+
+### Look and feel
+- Night mode: red on black, preserving your dark adaptation for stargazing
+- Light, dark and system themes; monospaced JetBrains Mono font
+- Full-screen toggle (double-tap on the app's name or logo in the top-left corner)
 - Available in English and German
-- Android widgets and value conversion between time systems: planned for future releases
 
-### Privacy & permissions
+### Privacy and permissions
 - **No ads. No notifications. No tracking. No analytics. No network requests.**
 - All settings stored locally on your device
-- No permissions required -- for LMST, you can specify longitude manually,
-  or temporarily grant ACCESS_COARSE_LOCATION permission (one-time setup step)
+- No permissions required – for LMST you can enter longitude manually, or
+  temporarily grant ACCESS_COARSE_LOCATION permission (one-time setup step)
+- Free software (GPL), F-Droid reproducible builds
+
+### Planned
+- Android widgets, value conversion between time systems, new value types, and more
 
 
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 27 different time values simultaneously, lets you pick exactly
+Epoch shows you 28 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
-- are curious about different time systems in use around the world
-- want to compare local times across many timezones at a glance (e. g. friends/colleagues abroad)
-- need up-to-date time zone data (latest IANA db) if your phone's system no longer receives upgrades 
-- enjoy unusual time representations like Swatch Internet Time, day seconds, or binary clocks
-- do amateur astronomy and want a single app for sidereal time, LMST, and Julian Date —
-  without blue light ruining your dark adaptation
-- keep an eye on the Doomsday Clock
+- are curious about the many ways time is counted and displayed
+- want to compare local times across many time zones at a glance (e. g.
+  friends or colleagues abroad), including their upcoming clock changes
+- need current time zone rules although your phone's system no longer
+  receives updates: old devices keep outdated rules, Epoch ships its own
+  up-to-date IANA database (e. g. for recent changes in Canada)
+- want to see how any moment, past or future, looks in all time systems,
+  without touching your system clock
+- enjoy unusual time representations like Swatch Internet Time, day seconds,
+  Roman numerals or binary clocks
+- do amateur astronomy and want a single app for sidereal time, LMST and
+  Julian Date – in a night mode that does not ruin your dark adaptation
+- want a bedside or desk clock with a seven-segment look and burn-in protection
+- keep an eye on the Doomsday Clock (and its history)
 - just want to know what Unix time it is right now
 
 Epoch is built around flexibility:
 rather than making choices for you, it gives you the building blocks
 to assemble exactly the time display you need — and nothing you don't.
-
-> [!TIP]
-> Check out the `example_configs` folder with (partly) localized pre-made configurations 
-> that you might like to fine-tune for your needs. \
-> It also has a [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md) for reference, as well as screenshots (see next section).
 
 
 ## Screenshots
@@ -167,12 +227,11 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 
 </details>
 
----
 
 ## Platforms
 
-| Platform | Status          | Distribution                                                                                                                                   |
-|----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| Platform | Status           | Distribution                                                                                                                                   |
+|----------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | Android  | ✅ Supported     | [F-Droid](https://f-droid.org/packages/io.github.RealEarthling.epoch/) · [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases) |
 | Linux    | ✅ Supported     | [GitHub Releases](https://github.com/RealNoitasinagro/epoch/releases)                                                                          |
 | Web      | ✅ Supported     | [GitHub Pages](https://RealNoitasinagro.github.io/epoch) (possibly newer than latest release)                                                  |
@@ -201,27 +260,44 @@ Additional screenshots in `example_configs/{de-DE,en-US}/screenshots/`:
 
 Build and run the *Linux app* from source (requires **[Flutter](https://flutter.dev)**):
 ```
-git clone https://github.com/RealNoitasinagro/epoch.git
-cd epoch
+$ git clone https://github.com/RealNoitasinagro/epoch.git
+$ cd epoch
 
-flutter build linux --release
-flutter run -d linux
+$ flutter build linux --release
+$ flutter run -d linux
 ```
 
 Alternatively the *web app*:
 ```
-flutter build web --release
-flutter run -d chrome
+$ flutter build web --release
+$ flutter run -d chrome
 ```
 OR
 ```
-flutter build web --release
-cd build/web
-python -m http.server 8000
+$ flutter build web --release
+$ cd build/web
+$ python -m http.server 8000
 ```
 You can then open http://0.0.0.0:8000/ or http://127.0.0.1:8000/ with a browser.
 
----
+
+## Verifying downloads
+
+Every release on GitHub comes with the APK files and a `sha256sums.txt`.
+The APKs on GitHub and on F-Droid are signed with the same key.
+
+Check the file integrity (Linux):
+```
+$ sha256sum --check --ignore-missing sha256sums.txt
+```
+Check the signature with `apksigner verify --print-certs <downloaded apk>` (`apksigner` is part of the Android SDK build tools):
+```
+$ apksigner verify --print-certs app-arm64-v8a-release.apk | grep SHA-256
+V2 Signer: certificate SHA-256 digest: 7263c0bfce95b625839598b01fdcc695c04cdbe6dd4fa34a02a2d3ad2522c246
+```
+The `certificate SHA-256 digest` line must show: `7263c0bfce95b625839598b01fdcc695c04cdbe6dd4fa34a02a2d3ad2522c246`. \
+The same fingerprint is published independently of this repository in F-Droid's [build metadata](https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/io.github.RealEarthling.epoch.yml) (`AllowedAPKSigningKeys`). \
+If the digest differs, or `apksigner` reports an error, do not install the APK.
 
 ## Contributing
 
@@ -233,8 +309,16 @@ Found a bug or have a feature request?
 
 [![GPLv3+](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-[GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html.en) © 2026 RealEarthling
+Epoch is free software under the
+[GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html.en),
+© 2026 RealEarthling.
 
----
+Epoch includes data and a font under other licenses: IANA time zone data
+(public domain), Unicode CLDR (Unicode License v3), Wikidata capitals (CC0) and
+JetBrains Mono (SIL Open Font License 1.1). Details are in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The licenses of all packages,
+the bundled data and the font can also be read in the app (menu, About,
+View licenses).
+
 
 [^1]: These values use a 'seconds since midnight in base N' rather than a 'fraction of day in base N' approach.

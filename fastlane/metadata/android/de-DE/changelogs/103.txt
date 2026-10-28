@@ -1,0 +1,5 @@
+- Time Shift – jeden Zeitpunkt zwischen 1970 und 2038 in allen Werten anzeigen, fortlaufend oder eingefroren, ohne die Systemuhr zu ändern
+- Neu aufgebaute Zeitzonensuche: jede IANA-Zone per Stadt, Land, Hauptstadt, Name, Kürzel oder UTC-Offset, mit aktuellen Regeln auch auf alten Handys
+- Neuer Werttyp: Römische-Zahlen-Zeit
+- Zeitumstellungen zeigen die Uhrzeit vor und nach dem Sprung
+- Korrekte Tageslänge an Umstellungstagen, historische Schaltsekunden und Doomsday-Clock-Werte

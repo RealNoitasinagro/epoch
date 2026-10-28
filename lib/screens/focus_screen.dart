@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
@@ -39,8 +40,6 @@ class FocusScreen extends StatefulWidget {
   State<FocusScreen> createState() => _FocusScreenState();
 }
 
-enum _SecondsToggleTypes { swatchBeats, newEarthTime, binaryClockString, isGraphical }
-
 class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
@@ -49,7 +48,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late Timer _timer;
   Color _textColor = Colors.white;
   bool _showLine2 = false;
-  late bool _showSeconds;
+  late bool _showOptionalPart;
 
   double? _brightness;
   bool _controlsVisible = true;
@@ -95,13 +94,16 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Orientation? _lastOrientation;
 
+  bool get _showTimeShiftIndicator =>
+      EpochApp.of(context).focusTimeShiftIndicator;
+
   @override
   void initState() {
     super.initState();
-    _showSeconds = widget.timeValue.showSeconds;
-    _now = DateTime.now();
+    _showOptionalPart = widget.timeValue.showOptionalPart;
+    _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
-            (_) => setState(() => _now = DateTime.now()));
+            (_) => setState(() => _now = EffectiveClock.now()));
     WakelockPlus.enable();
     _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -219,6 +221,8 @@ class _FocusScreenState extends State<FocusScreen> {
     } catch (_) {}
   }
 
+  double _horizontalPadding(bool isLandscape) => isLandscape ? 80.0 : 24.0;
+
   void _scheduleControlsHide() {
     _controlsHideTimer?.cancel();
     _controlsHideTimer = Timer(_controlsAutoHideDelay, () {
@@ -237,20 +241,18 @@ class _FocusScreenState extends State<FocusScreen> {
     _showControls();
   }
 
-  void _toggleSeconds() {
-    setState(() => _showSeconds = !_showSeconds);
+  void _toggleOptionalPart() {
+    setState(() => _showOptionalPart = !_showOptionalPart);
     _showControls();
   }
 
   ({String line1, String line2}) _currentDisplay() {
     final app = EpochApp.of(context);
 
-    // For non-graphical types, override showSeconds with volatile _showSeconds:
-    final effectiveTimeValue = (
-        widget.timeValue.valueType == ValueType.swatchBeats ||
-        widget.timeValue.valueType == ValueType.newEarthTime ||
-        widget.timeValue.valueType == ValueType.binaryClockString
-    ) ? widget.timeValue.withShowSeconds(_showSeconds)
+    // The volatile Focus toggle overrides the stored setting:
+    final effectiveTimeValue =
+    widget.timeValue.valueType.optionalPart != OptionalPart.none
+        ? widget.timeValue.withShowOptionalPart(_showOptionalPart)
         : widget.timeValue;
 
     return TimeStringRow.computeDisplay(
@@ -305,18 +307,7 @@ class _FocusScreenState extends State<FocusScreen> {
     final display = _currentDisplay();
     final hasLine2 = display.line2.isNotEmpty
         && !widget.timeValue.valueType.isGraphical;
-    final _SecondsToggleTypes? handleSeconds;
-    if (widget.timeValue.valueType == ValueType.swatchBeats) {
-      handleSeconds = _SecondsToggleTypes.swatchBeats;
-    } else if (widget.timeValue.valueType == ValueType.newEarthTime) {
-      handleSeconds = _SecondsToggleTypes.newEarthTime;
-    } else if (widget.timeValue.valueType == ValueType.binaryClockString) {
-      handleSeconds = _SecondsToggleTypes.binaryClockString;
-    } else if (widget.timeValue.valueType.isGraphical) {
-        handleSeconds = _SecondsToggleTypes.isGraphical;
-    } else {
-        handleSeconds = null;
-    }
+    final optionalPart = widget.timeValue.valueType.optionalPart;
 
     if (_brightness == null) {
       return const Scaffold(backgroundColor: Colors.black);
@@ -327,12 +318,8 @@ class _FocusScreenState extends State<FocusScreen> {
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress:
-          handleSeconds == _SecondsToggleTypes.swatchBeats ||
-          handleSeconds == _SecondsToggleTypes.newEarthTime ||
-          handleSeconds == _SecondsToggleTypes.binaryClockString ||
-          handleSeconds == _SecondsToggleTypes.isGraphical
-          ? _toggleSeconds
+        onLongPress: optionalPart != OptionalPart.none
+          ? _toggleOptionalPart
           : _toggleLine2,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
@@ -374,9 +361,9 @@ class _FocusScreenState extends State<FocusScreen> {
                     duration: _controlsHideDuration,
                     child: isLandscape
                         ? _buildLandscapeControls(
-                        l10n, hasLine2, handleSeconds, mediaPadding)
+                        l10n, hasLine2, optionalPart, mediaPadding)
                         : _buildPortraitControls(
-                        l10n, hasLine2, handleSeconds, mediaPadding),
+                        l10n, hasLine2, optionalPart, mediaPadding),
                   ),
                 ),
               ],
@@ -388,7 +375,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, OptionalPart? optionalPart, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -420,7 +407,7 @@ class _FocusScreenState extends State<FocusScreen> {
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
               hasLine2: hasLine2,
-              handleSeconds: handleSeconds,
+              optionalPart: optionalPart,
               l10n: l10n
           ),
         ),
@@ -429,7 +416,7 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, _SecondsToggleTypes? handleSeconds, EdgeInsets mediaPadding) {
+      bool hasLine2, OptionalPart? optionalPart, EdgeInsets mediaPadding) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -462,7 +449,7 @@ class _FocusScreenState extends State<FocusScreen> {
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
               hasLine2: hasLine2,
-              handleSeconds: handleSeconds,
+              optionalPart: optionalPart,
               l10n: l10n
           ),
         ),
@@ -585,31 +572,28 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _exitHint(
-        {required bool hasLine2, required _SecondsToggleTypes? handleSeconds,
+        {required bool hasLine2, required OptionalPart? optionalPart,
          required AppLocalizations l10n}
       ) {
+    final exit = l10n.hintFocusScreenExit;
     final String text;
-    if (!hasLine2 &&
-        (handleSeconds == _SecondsToggleTypes.swatchBeats ||
-         handleSeconds == _SecondsToggleTypes.newEarthTime)) {
-      text = !_showSeconds
-          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOn}'
-          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleDecimalsOff}';
-    } else if (!hasLine2 &&
-        (handleSeconds == _SecondsToggleTypes.binaryClockString ||
-         handleSeconds == _SecondsToggleTypes.isGraphical)) {
-      text = !_showSeconds
-          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOn}'
-          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleSecondsOff}';
-    }
-    else if (hasLine2 && handleSeconds == null) {
-      text = _showLine2
-          ? '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToOneLine}'
-          : '${l10n.hintFocusScreenExit}  ·  ${l10n.hintFocusScreenToggleToTwoLines}';
+    if (optionalPart != OptionalPart.none && !hasLine2) {
+      final toggleHint = switch (optionalPart) {
+        OptionalPart.decimals => _showOptionalPart
+            ? l10n.hintFocusScreenToggleDecimalsOff
+            : l10n.hintFocusScreenToggleDecimalsOn,
+        _ => _showOptionalPart
+            ? l10n.hintFocusScreenToggleSecondsOff
+            : l10n.hintFocusScreenToggleSecondsOn,
+      };
+      text = '$exit  ·  $toggleHint';
+    } else if (optionalPart == OptionalPart.none && hasLine2) {
+      text = '$exit  ·  ${_showLine2
+          ? l10n.hintFocusScreenToggleToOneLine
+          : l10n.hintFocusScreenToggleToTwoLines}';
     } else {
-      text = l10n.hintFocusScreenExit;
+      text = exit;
     }
-
     return Text(
       text,
       style: TextStyle(color: _textColor.withAlpha(150), fontSize: 12),
@@ -618,10 +602,36 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Widget _buildValueDisplay(bool isLandscape) {
+    final valueContent = _buildValueContent(isLandscape);
+    if (!_showTimeShiftIndicator || !EffectiveClock.isShifted) {
+      return valueContent;
+    }
+    // The badge sits above the value and moves with it, so the pixel shift
+    // protects it from burn-in as well.
+    const badgeSize = kIconSizeDefault + 8;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        valueContent,
+        Positioned(
+          top: -badgeSize,
+          left: _horizontalPadding(isLandscape),
+          child: Icon(
+            EffectiveClock.isShiftedIntoPast
+                ? kIconTimeShiftPast : kIconTimeShiftFuture,
+            size: badgeSize,
+            color: _textColor.withAlpha(150),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildValueContent(bool isLandscape) {
     final app = EpochApp.of(context);
 
     // Horizontal padding: make room for side controls in landscape:
-    final hPadding = isLandscape ? 80.0 : 24.0;
+    final hPadding = _horizontalPadding(isLandscape);
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {
@@ -636,7 +646,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             digitHeight: kGraphicalSegmentClockHeightFocus,
-            showSeconds: _showSeconds,
+            showSeconds: _showOptionalPart,
             hourFormat24: app.hourFormat24,
             color: _textColor,
           ),
@@ -645,7 +655,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
-            showSeconds: _showSeconds,
+            showSeconds: _showOptionalPart,
             showLabels: false,
           ),
         ValueType.binaryClockBcd =>
@@ -653,7 +663,7 @@ class _FocusScreenState extends State<FocusScreen> {
             now: zonedNow,
             l10n: l10n,
             dotSize: kGraphicalBinaryClockDotSizeFocus,
-            showSeconds: _showSeconds,
+            showSeconds: _showOptionalPart,
             showLabels: false,
           ),
         _ => throw StateError(

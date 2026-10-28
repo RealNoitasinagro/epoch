@@ -5,7 +5,7 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
-import '../models/timezone_abbr_localization.dart';
+import '../models/timezone_abbreviation_localization.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import 'time_value_row.dart';
@@ -117,7 +117,6 @@ class TimeStringRow extends TimeValueRow {
 
   static String? _dstWarning(
       String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
-    if (!TimeUtils.hasDaylightSavingTime(ianaZone)) return null;
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
@@ -184,6 +183,22 @@ class TimeStringRow extends TimeValueRow {
         : timeValue.localizedDisplayLabel(l10n);
   }
 
+  static String computeClipboardDisplay(TimeValue timeValue, ({String line1, String line2}) display) {
+    String clipboardValue = display.line2.isEmpty
+        ? display.line1
+        : '${display.line1}\n${display.line2}';
+    if (timeValue.valueType == ValueType.romanNumeralsTime) {
+      String period = '';
+      if (clipboardValue.endsWith('AM') || clipboardValue.endsWith('PM')) {
+        period = clipboardValue.substring(clipboardValue.length - 3);
+        clipboardValue = clipboardValue.substring(0, clipboardValue.length - 3);
+      }
+      clipboardValue = clipboardValue.split(':').map((s) => s.trim()).join(':');
+      clipboardValue += period;
+    }
+    return clipboardValue;
+  }
+
   void _copyToClipboard(BuildContext context, AppLocalizations l10n,
       String label, String displayValue, { bool copyValueWithLabel = true }) {
     String clipboardText = copyValueWithLabel
@@ -217,9 +232,7 @@ class TimeStringRow extends TimeValueRow {
       longitude: longitude,
     );
     String label = computeLabel(l10n, timeValue, longitude);
-    final clipboardValue = display.line2.isEmpty
-        ? display.line1
-        : '${display.line1}\n${display.line2}';
+    String clipboardValue = computeClipboardDisplay(timeValue, display);
 
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
@@ -232,7 +245,7 @@ class TimeStringRow extends TimeValueRow {
     return ValueTile(
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
+      showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,

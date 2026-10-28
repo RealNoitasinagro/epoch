@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/time_value.dart';
-import 'models/timezone_abbr_localization.dart';
+import 'models/timezone_abbreviation_localization.dart';
 import 'time_utils.dart';
 
 class TimeValueFormatter {
@@ -78,16 +78,16 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${timeValue.showSeconds
+        return '@${timeValue.showOptionalPart
             ? swatchBeats.toStringAsFixed(2)
             : swatchBeats.toInt()}';
       case ValueType.newEarthTime:
         final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${timeValue.showSeconds
+        return '${timeValue.showOptionalPart
             ? formatDecimal(deg, locale, 2, thousandsSep:  false)
             : deg.toInt()}°';
       case ValueType.doomsdayClock:
-        return TimeUtils.doomsDayClockString(hourFormat24);
+        return TimeUtils.doomsDayClockString(hourFormat24, utcNow);
       default:
         break;
     }
@@ -96,6 +96,7 @@ class TimeValueFormatter {
     String tzLabel;
     DateTime dt;
     final Duration offset;
+    String? dayLengthZone;
 
     switch (timeValue.zone) {
       case ZoneUtc():
@@ -112,6 +113,7 @@ class TimeValueFormatter {
           tzLabel = now.timeZoneName;
         }
         offset = now.timeZoneOffset;
+        dayLengthZone = localIanaZone;
       case ZoneNamed(ianaZone: final zone):
         final tzDt = TimeUtils.inZone(utcNow, zone);
         if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
@@ -128,8 +130,12 @@ class TimeValueFormatter {
         dt = tzDt;
         tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
         offset = tzDt.timeZoneOffset;
+        dayLengthZone = zone;
     }
     final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
+    final dayProgress = dayLengthZone != null
+        ? TimeUtils.dayProgressInZone(utcNow, dayLengthZone)
+        : TimeUtils.dayProgressFixedOffset(dt);
 
     switch (timeValue.valueType) {
       // Civil
@@ -142,7 +148,7 @@ class TimeValueFormatter {
         return formatDateTime(hourFormat24, locale, dt, tzSuffix,
             datePattern: dateFormat, timePattern: timeFormat);
       case ValueType.daySecond:
-        final value = TimeUtils.daySecond(dt);
+        final value = dayProgress.elapsedSeconds;
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(value)
             : value.toString();
@@ -150,21 +156,29 @@ class TimeValueFormatter {
         return formattedValue;
       case ValueType.dayPercent:
         String formattedValue = formatDecimal(
-            TimeUtils.dayPercent(dt), locale, 3,
-            thousandsSep: false); // percent never needs thousands sep
+            dayProgress.elapsedSeconds / dayProgress.lengthSeconds * 100,
+            locale, 3, thousandsSep: false); // percent never needs thousands sep
         formattedValue += ' $tzSuffix';
         return formattedValue;
       // Curiosities
       case ValueType.decimalTime:
-        String formattedValue =  TimeUtils.decimalTimeString(dt);
+        String formattedValue = TimeUtils.decimalTimeString(dt,
+            elapsedSeconds: dayProgress.elapsedSeconds,
+            dayLengthSeconds: dayProgress.lengthSeconds);
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.binaryClockString:
-        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showSeconds);
+        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showOptionalPart);
       case ValueType.octalTime:
-        return TimeUtils.octalTimeString(dt);
+        return TimeUtils.octalTimeString(dt,
+            elapsedSeconds: dayProgress.elapsedSeconds);
       case ValueType.hexadecimalTime:
-        return TimeUtils.hexadecimalTimeString(dt);
+        return TimeUtils.hexadecimalTimeString(dt,
+            elapsedSeconds: dayProgress.elapsedSeconds);
+      case ValueType.romanNumeralsTime:
+        String formattedValue = TimeUtils.romanNumeralsTime(
+            hourFormat24, dt, showSeconds: timeValue.showOptionalPart);
+        return formattedValue;
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
       case ValueType.sevenSegmentClock:

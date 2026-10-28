@@ -4,6 +4,30 @@
 
 ---
 
+## [1.6.0] - 2026-10-28
+
+### Added
+- 🆒 Time Shift (new menu item): show any moment between 1970 and 2038 in all values, running or frozen,
+without touching the system clock; title bar shows the real system time meanwhile,
+Focus screen has an optional indicator, new config key `focus_time_shift_indicator` (cf. [config manual](https://github.com/RealNoitasinagro/epoch/blob/main/example_configs/CONFIG_MANUAL.md))
+- new value type: Roman numerals time under Curiosities (12/24-hour format, seconds optional)
+- (more) license texts (CLDR, JetBrains Mono) readable in the app
+
+### Changed
+- one shared clock (`EffectiveClock`) for tabs, Focus screen and clock change notices
+- time zone handling systematically rebuilt: all 345 IANA zones, found by city, country, capital,
+name, abbreviation or offset, in English and German
+- offsets, abbreviations and clock changes are derived from the time zone data
+- search screen optimized: sorting/ranking, time, count of search results
+- TAI and GPS time account for historical leap seconds; Doomsday Clock shows its historical settings
+- clock changes in the info dialog show the wall-clock time before and after the change
+
+### Fixed
+- day second, day percent, decimal/octal/hexadecimal time had the wrong standard day length on clock change days
+- LMST was still shown after deactivation if the app was closed before leaving Settings
+
+---
+
 ## [1.5.2] - 2026-10-12
 
 ### Added

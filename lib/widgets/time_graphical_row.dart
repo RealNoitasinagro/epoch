@@ -42,7 +42,7 @@ class TimeGraphicalRow extends TimeValueRow {
           now: zonedNow,
           l10n: l10n,
           digitHeight: kGraphicalSegmentClockHeightDefault,
-          showSeconds: timeValue.showSeconds,
+          showSeconds: timeValue.showOptionalPart,
           hourFormat24: app.hourFormat24,
           color: segmentColor,
         ),
@@ -50,13 +50,13 @@ class TimeGraphicalRow extends TimeValueRow {
         BinaryColumnsClock(
             now: zonedNow,
             l10n: l10n,
-            showSeconds: timeValue.showSeconds,
+            showSeconds: timeValue.showOptionalPart,
         ),
       ValueType.binaryClockBcd =>
         BinaryCodedDecimalClock(
             now: zonedNow,
             l10n: l10n,
-            showSeconds: timeValue.showSeconds,
+            showSeconds: timeValue.showOptionalPart,
         ),
       _ => throw StateError(
           'Unhandled graphical ValueType: ${timeValue.valueType}'),
@@ -65,15 +65,14 @@ class TimeGraphicalRow extends TimeValueRow {
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
         ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
         : null;
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
-      showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
+      showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
       dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
       height: ValueTile.graphicTileHeight,
       content: Tooltip(

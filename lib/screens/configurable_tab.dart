@@ -207,7 +207,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
-    bool selectedShowSeconds = timeValue.showSeconds;
+    bool selectedShowOptionalPart = timeValue.showOptionalPart;
+    final optionalPart = timeValue.valueType.optionalPart;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
     final existingModes = widget.entries
@@ -222,7 +223,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     var selectedMode = timeValue.timezoneClockChangeMode;
 
     final result = await showDialog<
-      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showSeconds})
+      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showOptionalPart})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -296,22 +297,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   )
                 ),
               ],
-              if (timeValue.valueType.isGraphical ||
-                  timeValue.valueType == ValueType.swatchBeats ||
-                  timeValue.valueType == ValueType.newEarthTime ||
-                  timeValue.valueType == ValueType.binaryClockString) ...<Widget>[
+              if (optionalPart != OptionalPart.none) ...<Widget>[
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
-                  title: Text(
-                      timeValue.valueType == ValueType.swatchBeats ||
-                      timeValue.valueType == ValueType.newEarthTime
-                          ? l10n.labelShowDecimals
-                          : l10n.labelShowSeconds
-                  ),
-                  value: selectedShowSeconds,
-                  onChanged: (v) => setDialogState(() => selectedShowSeconds = v ?? true),
+                  title: Text(optionalPart == OptionalPart.decimals
+                      ? l10n.labelShowDecimals
+                      : l10n.labelShowSeconds),
+                  value: selectedShowOptionalPart,
+                  onChanged: (v) => setDialogState(() => selectedShowOptionalPart = v ?? true),
                 ),
               ],
             ],
@@ -320,7 +315,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             TextButton(
               onPressed: () => Navigator.pop(ctx,
                   (label: null, mode: TimezoneClockChangeMode.auto,
-                  reset: true, showSeconds: true)
+                  reset: true, showOptionalPart: true)
               ),
               child: Text(l10n.hintResetToDefaults),
             ),
@@ -331,7 +326,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             TextButton(
               onPressed: () => Navigator.pop(ctx,
                   (label: controller.text.trim(), mode: selectedMode,
-                  reset: false, showSeconds: selectedShowSeconds)
+                  reset: false, showOptionalPart: selectedShowOptionalPart)
               ),
               child: const Text('OK'),
             ),
@@ -349,13 +344,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             ? null
             : result.label;
     final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
-    final newShowSeconds = result.reset ? true : result.showSeconds;
+    final newShowOptionalPart = result.reset ? true : result.showOptionalPart;
 
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue
         .withCustomLabel(newLabel)
         .withTimezoneClockChangeMode(newMode)
-        .withShowSeconds(newShowSeconds);
+        .withShowOptionalPart(newShowOptionalPart);
     widget.onEntriesChanged(updated);
   }
 
@@ -637,7 +632,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               now: zonedNow,
               l10n: l10n,
               digitHeight: kGraphicalSegmentClockHeightDefault,
-              showSeconds: timeValue.showSeconds,
+              showSeconds: timeValue.showOptionalPart,
               hourFormat24: app.hourFormat24,
               color: segmentColor,
             ),
@@ -645,18 +640,18 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             BinaryColumnsClock(
               now: zonedNow,
               l10n: l10n,
-              showSeconds: timeValue.showSeconds,
+              showSeconds: timeValue.showOptionalPart,
             ),
         ValueType.binaryClockBcd =>
             BinaryCodedDecimalClock(
               now: zonedNow,
               l10n: l10n,
-              showSeconds: timeValue.showSeconds,
+              showSeconds: timeValue.showOptionalPart,
             ),
         _ => throw StateError(
             'Unhandled graphical ValueType: ${timeValue.valueType}'),
       };
-    };
+    }
 
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
@@ -679,7 +674,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto,
+        showPinnedIndicator: timeValue.isPinned(widget.now.toUtc(), localIanaZone),
         dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical

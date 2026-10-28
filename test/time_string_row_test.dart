@@ -5,7 +5,7 @@ import 'package:epoch/models/time_value.dart';
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:timezone/data/latest.dart' as tzl;
+import 'package:timezone/data/latest_all.dart' as tzl;
 
 void main() {
   setUpAll(() async {

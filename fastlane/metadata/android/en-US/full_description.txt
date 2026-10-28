@@ -1,21 +1,27 @@
-Epoch shows the current moment across a wide range of time systems —
-updating every second, all in one place.
+Epoch shows the current moment across a wide range of time systems — updating every second, all in one place. 28 values, from Unix time and sidereal time to Swatch Internet Time and the Doomsday Clock.
 
 <b>What Epoch gives you</b>
-- Civil: date, time, day second, day percent, seven-segment clock — for any timezone
+- Civil: date, time, day second, day percent, seven-segment clock — for any time zone
 - Technical: Unix time, International Atomic Time (TAI), GPS time
-- Astronomical: Greenwich and Local Mean Sidereal Time (GMST, LMST), Julian Date variants
-- Curiosities: decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock, 3 binary clocks, octal time and hexadecimal time
+- Astronomical: Greenwich and Local Mean Sidereal Time (GMST, LMST), Julian Date and six variants
+- Curiosities: decimal time, Swatch Internet Time, New Earth Time, Doomsday Clock, Roman numerals time, 3 binary clocks, octal and hexadecimal time
 Copy any value to clipboard with one tap or long press.
+
+<b>Time zones, done thoroughly</b>
+- Every IANA time zone, found by city, country, capital, name, abbreviation or UTC offset — in English and German.
+- Epoch brings its own up-to-date time zone data, so even phones that no longer get system updates show the right time and the right clock changes.
+- 7-day advance notice of clock changes, with upcoming transitions in the value's info dialog.
+- Optionally pin time zones to always show standard or summer time.
+
+<b>Time Shift</b>
+Show any moment between 1970 and 2038 in all time systems, running or frozen, without touching your system clock. Check past clock change rules, leap seconds or Doomsday Clock settings, or simply pause time.
 
 <b>Configurable</b>
 - Build your own Watchlist tabs — combine any value from any category, in any order.
 - All built-in tabs (Civil, Technical, Astronomical, Curiosities) are fully customizable too, and can be hidden and restored anytime.
 - Set custom labels, section headers, and dividers.
 - Reorder by drag-and-drop, swipe to remove.
-- Customize date and time formats, configure timezone information.
-- Optionally pin timezones to always show standard or summer time.
-- 7-day advance notice of clock changes, with upcoming transitions shown in the value's info dialog.
+- Customize date and time formats, configure time zone information.
 - Export, import, and reset all preferences.
 
 <b>Focus mode</b>
@@ -28,14 +34,14 @@ Copy any value to clipboard with one tap or long press.
 <b>Designed for night use</b>
 Night mode displays red text on black — preserving your eyes' dark adaptation for stargazing.
 
-<b>Example configurations</b>
-Ready-to-import <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">example configurations</a> are available on GitHub,
-including spaceflight tab, world timezone explorer, and config manual.
+<b>Example configurations and documentation</b>
+Ready-to-import <a href="https://github.com/RealNoitasinagro/epoch/tree/main/example_configs">example configurations</a> (spaceflight, world time zone explorer, ...), a config manual and the <a href="https://github.com/RealNoitasinagro/epoch/wiki/Time-Zone-Search">time zone search guide</a> are available on GitHub.
 
 <b>Privacy first</b>
 No ads, notifications, tracking, analytics, or network requests.
 All settings stored locally on your device.
 No permissions required.
 For Local Mean Sidereal Time: optionally grant location access once (coarse, no GPS) or enter longitude manually.
+Free software (GPL-3.0-or-later), reproducible builds.
 
 Available in English and German.

@@ -46,6 +46,19 @@ void main() {
     test('invalid string returns null', () {
       expect(TimeValue.fromPrefsString('garbage'), isNull);
     });
+
+    test('empty label slot (||) means no custom label', () {
+      final tv = TimeValue.fromPrefsString('time/named:Europe/Kiev||dst:forceStandard')!;
+      expect(tv.customLabel, isNull);
+      expect(tv.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+    });
+
+    test('UTC aliases collapse to ZoneUtc, everything else stays', () {
+      expect(canonicalZoneSpec(const ZoneNamed('Etc/UTC')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Zulu')), isA<ZoneUtc>());
+      expect(canonicalZoneSpec(const ZoneNamed('Europe/Berlin')), isA<ZoneNamed>());
+      expect(canonicalZoneSpec(const ZoneLocal()), isA<ZoneLocal>());
+    });
   });
 
   group('TimeValue.isZoneIndependent', () {
@@ -57,6 +70,12 @@ void main() {
     test('time is zone-dependent', () {
       const e = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
       expect(e.isZoneIndependent, isFalse);
+    });
+
+    test('zones without clock change are treated as unpinned', () {
+      const e = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Asia/Tokyo'),
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard);
+      expect(e.isPinned(DateTime.utc(2026), 'UTC'), isFalse);
     });
   });
 
@@ -161,6 +180,38 @@ void main() {
       final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, -74.0);
       expect(result, contains('W'));
       expect(result, contains('74'));
+    });
+  });
+
+  group('ValueType.optionalPart', () {
+    test('every graphical type has an optional part', () {
+      for (final type in ValueType.values.where((t) => t.isGraphical)) {
+        expect(type.optionalPart, isNot(OptionalPart.none), reason: '$type');
+      }
+    });
+    test('decimals for Swatch beats and New Earth Time', () {
+      expect(ValueType.swatchBeats.optionalPart, OptionalPart.decimals);
+      expect(ValueType.newEarthTime.optionalPart, OptionalPart.decimals);
+    });
+    test('seconds for string-type values', () {
+      expect(ValueType.binaryClockString.optionalPart, OptionalPart.seconds);
+      expect(ValueType.romanNumeralsTime.optionalPart, OptionalPart.seconds);
+    });
+    test('all other types have none', () {
+      final withPart = {
+        ValueType.swatchBeats, ValueType.newEarthTime, ValueType.sevenSegmentClock,
+        ValueType.binaryClockBcd, ValueType.binaryClockColumns,
+        ValueType.binaryClockString, ValueType.romanNumeralsTime,
+      };
+      for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
+        expect(type.optionalPart, OptionalPart.none, reason: '$type');
+      }
+    });
+    test('|nosec roundtrip still works after the rename', () {
+      const value = TimeValue(
+          valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
+      expect(value.toPrefsString(), endsWith('|nosec'));
+      expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
     });
   });
 }

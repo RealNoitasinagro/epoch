@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
+import 'generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
-import 'timezone_search_zones.dart';
+import 'zone_rules.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -37,10 +38,16 @@ enum ValueType {
   binaryClockString,
   octalTime,
   hexadecimalTime,
+  romanNumeralsTime,
   doomsdayClock,
 }
 
+// For time zones with DST: automatic changes, or one pinned value.
 enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
+
+// How a value type can be shortened by the user: seconds or decimals can be hidden.
+enum OptionalPart { none, seconds, decimals }
+
 
 // Zone specification.
 sealed class ZoneSpec {
@@ -60,29 +67,27 @@ class ZoneNamed extends ZoneSpec {
   const ZoneNamed(this.ianaZone);
 }
 
+ZoneSpec canonicalZoneSpec(ZoneSpec zone) {
+  if (zone is! ZoneNamed) return zone;
+  final canonical = ianaLinksSnapshot[zone.ianaZone] ?? zone.ianaZone;
+  return canonical == 'Etc/UTC' ? const ZoneUtc() : zone;
+}
+
 // A single displayable entry: type + zone + optional custom label.
 class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
   final String? customLabel;
   final TimezoneClockChangeMode timezoneClockChangeMode;
-  final bool showSeconds;
+  final bool showOptionalPart;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
-    this.showSeconds = true,
+    this.showOptionalPart = true,
   });
-
-  TimeValue withShowSeconds(bool value) => TimeValue(
-    valueType: valueType,
-    zone: zone,
-    customLabel: customLabel,
-    timezoneClockChangeMode: timezoneClockChangeMode,
-    showSeconds: value,
-  );
 
   // Unique key for deduplication within a tab.
   // Custom label does not affect the key.
@@ -112,7 +117,7 @@ class TimeValue implements TabEntry {
     if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
       result = '$result|dst:${timezoneClockChangeMode.name}';
     }
-    if (!showSeconds) result = '$result|nosec';
+    if (!showOptionalPart) result = '$result|nosec';
     return result;
   }
 
@@ -129,9 +134,9 @@ class TimeValue implements TabEntry {
               TimezoneClockChangeMode.auto;
       workStr = workStr.substring(0, dstIdx);
     }
-    bool showSeconds = true;
+    bool showOptionalPart = true;
     if (workStr.endsWith('|nosec')) {
-      showSeconds = false;
+      showOptionalPart = false;
       workStr = workStr.substring(0, workStr.length - 6);
     }
 
@@ -159,30 +164,47 @@ class TimeValue implements TabEntry {
     return TimeValue(
       valueType: valueType,
       zone: zone,
-      customLabel: labelPart,
+      customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
       timezoneClockChangeMode: timezoneClockChangeMode,
-      showSeconds: showSeconds,
+      showOptionalPart: showOptionalPart,
     );
   }
 
-  // Returns a copy with a different custom label (null to clear).
-  TimeValue withCustomLabel(String? label) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: label
-      );
+  TimeValue copyWith({
+    String? customLabel,
+    bool clearCustomLabel = false,
+    TimezoneClockChangeMode? timezoneClockChangeMode,
+    bool? showOptionalPart,
+  }) => TimeValue(
+    valueType: valueType,
+    zone: zone,
+    customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
+    timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
+    showOptionalPart: showOptionalPart ?? this.showOptionalPart,
+  );
 
+  TimeValue withCustomLabel(String? label) =>
+      copyWith(customLabel: label, clearCustomLabel: label == null);
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
-      TimeValue(
-        valueType: valueType,
-        zone: zone,
-        customLabel: customLabel,
-        timezoneClockChangeMode: mode,
-      );
+      copyWith(timezoneClockChangeMode: mode);
+  TimeValue withShowOptionalPart(bool value) => copyWith(showOptionalPart: value);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
+
+  TimezoneClockChangeMode effectiveClockChangeMode(
+      DateTime nowUtc, String localIanaZone) {
+    if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
+      return TimezoneClockChangeMode.auto;
+    }
+    final ianaZone = TimeUtils.resolveIanaZone(this, localIanaZone);
+    final hasDst = ianaZone != null &&
+        TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
+    return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;
+  }
+
+  bool isPinned(DateTime nowUtc, String localIanaZone) =>
+      effectiveClockChangeMode(nowUtc, localIanaZone) != TimezoneClockChangeMode.auto;
 
   // Returns whether DST is currently active for this value's zone,
   // or null if the zone has no DST or is zone-independent.
@@ -191,26 +213,19 @@ class TimeValue implements TabEntry {
     if (isZoneIndependent) return null;
     final ianaZone = switch (zone) {
       ZoneLocal() => localIanaZone,
-      ZoneUtc() => '', // UTC never has DST
+      ZoneUtc() => '',
       ZoneNamed(ianaZone: final z) => z,
     };
-    final entry = tzDatabase.where((e) => e.ianaZone == ianaZone).firstOrNull;
-    if (entry == null || !entry.hasDst) return null;
-    // Use the timezone package to check the actual current DST status:
-    try {
-      final tzDt = TimeUtils.inZone(nowUtc, ianaZone);
-      return tzDt.timeZone.isDst;
-    } catch (_) {
-      return null;
-    }
+    final rules = zoneRulesAt(ianaZone, nowUtc);
+    if (rules == null || !rules.hasDst) return null;
+    return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;
   }
 
   IconData? getDstStatusIndicator(DateTime nowUtc, String localIanaZone) {
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceDst) {
-      return kIconDstActive;
-    }
-    if (timezoneClockChangeMode == TimezoneClockChangeMode.forceStandard) {
-      return kIconDstInactive;
+    switch (effectiveClockChangeMode(nowUtc, localIanaZone)) {
+      case TimezoneClockChangeMode.forceDst: return kIconDstActive;
+      case TimezoneClockChangeMode.forceStandard: return kIconDstInactive;
+      case TimezoneClockChangeMode.auto: break;
     }
     // auto: determine actual current DST status:
     return switch (isDstCurrentlyActive(nowUtc, localIanaZone)) {
@@ -261,6 +276,7 @@ class TimeValue implements TabEntry {
         ValueType.binaryClockString => l10n.valueTypeBinaryClockString,
         ValueType.octalTime => l10n.valueTypeOctalTime,
         ValueType.hexadecimalTime => l10n.valueTypeHexadecimalTime,
+        ValueType.romanNumeralsTime => l10n.valueTypeRomanNumeralsTime,
         ValueType.doomsdayClock => l10n.valueTypeDoomsdayClock,
       };
 
@@ -292,6 +308,7 @@ class TimeValue implements TabEntry {
     ValueType.binaryClockString => l10n.infoTextBinaryClockString,
     ValueType.octalTime => l10n.infoTextOctalTime,
     ValueType.hexadecimalTime => l10n.infoTextHexadecimalTime,
+    ValueType.romanNumeralsTime => l10n.infoTextRomanNumeralsTime,
     ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
   };
 
@@ -315,6 +332,7 @@ class TimeValue implements TabEntry {
     ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
     ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
     ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
+    ValueType.romanNumeralsTime => l10n.infoLinkRomanNumeralsTime,
     ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
     _ => null,
   };
@@ -348,6 +366,7 @@ extension ValueTypeProps on ValueType {
     ValueType.binaryClockString => false,
     ValueType.octalTime => false,
     ValueType.hexadecimalTime => false,
+    ValueType.romanNumeralsTime => false,
     ValueType.doomsdayClock => true,
   };
 
@@ -355,4 +374,12 @@ extension ValueTypeProps on ValueType {
       this == ValueType.sevenSegmentClock ||
       this == ValueType.binaryClockBcd ||
       this == ValueType.binaryClockColumns;
+
+  OptionalPart get optionalPart => switch (this) {
+    ValueType.swatchBeats || ValueType.newEarthTime => OptionalPart.decimals,
+    ValueType.sevenSegmentClock || ValueType.binaryClockBcd ||
+    ValueType.binaryClockColumns || ValueType.binaryClockString ||
+    ValueType.romanNumeralsTime => OptionalPart.seconds,
+    _ => OptionalPart.none,
+  };
 }

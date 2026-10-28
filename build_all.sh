@@ -115,6 +115,7 @@ checksum='/usr/bin/sha256sum'
 build_timestamp=$(date -u '+%Y%m%d_%H%M%S_%Z')
 dir_logs='.logs'
 build_all_log="${dir_logs}/build_all_${build_timestamp}.log"
+sha256sums_txt='sha256sums.txt'
 
 timezone_url='https://pub.dev/api/packages/timezone'
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -277,6 +278,7 @@ if [[ ! "$skipChecksums" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" )
         for f in "$apk_output_path"/*.apk ; do
             $checksum "$f" | tee -a "$build_all_log"
         done
+        grep "$apk_output_path" "$build_all_log" | grep -v 'app-release' | sed "s!$apk_output_path/!!" > "$sha256sums_txt"
     fi
 else
     echo "Skipped."
@@ -297,6 +299,7 @@ if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ;
     # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
     if [ ! "$dryRun" -eq "1" ] ; then
         cp -v $apk_output_path/*.apk $destination_path
+        cp -v $sha256sums_txt $destination_path
     fi
 fi
 echo | tee -a "$build_all_log"

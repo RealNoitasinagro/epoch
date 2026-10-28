@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
-    _settingsReloadNotifier?.removeListener(_onExternalReload);;
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
     _longitudeController.dispose();
     super.dispose();
   }
@@ -389,11 +389,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Table(
                         columnWidths: const {
-                          0: FixedColumnWidth(52),   // Token links
-                          1: FixedColumnWidth(48),   // Beispiel links
-                          2: FixedColumnWidth(16),   // Abstand
-                          3: FixedColumnWidth(52),   // Token rechts
-                          4: FlexColumnWidth(),      // Beispiel rechts
+                          0: FixedColumnWidth(52),   // Token left
+                          1: FixedColumnWidth(48),   // Example left
+                          2: FixedColumnWidth(16),   // Distance
+                          3: FixedColumnWidth(52),   // Token right
+                          4: FlexColumnWidth(),      // Example right
                         },
                         children: List.generate(rowCount, (i) {
                           final l = leftRows[i];
@@ -493,7 +493,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final messenger = ScaffoldMessenger.of(context);
       messenger.clearSnackBars();  // drop any queued ones – show only the latest
       messenger.showSnackBar(SnackBar(
-        content: Text(l10n.messageTabReactivated),
+        content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
         duration: const Duration(seconds: 6),
         behavior: SnackBarBehavior.floating,
       ));
@@ -611,16 +611,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             child: SectionHeader(label: l10n.settingsValueDisplay),
           ),
-          SwitchListTile(
-            secondary: const Icon(Icons.tag),
-            title: Text(l10n.settingsThousandsSep),
-            subtitle: Text(l10n.settingsThousandsSepSub),
-            value: _thousandsSep,
-            onChanged: (val) {
-              setState(() => _thousandsSep = val);
-              app.setThousandsSep(val);
-            },
-          ),
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: Text(l10n.settingsDateFormat),
@@ -700,6 +690,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (val) {
               setState(() => _dayQuarterColor = val);
               app.setDayQuarterColor(val);
+            },
+          ),
+          SwitchListTile(
+            secondary: const Icon(Icons.tag),
+            title: Text(l10n.settingsThousandsSep),
+            subtitle: Text(l10n.settingsThousandsSepSub),
+            value: _thousandsSep,
+            onChanged: (val) {
+              setState(() => _thousandsSep = val);
+              app.setThousandsSep(val);
             },
           ),
           const Divider(height: kDividerHeight),

@@ -18,6 +18,30 @@
       }
     }
   },
+  "@hintMatchAlsoCity": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintMatchAlsoCountry": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@hintTimeShiftIndicator": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -36,6 +60,67 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "@messageTabReactivated": {
+    "placeholders": {
+      "resetAction": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHint": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      },
+      "reset": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemDate": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftHintResetToSystemTime": {
+    "placeholders": {
+      "apply": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftOutOfRange": {
+    "placeholders": {
+      "earliest": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftSkippedTime": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "used": {
+        "type": "String"
       }
     }
   },
@@ -75,6 +160,8 @@
   "hintFocusScreenToggleSecondsOn": "Hold to display seconds",
   "hintFocusScreenToggleToOneLine": "Hold for one line",
   "hintFocusScreenToggleToTwoLines": "Hold for two lines",
+  "hintMatchAlsoCity": "Same time zone as {name}",
+  "hintMatchAlsoCountry": "Time zone also used in {name}",
   "hintPinnedIndicator": "Automatic clock change disabled",
   "hintPixelShiftOff": "Burn-in protection off – tap to enable",
   "hintPixelShiftOn": "Burn-in protection on – tap to disable",
@@ -84,6 +171,9 @@
   "hintSelectAll": "Select all",
   "hintSelectTimezone": "Select timezone",
   "hintSelectValueType": "Select value type",
+  "hintTimeShiftFuture": "into the future",
+  "hintTimeShiftIndicator": "Time Shift {period} · system date: {date}\nTap to change or reset",
+  "hintTimeShiftPast": "into the past",
   "hintTimezoneSearch": "City, country, zone or offset (e.g. UTC+5:30)",
   "hintZoneIndicator": "Timezone-dependent value",
   "infoLinkBinaryClockBcd": "https://en.wikipedia.org/wiki/Binary_clock",
@@ -102,6 +192,7 @@
   "infoLinkModifiedJulianDate2000": "https://en.wikipedia.org/wiki/Julian_day#Variants",
   "infoLinkNewEarthTime": "https://en.wikipedia.org/wiki/New_Earth_Time",
   "infoLinkReducedJulianDate": "https://en.wikipedia.org/wiki/Julian_day#Variants",
+  "infoLinkRomanNumeralsTime": "https://en.wikipedia.org/wiki/Roman_numerals",
   "infoLinkSwatchBeats": "https://en.wikipedia.org/wiki/Swatch_Internet_Time",
   "infoLinkTai": "https://en.wikipedia.org/wiki/International_Atomic_Time",
   "infoLinkUnixSeconds": "https://en.wikipedia.org/wiki/Unix_time",
@@ -115,10 +206,10 @@
   "infoTextDayPercent": "Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.",
   "infoTextDaySecond": "Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.",
   "infoTextDecimalTime": "Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.",
-  "infoTextDoomsdayClock": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Set to 85 seconds to midnight in January 2026.",
+  "infoTextDoomsdayClock": "The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Latest setting: 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.",
   "infoTextDublinJulianDate": "Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.",
   "infoTextGmst": "Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.",
-  "infoTextGps": "GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is currently 18 seconds ahead of UTC (2026-09).",
+  "infoTextGps": "GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is 18 seconds ahead of UTC.",
   "infoTextHexadecimalTime": "Seconds since midnight, shown in base 16 (hexadecimal), grouped in pairs for readability.",
   "infoTextJulianDate": "Julian Date (JD) counts days since noon on January 1, 4713 BC (epoch: -4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.",
   "infoTextLmst": "Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.",
@@ -127,25 +218,29 @@
   "infoTextNewEarthTime": "New Earth Time (or NET), also called degree time, splits a day into 360 NET degrees, where each NET degree has 60 NET minutes and each NET minute 60 NET seconds. UTC is the only time zone.",
   "infoTextOctalTime": "Seconds since midnight, shown in base 8 (octal).",
   "infoTextReducedJulianDate": "Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.",
+  "infoTextRomanNumeralsTime": "The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for 'none' or 'nothing'), is used to represent zeros.",
   "infoTextSevenSegmentTime": "The current time in the selected timezone in alarm clock design.",
   "infoTextSwatchBeats": "Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).",
-  "infoTextTai": "International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is currently 37 seconds ahead of UTC (2026-09). The last leap second was added on 2016-12-31 at 23:59:60 UTC.",
+  "infoTextTai": "International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is 37 seconds ahead of UTC. The last, and final, leap second was added on 2016-12-31 at 23:59:60 UTC.",
   "infoTextTime": "The current time in the selected timezone.",
   "infoTextUnixSeconds": "Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.",
+  "labelDay": "DD",
   "labelDstChangeInDays": "in {days} {days, plural, one{day} other{days}}",
   "labelDstChangeToday": "today",
   "labelDstChangeTomorrow": "tomorrow",
   "labelHours": "HH",
   "labelLocal": "Local",
   "labelLongitude": "Longitude (negative = West)",
-  "labelMinutes": "MM",
+  "labelMinutes": "mm",
+  "labelMonth": "MM",
   "labelNewLabel": "Label",
   "labelNewSectionName": "Section name",
   "labelNewTabName": "Tab name",
   "labelNextClockChanges": "Next clock changes",
-  "labelSeconds": "SS",
+  "labelSeconds": "ss",
   "labelShowDecimals": "Show decimals",
   "labelShowSeconds": "Show seconds",
+  "labelYear": "YYYY",
   "messageAlreadyDisplayed": "This value is already displayed.",
   "messageCopiedToClipboard": "Copied: {label}",
   "messageEmptyTab": "Configurable tab.\nUse the edit mode to add values.",
@@ -157,8 +252,9 @@
   "messageSettingsImportFailed": "Import failed – invalid file",
   "messageSettingsImported": "Settings imported",
   "messageSettingsReset": "Settings reset to defaults",
-  "messageTabReactivated": "Tab reactivated – it may not match the default configuration anymore. Use \"Reset to defaults\" on the tab if needed.",
+  "messageTabReactivated": "Tab reactivated – it may not match the default configuration anymore. Use \"{resetAction}\" on the tab if needed.",
   "pageSettings": "Settings",
+  "pageTimeShift": "Time Shift",
   "sectionAlternative": "Alternative Time Scales",
   "sectionAtomic": "Atomic Clock",
   "sectionDoomsdayClock": "Doomsday Clock",
@@ -229,9 +325,29 @@
   "tabCivil": "Civil",
   "tabCuriosities": "Curiosities",
   "tabTechnical": "Technical",
+  "timeShiftApply": "Apply",
+  "timeShiftDate": "Date",
+  "timeShiftFocusIndicator": "Indicator in Focus screen",
+  "timeShiftFocusIndicatorSub": "Shows a small icon while the displayed time deviates from the system time",
+  "timeShiftFrozen": "Freeze time",
+  "timeShiftFrozenSubOff": "The time used in the app keeps running from the set moment.",
+  "timeShiftFrozenSubOn": "The time used in the app stays at the set moment.",
+  "timeShiftHint": "\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.",
+  "timeShiftHintApply": "Applies the selected date and time to the whole app.",
+  "timeShiftHintRange": "Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.",
+  "timeShiftHintReset": "Sets date and time in the whole app to the values of the system clock.",
+  "timeShiftHintResetToSystemDate": "Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"{apply}\" button.",
+  "timeShiftHintResetToSystemTime": "Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"{apply}\" button.",
+  "timeShiftHours": "Hours",
+  "timeShiftMinutes": "Minutes",
+  "timeShiftOutOfRange": "Supported range: {earliest} to {latest}",
+  "timeShiftReset": "Reset to system clock",
+  "timeShiftSeconds": "Seconds",
+  "timeShiftSkippedTime": "{requested} does not exist because of a clock change, using {used}.",
+  "timeShiftTime": "Time",
   "valueTypeBinaryClockBcd": "Binary Clock (BCD)",
   "valueTypeBinaryClockColumns": "Binary Clock (columns)",
-  "valueTypeBinaryClockString": "Binary Time (string)",
+  "valueTypeBinaryClockString": "Binary time (string)",
   "valueTypeCcsdsJulianDate": "CCSDS Julian Date",
   "valueTypeCnesJulianDate": "CNES Julian Date",
   "valueTypeDate": "Date",
@@ -251,6 +367,7 @@
   "valueTypeNewEarthTime": "New Earth Time",
   "valueTypeOctalTime": "Octal time",
   "valueTypeReducedJulianDate": "Reduced Julian Date",
+  "valueTypeRomanNumeralsTime": "Roman numerals time",
   "valueTypeSevenSegmentTime": "Seven-segment Clock",
   "valueTypeSwatchBeats": "Swatch Internet Time",
   "valueTypeTai": "Unix time (TAI) (s)",

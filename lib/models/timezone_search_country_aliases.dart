@@ -1,0 +1,33 @@
+const Map<String, List<String>> countryNameAliasesDe = {
+  'BA': ['Bosnien', 'Bosnien-Herzegowina'],
+  'CC': ['Keelinginseln'],
+  'CD': ['Demokratische Republik Kongo', 'DR Kongo', 'DRK'],
+  'CG': ['Republik Kongo'],
+  'CI': ['Elfenbeinküste'],
+  'CN': ['Volksrepublik China'],
+  'CV': ['Kap Verde', 'Kapverden'],
+  'CZ': ['Tschechische Republik'],
+  'EH': ['Demokratische Arabische Republik Sahara', 'DARS', 'Arabische Saharauische Demokratische Republik'],
+  'FM': ['Föderierte Staaten von Mikronesien'],
+  'GB': ['Vereinigtes Königreich Großbritannien und Nordirland', 'Schottland'],
+  'MD': ['Moldau'],
+  'PS': ['Palästina'],
+  'US': ['Vereinigte Staaten von Amerika'],
+  'TW': ['Republik China'],
+};
+
+const Map<String, List<String>> countryNameAliasesEn = {
+  'BA': ['Bosnia', 'Bosnia-Herzegovina'],
+  'BN': ['Brunei Darussalam'],
+  'CC': ['Cocos Islands', 'Keeling Islands'],
+  'CD': ['Congo (DRC)', 'Democratic Republic of the Congo', 'DR Congo', 'DRC'],
+  'CG': ['Congo (Republic)', 'Congo Republic', 'Republic of the Congo'],
+  'CI': ['Ivory Coast'],
+  'CN': ["People's Republic of China"],
+  'EH': ['Sahrawi Arab Democratic Republic', 'SADR', 'Sahrawi Republic'],
+  'FM': ['Federated States of Micronesia'],
+  'GB': ['Britain', 'United Kingdom of Great Britain and Northern Ireland', 'UK', 'England', 'Scotland', 'Wales'],
+  'MP': ['Northern Marianas'],
+  'TW': ['Republic of China'],
+  'US': ['United States of America', 'USA'],
+};
