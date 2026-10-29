@@ -320,6 +320,7 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
       "$skipChecksums" -eq "0" && "$useLogging" -eq "1" && -e "${GL_Epoch}/.git-commit" ]] ; then
     rm -v -f $destination_path/*.apk
+    rm -v -f $destination_path/$sha256sums_txt
     cp -v $apk_output_path/${target_platform_android_arm} $destination_path
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
     cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
