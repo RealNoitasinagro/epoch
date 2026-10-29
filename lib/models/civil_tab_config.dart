@@ -16,6 +16,7 @@ const defaultCivilEntries = [
   TimeValue(valueType: ValueType.date,              zone: ZoneLocal()),
   TimeValue(valueType: ValueType.time,              zone: ZoneLocal()),
   TimeValue(valueType: ValueType.daySecond,         zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.dayMinute,         zone: ZoneLocal()),
   TimeValue(valueType: ValueType.dayPercent,        zone: ZoneLocal()),
   TimeValue(valueType: ValueType.sevenSegmentClock, zone: ZoneLocal()),
   TabDivider(id: 'builtin_divider_civil_1'),

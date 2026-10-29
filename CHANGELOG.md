@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- new value type: day minute
+
 ---
 
 ## [1.6.0] - 2026-10-28

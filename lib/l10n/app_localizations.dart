@@ -572,6 +572,12 @@ abstract class AppLocalizations {
   /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
 
+  /// No description provided for @infoTextDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  String get infoTextDayMinute;
+
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
@@ -1465,6 +1471,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date & Time'**
   String get valueTypeDateTime;
+
+  /// No description provided for @valueTypeDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Day minute'**
+  String get valueTypeDayMinute;
 
   /// No description provided for @valueTypeDayPercent.
   ///

@@ -18,7 +18,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ## Highlights
 
-- **28 time values in one app** – civil, technical, astronomical and curious:
+- **29 time values in one app** – civil, technical, astronomical and curious:
   from Unix time, TAI and GPS time to sidereal time, Julian Date variants,
   Swatch Internet Time and the Doomsday Clock
 - **Your own time zone engine** – every IANA time zone, found by city, country,
@@ -37,7 +37,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Time systems
 - **Civil** – date (with ISO week and day of the year), time, date & time,
-  day second, day percent, seven-segment clock; for any time zone
+  day second, day minute, day percent, seven-segment clock; for any time zone
 - **Technical** – Unix time, International Atomic Time (TAI), GPS time
   (with historical leap seconds)
 - **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST),
@@ -121,7 +121,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 28 different time values simultaneously, lets you pick exactly
+Epoch shows you 29 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
