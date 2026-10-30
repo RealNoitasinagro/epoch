@@ -760,9 +760,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _showBuildInfo(BuildContext context) {
-    RegExpMatch? commitId =
-        RegExp(r'Repo: (?:\w+ @ )?([0-9a-f]{7,40})').firstMatch(kBuildInfo);
-    String commitLink = commitId != null
+    // Only builds that show a bare commit ("Repo: <hash>") are linked: release,
+    // F-Droid and CI builds. Local development builds add branch and dirty
+    // marker and may refer to commits that do not exist on GitHub.
+    final commitId = RegExp(r'^Repo: ([0-9a-f]{7,40})$', multiLine: true)
+        .firstMatch(kBuildInfo);
+    final commitLink = commitId != null
         ? '$repoLink/commit/${commitId.group(1)!}' : '';
     showDialog(
       context: context,
