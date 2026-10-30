@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Focus screen in night mode always starts in night red at low brightness; changes there are not saved
+
 ---
 
 ## [1.6.0] - 2026-10-28

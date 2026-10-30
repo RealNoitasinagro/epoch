@@ -188,20 +188,13 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Future<void> _initBrightness() async {
-    final app = EpochApp.of(context);
-    final savedColor = await loadFocusColor(app.isNightMode);
+    final isNightMode = EpochApp.of(context).isNightMode;
+    final savedColor = await loadFocusColor(isNightMode);
     double initial;
     try {
-      final saved = await loadFocusBrightness();
-      if (saved != null) {
-        initial = saved;
-        if (!kIsWeb && !Platform.isLinux) {
-          await ScreenBrightness().setApplicationScreenBrightness(initial);
-        }
-      } else {
-        initial = (!kIsWeb && !Platform.isLinux)
-            ? await ScreenBrightness().application
-            : kDefaultFocusBrightness;
+      initial = await loadFocusBrightness(isNightMode);
+      if (!kIsWeb && !Platform.isLinux) {
+        await ScreenBrightness().setApplicationScreenBrightness(initial);
       }
     } catch (_) {
       initial = kDefaultFocusBrightness;
@@ -213,9 +206,11 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Future<void> _saveBrightness(double value) async {
+    // In night mode, changes last for this session only.
+    final persist = !EpochApp.of(context).isNightMode;
     try {
       await ScreenBrightness().setApplicationScreenBrightness(value);
-      await saveFocusBrightness(value);
+      if (persist) await saveFocusBrightness(value);
     } catch (_) {}
   }
 
@@ -477,7 +472,7 @@ class _FocusScreenState extends State<FocusScreen> {
       return GestureDetector(
         onTap: () {
           setState(() => _textColor = color);
-          saveFocusColor(color);
+          if (!EpochApp.of(context).isNightMode) saveFocusColor(color);
           _scheduleControlsHide();
         },
         child: Container(

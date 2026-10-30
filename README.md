@@ -97,6 +97,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Focus mode
 - Double-tap any value for a full-screen, always-on display
 - Adjustable color (all platforms) and brightness (Android)
+- In night mode, the Focus screen starts in night red at low brightness
 - Long press toggles details (seconds, decimals, time zone line)
 - Burn-in protection through regular pixel shift (especially on OLED screens)
 - Optionally start the app directly in Focus mode

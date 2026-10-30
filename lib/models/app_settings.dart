@@ -34,6 +34,7 @@ const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
 const kDefaultDayQuarterColor = true;
 const kDefaultLmstMode = LmstMode.off;
 const kDefaultFocusBrightness = 0.5;
+const kDefaultFocusBrightnessNight = 0.1;
 const kDefaultFocusTimeShiftIndicator = true;
 const kFocusDefaultColorLight = kColorWhite;
 const kFocusDefaultColorNight = kColorNightRed;
@@ -224,7 +225,9 @@ Future<void> saveActiveTab(int index) async {
   await prefs.setInt(_kActiveTabKey, index);
 }
 
-Future<double?> loadFocusBrightness() async {
+/// Night mode starts dim: a saved brightness is ignored there.
+Future<double> loadFocusBrightness(bool isNightMode) async {
+  if (isNightMode) return kDefaultFocusBrightnessNight;
   final prefs = await SharedPreferences.getInstance();
   return prefs.getDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness;
 }
@@ -234,11 +237,12 @@ Future<void> saveFocusBrightness(double brightness) async {
   await prefs.setDouble(_kFocusBrightnessKey, brightness);
 }
 
+/// Night mode always starts with night red: a saved color is ignored there.
 Future<Color> loadFocusColor(bool isNightMode) async {
+  if (isNightMode) return kFocusDefaultColorNight;
   final prefs = await SharedPreferences.getInstance();
   final value = prefs.getInt(_kFocusColorKey);
-  if (value != null) return Color(value);
-  return isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight;
+  return value != null ? Color(value) : kFocusDefaultColorLight;
 }
 
 Future<void> saveFocusColor(Color color) async {
