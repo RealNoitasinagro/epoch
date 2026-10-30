@@ -143,11 +143,12 @@ fi
 
 if [ "$cwd" == "$GL_Epoch" ] ; then
     # Release export: update_release_working_dir.sh writes branch and full hash to .git-commit
-    repo_status=$(tail -1 .git-commit 2>/dev/null | cut - c1-7)
+    repo_status=$(tail -1 .git-commit 2>/dev/null | cut -c 1-7)
     repo_status=${repo_status:-unknown}
 else
     branch=$(git branch --show-current)
-    repo_status=$(printf '%s @ %s %s\n' "${branch:-detached}" "$(git rev-parse --short HEAD)" \
+    commit=$(git rev-parse --short HEAD | cut -c 1-7)
+    repo_status=$(printf '%s @ %s %s\n' "${branch:-detached}" "$commit" \
         "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
 fi
 
