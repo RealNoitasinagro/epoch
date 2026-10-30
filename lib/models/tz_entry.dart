@@ -203,6 +203,7 @@ class TzEntry {
     final metazoneIds = _metazoneIds;
     return [
       for (final t in linkCityNames) (source: TzSource.ianaLinks, term: t),
+      for (final id in _linkIds) (source: TzSource.ianaLinks, term: id),
       for (final t in _countryNamesIsoEn) (source: TzSource.iso3166NamesEn, term: t),
       for (final t in _countryNamesCldrEn) (source: TzSource.cldrCountryNamesEn, term: t),
       for (final t in _countryNamesCldrDe) (source: TzSource.cldrCountryNamesDe, term: t),

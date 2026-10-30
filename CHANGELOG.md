@@ -5,7 +5,9 @@
 ### Changed
 - Focus screen in night mode always starts in night red at low brightness; changes there are not saved
 - clock changes in the info dialog show time zone abbreviations next to the wall-clock times
-- import and reset of preferences also end Time Shift 
+- import and reset of preferences also end Time Shift
+- full support for legacy IANA identifiers; now you can also search for Europe/Amsterdam or Asia/Calcutta;
+previously only "Amsterdam" and "Calcutta" would have matched
 
 ---
 

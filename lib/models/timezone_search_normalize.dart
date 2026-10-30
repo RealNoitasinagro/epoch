@@ -33,6 +33,8 @@ String _foldSaintAbbreviation(String input) => input
 String _foldHyphens(String input) =>
     input.replaceAll('-', ' ');
 
+String _foldUnderscores(String input) => input.replaceAll('_', ' ');
+
 String _foldPunctuation(String input) =>
     input.replaceAll(RegExp(r'[,.]'), '');
 
@@ -44,6 +46,7 @@ String normalize(String s) {
   result = _stripApostrophes(result);
   result = _foldSaintAbbreviation(result);
   result = _foldHyphens(result);
+  result = _foldUnderscores(result);
   result = _foldPunctuation(result);
   result = result.replaceAll(' the ', ' ');
   result = result.replaceAll(RegExp(r'\bislands\b'), 'island');

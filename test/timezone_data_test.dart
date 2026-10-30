@@ -49,6 +49,16 @@ void main() {
     }
   });
 
+  group('IANA Link identifiers are searchable', () {
+    for (final entry in ianaLinksSnapshot.entries) {
+      test('${entry.key} finds ${entry.value}', () {
+        final found = searchTimezones(entry.key, tzDatabase)
+            .map((e) => e.ianaZoneId);
+        expect(found, contains(entry.value));
+      });
+    }
+  });
+
 /*  group('TzEntry search terms round-trip', () {
     // Every term listed for an entry must actually resolve back to that
     // entry. New terms added to timezone_search_zones.dart get coverage
