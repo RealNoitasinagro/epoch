@@ -4,6 +4,7 @@
 
 ### Changed
 - Focus screen in night mode always starts in night red at low brightness; changes there are not saved
+- clock changes in the info dialog show time zone abbreviations next to the wall-clock times
 
 ---
 

@@ -96,19 +96,22 @@ abstract class TimeValueRow extends StatelessWidget {
       final sameDay = wallClock.before.year == wallClock.after.year &&
           wallClock.before.month == wallClock.after.month &&
           wallClock.before.day == wallClock.after.day;
-      String describeWallClock(DateTime wall) => sameDay
-          ? TimeValueFormatter.formatTime(
-          app.hourFormat24, wall.hour, wall.minute, wall.second)
-          : TimeValueFormatter.formatDateTime(
-          app.hourFormat24, locale, wall, null);
       final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
       final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
       final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
-      final arrow = '$before → $after';
-      final zonedStr = '$arrow  '
+
+      // The abbreviation tells apart the two occurrences of a repeated hour
+      // (02:00:00 CEST and 02:00:00 CET), whatever the language.
+      String describeWallClock(DateTime wall, String abbreviation) => sameDay
+          ? TimeValueFormatter.formatTime(
+          app.hourFormat24, wall.hour, wall.minute, wall.second,
+          tzSuffix: abbreviation)
+          : TimeValueFormatter.formatDateTime(
+          app.hourFormat24, locale, wall, abbreviation);
+      final zonedStr =
           '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
-          '${describeWallClock(wallClock.before)} → '
-          '${describeWallClock(wallClock.after)}';
+          '${describeWallClock(wallClock.before, before)} → '
+          '${describeWallClock(wallClock.after, after)}';
 
       final localStr = TimeValueFormatter.formatDateTime(
           app.hourFormat24, locale, localTime, null);
@@ -121,35 +124,27 @@ abstract class TimeValueRow extends StatelessWidget {
         try {
           final localLoc = tz.getLocation(app.localIanaZone);
           final abbr = tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
-          final localizedAbbr = localizeTimezoneAbbr(abbr, l10n.localeName);
-          return localizedAbbr;
+          return localizeTimezoneAbbr(abbr, l10n.localeName);
         } catch (_) {
           return '';
         }
       }();
 
-      return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(zonedStr,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(zonedStr,
+            style: textTheme.bodySmall?.copyWith(fontFamily: fontFamilyDefault),
+          ),
+          if (showLocal)
+            Text(
+              '(= ${l10n.labelLocal.toLowerCase()}: $localStr $localAbbrAtTransition)',
               style: textTheme.bodySmall?.copyWith(
                 fontFamily: fontFamilyDefault,
+                color: colorScheme.onSurface.withAlpha(150),
               ),
             ),
-            if (showLocal)
-              Text(
-                '(= ${l10n.labelLocal.toLowerCase()}:  ' +
-                    ' ' * (arrow.length - l10n.labelLocal.length - 4) +
-                    '$localStr $localAbbrAtTransition)',
-                style: textTheme.bodySmall?.copyWith(
-                  fontFamily: fontFamilyDefault,
-                  color: colorScheme.onSurface.withAlpha(150),
-                ),
-              ),
-          ],
-        ),
+        ],
       );
     }
 
@@ -163,7 +158,10 @@ abstract class TimeValueRow extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 6),
-      ...transitions.map(transitionRow),
+      for (var index = 0; index < transitions.length; index++) ...[
+        if (index > 0) const Divider(height: 16),
+        transitionRow(transitions[index]),
+      ],
     ];
   }
 }
