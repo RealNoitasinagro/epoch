@@ -6,9 +6,7 @@ import '../models/app_settings.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
-import '../widgets/clocks/binary_coded_decimal_clock.dart';
-import '../widgets/clocks/binary_columns_clock.dart';
-import '../widgets/clocks/seven_segment_clock.dart';
+import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
 import '../widgets/time_string_row.dart';
@@ -616,41 +614,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
 
-    final segmentColor = switch (app.themeMode) {
-      AppThemeMode.light  => Colors.black,
-      AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => kColorNightRed,
-      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
-          ? Colors.white : Colors.black,
-    };
-
     late final Widget clock;
     if (isGraphical) {
-      clock = switch (timeValue.valueType) {
-        ValueType.sevenSegmentClock =>
-            SevenSegmentClock(
-              now: zonedNow,
-              l10n: l10n,
-              digitHeight: kGraphicalSegmentClockHeightDefault,
-              showSeconds: timeValue.showOptionalPart,
-              hourFormat24: app.hourFormat24,
-              color: segmentColor,
-            ),
-        ValueType.binaryClockColumns =>
-            BinaryColumnsClock(
-              now: zonedNow,
-              l10n: l10n,
-              showSeconds: timeValue.showOptionalPart,
-            ),
-        ValueType.binaryClockBcd =>
-            BinaryCodedDecimalClock(
-              now: zonedNow,
-              l10n: l10n,
-              showSeconds: timeValue.showOptionalPart,
-            ),
-        _ => throw StateError(
-            'Unhandled graphical ValueType: ${timeValue.valueType}'),
-      };
+      clock = buildGraphicalClock(
+        valueType: timeValue.valueType,
+        now: zonedNow,
+        l10n: l10n,
+        showSeconds: timeValue.showOptionalPart,
+        hourFormat24: app.hourFormat24,
+        segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
+      );
     }
 
     String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
