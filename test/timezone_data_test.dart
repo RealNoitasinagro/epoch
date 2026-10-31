@@ -59,34 +59,6 @@ void main() {
     }
   });
 
-/*  group('TzEntry search terms round-trip', () {
-    // Every term listed for an entry must actually resolve back to that
-    // entry. New terms added to timezone_search_zones.dart get coverage
-    // here automatically -- no test file changes needed.
-    for (final entry in tzDatabase) {
-      for (final term in entry.terms) {
-        test('term "$term" resolves to ${entry.ianaZoneId}', () {
-          final matches = tzDatabase.where((e) => e.matches(term));
-          expect(matches.map((e) => e.ianaZoneId), contains(entry.ianaZoneId));
-        });
-      }
-    }
-  });
-
-  group('TzEntry country name matching', () {
-    // Generated from zone1970.tab / ISO 3166-1 (English) and CLDR
-    // (German) -- covers every country assigned to a zone in tzDatabase
-    // without hand-written per-country tests.
-    for (final entry in tzDatabase) {
-      for (final name in entry.countryNames) {
-        test('country name "$name" resolves to ${entry.ianaZoneId}', () {
-          final matches = tzDatabase.where((e) => e.matches(name));
-          expect(matches.map((e) => e.ianaZoneId), contains(entry.ianaZoneId));
-        });
-      }
-    }
-  });*/
-
   group('every candidate source resolves to its own entry', () {
     for (final entry in tzDatabase) {
       final firstPerSource = <String, String>{};

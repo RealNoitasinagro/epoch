@@ -65,11 +65,13 @@ class _DailyData {
     required this.day,
     required this.candidates,
     required this.abbreviationAliases,
+    required this.normalizedZoneId,
   });
 
   final String day; // UTC, yyyy-MM-dd
   final List<NormalizedCandidate> candidates;
   final Set<String> abbreviationAliases;
+  final String normalizedZoneId;  // "etc/gmt 5" for Etc/GMT-5
 }
 
 final Expando<_DailyData> _dailyDataByEntry = Expando();
@@ -175,12 +177,13 @@ class TzEntry {
     }
 
     final allCaps = queryOrig == queryOrig.toUpperCase();
-    if (!allCaps) {
-      final zoneIdLower = ianaZoneId.toLowerCase();
-      if (zoneIdLower.contains(queryNorm) ||
-          zoneIdLower.contains(queryNorm.replaceAll(' ', '_'))) {
-        return (rule: TzRule.zoneId, source: TzSource.none, term: ianaZoneId);
-      }
+    // Capital letters only means an abbreviation (IST, CET): it must not match
+    // inside zone IDs (Europe/Istanbul). Digits, signs or a slash (GMT-5,
+    // Etc/GMT-5) can be part of an ID.
+    final looksLikeAbbreviation = RegExp(r'^[A-Z]+$').hasMatch(queryOrig);
+    if (!looksLikeAbbreviation &&
+        dailyData.normalizedZoneId.contains(queryNorm)) {
+      return (rule: TzRule.zoneId, source: TzSource.none, term: ianaZoneId);
     }
     for (final candidate in dailyData.candidates) {
       final isHit = allCaps
@@ -241,6 +244,7 @@ class TzEntry {
           (source: c.source, term: c.term, normalized: normalize(c.term)),
       ],
       abbreviationAliases: _computeAbbreviationAliases(),
+      normalizedZoneId: normalize(ianaZoneId),
     );
     _dailyDataByEntry[this] = data;
     return data;

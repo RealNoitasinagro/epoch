@@ -7,6 +7,7 @@
 import 'dart:io';
 import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/timezone_match_labels.dart';
+import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_normalize.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
 import 'package:epoch/models/tz_entry.dart';
@@ -71,6 +72,14 @@ TzEntry? findEntry(String zoneId) {
 }
 
 void explainQuery(String query) {
+  final byOffset = searchByOffset(query, tzDatabase);
+  if (byOffset.isNotEmpty) {
+    for (final entry in byOffset) {
+      print('TZ-MATCH q="$query" zone=${entry.ianaZoneId} '
+          'by=${TzRule.offset} term="${entry.offsetLabel}"');
+    }
+    return;
+  }
   var count = 0;
   for (final entry in tzDatabase) {
     final reason = entry.match(query);
