@@ -700,6 +700,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsZoneDisplayModeSub => 'Kürzel, UTC-Zeitabstand';
 
   @override
+  String get startupErrorCopied => 'Details kopiert';
+
+  @override
+  String get startupErrorCopy => 'Details kopieren';
+
+  @override
+  String startupErrorHint(String url) {
+    return 'Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit unter $url.';
+  }
+
+  @override
+  String get startupErrorTitle => 'Epoch konnte nicht starten';
+
+  @override
   String get tabAstronomical => 'Astronomisch';
 
   @override

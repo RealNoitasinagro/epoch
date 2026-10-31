@@ -1280,6 +1280,30 @@ abstract class AppLocalizations {
   /// **'abbreviation, UTC-offset'**
   String get settingsZoneDisplayModeSub;
 
+  /// No description provided for @startupErrorCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Details copied'**
+  String get startupErrorCopied;
+
+  /// No description provided for @startupErrorCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details'**
+  String get startupErrorCopy;
+
+  /// No description provided for @startupErrorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while loading the app. If possible, please report the details below at {url}.'**
+  String startupErrorHint(String url);
+
+  /// No description provided for @startupErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Epoch could not start'**
+  String get startupErrorTitle;
+
   /// No description provided for @tabAstronomical.
   ///
   /// In en, this message translates to:

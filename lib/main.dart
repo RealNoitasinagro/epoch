@@ -24,39 +24,43 @@ import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
 import 'widgets/time_shift_indicator.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  registerBundledLicenses();
-  await runPrefsMigrations();
-  tz.initializeTimeZones();
-
-  if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
-    if (args.contains('--help') || args.contains('-h')) {
-      stdout.writeln('Usage: epoch [config.json]');
-      exit(0);
-    }
-    final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
-    if (configPath != null) {
-      final file = File(configPath);
-      if (file.existsSync()) {
-        try {
-          final json = await file.readAsString();
-          await importSettingsJson(json);
-        } catch (e) {
-          stderr.writeln('Failed to load config: $e');
-          exit(1);
-        }
-      } else {
-        stderr.writeln('Config file not found: $configPath');
-        exit(1);
-      }
-    }
+  try {
+    registerBundledLicenses();
+    await runPrefsMigrations();
+    tz.initializeTimeZones();
+    await _loadConfigFromCommandLine(args);
+  } catch (error, stackTrace) {
+    runApp(StartupErrorApp(error: error, stackTrace: stackTrace));
+    return;
   }
-
   runApp(const EpochApp());
+}
+
+Future<void> _loadConfigFromCommandLine(List<String> args) async {
+  if (kIsWeb || !Platform.isLinux || args.isEmpty) return;
+  if (args.contains('--help') || args.contains('-h')) {
+    stdout.writeln('Usage: epoch [config.json]');
+    exit(0);
+  }
+  final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+  if (configPath == null) return;
+  final file = File(configPath);
+  if (!file.existsSync()) {
+    stderr.writeln('Config file not found: $configPath');
+    exit(1);
+  }
+  try {
+    await importSettingsJson(await file.readAsString());
+  } catch (e) {
+    stderr.writeln('Failed to load config: $e');
+    exit(1);
+  }
 }
 
 const _nightRed = kColorNightRed;
@@ -114,6 +118,7 @@ class EpochApp extends StatefulWidget {
 }
 
 class EpochAppState extends State<EpochApp> {
+  ({Object error, StackTrace stackTrace})? _startupError;
   bool _settingsLoaded             = false;
   bool _splashMinDurationElapsed   = false;
   String _localIanaZone            = 'UTC';
@@ -153,47 +158,53 @@ class EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadPreferences() async {
-    final locale                  = await loadLocale() ?? kDefaultLocale;
-    final theme                   = await loadThemeMode();
-    final hour24                  = await loadHourFormat24();
-    final thousands               = await loadThousandsSep();
-    final dateWithDetails         = await loadDateWithDetails();
-    final dateFormat              = await loadDateFormat();
-    final timeFormat              = await loadTimeFormat();
-    final zoneDisplayMode         = await loadZoneDisplayMode();
-    final dayQuarterColor         = await loadDayQuarterColor();
-    final lmstMode                = await loadLmstMode();
-    final lmstLongitude           = await loadLmstLongitude();
-    final lastImportedConfig      = await loadLastImportedConfig();
-    final startupFocusValue       = await loadStartupFocusValue();
-    final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
-
-    String localZone = 'UTC';
     try {
-      final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
-      localZone = currentTimeZone.identifier;
-    } catch (_) {
-      localZone = 'UTC';
-    }
+      final locale                  = await loadLocale() ?? kDefaultLocale;
+      final theme                   = await loadThemeMode();
+      final hour24                  = await loadHourFormat24();
+      final thousands               = await loadThousandsSep();
+      final dateWithDetails         = await loadDateWithDetails();
+      final dateFormat              = await loadDateFormat();
+      final timeFormat              = await loadTimeFormat();
+      final zoneDisplayMode         = await loadZoneDisplayMode();
+      final dayQuarterColor         = await loadDayQuarterColor();
+      final lmstMode                = await loadLmstMode();
+      final lmstLongitude           = await loadLmstLongitude();
+      final lastImportedConfig      = await loadLastImportedConfig();
+      final startupFocusValue       = await loadStartupFocusValue();
+      final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
 
-    setState(() {
-      _localIanaZone           = localZone;
-      _locale                  = locale;
-      _themeMode               = theme;
-      _hourFormat24            = hour24;
-      _thousandsSep            = thousands;
-      _dateWithDetails         = dateWithDetails;
-      _dateFormat              = dateFormat;
-      _timeFormat              = timeFormat;
-      _zoneDisplayMode         = zoneDisplayMode;
-      _dayQuarterColor         = dayQuarterColor;
-      _lmstMode                = lmstMode;
-      _lmstLongitude           = lmstLongitude;
-      _lastImportedConfig      = lastImportedConfig;
-      _startupFocusValue       = startupFocusValue;
-      _focusTimeShiftIndicator = focusTimeShiftIndicator;
-      _settingsLoaded          = true;
-    });
+      String localZone = 'UTC';
+      try {
+        final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+        localZone = currentTimeZone.identifier;
+      } catch (_) {
+        localZone = 'UTC';
+      }
+
+      setState(() {
+        _localIanaZone           = localZone;
+        _locale                  = locale;
+        _themeMode               = theme;
+        _hourFormat24            = hour24;
+        _thousandsSep            = thousands;
+        _dateWithDetails         = dateWithDetails;
+        _dateFormat              = dateFormat;
+        _timeFormat              = timeFormat;
+        _zoneDisplayMode         = zoneDisplayMode;
+        _dayQuarterColor         = dayQuarterColor;
+        _lmstMode                = lmstMode;
+        _lmstLongitude           = lmstLongitude;
+        _lastImportedConfig      = lastImportedConfig;
+        _startupFocusValue       = startupFocusValue;
+        _focusTimeShiftIndicator = focusTimeShiftIndicator;
+        _settingsLoaded          = true;
+      });
+    } catch (error, stackTrace) {
+      if (mounted) {
+        setState(() => _startupError = (error: error, stackTrace: stackTrace));
+      }
+    }
   }
 
   void setLocale(Locale l) {
@@ -304,12 +315,17 @@ class EpochAppState extends State<EpochApp> {
       locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: showSplash
-          ? const SplashScreen()
-          : (_startupFocusValue != null
-            ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
-            : HomeScreen(key: _homeKey)),
-    );
+      home: _startupError != null
+          ? StartupErrorScreen(
+              error: _startupError!.error,
+              stackTrace: _startupError!.stackTrace
+            )
+          : showSplash
+            ? const SplashScreen()
+            : (_startupFocusValue != null
+              ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
+              : HomeScreen(key: _homeKey)),
+      );
   }
 }
 
