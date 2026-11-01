@@ -7,6 +7,8 @@
 
 ### Changed
 - Focus screen in night mode always starts in night red at low brightness; changes there are not saved
+- Focus screen starts with what's shown on the tab by default, new button to show/hide details line;
+onLongPress only toggles the value itself (seconds/decimals on/off)
 - clock changes in the info dialog show time zone abbreviations and offsets next to the wall-clock times
 - import and reset of preferences also end Time Shift
 - time zone search finds old and alternative IANA IDs such as Europe/Amsterdam or Asia/Calcutta,

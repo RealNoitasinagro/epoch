@@ -45,7 +45,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late DateTime _now;
   late Timer _timer;
   Color _textColor = Colors.white;
-  bool _showLine2 = false;
+  bool _showLine2 = true;
   late bool _showOptionalPart;
 
   double? _brightness;
@@ -234,6 +234,20 @@ class _FocusScreenState extends State<FocusScreen> {
     _showControls();
   }
 
+  Widget _detailsToggle(AppLocalizations l10n) {
+    return IconButton(
+      icon: Icon(
+        _showLine2 ? Icons.subtitles : Icons.subtitles_off_outlined,
+        color: _textColor,
+        size: 28,
+      ),
+      tooltip: _showLine2
+          ? l10n.hintFocusScreenDetailsOff
+          : l10n.hintFocusScreenDetailsOn,
+      onPressed: _toggleLine2,
+    );
+  }
+
   void _toggleOptionalPart() {
     setState(() => _showOptionalPart = !_showOptionalPart);
     _showControls();
@@ -313,7 +327,7 @@ class _FocusScreenState extends State<FocusScreen> {
         onTap: _showControls,
         onLongPress: optionalPart != OptionalPart.none
           ? _toggleOptionalPart
-          : _toggleLine2,
+          : null,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -383,6 +397,7 @@ class _FocusScreenState extends State<FocusScreen> {
               ..._colorSwatches(),
               const SizedBox(width: 16),
               _pixelShiftToggle(l10n),
+              if (hasLine2) _detailsToggle(l10n),
             ],
           ),
         ),
@@ -399,7 +414,6 @@ class _FocusScreenState extends State<FocusScreen> {
           right: 0,
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
-              hasLine2: hasLine2,
               optionalPart: optionalPart,
               l10n: l10n
           ),
@@ -422,6 +436,7 @@ class _FocusScreenState extends State<FocusScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (hasLine2) _detailsToggle(l10n),
               _pixelShiftToggle(l10n),
               const SizedBox(height: 16),
               ..._colorSwatches(vertical: true),
@@ -441,7 +456,6 @@ class _FocusScreenState extends State<FocusScreen> {
           right: 0,
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
-              hasLine2: hasLine2,
               optionalPart: optionalPart,
               l10n: l10n
           ),
@@ -564,31 +578,19 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  Widget _exitHint(
-        {required bool hasLine2, required OptionalPart? optionalPart,
-         required AppLocalizations l10n}
-      ) {
+  Widget _exitHint({required OptionalPart? optionalPart, required AppLocalizations l10n}) {
     final exit = l10n.hintFocusScreenExit;
-    final String text;
-    if (optionalPart != OptionalPart.none && !hasLine2) {
-      final toggleHint = switch (optionalPart) {
-        OptionalPart.decimals => _showOptionalPart
-            ? l10n.hintFocusScreenToggleDecimalsOff
-            : l10n.hintFocusScreenToggleDecimalsOn,
-        _ => _showOptionalPart
-            ? l10n.hintFocusScreenToggleSecondsOff
-            : l10n.hintFocusScreenToggleSecondsOn,
-      };
-      text = '$exit  ·  $toggleHint';
-    } else if (optionalPart == OptionalPart.none && hasLine2) {
-      text = '$exit  ·  ${_showLine2
-          ? l10n.hintFocusScreenToggleToOneLine
-          : l10n.hintFocusScreenToggleToTwoLines}';
-    } else {
-      text = exit;
-    }
+    final toggleHint = switch (optionalPart) {
+      OptionalPart.decimals => _showOptionalPart
+          ? l10n.hintFocusScreenToggleDecimalsOff
+          : l10n.hintFocusScreenToggleDecimalsOn,
+      OptionalPart.seconds => _showOptionalPart
+          ? l10n.hintFocusScreenToggleSecondsOff
+          : l10n.hintFocusScreenToggleSecondsOn,
+      _ => null,
+    };
     return Text(
-      text,
+      toggleHint == null ? exit : '$exit  ·  $toggleHint',
       style: TextStyle(color: _textColor.withAlpha(150), fontSize: 12),
       textAlign: TextAlign.center,
     );

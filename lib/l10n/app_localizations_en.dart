@@ -113,6 +113,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditTimeValue => 'Edit time value';
 
   @override
+  String get hintFocusScreenDetailsOff => 'Hide details line';
+
+  @override
+  String get hintFocusScreenDetailsOn => 'Show details line';
+
+  @override
   String get hintFocusScreenExit => 'Double-tap to exit';
 
   @override
@@ -129,12 +135,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintFocusScreenToggleSecondsOn => 'Hold to display seconds';
-
-  @override
-  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
-
-  @override
-  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
 
   @override
   String hintMatchAlsoCity(String name) {

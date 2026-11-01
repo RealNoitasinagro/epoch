@@ -112,6 +112,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintEditTimeValue => 'Zeitwert bearbeiten';
 
   @override
+  String get hintFocusScreenDetailsOff => 'Detailzeile ausblenden';
+
+  @override
+  String get hintFocusScreenDetailsOn => 'Detailzeile einblenden';
+
+  @override
   String get hintFocusScreenExit => 'Doppelt antippen zum Verlassen';
 
   @override
@@ -133,13 +139,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get hintFocusScreenToggleSecondsOn =>
       'Gedrückt halten für Anzeige mit Sekunden';
-
-  @override
-  String get hintFocusScreenToggleToOneLine => 'Gedrückt halten für eine Zeile';
-
-  @override
-  String get hintFocusScreenToggleToTwoLines =>
-      'Gedrückt halten für zwei Zeilen';
 
   @override
   String hintMatchAlsoCity(String name) {

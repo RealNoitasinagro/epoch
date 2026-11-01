@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenDetailsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide details line'**
+  String get hintFocusScreenDetailsOff;
+
+  /// No description provided for @hintFocusScreenDetailsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get hintFocusScreenDetailsOn;
+
   /// No description provided for @hintFocusScreenExit.
   ///
   /// In en, this message translates to:
@@ -301,18 +313,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold to display seconds'**
   String get hintFocusScreenToggleSecondsOn;
-
-  /// No description provided for @hintFocusScreenToggleToOneLine.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for one line'**
-  String get hintFocusScreenToggleToOneLine;
-
-  /// No description provided for @hintFocusScreenToggleToTwoLines.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for two lines'**
-  String get hintFocusScreenToggleToTwoLines;
 
   /// No description provided for @hintMatchAlsoCity.
   ///
