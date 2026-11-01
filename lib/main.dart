@@ -34,7 +34,7 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     // Comment out to test the StartupErrorScreen:
-    throw StateError('test');
+    //throw StateError('test');
     registerBundledLicenses();
     await runPrefsMigrations();
     tz.initializeTimeZones();
@@ -66,50 +66,6 @@ Future<void> _loadConfigFromCommandLine(List<String> args) async {
     exit(1);
   }
 }
-
-const _nightRed = kColorNightRed;
-const _nightRedDim = kColorNightRedDim;
-
-ThemeData _nightTheme() => ThemeData(
-  brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.black,
-  colorScheme: ColorScheme.dark(
-    surface: Colors.black,
-    primary: _nightRed,
-    onPrimary: Colors.black,
-    secondary: _nightRed,
-    onSecondary: Colors.black,
-    onSurface: _nightRed,
-    outline: _nightRedDim,
-    outlineVariant: _nightRedDim,
-  ),
-  appBarTheme: const AppBarTheme(
-    foregroundColor: _nightRed,
-    iconTheme: IconThemeData(color: _nightRed),
-  ),
-  tabBarTheme: const TabBarThemeData(
-    labelColor: _nightRed,
-    unselectedLabelColor: _nightRedDim,
-    indicatorColor: _nightRed,
-  ),
-  iconTheme: const IconThemeData(color: _nightRed),
-  textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyDefault),
-    bodyMedium: TextStyle(color: _nightRed),
-    bodySmall: TextStyle(color: _nightRedDim),
-    labelSmall: TextStyle(color: _nightRedDim),
-    labelMedium: TextStyle(color: _nightRed),
-  ),
-  dividerTheme: const DividerThemeData(color: _nightRedDim),
-  checkboxTheme: CheckboxThemeData(
-    fillColor: WidgetStateProperty.all(_nightRed),
-  ),
-  switchTheme: SwitchThemeData(
-    thumbColor: WidgetStateProperty.all(_nightRed),
-    trackColor: WidgetStateProperty.all(_nightRedDim),
-  ),
-  useMaterial3: true,
-);
 
 class EpochApp extends StatefulWidget {
   const EpochApp({super.key});
@@ -308,7 +264,7 @@ class EpochAppState extends State<EpochApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      darkTheme: isNightMode ? _nightTheme() : buildDarkTheme(),
+      darkTheme: isNightMode ? buildNightTheme() : buildDarkTheme(),
       themeMode: showSplash ? ThemeMode.dark : _flutterThemeMode,
       locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
