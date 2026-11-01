@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:url_launcher/url_launcher.dart';
 import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
@@ -10,6 +9,7 @@ import '../models/timezone_abbreviation_localization.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
+import 'link_text.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;
@@ -38,16 +38,7 @@ abstract class TimeValueRow extends StatelessWidget {
             Text(timeValue.localizedInfoText(l10n)),
             if (link != null) ...[
               const SizedBox(height: 12),
-              InkWell(
-                onTap: () async => launchUrl(Uri.parse(link),
-                    mode: LaunchMode.externalApplication),
-                child: Text(link,
-                  style: TextStyle(
-                    color: Theme.of(ctx).colorScheme.primary,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
+              LinkText(url: link),
             ],
             if (ianaZone != null &&
                 timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto)
@@ -104,10 +95,10 @@ abstract class TimeValueRow extends StatelessWidget {
       // (02:00:00 CEST and 02:00:00 CET), whatever the language.
       String describeWallClock(DateTime wall, String abbreviation) => sameDay
           ? TimeValueFormatter.formatTime(
-          app.hourFormat24, wall.hour, wall.minute, wall.second,
-          tzSuffix: abbreviation)
+              app.hourFormat24, wall.hour, wall.minute, wall.second,
+            tzSuffix: abbreviation)
           : TimeValueFormatter.formatDateTime(
-          app.hourFormat24, locale, wall, abbreviation);
+              app.hourFormat24, locale, wall, abbreviation);
       final zonedStr =
           '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
           '${describeWallClock(wallClock.before, before)} → '

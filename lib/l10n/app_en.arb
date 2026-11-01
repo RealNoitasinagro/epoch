@@ -70,13 +70,6 @@
       }
     }
   },
-  "@startupErrorHint": {
-    "placeholders": {
-      "url": {
-        "type": "String"
-      }
-    }
-  },
   "@timeShiftHint": {
     "placeholders": {
       "apply": {
@@ -330,7 +323,7 @@
   "settingsZoneDisplayModeSub": "abbreviation, UTC-offset",
   "startupErrorCopied": "Details copied",
   "startupErrorCopy": "Copy details",
-  "startupErrorHint": "Something went wrong while loading the app. If possible, please report the details below at {url}.",
+  "startupErrorHint": "Something went wrong while loading the app. If possible, please report the details below on GitHub:",
   "startupErrorTitle": "Epoch could not start",
   "tabAstronomical": "Astronomical",
   "tabCivil": "Civil",

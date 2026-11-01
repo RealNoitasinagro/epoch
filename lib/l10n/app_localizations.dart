@@ -1295,8 +1295,8 @@ abstract class AppLocalizations {
   /// No description provided for @startupErrorHint.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong while loading the app. If possible, please report the details below at {url}.'**
-  String startupErrorHint(String url);
+  /// **'Something went wrong while loading the app. If possible, please report the details below on GitHub:'**
+  String get startupErrorHint;
 
   /// No description provided for @startupErrorTitle.
   ///

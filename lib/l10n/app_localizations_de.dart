@@ -706,9 +706,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get startupErrorCopy => 'Details kopieren';
 
   @override
-  String startupErrorHint(String url) {
-    return 'Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit unter $url.';
-  }
+  String get startupErrorHint =>
+      'Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit auf GitHub:';
 
   @override
   String get startupErrorTitle => 'Epoch konnte nicht starten';

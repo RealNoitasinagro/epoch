@@ -7,6 +7,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
+import 'app_themes.dart';
 import 'build_info.dart';
 import 'bundled_licenses.dart';
 import 'effective_clock.dart';
@@ -26,11 +27,14 @@ import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
+import 'widgets/link_text.dart';
 import 'widgets/time_shift_indicator.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
+    // Comment out to test the StartupErrorScreen:
+    throw StateError('test');
     registerBundledLicenses();
     await runPrefsMigrations();
     tz.initializeTimeZones();
@@ -304,13 +308,7 @@ class EpochAppState extends State<EpochApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      darkTheme: isNightMode ? _nightTheme() : ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueGrey,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
+      darkTheme: isNightMode ? _nightTheme() : buildDarkTheme(),
       themeMode: showSplash ? ThemeMode.dark : _flutterThemeMode,
       locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -798,12 +796,12 @@ class _HomeScreenState extends State<HomeScreen>
             const Divider(height: kDividerHeight),
             if (commitLink.isNotEmpty) ...[
               const SizedBox(height: 12),
-              _linkTile(ctx, 'Commit (GitHub)', commitLink),
+              LinkText(url: commitLink, label: 'Commit (GitHub)'),
               const SizedBox(height: 24),
             ],
-            _linkTile(ctx, 'timezone package website', timezoneLink),
+            LinkText(url: timezoneLink, label: 'timezone package website'),
             const SizedBox(height: 24),
-            _linkTile(ctx, 'IANA Time Zones website', ianaLink),
+            LinkText(url: ianaLink, label: 'IANA Time Zones website'),
           ],
         ),
         actions: [
@@ -812,18 +810,6 @@ class _HomeScreenState extends State<HomeScreen>
             child: const Text('OK'),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _linkTile(BuildContext context, String label, String url) {
-    return InkWell(
-      onTap: () async => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-      child: Text(label,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          decoration: TextDecoration.underline,
-        ),
       ),
     );
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../app_themes.dart';
 import '../build_info.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../link_constants.dart';
+import '../widgets/link_text.dart';
 
 /// Shown instead of a blank screen when the app cannot start, e.g. because
 /// the stored preferences are unreadable. Deliberately self-contained: it
@@ -28,8 +30,9 @@ class StartupErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = _localizations();
     final textTheme = Theme.of(context).textTheme;
-    final details = '$kBuildInfo\n${defaultTargetPlatform.name}\n\n'
-        '$error\n\n$stackTrace';
+    final platform = kIsWeb
+        ? 'web (${defaultTargetPlatform.name})' : defaultTargetPlatform.name;
+    final details = '$kBuildInfo\n$platform\n\n$error\n\n$stackTrace';
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -49,7 +52,9 @@ class StartupErrorScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              Text(l10n.startupErrorHint(issuesLink)),
+              Text(l10n.startupErrorHint),
+              const SizedBox(height: 4),
+              const LinkText(url: issuesLink),
               const SizedBox(height: 12),
               Expanded(
                 child: SingleChildScrollView(
@@ -65,7 +70,9 @@ class StartupErrorScreen extends StatelessWidget {
                 icon: const Icon(Icons.copy),
                 label: Text(l10n.startupErrorCopy),
                 onPressed: () async {
-                  await Clipboard.setData(ClipboardData(text: details));
+                  await Clipboard.setData(
+                      ClipboardData(text: '$issuesLink\n\n$details')
+                  );
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(l10n.startupErrorCopied),
@@ -98,7 +105,7 @@ class StartupErrorApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      darkTheme: buildDarkTheme(),
       home: StartupErrorScreen(error: error, stackTrace: stackTrace),
     );
   }

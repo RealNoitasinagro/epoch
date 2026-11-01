@@ -697,9 +697,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startupErrorCopy => 'Copy details';
 
   @override
-  String startupErrorHint(String url) {
-    return 'Something went wrong while loading the app. If possible, please report the details below at $url.';
-  }
+  String get startupErrorHint =>
+      'Something went wrong while loading the app. If possible, please report the details below on GitHub:';
 
   @override
   String get startupErrorTitle => 'Epoch could not start';

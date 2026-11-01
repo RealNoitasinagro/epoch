@@ -70,13 +70,6 @@
       }
     }
   },
-  "@startupErrorHint": {
-    "placeholders": {
-      "url": {
-        "type": "String"
-      }
-    }
-  },
   "@timeShiftHint": {
     "placeholders": {
       "apply": {
@@ -330,7 +323,7 @@
   "settingsZoneDisplayModeSub": "Kürzel, UTC-Zeitabstand",
   "startupErrorCopied": "Details kopiert",
   "startupErrorCopy": "Details kopieren",
-  "startupErrorHint": "Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit unter {url}.",
+  "startupErrorHint": "Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit auf GitHub:",
   "startupErrorTitle": "Epoch konnte nicht starten",
   "tabAstronomical": "Astronomisch",
   "tabCivil": "Bürgerlich",
