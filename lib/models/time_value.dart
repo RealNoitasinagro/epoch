@@ -381,6 +381,7 @@ extension ValueTypeProps on ValueType {
 
   OptionalPart get optionalPart => switch (this) {
     ValueType.swatchBeats || ValueType.newEarthTime => OptionalPart.decimals,
+    ValueType.dayMinute ||
     ValueType.sevenSegmentClock || ValueType.binaryClockBcd ||
     ValueType.binaryClockColumns || ValueType.binaryClockString ||
     ValueType.romanNumeralsTime => OptionalPart.seconds,

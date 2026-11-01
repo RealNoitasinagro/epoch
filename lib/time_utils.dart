@@ -185,9 +185,9 @@ class TimeUtils {
     }
     final moment = tz.TZDateTime.from(utc, location);
     final dayStart =
-    tz.TZDateTime(location, moment.year, moment.month, moment.day);
+        tz.TZDateTime(location, moment.year, moment.month, moment.day);
     final nextDayStart =
-    tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
+        tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
     return (
       elapsedSeconds: moment.difference(dayStart).inSeconds,
       lengthSeconds: nextDayStart.difference(dayStart).inSeconds,

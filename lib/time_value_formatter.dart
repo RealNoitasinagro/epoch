@@ -155,10 +155,14 @@ class TimeValueFormatter {
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.dayMinute:
-        final value = dayProgress.elapsedSeconds ~/ 60;
+        final minutes = dayProgress.elapsedSeconds ~/ 60;
+        final seconds = dayProgress.elapsedSeconds % 60;
         String formattedValue = thousandsSep
-            ? NumberFormat.decimalPattern(locale).format(value)
-            : value.toString();
+            ? NumberFormat.decimalPattern(locale).format(minutes)
+            : minutes.toString();
+        if (timeValue.showOptionalPart) {
+          formattedValue += ':${seconds.toString().padLeft(2, '0')}';
+        }
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.dayPercent:
