@@ -6,6 +6,7 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/time_value.dart';
 import '../models/timezone_abbreviation_localization.dart';
+import '../models/zone_rules.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
@@ -88,21 +89,25 @@ abstract class TimeValueRow extends StatelessWidget {
           wallClock.before.month == wallClock.after.month &&
           wallClock.before.day == wallClock.after.day;
       final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
-      final before = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
-      final after  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+      final abbrBefore = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
+      final abbrAfter  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
 
-      // The abbreviation tells apart the two occurrences of a repeated hour
-      // (02:00:00 CEST and 02:00:00 CET), whatever the language.
-      String describeWallClock(DateTime wall, String abbreviation) => sameDay
-          ? TimeValueFormatter.formatTime(
-              app.hourFormat24, wall.hour, wall.minute, wall.second,
-            tzSuffix: abbreviation)
-          : TimeValueFormatter.formatDateTime(
-              app.hourFormat24, locale, wall, abbreviation);
+      // Abbreviation and offset, as in the time zone search: tells apart the
+      // two occurrences of a repeated hour even if the abbreviations are unfamiliar.
+      String describeWallClock(
+          DateTime wall, String abbreviation, Duration offset) {
+        final zone = '$abbreviation ${formatUtcOffset(offset, withUtcPrefix: true)}';
+        return sameDay
+            ? TimeValueFormatter.formatTime(
+                app.hourFormat24, wall.hour, wall.minute, wall.second,
+                tzSuffix: zone)
+            : TimeValueFormatter.formatDateTime(
+                app.hourFormat24, locale, wall, zone);
+      }
       final zonedStr =
           '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
-          '${describeWallClock(wallClock.before, before)} → '
-          '${describeWallClock(wallClock.after, after)}';
+          '  ${describeWallClock(wallClock.before, abbrBefore.padRight(5), wallClock.offsetBefore)}\n'
+          '→ ${describeWallClock(wallClock.after, abbrAfter.padRight(5), wallClock.offsetAfter)}';
 
       final localStr = TimeValueFormatter.formatDateTime(
           app.hourFormat24, locale, localTime, null);

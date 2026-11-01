@@ -157,10 +157,13 @@ class TimeUtils {
   /// Wall-clock readings in [ianaZone] directly before and after a clock change
   /// at [transitionUtc], e.g. 03:00:00 -> 02:00:00 for Berlin in autumn (so
   /// 02:00:00-02:59:59 occurs twice) or 02:00:00 -> 03:00:00 in spring (so
-  /// 02:00:00-02:59:59 does not exist). The returned DateTimes are UTC-kind and
-  /// only carry the wall-clock fields.
-  static ({DateTime before, DateTime after}) wallClockAroundTransition(
-      String ianaZone, DateTime transitionUtc) {
+  /// 02:00:00-02:59:59 does not exist). The returned DateTimes are UTC-kind.
+  static ({
+    DateTime before,
+    DateTime after,
+    Duration offsetBefore,
+    Duration offsetAfter,
+  }) wallClockAroundTransition(String ianaZone, DateTime transitionUtc) {
     final offsetBefore = inZone(
         transitionUtc.subtract(const Duration(seconds: 1)), ianaZone)
         .timeZoneOffset;
@@ -168,6 +171,8 @@ class TimeUtils {
     return (
       before: transitionUtc.add(offsetBefore),
       after: transitionUtc.add(offsetAfter),
+      offsetBefore: offsetBefore,
+      offsetAfter: offsetAfter,
     );
   }
 
