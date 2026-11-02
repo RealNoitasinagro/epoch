@@ -7,6 +7,7 @@ const civilTypes = [
   ValueType.time,
   ValueType.dateTime,
   ValueType.daySecond,
+  ValueType.dayMinute,
   ValueType.dayPercent,
   ValueType.sevenSegmentClock,
 ];

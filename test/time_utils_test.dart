@@ -26,6 +26,21 @@ void main() {
     });
   });
 
+  group('TimeUtils.dayMinute', () {
+    test('splits the wall-clock reading into minutes and seconds', () {
+      final result = TimeUtils.dayMinute(DateTime.utc(2026, 6, 15, 14, 5, 9));
+      expect(result, (minutes: 845, seconds: 9));
+    });
+
+    test('elapsed seconds replace the wall-clock reading', () {
+      final result = TimeUtils.dayMinute(
+        DateTime.utc(2026, 10, 25, 23, 59, 59),
+        elapsedSeconds: 89999,
+      );
+      expect(result, (minutes: 1499, seconds: 59));
+    });
+  });
+
   group('TimeUtils.dayPercent', () {
     test('midnight = 0.0', () {
       final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);

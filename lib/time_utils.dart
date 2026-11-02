@@ -223,6 +223,20 @@ class TimeUtils {
   static int daySecond(DateTime dt) =>
       dt.hour * 3600 + dt.minute * 60 + dt.second;
 
+  /// Day minute: whole minutes since the start of the day, plus the remaining
+  /// seconds. [elapsedSeconds] replaces the wall-clock reading of [dt] on
+  /// days with a clock change.
+  static ({int minutes, int seconds}) dayMinute(
+      DateTime dt, {
+        int? elapsedSeconds,
+      }) {
+    final secondsSinceStartOfDay = elapsedSeconds ?? daySecond(dt);
+    return (
+      minutes: secondsSinceStartOfDay ~/ 60,
+      seconds: secondsSinceStartOfDay % 60,
+    );
+  }
+
   /// Percentage of the day elapsed.
   static double dayPercent(DateTime dt) {
     int currentDaySecond = daySecond(dt);

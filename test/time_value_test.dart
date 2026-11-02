@@ -4,6 +4,7 @@ import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:timezone/data/latest_all.dart' as tzl;
 
 void main() {
   group('TimeValue.key', () {
@@ -218,6 +219,10 @@ void main() {
   });
 
   group('day minute', () {
+    setUpAll(() {
+      tzl.initializeTimeZones();
+    });
+
     String line1(TimeValue timeValue, DateTime utc,
         {bool thousandsSep = false, String locale = 'en'}) =>
         TimeStringRow.splitZoneOffset(TimeValueFormatter.format(
@@ -246,6 +251,7 @@ void main() {
     test('clock change days use the real day length', () {
       expect(line1(berlin, DateTime.utc(2026, 10, 25, 22, 59, 59)), '1499:59');  // 25-hour day
       expect(line1(berlin, DateTime.utc(2027, 3, 28, 21, 59, 59)), '1379:59');   // 23-hour day
-    }, skip: true);
+      expect(line1(berlin, DateTime.utc(2026, 6, 15, 21, 59, 59)), '1439:59');   // normal day
+    });
   });
 }
