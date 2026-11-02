@@ -6,7 +6,6 @@ import 'effective_clock.dart';
 import 'layout_constants.dart';
 import 'models/time_value.dart';
 import 'models/zone_rules.dart';
-import 'time_value_formatter.dart';
 
 class TimeUtils {
   static const int secondsPerDay = 24 * 60 * 60;  // 86400
@@ -488,14 +487,8 @@ class TimeUtils {
     return _doomsdaySecondsToMidnightByYear[settingYear]!;
   }
 
-  /// The Doomsday Clock as a time of day (23:5x:xx) for the given moment.
-  static String doomsDayClockString(bool hourFormat24, DateTime utc) {
-    final secondOfDay = 24 * 60 * 60 - doomsdaySecondsToMidnight(utc);
-    return TimeValueFormatter.formatTime(
-        hourFormat24,
-        secondOfDay ~/ 3600,
-        (secondOfDay % 3600) ~/ 60,
-        secondOfDay % 60,
-        tzSuffix: null);
+  /// The Doomsday Clock as seconds since midnight (23:5x:xx) at the given moment.
+  static int doomsdayClockSecondOfDay(DateTime utc) {
+    return secondsPerDay - doomsdaySecondsToMidnight(utc);
   }
 }

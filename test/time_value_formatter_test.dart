@@ -391,4 +391,31 @@ void main() {
       expect(TimeValueFormatter.validatePattern('DD-MM-YYYY', true), isNull);
     });
   });
+
+  group('Doomsday Clock display', () {
+    String doomsdayClock(DateTime utcMoment, {bool hourFormat24 = true}) {
+      const timeValue = TimeValue(
+        valueType: ValueType.doomsdayClock,
+        zone: ZoneUtc(),
+      );
+      return TimeValueFormatter.format(
+        timeValue,
+        utcMoment,
+        'en',
+        hourFormat24: hourFormat24,
+      );
+    }
+
+    test('shows the setting as a time of day', () {
+      expect(doomsdayClock(DateTime.utc(2026, 10, 24)), '23:58:35');
+      expect(doomsdayClock(DateTime.utc(1991, 6, 1)), '23:43:00');
+    });
+
+    test('12-hour format', () {
+      expect(
+        doomsdayClock(DateTime.utc(1991, 6, 1), hourFormat24: false),
+        '11:43:00 PM',
+      );
+    });
+  });
 }

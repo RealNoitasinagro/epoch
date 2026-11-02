@@ -419,10 +419,9 @@ void main() {
     test('the latest setting applies to all later dates', () {
       expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2037, 6, 1)), 85);
     });
-    test('clock string for today and for the 1991 maximum', () {
-      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(2026, 10, 24)), '23:58:35');
-      expect(TimeUtils.doomsDayClockString(true, DateTime.utc(1991, 6, 1)), '23:43:00');
-      expect(TimeUtils.doomsDayClockString(false, DateTime.utc(1991, 6, 1)), '11:43:00 PM');
+    test('second of day for today and for the 1991 maximum', () {
+      expect(TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(2026, 10, 24)), 86315);  // 23:58:35
+      expect(TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(1991, 6, 1)), 85380);    // 23:43:00
     });
   });
 
