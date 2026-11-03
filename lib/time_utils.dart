@@ -189,9 +189,9 @@ class TimeUtils {
     }
     final moment = tz.TZDateTime.from(utc, location);
     final dayStart =
-    tz.TZDateTime(location, moment.year, moment.month, moment.day);
+        tz.TZDateTime(location, moment.year, moment.month, moment.day);
     final nextDayStart =
-    tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
+        tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
     return (
       elapsedSeconds: moment.difference(dayStart).inSeconds,
       lengthSeconds: nextDayStart.difference(dayStart).inSeconds,
@@ -226,6 +226,20 @@ class TimeUtils {
   /// Day second (seconds since midnight) for a DateTime.
   static int daySecond(DateTime dt) =>
       dt.hour * 3600 + dt.minute * 60 + dt.second;
+
+  /// Day minute: whole minutes since the start of the day, plus the remaining
+  /// seconds. [elapsedSeconds] replaces the wall-clock reading of [dt] on
+  /// days with a clock change.
+  static ({int minutes, int seconds}) dayMinute(
+      DateTime dt, {
+        int? elapsedSeconds,
+      }) {
+    final secondsSinceStartOfDay = elapsedSeconds ?? daySecond(dt);
+    return (
+      minutes: secondsSinceStartOfDay ~/ 60,
+      seconds: secondsSinceStartOfDay % 60,
+    );
+  }
 
   /// Percentage of the day elapsed.
   static double dayPercent(DateTime dt) {

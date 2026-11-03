@@ -13,6 +13,7 @@ enum ValueType {
   time,
   dateTime,
   daySecond,
+  dayMinute,
   dayPercent,
   sevenSegmentClock,
   // Technical
@@ -254,6 +255,7 @@ class TimeValue implements TabEntry {
         ValueType.time => l10n.valueTypeTime,
         ValueType.dateTime => l10n.valueTypeDateTime,
         ValueType.daySecond => l10n.valueTypeDaySecond,
+        ValueType.dayMinute => l10n.valueTypeDayMinute,
         ValueType.dayPercent => l10n.valueTypeDayPercent,
         ValueType.sevenSegmentClock => l10n.valueTypeSevenSegmentTime,
         ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
@@ -286,6 +288,7 @@ class TimeValue implements TabEntry {
     ValueType.time => l10n.infoTextTime,
     ValueType.dateTime => l10n.infoTextDateTime,
     ValueType.daySecond => l10n.infoTextDaySecond,
+    ValueType.dayMinute => l10n.infoTextDayMinute,
     ValueType.dayPercent => l10n.infoTextDayPercent,
     ValueType.sevenSegmentClock => l10n.infoTextSevenSegmentTime,
     ValueType.unixSeconds => l10n.infoTextUnixSeconds,
@@ -344,6 +347,7 @@ extension ValueTypeProps on ValueType {
     ValueType.time => false,
     ValueType.dateTime => false,
     ValueType.daySecond => false,
+    ValueType.dayMinute => false,
     ValueType.dayPercent => false,
     ValueType.sevenSegmentClock => false,
     ValueType.unixSeconds => true,
@@ -377,6 +381,7 @@ extension ValueTypeProps on ValueType {
 
   OptionalPart get optionalPart => switch (this) {
     ValueType.swatchBeats || ValueType.newEarthTime => OptionalPart.decimals,
+    ValueType.dayMinute ||
     ValueType.sevenSegmentClock || ValueType.binaryClockBcd ||
     ValueType.binaryClockColumns || ValueType.binaryClockString ||
     ValueType.romanNumeralsTime => OptionalPart.seconds,

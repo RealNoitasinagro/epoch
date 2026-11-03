@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- new value type: day minute
 - errors during app start are shown on screen, with copyable details, instead of a black screen
 
 ### Changed

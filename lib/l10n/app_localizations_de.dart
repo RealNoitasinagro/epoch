@@ -301,6 +301,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
 
   @override
+  String get infoTextDayMinute =>
+      'Minuten seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+
+  @override
   String get infoTextDayPercent =>
       'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
 
@@ -820,6 +824,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeDateTime => 'Datum & Uhrzeit';
+
+  @override
+  String get valueTypeDayMinute => 'Tagesminute';
 
   @override
   String get valueTypeDayPercent => 'Tagesprozent';

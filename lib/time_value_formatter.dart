@@ -161,6 +161,19 @@ class TimeValueFormatter {
             : value.toString();
         formattedValue += ' $tzSuffix';
         return formattedValue;
+      case ValueType.dayMinute:
+        final dayMinute = TimeUtils.dayMinute(
+          dt,
+          elapsedSeconds: dayProgress.elapsedSeconds,
+        );
+        String formattedValue = thousandsSep
+            ? NumberFormat.decimalPattern(locale).format(dayMinute.minutes)
+            : dayMinute.minutes.toString();
+        if (timeValue.showOptionalPart) {
+          formattedValue += ':${dayMinute.seconds.toString().padLeft(2, '0')}';
+        }
+        formattedValue += ' $tzSuffix';
+        return formattedValue;
       case ValueType.dayPercent:
         String formattedValue = formatDecimal(
             dayProgress.elapsedSeconds / dayProgress.lengthSeconds * 100,

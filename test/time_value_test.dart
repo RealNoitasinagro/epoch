@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_value_formatter.dart';
+import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:timezone/data/latest_all.dart' as tzl;
 
 void main() {
   group('TimeValue.key', () {
@@ -199,6 +201,7 @@ void main() {
     });
     test('all other types have none', () {
       final withPart = {
+        ValueType.dayMinute,
         ValueType.swatchBeats, ValueType.newEarthTime, ValueType.sevenSegmentClock,
         ValueType.binaryClockBcd, ValueType.binaryClockColumns,
         ValueType.binaryClockString, ValueType.romanNumeralsTime,
@@ -212,6 +215,43 @@ void main() {
           valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
       expect(value.toPrefsString(), endsWith('|nosec'));
       expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
+    });
+  });
+
+  group('day minute', () {
+    setUpAll(() {
+      tzl.initializeTimeZones();
+    });
+
+    String line1(TimeValue timeValue, DateTime utc,
+        {bool thousandsSep = false, String locale = 'en'}) =>
+        TimeStringRow.splitZoneOffset(TimeValueFormatter.format(
+            timeValue, utc, locale, thousandsSep: thousandsSep)).line1;
+    const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
+    const utcNoSeconds = TimeValue(
+        valueType: ValueType.dayMinute, zone: ZoneUtc(), showOptionalPart: false);
+    const berlin = TimeValue(
+        valueType: ValueType.dayMinute, zone: ZoneNamed('Europe/Berlin'));
+
+    test('counts minutes since midnight, seconds follow the colon', () {
+      expect(line1(utc, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845:09');
+      expect(line1(utcNoSeconds, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845');
+    });
+    test('midnight and last minute of the day', () {
+      expect(line1(utc, DateTime.utc(2026, 6, 15)), '0:00');
+      expect(line1(utc, DateTime.utc(2026, 6, 15, 23, 59, 59)), '1439:59');
+    });
+    test('thousands separator follows the setting', () {
+      final lastMinute = DateTime.utc(2026, 6, 15, 23, 59, 59);
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true), '1,439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true, locale: 'de'), '1.439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'en'), '1439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'de'), '1439');
+    });
+    test('clock change days use the real day length', () {
+      expect(line1(berlin, DateTime.utc(2026, 10, 25, 22, 59, 59)), '1499:59');  // 25-hour day
+      expect(line1(berlin, DateTime.utc(2027, 3, 28, 21, 59, 59)), '1379:59');   // 23-hour day
+      expect(line1(berlin, DateTime.utc(2026, 6, 15, 21, 59, 59)), '1439:59');   // normal day
     });
   });
 }

@@ -295,6 +295,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
+  String get infoTextDayMinute =>
+      'Minutes elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
+
+  @override
   String get infoTextDayPercent =>
       'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
 
@@ -812,6 +816,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeDateTime => 'Date & Time';
+
+  @override
+  String get valueTypeDayMinute => 'Day minute';
 
   @override
   String get valueTypeDayPercent => 'Day percent';
