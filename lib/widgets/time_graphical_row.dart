@@ -24,7 +24,6 @@ class TimeGraphicalRow extends TimeValueRow {
     final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);
-    String? ianaZone = moment.ianaZone;
 
     final Widget clock = buildGraphicalClock(
       valueType: timeValue.valueType,
@@ -37,7 +36,7 @@ class TimeGraphicalRow extends TimeValueRow {
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return ValueTile(

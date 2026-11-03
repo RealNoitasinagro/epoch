@@ -631,14 +631,14 @@ class _FocusScreenState extends State<FocusScreen> {
 
     if (widget.timeValue.valueType.isGraphical) {
       final localIanaZone = EpochApp.of(context).localIanaZone;
-      final moment = ZonedMoment.of(
+      final wallClock = ZonedMoment.of(
           widget.timeValue, _now.toUtc(), localIanaZone
       ).wallClock;
       final l10n = AppLocalizations.of(context)!;
 
       final Widget clock = buildGraphicalClock(
         valueType: widget.timeValue.valueType,
-        now: moment,
+        now: wallClock,
         l10n: l10n,
         showSeconds: _showOptionalPart,
         hourFormat24: app.hourFormat24,

@@ -601,7 +601,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     // Edit mode: build ValueTile directly with edit action slots
     final moment = ZonedMoment.of(timeValue, widget.now.toUtc(), localIanaZone);
-    String? ianaZone = moment.ianaZone;
 
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
@@ -630,7 +629,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(widget.now.toUtc(), ianaZone)
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return Dismissible(

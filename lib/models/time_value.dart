@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
-import '../zoned_moment.dart';
 import 'generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
 import 'zone_rules.dart';
@@ -111,6 +110,15 @@ class TimeValue implements TabEntry {
 
   bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
 
+  /// The IANA zone whose rules apply to this value; null for UTC.
+  String? ianaZoneFor(String localIanaZone) {
+    return switch (zone) {
+      ZoneLocal() => localIanaZone,
+      ZoneNamed(ianaZone: final zoneName) => zoneName,
+      ZoneUtc() => null,
+    };
+  }
+
   // Serialisation
   @override
   String toPrefsString() {
@@ -187,8 +195,10 @@ class TimeValue implements TabEntry {
 
   TimeValue withCustomLabel(String? label) =>
       copyWith(customLabel: label, clearCustomLabel: label == null);
+
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
       copyWith(timezoneClockChangeMode: mode);
+
   TimeValue withShowOptionalPart(bool value) => copyWith(showOptionalPart: value);
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
@@ -199,8 +209,7 @@ class TimeValue implements TabEntry {
     if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
       return TimezoneClockChangeMode.auto;
     }
-    final moment = ZonedMoment.of(this, nowUtc, localIanaZone);
-    String? ianaZone = moment.ianaZone;
+    final ianaZone = ianaZoneFor(localIanaZone);
     final hasDst = ianaZone != null &&
         TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
     return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;
@@ -214,11 +223,8 @@ class TimeValue implements TabEntry {
   // Used to show a summer/winter time indicator icon.
   bool? isDstCurrentlyActive(DateTime nowUtc, String localIanaZone) {
     if (isZoneIndependent) return null;
-    final ianaZone = switch (zone) {
-      ZoneLocal() => localIanaZone,
-      ZoneUtc() => '',
-      ZoneNamed(ianaZone: final z) => z,
-    };
+    final ianaZone = ianaZoneFor(localIanaZone);
+    if (ianaZone == null) return null;
     final rules = zoneRulesAt(ianaZone, nowUtc);
     if (rules == null || !rules.hasDst) return null;
     return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;

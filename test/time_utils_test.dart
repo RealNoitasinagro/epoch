@@ -1,3 +1,4 @@
+import 'package:epoch/layout_constants.dart';
 import 'package:epoch/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
@@ -7,34 +8,46 @@ void main() {
 
   // Civil
 
-  // group('TimeUtils.daySecond', () {
-  //   test('midnight = 0', () {
-  //     final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-  //     expect(TimeUtils.daySecond(dt), equals(0));
-  //   });
-  //
-  //   test('noon = 43200', () {
-  //     final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
-  //     expect(TimeUtils.daySecond(dt), equals(43200));
-  //   });
-  //
-  //   test('23:59:59 = 86399', () {
-  //     final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
-  //     expect(TimeUtils.daySecond(dt), equals(86399));
-  //   });
-  // });
+  group('TimeUtils.dayProgressFixedOffset', () {
+    test('midnight, noon and the last second of a normal day', () {
+      expect(
+        TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1)),
+        (elapsedSeconds: 0, dayLengthSeconds: 86400),
+      );
+      expect(
+        TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1, 12)),
+        (elapsedSeconds: 43200, dayLengthSeconds: 86400),
+      );
+      expect(
+        TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1, 23, 59, 59)),
+        (elapsedSeconds: 86399, dayLengthSeconds: 86400),
+      );
+    });
+  });
 
-  // group('TimeUtils.dayPercent', () {
-  //   test('midnight = 0.0', () {
-  //     final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-  //     expect(TimeUtils.dayPercent(dt), equals(0.0));
-  //   });
-  //
-  //   test('noon = 50.0', () {
-  //     final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
-  //     expect(TimeUtils.dayPercent(dt), equals(50.0));
-  //   });
-  // });
+  group('values derived from the day progress', () {
+    const noonOfNormalDay = (elapsedSeconds: 43200, dayLengthSeconds: 86400);
+    const lastSecondOf25HourDay = (elapsedSeconds: 89999, dayLengthSeconds: 90000);
+    const after24HoursOf25HourDay = (elapsedSeconds: 86400, dayLengthSeconds: 90000);
+
+    test('day percent relates to the real day length', () {
+      expect(TimeUtils.dayPercent(noonOfNormalDay), 50.0);
+      expect(TimeUtils.dayPercent(after24HoursOf25HourDay), closeTo(96.0, 0.0001));
+    });
+
+    test('day minute', () {
+      expect(TimeUtils.dayMinute(noonOfNormalDay), (minutes: 720, seconds: 0));
+      expect(TimeUtils.dayMinute(lastSecondOf25HourDay), (minutes: 1499, seconds: 59));
+    });
+
+    test('decimal time is a share of the real day length', () {
+      expect(TimeUtils.decimalTime(noonOfNormalDay), (hours: 5, minutes: 0, seconds: 0));
+      expect(
+        TimeUtils.decimalTime(lastSecondOf25HourDay),
+        (hours: 9, minutes: 99, seconds: 99),
+      );
+    });
+  });
 
   group('TimeUtils.dayOfYear', () {
     test('January 1 = day 1', () {
@@ -537,16 +550,16 @@ void main() {
     test('a normal day has 86,400 seconds', () {
       final progress = TimeUtils.dayProgressInZone(
           DateTime.utc(2026, 6, 15, 12), 'Europe/Berlin');  // 14:00 CEST
-      expect(progress, (elapsedSeconds: 50400, lengthSeconds: 86400));
+      expect(progress, (elapsedSeconds: 50400, dayLengthSeconds: 86400));
     });
 
     test('autumn: 25-hour day, the count continues through the repeated hour', () {
       expect(
           TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 0, 59, 59), 'Europe/Berlin'),
-          (elapsedSeconds: 10799, lengthSeconds: 90000));  // 02:59:59 CEST
+          (elapsedSeconds: 10799, dayLengthSeconds: 90000));  // 02:59:59 CEST
       expect(
           TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 1), 'Europe/Berlin'),
-          (elapsedSeconds: 10800, lengthSeconds: 90000));  // 02:00:00 CET
+          (elapsedSeconds: 10800, dayLengthSeconds: 90000));  // 02:00:00 CET
       expect(
           TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 22, 59, 59), 'Europe/Berlin')
               .elapsedSeconds, 89999);                       // 23:59:59 CET
@@ -555,19 +568,29 @@ void main() {
     test('spring: 23-hour day', () {
       expect(
           TimeUtils.dayProgressInZone(DateTime.utc(2027, 3, 28, 1), 'Europe/Berlin'),
-          (elapsedSeconds: 7200, lengthSeconds: 82800));   // 03:00:00 CEST
+          (elapsedSeconds: 7200, dayLengthSeconds: 82800));   // 03:00:00 CEST
     });
 
     test('skipped midnight: the day starts at the transition', () {
       // São Paulo, 2018-11-04: 00:00 BRT became 01:00 BRST.
       expect(
           TimeUtils.dayProgressInZone(DateTime.utc(2018, 11, 4, 3), 'America/Sao_Paulo'),
-          (elapsedSeconds: 0, lengthSeconds: 82800));
+          (elapsedSeconds: 0, dayLengthSeconds: 82800));
     });
 
     test('unknown zone falls back to UTC', () {
-      expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').lengthSeconds,
-          86400);
+      expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').dayLengthSeconds, 86400);
     });
+  });
+
+  test('day quarter colors', () {
+    expect(TimeUtils.dayQuarterColor(0), kColorNightRed);
+    expect(TimeUtils.dayQuarterColor(5), kColorNightRed);
+    expect(TimeUtils.dayQuarterColor(6), kColorCyan);
+    expect(TimeUtils.dayQuarterColor(11), kColorCyan);
+    expect(TimeUtils.dayQuarterColor(12), kColorAmber);
+    expect(TimeUtils.dayQuarterColor(17), kColorAmber);
+    expect(TimeUtils.dayQuarterColor(18), kColorMatrixGreen);
+    expect(TimeUtils.dayQuarterColor(23), kColorMatrixGreen);
   });
 }

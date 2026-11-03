@@ -237,12 +237,10 @@ class TimeStringRow extends TimeValueRow {
     String clipboardValue = computeClipboardDisplay(timeValue, display);
 
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);
-    String? ianaZone = moment.ianaZone;
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return ValueTile(

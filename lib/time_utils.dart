@@ -5,6 +5,11 @@ import 'effective_clock.dart';
 import 'layout_constants.dart';
 import 'models/zone_rules.dart';
 
+/// Progress of a local day: seconds since its start, and its real length
+/// (82,800 or 90,000 seconds on days with a clock change;
+/// Lord Howe: 84,600 or 88,200).
+typedef DayProgress = ({int elapsedSeconds, int dayLengthSeconds});
+
 class TimeUtils {
   static const int secondsPerNormalDay = 24 * 60 * 60;  // 86400
 
@@ -27,9 +32,9 @@ class TimeUtils {
       DateTime.utc(year, month),
   ];
 
-  static int dayOfYear(DateTime dt) => dt.ordinalDate;
+  static int dayOfYear(DateTime wallClock) => wallClock.ordinalDate;
 
-  static int isoWeekNumber(DateTime dt) => dt.weekNumber;
+  static int isoWeekNumber(DateTime wallClock) => wallClock.weekNumber;
 
   /// Returns TZDateTime for a given IANA time zone.
   static tz.TZDateTime inZone(DateTime utc, String ianaZone) {
@@ -137,7 +142,7 @@ class TimeUtils {
   /// that day in [ianaZone]: 82,800 or 90,000 on days with a clock change.
   /// A midnight skipped by a clock change resolves to the transition instant,
   /// so that day simply starts later.
-  static ({int elapsedSeconds, int lengthSeconds}) dayProgressInZone(
+  static DayProgress dayProgressInZone(
       DateTime utc, String ianaZone) {
     tz.Location location;
     try {
@@ -152,58 +157,48 @@ class TimeUtils {
         tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
     return (
       elapsedSeconds: moment.difference(dayStart).inSeconds,
-      lengthSeconds: nextDayStart.difference(dayStart).inSeconds,
+      dayLengthSeconds: nextDayStart.difference(dayStart).inSeconds,
     );
   }
 
   /// For fixed offsets (UTC, pinned standard or summer time) every day has
   /// exactly 86,400 seconds.
-  static ({int elapsedSeconds, int lengthSeconds}) dayProgressFixedOffset(
+  static DayProgress dayProgressFixedOffset(
       DateTime wallClock) {
-    return (elapsedSeconds: _daySecond(wallClock), lengthSeconds: secondsPerNormalDay);
+    return (
+      elapsedSeconds: _secondsSinceMidnight(wallClock),
+      dayLengthSeconds: secondsPerNormalDay
+    );
   }
 
-  /// Return a color depending on what quarter of the day it is.
-  static Color dayQuarterColor(DateTime utc, String? ianaZone) {
-    int hour;
-    if (ianaZone == null) {
-      hour = utc.hour;
-    } else {
-      tz.TZDateTime tzDt = inZone(utc, ianaZone);
-      hour = tzDt.hour;
-    }
-    if (hour < 6)  return kColorNightRed;
-    if (hour < 12) return kColorCyan;
-    if (hour < 18) return kColorAmber;
+  /// Color of the quarter of the day an hour of the wall clock belongs to.
+  static Color dayQuarterColor(int wallClockHour) {
+    if (wallClockHour < 6) return kColorNightRed;
+    if (wallClockHour < 12) return kColorCyan;
+    if (wallClockHour < 18) return kColorAmber;
     return kColorMatrixGreen;
   }
 
 
   // ── Value Type functions ───────────────────────────────────────────────────
 
-  /// Day second (seconds since midnight) for a DateTime.
-  static int _daySecond(DateTime dt) =>
-      dt.hour * 3600 + dt.minute * 60 + dt.second;
-
-  /// Percentage of the day elapsed.
-  static double _dayPercent(DateTime dt) {
-    int currentDaySecond = _daySecond(dt);
-    var percent = currentDaySecond / secondsPerNormalDay * 100;
-    return percent;
+  static int _secondsSinceMidnight(DateTime wallClock) {
+    return wallClock.hour * 3600 + wallClock.minute * 60 + wallClock.second;
   }
 
-  // /// Percentage of the hour elapsed. Currently unused.
-  // static double hourPercent(DateTime dt) {
-  //   int secondsPerHour = 60 * 60;  // 3600
-  //   int currentHourSecond = dt.minute * 60 + dt.second;
-  //   var percent = currentHourSecond / secondsPerHour * 100;
-  //   return percent;
-  // }
-  //
-  // /// Percentage of the minute elapsed. Currently unused.
-  // static double minutePercent (DateTime dt) {
-  //   return dt.second / 60 * 100;
-  // }
+  /// Day minute: whole minutes since the start of the day, plus the
+  /// remaining seconds.
+  static ({int minutes, int seconds}) dayMinute(DayProgress dayProgress) {
+    return (
+      minutes: dayProgress.elapsedSeconds ~/ 60,
+      seconds: dayProgress.elapsedSeconds % 60,
+    );
+  }
+
+  /// Percentage of the day that has elapsed.
+  static double dayPercent(DayProgress dayProgress) {
+    return dayProgress.elapsedSeconds / dayProgress.dayLengthSeconds * 100;
+  }
 
   /// Unix timestamp in seconds.
   static int unixTimestamp(DateTime utc) =>
@@ -303,6 +298,21 @@ class TimeUtils {
   static double modifiedJulianDate2000(DateTime utc) =>
       julianDate(utc.toUtc()) - 2451544.5;
 
+  /// Decimal time (French Revolutionary time): the day has 10 decimal hours
+  /// of 100 decimal minutes of 100 decimal seconds, whatever its real length.
+  static ({int hours, int minutes, int seconds}) decimalTime(
+      DayProgress dayProgress,
+      ) {
+    final fractionOfDay =
+        dayProgress.elapsedSeconds / dayProgress.dayLengthSeconds;
+    final decimalSeconds = (fractionOfDay * 100000).round() % 100000;
+    return (
+      hours: decimalSeconds ~/ 10000,
+      minutes: (decimalSeconds % 10000) ~/ 100,
+      seconds: decimalSeconds % 100,
+    );
+  }
+
   /// Swatch Internet Time (.beat): 1 day = 1000 beats, based on UTC+1.
   static double swatchBeats(DateTime utc) {
     final bmt = utc.toUtc().add(const Duration(hours: 1));
@@ -310,20 +320,22 @@ class TimeUtils {
     return seconds / 86.4; // 86400s / 1000 beats
   }
 
-  /// New Earth Time (NET) / degree time: day expressed as 0–360°,
-  /// analogous to a compass. 1° = 240 seconds (86400s / 360).
-  /// The UTC wall clock is the UTC reading.
-  static double newEarthTimeDegrees(DateTime utc) => _dayPercent(utc) / 100 * 360;
+  /// New Earth Time / degree time: the UTC day as 0-360 degrees,
+  /// 1 degree = 240 seconds (86400s / 360).
+  static double newEarthTimeDegrees(DateTime utc) {
+    final secondsSinceMidnight = _secondsSinceMidnight(utc.toUtc());
+    return secondsSinceMidnight / secondsPerNormalDay * 360;
+  }
 
   static String _toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
 
   /// Binary clock representation: hours, minutes, seconds as binary strings.
   static ({String hours, String minutes, String seconds}) binaryTime(
-      DateTime dt) {
+      DateTime wallClock) {
     return (
-      hours:   _toBin(dt.hour,   5),
-      minutes: _toBin(dt.minute, 6),
-      seconds: _toBin(dt.second, 6),
+      hours:   _toBin(wallClock.hour,   5),
+      minutes: _toBin(wallClock.minute, 6),
+      seconds: _toBin(wallClock.second, 6),
     );
   }
 
@@ -333,14 +345,14 @@ class TimeUtils {
     String hourTens,   String hourUnits,
     String minTens,    String minUnits,
     String secTens,    String secUnits,
-  }) bcdTime(DateTime dt) {
+  }) bcdTime(DateTime wallClock) {
     return (
-      hourTens:  _toBin(dt.hour   ~/ 10, 2),
-      hourUnits: _toBin(dt.hour    % 10, 4),
-      minTens:   _toBin(dt.minute ~/ 10, 3),
-      minUnits:  _toBin(dt.minute  % 10, 4),
-      secTens:   _toBin(dt.second ~/ 10, 3),
-      secUnits:  _toBin(dt.second  % 10, 4),
+      hourTens:  _toBin(wallClock.hour   ~/ 10, 2),
+      hourUnits: _toBin(wallClock.hour    % 10, 4),
+      minTens:   _toBin(wallClock.minute ~/ 10, 3),
+      minUnits:  _toBin(wallClock.minute  % 10, 4),
+      secTens:   _toBin(wallClock.second ~/ 10, 3),
+      secUnits:  _toBin(wallClock.second  % 10, 4),
     );
   }
 

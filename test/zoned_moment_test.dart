@@ -55,30 +55,26 @@ void main() {
       expect(moment.wallClock.hour, 13);
       expect(moment.offset, const Duration(hours: 1));
       expect(moment.abbreviation, 'CET');
-      expect(moment.elapsedSeconds, 13 * 3600);
-      expect(moment.daySeconds, 86400);
+      expect(moment.dayProgress, (elapsedSeconds: 13 * 3600, dayLengthSeconds: 86400));
     });
   });
 
   group('progress of the local day', () {
     test('a normal day', () {
       final moment = berlinAt(DateTime.utc(2026, 6, 15, 21, 59, 59));
-      expect(moment.elapsedSeconds, 86399);
-      expect(moment.daySeconds, 86400);
+      expect(moment.dayProgress, (elapsedSeconds: 86399, dayLengthSeconds: 86400));
     });
 
     test('a 25-hour day continues through the repeated hour', () {
-      expect(berlinAt(DateTime.utc(2026, 10, 25, 0, 59, 59)).elapsedSeconds, 10799);
-      expect(berlinAt(DateTime.utc(2026, 10, 25, 1)).elapsedSeconds, 10800);
+      expect(berlinAt(DateTime.utc(2026, 10, 25, 0, 59, 59)).dayProgress.elapsedSeconds, 10799);
+      expect(berlinAt(DateTime.utc(2026, 10, 25, 1)).dayProgress.elapsedSeconds, 10800);
       final lastSecond = berlinAt(DateTime.utc(2026, 10, 25, 22, 59, 59));
-      expect(lastSecond.elapsedSeconds, 89999);
-      expect(lastSecond.daySeconds, 90000);
+      expect(lastSecond.dayProgress, (elapsedSeconds: 89999, dayLengthSeconds: 90000));
     });
 
     test('a 23-hour day', () {
       final moment = berlinAt(DateTime.utc(2027, 3, 28, 1));
-      expect(moment.elapsedSeconds, 7200);
-      expect(moment.daySeconds, 82800);
+      expect(moment.dayProgress, (elapsedSeconds: 7200, dayLengthSeconds: 82800));
     });
 
     test('the local zone uses the given zone name, not the device', () {
@@ -88,25 +84,7 @@ void main() {
         'Europe/Berlin',
       );
       expect(moment.ianaZone, 'Europe/Berlin');
-      expect(moment.daySeconds, 90000);
-    });
-  });
-
-  group('values derived from the day progress', () {
-    test('day minute', () {
-      final moment = berlinAt(DateTime.utc(2026, 10, 25, 22, 59, 59));
-      expect(moment.dayMinute, (minutes: 1499, seconds: 59));
-    });
-
-    test('decimal time is a share of the real day length', () {
-      expect(
-        ZonedMoment.of(utcValue, DateTime.utc(2026, 1, 1, 12), 'UTC').decimalTime,
-        (hours: 5, minutes: 0, seconds: 0),
-      );
-      expect(
-        berlinAt(DateTime.utc(2026, 10, 25, 22, 59, 59)).decimalTime,
-        (hours: 9, minutes: 99, seconds: 99),
-      );
+      expect(moment.dayProgress.dayLengthSeconds, 90000);
     });
   });
 }

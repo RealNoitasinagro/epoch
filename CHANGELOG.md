@@ -15,6 +15,9 @@ onLongPress only toggles the value itself (seconds/decimals on/off)
 - time zone search finds old and alternative IANA IDs such as Europe/Amsterdam or Asia/Calcutta,
 and IDs with hyphens such as Etc/GMT-5
 
+### Fixed
+- day quarter color of values pinned to standard or summer time followed the real local time instead of the displayed one
+
 ---
 
 ## [1.6.0] - 2026-10-28

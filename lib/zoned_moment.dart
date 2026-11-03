@@ -11,7 +11,7 @@ class ZonedMoment {
   final DateTime utc;
 
   /// The zone whose rules apply; null for UTC. For a value pinned to standard
-  /// or summer time it is still the named zone (see [elapsedSeconds]).
+  /// or summer time it is still the named zone.
   final String? ianaZone;
 
   /// Wall-clock reading in the zone. Only its fields (year ... second) are
@@ -23,10 +23,8 @@ class ZonedMoment {
   /// Abbreviation as in the time zone data (e.g. "CEST"), not localized.
   final String abbreviation;
 
-  /// Seconds since the start of the local day, and the real length of that
-  /// day: 82,800 or 90,000 on days with a clock change, 86,400 otherwise.
-  final int elapsedSeconds;
-  final int daySeconds;
+  /// Progress of the local day: seconds elapsed and the real length of the day.
+  final DayProgress dayProgress;
 
   const ZonedMoment._({
     required this.utc,
@@ -34,8 +32,7 @@ class ZonedMoment {
     required this.wallClock,
     required this.offset,
     required this.abbreviation,
-    required this.elapsedSeconds,
-    required this.daySeconds,
+    required this.dayProgress,
   });
 
   factory ZonedMoment.of(
@@ -98,8 +95,7 @@ class ZonedMoment {
       wallClock: wallClock,
       offset: offset,
       abbreviation: abbreviation,
-      elapsedSeconds: dayProgress.elapsedSeconds,
-      daySeconds: dayProgress.lengthSeconds,
+      dayProgress: dayProgress,
     );
   }
 
@@ -116,8 +112,7 @@ class ZonedMoment {
       wallClock: wallClock,
       offset: wallClock.timeZoneOffset,
       abbreviation: _abbreviationAt(utc, ianaZone, wallClock),
-      elapsedSeconds: dayProgress.elapsedSeconds,
-      daySeconds: dayProgress.lengthSeconds,
+      dayProgress: dayProgress,
     );
   }
 
@@ -132,26 +127,5 @@ class ZonedMoment {
     } catch (_) {
       return wallClock.timeZoneName;
     }
-  }
-
-  /// Share of the local day that has elapsed, 0 <= x < 1.
-  double get dayFraction => elapsedSeconds / daySeconds;
-
-  /// Whole minutes since the start of the local day, plus the remaining seconds.
-  ({int minutes, int seconds}) get dayMinute {
-    return (
-      minutes: elapsedSeconds ~/ 60,
-      seconds: elapsedSeconds % 60,
-    );
-  }
-
-  /// French decimal time: the day has 10 hours of 100 minutes of 100 seconds.
-  ({int hours, int minutes, int seconds}) get decimalTime {
-    final decimalSeconds = (dayFraction * 100000).round() % 100000;
-    return (
-      hours: decimalSeconds ~/ 10000,
-      minutes: (decimalSeconds % 10000) ~/ 100,
-      seconds: decimalSeconds % 100,
-    );
   }
 }

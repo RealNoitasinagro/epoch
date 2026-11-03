@@ -135,7 +135,7 @@ class TimeValueFormatter {
           timePattern: timeFormat,
         );
       case ValueType.daySecond:
-        final value = moment.elapsedSeconds;
+        final value = moment.dayProgress.elapsedSeconds;
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(value)
             : value.toString();
@@ -143,15 +143,15 @@ class TimeValueFormatter {
         return formattedValue;
       case ValueType.dayPercent:
         String formattedValue = formatDecimal(
-          moment.dayFraction * 100,
+          TimeUtils.dayPercent(moment.dayProgress),
           locale,
           3,
-          thousandsSep: false,  // percent never needs thousands sep
+          thousandsSep: false,
         );
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.dayMinute:
-        final dayMinute = moment.dayMinute;
+        final dayMinute = TimeUtils.dayMinute(moment.dayProgress);
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(dayMinute.minutes)
             : dayMinute.minutes.toString();
@@ -162,16 +162,17 @@ class TimeValueFormatter {
         return formattedValue;
     // Curiosities
       case ValueType.decimalTime:
-        return '${_decimalTimeText(moment.decimalTime)} $tzSuffix';
+        final decimalTime = TimeUtils.decimalTime(moment.dayProgress);
+        return '${_decimalTimeText(decimalTime)} $tzSuffix';
       case ValueType.binaryClockString:
         return binaryTimeString(
           wallClock,
           showSeconds: timeValue.showOptionalPart,
         );
       case ValueType.octalTime:
-        return _secondsInBase(moment.elapsedSeconds, 8, 6);
+        return _secondsInBase(moment.dayProgress.elapsedSeconds, 8, 6);
       case ValueType.hexadecimalTime:
-        return _hexadecimalText(moment.elapsedSeconds);
+        return _hexadecimalText(moment.dayProgress.elapsedSeconds);
       case ValueType.romanNumeralsTime:
         return romanNumeralsTime(
           hourFormat24,
@@ -378,20 +379,20 @@ class TimeValueFormatter {
   }
 
   /// Binary clock string representation, e.g. "10:110000:10111".
-  static String binaryTimeString(DateTime dt, {bool showSeconds = true}) {
-    final bin = TimeUtils.binaryTime(dt);
+  static String binaryTimeString(DateTime wallClock, {bool showSeconds = true}) {
+    final bin = TimeUtils.binaryTime(wallClock);
     if (!showSeconds) return [bin.hours, bin.minutes].join(':');
     return [bin.hours, bin.minutes, bin.seconds].join(':');
   }
 
   /// Roman numerals time: time shown in Roman numerals. N for zeros.
-  static String romanNumeralsTime(bool hourFormat24, DateTime dt,
+  static String romanNumeralsTime(bool hourFormat24, DateTime wallClock,
       {bool showSeconds = true}) {
     final displayHour = hourFormat24
-        ? dt.hour
-        : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
-    final period = hourFormat24 ? '' : (dt.hour < 12 ? ' AM' : ' PM');
-    final fields = [displayHour, dt.minute, if (showSeconds) dt.second]
+        ? wallClock.hour
+        : (wallClock.hour % 12 == 0 ? 12 : wallClock.hour % 12);
+    final period = hourFormat24 ? '' : (wallClock.hour < 12 ? ' AM' : ' PM');
+    final fields = [displayHour, wallClock.minute, if (showSeconds) wallClock.second]
         .map((value) => _centered(value.toRomanNumeralString(config: _romanNumeralsConfig) ?? '--'));
     return '${fields.join(':')}$period';
   }
