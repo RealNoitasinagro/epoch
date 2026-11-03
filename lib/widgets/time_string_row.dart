@@ -8,6 +8,7 @@ import '../models/time_value.dart';
 import '../models/timezone_abbreviation_localization.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
+import '../zoned_moment.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
 
@@ -81,7 +82,8 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+      final moment = ZonedMoment.of(timeValue, now, localIanaZone);
+      String? ianaZone = moment.ianaZone;
 
       if (ianaZone != null &&
           timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
@@ -234,7 +236,8 @@ class TimeStringRow extends TimeValueRow {
     String label = computeLabel(l10n, timeValue, longitude);
     String clipboardValue = computeClipboardDisplay(timeValue, display);
 
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+    final moment = ZonedMoment.of(timeValue, now, localIanaZone);
+    String? ianaZone = moment.ianaZone;
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night &&

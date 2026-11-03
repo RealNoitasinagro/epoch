@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../time_utils.dart';
+import '../zoned_moment.dart';
 import 'generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
 import 'zone_rules.dart';
@@ -198,7 +199,8 @@ class TimeValue implements TabEntry {
     if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
       return TimezoneClockChangeMode.auto;
     }
-    final ianaZone = TimeUtils.resolveIanaZone(this, localIanaZone);
+    final moment = ZonedMoment.of(this, nowUtc, localIanaZone);
+    String? ianaZone = moment.ianaZone;
     final hasDst = ianaZone != null &&
         TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
     return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;

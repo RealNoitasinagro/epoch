@@ -6,7 +6,7 @@ import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/generated/legacy_abbreviations.g.dart';
 import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
-import 'package:epoch/time_utils.dart';
+import 'package:epoch/models/zone_rules.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
@@ -100,7 +100,7 @@ void main() {
     };
     for (final offset in offsets) {
       for (final q in spellings(offset)) {
-        test('$q finds a zone with ${TimeUtils.utcOffsetString(offset)}', () {
+        test('$q finds a zone with ${formatUtcOffset(offset)}', () {
           final found = searchTimezones(q, tzDatabase);
           expect(found.any((e) =>
             e.rules.standardOffset == offset || e.rules.dstOffset == offset),

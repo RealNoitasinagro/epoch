@@ -11,6 +11,7 @@ import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
 import '../widgets/time_string_row.dart';
 import '../widgets/value_tile.dart';
+import '../zoned_moment.dart';
 import 'entry_picker.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
@@ -599,8 +600,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     }
 
     // Edit mode: build ValueTile directly with edit action slots
-    final zonedNow = TimeUtils.resolveLocalTime(
-        timeValue, widget.now.toUtc(), localIanaZone);
+    final moment = ZonedMoment.of(timeValue, widget.now.toUtc(), localIanaZone);
+    String? ianaZone = moment.ianaZone;
+
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
       localIanaZone: localIanaZone,
@@ -618,7 +620,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (isGraphical) {
       clock = buildGraphicalClock(
         valueType: timeValue.valueType,
-        now: zonedNow,
+        now: moment.wallClock,
         l10n: l10n,
         showSeconds: timeValue.showOptionalPart,
         hourFormat24: app.hourFormat24,
@@ -626,11 +628,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       );
     }
 
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
-
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
         ? TimeUtils.dayQuarterColor(widget.now.toUtc(), ianaZone)
         : null;
 

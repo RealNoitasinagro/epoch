@@ -392,6 +392,62 @@ void main() {
     });
   });
 
+  group('TimeValueFormatter.binaryTimeString', () {
+    test('midnight = 00000:000000:000000', () {
+      final dt = DateTime(2026, 1, 1, 0, 0, 0);
+      expect(TimeValueFormatter.binaryTimeString(dt), equals('00000:000000:000000'));
+    });
+
+    test('format is H:M:S with correct bit widths', () {
+      final dt = DateTime(2026, 1, 1, 2, 30, 9);
+      final result = TimeValueFormatter.binaryTimeString(dt);
+      final parts = result.split(':');
+      expect(parts.length, equals(3));
+      expect(parts[0].length, equals(5));  // hours: 5 bits
+      expect(parts[1].length, equals(6));  // minutes: 6 bits
+      expect(parts[2].length, equals(6));  // seconds: 6 bits
+    });
+  });
+
+  group('TimeValueFormatter.romanNumeralsTime', () {
+    test('midnight uses N for zero, all fields 7 wide', () {
+      expect(TimeValueFormatter.romanNumeralsTime(true, DateTime(2026, 1, 1, 0, 0, 0)),
+          equals('   N   :   N   :   N   '));
+    });
+
+    test('24h with the longest numeral', () {
+      expect(TimeValueFormatter.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58)),
+          equals(' XVIII :XXXVIII: LVIII '));
+    });
+
+    test('seconds off keeps the field width', () {
+      expect(TimeValueFormatter.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58),
+          showSeconds: false), equals(' XVIII :XXXVIII'));
+    });
+
+    test('12h appends the period after the padded field', () {
+      expect(TimeValueFormatter.romanNumeralsTime(false, DateTime(2026, 1, 1, 14, 5, 9)),
+          equals('   II  :   V   :   IX   PM'));
+    });
+
+    test('width is constant for every second of the day', () {
+      for (var s = 0; s < 86400; s += 7) {
+        final dt = DateTime(2026, 1, 1).add(Duration(seconds: s));
+        expect(TimeValueFormatter.romanNumeralsTime(true, dt).length, 23);
+      }
+    });
+
+    test('roman numerals clipboard value has no padding', () {
+      const timeValue = TimeValue(
+          valueType: ValueType.romanNumeralsTime, zone: ZoneLocal());
+      expect(
+        TimeStringRow.computeClipboardDisplay(
+            timeValue, (line1: '  XIV  :XXXVIII:   V    PM', line2: '')),
+        equals('XIV:XXXVIII:V PM'),
+      );
+    });
+  });
+
   group('Doomsday Clock display', () {
     String doomsdayClock(DateTime utcMoment, {bool hourFormat24 = true}) {
       const timeValue = TimeValue(
@@ -416,6 +472,28 @@ void main() {
         doomsdayClock(DateTime.utc(1991, 6, 1), hourFormat24: false),
         '11:43:00 PM',
       );
+    });
+  });
+
+  group('octal and hexadecimal time', () {
+    String format(ValueType type, DateTime utc) {
+      return TimeValueFormatter.format(
+        TimeValue(valueType: type, zone: const ZoneUtc()),
+        utc,
+        'en',
+      );
+    }
+
+    test('midnight is all zeros', () {
+      final midnight = DateTime.utc(2026, 1, 1);
+      expect(format(ValueType.octalTime, midnight), '000000');
+      expect(format(ValueType.hexadecimalTime, midnight), '0_00_00');
+    });
+
+    test('one second before midnight (day second 86399)', () {
+      final lastSecond = DateTime.utc(2026, 1, 1, 23, 59, 59);
+      expect(format(ValueType.octalTime, lastSecond), '250577');
+      expect(format(ValueType.hexadecimalTime, lastSecond), '1_51_7F');
     });
   });
 }

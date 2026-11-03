@@ -6,6 +6,7 @@ import '../models/app_settings.dart';
 import '../time_utils.dart';
 import '../widgets/time_value_row.dart';
 import '../widgets/value_tile.dart';
+import '../zoned_moment.dart';
 import 'clocks/graphical_clock.dart';
 
 class TimeGraphicalRow extends TimeValueRow {
@@ -22,19 +23,17 @@ class TimeGraphicalRow extends TimeValueRow {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final zonedNow = TimeUtils.resolveLocalTime(
-        timeValue, now.toUtc(), localIanaZone);
+    final moment = ZonedMoment.of(timeValue, now, localIanaZone);
+    String? ianaZone = moment.ianaZone;
 
     final Widget clock = buildGraphicalClock(
       valueType: timeValue.valueType,
-      now: zonedNow,
+      now: moment.wallClock,
       l10n: l10n,
       showSeconds: timeValue.showOptionalPart,
       hourFormat24: app.hourFormat24,
       segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
     );
-
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent

@@ -10,6 +10,7 @@ import '../models/zone_rules.dart';
 import '../screens/focus_screen.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
+import '../zoned_moment.dart';
 import 'link_text.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
@@ -26,7 +27,8 @@ abstract class TimeValueRow extends StatelessWidget {
 
   void showInfo(BuildContext context, AppLocalizations l10n) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+    final moment = ZonedMoment.of(timeValue, now, localIanaZone);
+    String? ianaZone = moment.ianaZone;
     final link = infoLinkOverride ?? timeValue.localizedInfoLink(l10n);
     showDialog(
       context: context,

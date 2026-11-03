@@ -1,6 +1,4 @@
-import 'package:epoch/models/time_value.dart';
 import 'package:epoch/time_utils.dart';
-import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
@@ -9,49 +7,34 @@ void main() {
 
   // Civil
 
-  group('TimeUtils.daySecond', () {
-    test('midnight = 0', () {
-      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-      expect(TimeUtils.daySecond(dt), equals(0));
-    });
+  // group('TimeUtils.daySecond', () {
+  //   test('midnight = 0', () {
+  //     final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
+  //     expect(TimeUtils.daySecond(dt), equals(0));
+  //   });
+  //
+  //   test('noon = 43200', () {
+  //     final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
+  //     expect(TimeUtils.daySecond(dt), equals(43200));
+  //   });
+  //
+  //   test('23:59:59 = 86399', () {
+  //     final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
+  //     expect(TimeUtils.daySecond(dt), equals(86399));
+  //   });
+  // });
 
-    test('noon = 43200', () {
-      final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
-      expect(TimeUtils.daySecond(dt), equals(43200));
-    });
-
-    test('23:59:59 = 86399', () {
-      final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
-      expect(TimeUtils.daySecond(dt), equals(86399));
-    });
-  });
-
-  group('TimeUtils.dayMinute', () {
-    test('splits the wall-clock reading into minutes and seconds', () {
-      final result = TimeUtils.dayMinute(DateTime.utc(2026, 6, 15, 14, 5, 9));
-      expect(result, (minutes: 845, seconds: 9));
-    });
-
-    test('elapsed seconds replace the wall-clock reading', () {
-      final result = TimeUtils.dayMinute(
-        DateTime.utc(2026, 10, 25, 23, 59, 59),
-        elapsedSeconds: 89999,
-      );
-      expect(result, (minutes: 1499, seconds: 59));
-    });
-  });
-
-  group('TimeUtils.dayPercent', () {
-    test('midnight = 0.0', () {
-      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-      expect(TimeUtils.dayPercent(dt), equals(0.0));
-    });
-
-    test('noon = 50.0', () {
-      final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
-      expect(TimeUtils.dayPercent(dt), equals(50.0));
-    });
-  });
+  // group('TimeUtils.dayPercent', () {
+  //   test('midnight = 0.0', () {
+  //     final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
+  //     expect(TimeUtils.dayPercent(dt), equals(0.0));
+  //   });
+  //
+  //   test('noon = 50.0', () {
+  //     final dt = DateTime.utc(2026, 1, 1, 12, 0, 0);
+  //     expect(TimeUtils.dayPercent(dt), equals(50.0));
+  //   });
+  // });
 
   group('TimeUtils.dayOfYear', () {
     test('January 1 = day 1', () {
@@ -88,29 +71,6 @@ void main() {
     test('2016-01-01 is week 53 of 2015', () {
       // Edge case: first days of year can be in previous year's last week
       expect(TimeUtils.isoWeekNumber(DateTime(2016, 1, 1)), equals(53));
-    });
-  });
-
-  group('TimeUtils.utcOffsetString', () {
-    test('zero offset = UTC+00:00', () {
-      expect(TimeUtils.utcOffsetString(Duration.zero), equals('UTC+00:00'));
-    });
-
-    test('positive offset', () {
-      expect(TimeUtils.utcOffsetString(const Duration(hours: 2)),
-          equals('UTC+02:00'));
-    });
-
-    test('negative offset', () {
-      expect(TimeUtils.utcOffsetString(const Duration(hours: -5)),
-          equals('UTC−05:00'));
-    });
-
-    test('fractional offset (India +5:30)', () {
-      expect(
-          TimeUtils.utcOffsetString(
-              const Duration(hours: 5, minutes: 30)),
-          equals('UTC+05:30'));
     });
   });
 
@@ -302,18 +262,6 @@ void main() {
 
   // Curiosities
 
-  group('TimeUtils.decimalTime', () {
-    test('midnight = 0:00:00', () {
-      final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 0, 0, 0));
-      expect(d, equals((hours: 0, minutes: 0, seconds: 0)));
-    });
-
-    test('noon = 5:00:00 (half the day)', () {
-      final d = TimeUtils.decimalTime(DateTime.utc(2026, 1, 1, 12, 0, 0));
-      expect(d, equals((hours: 5, minutes: 0, seconds: 0)));
-    });
-  });
-
   group('TimeUtils.swatchBeats', () {
     test('returns value between 0 and 1000', () {
       final dt = DateTime.utc(2026, 5, 1, 12, 0, 0);
@@ -352,76 +300,6 @@ void main() {
     });
   });
 
-  group('TimeUtils.binaryTimeString', () {
-    test('midnight = 00000:000000:000000', () {
-      final dt = DateTime(2026, 1, 1, 0, 0, 0);
-      expect(TimeUtils.binaryTimeString(dt), equals('00000:000000:000000'));
-    });
-
-    test('format is H:M:S with correct bit widths', () {
-      final dt = DateTime(2026, 1, 1, 2, 30, 9);
-      final result = TimeUtils.binaryTimeString(dt);
-      final parts = result.split(':');
-      expect(parts.length, equals(3));
-      expect(parts[0].length, equals(5));  // hours: 5 bits
-      expect(parts[1].length, equals(6));  // minutes: 6 bits
-      expect(parts[2].length, equals(6));  // seconds: 6 bits
-    });
-  });
-
-  group('TimeUtils.octalTimeString / hexadecimalTimeString', () {
-    test('midnight is all zeros', () {
-      final dt = DateTime.utc(2026, 1, 1, 0, 0, 0);
-      expect(TimeUtils.octalTimeString(dt), equals('000000'));
-      expect(TimeUtils.hexadecimalTimeString(dt), equals('0_00_00'));
-    });
-
-    test('one second before midnight (daySecond 86399)', () {
-      final dt = DateTime.utc(2026, 1, 1, 23, 59, 59);
-      expect(TimeUtils.octalTimeString(dt), equals('250577'));
-      expect(TimeUtils.hexadecimalTimeString(dt), equals('1_51_7F'));
-    });
-  });
-
-  group('TimeUtils.romanNumeralsTime', () {
-    test('midnight uses N for zero, all fields 7 wide', () {
-      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 0, 0, 0)),
-          equals('   N   :   N   :   N   '));
-    });
-
-    test('24h with the longest numeral', () {
-      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58)),
-          equals(' XVIII :XXXVIII: LVIII '));
-    });
-
-    test('seconds off keeps the field width', () {
-      expect(TimeUtils.romanNumeralsTime(true, DateTime(2026, 1, 1, 18, 38, 58),
-          showSeconds: false), equals(' XVIII :XXXVIII'));
-    });
-
-    test('12h appends the period after the padded field', () {
-      expect(TimeUtils.romanNumeralsTime(false, DateTime(2026, 1, 1, 14, 5, 9)),
-          equals('   II  :   V   :   IX   PM'));
-    });
-
-    test('width is constant for every second of the day', () {
-      for (var s = 0; s < 86400; s += 7) {
-        final dt = DateTime(2026, 1, 1).add(Duration(seconds: s));
-        expect(TimeUtils.romanNumeralsTime(true, dt).length, 23);
-      }
-    });
-
-    test('roman numerals clipboard value has no padding', () {
-      const timeValue = TimeValue(
-          valueType: ValueType.romanNumeralsTime, zone: ZoneLocal());
-      expect(
-        TimeStringRow.computeClipboardDisplay(
-            timeValue, (line1: '  XIV  :XXXVIII:   V    PM', line2: '')),
-        equals('XIV:XXXVIII:V PM'),
-      );
-    });
-  });
-
   group('TimeUtils.doomsdaySecondsToMidnight', () {
     test('1970 still shows the setting of 1969 (10 minutes)', () {
       expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(1970, 1, 1)), 600);
@@ -439,6 +317,7 @@ void main() {
       expect(TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(1991, 6, 1)), 85380);    // 23:43:00
     });
   });
+
 
   // Other
 
@@ -689,15 +568,6 @@ void main() {
     test('unknown zone falls back to UTC', () {
       expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').lengthSeconds,
           86400);
-    });
-  });
-
-  group('TimeUtils.resolveLocalTime', () {
-    test('local zone uses the given moment, not the system clock', () {
-      const timeValue = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
-      final moment = DateTime.utc(2001, 9, 9, 1, 46, 40);
-      expect(TimeUtils.resolveLocalTime(timeValue, moment, 'Europe/Berlin'),
-          equals(moment.toLocal()));
     });
   });
 }

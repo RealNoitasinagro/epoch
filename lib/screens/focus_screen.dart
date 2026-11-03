@@ -11,9 +11,9 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
-import '../time_utils.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_string_row.dart';
+import '../zoned_moment.dart';
 
 const _colorOptions = [
   kColorWhite,
@@ -630,14 +630,15 @@ class _FocusScreenState extends State<FocusScreen> {
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {
-      final zonedNow = TimeUtils.resolveLocalTime(
-          widget.timeValue, _now.toUtc(),
-          EpochApp.of(context).localIanaZone);
+      final localIanaZone = EpochApp.of(context).localIanaZone;
+      final moment = ZonedMoment.of(
+          widget.timeValue, _now.toUtc(), localIanaZone
+      ).wallClock;
       final l10n = AppLocalizations.of(context)!;
 
       final Widget clock = buildGraphicalClock(
         valueType: widget.timeValue.valueType,
-        now: zonedNow,
+        now: moment,
         l10n: l10n,
         showSeconds: _showOptionalPart,
         hourFormat24: app.hourFormat24,
