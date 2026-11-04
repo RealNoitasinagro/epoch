@@ -27,6 +27,7 @@ class TimeValueFormatter {
     final timeFormat = settings.timeFormat;
     final localIanaZone = settings.localIanaZone;
     final longitude = settings.longitude;
+    final showOptionalPart = settings.showsOptionalPart(timeValue);
     final utcNow = now.toUtc();
 
     // Zone-independent values.
@@ -84,12 +85,12 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${timeValue.showOptionalPart
+        return '@${showOptionalPart
             ? swatchBeats.toStringAsFixed(2)
             : swatchBeats.toInt()}';
       case ValueType.newEarthTime:
         final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${timeValue.showOptionalPart
+        return '${showOptionalPart
             ? formatDecimal(deg, locale, 2, thousandsSep:  false)
             : deg.toInt()}°';
       case ValueType.doomsdayClock:
@@ -113,6 +114,9 @@ class TimeValueFormatter {
         moment.offset, withUtcPrefix: true, typographicMinus: true
     );
     final tzSuffix = '$tzLabel (${utcOffset})';
+    final timePattern = showOptionalPart
+        ? timeFormat
+        : timePatternWithoutSeconds(timeFormat);
 
     switch (timeValue.valueType) {
     // Civil
@@ -125,7 +129,7 @@ class TimeValueFormatter {
           wallClock.minute,
           wallClock.second,
           tzSuffix: tzSuffix,
-          pattern: timeFormat,
+          pattern: timePattern,
         );
       case ValueType.dateTime:
         return formatDateTime(
@@ -134,7 +138,7 @@ class TimeValueFormatter {
           wallClock,
           tzSuffix,
           datePattern: dateFormat,
-          timePattern: timeFormat,
+          timePattern: timePattern,
         );
       case ValueType.daySecond:
         final value = moment.dayProgress.elapsedSeconds;
@@ -143,33 +147,35 @@ class TimeValueFormatter {
             : value.toString();
         formattedValue += ' $tzSuffix';
         return formattedValue;
-      case ValueType.dayPercent:
-        String formattedValue = formatDecimal(
-          TimeUtils.dayPercent(moment.dayProgress),
-          locale,
-          3,
-          thousandsSep: false,
-        );
-        formattedValue += ' $tzSuffix';
-        return formattedValue;
       case ValueType.dayMinute:
         final dayMinute = TimeUtils.dayMinute(moment.dayProgress);
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(dayMinute.minutes)
             : dayMinute.minutes.toString();
-        if (timeValue.showOptionalPart) {
+        if (showOptionalPart) {
           formattedValue += ':${dayMinute.seconds.toString().padLeft(2, '0')}';
         }
         formattedValue += ' $tzSuffix';
         return formattedValue;
+      case ValueType.dayPercent:
+        final percent = TimeUtils.dayPercent(moment.dayProgress);
+        // Hidden decimals are cut off, not rounded: 99.9 % is not yet 100 %.
+        final formattedPercent = showOptionalPart
+            ? formatDecimal(percent, locale, 3, thousandsSep: false)
+            : formatDecimal(percent.floorToDouble(), locale, 0, thousandsSep: false);
+        return '$formattedPercent $tzSuffix';
     // Curiosities
       case ValueType.decimalTime:
         final decimalTime = TimeUtils.decimalTime(moment.dayProgress);
-        return '${_decimalTimeText(decimalTime)} $tzSuffix';
+        final decimalTimeText = _decimalTimeText(
+          decimalTime,
+          showSeconds: showOptionalPart,
+        );
+        return '$decimalTimeText $tzSuffix';
       case ValueType.binaryClockString:
         return binaryTimeString(
           wallClock,
-          showSeconds: timeValue.showOptionalPart,
+          showSeconds: showOptionalPart,
         );
       case ValueType.octalTime:
         return _secondsInBase(moment.dayProgress.elapsedSeconds, 8, 6);
@@ -179,7 +185,7 @@ class TimeValueFormatter {
         return romanNumeralsTime(
           hourFormat24,
           wallClock,
-          showSeconds: timeValue.showOptionalPart,
+          showSeconds: showOptionalPart,
         );
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
@@ -356,12 +362,23 @@ class TimeValueFormatter {
   }
 
   static String _decimalTimeText(
-      ({int hours, int minutes, int seconds}) decimalTime,
-      ) {
-    return '${decimalTime.hours}\u02b0'
-        '${decimalTime.minutes.toString().padLeft(2, '0')}\u1d50'
+      ({int hours, int minutes, int seconds}) decimalTime, {
+        required bool showSeconds,
+      }) {
+    final hoursAndMinutes = '${decimalTime.hours}\u02b0'
+        '${decimalTime.minutes.toString().padLeft(2, '0')}\u1d50';
+    if (!showSeconds) return hoursAndMinutes;
+    return '$hoursAndMinutes'
         '${decimalTime.seconds.toString().padLeft(2, '0')}\u02e2';
   }
+
+  /// Binary clock string representation, e.g. "10:110000:10111".
+  static String binaryTimeString(DateTime wallClock, {bool showSeconds = true}) {
+    final bin = TimeUtils.binaryTime(wallClock);
+    if (!showSeconds) return [bin.hours, bin.minutes].join(':');
+    return [bin.hours, bin.minutes, bin.seconds].join(':');
+  }
+
 
   /// Seconds since midnight in the given base, zero-padded to a fixed width.
   static String _secondsInBase(int seconds, int base, int digits) {
@@ -378,13 +395,6 @@ class TimeValueFormatter {
       buffer.write(hex[index]);
     }
     return buffer.toString();
-  }
-
-  /// Binary clock string representation, e.g. "10:110000:10111".
-  static String binaryTimeString(DateTime wallClock, {bool showSeconds = true}) {
-    final bin = TimeUtils.binaryTime(wallClock);
-    if (!showSeconds) return [bin.hours, bin.minutes].join(':');
-    return [bin.hours, bin.minutes, bin.seconds].join(':');
   }
 
   /// Roman numerals time: time shown in Roman numerals. N for zeros.
@@ -404,5 +414,18 @@ class TimeValueFormatter {
     final padding = width - text.length;
     if (padding <= 0) return text;
     return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
+  }
+
+  /// The time pattern without its seconds and the separator before them,
+  /// e.g. "HH:mm:ss" -> "HH:mm". Patterns where the seconds do not follow
+  /// the minutes are returned unchanged.
+  static String timePatternWithoutSeconds(String pattern) {
+    final secondsIndex = pattern.indexOf('ss');
+    if (secondsIndex < 0) return pattern;
+    final minutesIndex = pattern.lastIndexOf('mm', secondsIndex);
+    if (minutesIndex < 0) return pattern;
+    final endOfMinutes = minutesIndex + 'mm'.length;
+    return pattern.substring(0, endOfMinutes) +
+        pattern.substring(secondsIndex + 'ss'.length);
   }
 }

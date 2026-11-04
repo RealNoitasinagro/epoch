@@ -24,8 +24,8 @@ Default values will show up in config files when a non-default value had been co
 
 | Key                          | Type             | Default                         | Description                                                                                       |
 |------------------------------|------------------|---------------------------------|---------------------------------------------------------------------------------------------------|
-| `active_tab`                 | string           | `0`                             | app will start with the tab used last                                                             |
-| `all_tabs`                   | array of strings | `[]`                            | each line contains the settings for one tab (see below)                                           |
+| `active_tab`                 | string           | `0`                             | App will start with the tab used last                                                             |
+| `all_tabs`                   | array of strings | `[]`                            | Each line contains the settings for one tab (see below)                                           |
 | `date_cw_doy`                | bool             | `true`                          | Show ISO week number and day of year                                                              |
 | `date_format`                | string           | `"EEE, YYYY-MM-DD"`             | Date display format (see tokens below)                                                            |
 | `day_quarter_color`          | bool             | `true`                          | Show day quarter indicator in night red, cyan, amber, matrix green                                |
@@ -39,7 +39,8 @@ Default values will show up in config files when a non-default value had been co
 | `lmst_longitude`             | number           | `—`                             | Longitude in decimal degrees (−180 to +180)                                                       |
 | `lmst_mode`                  | string           | `"off"`                         | `"off"`, `"manual"`, `"locationAccess"`                                                           |
 | `locale`                     | string           | `"en"`                          | `"en"` or `"de"`                                                                                  |
-| `startup_focus_value`        | string           | `—`                             | app will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)  |
+| `optional_part_hidden`       | array of strings | `[]`                            | Types excluded from the global default to show optional parts (seconds or decimals)               |
+| `startup_focus_value`        | string           | `—`                             | App will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)  |
 | `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                        |
 | `time_format`                | string           | `"HH:mm:ss"`                    | Time display format (see tokens below)                                                            |
 | `thousands_sep`              | bool             | `true`                          | Thousands separator in numbers (locale-dependent)                                                 |
@@ -202,10 +203,11 @@ The optional suffix is for
 - graphical clocks (`sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`),
 - as well as `binaryClockString`, `romanNumeralsTime`, `swatchBeats`, and `newEarthTime`:
 
-| Suffix    | Effect                  |
-|-----------|-------------------------|
-| *(none)*  | Show seconds / decimals |
-| `\|nosec` | Hide seconds / decimals |
+| Suffix    | Effect                                                     |
+|-----------|------------------------------------------------------------|
+| *(none)*  | Global default (show seconds / decimals unless turned off) |
+| `\|sec`   | Show seconds / decimals                                    |
+| `\|nosec` | Hide seconds / decimals                                    |
 
 #### Divider
 

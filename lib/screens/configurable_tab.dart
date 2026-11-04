@@ -192,7 +192,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Future<void> _editLabel(
       BuildContext context, TimeValue timeValue, AppLocalizations l10n, int index
     ) async {
-    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final app = EpochApp.of(context);
+    final settings = app.formatSettings;
+    final localIanaZone = settings.localIanaZone;
     final ianaZone = switch (timeValue.zone) {
       ZoneLocal()                  => localIanaZone,
       ZoneNamed(ianaZone: final z) => z,
@@ -200,7 +202,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
-    bool selectedShowOptionalPart = timeValue.showOptionalPart;
+    bool selectedShowOptionalPart = settings.showsOptionalPart(timeValue);
     final optionalPart = timeValue.valueType.optionalPart;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
@@ -603,7 +605,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         valueType: timeValue.valueType,
         now: moment.wallClock,
         l10n: l10n,
-        showSeconds: timeValue.showOptionalPart,
+        showSeconds: settings.showsOptionalPart(timeValue),
         hourFormat24: settings.hourFormat24,
         segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
       );

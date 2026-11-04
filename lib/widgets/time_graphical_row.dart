@@ -20,6 +20,7 @@ class TimeGraphicalRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
@@ -29,7 +30,7 @@ class TimeGraphicalRow extends TimeValueRow {
       valueType: timeValue.valueType,
       now: moment.wallClock,
       l10n: l10n,
-      showSeconds: timeValue.showOptionalPart,
+      showSeconds: settings.showsOptionalPart(timeValue),
       hourFormat24: app.hourFormat24,
       segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
     );

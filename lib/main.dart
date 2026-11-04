@@ -97,6 +97,7 @@ class EpochAppState extends State<EpochApp> {
   String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
   bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
+  Set<ValueType> _optionalPartHiddenTypes = {};
 
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
@@ -134,6 +135,7 @@ class EpochAppState extends State<EpochApp> {
       final lastImportedConfig      = await loadLastImportedConfig();
       final startupFocusValue       = await loadStartupFocusValue();
       final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
+      final optionalPartHiddenTypes = await loadOptionalPartHiddenTypes();
 
       String localZone = 'UTC';
       try {
@@ -159,6 +161,7 @@ class EpochAppState extends State<EpochApp> {
         _lastImportedConfig      = lastImportedConfig;
         _startupFocusValue       = startupFocusValue;
         _focusTimeShiftIndicator = focusTimeShiftIndicator;
+        _optionalPartHiddenTypes = optionalPartHiddenTypes;
         _settingsLoaded          = true;
       });
     } catch (error, stackTrace) {
@@ -233,6 +236,11 @@ class EpochAppState extends State<EpochApp> {
     saveFocusTimeShiftIndicator(v);
   }
 
+  void setOptionalPartHiddenTypes(Set<ValueType> valueTypes) {
+    setState(() => _optionalPartHiddenTypes = valueTypes);
+    saveOptionalPartHiddenTypes(valueTypes);
+  }
+
   String get localIanaZone => _localIanaZone;
   Locale? get locale                  => _locale;
   AppThemeMode get themeMode          => _themeMode;
@@ -265,6 +273,7 @@ class EpochAppState extends State<EpochApp> {
       dateWithDetails: _dateWithDetails,
       localIanaZone: _localIanaZone,
       longitude: _lmstLongitude,
+      optionalPartHiddenTypes: _optionalPartHiddenTypes,
     );
   }
 

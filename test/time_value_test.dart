@@ -193,19 +193,32 @@ void main() {
       }
     });
     test('decimals for Swatch beats and New Earth Time', () {
+      expect(ValueType.dayPercent.optionalPart, OptionalPart.decimals);
       expect(ValueType.swatchBeats.optionalPart, OptionalPart.decimals);
       expect(ValueType.newEarthTime.optionalPart, OptionalPart.decimals);
     });
     test('seconds for string-type values', () {
+      expect(ValueType.time.optionalPart, OptionalPart.seconds);
+      expect(ValueType.dateTime.optionalPart, OptionalPart.seconds);
+      expect(ValueType.dayMinute.optionalPart, OptionalPart.seconds);
+      expect(ValueType.decimalTime.optionalPart, OptionalPart.seconds);
       expect(ValueType.binaryClockString.optionalPart, OptionalPart.seconds);
       expect(ValueType.romanNumeralsTime.optionalPart, OptionalPart.seconds);
     });
     test('all other types have none', () {
       final withPart = {
+        ValueType.time,
+        ValueType.dateTime,
         ValueType.dayMinute,
-        ValueType.swatchBeats, ValueType.newEarthTime, ValueType.sevenSegmentClock,
-        ValueType.binaryClockBcd, ValueType.binaryClockColumns,
-        ValueType.binaryClockString, ValueType.romanNumeralsTime,
+        ValueType.dayPercent,
+        ValueType.decimalTime,
+        ValueType.swatchBeats,
+        ValueType.newEarthTime,
+        ValueType.sevenSegmentClock,
+        ValueType.binaryClockBcd,
+        ValueType.binaryClockColumns,
+        ValueType.binaryClockString,
+        ValueType.romanNumeralsTime,
       };
       for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
         expect(type.optionalPart, OptionalPart.none, reason: '$type');
@@ -216,6 +229,50 @@ void main() {
           valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
       expect(value.toPrefsString(), endsWith('|nosec'));
       expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
+    });
+  });
+
+  group('optional part choice', () {
+    const byDefault = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+    const shown = TimeValue(
+      valueType: ValueType.time,
+      zone: ZoneUtc(),
+      showOptionalPart: true,
+    );
+    const hidden = TimeValue(
+      valueType: ValueType.time,
+      zone: ZoneUtc(),
+      showOptionalPart: false,
+    );
+
+    test('serializes default, shown and hidden', () {
+      expect(byDefault.toPrefsString(), 'time/utc');
+      expect(shown.toPrefsString(), 'time/utc|sec');
+      expect(hidden.toPrefsString(), 'time/utc|nosec');
+    });
+
+    test('parses the three variants; old configs mean "default"', () {
+      expect(TimeValue.fromPrefsString('time/utc')!.showOptionalPart, isNull);
+      expect(TimeValue.fromPrefsString('time/utc|sec')!.showOptionalPart, isTrue);
+      expect(TimeValue.fromPrefsString('time/utc|nosec')!.showOptionalPart, isFalse);
+    });
+
+    test('works together with label and clock change mode', () {
+      const value = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        customLabel: 'Home',
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        showOptionalPart: false,
+      );
+      final parsed = TimeValue.fromPrefsString(value.toPrefsString())!;
+      expect(parsed.customLabel, 'Home');
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+    });
+
+    test('withShowOptionalPart(null) goes back to the default', () {
+      expect(hidden.withShowOptionalPart(null).showOptionalPart, isNull);
     });
   });
 

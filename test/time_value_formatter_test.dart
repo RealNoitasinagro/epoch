@@ -1,3 +1,4 @@
+import 'package:epoch/models/app_settings.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/time_value_formatter.dart';
@@ -489,6 +490,79 @@ void main() {
       final lastSecond = DateTime.utc(2026, 1, 1, 23, 59, 59);
       expect(formatWith(t_oct, lastSecond), '250577');
       expect(formatWith(t_hex, lastSecond), '1_51_7F');
+    });
+  });
+
+  group('optional part in the formatter', () {
+    String line1(
+        TimeValue timeValue,
+        DateTime utcMoment, {
+          bool hourFormat24 = true,
+          String timeFormat = kTimePatternFull,
+        }) {
+      final formatted = TimeValueFormatter.format(
+        timeValue,
+        utcMoment,
+        'en',
+        settings: ValueFormatSettings(
+          hourFormat24: hourFormat24,
+          timeFormat: timeFormat,
+        ),
+      );
+      return TimeStringRow.splitZoneOffset(formatted).line1;
+    }
+
+    final moment = DateTime.utc(2026, 6, 15, 14, 5, 9);
+    const timeWithoutSeconds = TimeValue(
+      valueType: ValueType.time,
+      zone: ZoneUtc(),
+      showOptionalPart: false,
+    );
+
+    test('time without seconds', () {
+      expect(line1(timeWithoutSeconds, moment), '14:05');
+      expect(line1(timeWithoutSeconds, moment, hourFormat24: false), '02:05 PM');
+      expect(line1(timeWithoutSeconds, moment, timeFormat: 'H.mm.ss'), '14.05');
+    });
+
+    test('day percent without decimals is cut off, not rounded', () {
+      const dayPercent = TimeValue(
+        valueType: ValueType.dayPercent,
+        zone: ZoneUtc(),
+        showOptionalPart: false,
+      );
+      expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 23, 59, 59)), '99');
+      expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 12)), '50');
+    });
+
+    test('decimal time without seconds', () {
+      const decimalTime = TimeValue(
+        valueType: ValueType.decimalTime,
+        zone: ZoneUtc(),
+        showOptionalPart: false,
+      );
+      expect(line1(decimalTime, DateTime.utc(2026, 6, 15, 12)), '5ʰ00ᵐ');
+    });
+  });
+
+  group('TimeValueFormatter.timePatternWithoutSeconds', () {
+    test('removes the seconds and the separator before them', () {
+      expect(TimeValueFormatter.timePatternWithoutSeconds('HH:mm:ss'), 'HH:mm');
+      expect(TimeValueFormatter.timePatternWithoutSeconds('H:mm:ss'), 'H:mm');
+      expect(TimeValueFormatter.timePatternWithoutSeconds('HHmmss'), 'HHmm');
+      expect(TimeValueFormatter.timePatternWithoutSeconds('HH.mm.ss'), 'HH.mm');
+    });
+
+    test('keeps text after the seconds', () {
+      expect(
+        TimeValueFormatter.timePatternWithoutSeconds('HH:mm:ss Uhr'),
+        'HH:mm Uhr',
+      );
+    });
+
+    test('leaves patterns without seconds, or with them before the minutes, alone', () {
+      expect(TimeValueFormatter.timePatternWithoutSeconds('HH:mm'), 'HH:mm');
+      expect(TimeValueFormatter.timePatternWithoutSeconds('ss:mm:HH'), 'ss:mm:HH');
     });
   });
 }

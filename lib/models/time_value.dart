@@ -80,14 +80,18 @@ class TimeValue implements TabEntry {
   final ZoneSpec zone;
   final String? customLabel;
   final TimezoneClockChangeMode timezoneClockChangeMode;
-  final bool showOptionalPart;
+
+  /// Whether the optional part (seconds or decimals, see
+  /// [ValueTypeProps.optionalPart]) is shown. Null: the global default for
+  /// the value type applies.
+  final bool? showOptionalPart;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
-    this.showOptionalPart = true,
+    this.showOptionalPart,
   });
 
   // Unique key for deduplication within a tab.
@@ -127,7 +131,10 @@ class TimeValue implements TabEntry {
     if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
       result = '$result|dst:${timezoneClockChangeMode.name}';
     }
-    if (!showOptionalPart) result = '$result|nosec';
+    final optionalPartChoice = showOptionalPart;
+    if (optionalPartChoice != null) {
+      result = '$result|${optionalPartChoice ? 'sec' : 'nosec'}';
+    }
     return result;
   }
 
@@ -144,10 +151,13 @@ class TimeValue implements TabEntry {
               TimezoneClockChangeMode.auto;
       workStr = workStr.substring(0, dstIdx);
     }
-    bool showOptionalPart = true;
+    bool? showOptionalPart;
     if (workStr.endsWith('|nosec')) {
       showOptionalPart = false;
-      workStr = workStr.substring(0, workStr.length - 6);
+      workStr = workStr.substring(0, workStr.length - '|nosec'.length);
+    } else if (workStr.endsWith('|sec')) {
+      showOptionalPart = true;
+      workStr = workStr.substring(0, workStr.length - '|sec'.length);
     }
 
     final pipeIdx = workStr.indexOf('|');
@@ -185,12 +195,15 @@ class TimeValue implements TabEntry {
     bool clearCustomLabel = false,
     TimezoneClockChangeMode? timezoneClockChangeMode,
     bool? showOptionalPart,
+    bool clearShowOptionalPart = false,
   }) => TimeValue(
     valueType: valueType,
     zone: zone,
     customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
     timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
-    showOptionalPart: showOptionalPart ?? this.showOptionalPart,
+    showOptionalPart: clearShowOptionalPart
+        ? null
+        : (showOptionalPart ?? this.showOptionalPart),
   );
 
   TimeValue withCustomLabel(String? label) =>
@@ -199,7 +212,12 @@ class TimeValue implements TabEntry {
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
       copyWith(timezoneClockChangeMode: mode);
 
-  TimeValue withShowOptionalPart(bool value) => copyWith(showOptionalPart: value);
+  TimeValue withShowOptionalPart(bool? value) {
+    return copyWith(
+      showOptionalPart: value,
+      clearShowOptionalPart: value == null,
+    );
+  }
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
@@ -388,10 +406,17 @@ extension ValueTypeProps on ValueType {
       this == ValueType.binaryClockColumns;
 
   OptionalPart get optionalPart => switch (this) {
-    ValueType.swatchBeats || ValueType.newEarthTime => OptionalPart.decimals,
+    ValueType.dayPercent ||
+    ValueType.swatchBeats ||
+    ValueType.newEarthTime => OptionalPart.decimals,
+    ValueType.time ||
+    ValueType.dateTime ||
     ValueType.dayMinute ||
-    ValueType.sevenSegmentClock || ValueType.binaryClockBcd ||
-    ValueType.binaryClockColumns || ValueType.binaryClockString ||
+    ValueType.decimalTime ||
+    ValueType.sevenSegmentClock ||
+    ValueType.binaryClockBcd ||
+    ValueType.binaryClockColumns ||
+    ValueType.binaryClockString ||
     ValueType.romanNumeralsTime => OptionalPart.seconds,
     _ => OptionalPart.none,
   };

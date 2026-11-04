@@ -98,7 +98,8 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   void initState() {
     super.initState();
-    _showOptionalPart = widget.timeValue.showOptionalPart;
+    final app = EpochApp.of(context);
+    _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = EffectiveClock.now()));
