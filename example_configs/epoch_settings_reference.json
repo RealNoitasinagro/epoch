@@ -19,6 +19,10 @@
   "lmst_longitude": 8.1427,
   "lmst_mode": "manual",
   "locale": "en",
+  "optional_part_hidden": [
+    "binaryClockString",
+    "romanNumeralsTime"
+  ],
   "startup_focus_value": "unixSeconds/utc",
   "theme_mode": "dark",
   "thousands_sep": false,

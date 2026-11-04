@@ -225,6 +225,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
+          scrollable: true,
           title: Text(l10n.hintEditTimeValue),
           content: Column(
             mainAxisSize: MainAxisSize.min,
