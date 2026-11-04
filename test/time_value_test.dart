@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -223,10 +224,17 @@ void main() {
       tzl.initializeTimeZones();
     });
 
-    String line1(TimeValue timeValue, DateTime utc,
-        {bool thousandsSep = false, String locale = 'en'}) =>
-        TimeStringRow.splitZoneOffset(TimeValueFormatter.format(
-            timeValue, utc, locale, thousandsSep: thousandsSep)).line1;
+    String line1(
+        TimeValue timeValue, DateTime utc,
+        {bool thousandsSep = false, String locale = 'en'}
+        ) {
+      return TimeStringRow.splitZoneOffset(
+        TimeValueFormatter.format(
+          timeValue, utc, locale,
+          settings: ValueFormatSettings(thousandsSep: thousandsSep),
+        )
+      ).line1;
+    }
     const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
     const utcNoSeconds = TimeValue(
         valueType: ValueType.dayMinute, zone: ZoneUtc(), showOptionalPart: false);

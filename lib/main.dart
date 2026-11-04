@@ -20,6 +20,7 @@ import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
 import 'models/time_value.dart';
+import 'models/value_format_settings.dart';
 import 'platform_utils.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
@@ -253,6 +254,19 @@ class EpochAppState extends State<EpochApp> {
   double?  get lmstLongitude          => _lmstLongitude;
   String? get lastImportedConfig      => _lastImportedConfig;
   bool get focusTimeShiftIndicator    => _focusTimeShiftIndicator;
+
+  ValueFormatSettings get formatSettings {
+    return ValueFormatSettings(
+      hourFormat24: _hourFormat24,
+      thousandsSep: _thousandsSep,
+      dateFormat: _dateFormat,
+      timeFormat: _timeFormat,
+      zoneDisplayMode: _zoneDisplayMode,
+      dateWithDetails: _dateWithDetails,
+      localIanaZone: _localIanaZone,
+      longitude: _lmstLongitude,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -503,7 +517,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final app  = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     if (!_loaded) {
@@ -680,9 +693,6 @@ class _HomeScreenState extends State<HomeScreen>
           defaultEntries: tab.isBuiltin
               ? defaultEntriesFor(tab.builtinKind!)
               : List.of(defaultWatchlistEntries),
-          thousandsSep: app.thousandsSep,
-          hourFormat24: app.hourFormat24,
-          showDateDetails: app.dateWithDetails,
           onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
         )).toList(),
       ),

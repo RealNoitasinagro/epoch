@@ -1,4 +1,5 @@
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +13,15 @@ void main() {
     await initializeDateFormatting('de');
   });
 
+  String formatWith(
+      TimeValue timeValue,
+      DateTime now, {
+        ValueFormatSettings settings = const ValueFormatSettings(),
+        String locale = 'en',
+      }) {
+    return TimeValueFormatter.format(timeValue, now, locale, settings: settings);
+  }
+
   group('TimeValueFormatter.format – zone-independent', () {
     final t = DateTime.utc(2001, 9, 9, 1, 46, 40); // Unix 1000000000
 
@@ -19,20 +29,19 @@ void main() {
 
     test('unixSeconds formats correctly', () {
       const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, equals('1,000,000,000'));
     });
 
     test('unixSeconds without thousands separator', () {
       const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          thousandsSep: false);
+      final result = formatWith(tv, t, settings: const ValueFormatSettings(thousandsSep: false));
       expect(result, equals('1000000000'));
     });
 
     test('unixSeconds DE locale uses period as thousands separator', () {
       const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'de');
+      final result = formatWith(tv, t, locale: 'de');
       expect(result, equals('1.000.000.000'));
     });
 
@@ -40,20 +49,19 @@ void main() {
 
     test('gmst returns HH:MM:SS format', () {
       const tv = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, matches(RegExp(r'^\d{2}:\d{2}:\d{2}$')));
     });
 
     test('lmst returns placeholder without longitude', () {
       const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, equals('--:--:--'));
     });
 
     test('lmst with longitude returns HH:MM:SS', () {
       const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          longitude: 8.68);
+      final result = formatWith(tv, t, settings: const ValueFormatSettings(longitude: 8.68));
       final parts = result.split(':');
       expect(parts.length, equals(3));
       expect(int.tryParse(parts[0]), isNotNull);
@@ -61,8 +69,7 @@ void main() {
 
     test('julianDate has 5 decimal places', () {
       const tv = TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          thousandsSep: false);
+      final result = formatWith(tv, t, settings: const ValueFormatSettings(thousandsSep: false));
       final parts = result.split('.');
       expect(parts.length, equals(2));
       expect(parts[1].length, equals(5));
@@ -72,7 +79,7 @@ void main() {
 
     test('swatchBeats format starts with @', () {
       const tv = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, startsWith('@'));
       //final beats = int.tryParse(result.substring(1));
       final beats = double.tryParse(result.substring(1));
@@ -89,29 +96,27 @@ void main() {
 
     test('time local returns HH:MM:SS with timezone suffix', () {
       const tv = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          localIanaZone: 'Europe/Berlin');
+      final result = formatWith(tv, t, settings: const ValueFormatSettings(localIanaZone: 'Europe/Berlin'));
       expect(result, contains(':'));
       expect(result, contains('UTC'));
     });
 
     test('time UTC returns UTC suffix', () {
       const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, contains('UTC'));
     });
 
     test('time 12h format contains AM or PM', () {
       const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          hourFormat24: false);
+      final result = formatWith(tv, t, settings: const ValueFormatSettings(hourFormat24: false));
       expect(result, anyOf(contains('AM'), contains('PM')));
     });
 
     test('daySecond is between 0 and 86399', () {
       const tv = TimeValue(valueType: ValueType.daySecond, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en',
-          thousandsSep: false);
+      final result = formatWith(
+          tv, t, settings: const ValueFormatSettings(thousandsSep: false));
       var split = TimeStringRow.splitZoneOffset(result);
       final v = int.tryParse(split.line1);
       expect(v, isNotNull);
@@ -121,7 +126,7 @@ void main() {
 
     test('dayPercent is between 0.000 and 99.999', () {
       const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       var split = TimeStringRow.splitZoneOffset(result);
       final v = double.tryParse(split.line1);
       expect(v, isNotNull);
@@ -131,7 +136,7 @@ void main() {
 
     test('binaryClockString matches pattern', () {
       const tv = TimeValue(valueType: ValueType.binaryClockString, zone: ZoneLocal());
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, matches(RegExp(r'^\d{5}:\d{6}:\d{6}$')));
     });
 
@@ -139,7 +144,7 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time,
           zone: ZoneNamed('Asia/Tokyo'));
-      final result = TimeValueFormatter.format(tv, t, 'en');
+      final result = formatWith(tv, t);
       expect(result, contains('JST'));
     });
   });
@@ -454,12 +459,7 @@ void main() {
         valueType: ValueType.doomsdayClock,
         zone: ZoneUtc(),
       );
-      return TimeValueFormatter.format(
-        timeValue,
-        utcMoment,
-        'en',
-        hourFormat24: hourFormat24,
-      );
+      return formatWith(timeValue, utcMoment, settings: ValueFormatSettings(hourFormat24: hourFormat24));
     }
 
     test('shows the setting as a time of day', () {
@@ -476,24 +476,19 @@ void main() {
   });
 
   group('octal and hexadecimal time', () {
-    String format(ValueType type, DateTime utc) {
-      return TimeValueFormatter.format(
-        TimeValue(valueType: type, zone: const ZoneUtc()),
-        utc,
-        'en',
-      );
-    }
+    final t_oct = TimeValue(valueType: ValueType.octalTime, zone: const ZoneUtc());
+    final t_hex = TimeValue(valueType: ValueType.hexadecimalTime, zone: const ZoneUtc());
 
     test('midnight is all zeros', () {
       final midnight = DateTime.utc(2026, 1, 1);
-      expect(format(ValueType.octalTime, midnight), '000000');
-      expect(format(ValueType.hexadecimalTime, midnight), '0_00_00');
+      expect(formatWith(t_oct, midnight), '000000');
+      expect(formatWith(t_hex, midnight), '0_00_00');
     });
 
     test('one second before midnight (day second 86399)', () {
       final lastSecond = DateTime.utc(2026, 1, 1, 23, 59, 59);
-      expect(format(ValueType.octalTime, lastSecond), '250577');
-      expect(format(ValueType.hexadecimalTime, lastSecond), '1_51_7F');
+      expect(formatWith(t_oct, lastSecond), '250577');
+      expect(formatWith(t_hex, lastSecond), '1_51_7F');
     });
   });
 }

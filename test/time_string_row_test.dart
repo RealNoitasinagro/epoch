@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/app_settings.dart';
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -61,14 +62,18 @@ void main() {
     test('lmst with longitude has degree subtitle', () {
       const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
       final result = TimeStringRow.computeDisplay(
-          tv, summerUtc, 'en', l10n, longitude: 13.4);
+        tv, summerUtc, 'en', l10n,
+        settings: const ValueFormatSettings(longitude: 13.4),
+      );
       expect(result.line2, contains('°'));
     });
 
     test('date with details shows week and day in line2', () {
       const tv = TimeValue(valueType: ValueType.date, zone: ZoneLocal());
       final result = TimeStringRow.computeDisplay(
-          tv, DateTime(2026, 6, 15), 'en', l10n, showDateDetails: true);
+        tv, DateTime(2026, 6, 15), 'en', l10n,
+        settings: const ValueFormatSettings(dateWithDetails: true),
+      );
       expect(result.line2, contains('25'));  // week 25
       expect(result.line2, contains('166')); // day 166
     });
@@ -76,7 +81,9 @@ void main() {
     test('date without details has no line2', () {
       const tv = TimeValue(valueType: ValueType.date, zone: ZoneLocal());
       final result = TimeStringRow.computeDisplay(
-          tv, DateTime(2026, 6, 15), 'en', l10n, showDateDetails: false);
+        tv, DateTime(2026, 6, 15), 'en', l10n,
+        settings: const ValueFormatSettings(dateWithDetails: false),
+      );
       expect(result.line2, isEmpty);
     });
 
@@ -114,8 +121,9 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
-          tv, summerUtc, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.abbreviation);
+        tv, summerUtc, 'en', l10n,
+        settings: const ValueFormatSettings(zoneDisplayMode: ZoneDisplayMode.abbreviation)
+      );
       expect(result.line2, equals('CEST'));
     });
 
@@ -123,8 +131,9 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
-          tv, summerUtc, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.offsetLong);
+        tv, summerUtc, 'en', l10n,
+        settings: const ValueFormatSettings(zoneDisplayMode: ZoneDisplayMode.offsetLong)
+      );
       expect(result.line2, equals('UTC+02:00'));
     });
 
@@ -132,8 +141,9 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
-          tv, summerUtc, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.offsetShort);
+        tv, summerUtc, 'en', l10n,
+        settings: const ValueFormatSettings(zoneDisplayMode: ZoneDisplayMode.offsetShort)
+      );
       expect(result.line2, equals('+02:00'));
     });
 
@@ -141,8 +151,9 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
-          tv, summerUtc, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.offsetMini);
+        tv, summerUtc, 'en', l10n,
+        settings: const ValueFormatSettings(zoneDisplayMode: ZoneDisplayMode.offsetMini)
+      );
       expect(result.line2, equals('+2'));
     });
 
@@ -151,8 +162,9 @@ void main() {
       const tv = TimeValue(
           valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
       final result = TimeStringRow.computeDisplay(
-          tv, before, 'en', l10n,
-          zoneDisplayMode: ZoneDisplayMode.abbreviation);
+        tv, before, 'en', l10n,
+        settings: const ValueFormatSettings(zoneDisplayMode: ZoneDisplayMode.abbreviation),
+      );
       // Warning overrides mode:
       expect(result.line2, contains('→'));
     });

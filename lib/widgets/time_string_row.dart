@@ -6,6 +6,7 @@ import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../models/timezone_abbreviation_localization.dart';
+import '../models/value_format_settings.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
 import '../zoned_moment.dart';
@@ -14,20 +15,12 @@ import 'value_tile.dart';
 
 class TimeStringRow extends TimeValueRow {
   final String locale;
-  final bool hourFormat24;
-  final bool thousandsSep;
-  final bool showDateDetails;
-  final double? longitude;
 
   const TimeStringRow({
     super.key,
     required super.timeValue,
     required super.now,
     required this.locale,
-    this.hourFormat24 = true,
-    this.thousandsSep = true,
-    this.showDateDetails = true,
-    this.longitude,
     super.infoLinkOverride,
   });
 
@@ -36,25 +29,11 @@ class TimeStringRow extends TimeValueRow {
       DateTime now,
       String locale,
       AppLocalizations l10n,
-      {
-        String localIanaZone = 'UTC',
-        bool hourFormat24 = true,
-        bool thousandsSep = true,
-        bool showDateDetails = true,
-        String dateFormat = kDatePatternIso,
-        String timeFormat = kTimePatternFull,
-        ZoneDisplayMode zoneDisplayMode = ZoneDisplayMode.full,
-        double? longitude,
-      }
+      { ValueFormatSettings settings = const ValueFormatSettings(), }
     ) {
     final formattedValue = TimeValueFormatter.format(
       timeValue, now, locale,
-      localIanaZone: localIanaZone,
-      hourFormat24: hourFormat24,
-      thousandsSep: thousandsSep,
-      dateFormat: dateFormat,
-      timeFormat: timeFormat,
-      longitude: longitude,
+      settings: settings
     );
 
     String? subtitle;
@@ -64,7 +43,7 @@ class TimeStringRow extends TimeValueRow {
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
     };
 
-    if (timeValue.valueType == ValueType.date && showDateDetails) {
+    if (timeValue.valueType == ValueType.date && settings.dateWithDetails) {
       subtitle = l10n.dataDateSub(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
     } else if (timeValue.valueType == ValueType.gmst ||
@@ -82,7 +61,7 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      final moment = ZonedMoment.of(timeValue, now, localIanaZone);
+      final moment = ZonedMoment.of(timeValue, now, settings.localIanaZone);
       String? ianaZone = moment.ianaZone;
 
       if (ianaZone != null &&
@@ -96,7 +75,7 @@ class TimeStringRow extends TimeValueRow {
 
       // No warning – apply ZoneDisplayMode to the existing split.line2:
       if (zoneLine == null) {
-        zoneLine = _applyZoneDisplayMode(split.line2, zoneDisplayMode);
+        zoneLine = _applyZoneDisplayMode(split.line2, settings.zoneDisplayMode);
       }
     }
 
@@ -219,21 +198,15 @@ class TimeStringRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
     final display = computeDisplay(
       timeValue, now, locale, l10n,
-      localIanaZone: localIanaZone,
-      hourFormat24: hourFormat24,
-      thousandsSep: thousandsSep,
-      showDateDetails: showDateDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: longitude,
+        settings: settings
     );
-    String label = computeLabel(l10n, timeValue, longitude);
+    String label = computeLabel(l10n, timeValue, settings.longitude);
     String clipboardValue = computeClipboardDisplay(timeValue, display);
 
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);

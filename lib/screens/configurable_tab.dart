@@ -19,9 +19,6 @@ import 'entry_picker.dart';
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
   final List<TabEntry> entries;
-  final bool hourFormat24;
-  final bool thousandsSep;
-  final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TabEntry>> onEntriesChanged;
   final List<TabEntry> defaultEntries;  // used by "reset to defaults"
@@ -32,9 +29,6 @@ class ConfigurableTab extends StatefulWidget {
     required this.entries,
     required this.onEntriesChanged,
     required this.defaultEntries,
-    this.thousandsSep = true,
-    this.hourFormat24 = true,
-    this.showDateDetails = true,
     this.maxEntries = 30,
   });
 
@@ -574,9 +568,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       String locale,
       ) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final isGraphical = timeValue.valueType.isGraphical;
-    final longitude = EpochApp.of(context).lmstLongitude;
-    final localIanaZone = EpochApp.of(context).localIanaZone;
 
     // View mode: delegate to Row widgets (they handle info/copy themselves)
     if (editIndex == null) {
@@ -592,28 +585,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         timeValue: timeValue,
         now: widget.now,
         locale: locale,
-        hourFormat24: widget.hourFormat24,
-        thousandsSep: widget.thousandsSep,
-        showDateDetails: widget.showDateDetails,
-        longitude: longitude,
       );
     }
 
     // Edit mode: build ValueTile directly with edit action slots
-    final moment = ZonedMoment.of(timeValue, widget.now.toUtc(), localIanaZone);
+    final moment = ZonedMoment.of(timeValue, widget.now.toUtc(), settings.localIanaZone);
 
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
-      localIanaZone: localIanaZone,
-      hourFormat24: widget.hourFormat24,
-      thousandsSep: widget.thousandsSep,
-      showDateDetails: widget.showDateDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: longitude,
+      settings: settings
     );
-    final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
+    final label = TimeStringRow.computeLabel(l10n, timeValue, settings.longitude);
 
     late final Widget clock;
     if (isGraphical) {
@@ -622,7 +604,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         now: moment.wallClock,
         l10n: l10n,
         showSeconds: timeValue.showOptionalPart,
-        hourFormat24: app.hourFormat24,
+        hourFormat24: settings.hourFormat24,
         segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
       );
     }
@@ -645,8 +627,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.isPinned(widget.now.toUtc(), localIanaZone),
-        dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
+        showPinnedIndicator: timeValue.isPinned(widget.now.toUtc(), settings.localIanaZone),
+        dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), settings.localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(

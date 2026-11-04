@@ -4,6 +4,7 @@ import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
 import 'models/time_value.dart';
 import 'models/timezone_abbreviation_localization.dart';
+import 'models/value_format_settings.dart';
 import 'models/zone_rules.dart';
 import 'time_utils.dart';
 import 'zoned_moment.dart';
@@ -17,14 +18,15 @@ class TimeValueFormatter {
       DateTime now,
       String locale,
       {
-        bool hourFormat24 = true,
-        bool thousandsSep = true,
-        String dateFormat = kDatePatternIso,
-        String timeFormat = kTimePatternFull,
-        String localIanaZone = 'UTC',
-        double? longitude,
+        ValueFormatSettings settings = const ValueFormatSettings(),
       }
   ) {
+    final hourFormat24 = settings.hourFormat24;
+    final thousandsSep = settings.thousandsSep;
+    final dateFormat = settings.dateFormat;
+    final timeFormat = settings.timeFormat;
+    final localIanaZone = settings.localIanaZone;
+    final longitude = settings.longitude;
     final utcNow = now.toUtc();
 
     // Zone-independent values.

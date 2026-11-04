@@ -267,14 +267,7 @@ class _FocusScreenState extends State<FocusScreen> {
       _now,
       widget.locale,
       AppLocalizations.of(context)!,
-      localIanaZone: app.localIanaZone,
-      hourFormat24: app.hourFormat24,
-      thousandsSep: app.thousandsSep,
-      showDateDetails: app.dateWithDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: app.lmstLongitude,
+      settings: app.formatSettings
     );
   }
 
