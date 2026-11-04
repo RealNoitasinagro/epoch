@@ -251,12 +251,6 @@ class EpochAppState extends State<EpochApp> {
     AppThemeMode.system => ThemeMode.system,
   };
   bool get isNightMode                => _themeMode == AppThemeMode.night;
-  bool get hourFormat24               => _hourFormat24;
-  bool get thousandsSep               => _thousandsSep;
-  bool get dateWithDetails            => _dateWithDetails;
-  String get dateFormat               => _dateFormat;
-  String get timeFormat               => _timeFormat;
-  ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
   bool get dayQuarterColor            => _dayQuarterColor;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;

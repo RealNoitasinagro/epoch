@@ -74,6 +74,7 @@ abstract class TimeValueRow extends StatelessWidget {
   List<Widget> _buildDstTransitionsSection(
       String ianaZone, BuildContext context, AppLocalizations l10n) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final transitions = TimeUtils.nextDstTransitions(
         ianaZone, EffectiveClock.now().toUtc(), count: 4);
     if (transitions.isEmpty) return [];
@@ -101,10 +102,10 @@ abstract class TimeValueRow extends StatelessWidget {
         final zone = '$abbreviation ${formatUtcOffset(offset, withUtcPrefix: true)}';
         return sameDay
             ? TimeValueFormatter.formatTime(
-                app.hourFormat24, wall.hour, wall.minute, wall.second,
+                settings.hourFormat24, wall.hour, wall.minute, wall.second,
                 tzSuffix: zone)
             : TimeValueFormatter.formatDateTime(
-                app.hourFormat24, locale, wall, zone);
+                settings.hourFormat24, locale, wall, zone);
       }
       final zonedStr =
           '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
@@ -112,7 +113,7 @@ abstract class TimeValueRow extends StatelessWidget {
           '→ ${describeWallClock(wallClock.after, abbrAfter.padRight(5), wallClock.offsetAfter)}';
 
       final localStr = TimeValueFormatter.formatDateTime(
-          app.hourFormat24, locale, localTime, null);
+          settings.hourFormat24, locale, localTime, null);
       // Only show local time if it differs from zoned time (different day or hour):
       final showLocal = zonedTime.day != localTime.day ||
           zonedTime.hour != localTime.hour ||
@@ -120,7 +121,7 @@ abstract class TimeValueRow extends StatelessWidget {
 
       final localAbbrAtTransition = () {
         try {
-          final localLoc = tz.getLocation(app.localIanaZone);
+          final localLoc = tz.getLocation(settings.localIanaZone);
           final abbr = tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
           return localizeTimezoneAbbr(abbr, l10n.localeName);
         } catch (_) {

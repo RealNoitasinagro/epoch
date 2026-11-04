@@ -63,13 +63,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _locale = app.locale;
       _themeMode = app.themeMode;
-      _hourFormat24 = app.hourFormat24;
-      _thousandsSep = app.thousandsSep;
-      _dateWithDetails = app.dateWithDetails;
-      _dateFormat = app.dateFormat;
-      _timeFormat = app.timeFormat;
+      _dateFormat = app.formatSettings.dateFormat;
+      _dateWithDetails = app.formatSettings.dateWithDetails;
+      _timeFormat = app.formatSettings.timeFormat;
+      _hourFormat24 = app.formatSettings.hourFormat24;
+      _thousandsSep = app.formatSettings.thousandsSep;
+      _zoneDisplayMode = app.formatSettings.zoneDisplayMode;
       _dayQuarterColor = app.dayQuarterColor;
-      _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';

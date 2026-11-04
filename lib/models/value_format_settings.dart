@@ -5,27 +5,26 @@ import 'time_value.dart';
 /// Resolved once by the app and handed down, instead of passing eight
 /// parameters from widget to widget.
 class ValueFormatSettings {
+  final String localIanaZone;
+  final String dateFormat;
+  final bool dateWithDetails;
+  final String timeFormat;
   final bool hourFormat24;
   final bool thousandsSep;
-  final String dateFormat;
-  final String timeFormat;
   final ZoneDisplayMode zoneDisplayMode;
-  final bool dateWithDetails;
-  final String localIanaZone;
   final double? longitude;
+  final Set<ValueType> optionalPartHiddenTypes;
 
   /// Value types whose seconds or decimals are hidden unless the value
   /// itself says otherwise.
-  final Set<ValueType> optionalPartHiddenTypes;
-
   const ValueFormatSettings({
+    this.localIanaZone = 'UTC',
+    this.dateFormat = kDatePatternIso,
+    this.dateWithDetails = kDefaultDateWithDetails,
+    this.timeFormat = kTimePatternFull,
     this.hourFormat24 = kDefaultHourFormat24,
     this.thousandsSep = kDefaultThousandsSep,
-    this.dateFormat = kDatePatternIso,
-    this.timeFormat = kTimePatternFull,
     this.zoneDisplayMode = kDefaultZoneDisplayMode,
-    this.dateWithDetails = kDefaultDateWithDetails,
-    this.localIanaZone = 'UTC',
     this.longitude,
     this.optionalPartHiddenTypes = const {},
   });

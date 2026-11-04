@@ -31,7 +31,7 @@ class TimeGraphicalRow extends TimeValueRow {
       now: moment.wallClock,
       l10n: l10n,
       showSeconds: settings.showsOptionalPart(timeValue),
-      hourFormat24: app.hourFormat24,
+      hourFormat24: settings.hourFormat24,
       segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
     );
 

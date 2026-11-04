@@ -635,7 +635,7 @@ class _FocusScreenState extends State<FocusScreen> {
         now: wallClock,
         l10n: l10n,
         showSeconds: _showOptionalPart,
-        hourFormat24: app.hourFormat24,
+        hourFormat24: app.formatSettings.hourFormat24,
         segmentColor: _textColor,
         focusSize: true,
       );
