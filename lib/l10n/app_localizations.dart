@@ -710,6 +710,12 @@ abstract class AppLocalizations {
   /// **'DD'**
   String get labelDay;
 
+  /// No description provided for @labelDefaultState.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {state}'**
+  String labelDefaultState(String state);
+
   /// No description provided for @labelDstChangeInDays.
   ///
   /// In en, this message translates to:
@@ -1123,6 +1129,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'on'**
   String get settingsOn;
+
+  /// No description provided for @settingsOptionalPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds and decimals'**
+  String get settingsOptionalPart;
+
+  /// No description provided for @settingsOptionalPartAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get settingsOptionalPartAll;
+
+  /// No description provided for @settingsOptionalPartSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}'**
+  String settingsOptionalPartSummary(int hidden, int total);
 
   /// No description provided for @settingsPreferencesExport.
   ///

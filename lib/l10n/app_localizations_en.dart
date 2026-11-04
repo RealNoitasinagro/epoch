@@ -385,6 +385,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelDay => 'DD';
 
   @override
+  String labelDefaultState(String state) {
+    return 'Default: $state';
+  }
+
+  @override
   String labelDstChangeInDays(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -610,6 +615,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsOn => 'on';
+
+  @override
+  String get settingsOptionalPart => 'Seconds and decimals';
+
+  @override
+  String get settingsOptionalPartAll => 'All';
+
+  @override
+  String settingsOptionalPartSummary(int hidden, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hidden,
+      locale: localeName,
+      other: '$hidden of $total hidden',
+      zero: 'All shown',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get settingsPreferencesExport => 'Export preferences';

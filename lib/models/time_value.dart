@@ -425,3 +425,9 @@ extension ValueTypeProps on ValueType {
     _ => OptionalPart.none,
   };
 }
+
+/// Value types with an optional part (seconds or decimals), in enum order.
+final List<ValueType> optionalPartTypes = [
+  for (final valueType in ValueType.values)
+    if (valueType.optionalPart != OptionalPart.none) valueType,
+];

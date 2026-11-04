@@ -202,8 +202,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
-    bool selectedShowOptionalPart = settings.showsOptionalPart(timeValue);
     final optionalPart = timeValue.valueType.optionalPart;
+    final shownByDefault =
+        !settings.optionalPartHiddenTypes.contains(timeValue.valueType);
+    bool? selectedShowOptionalPart = timeValue.showOptionalPart;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
     final existingModes = widget.entries
@@ -218,7 +220,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     var selectedMode = timeValue.timezoneClockChangeMode;
 
     final result = await showDialog<
-      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showOptionalPart})
+      ({String? label, TimezoneClockChangeMode mode, bool reset, bool? showOptionalPart})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -297,11 +299,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
+                  tristate: true,
                   title: Text(optionalPart == OptionalPart.decimals
                       ? l10n.labelShowDecimals
                       : l10n.labelShowSeconds),
+                  subtitle: selectedShowOptionalPart == null
+                      ? Text(l10n.labelDefaultState(
+                      shownByDefault ? l10n.settingsOn : l10n.settingsOff))
+                      : null,
                   value: selectedShowOptionalPart,
-                  onChanged: (v) => setDialogState(() => selectedShowOptionalPart = v ?? true),
+                  onChanged: (value) =>
+                      setDialogState(() => selectedShowOptionalPart = value),
                 ),
               ],
             ],
@@ -310,7 +318,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             TextButton(
               onPressed: () => Navigator.pop(ctx,
                   (label: null, mode: TimezoneClockChangeMode.auto,
-                  reset: true, showOptionalPart: true)
+                  reset: true, showOptionalPart: null)
               ),
               child: Text(l10n.hintResetToDefaults),
             ),
@@ -339,7 +347,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             ? null
             : result.label;
     final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
-    final newShowOptionalPart = result.reset ? true : result.showOptionalPart;
+    final newShowOptionalPart = result.reset ? null : result.showOptionalPart;
 
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue

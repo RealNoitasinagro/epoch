@@ -42,6 +42,13 @@
       }
     }
   },
+  "@labelDefaultState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -67,6 +74,16 @@
     "placeholders": {
       "resetAction": {
         "type": "String"
+      }
+    }
+  },
+  "@settingsOptionalPartSummary": {
+    "placeholders": {
+      "hidden": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -226,6 +243,7 @@
   "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
   "labelDay": "TT",
+  "labelDefaultState": "Standard: {state}",
   "labelDstChangeInDays": "in {days} {days, plural, one{Tag} other{Tagen}}",
   "labelDstChangeToday": "heute",
   "labelDstChangeTomorrow": "morgen",
@@ -295,6 +313,9 @@
   "settingsLmstOff": "Nicht anzeigen",
   "settingsOff": "aus",
   "settingsOn": "an",
+  "settingsOptionalPart": "Sekunden und Dezimalstellen",
+  "settingsOptionalPartAll": "Alle",
+  "settingsOptionalPartSummary": "{hidden, plural, =0{Alle angezeigt} other{{hidden} von {total} ausgeblendet}}",
   "settingsPreferencesExport": "Einstellungen exportieren",
   "settingsPreferencesImport": "Einstellungen importieren",
   "settingsPreferencesReset": "Einstellungen zurücksetzen",

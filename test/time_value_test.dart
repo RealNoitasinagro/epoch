@@ -223,6 +223,7 @@ void main() {
       for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
         expect(type.optionalPart, OptionalPart.none, reason: '$type');
       }
+      expect(optionalPartTypes.length, 12);
     });
     test('|nosec roundtrip still works after the rename', () {
       const value = TimeValue(

@@ -11,6 +11,7 @@ import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
 import 'entry_picker.dart';
+import 'optional_part_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,6 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _dateWithDetails;
   late String _dateFormat;
   late String _timeFormat;
+  late Set<ValueType> _optionalPartHiddenTypes;
   late ZoneDisplayMode _zoneDisplayMode;
   late bool _dayQuarterColor;
   late LmstMode _lmstMode;
@@ -67,6 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _dateWithDetails = app.formatSettings.dateWithDetails;
       _timeFormat = app.formatSettings.timeFormat;
       _hourFormat24 = app.formatSettings.hourFormat24;
+      _optionalPartHiddenTypes = app.formatSettings.optionalPartHiddenTypes;
       _thousandsSep = app.formatSettings.thousandsSep;
       _zoneDisplayMode = app.formatSettings.zoneDisplayMode;
       _dayQuarterColor = app.dayQuarterColor;
@@ -469,6 +472,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         hourFormat24: _hourFormat24);
   }
 
+  Future<void> _showOptionalPartDialog(BuildContext context) async {
+    final hiddenTypes = await showDialog<Set<ValueType>>(
+      context: context,
+      builder: (_) => OptionalPartDialog(hiddenTypes: _optionalPartHiddenTypes),
+    );
+    if (hiddenTypes == null || !context.mounted) return;
+    setState(() => _optionalPartHiddenTypes = hiddenTypes);
+    EpochApp.of(context).setOptionalPartHiddenTypes(hiddenTypes);
+  }
+
   void _toggleTabVisibility(BuiltinTabKind kind, bool value) {
     final idx = _tabs.indexWhere((t) => t.builtinKind == kind);
     if (idx == -1) return;
@@ -604,6 +617,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.settingsTimeFormat),
             subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
             onTap: () => _showFormatPicker(context, l10n, isDate: false),
+          ),
+          ListTile(
+            leading: const Icon(Icons.timer_outlined),
+            title: Text(l10n.settingsOptionalPart),
+            subtitle: Text(l10n.settingsOptionalPartSummary(
+              _optionalPartHiddenTypes.length,
+              optionalPartTypes.length,
+            )),
+            onTap: () => _showOptionalPartDialog(context),
           ),
           ListTile(
             leading: const Icon(Icons.format_list_numbered),

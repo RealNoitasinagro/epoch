@@ -42,6 +42,13 @@
       }
     }
   },
+  "@labelDefaultState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -67,6 +74,16 @@
     "placeholders": {
       "resetAction": {
         "type": "String"
+      }
+    }
+  },
+  "@settingsOptionalPartSummary": {
+    "placeholders": {
+      "hidden": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -226,6 +243,7 @@
   "infoTextTime": "The current time in the selected timezone.",
   "infoTextUnixSeconds": "Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.",
   "labelDay": "DD",
+  "labelDefaultState": "Default: {state}",
   "labelDstChangeInDays": "in {days} {days, plural, one{day} other{days}}",
   "labelDstChangeToday": "today",
   "labelDstChangeTomorrow": "tomorrow",
@@ -295,6 +313,9 @@
   "settingsLmstOff": "Do not show",
   "settingsOff": "off",
   "settingsOn": "on",
+  "settingsOptionalPart": "Seconds and decimals",
+  "settingsOptionalPartAll": "All",
+  "settingsOptionalPartSummary": "{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}",
   "settingsPreferencesExport": "Export preferences",
   "settingsPreferencesImport": "Import preferences",
   "settingsPreferencesReset": "Reset preferences",
