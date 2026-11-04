@@ -274,6 +274,15 @@ void main() {
     test('withShowOptionalPart(null) goes back to the default', () {
       expect(hidden.withShowOptionalPart(null).showOptionalPart, isNull);
     });
+
+    test('combined suffixes are read in the order they are written', () {
+      final parsed = TimeValue.fromPrefsString(
+        'sevenSegmentClock/named:Europe/Berlin||dst:forceStandard|nosec',
+      )!;
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+      expect(parsed.customLabel, isNull);
+    });
   });
 
   group('day minute', () {

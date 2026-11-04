@@ -147,6 +147,7 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `time`                   | Current time                 |
 | `dateTime`               | Date and time combined       |
 | `daySecond`              | Seconds elapsed today        |
+| `dayMinute`              | Minutes elapsed today        |
 | `dayPercent`             | Day progress as percentage   |
 | *`sevenSegmentClock`*    | Seven-segment Clock          |
 | `unixSeconds`            | Unix timestamp               |
@@ -201,13 +202,25 @@ The optional suffix is only for zones that have DST:
 
 The optional suffix is for
 - graphical clocks (`sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`),
-- as well as `binaryClockString`, `romanNumeralsTime`, `swatchBeats`, and `newEarthTime`:
+- as well as:
+  - `time`
+  - `dateTime`
+  - `dayMinute`
+  - `dayPercent`
+  - `decimalTime`
+  - `swatchBeats`
+  - `newEarthTime`
+  - `binaryClockString`
+  - `romanNumeralsTime`
 
 | Suffix    | Effect                                                     |
 |-----------|------------------------------------------------------------|
 | *(none)*  | Global default (show seconds / decimals unless turned off) |
-| `\|sec`   | Show seconds / decimals                                    |
-| `\|nosec` | Hide seconds / decimals                                    |
+| `\|sec`   | Show seconds / decimals (forced on)                        |
+| `\|nosec` | Hide seconds / decimals (forced off)                       |
+
+> [!IMPORTANT]
+> The app expects clock change mode and show-seconds settings in this order, e. g. `time/named:Europe/Brussels||dst:forceStandard|nosec`.
 
 #### Divider
 

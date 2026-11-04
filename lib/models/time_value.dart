@@ -139,18 +139,10 @@ class TimeValue implements TabEntry {
   }
 
   static TimeValue? fromPrefsString(String s) {
-    TimezoneClockChangeMode timezoneClockChangeMode = TimezoneClockChangeMode.auto;
     var workStr = s;
-    final dstIdx = workStr.lastIndexOf('|dst:');
-    if (dstIdx >= 0) {
-      final dstStr = workStr.substring(dstIdx + 5);
-      timezoneClockChangeMode =
-          TimezoneClockChangeMode.values
-              .where((m) => m.name == dstStr)
-              .firstOrNull ??
-              TimezoneClockChangeMode.auto;
-      workStr = workStr.substring(0, dstIdx);
-    }
+
+    // The optional suffixes are written as "|dst:<mode>" followed by "|sec"
+    // or "|nosec", so they are taken off in the opposite order.
     bool? showOptionalPart;
     if (workStr.endsWith('|nosec')) {
       showOptionalPart = false;
@@ -158,6 +150,18 @@ class TimeValue implements TabEntry {
     } else if (workStr.endsWith('|sec')) {
       showOptionalPart = true;
       workStr = workStr.substring(0, workStr.length - '|sec'.length);
+    }
+
+    TimezoneClockChangeMode timezoneClockChangeMode =
+        TimezoneClockChangeMode.auto;
+    final dstIdx = workStr.lastIndexOf('|dst:');
+    if (dstIdx >= 0) {
+      final dstName = workStr.substring(dstIdx + '|dst:'.length);
+      timezoneClockChangeMode = TimezoneClockChangeMode.values
+          .where((mode) => mode.name == dstName)
+          .firstOrNull ??
+          TimezoneClockChangeMode.auto;
+      workStr = workStr.substring(0, dstIdx);
     }
 
     final pipeIdx = workStr.indexOf('|');

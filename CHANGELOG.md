@@ -16,6 +16,7 @@ onLongPress only toggles the value itself (seconds/decimals on/off)
 and IDs with hyphens such as Etc/GMT-5
 
 ### Fixed
+- values pinned to standard or summer time lost the pinning on restart or import when their seconds were hidden
 - day quarter color of values pinned to standard or summer time followed the real local time instead of the displayed one
 
 ---
