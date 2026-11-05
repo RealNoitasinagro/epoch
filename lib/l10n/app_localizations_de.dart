@@ -644,6 +644,10 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get settingsOptionalPartTimeNote =>
+      'Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.';
+
+  @override
   String get settingsPreferencesExport => 'Einstellungen exportieren';
 
   @override

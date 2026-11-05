@@ -21,14 +21,14 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
   /// True: all shown, false: all hidden, null: mixed.
   bool? get _allShown {
     if (_hiddenTypes.isEmpty) return true;
-    if (_hiddenTypes.length == optionalPartTypes.length) return false;
+    if (_hiddenTypes.length == globalOptionalPartTypes.length) return false;
     return null;
   }
 
   void _setAllShown(bool shown) {
     setState(() {
       _hiddenTypes.clear();
-      if (!shown) _hiddenTypes.addAll(optionalPartTypes);
+      if (!shown) _hiddenTypes.addAll(globalOptionalPartTypes);
     });
   }
 
@@ -47,7 +47,7 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
       OptionalPart optionalPart,
       AppLocalizations l10n,
       ) {
-    final valueTypes = optionalPartTypes.where(
+    final valueTypes = globalOptionalPartTypes.where(
           (valueType) => valueType.optionalPart == optionalPart,
     );
     return Column(
@@ -92,6 +92,14 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
             ),
             const Divider(),
             _group(l10n.labelShowSeconds, OptionalPart.seconds, l10n),
+            const SizedBox(height: 8),
+            Text(
+              l10n.settingsOptionalPartTimeNote,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(170),
+              ),
+            ),
+            const Divider(),
             _group(l10n.labelShowDecimals, OptionalPart.decimals, l10n),
           ],
         ),

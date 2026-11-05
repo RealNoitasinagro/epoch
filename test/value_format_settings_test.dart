@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const time = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+  const dayMinute = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
   const timeShown = TimeValue(
     valueType: ValueType.time,
     zone: ZoneUtc(),
@@ -19,9 +20,9 @@ void main() {
 
   test('the global default applies per value type', () {
     const settings = ValueFormatSettings(
-      optionalPartHiddenTypes: {ValueType.time},
+      optionalPartHiddenTypes: {ValueType.dayMinute},
     );
-    expect(settings.showsOptionalPart(time), isFalse);
+    expect(settings.showsOptionalPart(dayMinute), isFalse);
     expect(settings.showsOptionalPart(swatchBeats), isTrue);
   });
 
@@ -30,6 +31,29 @@ void main() {
       optionalPartHiddenTypes: {ValueType.time},
     );
     expect(settings.showsOptionalPart(timeShown), isTrue);
+  });
+
+  test('time and date & time follow the time format', () {
+    const dateTime = TimeValue(valueType: ValueType.dateTime, zone: ZoneUtc());
+    const withSeconds = ValueFormatSettings(timeFormat: 'HH:mm:ss');
+    const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
+    expect(withSeconds.showsOptionalPart(time), isTrue);
+    expect(withSeconds.showsOptionalPart(dateTime), isTrue);
+    expect(withoutSeconds.showsOptionalPart(time), isFalse);
+    expect(withoutSeconds.showsOptionalPart(dateTime), isFalse);
+  });
+
+  test("a value's own choice wins over the time format", () {
+    const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
+    expect(withoutSeconds.showsOptionalPart(timeShown), isTrue);
+  });
+
+  test('the global hidden types do not apply to time', () {
+    const settings = ValueFormatSettings(
+      timeFormat: 'HH:mm:ss',
+      optionalPartHiddenTypes: {ValueType.time},
+    );
+    expect(settings.showsOptionalPart(time), isTrue);
   });
 
   group('details line', () {

@@ -1,4 +1,5 @@
 import 'app_settings.dart';
+import 'time_pattern.dart';
 import 'time_value.dart';
 
 /// The global settings that decide how a value is turned into text.
@@ -29,11 +30,21 @@ class ValueFormatSettings {
     this.optionalPartHiddenTypes = const {},
   });
 
+  /// Whether seconds or decimals of a value type are shown unless the value
+  /// itself says otherwise: for time and date & time the time format decides,
+  /// for all other types the global choice.
+  bool showsOptionalPartByDefault(ValueType valueType) {
+    if (valueType.optionalPartFollowsTimeFormat) {
+      return timePatternHasSeconds(timeFormat);
+    }
+    return !optionalPartHiddenTypes.contains(valueType);
+  }
+
   /// Whether the optional part (seconds or decimals) of [timeValue] is shown:
-  /// its own choice wins, otherwise the global default for its type applies.
+  /// its own choice wins, otherwise the default for its type applies.
   bool showsOptionalPart(TimeValue timeValue) {
     return timeValue.showOptionalPart ??
-        !optionalPartHiddenTypes.contains(timeValue.valueType);
+        showsOptionalPartByDefault(timeValue.valueType);
   }
 
   /// Whether the details line of a value of this type is shown when the value

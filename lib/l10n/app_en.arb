@@ -317,6 +317,7 @@
   "settingsOptionalPart": "Seconds and decimals",
   "settingsOptionalPartAll": "All",
   "settingsOptionalPartSummary": "{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}",
+  "settingsOptionalPartTimeNote": "Time and Date & Time follow the time format.",
   "settingsPreferencesExport": "Export preferences",
   "settingsPreferencesImport": "Import preferences",
   "settingsPreferencesReset": "Reset preferences",

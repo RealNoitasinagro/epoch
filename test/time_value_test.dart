@@ -195,8 +195,6 @@ void main() {
       expect(ValueType.newEarthTime.optionalPart, OptionalPart.decimals);
     });
     test('seconds for string-type values', () {
-      expect(ValueType.time.optionalPart, OptionalPart.seconds);
-      expect(ValueType.dateTime.optionalPart, OptionalPart.seconds);
       expect(ValueType.dayMinute.optionalPart, OptionalPart.seconds);
       expect(ValueType.decimalTime.optionalPart, OptionalPart.seconds);
       expect(ValueType.binaryClockString.optionalPart, OptionalPart.seconds);
@@ -220,7 +218,7 @@ void main() {
       for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
         expect(type.optionalPart, OptionalPart.none, reason: '$type');
       }
-      expect(optionalPartTypes.length, 12);
+      expect(globalOptionalPartTypes.length, 10);
     });
     test('|nosec roundtrip still works after the rename', () {
       const value = TimeValue(

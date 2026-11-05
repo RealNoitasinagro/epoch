@@ -637,6 +637,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get settingsOptionalPartTimeNote =>
+      'Time and Date & Time follow the time format.';
+
+  @override
   String get settingsPreferencesExport => 'Export preferences';
 
   @override

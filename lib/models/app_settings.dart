@@ -304,7 +304,8 @@ Future<Set<ValueType>> loadOptionalPartHiddenTypes() async {
   return {
     for (final valueType in ValueType.values)
       if (names.contains(valueType.name) &&
-          valueType.optionalPart != OptionalPart.none)
+          valueType.optionalPart != OptionalPart.none &&
+          !valueType.optionalPartFollowsTimeFormat)
         valueType,
   };
 }

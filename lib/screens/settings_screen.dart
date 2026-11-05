@@ -623,7 +623,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.settingsOptionalPart),
             subtitle: Text(l10n.settingsOptionalPartSummary(
               _optionalPartHiddenTypes.length,
-              optionalPartTypes.length,
+              globalOptionalPartTypes.length,
             )),
             onTap: () => _showOptionalPartDialog(context),
           ),

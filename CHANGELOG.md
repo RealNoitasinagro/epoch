@@ -5,8 +5,8 @@
 ### Added
 - new value type: day minute with optional seconds
 - seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
-with a global default per value type (Settings, "Seconds and decimals") and an override for each value;
-Focus screen starts with the resolved setting
+with a global default per value type (Settings, "Seconds and decimals"; time and date & time follow the time format)
+and an override for each value on tabs; Focus screen starts with what is shown on the tab
 - the details line (time zone, week and day of the year, angle) can be shown or hidden for each value,
 overriding the global settings
 - errors during app start are shown on screen, with copyable details, instead of a black screen

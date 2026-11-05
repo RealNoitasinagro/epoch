@@ -317,6 +317,7 @@
   "settingsOptionalPart": "Sekunden und Dezimalstellen",
   "settingsOptionalPartAll": "Alle",
   "settingsOptionalPartSummary": "{hidden, plural, =0{Alle angezeigt} other{{hidden} von {total} ausgeblendet}}",
+  "settingsOptionalPartTimeNote": "Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.",
   "settingsPreferencesExport": "Einstellungen exportieren",
   "settingsPreferencesImport": "Einstellungen importieren",
   "settingsPreferencesReset": "Einstellungen zurücksetzen",

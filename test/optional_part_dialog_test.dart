@@ -44,13 +44,13 @@ void main() {
       hiddenTypes: {},
       tapTexts: ['All'],
     );
-    expect(result, optionalPartTypes.toSet());
+    expect(result, globalOptionalPartTypes.toSet());
   });
 
   testWidgets('the master checkbox shows everything when some are hidden', (tester) async {
     final result = await openDialogAndTap(
       tester,
-      hiddenTypes: {ValueType.time},
+      hiddenTypes: {ValueType.dayMinute},
       tapTexts: ['All'],
     );
     expect(result, isEmpty);
@@ -60,9 +60,9 @@ void main() {
     final result = await openDialogAndTap(
       tester,
       hiddenTypes: {},
-      tapTexts: ['Time'],
+      tapTexts: ['Day minute'],
     );
-    expect(result, {ValueType.time});
+    expect(result, {ValueType.dayMinute});
   });
 
   testWidgets('cancel discards the changes', (tester) async {

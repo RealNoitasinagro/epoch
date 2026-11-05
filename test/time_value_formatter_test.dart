@@ -23,6 +23,24 @@ void main() {
     return TimeValueFormatter.format(timeValue, now, locale, settings: settings);
   }
 
+  String line1(
+      TimeValue timeValue,
+      DateTime utcMoment, {
+        bool hourFormat24 = true,
+        String timeFormat = kTimePatternFull,
+      }) {
+    final formatted = TimeValueFormatter.format(
+      timeValue,
+      utcMoment,
+      'en',
+      settings: ValueFormatSettings(
+        hourFormat24: hourFormat24,
+        timeFormat: timeFormat,
+      ),
+    );
+    return TimeStringRow.splitZoneOffset(formatted).line1;
+  }
+
   group('TimeValueFormatter.format – zone-independent', () {
     final t = DateTime.utc(2001, 9, 9, 1, 46, 40); // Unix 1000000000
 
@@ -538,24 +556,6 @@ void main() {
   });
 
   group('optional part in the formatter', () {
-    String line1(
-        TimeValue timeValue,
-        DateTime utcMoment, {
-          bool hourFormat24 = true,
-          String timeFormat = kTimePatternFull,
-        }) {
-      final formatted = TimeValueFormatter.format(
-        timeValue,
-        utcMoment,
-        'en',
-        settings: ValueFormatSettings(
-          hourFormat24: hourFormat24,
-          timeFormat: timeFormat,
-        ),
-      );
-      return TimeStringRow.splitZoneOffset(formatted).line1;
-    }
-
     final moment = DateTime.utc(2026, 6, 15, 14, 5, 9);
     const timeWithoutSeconds = TimeValue(
       valueType: ValueType.time,
@@ -587,26 +587,24 @@ void main() {
       );
       expect(line1(decimalTime, DateTime.utc(2026, 6, 15, 12)), '5ʰ00ᵐ');
     });
-  });
 
-  group('TimeValueFormatter.timePatternWithoutSeconds', () {
-    test('removes the seconds and the separator before them', () {
-      expect(TimeValueFormatter.timePatternWithoutSeconds('HH:mm:ss'), 'HH:mm');
-      expect(TimeValueFormatter.timePatternWithoutSeconds('H:mm:ss'), 'H:mm');
-      expect(TimeValueFormatter.timePatternWithoutSeconds('HHmmss'), 'HHmm');
-      expect(TimeValueFormatter.timePatternWithoutSeconds('HH.mm.ss'), 'HH.mm');
-    });
-
-    test('keeps text after the seconds', () {
+    test('forcing seconds adds them to a format without seconds', () {
+      const timeWithSeconds = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneUtc(),
+        showOptionalPart: true,
+      );
+      expect(line1(timeWithSeconds, moment, timeFormat: 'HH:mm'), '14:05:09');
       expect(
-        TimeValueFormatter.timePatternWithoutSeconds('HH:mm:ss Uhr'),
-        'HH:mm Uhr',
+        line1(timeWithSeconds, moment, timeFormat: 'H.mm', hourFormat24: false),
+        '2.05.09 PM',
       );
     });
 
-    test('leaves patterns without seconds, or with them before the minutes, alone', () {
-      expect(TimeValueFormatter.timePatternWithoutSeconds('HH:mm'), 'HH:mm');
-      expect(TimeValueFormatter.timePatternWithoutSeconds('ss:mm:HH'), 'ss:mm:HH');
+    test('without a choice the time format decides', () {
+      const time = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+      expect(line1(time, moment, timeFormat: 'HH:mm'), '14:05');
+      expect(line1(time, moment, timeFormat: 'HH:mm:ss'), '14:05:09');
     });
   });
 }

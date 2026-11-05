@@ -22,29 +22,29 @@ Default values will show up in config files when a non-default value had been co
 
 ### Global Settings
 
-| Key                          | Type             | Default                         | Description                                                                                                                                                              |
-|------------------------------|------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `active_tab`                 | string           | `0`                             | App will start with the tab used last                                                                                                                                    |
-| `all_tabs`                   | array of strings | `[]`                            | Each line contains the settings for one tab (see below)                                                                                                                  |
-| `date_cw_doy`                | bool             | `true`                          | Show ISO week number and day of year                                                                                                                                     |
-| `date_format`                | string           | `"EEE, YYYY-MM-DD"`             | Date display format (see tokens below)                                                                                                                                   |
-| `day_quarter_color`          | bool             | `true`                          | Show day quarter indicator in night red, cyan, amber, matrix green                                                                                                       |
-| `focus_brightness`           | number           | `0.5` (except night[^3])        | Focus screen brightness (0.01–1.0,  Android only)                                                                                                                        |
-| `focus_color`                | integer          | `4294967295` (except night[^3]) | Focus screen text color as ARGB integer (see below)                                                                                                                      |
-| `focus_pixel_shift`          | bool             | `true` (Android)                | Burn-in protection for Focus screen through regular pixel shift                                                                                                          |
-| `focus_time_shift_indicator` | bool             | `true`                          | Show a Time Shift icon in the Focus screen while the displayed time deviates from the system time                                                                        |
-| `hour_format_24`             | bool             | `true`                          | 24-hour clock                                                                                                                                                            |
-| `last_export_dir`            | string           | `—`                             | Path to a folder (defaults platform-specific)                                                                                                                            |
-| `last_imported_config`[^1]   | string           | `—`                             | Filename of the last imported config                                                                                                                                     |
-| `lmst_longitude`             | number           | `—`                             | Longitude in decimal degrees (−180 to +180)                                                                                                                              |
-| `lmst_mode`                  | string           | `"off"`                         | `"off"`, `"manual"`, `"locationAccess"`                                                                                                                                  |
-| `locale`                     | string           | `"en"`                          | `"en"` or `"de"`                                                                                                                                                         |
-| `optional_part_hidden`       | array of strings | `[]`                            | Value types whose seconds or decimals are hidden by default (see [Seconds and decimals](#seconds-and-decimals)); unknown names and types without such a part are ignored |
-| `startup_focus_value`        | string           | `—`                             | App will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)                                                                         |
-| `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                                                                                               |
-| `time_format`                | string           | `"HH:mm:ss"`                    | Time display format (see tokens below)                                                                                                                                   |
-| `thousands_sep`              | bool             | `true`                          | Thousands separator in numbers (locale-dependent)                                                                                                                        |
-| `zone_display_mode`          | string           | `"full"`                        | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"`                                                                                  |
+| Key                          | Type             | Default                         | Description                                                                                                                                                                 |
+|------------------------------|------------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `active_tab`                 | string           | `0`                             | App will start with the tab used last                                                                                                                                       |
+| `all_tabs`                   | array of strings | `[]`                            | Each line contains the settings for one tab (see below)                                                                                                                     |
+| `date_cw_doy`                | bool             | `true`                          | Show ISO week number and day of year                                                                                                                                        |
+| `date_format`                | string           | `"EEE, YYYY-MM-DD"`             | Date display format (see tokens below)                                                                                                                                      |
+| `day_quarter_color`          | bool             | `true`                          | Show day quarter indicator in night red, cyan, amber, matrix green                                                                                                          |
+| `focus_brightness`           | number           | `0.5` (except night[^3])        | Focus screen brightness (0.01–1.0,  Android only)                                                                                                                           |
+| `focus_color`                | integer          | `4294967295` (except night[^3]) | Focus screen text color as ARGB integer (see below)                                                                                                                         |
+| `focus_pixel_shift`          | bool             | `true` (Android)                | Burn-in protection for Focus screen through regular pixel shift                                                                                                             |
+| `focus_time_shift_indicator` | bool             | `true`                          | Show a Time Shift icon in the Focus screen while the displayed time deviates from the system time                                                                           |
+| `hour_format_24`             | bool             | `true`                          | 24-hour clock                                                                                                                                                               |
+| `last_export_dir`            | string           | `—`                             | Path to a folder (defaults platform-specific)                                                                                                                               |
+| `last_imported_config`[^1]   | string           | `—`                             | Filename of the last imported config                                                                                                                                        |
+| `lmst_longitude`             | number           | `—`                             | Longitude in decimal degrees (−180 to +180)                                                                                                                                 |
+| `lmst_mode`                  | string           | `"off"`                         | `"off"`, `"manual"`, `"locationAccess"`                                                                                                                                     |
+| `locale`                     | string           | `"en"`                          | `"en"` or `"de"`                                                                                                                                                            |
+| `optional_part_hidden`       | array of strings | `[]`                            | Value types whose seconds or decimals are hidden by default (not `time` and `dateTime`, they follow `time_format`); unknown names and types without such a part are ignored |
+| `startup_focus_value`        | string           | `—`                             | App will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)                                                                            |
+| `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                                                                                                  |
+| `time_format`                | string           | `"HH:mm:ss"`                    | Time display format (see tokens below)                                                                                                                                      |
+| `thousands_sep`              | bool             | `true`                          | Thousands separator in numbers (locale-dependent)                                                                                                                           |
+| `zone_display_mode`          | string           | `"full"`                        | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"`                                                                                     |
 
 [^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
 [^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.
@@ -209,15 +209,15 @@ Some value types have an optional part that can be shown or hidden:
 | seconds       | `time`, `dateTime`, `dayMinute`, `decimalTime`, `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `romanNumeralsTime` |
 | decimals      | `dayPercent`, `swatchBeats`, `newEarthTime`                                                                                                           |
 
-Hiding the seconds of `time` and `dateTime` removes them, and the separator before them, from the time format: `HH:mm:ss` becomes `HH:mm`. Formats without seconds are not affected. Hidden decimals are cut off, not rounded.
+Whether the part is shown is decided in this order: the suffix of the value itself, then the default for its type, then *shown*. The default is `optional_part_hidden` for all types except `time` and `dateTime`: for these two, a `time_format` with seconds (`ss`) shows them, one without hides them.
 
-Whether the part is shown is decided in this order: the suffix of the value itself, then the global default (`optional_part_hidden`), then *shown*.
+| Suffix    | Effect                                                                                      |
+|-----------|---------------------------------------------------------------------------------------------|
+| *(none)*  | the default for the type                                                                    |
+| `\|sec`   | shown (forced on); a `time_format` without seconds is extended: `HH:mm` becomes `HH:mm:ss`  |
+| `\|nosec` | hidden (forced off); seconds are removed from the `time_format`: `HH:mm:ss` becomes `HH:mm` |
 
-| Suffix    | Effect                                                                     |
-|-----------|----------------------------------------------------------------------------|
-| *(none)*  | global default: shown, unless the type is listed in `optional_part_hidden` |
-| `\|sec`   | shown (forced on)                                                          |
-| `\|nosec` | hidden (forced off)                                                        |
+Hidden decimals are cut off, not rounded.
 
 ##### Details line
 

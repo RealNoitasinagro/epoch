@@ -203,8 +203,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
     final optionalPart = timeValue.valueType.optionalPart;
-    final optionalPartshownByDefault =
-        !settings.optionalPartHiddenTypes.contains(timeValue.valueType);
+    final optionalPartShownByDefault =
+        settings.showsOptionalPartByDefault(timeValue.valueType);
     final detailsShownByDefault =
         settings.showsDetailsByDefault(timeValue.valueType);
     bool? selectedShowOptionalPart = timeValue.showOptionalPart;
@@ -309,8 +309,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       ? l10n.labelShowDecimals
                       : l10n.labelShowSeconds),
                   subtitle: selectedShowOptionalPart == null
-                      ? Text(l10n.labelDefaultState(
-                      optionalPartshownByDefault ? l10n.settingsOn : l10n.settingsOff))
+                      ? Text(
+                          l10n.labelDefaultState(
+                            optionalPartShownByDefault
+                              ? l10n.settingsOn
+                              : l10n.settingsOff
+                          )
+                        )
                       : null,
                   value: selectedShowOptionalPart,
                   onChanged: (value) =>
@@ -324,10 +329,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   tristate: true,
                   title: Text(l10n.labelShowDetails),
                   subtitle: selectedShowDetails == null
-                      ? Text(l10n.labelDefaultState(
-                      detailsShownByDefault
-                          ? l10n.settingsOn
-                          : l10n.settingsOff))
+                      ? Text(
+                          l10n.labelDefaultState(
+                            detailsShownByDefault
+                              ? l10n.settingsOn
+                            : l10n.settingsOff
+                          )
+                        )
                       : null,
                   value: selectedShowDetails,
                   onChanged: (value) =>

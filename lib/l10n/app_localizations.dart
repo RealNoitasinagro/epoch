@@ -1154,6 +1154,12 @@ abstract class AppLocalizations {
   /// **'{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}'**
   String settingsOptionalPartSummary(int hidden, int total);
 
+  /// No description provided for @settingsOptionalPartTimeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Time and Date & Time follow the time format.'**
+  String get settingsOptionalPartTimeNote;
+
   /// No description provided for @settingsPreferencesExport.
   ///
   /// In en, this message translates to:

@@ -18,15 +18,15 @@ void main() {
 
   test('hidden optional parts: round trip, unknown names and types without one are dropped', () async {
     SharedPreferences.setMockInitialValues({
-      'optional_part_hidden': ['time', 'swatchBeats', 'date', 'noSuchType'],
+      'optional_part_hidden': ['time','swatchBeats', 'date', 'noSuchType'],
     });
     expect(
       await loadOptionalPartHiddenTypes(),
-      {ValueType.time, ValueType.swatchBeats},
+      {ValueType.swatchBeats},
     );
 
-    await saveOptionalPartHiddenTypes({ValueType.swatchBeats, ValueType.time});
+    await saveOptionalPartHiddenTypes({ValueType.swatchBeats, ValueType.dayMinute});
     final prefs = await SharedPreferences.getInstance();
-    expect(prefs.getStringList('optional_part_hidden'), ['time', 'swatchBeats']);
+    expect(prefs.getStringList('optional_part_hidden'), ['dayMinute', 'swatchBeats']);
   });
 }

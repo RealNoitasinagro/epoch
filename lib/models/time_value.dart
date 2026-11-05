@@ -409,77 +409,89 @@ class TimeValue implements TabEntry {
 }
 
 extension ValueTypeProps on ValueType {
-  bool get isZoneIndependent => switch (this) {
-    ValueType.date => false,
-    ValueType.time => false,
-    ValueType.dateTime => false,
-    ValueType.daySecond => false,
-    ValueType.dayMinute => false,
-    ValueType.dayPercent => false,
-    ValueType.sevenSegmentClock => false,
-    ValueType.unixSeconds => true,
-    ValueType.tai => true,
-    ValueType.gps => true,
-    ValueType.gmst => true,
-    ValueType.lmst => true,
-    ValueType.julianDate => true,
-    ValueType.reducedJulianDate => true,
-    ValueType.modifiedJulianDate => true,
-    ValueType.dublinJulianDate => true,
-    ValueType.cnesJulianDate => true,
-    ValueType.ccsdsJulianDate => true,
-    ValueType.modifiedJulianDate2000 => true,
-    ValueType.decimalTime => false,
-    ValueType.swatchBeats => true,
-    ValueType.newEarthTime => true,
-    ValueType.binaryClockBcd => false,
-    ValueType.binaryClockColumns => false,
-    ValueType.binaryClockString => false,
-    ValueType.octalTime => false,
-    ValueType.hexadecimalTime => false,
-    ValueType.romanNumeralsTime => false,
-    ValueType.doomsdayClock => true,
-  };
+  bool get isZoneIndependent =>
+      switch (this) {
+        ValueType.date => false,
+        ValueType.time => false,
+        ValueType.dateTime => false,
+        ValueType.daySecond => false,
+        ValueType.dayMinute => false,
+        ValueType.dayPercent => false,
+        ValueType.sevenSegmentClock => false,
+        ValueType.unixSeconds => true,
+        ValueType.tai => true,
+        ValueType.gps => true,
+        ValueType.gmst => true,
+        ValueType.lmst => true,
+        ValueType.julianDate => true,
+        ValueType.reducedJulianDate => true,
+        ValueType.modifiedJulianDate => true,
+        ValueType.dublinJulianDate => true,
+        ValueType.cnesJulianDate => true,
+        ValueType.ccsdsJulianDate => true,
+        ValueType.modifiedJulianDate2000 => true,
+        ValueType.decimalTime => false,
+        ValueType.swatchBeats => true,
+        ValueType.newEarthTime => true,
+        ValueType.binaryClockBcd => false,
+        ValueType.binaryClockColumns => false,
+        ValueType.binaryClockString => false,
+        ValueType.octalTime => false,
+        ValueType.hexadecimalTime => false,
+        ValueType.romanNumeralsTime => false,
+        ValueType.doomsdayClock => true,
+      };
 
   bool get isGraphical =>
       this == ValueType.sevenSegmentClock ||
       this == ValueType.binaryClockBcd ||
       this == ValueType.binaryClockColumns;
 
-  OptionalPart get optionalPart => switch (this) {
-    ValueType.dayPercent ||
-    ValueType.swatchBeats ||
-    ValueType.newEarthTime => OptionalPart.decimals,
-    ValueType.time ||
-    ValueType.dateTime ||
-    ValueType.dayMinute ||
-    ValueType.decimalTime ||
-    ValueType.sevenSegmentClock ||
-    ValueType.binaryClockBcd ||
-    ValueType.binaryClockColumns ||
-    ValueType.binaryClockString ||
-    ValueType.romanNumeralsTime => OptionalPart.seconds,
-    _ => OptionalPart.none,
-  };
+  OptionalPart get optionalPart =>
+      switch (this) {
+        ValueType.dayPercent ||
+        ValueType.swatchBeats ||
+        ValueType.newEarthTime => OptionalPart.decimals,
+        ValueType.time ||
+        ValueType.dateTime ||
+        ValueType.dayMinute ||
+        ValueType.decimalTime ||
+        ValueType.sevenSegmentClock ||
+        ValueType.binaryClockBcd ||
+        ValueType.binaryClockColumns ||
+        ValueType.binaryClockString ||
+        ValueType.romanNumeralsTime => OptionalPart.seconds,
+        _ => OptionalPart.none,
+      };
+
+  /// Time and date & time: whether seconds are shown by default follows the
+  /// time format (a pattern with "ss" shows them), not a per-type setting.
+  bool get optionalPartFollowsTimeFormat =>
+      this == ValueType.time || this == ValueType.dateTime;
 
   /// Types that can show a details line below the value: the time zone, the
   /// week and day of the year (date), or the angle (sidereal time).
-  bool get hasDetailsLine => switch (this) {
-    ValueType.date ||
-    ValueType.time ||
-    ValueType.dateTime ||
-    ValueType.daySecond ||
-    ValueType.dayPercent ||
-    ValueType.dayMinute ||
-    ValueType.decimalTime ||
-    ValueType.gmst ||
-    ValueType.lmst => true,
-    _ => false,
-  };
+  bool get hasDetailsLine =>
+      switch (this) {
+        ValueType.date ||
+        ValueType.time ||
+        ValueType.dateTime ||
+        ValueType.daySecond ||
+        ValueType.dayPercent ||
+        ValueType.dayMinute ||
+        ValueType.decimalTime ||
+        ValueType.gmst ||
+        ValueType.lmst => true,
+        _ => false,
+      };
 }
 
-/// Value types with an optional part (seconds or decimals), in enum order.
-final List<ValueType> optionalPartTypes = [
+/// Value types whose seconds or decimals can be hidden by default for all
+/// values of the type, in enum order. Time and date & time are not among
+/// them: their default follows the time format.
+final List<ValueType> globalOptionalPartTypes = [
   for (final valueType in ValueType.values)
-    if (valueType.optionalPart != OptionalPart.none) valueType,
+    if (valueType.optionalPart != OptionalPart.none &&
+        !valueType.optionalPartFollowsTimeFormat)
+      valueType,
 ];

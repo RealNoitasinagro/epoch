@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:numerus/numerus.dart';
 import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
+import 'models/time_pattern.dart';
 import 'models/time_value.dart';
 import 'models/timezone_abbreviation_localization.dart';
 import 'models/value_format_settings.dart';
@@ -115,7 +116,7 @@ class TimeValueFormatter {
     );
     final tzSuffix = '$tzLabel (${utcOffset})';
     final timePattern = showOptionalPart
-        ? timeFormat
+        ? timePatternWithSeconds(timeFormat)
         : timePatternWithoutSeconds(timeFormat);
 
     switch (timeValue.valueType) {
@@ -413,18 +414,5 @@ class TimeValueFormatter {
     final padding = width - text.length;
     if (padding <= 0) return text;
     return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
-  }
-
-  /// The time pattern without its seconds and the separator before them,
-  /// e.g. "HH:mm:ss" -> "HH:mm". Patterns where the seconds do not follow
-  /// the minutes are returned unchanged.
-  static String timePatternWithoutSeconds(String pattern) {
-    final secondsIndex = pattern.indexOf('ss');
-    if (secondsIndex < 0) return pattern;
-    final minutesIndex = pattern.lastIndexOf('mm', secondsIndex);
-    if (minutesIndex < 0) return pattern;
-    final endOfMinutes = minutesIndex + 'mm'.length;
-    return pattern.substring(0, endOfMinutes) +
-        pattern.substring(secondsIndex + 'ss'.length);
   }
 }
