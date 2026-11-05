@@ -800,6 +800,12 @@ abstract class AppLocalizations {
   /// **'Show decimals'**
   String get labelShowDecimals;
 
+  /// No description provided for @labelShowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get labelShowDetails;
+
   /// No description provided for @labelShowSeconds.
   ///
   /// In en, this message translates to:

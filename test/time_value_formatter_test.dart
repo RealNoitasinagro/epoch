@@ -476,6 +476,50 @@ void main() {
     });
   });
 
+  group('day minute', () {
+    setUpAll(() {
+      tzl.initializeTimeZones();
+    });
+
+    String line1(
+        TimeValue timeValue, DateTime utc,
+        {bool thousandsSep = false, String locale = 'en'}
+        ) {
+      return TimeStringRow.splitZoneOffset(
+          TimeValueFormatter.format(
+            timeValue, utc, locale,
+            settings: ValueFormatSettings(thousandsSep: thousandsSep),
+          )
+      ).line1;
+    }
+    const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
+    const utcNoSeconds = TimeValue(
+        valueType: ValueType.dayMinute, zone: ZoneUtc(), showOptionalPart: false);
+    const berlin = TimeValue(
+        valueType: ValueType.dayMinute, zone: ZoneNamed('Europe/Berlin'));
+
+    test('counts minutes since midnight, seconds follow the colon', () {
+      expect(line1(utc, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845:09');
+      expect(line1(utcNoSeconds, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845');
+    });
+    test('midnight and last minute of the day', () {
+      expect(line1(utc, DateTime.utc(2026, 6, 15)), '0:00');
+      expect(line1(utc, DateTime.utc(2026, 6, 15, 23, 59, 59)), '1439:59');
+    });
+    test('thousands separator follows the setting', () {
+      final lastMinute = DateTime.utc(2026, 6, 15, 23, 59, 59);
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true), '1,439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true, locale: 'de'), '1.439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'en'), '1439');
+      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'de'), '1439');
+    });
+    test('clock change days use the real day length', () {
+      expect(line1(berlin, DateTime.utc(2026, 10, 25, 22, 59, 59)), '1499:59');  // 25-hour day
+      expect(line1(berlin, DateTime.utc(2027, 3, 28, 21, 59, 59)), '1379:59');   // 23-hour day
+      expect(line1(berlin, DateTime.utc(2026, 6, 15, 21, 59, 59)), '1439:59');   // normal day
+    });
+  });
+
   group('octal and hexadecimal time', () {
     final t_oct = TimeValue(valueType: ValueType.octalTime, zone: const ZoneUtc());
     final t_hex = TimeValue(valueType: ValueType.hexadecimalTime, zone: const ZoneUtc());

@@ -168,5 +168,98 @@ void main() {
       // Warning overrides mode:
       expect(result.line2, contains('→'));
     });
+
+    test('details line off hides the zone line', () {
+      const timeHidden = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        showDetails: false,
+      );
+      final result = TimeStringRow.computeDisplay(
+        timeHidden,
+        summerUtc,
+        'en',
+        l10n,
+      );
+      expect(result.line2, isEmpty);
+    });
+
+    test('details line on shows the full zone line although the global mode is hidden', () {
+      const timeShown = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        showDetails: true,
+      );
+      final result = TimeStringRow.computeDisplay(
+        timeShown,
+        summerUtc,
+        'en',
+        l10n,
+        settings: const ValueFormatSettings(
+          zoneDisplayMode: ZoneDisplayMode.hidden,
+        ),
+      );
+      expect(result.line2, 'CEST (UTC+02:00)');
+    });
+
+    test('details line off hides week and day of the year, and the angle of GMST', () {
+      const date = TimeValue(
+        valueType: ValueType.date,
+        zone: ZoneLocal(),
+        showDetails: false,
+      );
+      const gmst = TimeValue(
+        valueType: ValueType.gmst,
+        zone: ZoneUtc(),
+        showDetails: false,
+      );
+      expect(
+        TimeStringRow.computeDisplay(date, summerUtc, 'en', l10n).line2,
+        isEmpty,
+      );
+      expect(
+        TimeStringRow.computeDisplay(gmst, summerUtc, 'en', l10n).line2,
+        isEmpty,
+      );
+    });
+
+    test('a clock change notice stays visible when the details line is off', () {
+      const timeHidden = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        showDetails: false,
+      );
+      final threeDaysBefore = DateTime.utc(2027, 3, 25, 12);
+      final result = TimeStringRow.computeDisplay(
+        timeHidden,
+        threeDaysBefore,
+        'en',
+        l10n,
+      );
+      expect(result.line2, contains('→'));
+    });
+
+    test('exactly the types with hasDetailsLine get a second line', () {
+      const settings = ValueFormatSettings(
+        longitude: 8.0,
+        dateWithDetails: true,
+        zoneDisplayMode: ZoneDisplayMode.full,
+      );
+      for (final valueType in ValueType.values) {
+        final timeValue = TimeValue(valueType: valueType, zone: const ZoneUtc());
+        final display = TimeStringRow.computeDisplay(
+          timeValue,
+          summerUtc,
+          'en',
+          l10n,
+          settings: settings,
+        );
+        expect(
+          display.line2.isNotEmpty,
+          valueType.hasDetailsLine,
+          reason: valueType.name,
+        );
+      }
+    });
   });
 }

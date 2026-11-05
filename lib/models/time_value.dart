@@ -86,12 +86,18 @@ class TimeValue implements TabEntry {
   /// the value type applies.
   final bool? showOptionalPart;
 
+  /// Whether the details line (time zone, week and day of the year, degrees)
+  /// is shown, see [ValueTypeProps.hasDetailsLine]. Null: the global
+  /// settings apply.
+  final bool? showDetails;
+
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showOptionalPart,
+    this.showDetails,
   });
 
   // Unique key for deduplication within a tab.
@@ -126,8 +132,7 @@ class TimeValue implements TabEntry {
   // Serialisation
   @override
   String toPrefsString() {
-    final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
-    var result = base;
+    var result = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
     if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
       result = '$result|dst:${timezoneClockChangeMode.name}';
     }
@@ -135,21 +140,37 @@ class TimeValue implements TabEntry {
     if (optionalPartChoice != null) {
       result = '$result|${optionalPartChoice ? 'sec' : 'nosec'}';
     }
+    final detailsChoice = showDetails;
+    if (detailsChoice != null) {
+      result = '$result|${detailsChoice ? 'det' : 'nodet'}';
+    }
     return result;
   }
 
   static TimeValue? fromPrefsString(String s) {
     var workStr = s;
 
-    // The optional suffixes are written as "|dst:<mode>" followed by "|sec"
-    // or "|nosec", so they are taken off in the opposite order.
+    // The flags are written as "|sec" or "|nosec", then "|det" or "|nodet",
+    // but are accepted in any order. They are taken off the end first,
+    // then "|dst:<mode>".
     bool? showOptionalPart;
-    if (workStr.endsWith('|nosec')) {
-      showOptionalPart = false;
-      workStr = workStr.substring(0, workStr.length - '|nosec'.length);
-    } else if (workStr.endsWith('|sec')) {
-      showOptionalPart = true;
-      workStr = workStr.substring(0, workStr.length - '|sec'.length);
+    bool? showDetails;
+    while (true) {
+      if (workStr.endsWith('|nosec')) {
+        showOptionalPart = false;
+        workStr = _withoutSuffix(workStr, '|nosec');
+      } else if (workStr.endsWith('|sec')) {
+        showOptionalPart = true;
+        workStr = _withoutSuffix(workStr, '|sec');
+      } else if (workStr.endsWith('|nodet')) {
+        showDetails = false;
+        workStr = _withoutSuffix(workStr, '|nodet');
+      } else if (workStr.endsWith('|det')) {
+        showDetails = true;
+        workStr = _withoutSuffix(workStr, '|det');
+      } else {
+        break;
+      }
     }
 
     TimezoneClockChangeMode timezoneClockChangeMode =
@@ -191,7 +212,12 @@ class TimeValue implements TabEntry {
       customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
       timezoneClockChangeMode: timezoneClockChangeMode,
       showOptionalPart: showOptionalPart,
+      showDetails: showDetails
     );
+  }
+
+  static String _withoutSuffix(String text, String suffix) {
+    return text.substring(0, text.length - suffix.length);
   }
 
   TimeValue copyWith({
@@ -200,14 +226,18 @@ class TimeValue implements TabEntry {
     TimezoneClockChangeMode? timezoneClockChangeMode,
     bool? showOptionalPart,
     bool clearShowOptionalPart = false,
+    bool? showDetails,
+    bool clearShowDetails = false,
   }) => TimeValue(
     valueType: valueType,
     zone: zone,
     customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
-    timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
+    timezoneClockChangeMode:
+    timezoneClockChangeMode ?? this.timezoneClockChangeMode,
     showOptionalPart: clearShowOptionalPart
         ? null
         : (showOptionalPart ?? this.showOptionalPart),
+    showDetails: clearShowDetails ? null : (showDetails ?? this.showDetails),
   );
 
   TimeValue withCustomLabel(String? label) =>
@@ -220,6 +250,13 @@ class TimeValue implements TabEntry {
     return copyWith(
       showOptionalPart: value,
       clearShowOptionalPart: value == null,
+    );
+  }
+
+  TimeValue withShowDetails(bool? value) {
+    return copyWith(
+      showDetails: value,
+      clearShowDetails: value == null,
     );
   }
 
@@ -423,6 +460,21 @@ extension ValueTypeProps on ValueType {
     ValueType.binaryClockString ||
     ValueType.romanNumeralsTime => OptionalPart.seconds,
     _ => OptionalPart.none,
+  };
+
+  /// Types that can show a details line below the value: the time zone, the
+  /// week and day of the year (date), or the angle (sidereal time).
+  bool get hasDetailsLine => switch (this) {
+    ValueType.date ||
+    ValueType.time ||
+    ValueType.dateTime ||
+    ValueType.daySecond ||
+    ValueType.dayPercent ||
+    ValueType.dayMinute ||
+    ValueType.decimalTime ||
+    ValueType.gmst ||
+    ValueType.lmst => true,
+    _ => false,
   };
 }
 

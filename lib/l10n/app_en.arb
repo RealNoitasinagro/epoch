@@ -258,6 +258,7 @@
   "labelNextClockChanges": "Next clock changes",
   "labelSeconds": "ss",
   "labelShowDecimals": "Show decimals",
+  "labelShowDetails": "Show details line",
   "labelShowSeconds": "Show seconds",
   "labelYear": "YYYY",
   "messageAlreadyDisplayed": "This value is already displayed.",

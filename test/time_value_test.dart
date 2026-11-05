@@ -1,11 +1,8 @@
 import 'dart:ui';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/time_value_formatter.dart';
-import 'package:epoch/widgets/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest_all.dart' as tzl;
 
 void main() {
   group('TimeValue.key', () {
@@ -286,47 +283,67 @@ void main() {
     });
   });
 
-  group('day minute', () {
-    setUpAll(() {
-      tzl.initializeTimeZones();
+  group('details line choice', () {
+    test('serializes after the optional part flag', () {
+      const shown = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneUtc(),
+        showDetails: true,
+      );
+      const hidden = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        customLabel: 'Home',
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        showOptionalPart: false,
+        showDetails: false,
+      );
+      expect(shown.toPrefsString(), 'time/utc|det');
+      expect(
+        hidden.toPrefsString(),
+        'time/named:Europe/Berlin|Home|dst:forceStandard|nosec|nodet',
+      );
     });
 
-    String line1(
-        TimeValue timeValue, DateTime utc,
-        {bool thousandsSep = false, String locale = 'en'}
-        ) {
-      return TimeStringRow.splitZoneOffset(
-        TimeValueFormatter.format(
-          timeValue, utc, locale,
-          settings: ValueFormatSettings(thousandsSep: thousandsSep),
-        )
-      ).line1;
-    }
-    const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
-    const utcNoSeconds = TimeValue(
-        valueType: ValueType.dayMinute, zone: ZoneUtc(), showOptionalPart: false);
-    const berlin = TimeValue(
-        valueType: ValueType.dayMinute, zone: ZoneNamed('Europe/Berlin'));
+    test('everything survives a round trip', () {
+      final parsed = TimeValue.fromPrefsString(
+        'time/named:Europe/Berlin|Home|dst:forceStandard|nosec|nodet',
+      )!;
+      expect(parsed.customLabel, 'Home');
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+      expect(parsed.showDetails, isFalse);
+    });
 
-    test('counts minutes since midnight, seconds follow the colon', () {
-      expect(line1(utc, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845:09');
-      expect(line1(utcNoSeconds, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845');
+    test('flags are accepted in any order', () {
+      final parsed = TimeValue.fromPrefsString('time/utc|det|nosec')!;
+      expect(parsed.showDetails, isTrue);
+      expect(parsed.showOptionalPart, isFalse);
     });
-    test('midnight and last minute of the day', () {
-      expect(line1(utc, DateTime.utc(2026, 6, 15)), '0:00');
-      expect(line1(utc, DateTime.utc(2026, 6, 15, 23, 59, 59)), '1439:59');
+
+    test('without a flag the global settings apply', () {
+      final parsed = TimeValue.fromPrefsString('time/utc')!;
+      expect(parsed.showDetails, isNull);
     });
-    test('thousands separator follows the setting', () {
-      final lastMinute = DateTime.utc(2026, 6, 15, 23, 59, 59);
-      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true), '1,439');
-      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true, locale: 'de'), '1.439');
-      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'en'), '1439');
-      expect(line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'de'), '1439');
+
+    test('withShowDetails(null) goes back to the default', () {
+      final value = TimeValue.fromPrefsString('time/utc|nodet')!;
+      expect(value.withShowDetails(null).showDetails, isNull);
     });
-    test('clock change days use the real day length', () {
-      expect(line1(berlin, DateTime.utc(2026, 10, 25, 22, 59, 59)), '1499:59');  // 25-hour day
-      expect(line1(berlin, DateTime.utc(2027, 3, 28, 21, 59, 59)), '1379:59');   // 23-hour day
-      expect(line1(berlin, DateTime.utc(2026, 6, 15, 21, 59, 59)), '1439:59');   // normal day
+  });
+
+  test('nine types have a details line', () {
+    final types = ValueType.values.where((type) => type.hasDetailsLine).toSet();
+    expect(types, {
+      ValueType.date,
+      ValueType.time,
+      ValueType.dateTime,
+      ValueType.daySecond,
+      ValueType.dayPercent,
+      ValueType.dayMinute,
+      ValueType.decimalTime,
+      ValueType.gmst,
+      ValueType.lmst,
     });
   });
 }

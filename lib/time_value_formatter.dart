@@ -379,7 +379,6 @@ class TimeValueFormatter {
     return [bin.hours, bin.minutes, bin.seconds].join(':');
   }
 
-
   /// Seconds since midnight in the given base, zero-padded to a fixed width.
   static String _secondsInBase(int seconds, int base, int digits) {
     return seconds.toRadixString(base).padLeft(digits, '0').toUpperCase();

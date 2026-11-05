@@ -35,4 +35,28 @@ class ValueFormatSettings {
     return timeValue.showOptionalPart ??
         !optionalPartHiddenTypes.contains(timeValue.valueType);
   }
+
+  /// Whether the details line of a value of this type is shown when the value
+  /// itself does not say otherwise.
+  bool showsDetailsByDefault(ValueType valueType) {
+    return switch (valueType) {
+      ValueType.date => dateWithDetails,
+      ValueType.gmst || ValueType.lmst => true,
+      _ => zoneDisplayMode != ZoneDisplayMode.hidden,
+    };
+  }
+
+  /// Whether the details line of [timeValue] is shown: its own choice wins,
+  /// otherwise the global settings decide.
+  bool showsDetails(TimeValue timeValue) {
+    return timeValue.showDetails ?? showsDetailsByDefault(timeValue.valueType);
+  }
+
+  /// The time zone display mode that applies to [timeValue]. A value that
+  /// shows its details although the global mode is "hidden" gets the full form.
+  ZoneDisplayMode zoneDisplayModeFor(TimeValue timeValue) {
+    if (!showsDetails(timeValue)) return ZoneDisplayMode.hidden;
+    if (zoneDisplayMode == ZoneDisplayMode.hidden) return ZoneDisplayMode.full;
+    return zoneDisplayMode;
+  }
 }

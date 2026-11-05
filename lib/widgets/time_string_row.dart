@@ -43,11 +43,12 @@ class TimeStringRow extends TimeValueRow {
       ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
     };
 
-    if (timeValue.valueType == ValueType.date && settings.dateWithDetails) {
+    if (timeValue.valueType == ValueType.date && settings.showsDetails(timeValue)) {
       subtitle = l10n.dataDateSub(
           TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
-    } else if (timeValue.valueType == ValueType.gmst ||
-        timeValue.valueType == ValueType.lmst) {
+    } else if ((timeValue.valueType == ValueType.gmst ||
+        timeValue.valueType == ValueType.lmst) &&
+        settings.showsDetails(timeValue)) {
       final hours = TimeValueFormatter.hmsToHours(formattedValue);
       if (hours != null) {
         final deg = TimeValueFormatter.formatDecimal(
@@ -75,7 +76,10 @@ class TimeStringRow extends TimeValueRow {
 
       // No warning – apply ZoneDisplayMode to the existing split.line2:
       if (zoneLine == null) {
-        zoneLine = _applyZoneDisplayMode(split.line2, settings.zoneDisplayMode);
+        zoneLine = _applyZoneDisplayMode(
+          split.line2,
+          settings.zoneDisplayModeFor(timeValue),
+        );
       }
     }
 

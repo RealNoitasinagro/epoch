@@ -446,6 +446,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelShowDecimals => 'Dezimalstellen anzeigen';
 
   @override
+  String get labelShowDetails => 'Detailzeile anzeigen';
+
+  @override
   String get labelShowSeconds => 'Sekunden anzeigen';
 
   @override

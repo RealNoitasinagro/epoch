@@ -440,6 +440,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelShowDecimals => 'Show decimals';
 
   @override
+  String get labelShowDetails => 'Show details line';
+
+  @override
   String get labelShowSeconds => 'Show seconds';
 
   @override

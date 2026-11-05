@@ -137,7 +137,9 @@ valueType/zone|Custom Label
 valueType/zone|Custom Label|dst:forceDst
 valueType/zone||dst:forceStandard
 ```
-Note: `valueType` and `zone` are obligatory, custom label and forced clock change mode settings are optional.
+> [!NOTE]
+> `valueType` and `zone` are obligatory; custom label, forced clock change mode, seconds/decimals and details line settings are optional.  \
+> For example: `time/named:Europe/Brussels|dst:forceStandard|nosec`. An empty label slot (||) is accepted too.
 
 ##### Value types
 
@@ -217,8 +219,19 @@ Whether the part is shown is decided in this order: the suffix of the value itse
 | `\|sec`   | shown (forced on)                                                          |
 | `\|nosec` | hidden (forced off)                                                        |
 
+##### Details line
+
+The details line below the value is the time zone line (`time`, `dateTime`, `daySecond`, `dayPercent`, `dayMinute`, `decimalTime`), the week and day of the year (`date`), or the angle (`gmst`, `lmst`). All other value types have none.
+
+| Suffix    | Effect                                                                     |
+|-----------|----------------------------------------------------------------------------|
+| *(none)*  | global setting (`zone_display_mode`, `date_cw_doy`; angles always shown)   |
+| `\|det`   | shown (forced on; with `zone_display_mode` `hidden` the full form is used) |
+| `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)     |
+
 > [!IMPORTANT]
-> Write the suffixes in this order: label, clock change mode, `|sec` or `|nosec`, e. g. `time/named:Europe/Brussels||dst:forceStandard|nosec`. The empty label slot (`||`) is needed if there is no label.
+> The suffixes `|sec`, `|nosec`, `|det` and `|nodet` may be combined and are read in any order after the label and the clock change mode, e. g. `time/named:Europe/Brussels|dst:forceStandard|nosec|nodet`.  \
+> As custom labels, these four words cannot be used.
 
 #### Divider
 

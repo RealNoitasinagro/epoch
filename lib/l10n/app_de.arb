@@ -258,6 +258,7 @@
   "labelNextClockChanges": "Nächste Zeitumstellungen",
   "labelSeconds": "Sek",
   "labelShowDecimals": "Dezimalstellen anzeigen",
+  "labelShowDetails": "Detailzeile anzeigen",
   "labelShowSeconds": "Sekunden anzeigen",
   "labelYear": "JJJJ",
   "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
