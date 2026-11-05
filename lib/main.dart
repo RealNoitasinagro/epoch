@@ -7,6 +7,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
+import 'app_themes.dart';
 import 'build_info.dart';
 import 'bundled_licenses.dart';
 import 'effective_clock.dart';
@@ -19,89 +20,53 @@ import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
 import 'models/time_value.dart';
+import 'models/value_format_settings.dart';
 import 'platform_utils.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
+import 'widgets/link_text.dart';
 import 'widgets/time_shift_indicator.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  registerBundledLicenses();
-  await runPrefsMigrations();
-  tz.initializeTimeZones();
-
-  if (!kIsWeb && Platform.isLinux && args.isNotEmpty) {
-    if (args.contains('--help') || args.contains('-h')) {
-      stdout.writeln('Usage: epoch [config.json]');
-      exit(0);
-    }
-    final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
-    if (configPath != null) {
-      final file = File(configPath);
-      if (file.existsSync()) {
-        try {
-          final json = await file.readAsString();
-          await importSettingsJson(json);
-        } catch (e) {
-          stderr.writeln('Failed to load config: $e');
-          exit(1);
-        }
-      } else {
-        stderr.writeln('Config file not found: $configPath');
-        exit(1);
-      }
-    }
+  try {
+    // Comment out to test the StartupErrorScreen:
+    //throw StateError('test');
+    registerBundledLicenses();
+    await runPrefsMigrations();
+    tz.initializeTimeZones();
+    await _loadConfigFromCommandLine(args);
+  } catch (error, stackTrace) {
+    runApp(StartupErrorApp(error: error, stackTrace: stackTrace));
+    return;
   }
-
   runApp(const EpochApp());
 }
 
-const _nightRed = kColorNightRed;
-const _nightRedDim = kColorNightRedDim;
-
-ThemeData _nightTheme() => ThemeData(
-  brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.black,
-  colorScheme: ColorScheme.dark(
-    surface: Colors.black,
-    primary: _nightRed,
-    onPrimary: Colors.black,
-    secondary: _nightRed,
-    onSecondary: Colors.black,
-    onSurface: _nightRed,
-    outline: _nightRedDim,
-    outlineVariant: _nightRedDim,
-  ),
-  appBarTheme: const AppBarTheme(
-    foregroundColor: _nightRed,
-    iconTheme: IconThemeData(color: _nightRed),
-  ),
-  tabBarTheme: const TabBarThemeData(
-    labelColor: _nightRed,
-    unselectedLabelColor: _nightRedDim,
-    indicatorColor: _nightRed,
-  ),
-  iconTheme: const IconThemeData(color: _nightRed),
-  textTheme: const TextTheme(
-    headlineSmall: TextStyle(color: _nightRed, fontFamily: fontFamilyDefault),
-    bodyMedium: TextStyle(color: _nightRed),
-    bodySmall: TextStyle(color: _nightRedDim),
-    labelSmall: TextStyle(color: _nightRedDim),
-    labelMedium: TextStyle(color: _nightRed),
-  ),
-  dividerTheme: const DividerThemeData(color: _nightRedDim),
-  checkboxTheme: CheckboxThemeData(
-    fillColor: WidgetStateProperty.all(_nightRed),
-  ),
-  switchTheme: SwitchThemeData(
-    thumbColor: WidgetStateProperty.all(_nightRed),
-    trackColor: WidgetStateProperty.all(_nightRedDim),
-  ),
-  useMaterial3: true,
-);
+Future<void> _loadConfigFromCommandLine(List<String> args) async {
+  if (kIsWeb || !Platform.isLinux || args.isEmpty) return;
+  if (args.contains('--help') || args.contains('-h')) {
+    stdout.writeln('Usage: epoch [config.json]');
+    exit(0);
+  }
+  final configPath = args.where((a) => !a.startsWith('--')).firstOrNull;
+  if (configPath == null) return;
+  final file = File(configPath);
+  if (!file.existsSync()) {
+    stderr.writeln('Config file not found: $configPath');
+    exit(1);
+  }
+  try {
+    await importSettingsJson(await file.readAsString());
+  } catch (e) {
+    stderr.writeln('Failed to load config: $e');
+    exit(1);
+  }
+}
 
 class EpochApp extends StatefulWidget {
   const EpochApp({super.key});
@@ -114,6 +79,7 @@ class EpochApp extends StatefulWidget {
 }
 
 class EpochAppState extends State<EpochApp> {
+  ({Object error, StackTrace stackTrace})? _startupError;
   bool _settingsLoaded             = false;
   bool _splashMinDurationElapsed   = false;
   String _localIanaZone            = 'UTC';
@@ -131,6 +97,7 @@ class EpochAppState extends State<EpochApp> {
   String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
   bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
+  Set<ValueType> _optionalPartHiddenTypes = {};
 
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
@@ -153,47 +120,55 @@ class EpochAppState extends State<EpochApp> {
   }
 
   Future<void> _loadPreferences() async {
-    final locale                  = await loadLocale() ?? kDefaultLocale;
-    final theme                   = await loadThemeMode();
-    final hour24                  = await loadHourFormat24();
-    final thousands               = await loadThousandsSep();
-    final dateWithDetails         = await loadDateWithDetails();
-    final dateFormat              = await loadDateFormat();
-    final timeFormat              = await loadTimeFormat();
-    final zoneDisplayMode         = await loadZoneDisplayMode();
-    final dayQuarterColor         = await loadDayQuarterColor();
-    final lmstMode                = await loadLmstMode();
-    final lmstLongitude           = await loadLmstLongitude();
-    final lastImportedConfig      = await loadLastImportedConfig();
-    final startupFocusValue       = await loadStartupFocusValue();
-    final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
-
-    String localZone = 'UTC';
     try {
-      final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
-      localZone = currentTimeZone.identifier;
-    } catch (_) {
-      localZone = 'UTC';
-    }
+      final locale                  = await loadLocale() ?? kDefaultLocale;
+      final theme                   = await loadThemeMode();
+      final hour24                  = await loadHourFormat24();
+      final thousands               = await loadThousandsSep();
+      final dateWithDetails         = await loadDateWithDetails();
+      final dateFormat              = await loadDateFormat();
+      final timeFormat              = await loadTimeFormat();
+      final zoneDisplayMode         = await loadZoneDisplayMode();
+      final dayQuarterColor         = await loadDayQuarterColor();
+      final lmstMode                = await loadLmstMode();
+      final lmstLongitude           = await loadLmstLongitude();
+      final lastImportedConfig      = await loadLastImportedConfig();
+      final startupFocusValue       = await loadStartupFocusValue();
+      final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
+      final optionalPartHiddenTypes = await loadOptionalPartHiddenTypes();
 
-    setState(() {
-      _localIanaZone           = localZone;
-      _locale                  = locale;
-      _themeMode               = theme;
-      _hourFormat24            = hour24;
-      _thousandsSep            = thousands;
-      _dateWithDetails         = dateWithDetails;
-      _dateFormat              = dateFormat;
-      _timeFormat              = timeFormat;
-      _zoneDisplayMode         = zoneDisplayMode;
-      _dayQuarterColor         = dayQuarterColor;
-      _lmstMode                = lmstMode;
-      _lmstLongitude           = lmstLongitude;
-      _lastImportedConfig      = lastImportedConfig;
-      _startupFocusValue       = startupFocusValue;
-      _focusTimeShiftIndicator = focusTimeShiftIndicator;
-      _settingsLoaded          = true;
-    });
+      String localZone = 'UTC';
+      try {
+        final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+        localZone = currentTimeZone.identifier;
+      } catch (_) {
+        localZone = 'UTC';
+      }
+
+      setState(() {
+        _localIanaZone           = localZone;
+        _locale                  = locale;
+        _themeMode               = theme;
+        _hourFormat24            = hour24;
+        _thousandsSep            = thousands;
+        _dateWithDetails         = dateWithDetails;
+        _dateFormat              = dateFormat;
+        _timeFormat              = timeFormat;
+        _zoneDisplayMode         = zoneDisplayMode;
+        _dayQuarterColor         = dayQuarterColor;
+        _lmstMode                = lmstMode;
+        _lmstLongitude           = lmstLongitude;
+        _lastImportedConfig      = lastImportedConfig;
+        _startupFocusValue       = startupFocusValue;
+        _focusTimeShiftIndicator = focusTimeShiftIndicator;
+        _optionalPartHiddenTypes = optionalPartHiddenTypes;
+        _settingsLoaded          = true;
+      });
+    } catch (error, stackTrace) {
+      if (mounted) {
+        setState(() => _startupError = (error: error, stackTrace: stackTrace));
+      }
+    }
   }
 
   void setLocale(Locale l) {
@@ -261,6 +236,11 @@ class EpochAppState extends State<EpochApp> {
     saveFocusTimeShiftIndicator(v);
   }
 
+  void setOptionalPartHiddenTypes(Set<ValueType> valueTypes) {
+    setState(() => _optionalPartHiddenTypes = valueTypes);
+    saveOptionalPartHiddenTypes(valueTypes);
+  }
+
   String get localIanaZone => _localIanaZone;
   Locale? get locale                  => _locale;
   AppThemeMode get themeMode          => _themeMode;
@@ -271,17 +251,25 @@ class EpochAppState extends State<EpochApp> {
     AppThemeMode.system => ThemeMode.system,
   };
   bool get isNightMode                => _themeMode == AppThemeMode.night;
-  bool get hourFormat24               => _hourFormat24;
-  bool get thousandsSep               => _thousandsSep;
-  bool get dateWithDetails            => _dateWithDetails;
-  String get dateFormat               => _dateFormat;
-  String get timeFormat               => _timeFormat;
-  ZoneDisplayMode get zoneDisplayMode => _zoneDisplayMode;
   bool get dayQuarterColor            => _dayQuarterColor;
   LmstMode get lmstMode               => _lmstMode;
   double?  get lmstLongitude          => _lmstLongitude;
   String? get lastImportedConfig      => _lastImportedConfig;
   bool get focusTimeShiftIndicator    => _focusTimeShiftIndicator;
+
+  ValueFormatSettings get formatSettings {
+    return ValueFormatSettings(
+      hourFormat24: _hourFormat24,
+      thousandsSep: _thousandsSep,
+      dateFormat: _dateFormat,
+      timeFormat: _timeFormat,
+      zoneDisplayMode: _zoneDisplayMode,
+      dateWithDetails: _dateWithDetails,
+      localIanaZone: _localIanaZone,
+      longitude: _lmstLongitude,
+      optionalPartHiddenTypes: _optionalPartHiddenTypes,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,23 +281,22 @@ class EpochAppState extends State<EpochApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
       ),
-      darkTheme: isNightMode ? _nightTheme() : ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueGrey,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
+      darkTheme: isNightMode ? buildNightTheme() : buildDarkTheme(),
       themeMode: showSplash ? ThemeMode.dark : _flutterThemeMode,
       locale: showSplash ? null : _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: showSplash
-          ? const SplashScreen()
-          : (_startupFocusValue != null
-            ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
-            : HomeScreen(key: _homeKey)),
-    );
+      home: _startupError != null
+          ? StartupErrorScreen(
+              error: _startupError!.error,
+              stackTrace: _startupError!.stackTrace
+            )
+          : showSplash
+            ? const SplashScreen()
+            : (_startupFocusValue != null
+              ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
+              : HomeScreen(key: _homeKey)),
+      );
   }
 }
 
@@ -533,7 +520,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final app  = EpochApp.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     if (!_loaded) {
@@ -710,9 +696,6 @@ class _HomeScreenState extends State<HomeScreen>
           defaultEntries: tab.isBuiltin
               ? defaultEntriesFor(tab.builtinKind!)
               : List.of(defaultWatchlistEntries),
-          thousandsSep: app.thousandsSep,
-          hourFormat24: app.hourFormat24,
-          showDateDetails: app.dateWithDetails,
           onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
         )).toList(),
       ),
@@ -782,12 +765,12 @@ class _HomeScreenState extends State<HomeScreen>
             const Divider(height: kDividerHeight),
             if (commitLink.isNotEmpty) ...[
               const SizedBox(height: 12),
-              _linkTile(ctx, 'Commit (GitHub)', commitLink),
+              LinkText(url: commitLink, label: 'Commit (GitHub)'),
               const SizedBox(height: 24),
             ],
-            _linkTile(ctx, 'timezone package website', timezoneLink),
+            LinkText(url: timezoneLink, label: 'timezone package website'),
             const SizedBox(height: 24),
-            _linkTile(ctx, 'IANA Time Zones website', ianaLink),
+            LinkText(url: ianaLink, label: 'IANA Time Zones website'),
           ],
         ),
         actions: [
@@ -796,18 +779,6 @@ class _HomeScreenState extends State<HomeScreen>
             child: const Text('OK'),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _linkTile(BuildContext context, String label, String url) {
-    return InkWell(
-      onTap: () async => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-      child: Text(label,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          decoration: TextDecoration.underline,
-        ),
       ),
     );
   }

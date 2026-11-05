@@ -6,13 +6,12 @@ import '../models/app_settings.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
 import '../time_utils.dart';
-import '../widgets/clocks/binary_coded_decimal_clock.dart';
-import '../widgets/clocks/binary_columns_clock.dart';
-import '../widgets/clocks/seven_segment_clock.dart';
+import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/time_graphical_row.dart';
 import '../widgets/time_string_row.dart';
 import '../widgets/value_tile.dart';
+import '../zoned_moment.dart';
 import 'entry_picker.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
@@ -20,9 +19,6 @@ import 'entry_picker.dart';
 class ConfigurableTab extends StatefulWidget {
   final DateTime now;
   final List<TabEntry> entries;
-  final bool hourFormat24;
-  final bool thousandsSep;
-  final bool showDateDetails;
   final int maxEntries;
   final ValueChanged<List<TabEntry>> onEntriesChanged;
   final List<TabEntry> defaultEntries;  // used by "reset to defaults"
@@ -33,9 +29,6 @@ class ConfigurableTab extends StatefulWidget {
     required this.entries,
     required this.onEntriesChanged,
     required this.defaultEntries,
-    this.thousandsSep = true,
-    this.hourFormat24 = true,
-    this.showDateDetails = true,
     this.maxEntries = 30,
   });
 
@@ -199,7 +192,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Future<void> _editLabel(
       BuildContext context, TimeValue timeValue, AppLocalizations l10n, int index
     ) async {
-    final localIanaZone = EpochApp.of(context).localIanaZone;
+    final app = EpochApp.of(context);
+    final settings = app.formatSettings;
+    final localIanaZone = settings.localIanaZone;
     final ianaZone = switch (timeValue.zone) {
       ZoneLocal()                  => localIanaZone,
       ZoneNamed(ianaZone: final z) => z,
@@ -207,8 +202,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     };
     final hasDst = TimeUtils.hasDaylightSavingTime(ianaZone);
     final isZoneDependent = !timeValue.isZoneIndependent;
-    bool selectedShowOptionalPart = timeValue.showOptionalPart;
     final optionalPart = timeValue.valueType.optionalPart;
+    final optionalPartShownByDefault =
+        settings.showsOptionalPartByDefault(timeValue.valueType);
+    final detailsShownByDefault =
+        settings.showsDetailsByDefault(timeValue.valueType);
+    bool? selectedShowOptionalPart = timeValue.showOptionalPart;
+    bool? selectedShowDetails = timeValue.showDetails;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
     final existingModes = widget.entries
@@ -223,11 +223,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     var selectedMode = timeValue.timezoneClockChangeMode;
 
     final result = await showDialog<
-      ({String? label, TimezoneClockChangeMode mode, bool reset, bool showOptionalPart})
+      ({String? label, TimezoneClockChangeMode mode, bool reset,
+      bool? showOptionalPart, bool? showDetails})
     >(
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
+          scrollable: true,
           title: Text(l10n.hintEditTimeValue),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -302,20 +304,57 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
+                  tristate: true,
                   title: Text(optionalPart == OptionalPart.decimals
                       ? l10n.labelShowDecimals
                       : l10n.labelShowSeconds),
+                  subtitle: selectedShowOptionalPart == null
+                      ? Text(
+                          l10n.labelDefaultState(
+                            optionalPartShownByDefault
+                              ? l10n.settingsOn
+                              : l10n.settingsOff
+                          )
+                        )
+                      : null,
                   value: selectedShowOptionalPart,
-                  onChanged: (v) => setDialogState(() => selectedShowOptionalPart = v ?? true),
+                  onChanged: (value) =>
+                      setDialogState(() => selectedShowOptionalPart = value),
+                ),
+              ],
+              if (timeValue.valueType.hasDetailsLine) ...<Widget>[
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  tristate: true,
+                  title: Text(l10n.labelShowDetails),
+                  subtitle: selectedShowDetails == null
+                      ? Text(
+                          l10n.labelDefaultState(
+                            detailsShownByDefault
+                              ? l10n.settingsOn
+                            : l10n.settingsOff
+                          )
+                        )
+                      : null,
+                  value: selectedShowDetails,
+                  onChanged: (value) =>
+                      setDialogState(() => selectedShowDetails = value),
                 ),
               ],
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(ctx,
-                  (label: null, mode: TimezoneClockChangeMode.auto,
-                  reset: true, showOptionalPart: true)
+              onPressed: () => Navigator.pop(
+                  ctx,
+                  (
+                    label: null,
+                    mode: TimezoneClockChangeMode.auto,
+                    reset: true,
+                    showOptionalPart: null,
+                    showDetails: null,
+                  )
               ),
               child: Text(l10n.hintResetToDefaults),
             ),
@@ -324,9 +363,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
               child: Text(l10n.actionCancel),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(ctx,
-                  (label: controller.text.trim(), mode: selectedMode,
-                  reset: false, showOptionalPart: selectedShowOptionalPart)
+              onPressed: () => Navigator.pop(
+                ctx,
+                (
+                  label: controller.text.trim(),
+                  mode: selectedMode,
+                  reset: false,
+                  showOptionalPart: selectedShowOptionalPart,
+                  showDetails: selectedShowDetails,
+                )
               ),
               child: const Text('OK'),
             ),
@@ -344,13 +389,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             ? null
             : result.label;
     final newMode = result.reset ? TimezoneClockChangeMode.auto : result.mode;
-    final newShowOptionalPart = result.reset ? true : result.showOptionalPart;
+    final newShowOptionalPart = result.reset ? null : result.showOptionalPart;
+    final newShowDetails = result.reset ? null : result.showDetails;
 
     final updated = List<TabEntry>.of(widget.entries);
     updated[index] = timeValue
         .withCustomLabel(newLabel)
         .withTimezoneClockChangeMode(newMode)
-        .withShowOptionalPart(newShowOptionalPart);
+        .withShowOptionalPart(newShowOptionalPart)
+        .withShowDetails(newShowDetails);
     widget.onEntriesChanged(updated);
   }
 
@@ -575,9 +622,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       String locale,
       ) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final isGraphical = timeValue.valueType.isGraphical;
-    final longitude = EpochApp.of(context).lmstLongitude;
-    final localIanaZone = EpochApp.of(context).localIanaZone;
 
     // View mode: delegate to Row widgets (they handle info/copy themselves)
     if (editIndex == null) {
@@ -593,72 +639,33 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         timeValue: timeValue,
         now: widget.now,
         locale: locale,
-        hourFormat24: widget.hourFormat24,
-        thousandsSep: widget.thousandsSep,
-        showDateDetails: widget.showDateDetails,
-        longitude: longitude,
       );
     }
 
     // Edit mode: build ValueTile directly with edit action slots
-    final zonedNow = TimeUtils.resolveLocalTime(
-        timeValue, widget.now.toUtc(), localIanaZone);
+    final moment = ZonedMoment.of(timeValue, widget.now.toUtc(), settings.localIanaZone);
+
     final display = TimeStringRow.computeDisplay(
       timeValue, widget.now, locale, l10n,
-      localIanaZone: localIanaZone,
-      hourFormat24: widget.hourFormat24,
-      thousandsSep: widget.thousandsSep,
-      showDateDetails: widget.showDateDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: longitude,
+      settings: settings
     );
-    final label = TimeStringRow.computeLabel(l10n, timeValue, longitude);
-
-    final segmentColor = switch (app.themeMode) {
-      AppThemeMode.light  => Colors.black,
-      AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => kColorNightRed,
-      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
-          ? Colors.white : Colors.black,
-    };
+    final label = TimeStringRow.computeLabel(l10n, timeValue, settings.longitude);
 
     late final Widget clock;
     if (isGraphical) {
-      clock = switch (timeValue.valueType) {
-        ValueType.sevenSegmentClock =>
-            SevenSegmentClock(
-              now: zonedNow,
-              l10n: l10n,
-              digitHeight: kGraphicalSegmentClockHeightDefault,
-              showSeconds: timeValue.showOptionalPart,
-              hourFormat24: app.hourFormat24,
-              color: segmentColor,
-            ),
-        ValueType.binaryClockColumns =>
-            BinaryColumnsClock(
-              now: zonedNow,
-              l10n: l10n,
-              showSeconds: timeValue.showOptionalPart,
-            ),
-        ValueType.binaryClockBcd =>
-            BinaryCodedDecimalClock(
-              now: zonedNow,
-              l10n: l10n,
-              showSeconds: timeValue.showOptionalPart,
-            ),
-        _ => throw StateError(
-            'Unhandled graphical ValueType: ${timeValue.valueType}'),
-      };
+      clock = buildGraphicalClock(
+        valueType: timeValue.valueType,
+        now: moment.wallClock,
+        l10n: l10n,
+        showSeconds: settings.showsOptionalPart(timeValue),
+        hourFormat24: settings.hourFormat24,
+        segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
+      );
     }
 
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
-
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(widget.now.toUtc(), ianaZone)
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return Dismissible(
@@ -674,8 +681,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: ValueTile(
         label: label,
         showZoneIndicator: !timeValue.isZoneIndependent,
-        showPinnedIndicator: timeValue.isPinned(widget.now.toUtc(), localIanaZone),
-        dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), localIanaZone),
+        showPinnedIndicator: timeValue.isPinned(widget.now.toUtc(), settings.localIanaZone),
+        dstStatusIndicator: timeValue.getDstStatusIndicator(widget.now.toUtc(), settings.localIanaZone),
         height: isGraphical ? ValueTile.graphicTileHeight : null,
         content: isGraphical
             ? GraphicValueContent(

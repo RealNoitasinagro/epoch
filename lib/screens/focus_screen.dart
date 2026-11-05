@@ -11,11 +11,9 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
-import '../time_utils.dart';
-import '../widgets/clocks/binary_coded_decimal_clock.dart';
-import '../widgets/clocks/binary_columns_clock.dart';
-import '../widgets/clocks/seven_segment_clock.dart';
+import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_string_row.dart';
+import '../zoned_moment.dart';
 
 const _colorOptions = [
   kColorWhite,
@@ -47,7 +45,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late DateTime _now;
   late Timer _timer;
   Color _textColor = Colors.white;
-  bool _showLine2 = false;
+  bool? _showLine2;  // null until the first build, then follows the button
   late bool _showOptionalPart;
 
   double? _brightness;
@@ -100,7 +98,8 @@ class _FocusScreenState extends State<FocusScreen> {
   @override
   void initState() {
     super.initState();
-    _showOptionalPart = widget.timeValue.showOptionalPart;
+    final app = EpochApp.of(context);
+    _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
             (_) => setState(() => _now = EffectiveClock.now()));
@@ -190,20 +189,13 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Future<void> _initBrightness() async {
-    final app = EpochApp.of(context);
-    final savedColor = await loadFocusColor(app.isNightMode);
+    final isNightMode = EpochApp.of(context).isNightMode;
+    final savedColor = await loadFocusColor(isNightMode);
     double initial;
     try {
-      final saved = await loadFocusBrightness();
-      if (saved != null) {
-        initial = saved;
-        if (!kIsWeb && !Platform.isLinux) {
-          await ScreenBrightness().setApplicationScreenBrightness(initial);
-        }
-      } else {
-        initial = (!kIsWeb && !Platform.isLinux)
-            ? await ScreenBrightness().application
-            : kDefaultFocusBrightness;
+      initial = await loadFocusBrightness(isNightMode);
+      if (!kIsWeb && !Platform.isLinux) {
+        await ScreenBrightness().setApplicationScreenBrightness(initial);
       }
     } catch (_) {
       initial = kDefaultFocusBrightness;
@@ -215,9 +207,11 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   Future<void> _saveBrightness(double value) async {
+    // In night mode, changes last for this session only.
+    final persist = !EpochApp.of(context).isNightMode;
     try {
       await ScreenBrightness().setApplicationScreenBrightness(value);
-      await saveFocusBrightness(value);
+      if (persist) await saveFocusBrightness(value);
     } catch (_) {}
   }
 
@@ -237,8 +231,22 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _toggleLine2() {
     if (_sliderActive) return;
-    setState(() => _showLine2 = !_showLine2);
+    setState(() => _showLine2 = !(_showLine2 ?? false));
     _showControls();
+  }
+
+  Widget _detailsToggle(AppLocalizations l10n) {
+    return IconButton(
+      icon: Icon(
+        _showLine2 == true ? Icons.subtitles : Icons.subtitles_off_outlined,
+        color: _textColor,
+        size: 28,
+      ),
+      tooltip: _showLine2 == true
+          ? l10n.hintFocusScreenDetailsOff
+          : l10n.hintFocusScreenDetailsOn,
+      onPressed: _toggleLine2,
+    );
   }
 
   void _toggleOptionalPart() {
@@ -246,28 +254,23 @@ class _FocusScreenState extends State<FocusScreen> {
     _showControls();
   }
 
-  ({String line1, String line2}) _currentDisplay() {
+  /// The display with the sessions's seconds setting; [withDetails] switches
+  /// the details line on whatever the tab says, for values that have one.
+  ({String line1, String line2}) _display({required bool withDetails}) {
     final app = EpochApp.of(context);
-
-    // The volatile Focus toggle overrides the stored setting:
-    final effectiveTimeValue =
-    widget.timeValue.valueType.optionalPart != OptionalPart.none
-        ? widget.timeValue.withShowOptionalPart(_showOptionalPart)
-        : widget.timeValue;
-
+    var timeValue = widget.timeValue;
+    if (timeValue.valueType.optionalPart != OptionalPart.none) {
+      timeValue = timeValue.withShowOptionalPart(_showOptionalPart);
+    }
+    if (withDetails && timeValue.valueType.hasDetailsLine) {
+      timeValue = timeValue.withShowDetails(true);
+    }
     return TimeStringRow.computeDisplay(
-      effectiveTimeValue,
+      timeValue,
       _now,
       widget.locale,
       AppLocalizations.of(context)!,
-      localIanaZone: app.localIanaZone,
-      hourFormat24: app.hourFormat24,
-      thousandsSep: app.thousandsSep,
-      showDateDetails: app.dateWithDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: app.lmstLongitude,
+      settings: app.formatSettings,
     );
   }
 
@@ -304,9 +307,11 @@ class _FocusScreenState extends State<FocusScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
 
     final l10n = AppLocalizations.of(context)!;
-    final display = _currentDisplay();
-    final hasLine2 = display.line2.isNotEmpty
-        && !widget.timeValue.valueType.isGraphical;
+    final tabDisplay = _display(withDetails: false);
+    final fullDisplay = _display(withDetails: true);
+    _showLine2 ??= tabDisplay.line2.isNotEmpty;
+    final hasLine2 =
+        fullDisplay.line2.isNotEmpty && !widget.timeValue.valueType.isGraphical;
     final optionalPart = widget.timeValue.valueType.optionalPart;
 
     if (_brightness == null) {
@@ -318,9 +323,9 @@ class _FocusScreenState extends State<FocusScreen> {
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress: optionalPart != OptionalPart.none
-          ? _toggleOptionalPart
-          : _toggleLine2,
+        // onLongPress: optionalPart != OptionalPart.none
+        //   ? _toggleOptionalPart
+        //   : null,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -350,7 +355,12 @@ class _FocusScreenState extends State<FocusScreen> {
                     curve: Curves.easeInOut,
                     transform: Matrix4.translationValues(
                         0, _pixelShiftOffsetY, 0),
-                    child: _buildValueDisplay(isLandscape),
+                    child: GestureDetector(
+                        onLongPress: optionalPart != OptionalPart.none
+                            ? _toggleOptionalPart
+                            : null,
+                        child: _buildValueDisplay(isLandscape)
+                    ),
                   ),
                 ),
                 // Controls overlay – fades in/out:
@@ -390,6 +400,7 @@ class _FocusScreenState extends State<FocusScreen> {
               ..._colorSwatches(),
               const SizedBox(width: 16),
               _pixelShiftToggle(l10n),
+              if (hasLine2) _detailsToggle(l10n),
             ],
           ),
         ),
@@ -406,7 +417,6 @@ class _FocusScreenState extends State<FocusScreen> {
           right: 0,
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
-              hasLine2: hasLine2,
               optionalPart: optionalPart,
               l10n: l10n
           ),
@@ -429,6 +439,7 @@ class _FocusScreenState extends State<FocusScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (hasLine2) _detailsToggle(l10n),
               _pixelShiftToggle(l10n),
               const SizedBox(height: 16),
               ..._colorSwatches(vertical: true),
@@ -448,7 +459,6 @@ class _FocusScreenState extends State<FocusScreen> {
           right: 0,
           bottom: mediaPadding.bottom + 12,
           child: _exitHint(
-              hasLine2: hasLine2,
               optionalPart: optionalPart,
               l10n: l10n
           ),
@@ -479,7 +489,7 @@ class _FocusScreenState extends State<FocusScreen> {
       return GestureDetector(
         onTap: () {
           setState(() => _textColor = color);
-          saveFocusColor(color);
+          if (!EpochApp.of(context).isNightMode) saveFocusColor(color);
           _scheduleControlsHide();
         },
         child: Container(
@@ -571,31 +581,19 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  Widget _exitHint(
-        {required bool hasLine2, required OptionalPart? optionalPart,
-         required AppLocalizations l10n}
-      ) {
+  Widget _exitHint({required OptionalPart? optionalPart, required AppLocalizations l10n}) {
     final exit = l10n.hintFocusScreenExit;
-    final String text;
-    if (optionalPart != OptionalPart.none && !hasLine2) {
-      final toggleHint = switch (optionalPart) {
-        OptionalPart.decimals => _showOptionalPart
-            ? l10n.hintFocusScreenToggleDecimalsOff
-            : l10n.hintFocusScreenToggleDecimalsOn,
-        _ => _showOptionalPart
-            ? l10n.hintFocusScreenToggleSecondsOff
-            : l10n.hintFocusScreenToggleSecondsOn,
-      };
-      text = '$exit  ·  $toggleHint';
-    } else if (optionalPart == OptionalPart.none && hasLine2) {
-      text = '$exit  ·  ${_showLine2
-          ? l10n.hintFocusScreenToggleToOneLine
-          : l10n.hintFocusScreenToggleToTwoLines}';
-    } else {
-      text = exit;
-    }
+    final toggleHint = switch (optionalPart) {
+      OptionalPart.decimals => _showOptionalPart
+          ? l10n.hintFocusScreenToggleDecimalsOff
+          : l10n.hintFocusScreenToggleDecimalsOn,
+      OptionalPart.seconds => _showOptionalPart
+          ? l10n.hintFocusScreenToggleSecondsOff
+          : l10n.hintFocusScreenToggleSecondsOn,
+      _ => null,
+    };
     return Text(
-      text,
+      toggleHint == null ? exit : '$exit  ·  $toggleHint',
       style: TextStyle(color: _textColor.withAlpha(150), fontSize: 12),
       textAlign: TextAlign.center,
     );
@@ -635,40 +633,21 @@ class _FocusScreenState extends State<FocusScreen> {
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {
-      final zonedNow = TimeUtils.resolveLocalTime(
-          widget.timeValue, _now.toUtc(),
-          EpochApp.of(context).localIanaZone);
+      final localIanaZone = EpochApp.of(context).localIanaZone;
+      final wallClock = ZonedMoment.of(
+          widget.timeValue, _now.toUtc(), localIanaZone
+      ).wallClock;
       final l10n = AppLocalizations.of(context)!;
 
-      final Widget clock = switch (widget.timeValue.valueType) {
-        ValueType.sevenSegmentClock =>
-          SevenSegmentClock(
-            now: zonedNow,
-            l10n: l10n,
-            digitHeight: kGraphicalSegmentClockHeightFocus,
-            showSeconds: _showOptionalPart,
-            hourFormat24: app.hourFormat24,
-            color: _textColor,
-          ),
-        ValueType.binaryClockColumns =>
-          BinaryColumnsClock(
-            now: zonedNow,
-            l10n: l10n,
-            dotSize: kGraphicalBinaryClockDotSizeFocus,
-            showSeconds: _showOptionalPart,
-            showLabels: false,
-          ),
-        ValueType.binaryClockBcd =>
-          BinaryCodedDecimalClock(
-            now: zonedNow,
-            l10n: l10n,
-            dotSize: kGraphicalBinaryClockDotSizeFocus,
-            showSeconds: _showOptionalPart,
-            showLabels: false,
-          ),
-        _ => throw StateError(
-            'Unhandled graphical ValueType: ${widget.timeValue.valueType}'),
-      };
+      final Widget clock = buildGraphicalClock(
+        valueType: widget.timeValue.valueType,
+        now: wallClock,
+        l10n: l10n,
+        showSeconds: _showOptionalPart,
+        hourFormat24: app.formatSettings.hourFormat24,
+        segmentColor: _textColor,
+        focusSize: true,
+      );
       return Padding(
         padding: EdgeInsets.symmetric(
             horizontal: hPadding, vertical: vPadding),
@@ -676,7 +655,7 @@ class _FocusScreenState extends State<FocusScreen> {
       );
     }
 
-    final display = _currentDisplay();
+    final display = _display(withDetails: true);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: hPadding, vertical: vPadding),
@@ -696,7 +675,7 @@ class _FocusScreenState extends State<FocusScreen> {
               ),
               maxLines: 1,
             ),
-            if (_showLine2 && display.line2.isNotEmpty) ...[
+            if (_showLine2 == true && display.line2.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
                 display.line2,

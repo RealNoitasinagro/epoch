@@ -3,13 +3,11 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
-import '../models/time_value.dart';
 import '../time_utils.dart';
-import '../widgets/clocks/seven_segment_clock.dart';
 import '../widgets/time_value_row.dart';
 import '../widgets/value_tile.dart';
-import 'clocks/binary_coded_decimal_clock.dart';
-import 'clocks/binary_columns_clock.dart';
+import '../zoned_moment.dart';
+import 'clocks/graphical_clock.dart';
 
 class TimeGraphicalRow extends TimeValueRow {
   const TimeGraphicalRow({
@@ -22,51 +20,24 @@ class TimeGraphicalRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final localIanaZone = EpochApp.of(context).localIanaZone;
-    final zonedNow = TimeUtils.resolveLocalTime(
-        timeValue, now.toUtc(), localIanaZone);
+    final moment = ZonedMoment.of(timeValue, now, localIanaZone);
 
-    final segmentColor = switch (app.themeMode) {
-      AppThemeMode.light  => Colors.black,
-      AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => kColorNightRed,
-      AppThemeMode.system => Theme.of(context).brightness == Brightness.dark
-          ? Colors.white : Colors.black,
-    };
-
-    final Widget clock = switch (timeValue.valueType) {
-      ValueType.sevenSegmentClock =>
-        SevenSegmentClock(
-          now: zonedNow,
-          l10n: l10n,
-          digitHeight: kGraphicalSegmentClockHeightDefault,
-          showSeconds: timeValue.showOptionalPart,
-          hourFormat24: app.hourFormat24,
-          color: segmentColor,
-        ),
-      ValueType.binaryClockColumns =>
-        BinaryColumnsClock(
-            now: zonedNow,
-            l10n: l10n,
-            showSeconds: timeValue.showOptionalPart,
-        ),
-      ValueType.binaryClockBcd =>
-        BinaryCodedDecimalClock(
-            now: zonedNow,
-            l10n: l10n,
-            showSeconds: timeValue.showOptionalPart,
-        ),
-      _ => throw StateError(
-          'Unhandled graphical ValueType: ${timeValue.valueType}'),
-    };
-
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+    final Widget clock = buildGraphicalClock(
+      valueType: timeValue.valueType,
+      now: moment.wallClock,
+      l10n: l10n,
+      showSeconds: settings.showsOptionalPart(timeValue),
+      hourFormat24: settings.hourFormat24,
+      segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
+    );
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
         app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return ValueTile(

@@ -20,19 +20,20 @@ class TimeShiftIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final systemTime = EffectiveClock.systemTime();
     final textStyle = DefaultTextStyle.of(context).style.copyWith(
         fontFamily: fontFamilyDefault, fontSize: 14, fontWeight: FontWeight.w500);
 
-    final timePattern = app.timeFormat.length <= _maxPatternLength
-        ? app.timeFormat : kTimePatternFull;
+    final timePattern = settings.timeFormat.length <= _maxPatternLength
+        ? settings.timeFormat : kTimePatternFull;
     final timeText = TimeValueFormatter.formatTime(
-        app.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
+        settings.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
         pattern: timePattern
     );
     final dateText = TimeValueFormatter.formatDate(
-        l10n.localeName, systemTime, pattern: app.dateFormat);
+        l10n.localeName, systemTime, pattern: settings.dateFormat);
 
     IconData timeShiftIcon;
     String timeRange;

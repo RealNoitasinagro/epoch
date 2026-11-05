@@ -8,7 +8,7 @@ typedef TzResult = ({TzEntry entry, TzMatch? match});
 // Normalize the query once per search, not per entry.
 List<TzResult> _findHits(String query, List<TzEntry> db) {
   final trimmed = query.trim();
-  final byOffset = _searchByOffset(trimmed, db);
+  final byOffset = searchByOffset(trimmed, db);
   if (byOffset.isNotEmpty) {
     return [for (final e in byOffset) (entry: e, match: null)];
   }
@@ -21,7 +21,7 @@ List<TzResult> _findHits(String query, List<TzEntry> db) {
 }
 
 // Parses UTC offset queries like "UTC+05:30", "+5:30", "-3", "+5.5", "+9,75"
-List<TzEntry> _searchByOffset(String query, List<TzEntry> db) {
+List<TzEntry> searchByOffset(String query, List<TzEntry> db) {
   final q = query.trim().toUpperCase().replaceAll(' ', '');
 
   final decimalMatch = RegExp(r'^(?:UTC)?([+-])(\d{1,2})[.,](50?|75|25)$').firstMatch(q);

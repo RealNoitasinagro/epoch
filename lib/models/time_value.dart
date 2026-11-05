@@ -13,6 +13,7 @@ enum ValueType {
   time,
   dateTime,
   daySecond,
+  dayMinute,
   dayPercent,
   sevenSegmentClock,
   // Technical
@@ -79,14 +80,24 @@ class TimeValue implements TabEntry {
   final ZoneSpec zone;
   final String? customLabel;
   final TimezoneClockChangeMode timezoneClockChangeMode;
-  final bool showOptionalPart;
+
+  /// Whether the optional part (seconds or decimals, see
+  /// [ValueTypeProps.optionalPart]) is shown. Null: the global default for
+  /// the value type applies.
+  final bool? showOptionalPart;
+
+  /// Whether the details line (time zone, week and day of the year, degrees)
+  /// is shown, see [ValueTypeProps.hasDetailsLine]. Null: the global
+  /// settings apply.
+  final bool? showDetails;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
-    this.showOptionalPart = true,
+    this.showOptionalPart,
+    this.showDetails,
   });
 
   // Unique key for deduplication within a tab.
@@ -109,35 +120,69 @@ class TimeValue implements TabEntry {
 
   bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
 
+  /// The IANA zone whose rules apply to this value; null for UTC.
+  String? ianaZoneFor(String localIanaZone) {
+    return switch (zone) {
+      ZoneLocal() => localIanaZone,
+      ZoneNamed(ianaZone: final zoneName) => zoneName,
+      ZoneUtc() => null,
+    };
+  }
+
   // Serialisation
   @override
   String toPrefsString() {
-    final base = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
-    var result = base;
+    var result = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
     if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
       result = '$result|dst:${timezoneClockChangeMode.name}';
     }
-    if (!showOptionalPart) result = '$result|nosec';
+    final optionalPartChoice = showOptionalPart;
+    if (optionalPartChoice != null) {
+      result = '$result|${optionalPartChoice ? 'sec' : 'nosec'}';
+    }
+    final detailsChoice = showDetails;
+    if (detailsChoice != null) {
+      result = '$result|${detailsChoice ? 'det' : 'nodet'}';
+    }
     return result;
   }
 
   static TimeValue? fromPrefsString(String s) {
-    TimezoneClockChangeMode timezoneClockChangeMode = TimezoneClockChangeMode.auto;
     var workStr = s;
+
+    // The flags are written as "|sec" or "|nosec", then "|det" or "|nodet",
+    // but are accepted in any order. They are taken off the end first,
+    // then "|dst:<mode>".
+    bool? showOptionalPart;
+    bool? showDetails;
+    while (true) {
+      if (workStr.endsWith('|nosec')) {
+        showOptionalPart = false;
+        workStr = _withoutSuffix(workStr, '|nosec');
+      } else if (workStr.endsWith('|sec')) {
+        showOptionalPart = true;
+        workStr = _withoutSuffix(workStr, '|sec');
+      } else if (workStr.endsWith('|nodet')) {
+        showDetails = false;
+        workStr = _withoutSuffix(workStr, '|nodet');
+      } else if (workStr.endsWith('|det')) {
+        showDetails = true;
+        workStr = _withoutSuffix(workStr, '|det');
+      } else {
+        break;
+      }
+    }
+
+    TimezoneClockChangeMode timezoneClockChangeMode =
+        TimezoneClockChangeMode.auto;
     final dstIdx = workStr.lastIndexOf('|dst:');
     if (dstIdx >= 0) {
-      final dstStr = workStr.substring(dstIdx + 5);
-      timezoneClockChangeMode =
-          TimezoneClockChangeMode.values
-              .where((m) => m.name == dstStr)
-              .firstOrNull ??
-              TimezoneClockChangeMode.auto;
+      final dstName = workStr.substring(dstIdx + '|dst:'.length);
+      timezoneClockChangeMode = TimezoneClockChangeMode.values
+          .where((mode) => mode.name == dstName)
+          .firstOrNull ??
+          TimezoneClockChangeMode.auto;
       workStr = workStr.substring(0, dstIdx);
-    }
-    bool showOptionalPart = true;
-    if (workStr.endsWith('|nosec')) {
-      showOptionalPart = false;
-      workStr = workStr.substring(0, workStr.length - 6);
     }
 
     final pipeIdx = workStr.indexOf('|');
@@ -167,7 +212,12 @@ class TimeValue implements TabEntry {
       customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
       timezoneClockChangeMode: timezoneClockChangeMode,
       showOptionalPart: showOptionalPart,
+      showDetails: showDetails
     );
+  }
+
+  static String _withoutSuffix(String text, String suffix) {
+    return text.substring(0, text.length - suffix.length);
   }
 
   TimeValue copyWith({
@@ -175,19 +225,40 @@ class TimeValue implements TabEntry {
     bool clearCustomLabel = false,
     TimezoneClockChangeMode? timezoneClockChangeMode,
     bool? showOptionalPart,
+    bool clearShowOptionalPart = false,
+    bool? showDetails,
+    bool clearShowDetails = false,
   }) => TimeValue(
     valueType: valueType,
     zone: zone,
     customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
-    timezoneClockChangeMode: timezoneClockChangeMode ?? this.timezoneClockChangeMode,
-    showOptionalPart: showOptionalPart ?? this.showOptionalPart,
+    timezoneClockChangeMode:
+    timezoneClockChangeMode ?? this.timezoneClockChangeMode,
+    showOptionalPart: clearShowOptionalPart
+        ? null
+        : (showOptionalPart ?? this.showOptionalPart),
+    showDetails: clearShowDetails ? null : (showDetails ?? this.showDetails),
   );
 
   TimeValue withCustomLabel(String? label) =>
       copyWith(customLabel: label, clearCustomLabel: label == null);
+
   TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
       copyWith(timezoneClockChangeMode: mode);
-  TimeValue withShowOptionalPart(bool value) => copyWith(showOptionalPart: value);
+
+  TimeValue withShowOptionalPart(bool? value) {
+    return copyWith(
+      showOptionalPart: value,
+      clearShowOptionalPart: value == null,
+    );
+  }
+
+  TimeValue withShowDetails(bool? value) {
+    return copyWith(
+      showDetails: value,
+      clearShowDetails: value == null,
+    );
+  }
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).
   bool get isZoneIndependent => valueType.isZoneIndependent;
@@ -197,7 +268,7 @@ class TimeValue implements TabEntry {
     if (timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
       return TimezoneClockChangeMode.auto;
     }
-    final ianaZone = TimeUtils.resolveIanaZone(this, localIanaZone);
+    final ianaZone = ianaZoneFor(localIanaZone);
     final hasDst = ianaZone != null &&
         TimeUtils.hasDaylightSavingTime(ianaZone, referenceUtc: nowUtc);
     return hasDst ? timezoneClockChangeMode : TimezoneClockChangeMode.auto;
@@ -211,11 +282,8 @@ class TimeValue implements TabEntry {
   // Used to show a summer/winter time indicator icon.
   bool? isDstCurrentlyActive(DateTime nowUtc, String localIanaZone) {
     if (isZoneIndependent) return null;
-    final ianaZone = switch (zone) {
-      ZoneLocal() => localIanaZone,
-      ZoneUtc() => '',
-      ZoneNamed(ianaZone: final z) => z,
-    };
+    final ianaZone = ianaZoneFor(localIanaZone);
+    if (ianaZone == null) return null;
     final rules = zoneRulesAt(ianaZone, nowUtc);
     if (rules == null || !rules.hasDst) return null;
     return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;
@@ -254,6 +322,7 @@ class TimeValue implements TabEntry {
         ValueType.time => l10n.valueTypeTime,
         ValueType.dateTime => l10n.valueTypeDateTime,
         ValueType.daySecond => l10n.valueTypeDaySecond,
+        ValueType.dayMinute => l10n.valueTypeDayMinute,
         ValueType.dayPercent => l10n.valueTypeDayPercent,
         ValueType.sevenSegmentClock => l10n.valueTypeSevenSegmentTime,
         ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
@@ -286,6 +355,7 @@ class TimeValue implements TabEntry {
     ValueType.time => l10n.infoTextTime,
     ValueType.dateTime => l10n.infoTextDateTime,
     ValueType.daySecond => l10n.infoTextDaySecond,
+    ValueType.dayMinute => l10n.infoTextDayMinute,
     ValueType.dayPercent => l10n.infoTextDayPercent,
     ValueType.sevenSegmentClock => l10n.infoTextSevenSegmentTime,
     ValueType.unixSeconds => l10n.infoTextUnixSeconds,
@@ -339,47 +409,89 @@ class TimeValue implements TabEntry {
 }
 
 extension ValueTypeProps on ValueType {
-  bool get isZoneIndependent => switch (this) {
-    ValueType.date => false,
-    ValueType.time => false,
-    ValueType.dateTime => false,
-    ValueType.daySecond => false,
-    ValueType.dayPercent => false,
-    ValueType.sevenSegmentClock => false,
-    ValueType.unixSeconds => true,
-    ValueType.tai => true,
-    ValueType.gps => true,
-    ValueType.gmst => true,
-    ValueType.lmst => true,
-    ValueType.julianDate => true,
-    ValueType.reducedJulianDate => true,
-    ValueType.modifiedJulianDate => true,
-    ValueType.dublinJulianDate => true,
-    ValueType.cnesJulianDate => true,
-    ValueType.ccsdsJulianDate => true,
-    ValueType.modifiedJulianDate2000 => true,
-    ValueType.decimalTime => false,
-    ValueType.swatchBeats => true,
-    ValueType.newEarthTime => true,
-    ValueType.binaryClockBcd => false,
-    ValueType.binaryClockColumns => false,
-    ValueType.binaryClockString => false,
-    ValueType.octalTime => false,
-    ValueType.hexadecimalTime => false,
-    ValueType.romanNumeralsTime => false,
-    ValueType.doomsdayClock => true,
-  };
+  bool get isZoneIndependent =>
+      switch (this) {
+        ValueType.date => false,
+        ValueType.time => false,
+        ValueType.dateTime => false,
+        ValueType.daySecond => false,
+        ValueType.dayMinute => false,
+        ValueType.dayPercent => false,
+        ValueType.sevenSegmentClock => false,
+        ValueType.unixSeconds => true,
+        ValueType.tai => true,
+        ValueType.gps => true,
+        ValueType.gmst => true,
+        ValueType.lmst => true,
+        ValueType.julianDate => true,
+        ValueType.reducedJulianDate => true,
+        ValueType.modifiedJulianDate => true,
+        ValueType.dublinJulianDate => true,
+        ValueType.cnesJulianDate => true,
+        ValueType.ccsdsJulianDate => true,
+        ValueType.modifiedJulianDate2000 => true,
+        ValueType.decimalTime => false,
+        ValueType.swatchBeats => true,
+        ValueType.newEarthTime => true,
+        ValueType.binaryClockBcd => false,
+        ValueType.binaryClockColumns => false,
+        ValueType.binaryClockString => false,
+        ValueType.octalTime => false,
+        ValueType.hexadecimalTime => false,
+        ValueType.romanNumeralsTime => false,
+        ValueType.doomsdayClock => true,
+      };
 
   bool get isGraphical =>
       this == ValueType.sevenSegmentClock ||
       this == ValueType.binaryClockBcd ||
       this == ValueType.binaryClockColumns;
 
-  OptionalPart get optionalPart => switch (this) {
-    ValueType.swatchBeats || ValueType.newEarthTime => OptionalPart.decimals,
-    ValueType.sevenSegmentClock || ValueType.binaryClockBcd ||
-    ValueType.binaryClockColumns || ValueType.binaryClockString ||
-    ValueType.romanNumeralsTime => OptionalPart.seconds,
-    _ => OptionalPart.none,
-  };
+  OptionalPart get optionalPart =>
+      switch (this) {
+        ValueType.dayPercent ||
+        ValueType.swatchBeats ||
+        ValueType.newEarthTime => OptionalPart.decimals,
+        ValueType.time ||
+        ValueType.dateTime ||
+        ValueType.dayMinute ||
+        ValueType.decimalTime ||
+        ValueType.sevenSegmentClock ||
+        ValueType.binaryClockBcd ||
+        ValueType.binaryClockColumns ||
+        ValueType.binaryClockString ||
+        ValueType.romanNumeralsTime => OptionalPart.seconds,
+        _ => OptionalPart.none,
+      };
+
+  /// Time and date & time: whether seconds are shown by default follows the
+  /// time format (a pattern with "ss" shows them), not a per-type setting.
+  bool get optionalPartFollowsTimeFormat =>
+      this == ValueType.time || this == ValueType.dateTime;
+
+  /// Types that can show a details line below the value: the time zone, the
+  /// week and day of the year (date), or the angle (sidereal time).
+  bool get hasDetailsLine =>
+      switch (this) {
+        ValueType.date ||
+        ValueType.time ||
+        ValueType.dateTime ||
+        ValueType.daySecond ||
+        ValueType.dayPercent ||
+        ValueType.dayMinute ||
+        ValueType.decimalTime ||
+        ValueType.gmst ||
+        ValueType.lmst => true,
+        _ => false,
+      };
 }
+
+/// Value types whose seconds or decimals can be hidden by default for all
+/// values of the type, in enum order. Time and date & time are not among
+/// them: their default follows the time format.
+final List<ValueType> globalOptionalPartTypes = [
+  for (final valueType in ValueType.values)
+    if (valueType.optionalPart != OptionalPart.none &&
+        !valueType.optionalPartFollowsTimeFormat)
+      valueType,
+];

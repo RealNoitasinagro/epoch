@@ -190,28 +190,158 @@ void main() {
       }
     });
     test('decimals for Swatch beats and New Earth Time', () {
+      expect(ValueType.dayPercent.optionalPart, OptionalPart.decimals);
       expect(ValueType.swatchBeats.optionalPart, OptionalPart.decimals);
       expect(ValueType.newEarthTime.optionalPart, OptionalPart.decimals);
     });
     test('seconds for string-type values', () {
+      expect(ValueType.dayMinute.optionalPart, OptionalPart.seconds);
+      expect(ValueType.decimalTime.optionalPart, OptionalPart.seconds);
       expect(ValueType.binaryClockString.optionalPart, OptionalPart.seconds);
       expect(ValueType.romanNumeralsTime.optionalPart, OptionalPart.seconds);
     });
     test('all other types have none', () {
       final withPart = {
-        ValueType.swatchBeats, ValueType.newEarthTime, ValueType.sevenSegmentClock,
-        ValueType.binaryClockBcd, ValueType.binaryClockColumns,
-        ValueType.binaryClockString, ValueType.romanNumeralsTime,
+        ValueType.time,
+        ValueType.dateTime,
+        ValueType.dayMinute,
+        ValueType.dayPercent,
+        ValueType.decimalTime,
+        ValueType.swatchBeats,
+        ValueType.newEarthTime,
+        ValueType.sevenSegmentClock,
+        ValueType.binaryClockBcd,
+        ValueType.binaryClockColumns,
+        ValueType.binaryClockString,
+        ValueType.romanNumeralsTime,
       };
       for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
         expect(type.optionalPart, OptionalPart.none, reason: '$type');
       }
+      expect(globalOptionalPartTypes.length, 10);
     });
     test('|nosec roundtrip still works after the rename', () {
       const value = TimeValue(
           valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
       expect(value.toPrefsString(), endsWith('|nosec'));
       expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
+    });
+  });
+
+  group('optional part choice', () {
+    const byDefault = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+    const shown = TimeValue(
+      valueType: ValueType.time,
+      zone: ZoneUtc(),
+      showOptionalPart: true,
+    );
+    const hidden = TimeValue(
+      valueType: ValueType.time,
+      zone: ZoneUtc(),
+      showOptionalPart: false,
+    );
+
+    test('serializes default, shown and hidden', () {
+      expect(byDefault.toPrefsString(), 'time/utc');
+      expect(shown.toPrefsString(), 'time/utc|sec');
+      expect(hidden.toPrefsString(), 'time/utc|nosec');
+    });
+
+    test('parses the three variants; old configs mean "default"', () {
+      expect(TimeValue.fromPrefsString('time/utc')!.showOptionalPart, isNull);
+      expect(TimeValue.fromPrefsString('time/utc|sec')!.showOptionalPart, isTrue);
+      expect(TimeValue.fromPrefsString('time/utc|nosec')!.showOptionalPart, isFalse);
+    });
+
+    test('works together with label and clock change mode', () {
+      const value = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        customLabel: 'Home',
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        showOptionalPart: false,
+      );
+      final parsed = TimeValue.fromPrefsString(value.toPrefsString())!;
+      expect(parsed.customLabel, 'Home');
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+    });
+
+    test('withShowOptionalPart(null) goes back to the default', () {
+      expect(hidden.withShowOptionalPart(null).showOptionalPart, isNull);
+    });
+
+    test('combined suffixes are read in the order they are written', () {
+      final parsed = TimeValue.fromPrefsString(
+        'sevenSegmentClock/named:Europe/Berlin||dst:forceStandard|nosec',
+      )!;
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+      expect(parsed.customLabel, isNull);
+    });
+  });
+
+  group('details line choice', () {
+    test('serializes after the optional part flag', () {
+      const shown = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneUtc(),
+        showDetails: true,
+      );
+      const hidden = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        customLabel: 'Home',
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        showOptionalPart: false,
+        showDetails: false,
+      );
+      expect(shown.toPrefsString(), 'time/utc|det');
+      expect(
+        hidden.toPrefsString(),
+        'time/named:Europe/Berlin|Home|dst:forceStandard|nosec|nodet',
+      );
+    });
+
+    test('everything survives a round trip', () {
+      final parsed = TimeValue.fromPrefsString(
+        'time/named:Europe/Berlin|Home|dst:forceStandard|nosec|nodet',
+      )!;
+      expect(parsed.customLabel, 'Home');
+      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(parsed.showOptionalPart, isFalse);
+      expect(parsed.showDetails, isFalse);
+    });
+
+    test('flags are accepted in any order', () {
+      final parsed = TimeValue.fromPrefsString('time/utc|det|nosec')!;
+      expect(parsed.showDetails, isTrue);
+      expect(parsed.showOptionalPart, isFalse);
+    });
+
+    test('without a flag the global settings apply', () {
+      final parsed = TimeValue.fromPrefsString('time/utc')!;
+      expect(parsed.showDetails, isNull);
+    });
+
+    test('withShowDetails(null) goes back to the default', () {
+      final value = TimeValue.fromPrefsString('time/utc|nodet')!;
+      expect(value.withShowDetails(null).showDetails, isNull);
+    });
+  });
+
+  test('nine types have a details line', () {
+    final types = ValueType.values.where((type) => type.hasDetailsLine).toSet();
+    expect(types, {
+      ValueType.date,
+      ValueType.time,
+      ValueType.dateTime,
+      ValueType.daySecond,
+      ValueType.dayPercent,
+      ValueType.dayMinute,
+      ValueType.decimalTime,
+      ValueType.gmst,
+      ValueType.lmst,
     });
   });
 }

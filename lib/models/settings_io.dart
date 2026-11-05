@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'prefs_migrations.dart';
@@ -83,6 +83,7 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
+  EffectiveClock.reset();  // an import starts from a clean slate, Time Shift included
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
@@ -99,6 +100,7 @@ Future<void> resetSettings(BuildContext context) async {
   // reset
   final prefs = await SharedPreferences.getInstance();
   await prefs.clear();
+  EffectiveClock.reset();  // reset includes Time Shift
 
   // reload
   if (!context.mounted) return;

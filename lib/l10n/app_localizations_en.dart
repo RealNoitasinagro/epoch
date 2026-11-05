@@ -113,6 +113,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditTimeValue => 'Edit time value';
 
   @override
+  String get hintFocusScreenDetailsOff => 'Hide details line';
+
+  @override
+  String get hintFocusScreenDetailsOn => 'Show details line';
+
+  @override
   String get hintFocusScreenExit => 'Double-tap to exit';
 
   @override
@@ -129,12 +135,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintFocusScreenToggleSecondsOn => 'Hold to display seconds';
-
-  @override
-  String get hintFocusScreenToggleToOneLine => 'Hold for one line';
-
-  @override
-  String get hintFocusScreenToggleToTwoLines => 'Hold for two lines';
 
   @override
   String hintMatchAlsoCity(String name) {
@@ -295,6 +295,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.';
 
   @override
+  String get infoTextDayMinute =>
+      'Minutes elapsed since midnight in the selected timezone. Resets to 0 at midnight.';
+
+  @override
   String get infoTextDayPercent =>
       'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.';
 
@@ -381,6 +385,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelDay => 'DD';
 
   @override
+  String labelDefaultState(String state) {
+    return 'Default: $state';
+  }
+
+  @override
   String labelDstChangeInDays(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -429,6 +438,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelShowDecimals => 'Show decimals';
+
+  @override
+  String get labelShowDetails => 'Show details line';
 
   @override
   String get labelShowSeconds => 'Show seconds';
@@ -608,6 +620,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsOn => 'on';
 
   @override
+  String get settingsOptionalPart => 'Seconds and decimals';
+
+  @override
+  String get settingsOptionalPartAll => 'All';
+
+  @override
+  String settingsOptionalPartSummary(int hidden, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hidden,
+      locale: localeName,
+      other: '$hidden of $total hidden',
+      zero: 'All shown',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsOptionalPartTimeNote =>
+      'Time and Date & Time follow the time format.';
+
+  @override
   String get settingsPreferencesExport => 'Export preferences';
 
   @override
@@ -689,6 +722,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsZoneDisplayModeSub => 'abbreviation, UTC-offset';
+
+  @override
+  String get startupErrorCopied => 'Details copied';
+
+  @override
+  String get startupErrorCopy => 'Copy details';
+
+  @override
+  String get startupErrorHint =>
+      'Something went wrong while loading the app. If possible, please report the details below on GitHub:';
+
+  @override
+  String get startupErrorTitle => 'Epoch could not start';
 
   @override
   String get tabAstronomical => 'Astronomical';
@@ -799,6 +845,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valueTypeDateTime => 'Date & Time';
+
+  @override
+  String get valueTypeDayMinute => 'Day minute';
 
   @override
   String get valueTypeDayPercent => 'Day percent';

@@ -2,6 +2,28 @@
 
 ## [Unreleased]
 
+### Added
+- new value type: day minute with optional seconds
+- seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
+with a global default per value type (Settings, "Seconds and decimals"; time and date & time follow the time format)
+and an override for each value on tabs; Focus screen starts with what is shown on the tab
+- the details line (time zone, week and day of the year, angle) can be shown or hidden for each value,
+overriding the global settings
+- errors during app start are shown on screen, with copyable details, instead of a black screen
+
+### Changed
+- Focus screen in night mode always starts in night red at low brightness; changes there are not saved
+- Focus screen starts with what's shown on the tab by default, new button to show/hide details line;
+onLongPress only toggles the value itself (seconds/decimals on/off)
+- clock changes in the info dialog show time zone abbreviations and offsets next to the wall-clock times
+- import and reset of preferences also end Time Shift
+- time zone search finds old and alternative IANA IDs such as Europe/Amsterdam or Asia/Calcutta,
+and IDs with hyphens such as Etc/GMT-5
+
+### Fixed
+- values pinned to standard or summer time lost the pinning on restart or import when their seconds were hidden
+- day quarter color of values pinned to standard or summer time followed the real local time instead of the displayed one
+
 ---
 
 ## [1.6.0] - 2026-10-28

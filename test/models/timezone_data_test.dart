@@ -6,7 +6,7 @@ import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
 import 'package:epoch/models/generated/legacy_abbreviations.g.dart';
 import 'package:epoch/models/timezone_search.dart';
 import 'package:epoch/models/timezone_search_zones.dart';
-import 'package:epoch/time_utils.dart';
+import 'package:epoch/models/zone_rules.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
@@ -49,33 +49,15 @@ void main() {
     }
   });
 
-/*  group('TzEntry search terms round-trip', () {
-    // Every term listed for an entry must actually resolve back to that
-    // entry. New terms added to timezone_search_zones.dart get coverage
-    // here automatically -- no test file changes needed.
-    for (final entry in tzDatabase) {
-      for (final term in entry.terms) {
-        test('term "$term" resolves to ${entry.ianaZoneId}', () {
-          final matches = tzDatabase.where((e) => e.matches(term));
-          expect(matches.map((e) => e.ianaZoneId), contains(entry.ianaZoneId));
-        });
-      }
+  group('IANA Link identifiers are searchable', () {
+    for (final entry in ianaLinksSnapshot.entries) {
+      test('${entry.key} finds ${entry.value}', () {
+        final found = searchTimezones(entry.key, tzDatabase)
+            .map((e) => e.ianaZoneId);
+        expect(found, contains(entry.value));
+      });
     }
   });
-
-  group('TzEntry country name matching', () {
-    // Generated from zone1970.tab / ISO 3166-1 (English) and CLDR
-    // (German) -- covers every country assigned to a zone in tzDatabase
-    // without hand-written per-country tests.
-    for (final entry in tzDatabase) {
-      for (final name in entry.countryNames) {
-        test('country name "$name" resolves to ${entry.ianaZoneId}', () {
-          final matches = tzDatabase.where((e) => e.matches(name));
-          expect(matches.map((e) => e.ianaZoneId), contains(entry.ianaZoneId));
-        });
-      }
-    }
-  });*/
 
   group('every candidate source resolves to its own entry', () {
     for (final entry in tzDatabase) {
@@ -118,7 +100,7 @@ void main() {
     };
     for (final offset in offsets) {
       for (final q in spellings(offset)) {
-        test('$q finds a zone with ${TimeUtils.utcOffsetString(offset)}', () {
+        test('$q finds a zone with ${formatUtcOffset(offset)}', () {
           final found = searchTimezones(q, tzDatabase);
           expect(found.any((e) =>
             e.rules.standardOffset == offset || e.rules.dstOffset == offset),

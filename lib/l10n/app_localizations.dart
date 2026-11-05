@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenDetailsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide details line'**
+  String get hintFocusScreenDetailsOff;
+
+  /// No description provided for @hintFocusScreenDetailsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get hintFocusScreenDetailsOn;
+
   /// No description provided for @hintFocusScreenExit.
   ///
   /// In en, this message translates to:
@@ -301,18 +313,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold to display seconds'**
   String get hintFocusScreenToggleSecondsOn;
-
-  /// No description provided for @hintFocusScreenToggleToOneLine.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for one line'**
-  String get hintFocusScreenToggleToOneLine;
-
-  /// No description provided for @hintFocusScreenToggleToTwoLines.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for two lines'**
-  String get hintFocusScreenToggleToTwoLines;
 
   /// No description provided for @hintMatchAlsoCity.
   ///
@@ -572,6 +572,12 @@ abstract class AppLocalizations {
   /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
 
+  /// No description provided for @infoTextDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  String get infoTextDayMinute;
+
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
@@ -704,6 +710,12 @@ abstract class AppLocalizations {
   /// **'DD'**
   String get labelDay;
 
+  /// No description provided for @labelDefaultState.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {state}'**
+  String labelDefaultState(String state);
+
   /// No description provided for @labelDstChangeInDays.
   ///
   /// In en, this message translates to:
@@ -787,6 +799,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show decimals'**
   String get labelShowDecimals;
+
+  /// No description provided for @labelShowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get labelShowDetails;
 
   /// No description provided for @labelShowSeconds.
   ///
@@ -1118,6 +1136,30 @@ abstract class AppLocalizations {
   /// **'on'**
   String get settingsOn;
 
+  /// No description provided for @settingsOptionalPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds and decimals'**
+  String get settingsOptionalPart;
+
+  /// No description provided for @settingsOptionalPartAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get settingsOptionalPartAll;
+
+  /// No description provided for @settingsOptionalPartSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}'**
+  String settingsOptionalPartSummary(int hidden, int total);
+
+  /// No description provided for @settingsOptionalPartTimeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Time and Date & Time follow the time format.'**
+  String get settingsOptionalPartTimeNote;
+
   /// No description provided for @settingsPreferencesExport.
   ///
   /// In en, this message translates to:
@@ -1279,6 +1321,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'abbreviation, UTC-offset'**
   String get settingsZoneDisplayModeSub;
+
+  /// No description provided for @startupErrorCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Details copied'**
+  String get startupErrorCopied;
+
+  /// No description provided for @startupErrorCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details'**
+  String get startupErrorCopy;
+
+  /// No description provided for @startupErrorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while loading the app. If possible, please report the details below on GitHub:'**
+  String get startupErrorHint;
+
+  /// No description provided for @startupErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Epoch could not start'**
+  String get startupErrorTitle;
 
   /// No description provided for @tabAstronomical.
   ///
@@ -1465,6 +1531,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date & Time'**
   String get valueTypeDateTime;
+
+  /// No description provided for @valueTypeDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Day minute'**
+  String get valueTypeDayMinute;
 
   /// No description provided for @valueTypeDayPercent.
   ///

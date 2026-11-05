@@ -11,6 +11,7 @@ import '../services/location_service.dart';
 import '../time_value_formatter.dart';
 import '../widgets/section_header.dart';
 import 'entry_picker.dart';
+import 'optional_part_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,6 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _dateWithDetails;
   late String _dateFormat;
   late String _timeFormat;
+  late Set<ValueType> _optionalPartHiddenTypes;
   late ZoneDisplayMode _zoneDisplayMode;
   late bool _dayQuarterColor;
   late LmstMode _lmstMode;
@@ -63,13 +65,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _locale = app.locale;
       _themeMode = app.themeMode;
-      _hourFormat24 = app.hourFormat24;
-      _thousandsSep = app.thousandsSep;
-      _dateWithDetails = app.dateWithDetails;
-      _dateFormat = app.dateFormat;
-      _timeFormat = app.timeFormat;
+      _dateFormat = app.formatSettings.dateFormat;
+      _dateWithDetails = app.formatSettings.dateWithDetails;
+      _timeFormat = app.formatSettings.timeFormat;
+      _hourFormat24 = app.formatSettings.hourFormat24;
+      _optionalPartHiddenTypes = app.formatSettings.optionalPartHiddenTypes;
+      _thousandsSep = app.formatSettings.thousandsSep;
+      _zoneDisplayMode = app.formatSettings.zoneDisplayMode;
       _dayQuarterColor = app.dayQuarterColor;
-      _zoneDisplayMode = app.zoneDisplayMode;
       _lmstMode = app.lmstMode;
       _lmstLongitude = app.lmstLongitude;
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
@@ -273,65 +276,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  GestureDetector _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) {
+  Widget _formatCheckbox({
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    required String title,
+    required String subtitle,
+  }) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () {
-        setState(() => _dateWithDetails = !_dateWithDetails);
-        app.setDateWithDetails(_dateWithDetails);
-      },
+      onTap: () => onChanged(!value),
       child: CheckboxListTile(
-        value: _dateWithDetails,
+        value: value,
         tristate: false,
         dense: true,
         contentPadding: EdgeInsets.zero,
         controlAffinity: ListTileControlAffinity.leading,
-        onChanged: (val) {
-          setState(() => _dateWithDetails = val!);
-          app.setDateWithDetails(val!);
-        },
-        title: Text(
-            l10n.settingsDateWithDetails,
-            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
-        ),
-        subtitle: Text(
-            l10n.settingsDateWithDetailsSub,
-            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
-        ),
+        onChanged: (newValue) => onChanged(newValue!),
+        title: Text(title,
+            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)),
+        subtitle: Text(subtitle,
+            style: TextStyle(
+                fontFamily: fontFamilyDefault,
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
       ),
     );
   }
 
-  GestureDetector _hourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        setState(() => _hourFormat24 = !_hourFormat24);
-        app.setHourFormat24(_hourFormat24);
-      },
-      child: CheckboxListTile(
-        value: _hourFormat24,
-        tristate: false,
-        dense: true,
-        contentPadding: EdgeInsets.zero,
-        controlAffinity: ListTileControlAffinity.leading,
-        onChanged: (val) {
-          setState(() => _hourFormat24 = val!);
-          app.setHourFormat24(val!);
+  Widget _expandedDateCheckbox(EpochAppState app, AppLocalizations l10n) =>
+      _formatCheckbox(
+        value: _dateWithDetails,
+        title: l10n.settingsDateWithDetails,
+        subtitle: l10n.settingsDateWithDetailsSub,
+        onChanged: (value) {
+          setState(() => _dateWithDetails = value);
+          app.setDateWithDetails(value);
         },
-        title: Text(
-            l10n.settingsHourFormat,
-            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)
-        ),
-        subtitle: Text(
-            l10n.settingsHourFormatSub,
-            style: TextStyle(fontFamily: fontFamilyDefault, fontSize: 12,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))
-        ),
-      ),
-    );
-  }
+      );
+
+  Widget _hourFormat24Checkbox(EpochAppState app, AppLocalizations l10n) =>
+      _formatCheckbox(
+        value: _hourFormat24,
+        title: l10n.settingsHourFormat,
+        subtitle: l10n.settingsHourFormatSub,
+        onChanged: (value) {
+          setState(() => _hourFormat24 = value);
+          app.setHourFormat24(value);
+        },
+      );
 
   Future<String?> _showCustomFormatDialog(
       BuildContext context, AppLocalizations l10n,
@@ -480,6 +472,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         hourFormat24: _hourFormat24);
   }
 
+  Future<void> _showOptionalPartDialog(BuildContext context) async {
+    final hiddenTypes = await showDialog<Set<ValueType>>(
+      context: context,
+      builder: (_) => OptionalPartDialog(hiddenTypes: _optionalPartHiddenTypes),
+    );
+    if (hiddenTypes == null || !context.mounted) return;
+    setState(() => _optionalPartHiddenTypes = hiddenTypes);
+    EpochApp.of(context).setOptionalPartHiddenTypes(hiddenTypes);
+  }
+
   void _toggleTabVisibility(BuiltinTabKind kind, bool value) {
     final idx = _tabs.indexWhere((t) => t.builtinKind == kind);
     if (idx == -1) return;
@@ -525,6 +527,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     saveStartupFocusValue(null);
   }
 
+  Widget _sectionHeader(String label) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: kTabHorizontalPadding),
+    child: SectionHeader(label: label),
+  );
+
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
@@ -545,13 +552,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsThemeLanguage),
-          ),
+          _sectionHeader(l10n.settingsThemeLanguage),
           ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
@@ -604,13 +605,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsValueDisplay),
-          ),
+          _sectionHeader(l10n.settingsValueDisplay),
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: Text(l10n.settingsDateFormat),
@@ -622,6 +617,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.settingsTimeFormat),
             subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
             onTap: () => _showFormatPicker(context, l10n, isDate: false),
+          ),
+          ListTile(
+            leading: const Icon(Icons.timer_outlined),
+            title: Text(l10n.settingsOptionalPart),
+            subtitle: Text(l10n.settingsOptionalPartSummary(
+              _optionalPartHiddenTypes.length,
+              globalOptionalPartTypes.length,
+            )),
+            onTap: () => _showOptionalPartDialog(context),
           ),
           ListTile(
             leading: const Icon(Icons.format_list_numbered),
@@ -703,13 +707,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsLmst),
-          ),
+          _sectionHeader(l10n.settingsLmst),
           RadioGroup<LmstMode>(
               groupValue: _lmstMode,
               onChanged: (v) {
@@ -743,7 +741,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 labelText: l10n.labelLongitude,
                                 suffixText: '°',
                                 hintText: TimeValueFormatter.formatDecimal(
-                                    8.6821,
+                                    8.1427,
                                     _locale.toString(),
                                     4,
                                     thousandsSep: false
@@ -810,13 +808,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               )
           ),
           const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsTabVisibility),
-          ),
+          _sectionHeader(l10n.settingsTabVisibility),
           ...BuiltinTabKind.values.map((kind) {
             final tab = _tabs.where((t) => t.builtinKind == kind).firstOrNull;
             return SwitchListTile(
@@ -847,13 +839,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => _pickStartupFocusValue(context),
           ),
           const Divider(height: kDividerHeight),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              kTabHorizontalPadding, 0,
-              kTabHorizontalPadding, 0,
-            ),
-            child: SectionHeader(label: l10n.settingsExportImportReset),
-          ),
+          _sectionHeader(l10n.settingsExportImportReset),
           ListTile(
             leading: const Icon(Icons.download),
             title: Text(l10n.settingsPreferencesExport),

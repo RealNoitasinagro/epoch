@@ -42,6 +42,13 @@
       }
     }
   },
+  "@labelDefaultState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -67,6 +74,16 @@
     "placeholders": {
       "resetAction": {
         "type": "String"
+      }
+    }
+  },
+  "@settingsOptionalPartSummary": {
+    "placeholders": {
+      "hidden": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -152,14 +169,14 @@
   "hintEditLayout": "Edit layout",
   "hintEditSectionHeader": "Edit section header",
   "hintEditTimeValue": "Edit time value",
+  "hintFocusScreenDetailsOff": "Hide details line",
+  "hintFocusScreenDetailsOn": "Show details line",
   "hintFocusScreenExit": "Double-tap to exit",
   "hintFocusScreenOpen": "Double-tap to switch to focus screen",
   "hintFocusScreenToggleDecimalsOff": "Hold to suppress decimals",
   "hintFocusScreenToggleDecimalsOn": "Hold to display decimals",
   "hintFocusScreenToggleSecondsOff": "Hold to suppress seconds",
   "hintFocusScreenToggleSecondsOn": "Hold to display seconds",
-  "hintFocusScreenToggleToOneLine": "Hold for one line",
-  "hintFocusScreenToggleToTwoLines": "Hold for two lines",
   "hintMatchAlsoCity": "Same time zone as {name}",
   "hintMatchAlsoCountry": "Time zone also used in {name}",
   "hintPinnedIndicator": "Automatic clock change disabled",
@@ -203,6 +220,7 @@
   "infoTextCnesJulianDate": "CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: 1950-01-01 00:00 UT). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.",
   "infoTextDate": "The current calendar date in the selected timezone.",
   "infoTextDateTime": "The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.",
+  "infoTextDayMinute": "Minutes elapsed since midnight in the selected timezone. Resets to 0 at midnight.",
   "infoTextDayPercent": "Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.",
   "infoTextDaySecond": "Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.",
   "infoTextDecimalTime": "Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.",
@@ -225,6 +243,7 @@
   "infoTextTime": "The current time in the selected timezone.",
   "infoTextUnixSeconds": "Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.",
   "labelDay": "DD",
+  "labelDefaultState": "Default: {state}",
   "labelDstChangeInDays": "in {days} {days, plural, one{day} other{days}}",
   "labelDstChangeToday": "today",
   "labelDstChangeTomorrow": "tomorrow",
@@ -239,6 +258,7 @@
   "labelNextClockChanges": "Next clock changes",
   "labelSeconds": "ss",
   "labelShowDecimals": "Show decimals",
+  "labelShowDetails": "Show details line",
   "labelShowSeconds": "Show seconds",
   "labelYear": "YYYY",
   "messageAlreadyDisplayed": "This value is already displayed.",
@@ -294,6 +314,10 @@
   "settingsLmstOff": "Do not show",
   "settingsOff": "off",
   "settingsOn": "on",
+  "settingsOptionalPart": "Seconds and decimals",
+  "settingsOptionalPartAll": "All",
+  "settingsOptionalPartSummary": "{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}",
+  "settingsOptionalPartTimeNote": "Time and Date & Time follow the time format.",
   "settingsPreferencesExport": "Export preferences",
   "settingsPreferencesImport": "Import preferences",
   "settingsPreferencesReset": "Reset preferences",
@@ -321,6 +345,10 @@
   "settingsZoneDisplayModeOffsetMini": "Offset Mini\n  [+2]",
   "settingsZoneDisplayModeOffsetShort": "Offset Short\n  [+02:00]",
   "settingsZoneDisplayModeSub": "abbreviation, UTC-offset",
+  "startupErrorCopied": "Details copied",
+  "startupErrorCopy": "Copy details",
+  "startupErrorHint": "Something went wrong while loading the app. If possible, please report the details below on GitHub:",
+  "startupErrorTitle": "Epoch could not start",
   "tabAstronomical": "Astronomical",
   "tabCivil": "Civil",
   "tabCuriosities": "Curiosities",
@@ -352,6 +380,7 @@
   "valueTypeCnesJulianDate": "CNES Julian Date",
   "valueTypeDate": "Date",
   "valueTypeDateTime": "Date & Time",
+  "valueTypeDayMinute": "Day minute",
   "valueTypeDayPercent": "Day percent",
   "valueTypeDaySecond": "Day second",
   "valueTypeDecimalTime": "Decimal time",

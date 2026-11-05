@@ -1,26 +1,34 @@
 import 'package:intl/intl.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:numerus/numerus.dart';
 import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
+import 'models/time_pattern.dart';
 import 'models/time_value.dart';
 import 'models/timezone_abbreviation_localization.dart';
+import 'models/value_format_settings.dart';
+import 'models/zone_rules.dart';
 import 'time_utils.dart';
+import 'zoned_moment.dart';
 
 class TimeValueFormatter {
+  static const CommonRomanNumeralsConfig _romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
+
   /// Computes the display string for a given TimeValue at a given moment.
   static String format(
       TimeValue timeValue,
       DateTime now,
       String locale,
       {
-        bool hourFormat24 = true,
-        bool thousandsSep = true,
-        String dateFormat = kDatePatternIso,
-        String timeFormat = kTimePatternFull,
-        String localIanaZone = 'UTC',
-        double? longitude,
+        ValueFormatSettings settings = const ValueFormatSettings(),
       }
   ) {
+    final hourFormat24 = settings.hourFormat24;
+    final thousandsSep = settings.thousandsSep;
+    final dateFormat = settings.dateFormat;
+    final timeFormat = settings.timeFormat;
+    final localIanaZone = settings.localIanaZone;
+    final longitude = settings.longitude;
+    final showOptionalPart = settings.showsOptionalPart(timeValue);
     final utcNow = now.toUtc();
 
     // Zone-independent values.
@@ -78,107 +86,108 @@ class TimeValueFormatter {
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${timeValue.showOptionalPart
+        return '@${showOptionalPart
             ? swatchBeats.toStringAsFixed(2)
             : swatchBeats.toInt()}';
       case ValueType.newEarthTime:
         final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${timeValue.showOptionalPart
+        return '${showOptionalPart
             ? formatDecimal(deg, locale, 2, thousandsSep:  false)
             : deg.toInt()}°';
       case ValueType.doomsdayClock:
-        return TimeUtils.doomsDayClockString(hourFormat24, utcNow);
+        final secondOfDay = TimeUtils.doomsdayClockSecondOfDay(utcNow);
+        return formatTime(
+          hourFormat24,
+          secondOfDay ~/ 3600,
+          (secondOfDay % 3600) ~/ 60,
+          secondOfDay % 60,
+          tzSuffix: null,
+        );
       default:
         break;
     }
 
     // Zone-dependent values.
-    String tzLabel;
-    DateTime dt;
-    final Duration offset;
-    String? dayLengthZone;
-
-    switch (timeValue.zone) {
-      case ZoneUtc():
-        dt = utcNow;
-        tzLabel = 'UTC';
-        offset = Duration.zero;
-      case ZoneLocal():
-        dt = now;
-        try {
-          final tzLocation = tz.getLocation(localIanaZone);
-          final tzDt = tz.TZDateTime.from(now.toUtc(), tzLocation);
-          tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
-        } catch (_) {
-          tzLabel = now.timeZoneName;
-        }
-        offset = now.timeZoneOffset;
-        dayLengthZone = localIanaZone;
-      case ZoneNamed(ianaZone: final zone):
-        final tzDt = TimeUtils.inZone(utcNow, zone);
-        if (timeValue.timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
-          final info = TimeUtils.daylightOrStandardOffset(
-              zone, timeValue.timezoneClockChangeMode ==
-                TimezoneClockChangeMode.forceDst);
-          if (info != null) {
-            tzLabel = localizeTimezoneAbbr(info.abbreviation, locale);
-            offset = info.offset;
-            dt = utcNow.add(offset);
-            break;
-          }
-        }
-        dt = tzDt;
-        tzLabel = localizeTimezoneAbbr(tzDt.timeZone.abbreviation, locale);
-        offset = tzDt.timeZoneOffset;
-        dayLengthZone = zone;
-    }
-    final tzSuffix = '$tzLabel (${TimeUtils.utcOffsetString(offset)})';
-    final dayProgress = dayLengthZone != null
-        ? TimeUtils.dayProgressInZone(utcNow, dayLengthZone)
-        : TimeUtils.dayProgressFixedOffset(dt);
+    final moment = ZonedMoment.of(timeValue, utcNow, localIanaZone);
+    final wallClock = moment.wallClock;
+    final tzLabel = localizeTimezoneAbbr(moment.abbreviation, locale);
+    final utcOffset = formatUtcOffset(
+        moment.offset, withUtcPrefix: true, typographicMinus: true
+    );
+    final tzSuffix = '$tzLabel (${utcOffset})';
+    final timePattern = showOptionalPart
+        ? timePatternWithSeconds(timeFormat)
+        : timePatternWithoutSeconds(timeFormat);
 
     switch (timeValue.valueType) {
-      // Civil
+    // Civil
       case ValueType.date:
-        return formatDate(locale, dt, pattern: dateFormat);
+        return formatDate(locale, wallClock, pattern: dateFormat);
       case ValueType.time:
-        return formatTime(hourFormat24, dt.hour, dt.minute, dt.second,
-            tzSuffix: tzSuffix, pattern: timeFormat);
+        return formatTime(
+          hourFormat24,
+          wallClock.hour,
+          wallClock.minute,
+          wallClock.second,
+          tzSuffix: tzSuffix,
+          pattern: timePattern,
+        );
       case ValueType.dateTime:
-        return formatDateTime(hourFormat24, locale, dt, tzSuffix,
-            datePattern: dateFormat, timePattern: timeFormat);
+        return formatDateTime(
+          hourFormat24,
+          locale,
+          wallClock,
+          tzSuffix,
+          datePattern: dateFormat,
+          timePattern: timePattern,
+        );
       case ValueType.daySecond:
-        final value = dayProgress.elapsedSeconds;
+        final value = moment.dayProgress.elapsedSeconds;
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(value)
             : value.toString();
         formattedValue += ' $tzSuffix';
         return formattedValue;
+      case ValueType.dayMinute:
+        final dayMinute = TimeUtils.dayMinute(moment.dayProgress);
+        String formattedValue = thousandsSep
+            ? NumberFormat.decimalPattern(locale).format(dayMinute.minutes)
+            : dayMinute.minutes.toString();
+        if (showOptionalPart) {
+          formattedValue += ':${dayMinute.seconds.toString().padLeft(2, '0')}';
+        }
+        formattedValue += ' $tzSuffix';
+        return formattedValue;
       case ValueType.dayPercent:
-        String formattedValue = formatDecimal(
-            dayProgress.elapsedSeconds / dayProgress.lengthSeconds * 100,
-            locale, 3, thousandsSep: false); // percent never needs thousands sep
-        formattedValue += ' $tzSuffix';
-        return formattedValue;
-      // Curiosities
+        final percent = TimeUtils.dayPercent(moment.dayProgress);
+        // Hidden decimals are cut off, not rounded: 99.9 % is not yet 100 %.
+        final formattedPercent = showOptionalPart
+            ? formatDecimal(percent, locale, 3, thousandsSep: false)
+            : formatDecimal(percent.floorToDouble(), locale, 0, thousandsSep: false);
+        return '$formattedPercent $tzSuffix';
+    // Curiosities
       case ValueType.decimalTime:
-        String formattedValue = TimeUtils.decimalTimeString(dt,
-            elapsedSeconds: dayProgress.elapsedSeconds,
-            dayLengthSeconds: dayProgress.lengthSeconds);
-        formattedValue += ' $tzSuffix';
-        return formattedValue;
+        final decimalTime = TimeUtils.decimalTime(moment.dayProgress);
+        final decimalTimeText = _decimalTimeText(
+          decimalTime,
+          showSeconds: showOptionalPart,
+        );
+        return '$decimalTimeText $tzSuffix';
       case ValueType.binaryClockString:
-        return TimeUtils.binaryTimeString(dt, showSeconds: timeValue.showOptionalPart);
+        return binaryTimeString(
+          wallClock,
+          showSeconds: showOptionalPart,
+        );
       case ValueType.octalTime:
-        return TimeUtils.octalTimeString(dt,
-            elapsedSeconds: dayProgress.elapsedSeconds);
+        return _secondsInBase(moment.dayProgress.elapsedSeconds, 8, 6);
       case ValueType.hexadecimalTime:
-        return TimeUtils.hexadecimalTimeString(dt,
-            elapsedSeconds: dayProgress.elapsedSeconds);
+        return _hexadecimalText(moment.dayProgress.elapsedSeconds);
       case ValueType.romanNumeralsTime:
-        String formattedValue = TimeUtils.romanNumeralsTime(
-            hourFormat24, dt, showSeconds: timeValue.showOptionalPart);
-        return formattedValue;
+        return romanNumeralsTime(
+          hourFormat24,
+          wallClock,
+          showSeconds: showOptionalPart,
+        );
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
       case ValueType.sevenSegmentClock:
@@ -351,5 +360,59 @@ class TimeValueFormatter {
         .toSet();
     if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
     return null;
+  }
+
+  static String _decimalTimeText(
+      ({int hours, int minutes, int seconds}) decimalTime, {
+        required bool showSeconds,
+      }) {
+    final hoursAndMinutes = '${decimalTime.hours}\u02b0'
+        '${decimalTime.minutes.toString().padLeft(2, '0')}\u1d50';
+    if (!showSeconds) return hoursAndMinutes;
+    return '$hoursAndMinutes'
+        '${decimalTime.seconds.toString().padLeft(2, '0')}\u02e2';
+  }
+
+  /// Binary clock string representation, e.g. "10:110000:10111".
+  static String binaryTimeString(DateTime wallClock, {bool showSeconds = true}) {
+    final bin = TimeUtils.binaryTime(wallClock);
+    if (!showSeconds) return [bin.hours, bin.minutes].join(':');
+    return [bin.hours, bin.minutes, bin.seconds].join(':');
+  }
+
+  /// Seconds since midnight in the given base, zero-padded to a fixed width.
+  static String _secondsInBase(int seconds, int base, int digits) {
+    return seconds.toRadixString(base).padLeft(digits, '0').toUpperCase();
+  }
+
+  /// Seconds since midnight in base 16, grouped in pairs from the right,
+  /// e.g. "1_51_7F".
+  static String _hexadecimalText(int seconds) {
+    final hex = _secondsInBase(seconds, 16, 5);
+    final buffer = StringBuffer();
+    for (var index = 0; index < hex.length; index++) {
+      if (index > 0 && (hex.length - index) % 2 == 0) buffer.write('_');
+      buffer.write(hex[index]);
+    }
+    return buffer.toString();
+  }
+
+  /// Roman numerals time: time shown in Roman numerals. N for zeros.
+  static String romanNumeralsTime(bool hourFormat24, DateTime wallClock,
+      {bool showSeconds = true}) {
+    final displayHour = hourFormat24
+        ? wallClock.hour
+        : (wallClock.hour % 12 == 0 ? 12 : wallClock.hour % 12);
+    final period = hourFormat24 ? '' : (wallClock.hour < 12 ? ' AM' : ' PM');
+    final fields = [displayHour, wallClock.minute, if (showSeconds) wallClock.second]
+        .map((value) => _centered(value.toRomanNumeralString(config: _romanNumeralsConfig) ?? '--'));
+    return '${fields.join(':')}$period';
+  }
+
+  // Fixed width (longest numeral: XXXVIII = 7), centered; extra space goes left.
+  static String _centered(String text, {int width = 7}) {
+    final padding = width - text.length;
+    if (padding <= 0) return text;
+    return text.padLeft(text.length + (padding + 1) ~/ 2).padRight(width);
   }
 }

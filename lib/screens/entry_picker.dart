@@ -56,7 +56,6 @@ enum _Step { valueType, zone }
 class _EntryPickerState extends State<_EntryPicker> {
   _Step _step = _Step.valueType;
   ValueType? _type;
-  final bool showZoneIndicator = true;
 
   bool _isAllowed(ValueType t) =>
       widget.allowedTypes == null || widget.allowedTypes!.contains(t);
@@ -107,140 +106,45 @@ class _EntryPickerState extends State<_EntryPicker> {
   Widget _buildValueTypeStep() {
     final l10n = AppLocalizations.of(context)!;
 
-    // Groups: only show a group if at least one type in it is allowed.
-    final civilTypesAllowed = civilTypes.where(_isAllowed).toList();
-    final technicalTypesAllowed = technicalTypes.where(_isAllowed).toList();
-    final astronomicalTypesAllowed = astronomicalTypes.where(_isAllowed).toList();
-    final curiosityTypesAllowed = curiosityTypes.where(_isAllowed).toList();
-    final totalAllowed = civilTypesAllowed.length
-        + technicalTypesAllowed.length
-        + astronomicalTypesAllowed.length
-        + curiosityTypesAllowed.length;
+    // Categories in display order; a category is only shown if at least one
+    // of its types is allowed.
+    final categories = [
+      (title: l10n.tabCivil, types: civilTypes),
+      (title: l10n.tabTechnical, types: technicalTypes),
+      (title: l10n.tabAstronomical, types: astronomicalTypes),
+      (title: l10n.tabCuriosities, types: curiosityTypes),
+    ]
+        .map((category) => (
+    title: category.title,
+    types: category.types.where(_isAllowed).toList(),
+    ))
+        .where((category) => category.types.isNotEmpty)
+        .toList();
+    final totalAllowed = categories.fold<int>(
+        0, (total, category) => total + category.types.length);
 
     return SimpleDialog(
-      title: Text(l10n.hintSelectValueType + " (${totalAllowed})"),
+      title: Text('${l10n.hintSelectValueType} ($totalAllowed)'),
       children: [
-        if (civilTypesAllowed.isNotEmpty) ...[
-          _sectionLabel(
-              context,
-              l10n.tabCivil,
-              civilTypesAllowed.length
-          ),
-          ...civilTypesAllowed.map((type) {
-            final disabled = _isDisabled(type);
-            return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(type),
-              child: _typeLabel(
-                  context,
-                  TimeValue.localizedTypeLabel(type, l10n),
-                  disabled,
-                  !type.isZoneIndependent,
-                  type.isGraphical,
-              ),
-            );
-          }),
-        ],
-        if (technicalTypesAllowed.isNotEmpty) ...[
-          const Divider(),
-          _sectionLabel(
-              context,
-              l10n.tabTechnical,
-              technicalTypesAllowed.length
-          ),
-          ...technicalTypesAllowed.map((type) {
-            final disabled = _isDisabled(type);
-            return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(type),
-              child: _typeLabel(
-                  context,
-                  TimeValue.localizedTypeLabel(type, l10n),
-                  disabled,
-                  !type.isZoneIndependent,
-                  type.isGraphical,
-              ),
-            );
-          }),
-        ],
-        if (astronomicalTypesAllowed.isNotEmpty) ...[
-          const Divider(),
-          _sectionLabel(
-              context,
-              l10n.tabAstronomical,
-              astronomicalTypesAllowed.length
-          ),
-          ...astronomicalTypesAllowed.map((type) {
-            final disabled = _isDisabled(type);
-            return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(type),
-              child: _typeLabel(
-                  context,
-                  TimeValue.localizedTypeLabel(type, l10n),
-                  disabled,
-                  !type.isZoneIndependent,
-                  type.isGraphical,
-              ),
-            );
-          }),
-        ],
-        if (curiosityTypesAllowed.isNotEmpty) ...[
-          const Divider(),
-          _sectionLabel(
-              context,
-              l10n.tabCuriosities,
-              curiosityTypesAllowed.length
-          ),
-          ...curiosityTypesAllowed.map((type) {
-            final disabled = _isDisabled(type);
-            return SimpleDialogOption(
-              onPressed: disabled ? null : () => _selectType(type),
-              child: _typeLabel(
-                  context,
-                  TimeValue.localizedTypeLabel(type, l10n),
-                  disabled,
-                  !type.isZoneIndependent,
-                  type.isGraphical,
-              ),
-            );
-          }),
+        for (var index = 0; index < categories.length; index++) ...[
+          if (index > 0) const Divider(),
+          _sectionLabel(context, categories[index].title,
+              categories[index].types.length),
+          ...categories[index].types.map((type) => _typeOption(context, type)),
         ],
         const Divider(),
-        SimpleDialogOption(
-          onPressed: widget.valueTypesOnly
-              ? null
-              : () => Navigator.pop(context, TabDivider.generateDividerId()),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.horizontal_rule, size: 16,
-                  color: widget.valueTypesOnly
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-                      : null),
-              const SizedBox(width: 8),
-              Text(l10n.hintAddDivider,
-                  style: TextStyle(color: widget.valueTypesOnly
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-                      : null)),
-            ],
-          ),
+        _structureOption(
+          context,
+          icon: Icons.horizontal_rule,
+          label: l10n.hintAddDivider,
+          onPressed: () =>
+              Navigator.pop(context, TabDivider.generateDividerId()),
         ),
-        SimpleDialogOption(
-          onPressed: widget.valueTypesOnly
-              ? null
-              : () => _addSection(context, l10n),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.title, size: 16,
-                  color: widget.valueTypesOnly
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-                      : null),
-              const SizedBox(width: 8),
-              Text(l10n.hintAddSectionHeader,
-                  style: TextStyle(color: widget.valueTypesOnly
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-                      : null)),
-            ],
-          ),
+        _structureOption(
+          context,
+          icon: Icons.title,
+          label: l10n.hintAddSectionHeader,
+          onPressed: () => _addSection(context, l10n),
         ),
         const Divider(),
         Padding(
@@ -251,6 +155,45 @@ class _EntryPickerState extends State<_EntryPicker> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _typeOption(BuildContext context, ValueType type) {
+    final l10n = AppLocalizations.of(context)!;
+    final disabled = _isDisabled(type);
+    return SimpleDialogOption(
+      onPressed: disabled ? null : () => _selectType(type),
+      child: _typeLabel(
+        context,
+        TimeValue.localizedTypeLabel(type, l10n),
+        disabled,
+        !type.isZoneIndependent,
+        type.isGraphical,
+      ),
+    );
+  }
+
+  /// Divider and section header options; disabled when only value types may
+  /// be picked (e.g. for the startup focus value).
+  Widget _structureOption(
+      BuildContext context, {
+        required IconData icon,
+        required String label,
+        required VoidCallback onPressed,
+      }) {
+    final dimmedColor = widget.valueTypesOnly
+        ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
+        : null;
+    return SimpleDialogOption(
+      onPressed: widget.valueTypesOnly ? null : onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: dimmedColor),
+          const SizedBox(width: 8),
+          Text(label, style: TextStyle(color: dimmedColor)),
+        ],
+      ),
     );
   }
 

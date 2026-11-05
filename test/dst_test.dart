@@ -1,4 +1,5 @@
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/models/value_format_settings.dart';
 import 'package:epoch/time_utils.dart';
 import 'package:epoch/time_value_formatter.dart';
 import 'package:epoch/widgets/time_string_row.dart';
@@ -300,12 +301,16 @@ void main() {
         zone: ZoneNamed('Europe/Berlin'),
         timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
-      final autoValFormatted = TimeValueFormatter.format(tvAuto, summerUtc,
-          'en', thousandsSep: false);
+      final autoValFormatted = TimeValueFormatter.format(
+          tvAuto, summerUtc,'en',
+          settings: const ValueFormatSettings(thousandsSep: false)
+      );
       var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
       final autoVal = int.parse(splitAutoVal.line1);
-      final stdValFormatted = TimeValueFormatter.format(tvStd, summerUtc,
-          'en', thousandsSep: false);
+      final stdValFormatted = TimeValueFormatter.format(
+          tvStd, summerUtc,'en',
+          settings: const ValueFormatSettings(thousandsSep: false)
+      );
       var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
       final stdVal = int.parse(splitStdVal.line1);
       expect(autoVal - stdVal, equals(3600));

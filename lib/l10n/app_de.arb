@@ -42,6 +42,13 @@
       }
     }
   },
+  "@labelDefaultState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDstChangeInDays": {
     "placeholders": {
       "days": {
@@ -67,6 +74,16 @@
     "placeholders": {
       "resetAction": {
         "type": "String"
+      }
+    }
+  },
+  "@settingsOptionalPartSummary": {
+    "placeholders": {
+      "hidden": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -152,14 +169,14 @@
   "hintEditLayout": "Layout bearbeiten",
   "hintEditSectionHeader": "Abschnittsüberschrift bearbeiten",
   "hintEditTimeValue": "Zeitwert bearbeiten",
+  "hintFocusScreenDetailsOff": "Detailzeile ausblenden",
+  "hintFocusScreenDetailsOn": "Detailzeile einblenden",
   "hintFocusScreenExit": "Doppelt antippen zum Verlassen",
   "hintFocusScreenOpen": "Doppelt antippen zum Wechsel in den Fokus-Screen",
   "hintFocusScreenToggleDecimalsOff": "Gedrückt halten für Anzeige ohne Dezimalstellen",
   "hintFocusScreenToggleDecimalsOn": "Gedrückt halten für Anzeige mit Dezimalstellen",
   "hintFocusScreenToggleSecondsOff": "Gedrückt halten für Anzeige ohne Sekunden",
   "hintFocusScreenToggleSecondsOn": "Gedrückt halten für Anzeige mit Sekunden",
-  "hintFocusScreenToggleToOneLine": "Gedrückt halten für eine Zeile",
-  "hintFocusScreenToggleToTwoLines": "Gedrückt halten für zwei Zeilen",
   "hintMatchAlsoCity": "Gleiche Zeitzone wie {name}",
   "hintMatchAlsoCountry": "Zeitzone gilt auch in {name}",
   "hintPinnedIndicator": "Automatische Zeitumstellung deaktiviert",
@@ -203,6 +220,7 @@
   "infoTextCnesJulianDate": "Julianisches Datum CNES (CNES JD) = JD − 2.433.282,5 (Epoche: 1950-01-01 00:00 UT). Vom französischen Raumfahrtzentrum CNES als kompakte Tageszählung für Raumfahrtberechnungen eingeführt, mit dem Beginn des Jahres 1950 als Referenzepoche.",
   "infoTextDate": "Das aktuelle Kalenderdatum in der gewählten Zeitzone.",
   "infoTextDateTime": "Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.",
+  "infoTextDayMinute": "Minuten seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoTextDayPercent": "Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoTextDaySecond": "Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.",
   "infoTextDecimalTime": "Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.",
@@ -225,6 +243,7 @@
   "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
   "labelDay": "TT",
+  "labelDefaultState": "Standard: {state}",
   "labelDstChangeInDays": "in {days} {days, plural, one{Tag} other{Tagen}}",
   "labelDstChangeToday": "heute",
   "labelDstChangeTomorrow": "morgen",
@@ -239,6 +258,7 @@
   "labelNextClockChanges": "Nächste Zeitumstellungen",
   "labelSeconds": "Sek",
   "labelShowDecimals": "Dezimalstellen anzeigen",
+  "labelShowDetails": "Detailzeile anzeigen",
   "labelShowSeconds": "Sekunden anzeigen",
   "labelYear": "JJJJ",
   "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
@@ -294,6 +314,10 @@
   "settingsLmstOff": "Nicht anzeigen",
   "settingsOff": "aus",
   "settingsOn": "an",
+  "settingsOptionalPart": "Sekunden und Dezimalstellen",
+  "settingsOptionalPartAll": "Alle",
+  "settingsOptionalPartSummary": "{hidden, plural, =0{Alle angezeigt} other{{hidden} von {total} ausgeblendet}}",
+  "settingsOptionalPartTimeNote": "Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.",
   "settingsPreferencesExport": "Einstellungen exportieren",
   "settingsPreferencesImport": "Einstellungen importieren",
   "settingsPreferencesReset": "Einstellungen zurücksetzen",
@@ -321,6 +345,10 @@
   "settingsZoneDisplayModeOffsetMini": "Offset Mini\n  [+2]",
   "settingsZoneDisplayModeOffsetShort": "Offset Kurz\n  [+02:00]",
   "settingsZoneDisplayModeSub": "Kürzel, UTC-Zeitabstand",
+  "startupErrorCopied": "Details kopiert",
+  "startupErrorCopy": "Details kopieren",
+  "startupErrorHint": "Beim Laden der App ist etwas schiefgelaufen. Bitte melde die folgenden Angaben nach Möglichkeit auf GitHub:",
+  "startupErrorTitle": "Epoch konnte nicht starten",
   "tabAstronomical": "Astronomisch",
   "tabCivil": "Bürgerlich",
   "tabCuriosities": "Kurioses",
@@ -352,6 +380,7 @@
   "valueTypeCnesJulianDate": "Julianisches Datum CNES",
   "valueTypeDate": "Datum",
   "valueTypeDateTime": "Datum & Uhrzeit",
+  "valueTypeDayMinute": "Tagesminute",
   "valueTypeDayPercent": "Tagesprozent",
   "valueTypeDaySecond": "Tagessekunde",
   "valueTypeDecimalTime": "Dezimalzeit",
