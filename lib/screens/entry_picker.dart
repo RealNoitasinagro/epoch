@@ -113,13 +113,11 @@ class _EntryPickerState extends State<_EntryPicker> {
       (title: l10n.tabTechnical, types: technicalTypes),
       (title: l10n.tabAstronomical, types: astronomicalTypes),
       (title: l10n.tabCuriosities, types: curiosityTypes),
-    ]
-        .map((category) => (
-    title: category.title,
-    types: category.types.where(_isAllowed).toList(),
-    ))
-        .where((category) => category.types.isNotEmpty)
-        .toList();
+    ].map((category) => (
+        title: category.title,
+        types: category.types.where(_isAllowed).toList(),
+    )).where((category) => category.types.isNotEmpty)
+      .toList();
     final totalAllowed = categories.fold<int>(
         0, (total, category) => total + category.types.length);
 

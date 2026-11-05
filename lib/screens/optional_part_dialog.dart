@@ -55,7 +55,7 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 12, bottom: 4),
-          child: SectionHeader(label: title),
+          child: SectionHeader(label: '$title (${valueTypes.length})'),
         ),
         for (final valueType in valueTypes)
           CheckboxListTile(
@@ -73,8 +73,9 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final numberOfOptionalPartTypes = globalOptionalPartTypes.length;
     return AlertDialog(
-      title: Text(l10n.settingsOptionalPart),
+      title: Text('${l10n.settingsOptionalPart} ($numberOfOptionalPartTypes)'),
       scrollable: true,
       content: SizedBox(
         width: 340,
