@@ -45,7 +45,7 @@ class _FocusScreenState extends State<FocusScreen> {
   late DateTime _now;
   late Timer _timer;
   Color _textColor = Colors.white;
-  bool _showLine2 = true;
+  bool? _showLine2;  // null until the first build, then follows the button
   late bool _showOptionalPart;
 
   double? _brightness;
@@ -231,18 +231,18 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _toggleLine2() {
     if (_sliderActive) return;
-    setState(() => _showLine2 = !_showLine2);
+    setState(() => _showLine2 = !(_showLine2 ?? false));
     _showControls();
   }
 
   Widget _detailsToggle(AppLocalizations l10n) {
     return IconButton(
       icon: Icon(
-        _showLine2 ? Icons.subtitles : Icons.subtitles_off_outlined,
+        _showLine2 == true ? Icons.subtitles : Icons.subtitles_off_outlined,
         color: _textColor,
         size: 28,
       ),
-      tooltip: _showLine2
+      tooltip: _showLine2 == true
           ? l10n.hintFocusScreenDetailsOff
           : l10n.hintFocusScreenDetailsOn,
       onPressed: _toggleLine2,
@@ -254,21 +254,23 @@ class _FocusScreenState extends State<FocusScreen> {
     _showControls();
   }
 
-  ({String line1, String line2}) _currentDisplay() {
+  /// The display with the sessions's seconds setting; [withDetails] switches
+  /// the details line on whatever the tab says, for values that have one.
+  ({String line1, String line2}) _display({required bool withDetails}) {
     final app = EpochApp.of(context);
-
-    // The volatile Focus toggle overrides the stored setting:
-    final effectiveTimeValue =
-    widget.timeValue.valueType.optionalPart != OptionalPart.none
-        ? widget.timeValue.withShowOptionalPart(_showOptionalPart)
-        : widget.timeValue;
-
+    var timeValue = widget.timeValue;
+    if (timeValue.valueType.optionalPart != OptionalPart.none) {
+      timeValue = timeValue.withShowOptionalPart(_showOptionalPart);
+    }
+    if (withDetails && timeValue.valueType.hasDetailsLine) {
+      timeValue = timeValue.withShowDetails(true);
+    }
     return TimeStringRow.computeDisplay(
-      effectiveTimeValue,
+      timeValue,
       _now,
       widget.locale,
       AppLocalizations.of(context)!,
-      settings: app.formatSettings
+      settings: app.formatSettings,
     );
   }
 
@@ -305,9 +307,11 @@ class _FocusScreenState extends State<FocusScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
 
     final l10n = AppLocalizations.of(context)!;
-    final display = _currentDisplay();
-    final hasLine2 = display.line2.isNotEmpty
-        && !widget.timeValue.valueType.isGraphical;
+    final tabDisplay = _display(withDetails: false);
+    final fullDisplay = _display(withDetails: true);
+    _showLine2 ??= tabDisplay.line2.isNotEmpty;
+    final hasLine2 =
+        fullDisplay.line2.isNotEmpty && !widget.timeValue.valueType.isGraphical;
     final optionalPart = widget.timeValue.valueType.optionalPart;
 
     if (_brightness == null) {
@@ -319,9 +323,9 @@ class _FocusScreenState extends State<FocusScreen> {
       body: GestureDetector(
         onDoubleTap: _exit,
         onTap: _showControls,
-        onLongPress: optionalPart != OptionalPart.none
-          ? _toggleOptionalPart
-          : null,
+        // onLongPress: optionalPart != OptionalPart.none
+        //   ? _toggleOptionalPart
+        //   : null,
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -351,7 +355,12 @@ class _FocusScreenState extends State<FocusScreen> {
                     curve: Curves.easeInOut,
                     transform: Matrix4.translationValues(
                         0, _pixelShiftOffsetY, 0),
-                    child: _buildValueDisplay(isLandscape),
+                    child: GestureDetector(
+                        onLongPress: optionalPart != OptionalPart.none
+                            ? _toggleOptionalPart
+                            : null,
+                        child: _buildValueDisplay(isLandscape)
+                    ),
                   ),
                 ),
                 // Controls overlay – fades in/out:
@@ -646,7 +655,7 @@ class _FocusScreenState extends State<FocusScreen> {
       );
     }
 
-    final display = _currentDisplay();
+    final display = _display(withDetails: true);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: hPadding, vertical: vPadding),
@@ -666,7 +675,7 @@ class _FocusScreenState extends State<FocusScreen> {
               ),
               maxLines: 1,
             ),
-            if (_showLine2 && display.line2.isNotEmpty) ...[
+            if (_showLine2 == true && display.line2.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
                 display.line2,
