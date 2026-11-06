@@ -674,11 +674,11 @@ abstract class AppLocalizations {
   /// **'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
   String get infoTextRomanNumeralsTime;
 
-  /// No description provided for @infoTextSevenSegmentTime.
+  /// No description provided for @infoTextSevenSegmentClock.
   ///
   /// In en, this message translates to:
   /// **'The current time in the selected timezone in alarm clock design.'**
-  String get infoTextSevenSegmentTime;
+  String get infoTextSevenSegmentClock;
 
   /// No description provided for @infoTextSwatchBeats.
   ///
@@ -1634,11 +1634,11 @@ abstract class AppLocalizations {
   /// **'Roman numerals time'**
   String get valueTypeRomanNumeralsTime;
 
-  /// No description provided for @valueTypeSevenSegmentTime.
+  /// No description provided for @valueTypeSevenSegmentClock.
   ///
   /// In en, this message translates to:
   /// **'Seven-segment Clock'**
-  String get valueTypeSevenSegmentTime;
+  String get valueTypeSevenSegmentClock;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///

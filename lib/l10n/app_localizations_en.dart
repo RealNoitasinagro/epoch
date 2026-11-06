@@ -363,7 +363,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.';
 
   @override
-  String get infoTextSevenSegmentTime =>
+  String get infoTextSevenSegmentClock =>
       'The current time in the selected timezone in alarm clock design.';
 
   @override
@@ -898,7 +898,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeRomanNumeralsTime => 'Roman numerals time';
 
   @override
-  String get valueTypeSevenSegmentTime => 'Seven-segment Clock';
+  String get valueTypeSevenSegmentClock => 'Seven-segment Clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';
