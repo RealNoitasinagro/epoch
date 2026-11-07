@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import '../../layout_constants.dart';
 
@@ -14,7 +13,6 @@ extension AnalogClockScaleProps on AnalogClockScale {
 }
 
 const double _fullCircle = 2 * math.pi;
-const int _hoursPerDayQuarter = 6;
 
 // ── Geometry helpers (angles: radians, clockwise from 12 o'clock) ───────────
 
@@ -34,38 +32,30 @@ double analogMinuteHandAngle(DateTime wallClock) =>
 double analogSecondHandAngle(DateTime wallClock) =>
     wallClock.second / 60 * _fullCircle;
 
-typedef AnalogClockArc = ({double startAngle, double sweepAngle});
-
-/// The part of the dial covered by the current quarter of the day:
-/// a quarter circle on the 24-hour dial, a half circle on the 12-hour dial.
-AnalogClockArc analogDayQuarterArc(int wallClockHour, AnalogClockScale scale) {
-  final quarterStartHour =
-      wallClockHour ~/ _hoursPerDayQuarter * _hoursPerDayQuarter;
-  return (
-  startAngle: quarterStartHour % scale.hoursPerRevolution /
-      scale.hoursPerRevolution * _fullCircle,
-  sweepAngle: _hoursPerDayQuarter / scale.hoursPerRevolution * _fullCircle,
-  );
-}
+/// The 12-hour dial shows "+12" in the second half of the day, which tells
+/// morning from afternoon.
+bool analogClockShowsPlusTwelve(int wallClockHour, AnalogClockScale scale) =>
+    scale == AnalogClockScale.twelveHour && wallClockHour >= 12;
 
 // ── Layout (all values as fractions of the dial radius) ─────────────────────
 
 const double _rimWidth = 0.035;
-const double _dayQuarterBandWidth = 0.045;
-const double _rimRadius = 1 - _dayQuarterBandWidth / 2;
-const double _tickOuterRadius = _rimRadius - _dayQuarterBandWidth / 2 - 0.01;
+const double _rimRadius = 1 - _rimWidth / 2;
+const double _minuteScaleOuterRadius = 1 - _rimWidth - 0.01;
 
 const double _minuteTickLength = 0.035;
 const double _minuteTickWidth = 0.008;
-const double _hourTickLength = 0.07;
-const double _hourTickWidth = 0.018;
 const int _minuteTickAlpha = 130;
+const double _fiveMinuteTickLength = 0.07;
+const double _fiveMinuteTickWidth = 0.018;
 
-const double _hourHandLength = 0.60;
+/// Own ring of hour ticks (24-hour dial only).
+const double _hourRingTickLength = 0.04;
+const double _hourRingTickWidth = 0.012;
+
 const double _hourHandWidth = 0.075;
-const double _minuteHandLength = 0.82;
 const double _minuteHandWidth = 0.052;
-const double _secondHandLength = _tickOuterRadius;
+const double _secondHandLength = _minuteScaleOuterRadius;
 const double _secondHandTailLength = 0.18;
 const double _secondHandWidth = 0.014;
 
@@ -77,6 +67,52 @@ const double _cutoutWidthFraction = 0.45;
 const double _centerRingRadius = 0.05;
 const double _centerRingWidth = 0.018;
 
+const double _plusTwelveRadius = 0.46;
+const double _plusTwelveFontSize = 0.08;
+const int _plusTwelveAlpha = 170;
+
+/// What differs between the two dials.
+class _DialLayout {
+  /// Null: the five-minute ticks mark the hours. Otherwise the outer radius
+  /// of an own ring of hour ticks inside the minute scale.
+  final double? hourTickRingRadius;
+  final double labelRadius;
+  final double labelFontSize;
+  final double hourHandLength;
+  final double minuteHandLength;
+
+  const _DialLayout({
+    this.hourTickRingRadius,
+    required this.labelRadius,
+    required this.labelFontSize,
+    required this.hourHandLength,
+    required this.minuteHandLength,
+  });
+
+  static const twelveHour = _DialLayout(
+    labelRadius: 0.74,
+    labelFontSize: 0.13,
+    hourHandLength: 0.60,
+    minuteHandLength: 0.82,
+  );
+
+  /// Two separate scales: minutes outside, hours (ticks and numbers) inside.
+  static const twentyFourHour = _DialLayout(
+    hourTickRingRadius: 0.80,
+    labelRadius: 0.64,
+    labelFontSize: 0.09,
+    hourHandLength: 0.52,
+    minuteHandLength: 0.86,
+  );
+}
+
+extension on AnalogClockScale {
+  _DialLayout get layout => switch (this) {
+    AnalogClockScale.twelveHour => _DialLayout.twelveHour,
+    AnalogClockScale.twentyFourHour => _DialLayout.twentyFourHour,
+  };
+}
+
 /// Analog clock without a dial background. The cutouts of the hands are real
 /// holes (the background shows through), so no background color is needed.
 class AnalogClock extends StatelessWidget {
@@ -85,10 +121,6 @@ class AnalogClock extends StatelessWidget {
   final AnalogClockScale scale;
   final bool showSeconds;
   final Color color;
-
-  /// Null: no day quarter indicator (setting off, night mode).
-  final Color? dayQuarterColor;
-
   final double diameter;
 
   /// Null: the font of the surrounding theme.
@@ -100,7 +132,6 @@ class AnalogClock extends StatelessWidget {
     required this.scale,
     this.showSeconds = true,
     this.color = Colors.white,
-    this.dayQuarterColor,
     this.diameter = kGraphicalAnalogClockDiameterDefault,
     this.fontFamily,
   });
@@ -114,7 +145,6 @@ class AnalogClock extends StatelessWidget {
         scale: scale,
         showSeconds: showSeconds,
         color: color,
-        dayQuarterColor: dayQuarterColor,
         fontFamily: fontFamily,
       ),
     );
@@ -126,7 +156,6 @@ class _AnalogClockPainter extends CustomPainter {
   final AnalogClockScale scale;
   final bool showSeconds;
   final Color color;
-  final Color? dayQuarterColor;
   final String? fontFamily;
 
   const _AnalogClockPainter({
@@ -134,9 +163,10 @@ class _AnalogClockPainter extends CustomPainter {
     required this.scale,
     required this.showSeconds,
     required this.color,
-    required this.dayQuarterColor,
     required this.fontFamily,
   });
+
+  _DialLayout get _layout => scale.layout;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -144,158 +174,162 @@ class _AnalogClockPainter extends CustomPainter {
     canvas.save();
     canvas.translate(size.width / 2, size.height / 2);
 
-    _paintRim(canvas, radius);
-    _paintTicks(canvas, radius);
+    canvas.drawCircle(
+        Offset.zero, radius * _rimRadius, _strokePaint(radius * _rimWidth));
+    _paintMinuteScale(canvas, radius);
+    _paintHourTickRing(canvas, radius);
     _paintLabels(canvas, radius);
+    _paintPlusTwelve(canvas, radius);
     _paintHands(canvas, radius);
-    _paintCenterRing(canvas, radius);
+    canvas.drawCircle(Offset.zero, radius * _centerRingRadius,
+        _strokePaint(radius * _centerRingWidth));
 
     canvas.restore();
   }
 
-  Paint _strokePaint(double width, {Color? strokeColor}) => Paint()
-    ..color = strokeColor ?? color
+  Paint _strokePaint(double width, {int? alpha}) => Paint()
+    ..color = alpha == null ? color : color.withAlpha(alpha)
     ..style = PaintingStyle.stroke
     ..strokeWidth = width
-    ..isAntiAlias = true;
-
-  Paint get _fillPaint => Paint()
-    ..color = color
-    ..style = PaintingStyle.fill
     ..isAntiAlias = true;
 
   /// Point at [angle] (clockwise from the top) and [distance] from the center.
   static Offset _pointAt(double angle, double distance) =>
       Offset(distance * math.sin(angle), -distance * math.cos(angle));
 
-  void _paintRim(Canvas canvas, double radius) {
-    canvas.drawCircle(
-        Offset.zero, radius * _rimRadius, _strokePaint(radius * _rimWidth));
-
-    final indicatorColor = dayQuarterColor;
-    if (indicatorColor == null) return;
-    // A wider stripe over the rim, only for the current quarter of the day:
-    final arc = analogDayQuarterArc(now.hour, scale);
-    canvas.drawArc(
-      Rect.fromCircle(center: Offset.zero, radius: radius * _rimRadius),
-      arc.startAngle - math.pi / 2,  // canvas angles start at 3 o'clock
-      arc.sweepAngle,
-      false,
-      _strokePaint(radius * _dayQuarterBandWidth, strokeColor: indicatorColor),
-    );
-  }
-
-  void _paintTicks(Canvas canvas, double radius) {
-    final minutePaint = _strokePaint(radius * _minuteTickWidth,
-        strokeColor: color.withAlpha(_minuteTickAlpha));
-    for (var minute = 0; minute < 60; minute++) {
-      _paintTick(canvas, radius, minute / 60 * _fullCircle,
-          _minuteTickLength, minutePaint);
-    }
-    final hourPaint = _strokePaint(radius * _hourTickWidth);
-    final hourMarks = scale.hoursPerRevolution;
-    for (var mark = 0; mark < hourMarks; mark++) {
-      _paintTick(canvas, radius, mark / hourMarks * _fullCircle,
-          _hourTickLength, hourPaint);
-    }
-  }
-
   void _paintTick(Canvas canvas, double radius, double angle,
-      double length, Paint paint) {
+      double outerRadius, double length, Paint paint) {
     canvas.drawLine(
-      _pointAt(angle, radius * _tickOuterRadius),
-      _pointAt(angle, radius * (_tickOuterRadius - length)),
+      _pointAt(angle, radius * outerRadius),
+      _pointAt(angle, radius * (outerRadius - length)),
       paint,
     );
+  }
+
+  /// 60 minute ticks, every fifth one longer and thicker. On the 12-hour
+  /// dial these are at the same time the hour ticks.
+  void _paintMinuteScale(Canvas canvas, double radius) {
+    final minutePaint =
+    _strokePaint(radius * _minuteTickWidth, alpha: _minuteTickAlpha);
+    final fiveMinutePaint = _strokePaint(radius * _fiveMinuteTickWidth);
+    for (var minute = 0; minute < 60; minute++) {
+      final isFiveMinuteMark = minute % 5 == 0;
+      _paintTick(
+        canvas, radius, minute / 60 * _fullCircle, _minuteScaleOuterRadius,
+        isFiveMinuteMark ? _fiveMinuteTickLength : _minuteTickLength,
+        isFiveMinuteMark ? fiveMinutePaint : minutePaint,
+      );
+    }
+  }
+
+  void _paintHourTickRing(Canvas canvas, double radius) {
+    final ringRadius = _layout.hourTickRingRadius;
+    if (ringRadius == null) return;
+    final paint = _strokePaint(radius * _hourRingTickWidth);
+    final markCount = scale.hoursPerRevolution;
+    for (var mark = 0; mark < markCount; mark++) {
+      _paintTick(canvas, radius, mark / markCount * _fullCircle, ringRadius,
+          _hourRingTickLength, paint);
+    }
+  }
+
+  void _paintText(Canvas canvas, String text, Offset center, TextStyle style) {
+    final painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(
+        canvas, center - Offset(painter.width / 2, painter.height / 2));
   }
 
   void _paintLabels(Canvas canvas, double radius) {
     final is24Hour = scale == AnalogClockScale.twentyFourHour;
     final labelCount = scale.hoursPerRevolution;
-    final fontSize = radius * (is24Hour ? 0.09 : 0.13);
-    final labelRadius = radius * (is24Hour ? 0.78 : 0.74);
     final style = TextStyle(
-        color: color, fontSize: fontSize, fontFamily: fontFamily,
-        fontWeight: FontWeight.w500);
-
+      color: color,
+      fontSize: radius * _layout.labelFontSize,
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w500,
+    );
     for (var index = 0; index < labelCount; index++) {
       final text = is24Hour
           ? index.toString().padLeft(2, '0')
           : (index == 0 ? 12 : index).toString();
-      final painter = TextPainter(
-        text: TextSpan(text: text, style: style),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      final center = _pointAt(index / labelCount * _fullCircle, labelRadius);
-      painter.paint(
-          canvas, center - Offset(painter.width / 2, painter.height / 2));
-    }
-  }
-
-  void _paintHands(Canvas canvas, double radius) {
-    final centerDisc = Path()
-      ..addOval(Rect.fromCircle(
-          center: Offset.zero, radius: radius * _centerRingRadius));
-
-    _paintHand(
-      canvas, analogHourHandAngle(now, scale),
-      _hollowHandPath(radius * _hourHandLength, radius * _hourHandWidth,
-          centerDisc),
-    );
-    _paintHand(
-      canvas, analogMinuteHandAngle(now),
-      _hollowHandPath(radius * _minuteHandLength, radius * _minuteHandWidth,
-          centerDisc),
-    );
-    if (showSeconds) {
-      _paintHand(
-        canvas, analogSecondHandAngle(now),
-        _secondHandPath(radius, centerDisc),
+      _paintText(
+        canvas, text,
+        _pointAt(index / labelCount * _fullCircle,
+            radius * _layout.labelRadius),
+        style,
       );
     }
   }
 
-  void _paintHand(Canvas canvas, double angle, Path path) {
-    canvas.save();
-    canvas.rotate(angle);
-    canvas.drawPath(path, _fillPaint);
-    canvas.restore();
-  }
-
-  /// Hand pointing up from the center, with a hole near the tip. The area
-  /// inside the center ring is cut out as well, so the ring stays clean.
-  Path _hollowHandPath(double length, double width, Path centerDisc) {
-    final outline = Path()
-      ..addRRect(RRect.fromLTRBR(
-          -width / 2, -length, width / 2, width / 2, Radius.circular(width / 2)));
-    final holeHalfWidth = width * _cutoutWidthFraction / 2;
-    final hole = Path()
-      ..addRRect(RRect.fromLTRBR(
-          -holeHalfWidth, -length * _cutoutEnd,
-          holeHalfWidth, -length * _cutoutStart,
-          Radius.circular(holeHalfWidth)));
-    final withHole =
-        ui.Path.combine(ui.PathOperation.difference, outline, hole);
-    return ui.Path.combine(ui.PathOperation.difference, withHole, centerDisc);
-  }
-
-  /// Thin hand from the tail across the center to the tick marks.
-  Path _secondHandPath(double radius, Path centerDisc) {
-    final width = radius * _secondHandWidth;
-    final hand = Path()
-      ..addRRect(RRect.fromLTRBR(
-          -width / 2, -radius * _secondHandLength,
-          width / 2, radius * _secondHandTailLength,
-          Radius.circular(width / 2)));
-    return ui.Path.combine(ui.PathOperation.difference, hand, centerDisc);
-  }
-
-  void _paintCenterRing(Canvas canvas, double radius) {
-    canvas.drawCircle(
-      Offset.zero,
-      radius * _centerRingRadius,
-      _strokePaint(radius * _centerRingWidth),
+  /// Small hint below the 12: this is the second half of the day.
+  void _paintPlusTwelve(Canvas canvas, double radius) {
+    if (!analogClockShowsPlusTwelve(now.hour, scale)) return;
+    _paintText(
+      canvas, '+12',
+      Offset(0, -radius * _plusTwelveRadius),
+      TextStyle(
+        color: color.withAlpha(_plusTwelveAlpha),
+        fontSize: radius * _plusTwelveFontSize,
+        fontFamily: fontFamily,
+        fontWeight: FontWeight.w500,
+      ),
     );
+  }
+
+  void _paintHands(Canvas canvas, double radius) {
+    _paintHand(
+      canvas, radius, analogHourHandAngle(now, scale),
+      outline: _handOutline(
+          radius * _layout.hourHandLength, radius * _hourHandWidth),
+      cutout: _handCutout(
+          radius * _layout.hourHandLength, radius * _hourHandWidth),
+    );
+    _paintHand(
+      canvas, radius, analogMinuteHandAngle(now),
+      outline: _handOutline(
+          radius * _layout.minuteHandLength, radius * _minuteHandWidth),
+      cutout: _handCutout(
+          radius * _layout.minuteHandLength, radius * _minuteHandWidth),
+    );
+    if (showSeconds) {
+      final width = radius * _secondHandWidth;
+      _paintHand(
+        canvas, radius, analogSecondHandAngle(now),
+        outline: RRect.fromLTRBR(
+            -width / 2, -radius * _secondHandLength,
+            width / 2, radius * _secondHandTailLength,
+            Radius.circular(width / 2)),
+      );
+    }
+  }
+
+  /// Hand pointing up from the center, rounded at both ends.
+  RRect _handOutline(double length, double width) => RRect.fromLTRBR(
+      -width / 2, -length, width / 2, width / 2, Radius.circular(width / 2));
+
+  RRect _handCutout(double length, double width) {
+    final halfWidth = width * _cutoutWidthFraction / 2;
+    return RRect.fromLTRBR(
+        -halfWidth, -length * _cutoutEnd, halfWidth, -length * _cutoutStart,
+        Radius.circular(halfWidth));
+  }
+
+  /// Every hand gets its own layer: the holes (cutout, inside of the center
+  /// ring) are erased with BlendMode.clear, which works on every backend and
+  /// neither touches the other hands nor the dial.
+  void _paintHand(Canvas canvas, double radius, double angle,
+      {required RRect outline, RRect? cutout}) {
+    final clearPaint = Paint()..blendMode = BlendMode.clear;
+    canvas.saveLayer(Rect.fromCircle(center: Offset.zero, radius: radius),
+        Paint());
+    canvas.rotate(angle);
+    canvas.drawRRect(outline, Paint()..color = color..isAntiAlias = true);
+    if (cutout != null) canvas.drawRRect(cutout, clearPaint);
+    canvas.drawCircle(Offset.zero, radius * _centerRingRadius, clearPaint);
+    canvas.restore();
   }
 
   @override
@@ -304,6 +338,5 @@ class _AnalogClockPainter extends CustomPainter {
       old.scale != scale ||
       old.showSeconds != showSeconds ||
       old.color != color ||
-      old.dayQuarterColor != dayQuarterColor ||
       old.fontFamily != fontFamily;
 }

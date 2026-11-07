@@ -30,21 +30,10 @@ void main() {
     });
   });
 
-  group('day quarter arc', () {
-    test('24h dial: a quarter circle starting at the quarter', () {
-      final arc = analogDayQuarterArc(13, AnalogClockScale.twentyFourHour);
-      expect(arc.startAngle, closeTo(math.pi, 1e-9));
-      expect(arc.sweepAngle, closeTo(quarterTurn, 1e-9));
-    });
-
-    test('12h dial: a half circle, upper half in quarters 1 and 3', () {
-      final morning = analogDayQuarterArc(3, AnalogClockScale.twelveHour);
-      final afternoon = analogDayQuarterArc(15, AnalogClockScale.twelveHour);
-      expect(morning.startAngle, closeTo(0, 1e-9));
-      expect(morning.sweepAngle, closeTo(math.pi, 1e-9));
-      expect(afternoon.startAngle, closeTo(0, 1e-9));
-      final evening = analogDayQuarterArc(20, AnalogClockScale.twelveHour);
-      expect(evening.startAngle, closeTo(math.pi, 1e-9));
-    });
+  test('"+12" only on the 12-hour dial, from noon on', () {
+    expect(analogClockShowsPlusTwelve(11, AnalogClockScale.twelveHour), isFalse);
+    expect(analogClockShowsPlusTwelve(12, AnalogClockScale.twelveHour), isTrue);
+    expect(analogClockShowsPlusTwelve(23, AnalogClockScale.twelveHour), isTrue);
+    expect(analogClockShowsPlusTwelve(15, AnalogClockScale.twentyFourHour), isFalse);
   });
 }

@@ -37,7 +37,6 @@ Widget buildGraphicalClock({
           ? AnalogClockScale.twelveHour : AnalogClockScale.twentyFourHour,
       showSeconds: showSeconds,
       color: segmentColor,
-      dayQuarterColor: dayQuarterColor,
       diameter: focusSize
           ? kGraphicalAnalogClockDiameterFocus
           : kGraphicalAnalogClockDiameterDefault,
