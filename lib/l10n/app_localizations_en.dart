@@ -542,7 +542,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsDateWithDetails => 'Expanded date';
 
   @override
-  String get settingsDateWithDetailsSub => 'calender week, day of the year';
+  String get settingsDateWithDetailsSub => 'calendar week, day of the year';
 
   @override
   String get settingsDayQuarterColor => 'Day quarter color';

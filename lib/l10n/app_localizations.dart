@@ -989,7 +989,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'calender week, day of the year'**
+  /// **'calendar week, day of the year'**
   String get settingsDateWithDetailsSub;
 
   /// No description provided for @settingsDayQuarterColor.

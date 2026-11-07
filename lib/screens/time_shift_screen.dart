@@ -76,20 +76,17 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         requested.hour, requested.minute, requested.second);
     final requestedText = _wallClockText(requested);
     final usedText = _wallClockText(moment);
-    setState(() {
-      _editedMoment = moment;
-      setState(() => _editedMoment = moment);
-      if (requestedText != usedText) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(SnackBar(
-            content: Text(AppLocalizations.of(context)!
-                .timeShiftSkippedTime(requestedText, usedText)),
-            duration: const Duration(seconds: 6),
-            behavior: SnackBarBehavior.floating,
-          ));
-      }
-    });
+    setState(() => _editedMoment = moment);
+    if (requestedText != usedText) {
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!
+              .timeShiftSkippedTime(requestedText, usedText)),
+          duration: const Duration(seconds: 6),
+          behavior: SnackBarBehavior.floating,
+        ));
+    }
   }
 
   Future<void> _editDate({required bool startWithYear}) async {
