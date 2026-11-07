@@ -210,6 +210,8 @@ void main() {
         ValueType.swatchBeats,
         ValueType.newEarthTime,
         ValueType.sevenSegmentClock,
+        ValueType.analogClock12h,
+        ValueType.analogClock24h,
         ValueType.binaryClockBcd,
         ValueType.binaryClockColumns,
         ValueType.binaryClockString,
@@ -218,7 +220,7 @@ void main() {
       for (final type in ValueType.values.where((t) => !withPart.contains(t))) {
         expect(type.optionalPart, OptionalPart.none, reason: '$type');
       }
-      expect(globalOptionalPartTypes.length, 10);
+      expect(globalOptionalPartTypes.length, 12);
     });
     test('|nosec roundtrip still works after the rename', () {
       const value = TimeValue(

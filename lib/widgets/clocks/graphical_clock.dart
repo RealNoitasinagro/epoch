@@ -3,6 +3,7 @@ import '../../l10n/app_localizations.dart';
 import '../../layout_constants.dart';
 import '../../models/app_settings.dart';
 import '../../models/time_value.dart';
+import 'analog_clock.dart';
 import 'binary_coded_decimal_clock.dart';
 import 'binary_columns_clock.dart';
 import 'seven_segment_clock.dart';
@@ -17,6 +18,7 @@ Widget buildGraphicalClock({
   required bool hourFormat24,
   required Color segmentColor,
   bool focusSize = false,
+  Color? dayQuarterColor
 }) {
   return switch (valueType) {
     ValueType.sevenSegmentClock => SevenSegmentClock(
@@ -28,6 +30,17 @@ Widget buildGraphicalClock({
       showSeconds: showSeconds,
       hourFormat24: hourFormat24,
       color: segmentColor,
+    ),
+    ValueType.analogClock12h || ValueType.analogClock24h => AnalogClock(
+      now: now,
+      scale: valueType == ValueType.analogClock12h
+          ? AnalogClockScale.twelveHour : AnalogClockScale.twentyFourHour,
+      showSeconds: showSeconds,
+      color: segmentColor,
+      dayQuarterColor: dayQuarterColor,
+      diameter: focusSize
+          ? kGraphicalAnalogClockDiameterFocus
+          : kGraphicalAnalogClockDiameterDefault,
     ),
     ValueType.binaryClockColumns => BinaryColumnsClock(
       now: now,

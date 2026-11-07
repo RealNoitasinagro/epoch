@@ -188,9 +188,11 @@ class TimeValueFormatter {
           wallClock,
           showSeconds: showOptionalPart,
         );
+      case ValueType.sevenSegmentClock:
+      case ValueType.analogClock12h:
+      case ValueType.analogClock24h:
       case ValueType.binaryClockBcd:
       case ValueType.binaryClockColumns:
-      case ValueType.sevenSegmentClock:
       default:
         return '';
     }

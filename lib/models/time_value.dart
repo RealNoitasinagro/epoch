@@ -16,6 +16,8 @@ enum ValueType {
   dayMinute,
   dayPercent,
   sevenSegmentClock,
+  analogClock12h,
+  analogClock24h,
   // Technical
   unixSeconds,
   tai,
@@ -325,6 +327,8 @@ class TimeValue implements TabEntry {
         ValueType.dayMinute => l10n.valueTypeDayMinute,
         ValueType.dayPercent => l10n.valueTypeDayPercent,
         ValueType.sevenSegmentClock => l10n.valueTypeSevenSegmentClock,
+        ValueType.analogClock12h => l10n.valueTypeAnalogClock12h,
+        ValueType.analogClock24h => l10n.valueTypeAnalogClock24h,
         ValueType.unixSeconds => l10n.valueTypeUnixSeconds,
         ValueType.tai => l10n.valueTypeTai,
         ValueType.gps => l10n.valueTypeGps,
@@ -350,62 +354,66 @@ class TimeValue implements TabEntry {
       };
 
   // Localized info text.
-  String localizedInfoText(AppLocalizations l10n) => switch (valueType) {
-    ValueType.date => l10n.infoTextDate,
-    ValueType.time => l10n.infoTextTime,
-    ValueType.dateTime => l10n.infoTextDateTime,
-    ValueType.daySecond => l10n.infoTextDaySecond,
-    ValueType.dayMinute => l10n.infoTextDayMinute,
-    ValueType.dayPercent => l10n.infoTextDayPercent,
-    ValueType.sevenSegmentClock => l10n.infoTextSevenSegmentClock,
-    ValueType.unixSeconds => l10n.infoTextUnixSeconds,
-    ValueType.tai => l10n.infoTextTai,
-    ValueType.gps => l10n.infoTextGps,
-    ValueType.gmst => l10n.infoTextGmst,
-    ValueType.lmst => l10n.infoTextLmst,
-    ValueType.julianDate => l10n.infoTextJulianDate,
-    ValueType.reducedJulianDate => l10n.infoTextReducedJulianDate,
-    ValueType.modifiedJulianDate => l10n.infoTextModifiedJulianDate,
-    ValueType.dublinJulianDate => l10n.infoTextDublinJulianDate,
-    ValueType.cnesJulianDate => l10n.infoTextCnesJulianDate,
-    ValueType.ccsdsJulianDate => l10n.infoTextCcsdsJulianDate,
-    ValueType.modifiedJulianDate2000 => l10n.infoTextModifiedJulianDate2000,
-    ValueType.decimalTime => l10n.infoTextDecimalTime,
-    ValueType.swatchBeats => l10n.infoTextSwatchBeats,
-    ValueType.newEarthTime => l10n.infoTextNewEarthTime,
-    ValueType.binaryClockBcd => l10n.infoTextBinaryClockBcd,
-    ValueType.binaryClockColumns => l10n.infoTextBinaryClockColumns,
-    ValueType.binaryClockString => l10n.infoTextBinaryClockString,
-    ValueType.octalTime => l10n.infoTextOctalTime,
-    ValueType.hexadecimalTime => l10n.infoTextHexadecimalTime,
-    ValueType.romanNumeralsTime => l10n.infoTextRomanNumeralsTime,
-    ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
-  };
+  String localizedInfoText(AppLocalizations l10n) =>
+      switch (valueType) {
+        ValueType.date => l10n.infoTextDate,
+        ValueType.time => l10n.infoTextTime,
+        ValueType.dateTime => l10n.infoTextDateTime,
+        ValueType.daySecond => l10n.infoTextDaySecond,
+        ValueType.dayMinute => l10n.infoTextDayMinute,
+        ValueType.dayPercent => l10n.infoTextDayPercent,
+        ValueType.sevenSegmentClock => l10n.infoTextSevenSegmentClock,
+        ValueType.analogClock12h => l10n.infoTextAnalogClock12h,
+        ValueType.analogClock24h => l10n.infoTextAnalogClock24h,
+        ValueType.unixSeconds => l10n.infoTextUnixSeconds,
+        ValueType.tai => l10n.infoTextTai,
+        ValueType.gps => l10n.infoTextGps,
+        ValueType.gmst => l10n.infoTextGmst,
+        ValueType.lmst => l10n.infoTextLmst,
+        ValueType.julianDate => l10n.infoTextJulianDate,
+        ValueType.reducedJulianDate => l10n.infoTextReducedJulianDate,
+        ValueType.modifiedJulianDate => l10n.infoTextModifiedJulianDate,
+        ValueType.dublinJulianDate => l10n.infoTextDublinJulianDate,
+        ValueType.cnesJulianDate => l10n.infoTextCnesJulianDate,
+        ValueType.ccsdsJulianDate => l10n.infoTextCcsdsJulianDate,
+        ValueType.modifiedJulianDate2000 => l10n.infoTextModifiedJulianDate2000,
+        ValueType.decimalTime => l10n.infoTextDecimalTime,
+        ValueType.swatchBeats => l10n.infoTextSwatchBeats,
+        ValueType.newEarthTime => l10n.infoTextNewEarthTime,
+        ValueType.binaryClockBcd => l10n.infoTextBinaryClockBcd,
+        ValueType.binaryClockColumns => l10n.infoTextBinaryClockColumns,
+        ValueType.binaryClockString => l10n.infoTextBinaryClockString,
+        ValueType.octalTime => l10n.infoTextOctalTime,
+        ValueType.hexadecimalTime => l10n.infoTextHexadecimalTime,
+        ValueType.romanNumeralsTime => l10n.infoTextRomanNumeralsTime,
+        ValueType.doomsdayClock => l10n.infoTextDoomsdayClock,
+      };
 
   // Returns a URL for further reading, or null if none defined.
-  String? localizedInfoLink(AppLocalizations l10n) => switch (valueType) {
-    ValueType.unixSeconds => l10n.infoLinkUnixSeconds,
-    ValueType.tai => l10n.infoLinkTai,
-    ValueType.gps => l10n.infoLinkGps,
-    ValueType.gmst => l10n.infoLinkGmst,
-    ValueType.lmst => l10n.infoLinkLmst,
-    ValueType.julianDate => l10n.infoLinkJulianDate,
-    ValueType.reducedJulianDate => l10n.infoLinkReducedJulianDate,
-    ValueType.modifiedJulianDate => l10n.infoLinkModifiedJulianDate,
-    ValueType.dublinJulianDate => l10n.infoLinkDublinJulianDate,
-    ValueType.cnesJulianDate => l10n.infoLinkCnesJulianDate,
-    ValueType.ccsdsJulianDate => l10n.infoLinkCcsdsJulianDate,
-    ValueType.modifiedJulianDate2000 => l10n.infoLinkModifiedJulianDate2000,
-    ValueType.decimalTime => l10n.infoLinkDecimalTime,
-    ValueType.swatchBeats => l10n.infoLinkSwatchBeats,
-    ValueType.newEarthTime => l10n.infoLinkNewEarthTime,
-    ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
-    ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
-    ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
-    ValueType.romanNumeralsTime => l10n.infoLinkRomanNumeralsTime,
-    ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
-    _ => null,
-  };
+  String? localizedInfoLink(AppLocalizations l10n) =>
+      switch (valueType) {
+        ValueType.unixSeconds => l10n.infoLinkUnixSeconds,
+        ValueType.tai => l10n.infoLinkTai,
+        ValueType.gps => l10n.infoLinkGps,
+        ValueType.gmst => l10n.infoLinkGmst,
+        ValueType.lmst => l10n.infoLinkLmst,
+        ValueType.julianDate => l10n.infoLinkJulianDate,
+        ValueType.reducedJulianDate => l10n.infoLinkReducedJulianDate,
+        ValueType.modifiedJulianDate => l10n.infoLinkModifiedJulianDate,
+        ValueType.dublinJulianDate => l10n.infoLinkDublinJulianDate,
+        ValueType.cnesJulianDate => l10n.infoLinkCnesJulianDate,
+        ValueType.ccsdsJulianDate => l10n.infoLinkCcsdsJulianDate,
+        ValueType.modifiedJulianDate2000 => l10n.infoLinkModifiedJulianDate2000,
+        ValueType.decimalTime => l10n.infoLinkDecimalTime,
+        ValueType.swatchBeats => l10n.infoLinkSwatchBeats,
+        ValueType.newEarthTime => l10n.infoLinkNewEarthTime,
+        ValueType.binaryClockBcd => l10n.infoLinkBinaryClockBcd,
+        ValueType.binaryClockColumns => l10n.infoLinkBinaryClockColumns,
+        ValueType.binaryClockString => l10n.infoLinkBinaryClockString,
+        ValueType.romanNumeralsTime => l10n.infoLinkRomanNumeralsTime,
+        ValueType.doomsdayClock => l10n.infoLinkDoomsdayClock,
+        _ => null,
+      };
 }
 
 extension ValueTypeProps on ValueType {
@@ -418,6 +426,8 @@ extension ValueTypeProps on ValueType {
         ValueType.dayMinute => false,
         ValueType.dayPercent => false,
         ValueType.sevenSegmentClock => false,
+        ValueType.analogClock12h => false,
+        ValueType.analogClock24h => false,
         ValueType.unixSeconds => true,
         ValueType.tai => true,
         ValueType.gps => true,
@@ -444,6 +454,8 @@ extension ValueTypeProps on ValueType {
 
   bool get isGraphical =>
       this == ValueType.sevenSegmentClock ||
+      this == ValueType.analogClock12h ||
+      this == ValueType.analogClock24h ||
       this == ValueType.binaryClockBcd ||
       this == ValueType.binaryClockColumns;
 
@@ -457,6 +469,8 @@ extension ValueTypeProps on ValueType {
         ValueType.dayMinute ||
         ValueType.decimalTime ||
         ValueType.sevenSegmentClock ||
+        ValueType.analogClock12h ||
+        ValueType.analogClock24h ||
         ValueType.binaryClockBcd ||
         ValueType.binaryClockColumns ||
         ValueType.binaryClockString ||

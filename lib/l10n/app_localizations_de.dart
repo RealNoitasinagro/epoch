@@ -273,6 +273,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
+  String get infoTextAnalogClock12h =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 12-Stunden-Ziffernblatt.';
+
+  @override
+  String get infoTextAnalogClock24h =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 24-Stunden-Ziffernblatt.';
+
+  @override
   String get infoTextBinaryClockBcd =>
       'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
 
@@ -832,6 +840,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftTime => 'Uhrzeit';
+
+  @override
+  String get valueTypeAnalogClock12h => 'Analoguhr (12h)';
+
+  @override
+  String get valueTypeAnalogClock24h => 'Analoguhr (24h)';
 
   @override
   String get valueTypeBinaryClockBcd => 'Binäruhr (BCD)';

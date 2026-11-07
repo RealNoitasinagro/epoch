@@ -10,6 +10,8 @@ const civilTypes = [
   ValueType.dayMinute,
   ValueType.dayPercent,
   ValueType.sevenSegmentClock,
+  ValueType.analogClock12h,
+  ValueType.analogClock24h,
 ];
 
 const defaultCivilEntries = [
@@ -20,6 +22,8 @@ const defaultCivilEntries = [
   TimeValue(valueType: ValueType.dayMinute,         zone: ZoneLocal()),
   TimeValue(valueType: ValueType.dayPercent,        zone: ZoneLocal()),
   TimeValue(valueType: ValueType.sevenSegmentClock, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.analogClock12h,    zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.analogClock24h,    zone: ZoneLocal()),
   TabDivider(id: 'builtin_divider_civil_1'),
   TabSection(id: 'builtin_other', label: '', builtinKey: BuiltinSectionKey.other),
   TimeValue(valueType: ValueType.time,              zone: ZoneUtc()),

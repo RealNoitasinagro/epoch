@@ -530,6 +530,18 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Unix_time'**
   String get infoLinkUnixSeconds;
 
+  /// No description provided for @infoTextAnalogClock12h.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone as an analog clock with a 12-hour face.'**
+  String get infoTextAnalogClock12h;
+
+  /// No description provided for @infoTextAnalogClock24h.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone as an analog clock with a 24-hour face.'**
+  String get infoTextAnalogClock24h;
+
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
@@ -1490,16 +1502,28 @@ abstract class AppLocalizations {
   /// **'Time'**
   String get timeShiftTime;
 
+  /// No description provided for @valueTypeAnalogClock12h.
+  ///
+  /// In en, this message translates to:
+  /// **'Analog clock (12h)'**
+  String get valueTypeAnalogClock12h;
+
+  /// No description provided for @valueTypeAnalogClock24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Analog clock (24h)'**
+  String get valueTypeAnalogClock24h;
+
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Binary Clock (BCD)'**
+  /// **'Binary clock (BCD)'**
   String get valueTypeBinaryClockBcd;
 
   /// No description provided for @valueTypeBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Binary Clock (columns)'**
+  /// **'Binary clock (columns)'**
   String get valueTypeBinaryClockColumns;
 
   /// No description provided for @valueTypeBinaryClockString.

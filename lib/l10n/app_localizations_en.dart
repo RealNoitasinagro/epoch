@@ -267,6 +267,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
 
   @override
+  String get infoTextAnalogClock12h =>
+      'The current time in the selected timezone as an analog clock with a 12-hour face.';
+
+  @override
+  String get infoTextAnalogClock24h =>
+      'The current time in the selected timezone as an analog clock with a 24-hour face.';
+
+  @override
   String get infoTextBinaryClockBcd =>
       'Seconds since midnight in binary representation: each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.';
 
@@ -826,10 +834,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeShiftTime => 'Time';
 
   @override
-  String get valueTypeBinaryClockBcd => 'Binary Clock (BCD)';
+  String get valueTypeAnalogClock12h => 'Analog clock (12h)';
 
   @override
-  String get valueTypeBinaryClockColumns => 'Binary Clock (columns)';
+  String get valueTypeAnalogClock24h => 'Analog clock (24h)';
+
+  @override
+  String get valueTypeBinaryClockBcd => 'Binary clock (BCD)';
+
+  @override
+  String get valueTypeBinaryClockColumns => 'Binary clock (columns)';
 
   @override
   String get valueTypeBinaryClockString => 'Binary time (string)';
