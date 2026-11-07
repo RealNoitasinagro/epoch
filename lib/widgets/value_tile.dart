@@ -124,9 +124,14 @@ class TextValueContent extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.onSurface.withAlpha(30),
         borderRadius: BorderRadius.circular(kTileBorderRadius),
-        border: dayQuarterColor != null
-            ? Border( left: BorderSide(color: dayQuarterColor!, width: 3) )
-            : Border()
+          border: dayQuarterColor != null
+              ? Border(
+                  left: BorderSide(
+                    color: dayQuarterColor!,
+                    width: kDayQuarterColorIndicatorWidth
+                  )
+                )
+              : Border()
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,12 +187,17 @@ class GraphicValueContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final container = Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface.withAlpha(30),
         borderRadius: BorderRadius.circular(kTileBorderRadius),
         border: dayQuarterColor != null
-            ? Border( left: BorderSide(color: dayQuarterColor!, width: 3) )
+            ? Border(
+                left: BorderSide(
+                  color: dayQuarterColor!,
+                  width: kDayQuarterColorIndicatorWidth
+                )
+              )
             : Border()
       ),
       child: FittedBox(

@@ -1,7 +1,7 @@
 Epoch zeigt die aktuelle Zeit in einer Vielzahl von Zeitsystemen an — sekündlich aktualisiert, alles an einem Ort. 29 Werte, von Unix-Zeit und Sternzeit bis zu Swatch-Internetzeit und Doomsday Clock.
 
 <b>Was Epoch bietet</b>
-- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesminute, Tagesprozent, Sieben-Segment-Uhr — für jede Zeitzone
+- Bürgerlich: Datum, Uhrzeit, Tagessekunde, Tagesminute, Tagesprozent, Sieben-Segment-Uhr, Analoguhr mit 12- oder 24-Stundenskala — für jede Zeitzone
 - Technisch: Unix-Zeit, Internationale Atomzeit (TAI), GPS-Zeit
 - Astronomisch: Greenwicher und lokale mittlere Sternzeit (GMST, LMST), Julianisches Datum und sechs Varianten
 - Kurioses: Dezimalzeit, Swatch-Internetzeit, New Earth Time, Doomsday Clock, Römische-Zahlen-Zeit, 3 Binäruhren, Oktal- und Hexadezimalzeit

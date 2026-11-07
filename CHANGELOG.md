@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- new value type: day minute with optional seconds
+- new value types: day minute and two graphical analog clocks (12 or 24-hour face), all with seconds optional
 - seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
 with a global default per value type (Settings, "Seconds and decimals"; time and date & time follow the time format)
 and an override for each value on tabs; Focus screen starts with what is shown on the tab

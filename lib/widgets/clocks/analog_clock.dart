@@ -61,9 +61,9 @@ const double _hourTickLength = 0.07;
 const double _hourTickWidth = 0.018;
 const int _minuteTickAlpha = 130;
 
-const double _hourHandLength = 0.50;
+const double _hourHandLength = 0.60;
 const double _hourHandWidth = 0.075;
-const double _minuteHandLength = 0.74;
+const double _minuteHandLength = 0.82;
 const double _minuteHandWidth = 0.052;
 const double _secondHandLength = _tickOuterRadius;
 const double _secondHandTailLength = 0.18;
@@ -275,7 +275,7 @@ class _AnalogClockPainter extends CustomPainter {
           holeHalfWidth, -length * _cutoutStart,
           Radius.circular(holeHalfWidth)));
     final withHole =
-    ui.Path.combine(ui.PathOperation.difference, outline, hole);
+        ui.Path.combine(ui.PathOperation.difference, outline, hole);
     return ui.Path.combine(ui.PathOperation.difference, withHole, centerDisc);
   }
 
@@ -301,9 +301,9 @@ class _AnalogClockPainter extends CustomPainter {
   @override
   bool shouldRepaint(_AnalogClockPainter old) =>
       old.now != now ||
-          old.scale != scale ||
-          old.showSeconds != showSeconds ||
-          old.color != color ||
-          old.dayQuarterColor != dayQuarterColor ||
-          old.fontFamily != fontFamily;
+      old.scale != scale ||
+      old.showSeconds != showSeconds ||
+      old.color != color ||
+      old.dayQuarterColor != dayQuarterColor ||
+      old.fontFamily != fontFamily;
 }

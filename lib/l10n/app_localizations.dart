@@ -1661,7 +1661,7 @@ abstract class AppLocalizations {
   /// No description provided for @valueTypeSevenSegmentClock.
   ///
   /// In en, this message translates to:
-  /// **'Seven-segment Clock'**
+  /// **'Seven-segment clock'**
   String get valueTypeSevenSegmentClock;
 
   /// No description provided for @valueTypeSwatchBeats.

@@ -651,6 +651,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     );
     final label = TimeStringRow.computeLabel(l10n, timeValue, settings.longitude);
 
+    final Color? dayQuarterColor = app.dayQuarterColor &&
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
+        : null;
+
     late final Widget clock;
     if (isGraphical) {
       clock = buildGraphicalClock(
@@ -662,11 +667,6 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
       );
     }
-
-    final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
-        : null;
 
     return Dismissible(
       key: ValueKey(timeValue.key),

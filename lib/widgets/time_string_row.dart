@@ -208,7 +208,7 @@ class TimeStringRow extends TimeValueRow {
 
     final display = computeDisplay(
       timeValue, now, locale, l10n,
-        settings: settings
+      settings: settings
     );
     String label = computeLabel(l10n, timeValue, settings.longitude);
     String clipboardValue = computeClipboardDisplay(timeValue, display);

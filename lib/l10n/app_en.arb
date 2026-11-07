@@ -401,7 +401,7 @@
   "valueTypeOctalTime": "Octal time",
   "valueTypeReducedJulianDate": "Reduced Julian Date",
   "valueTypeRomanNumeralsTime": "Roman numerals time",
-  "valueTypeSevenSegmentClock": "Seven-segment Clock",
+  "valueTypeSevenSegmentClock": "Seven-segment clock",
   "valueTypeSwatchBeats": "Swatch Internet Time",
   "valueTypeTai": "Unix time (TAI) (s)",
   "valueTypeTime": "Time",

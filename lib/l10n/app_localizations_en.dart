@@ -912,7 +912,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get valueTypeRomanNumeralsTime => 'Roman numerals time';
 
   @override
-  String get valueTypeSevenSegmentClock => 'Seven-segment Clock';
+  String get valueTypeSevenSegmentClock => 'Seven-segment clock';
 
   @override
   String get valueTypeSwatchBeats => 'Swatch Internet Time';

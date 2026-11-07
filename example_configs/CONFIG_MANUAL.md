@@ -151,7 +151,9 @@ valueType/zone||dst:forceStandard
 | `daySecond`              | Seconds elapsed today        |
 | `dayMinute`              | Minutes elapsed today        |
 | `dayPercent`             | Day progress as percentage   |
-| *`sevenSegmentClock`*    | Seven-segment Clock          |
+| *`sevenSegmentClock`*    | Seven-segment clock          |
+| *`analogClock12h`*       | Analog clock (12-hour face)  |
+| *`analogClock24h`*       | Analog clock (24-hour face)  |
 | `unixSeconds`            | Unix timestamp               |
 | `tai`                    | International Atomic Time    |
 | `gps`                    | GPS Time                     |
@@ -167,8 +169,8 @@ valueType/zone||dst:forceStandard
 | `decimalTime`            | Decimal time                 |
 | `swatchBeats`            | Swatch Internet Time         |
 | `newEarthTime`           | New Earth Time               |
-| *`binaryClockBcd`*       | Binary Clock (BCD)           |
-| *`binaryClockColumns`*   | Binary Clock (columns)       |
+| *`binaryClockBcd`*       | Binary clock (BCD)           |
+| *`binaryClockColumns`*   | Binary clock (columns)       |
 | `binaryClockString`      | Binary time (string)         |
 | `octalTime`              | Octal time                   |
 | `hexadecimalTime`        | Hexadecimal time             |

@@ -11,7 +11,6 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
-import '../time_utils.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_string_row.dart';
 import '../zoned_moment.dart';
@@ -634,16 +633,11 @@ class _FocusScreenState extends State<FocusScreen> {
     final vPadding = 24.0;
 
     if (widget.timeValue.valueType.isGraphical) {
-      final localIanaZone = app.localIanaZone;
+      final localIanaZone = EpochApp.of(context).localIanaZone;
       final wallClock = ZonedMoment.of(
           widget.timeValue, _now.toUtc(), localIanaZone
       ).wallClock;
       final l10n = AppLocalizations.of(context)!;
-
-      final Color? dayQuarterColor = app.dayQuarterColor &&
-          app.themeMode != AppThemeMode.night && !widget.timeValue.isZoneIndependent
-          ? TimeUtils.dayQuarterColor(wallClock.hour)
-          : null;
 
       final Widget clock = buildGraphicalClock(
         valueType: widget.timeValue.valueType,
@@ -653,7 +647,6 @@ class _FocusScreenState extends State<FocusScreen> {
         hourFormat24: app.formatSettings.hourFormat24,
         segmentColor: _textColor,
         focusSize: true,
-        dayQuarterColor: dayQuarterColor,
       );
       return Padding(
         padding: EdgeInsets.symmetric(
