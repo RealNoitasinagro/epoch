@@ -39,8 +39,7 @@ class ConfigurableTab extends StatefulWidget {
 class _ConfigurableTabState extends State<ConfigurableTab> {
   bool _editMode = false;
   final Set<String> _checked = {};
-  final ScrollController _scrollController = ScrollController();
-  double _savedScrollOffset = 0.0;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -56,25 +55,21 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         widget.onEntriesChanged(cleaned);
       }
     }
+    // The display list and the edit list are different widgets. A new
+    // ScrollPosition starts at the controller's initialScrollOffset, so a
+    // fresh controller that starts at the current offset avoids a first frame
+    // at the top (which a later jumpTo could only repair one frame too late).
+    final savedOffset =
+        _scrollController.hasClients ? _scrollController.offset : 0.0;
+    final previousController = _scrollController;
     setState(() {
-      // Save position before switching.
-      _savedScrollOffset = _scrollController.hasClients
-          ? _scrollController.offset
-          : 0.0;
+      _scrollController = ScrollController(initialScrollOffset: savedOffset);
       _editMode = !_editMode;
       if (!_editMode) _checked.clear();
     });
-    // Restore position after the new list has been built.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(
-          _savedScrollOffset.clamp(
-            0.0,
-            _scrollController.position.maxScrollExtent,
-          ),
-        );
-      }
-    });
+    // The old list is gone after this frame, so its controller can go too:
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => previousController.dispose());
   }
 
   bool get _allChecked =>
