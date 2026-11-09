@@ -9,6 +9,7 @@ with a global default per value type (Settings, "Seconds and decimals"; time and
 and an override for each value on tabs; Focus screen starts with what is shown on the tab
 - the details line (time zone, week and day of the year, angle) can be shown or hidden for each value,
 overriding the global settings
+- configurable night mode time window (Settings)
 - errors during app start are shown on screen, with copyable details, instead of a black screen
 
 ### Changed

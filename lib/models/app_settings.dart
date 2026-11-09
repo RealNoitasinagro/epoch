@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../layout_constants.dart';
 import '../platform_utils.dart';
+import 'night_mode_schedule.dart';
 import 'time_value.dart';
 
 const _kActiveTabKey = 'active_tab';
@@ -19,6 +20,8 @@ const _kLastImportedConfigKey = 'last_imported_config';
 const _kLmstLongitudeKey = 'lmst_longitude';  // double
 const _kLmstModeKey = 'lmst_mode';
 const _kLocaleKey = 'locale';
+const _kNightModeEndKey = 'night_mode_end';
+const _kNightModeStartKey = 'night_mode_start';
 const _kOptionalPartHiddenKey = 'optional_part_hidden';
 const _kStartupFocusValueKey = 'startup_focus_value';
 const _kThemeModeKey = 'theme_mode';
@@ -105,6 +108,29 @@ Future<void> saveThemeMode(AppThemeMode mode) async {
     AppThemeMode.system => 'system',
   };
   await prefs.setString(_kThemeModeKey, value);
+}
+
+Future<NightModeSchedule> loadNightModeSchedule() async {
+  final prefs = await SharedPreferences.getInstance();
+  // get() and a type check instead of getString(): a hand-edited config may
+  // hold something else than a string.
+  int? minuteOfDay(String key) {
+    final value = prefs.get(key);
+    return parseMinuteOfDay(value is String ? value : null);
+  }
+  return NightModeSchedule(
+    startMinute: minuteOfDay(_kNightModeStartKey),
+    endMinute: minuteOfDay(_kNightModeEndKey),
+  );
+}
+
+Future<void> saveNightModeSchedule(NightModeSchedule schedule) async {
+  final prefs = await SharedPreferences.getInstance();
+  Future<void> save(String key, int? minuteOfDay) => minuteOfDay == null
+      ? prefs.remove(key)
+      : prefs.setString(key, formatMinuteOfDay(minuteOfDay));
+  await save(_kNightModeStartKey, schedule.startMinute);
+  await save(_kNightModeEndKey, schedule.endMinute);
 }
 
 Future<bool> loadHourFormat24() async {

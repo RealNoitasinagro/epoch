@@ -3,6 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
+import '../models/night_mode_schedule.dart';
 import '../models/pattern_tokens.dart';
 import '../models/settings_io.dart';
 import '../models/tab_config.dart';
@@ -10,6 +11,7 @@ import '../models/time_value.dart';
 import '../platform_utils.dart';
 import '../services/location_service.dart';
 import '../time_value_formatter.dart';
+import '../widgets/dial_picker.dart';
 import '../widgets/section_header.dart';
 import 'entry_picker.dart';
 import 'optional_part_dialog.dart';
@@ -41,6 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _ioInProgress = false;
   late String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
+  late NightModeSchedule _nightModeSchedule;
 
   @override
   void initState() {
@@ -65,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final app = EpochApp.of(context);
     setState(() {
       _locale = app.locale;
-      _themeMode = app.themeMode;
+      _themeMode = app.userThemeMode;
       _dateFormat = app.formatSettings.dateFormat;
       _dateWithDetails = app.formatSettings.dateWithDetails;
       _timeFormat = app.formatSettings.timeFormat;
@@ -78,6 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _lmstLongitude = app.lmstLongitude;
       _longitudeController.text = _lmstLongitude?.toStringAsFixed(4) ?? '';
       _lastImportedConfig = app.lastImportedConfig;
+      _nightModeSchedule = app.nightModeSchedule;
     });
     _loadStartupFocusValue();
     _loadTabs();
@@ -549,6 +553,72 @@ class _SettingsScreenState extends State<SettingsScreen> {
     child: SectionHeader(label: label),
   );
 
+  void _setNightModeSchedule(NightModeSchedule schedule) {
+    setState(() => _nightModeSchedule = schedule);
+    EpochApp.of(context).setNightModeSchedule(schedule);
+  }
+
+  /// Hours, then minutes, with the dial pickers of Time Shift.
+  Future<void> _pickNightModeTime({required bool isStart}) async {
+    final l10n = AppLocalizations.of(context)!;
+    final current =
+    isStart ? _nightModeSchedule.startMinute : _nightModeSchedule.endMinute;
+    final initial = current ??
+        (isStart ? kDefaultNightModeStartMinute : kDefaultNightModeEndMinute);
+    final pickedHour = await showDialPicker(context,
+        title: l10n.timeShiftHours,
+        scale: DialScale.hours24,
+        initialValue: initial ~/ 60);
+    if (pickedHour == null || !mounted) return;
+    final pickedMinute = await showDialPicker(context,
+        title: l10n.timeShiftMinutes,
+        scale: DialScale.sixty,
+        initialValue: initial % 60);
+    if (pickedMinute == null || !mounted) return;
+    final picked = pickedHour * 60 + pickedMinute;
+    _setNightModeSchedule(isStart
+        ? _nightModeSchedule.withStart(picked)
+        : _nightModeSchedule.withEnd(picked));
+  }
+
+  Widget _nightModeTile(AppLocalizations l10n) {
+    final schedule = _nightModeSchedule;
+    Widget timeLink(int? minuteOfDay, {required bool isStart}) => InkWell(
+      onTap: () => _pickNightModeTime(isStart: isStart),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        child: Text(
+          minuteOfDay == null ? '--:--' : formatMinuteOfDay(minuteOfDay),
+          style: const TextStyle(
+              fontFamily: fontFamilyDefault,
+              decoration: TextDecoration.underline),
+        ),
+      ),
+    );
+    return ListTile(
+      leading: const Icon(Icons.bedtime_outlined),
+      title: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text('${l10n.settingsNightMode}: '),
+          timeLink(schedule.startMinute, isStart: true),
+          const Text(' – '),
+          timeLink(schedule.endMinute, isStart: false),
+        ],
+      ),
+      subtitle: Text(schedule.isActive
+          ? l10n.settingsNightModeSub
+          : l10n.settingsNightModeHint),
+      trailing: schedule.startMinute != null || schedule.endMinute != null
+          ? IconButton(
+        icon: const Icon(Icons.clear),
+        tooltip: l10n.settingsNightModeClear,
+        onPressed: () => _setNightModeSchedule(NightModeSchedule.none),
+      )
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
@@ -569,7 +639,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          _sectionHeader(l10n.settingsThemeLanguage),
+          _sectionHeader(l10n.settingsLanguageTheme),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(l10n.settingsLanguage),
+            trailing: DropdownButton<String>(
+              value: _locale?.languageCode ?? 'en',
+              underline: const SizedBox.shrink(),
+              iconEnabledColor: Theme.of(context).colorScheme.primary,
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
+              ],
+              onChanged: (code) {
+                if (code == null) return;
+                final locale = Locale(code);
+                setState(() => _locale = locale);
+                app.setLocale(locale);
+              },
+            ),
+          ),
           ListTile(
             leading: const Icon(Icons.brightness_6),
             title: Text(l10n.settingsTheme),
@@ -602,25 +691,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(l10n.settingsLanguage),
-            trailing: DropdownButton<String>(
-              value: _locale?.languageCode ?? 'en',
-              underline: const SizedBox.shrink(),
-              iconEnabledColor: Theme.of(context).colorScheme.primary,
-              items: const [
-                DropdownMenuItem(value: 'en', child: Text('English')),
-                DropdownMenuItem(value: 'de', child: Text('Deutsch')),
-              ],
-              onChanged: (code) {
-                if (code == null) return;
-                final locale = Locale(code);
-                setState(() => _locale = locale);
-                app.setLocale(locale);
-              },
-            ),
-          ),
+          _nightModeTile(l10n),
           const Divider(height: kDividerHeight),
           _sectionHeader(l10n.settingsValueDisplay),
           ListTile(

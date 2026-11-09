@@ -641,6 +641,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLmstOff => 'Do not show';
 
   @override
+  String get settingsNightMode => 'Night mode';
+
+  @override
+  String get settingsNightModeClear => 'Clear time window';
+
+  @override
+  String get settingsNightModeHint => 'Set start and end time to turn on';
+
+  @override
+  String get settingsNightModeSub =>
+      'Replaces the theme within this time window';
+
+  @override
   String get settingsOff => 'off';
 
   @override
@@ -699,7 +712,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeDark => 'Dark';
 
   @override
-  String get settingsThemeLanguage => 'Theme and language';
+  String get settingsLanguageTheme => 'Language and theme';
 
   @override
   String get settingsThemeLight => 'Light';

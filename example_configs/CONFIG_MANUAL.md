@@ -39,6 +39,8 @@ Default values will show up in config files when a non-default value had been co
 | `lmst_longitude`             | number           | `—`                             | Longitude in decimal degrees (−180 to +180)                                                                                                                                 |
 | `lmst_mode`                  | string           | `"off"`                         | `"off"`, `"manual"`, `"locationAccess"`                                                                                                                                     |
 | `locale`                     | string           | `"en"`                          | `"en"` or `"de"`                                                                                                                                                            |
+| `night_mode_end`             | string           | `—`                             | End of the night mode time window, "HH:mm" (24-hour)[^4]                                                                                                                    |
+| `night_mode_start`           | string           | `—`                             | Start of the night mode time window, "HH:mm" (24-hour)[^4]                                                                                                                  |
 | `optional_part_hidden`       | array of strings | `[]`                            | Value types whose seconds or decimals are hidden by default (not `time` and `dateTime`, they follow `time_format`); unknown names and types without such a part are ignored |
 | `startup_focus_value`        | string           | `—`                             | App will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)                                                                            |
 | `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                                                                                                  |
@@ -49,6 +51,7 @@ Default values will show up in config files when a non-default value had been co
 [^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
 [^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.
 [^3]: In night mode, the Focus screen always starts in night red at low brightness; changes made there are not saved.
+[^4]: The night mode time window is only active if start and end are both set and differ; may span midnight; follows the device's system time, not Time Shift.
 
 > [!TIP]
 > * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values).

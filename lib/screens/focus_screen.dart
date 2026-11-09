@@ -62,6 +62,8 @@ class _FocusScreenState extends State<FocusScreen> {
   static const _pixelShiftInterval = Duration(seconds: 180);
   static const _safetyMargin = 8.0;  // extra breathing room, both ends
 
+  ValueNotifier<bool>? _nightModeNotifier;
+
   double? _measuredContentHeight;
   double get _topReservedForShift =>
       _lastOrientation == Orientation.landscape ? 40.0 : 80.0;
@@ -99,6 +101,7 @@ class _FocusScreenState extends State<FocusScreen> {
   void initState() {
     super.initState();
     final app = EpochApp.of(context);
+    _nightModeNotifier = app.nightModeNotifier..addListener(_onNightModeChanged);
     _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
     _timer = Timer.periodic(const Duration(seconds: 1),
@@ -114,6 +117,13 @@ class _FocusScreenState extends State<FocusScreen> {
     ]);
     _scheduleControlsHide();
     _initBrightness();
+  }
+
+  /// Night mode begins or ends while the screen is open: take over the
+  /// color and brightness for the new mode (day values were never
+  /// overwritten, night values are not saved).
+  void _onNightModeChanged() {
+    if (mounted) _initBrightness();
   }
 
   void _remeasureContent() {
@@ -293,12 +303,13 @@ class _FocusScreenState extends State<FocusScreen> {
   void dispose() {
     _timer.cancel();
     _controlsHideTimer?.cancel();
+    _pixelShiftTimer?.cancel();
+    _nightModeNotifier?.removeListener(_onNightModeChanged);
     // Cleanup is in _exit(); if disposed without _exit (e.g. back button),
     // restore here too:
     WakelockPlus.disable();
     if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    _pixelShiftTimer?.cancel();
     super.dispose();
   }
 

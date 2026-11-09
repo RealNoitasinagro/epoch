@@ -19,6 +19,8 @@
   "lmst_longitude": 8.1427,
   "lmst_mode": "manual",
   "locale": "en",
+  "night_mode_end": "07:00",
+  "night_mode_start": "23:00",
   "optional_part_hidden": [
     "binaryClockString",
     "romanNumeralsTime"

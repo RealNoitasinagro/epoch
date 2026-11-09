@@ -15,6 +15,7 @@ import 'l10n/app_localizations.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
 import 'models/app_settings.dart';
+import 'models/night_mode_schedule.dart';
 import 'models/prefs_migrations.dart';
 import 'models/settings_io.dart';
 import 'models/tab_config.dart';
@@ -78,7 +79,7 @@ class EpochApp extends StatefulWidget {
   State<EpochApp> createState() => EpochAppState();
 }
 
-class EpochAppState extends State<EpochApp> {
+class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   ({Object error, StackTrace stackTrace})? _startupError;
   bool _settingsLoaded             = false;
   bool _splashMinDurationElapsed   = false;
@@ -99,16 +100,61 @@ class EpochAppState extends State<EpochApp> {
   bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
   Set<ValueType> _optionalPartHiddenTypes = {};
 
+  NightModeSchedule _nightModeSchedule = NightModeSchedule.none;
+  late bool _nightModeScheduleActive = false;  // system time is within the window
+  Timer? _nightModeTimer;
+
+  /// True while night mode is in effect (chosen or scheduled), for screens
+  /// that must react to a change while they are open (Focus screen).
+  final ValueNotifier<bool> nightModeNotifier = ValueNotifier(false);
+
   Key _homeKey = UniqueKey();
   final ValueNotifier<int> settingsReloadNotifier = ValueNotifier(0);
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadPreferences();
     Future.delayed(const Duration(milliseconds: 2000), () {
       if (mounted) setState(() => _splashMinDurationElapsed = true);
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _nightModeTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // A timer is not reliable while the device sleeps, and the system time
+    // or time zone may have changed meanwhile.
+    if (state == AppLifecycleState.resumed) _applyNightModeSchedule();
+  }
+
+  /// Checks the system time against the window (not the shifted time: Time
+  /// Shift is no reason for a theme change) and waits for the next change.
+  void _applyNightModeSchedule() {
+    _nightModeTimer?.cancel();
+    final now = EffectiveClock.systemTime();
+    final scheduleActive = _nightModeSchedule.isNightAt(now);
+    if (scheduleActive != _nightModeScheduleActive) {
+      setState(() => _nightModeScheduleActive = scheduleActive);
+    }
+    nightModeNotifier.value = isNightMode;
+    final nextChange = _nightModeSchedule.nextChangeAfter(now);
+    if (nextChange == null) return;
+    _nightModeTimer =
+        Timer(nextChange.difference(now), _applyNightModeSchedule);
+  }
+
+  void setNightModeSchedule(NightModeSchedule schedule) {
+    setState(() => _nightModeSchedule = schedule);
+    saveNightModeSchedule(schedule);
+    _applyNightModeSchedule();
   }
 
   Future<void> reloadPreferences() async {
@@ -123,6 +169,7 @@ class EpochAppState extends State<EpochApp> {
     try {
       final locale                  = await loadLocale() ?? kDefaultLocale;
       final theme                   = await loadThemeMode();
+      final nightModeSchedule       = await loadNightModeSchedule();
       final hour24                  = await loadHourFormat24();
       final thousands               = await loadThousandsSep();
       final dateWithDetails         = await loadDateWithDetails();
@@ -148,6 +195,7 @@ class EpochAppState extends State<EpochApp> {
       setState(() {
         _localIanaZone           = localZone;
         _locale                  = locale;
+        _nightModeSchedule       = nightModeSchedule;
         _themeMode               = theme;
         _hourFormat24            = hour24;
         _thousandsSep            = thousands;
@@ -169,6 +217,7 @@ class EpochAppState extends State<EpochApp> {
         setState(() => _startupError = (error: error, stackTrace: stackTrace));
       }
     }
+    _applyNightModeSchedule();
   }
 
   void setLocale(Locale l) {
@@ -179,6 +228,7 @@ class EpochAppState extends State<EpochApp> {
   void setThemeMode(AppThemeMode mode) {
     setState(() => _themeMode = mode);
     saveThemeMode(mode);
+    nightModeNotifier.value = isNightMode;
   }
 
   void setHourFormat24(bool v) {
@@ -242,20 +292,32 @@ class EpochAppState extends State<EpochApp> {
   }
 
   String get localIanaZone => _localIanaZone;
-  Locale? get locale                  => _locale;
-  AppThemeMode get themeMode          => _themeMode;
-  ThemeMode get _flutterThemeMode => switch (_themeMode) {
+  Locale? get locale => _locale;
+
+  /// The theme in effect: night mode within the night mode window, otherwise
+  /// the user's choice.
+  AppThemeMode get themeMode =>
+      _nightModeScheduleActive ? AppThemeMode.night : _themeMode;
+
+  /// The user's own choice, which the night mode window never changes.
+  AppThemeMode get userThemeMode => _themeMode;
+
+  NightModeSchedule get nightModeSchedule => _nightModeSchedule;
+
+  ThemeMode get _flutterThemeMode => switch (themeMode) {
     AppThemeMode.light  => ThemeMode.light,
     AppThemeMode.dark   => ThemeMode.dark,
     AppThemeMode.night  => ThemeMode.dark,
     AppThemeMode.system => ThemeMode.system,
   };
-  bool get isNightMode                => _themeMode == AppThemeMode.night;
-  bool get dayQuarterColor            => _dayQuarterColor;
-  LmstMode get lmstMode               => _lmstMode;
-  double?  get lmstLongitude          => _lmstLongitude;
-  String? get lastImportedConfig      => _lastImportedConfig;
-  bool get focusTimeShiftIndicator    => _focusTimeShiftIndicator;
+
+  bool get isNightMode => themeMode == AppThemeMode.night;
+
+  bool get dayQuarterColor => _dayQuarterColor;
+  LmstMode get lmstMode => _lmstMode;
+  double?  get lmstLongitude => _lmstLongitude;
+  String? get lastImportedConfig => _lastImportedConfig;
+  bool get focusTimeShiftIndicator => _focusTimeShiftIndicator;
 
   ValueFormatSettings get formatSettings {
     return ValueFormatSettings(

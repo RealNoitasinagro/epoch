@@ -1166,6 +1166,30 @@ abstract class AppLocalizations {
   /// **'Do not show'**
   String get settingsLmstOff;
 
+  /// No description provided for @settingsNightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Night mode'**
+  String get settingsNightMode;
+
+  /// No description provided for @settingsNightModeClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear time window'**
+  String get settingsNightModeClear;
+
+  /// No description provided for @settingsNightModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Set start and end time to turn on'**
+  String get settingsNightModeHint;
+
+  /// No description provided for @settingsNightModeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaces the theme within this time window'**
+  String get settingsNightModeSub;
+
   /// No description provided for @settingsOff.
   ///
   /// In en, this message translates to:
@@ -1262,11 +1286,11 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
-  /// No description provided for @settingsThemeLanguage.
+  /// No description provided for @settingsLanguageTheme.
   ///
   /// In en, this message translates to:
-  /// **'Theme and language'**
-  String get settingsThemeLanguage;
+  /// **'Language and theme'**
+  String get settingsLanguageTheme;
 
   /// No description provided for @settingsThemeLight.
   ///
