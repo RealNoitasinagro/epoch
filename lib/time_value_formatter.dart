@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:numerus/numerus.dart';
 import 'l10n/app_localizations.dart';
 import 'models/app_settings.dart';
+import 'models/pattern_tokens.dart';
 import 'models/time_pattern.dart';
 import 'models/time_value.dart';
 import 'models/timezone_abbreviation_localization.dart';
@@ -243,18 +244,17 @@ class TimeValueFormatter {
     String formattedTime = formatTime(
         hourFormat24, dt.hour, dt.minute, dt.second,
         tzSuffix: tzSuffix, pattern: timePattern);
-    return "$formattedDate $formattedTime";
+    return '$formattedDate $formattedTime';
   }
 
-  static String formatDatePattern(DateTime dt, String pattern, String locale) {
-    // Use intl for localized names:
+  /// The value of every date token for [dt]. The keys are exactly the tokens
+  /// a date pattern may contain (see [datePatternWorstCase]).
+  static Map<String, String> dateTokenValues(DateTime dt, String locale) {
     final monthLong    = DateFormat('MMMM', locale).format(dt);
     final monthShort   = DateFormat('MMM',  locale).format(dt);
     final weekDayLong  = DateFormat('EEEE', locale).format(dt);
     final weekDayShort = DateFormat('EEE',  locale).format(dt);
-
-    // Apply tokens longest-first to avoid partial substitution:
-    final tokens = <String, String>{
+    return {
       'YYYY': dt.year.toString().padLeft(4, '0'),
       'YY':   (dt.year % 100).toString().padLeft(2, '0'),
       'MMMM': monthLong,
@@ -266,47 +266,30 @@ class TimeValueFormatter {
       'DD':   dt.day.toString().padLeft(2, '0'),
       'D':    dt.day.toString(),
     };
-    return _applyTokens(pattern, tokens);
   }
 
-  static String formatTimePattern(DateTime dt, String pattern,
+  /// The value of every time token for [dt]; the keys are the tokens of a
+  /// time pattern (see [timePatternWorstCase]).
+  static Map<String, String> timeTokenValues(DateTime dt,
       {bool hourFormat24 = true}) {
     final displayHour = hourFormat24
         ? dt.hour
         : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
-    final tokens = <String, String>{
+    return {
       'HH': displayHour.toString().padLeft(2, '0'),
       'H':  displayHour.toString(),
       'mm': dt.minute.toString().padLeft(2, '0'),
       'ss': dt.second.toString().padLeft(2, '0'),
     };
-    return _applyTokens(pattern, tokens);
   }
 
-  static String _applyTokens(String pattern, Map<String, String> tokens) {
-    // Sort tokens by length descending for greedy matching:
-    final sorted = tokens.keys.toList()
-      ..sort((a, b) => b.length.compareTo(a.length));
+  static String formatDatePattern(DateTime dt, String pattern, String locale) =>
+      applyPatternTokens(pattern, dateTokenValues(dt, locale));
 
-    final buffer = StringBuffer();
-    int i = 0;
-    while (i < pattern.length) {
-      bool matched = false;
-      for (final token in sorted) {
-        if (pattern.startsWith(token, i)) {
-          buffer.write(tokens[token]);
-          i += token.length;
-          matched = true;
-          break;
-        }
-      }
-      if (!matched) {
-        buffer.write(pattern[i]);
-        i++;
-      }
-    }
-    return buffer.toString();
-  }
+  static String formatTimePattern(DateTime dt, String pattern,
+      {bool hourFormat24 = true}) =>
+      applyPatternTokens(
+          pattern, timeTokenValues(dt, hourFormat24: hourFormat24));
 
   /// Returns a double formatted to a given number of decimal digits.
   static String formatDecimal(double value, String locale, int decimals,
@@ -326,42 +309,6 @@ class TimeValueFormatter {
     final dir = longitude >= 0 ? 'E' : 'W';
     final deg = formatDecimal(longitude.abs(), locale, 2, thousandsSep: false);
     return '${timeValue.localizedDisplayLabel(l10n)} ($deg° $dir)';
-  }
-
-  static String? validatePattern(String pattern, bool isDate) =>
-      isDate ? validateDatePattern(pattern) : validateTimePattern(pattern);
-
-  static String? validateDatePattern(String pattern) {
-    final validTokens = {
-      'YYYY', 'YY', 'MMMM', 'MMM', 'MM', 'M', 'EEEE', 'EEE', 'DD', 'D'};
-    return _validatePattern(pattern, validTokens, requireAny: true);
-  }
-
-  static String? validateTimePattern(String pattern) {
-    const validTokens = {'HH', 'H', 'mm', 'ss'};
-    final error = _validatePattern(pattern, validTokens, requireAny: false);
-    if (error != null) return error;
-    if (!pattern.contains('HH') && !pattern.contains('H')) {
-      return 'H or HH required';
-    }
-    if (!pattern.contains('mm')) return 'mm required';
-    return null;
-  }
-
-  static String? _validatePattern(String pattern,
-      Set<String> validTokens, {required bool requireAny}) {
-    var remaining = pattern;
-    // Remove all valid tokens:
-    for (final token in validTokens) {
-      remaining = remaining.replaceAll(token, '');
-    }
-    // Check for leftover uppercase sequences:
-    final badTokens = RegExp(r'[A-Z]+').allMatches(remaining)
-        .map((m) => m.group(0)!)
-        .where((s) => s.isNotEmpty)
-        .toSet();
-    if (badTokens.isNotEmpty) return 'Unknown: ${badTokens.join(', ')}';
-    return null;
   }
 
   static String _decimalTimeText(

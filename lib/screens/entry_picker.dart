@@ -270,7 +270,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         kTabHorizontalPadding, kTabVerticalPadding,
         kTabHorizontalPadding, kTabVerticalPadding),
     child: Text(
-      text.toUpperCase() + " (${count})",
+      text.toUpperCase() + ' (${count})',
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
         color: Theme.of(context).colorScheme.primary,
         letterSpacing: 1.5,

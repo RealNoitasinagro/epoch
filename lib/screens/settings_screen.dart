@@ -3,6 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
+import '../models/pattern_tokens.dart';
 import '../models/settings_io.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';
@@ -353,15 +354,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) {
-          final error = TimeValueFormatter.validatePattern(
-              controller.text, isDate);
-          final preview = error == null
+          final issue = isDate
+              ? validateDatePattern(controller.text)
+              : validateTimePattern(controller.text);
+          final error =
+          issue == null ? null : _patternIssueMessage(l10n, issue);
+          final preview = issue == null
               ? (isDate
-                ? TimeValueFormatter.formatDatePattern(
-                  previewNow, controller.text, l10n.localeName)
-                : TimeValueFormatter.formatTimePattern(
-                  previewNow, controller.text,
-                  hourFormat24: _hourFormat24))
+                  ? TimeValueFormatter.formatDatePattern(
+                      previewNow, controller.text, l10n.localeName
+                    )
+                  : TimeValueFormatter.formatTimePattern(
+                      previewNow, controller.text,
+                      hourFormat24: _hourFormat24)
+                  )
               : null;
 
           return AlertDialog(
@@ -442,6 +448,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  String _patternIssueMessage(AppLocalizations l10n, PatternIssue issue) =>
+      switch (issue) {
+        PatternMissingToken() => l10n.messagePatternNoToken,
+        PatternUnknownTokens(:final tokens) =>
+            l10n.messagePatternUnknownTokens(tokens.join(', ')),
+        PatternMissingHour() => l10n.messagePatternNeedsHour,
+        PatternMissingMinutes() => l10n.messagePatternNeedsMinutes,
+        PatternTooLong(:final maxLength) =>
+            l10n.messagePatternTooLong(maxLength),
+      };
 
   Widget _tokenCell(String text, {required BuildContext ctx, bool bold = false}) {
     return Padding(

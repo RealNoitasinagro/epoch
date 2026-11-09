@@ -872,6 +872,36 @@ abstract class AppLocalizations {
   /// **'No matching timezone found.'**
   String get messageNoTimezone;
 
+  /// No description provided for @messagePatternNeedsHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour (H or HH) required'**
+  String get messagePatternNeedsHour;
+
+  /// No description provided for @messagePatternNeedsMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes (mm) required'**
+  String get messagePatternNeedsMinutes;
+
+  /// No description provided for @messagePatternNoToken.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one date token required'**
+  String get messagePatternNoToken;
+
+  /// No description provided for @messagePatternTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Too long: the result could exceed {maxLength} characters'**
+  String messagePatternTooLong(int maxLength);
+
+  /// No description provided for @messagePatternUnknownTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown: {tokens}'**
+  String messagePatternUnknownTokens(String tokens);
+
   /// No description provided for @messageSettingsExported.
   ///
   /// In en, this message translates to:

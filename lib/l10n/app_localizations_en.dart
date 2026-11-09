@@ -485,6 +485,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageNoTimezone => 'No matching timezone found.';
 
   @override
+  String get messagePatternNeedsHour => 'Hour (H or HH) required';
+
+  @override
+  String get messagePatternNeedsMinutes => 'Minutes (mm) required';
+
+  @override
+  String get messagePatternNoToken => 'At least one date token required';
+
+  @override
+  String messagePatternTooLong(int maxLength) {
+    return 'Too long: the result could exceed $maxLength characters';
+  }
+
+  @override
+  String messagePatternUnknownTokens(String tokens) {
+    return 'Unknown: $tokens';
+  }
+
+  @override
   String get messageSettingsExported => 'Settings exported';
 
   @override

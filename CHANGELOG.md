@@ -25,6 +25,7 @@ and IDs with hyphens such as Etc/GMT-5
 - values pinned to standard or summer time lost the pinning on restart or import when their seconds were hidden
 - day quarter color of values pinned to standard or summer time followed the real local time instead of the displayed one
 - scroll position sometimes jumped when toggling between view and edit mode
+- empty custom date pattern and overly long custom date/time patterns not caught, localization missing for a few error messages
 
 ---
 

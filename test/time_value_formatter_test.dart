@@ -377,45 +377,6 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.validatePattern', () {
-    test('valid date patterns return null', () {
-      for (final p in ['YYYY-MM-DD', 'DD.MM.YYYY', 'EEE, YYYY-MM-DD',
-        'YYYYMMDD', 'MMMM D, YYYY']) {
-        expect(TimeValueFormatter.validatePattern(p, true), isNull,
-            reason: 'Pattern "$p" should be valid');
-      }
-    });
-
-    test('valid time patterns return null', () {
-      for (final p in ['HH:mm:ss', 'HH:mm', 'H:mm:ss', 'HHmm']) {
-        expect(TimeValueFormatter.validatePattern(p, false), isNull,
-            reason: 'Pattern "$p" should be valid');
-      }
-    });
-
-    test('unknown uppercase token returns error', () {
-      expect(TimeValueFormatter.validatePattern('YYYY-ZZ-DD', true),
-          isNotNull);
-      expect(TimeValueFormatter.validatePattern('HH:mm:XX', false),
-          isNotNull);
-    });
-
-    test('time pattern without H returns error', () {
-      expect(TimeValueFormatter.validatePattern('mm:ss', false),
-          isNotNull);
-    });
-
-    test('time pattern without mm returns error', () {
-      expect(TimeValueFormatter.validatePattern('HH:ss', false),
-          isNotNull);
-    });
-
-    test('lowercase letters in date pattern are valid separators', () {
-      // 'a', 'b' etc. are not tokens and should be treated as literals:
-      expect(TimeValueFormatter.validatePattern('DD-MM-YYYY', true), isNull);
-    });
-  });
-
   group('TimeValueFormatter.binaryTimeString', () {
     test('midnight = 00000:000000:000000', () {
       final dt = DateTime(2026, 1, 1, 0, 0, 0);

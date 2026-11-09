@@ -70,6 +70,20 @@
       }
     }
   },
+  "@messagePatternTooLong": {
+    "placeholders": {
+      "maxLength": {
+        "type": "int"
+      }
+    }
+  },
+  "@messagePatternUnknownTokens": {
+    "placeholders": {
+      "tokens": {
+        "type": "String"
+      }
+    }
+  },
   "@messageTabReactivated": {
     "placeholders": {
       "resetAction": {
@@ -270,6 +284,11 @@
   "messageMissingTabsRestored": "Einige eingebaute Tabs fehlten in der geladenen Konfiguration und wurden wiederhergestellt.",
   "messageNoTabsVisible": "Alle Tabs sind ausgeblendet.\nAktiviere einen Tab in Einstellungen, oder lege einen neuen an.",
   "messageNoTimezone": "Keine passende Zeitzone gefunden.",
+  "messagePatternNeedsHour": "Stunde (H oder HH) erforderlich",
+  "messagePatternNeedsMinutes": "Minuten (mm) erforderlich",
+  "messagePatternNoToken": "Mindestens ein Datumstoken erforderlich",
+  "messagePatternTooLong": "Zu lang: Das Ergebnis könnte {maxLength} Zeichen überschreiten",
+  "messagePatternUnknownTokens": "Unbekannt: {tokens}",
   "messageSettingsExported": "Einstellungen exportiert",
   "messageSettingsImportFailed": "Import fehlgeschlagen – ungültige Datei",
   "messageSettingsImported": "Einstellungen importiert",
