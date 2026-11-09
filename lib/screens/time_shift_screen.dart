@@ -4,8 +4,15 @@ import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
+import '../models/generated/iana_links_snapshot.g.dart';
+import '../models/time_shift_start.dart';
+import '../models/time_value.dart';
+import '../models/timezone_search_zones.dart';
+import '../models/zone_rules.dart';
+import '../wall_clock_in_zone.dart';
 import '../widgets/dial_picker.dart';
 import '../widgets/section_header.dart';
+import '../widgets/zone_option_list.dart';
 
 enum _TimeUnit { hour, minute, second }
 
@@ -24,21 +31,44 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   late bool _frozen;
   late bool _focusIndicatorEnabled;
 
-  /// Null as long as the user has not edited anything: the shown values then
-  /// follow the live clock. After the first edit they stay as configured.
-  DateTime? _editedMoment;
+  /// The zone the moment is entered and shown in. Not a setting of its own:
+  /// it only becomes part of the preferences with a saved start value.
+  ZoneSpec _zone = const ZoneLocal();
 
-  DateTime get _displayedMoment => _editedMoment ?? EffectiveClock.now();
+  TimeShiftStart? _savedStart;
+
+  /// Wall-clock reading in [_zone] (a UTC-kind DateTime, only the fields
+  /// count). Null as long as the user has not edited anything: the shown
+  /// values then follow the live clock.
+  DateTime? _editedWallClock;
+
+  DateTime get _displayedWallClock =>
+      _editedWallClock ?? wallClockOf(EffectiveClock.now().toUtc(), _zone);
+
+  /// The shown moment as an instant, in whole seconds. For the live clock it
+  /// is the real instant, which keeps the repeated hour of a clock change
+  /// apart.
+  DateTime get _displayedInstant {
+    final edited = _editedWallClock;
+    final instant = edited == null
+        ? EffectiveClock.now().toUtc()
+        : instantOfWallClock(edited, _zone);
+    return DateTime.utc(instant.year, instant.month, instant.day, instant.hour,
+        instant.minute, instant.second);
+  }
 
   /// Apply would change something: values were edited, or the freeze
   /// setting differs from the one currently in effect.
   bool get _canSetAppClock =>
-      _editedMoment != null || _frozen != EffectiveClock.isFrozen;
+      _editedWallClock != null || _frozen != EffectiveClock.isFrozen;
 
   /// Reset would change something: the app clock is shifted, or the page
   /// holds unapplied edits.
   bool get _canReturnToSystemTime =>
-      EffectiveClock.isShifted || _editedMoment != null;
+      EffectiveClock.isShifted || _editedWallClock != null;
+
+  /// Without edits and without a shift, "saving" would only store "now".
+  bool get _canSaveStartValue => _canSetAppClock || EffectiveClock.isShifted;
 
   @override
   void initState() {
@@ -46,14 +76,27 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     _focusIndicatorEnabled = EpochApp.of(context).focusTimeShiftIndicator;
     _frozen = EffectiveClock.isFrozen;
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted && _editedMoment == null) setState(() {});
+      if (mounted && _editedWallClock == null) setState(() {});
     });
+    _loadSavedStart();
   }
 
   @override
   void dispose() {
     _ticker.cancel();
     super.dispose();
+  }
+
+  Future<void> _loadSavedStart() async {
+    final savedStart = await loadTimeShiftStart();
+    if (!mounted) return;
+    setState(() {
+      _savedStart = savedStart;
+      // Start with the zone the saved value was entered in:
+      if (savedStart != null && _editedWallClock == null) {
+        _zone = savedStart.zone;
+      }
+    });
   }
 
   static String _wallClockText(DateTime moment) {
@@ -63,34 +106,60 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         '${twoDigits(moment.minute)}:${twoDigits(moment.second)}';
   }
 
+  void _showSnackBar(String text, {Duration? duration}) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(
+        content: Text(text),
+        duration: duration ?? const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+      ));
+  }
+
+  void _showOutOfRange() {
+    _showSnackBar(AppLocalizations.of(context)!.timeShiftOutOfRange(
+        EffectiveClock.earliestMomentText, EffectiveClock.latestMomentText));
+  }
+
   void _updateMoment({
     int? year, int? month, int? day, int? hour, int? minute, int? second,
   }) {
-    final current = _displayedMoment;
+    final current = _displayedWallClock;
     // UTC has no clock changes, so this keeps exactly what was requested:
     final requested = DateTime.utc(
       year ?? current.year, month ?? current.month, day ?? current.day,
       hour ?? current.hour, minute ?? current.minute, second ?? current.second,
     );
-    final moment = DateTime(requested.year, requested.month, requested.day,
-        requested.hour, requested.minute, requested.second);
+    // A zone with clock changes may not know that reading:
+    final used = wallClockOf(instantOfWallClock(requested, _zone), _zone);
+    setState(() => _editedWallClock = used);
     final requestedText = _wallClockText(requested);
-    final usedText = _wallClockText(moment);
-    setState(() => _editedMoment = moment);
+    final usedText = _wallClockText(used);
     if (requestedText != usedText) {
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!
-              .timeShiftSkippedTime(requestedText, usedText)),
-          duration: const Duration(seconds: 6),
-          behavior: SnackBarBehavior.floating,
-        ));
+      _showSnackBar(
+        AppLocalizations.of(context)!
+            .timeShiftSkippedTime(requestedText, usedText),
+        duration: const Duration(seconds: 6),
+      );
     }
   }
 
+  Future<void> _pickZone() async {
+    final zone = await showZonePicker(context);
+    if (zone == null || !mounted) return;
+    setState(() {
+      // The same moment, read in the new zone (nothing to convert while the
+      // live clock is shown):
+      final edited = _editedWallClock;
+      if (edited != null) {
+        _editedWallClock = wallClockOf(instantOfWallClock(edited, _zone), zone);
+      }
+      _zone = zone;
+    });
+  }
+
   Future<void> _editDate({required bool startWithYear}) async {
-    final current = _displayedMoment;
+    final current = _displayedWallClock;
     final currentDate = DateTime(current.year, current.month, current.day);
     final picked = await showDatePicker(
       context: context,
@@ -101,7 +170,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       firstDate: _firstSelectableDate,
       lastDate: _lastSelectableDate,
       initialDatePickerMode:
-        startWithYear ? DatePickerMode.year : DatePickerMode.day,
+      startWithYear ? DatePickerMode.year : DatePickerMode.day,
     );
     if (picked == null || !mounted) return;
     _updateMoment(year: picked.year, month: picked.month, day: picked.day);
@@ -109,7 +178,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   Future<void> _editTimeUnit(_TimeUnit unit) async {
     final l10n = AppLocalizations.of(context)!;
-    final current = _displayedMoment;
+    final current = _displayedWallClock;
     final (title, scale, initialValue) = switch (unit) {
       _TimeUnit.hour   => (l10n.timeShiftHours, DialScale.hours24, current.hour),
       _TimeUnit.minute => (l10n.timeShiftMinutes, DialScale.sixty, current.minute),
@@ -126,22 +195,41 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   }
 
   void _apply() {
-    final moment = _displayedMoment;
-    if (!EffectiveClock.isSupported(moment)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.timeShiftOutOfRange(
-            EffectiveClock.earliestMomentText, EffectiveClock.latestMomentText)),
-        behavior: SnackBarBehavior.floating,
-      ));
+    final instant = _displayedInstant;
+    if (!EffectiveClock.isSupported(instant)) {
+      _showOutOfRange();
       return;
     }
-    EffectiveClock.shiftTo(moment, frozen: _frozen);
+    EffectiveClock.shiftTo(instant, frozen: _frozen);
     Navigator.pop(context);
   }
 
   void _resetToSystemTime() {
     EffectiveClock.reset();
     Navigator.pop(context);
+  }
+
+  Future<void> _saveStartValue() async {
+    final l10n = AppLocalizations.of(context)!;
+    final instant = _displayedInstant;
+    if (!EffectiveClock.isSupported(instant)) {
+      _showOutOfRange();
+      return;
+    }
+    final start =
+    TimeShiftStart(momentUtc: instant, frozen: _frozen, zone: _zone);
+    await saveTimeShiftStart(start);
+    if (!mounted) return;
+    setState(() => _savedStart = start);
+    _showSnackBar(l10n.timeShiftStartSaved);
+  }
+
+  Future<void> _removeStartValue() async {
+    final l10n = AppLocalizations.of(context)!;
+    await clearTimeShiftStart();
+    if (!mounted) return;
+    setState(() => _savedStart = null);
+    _showSnackBar(l10n.timeShiftStartRemoved);
   }
 
   Widget _segmentRow(List<Widget> segments, String separator) {
@@ -162,10 +250,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     );
   }
 
-  /// Sets the date (or the time of day) back to the current system values,
-  /// leaving the other part as configured.
+  /// Sets the date (or the time of day) back to the current system values
+  /// (read in the chosen zone), leaving the other part as configured.
   void _adoptSystemValues({required bool date}) {
-    final system = DateTime.now();
+    final system = wallClockOf(EffectiveClock.systemTime().toUtc(), _zone);
     if (date) {
       _updateMoment(year: system.year, month: system.month, day: system.day);
     } else {
@@ -174,7 +262,14 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     }
   }
 
-  Widget _sectionHeader(String label, {required bool date}) {
+  Widget _plainSectionHeader(String label) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: kTabHorizontalPadding),
+    child: SectionHeader(label: label),
+  );
+
+  /// Section header of the date or the time, with the button that takes over
+  /// the system values.
+  Widget _momentSectionHeader(String label, {required bool date}) {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kTabHorizontalPadding),
@@ -189,6 +284,98 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
               icon: const Icon(Icons.restart_alt),
               onPressed: () => _adoptSystemValues(date: date),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _zoneTitle(ZoneSpec zone, AppLocalizations l10n) => switch (zone) {
+    ZoneLocal() => l10n.actionZoneLocal,
+    ZoneUtc() => l10n.actionZoneUtc,
+    ZoneNamed(ianaZone: final ianaZone) =>
+        _namedZoneTitle(ianaZone, l10n.localeName),
+  };
+
+  String _namedZoneTitle(String ianaZone, String locale) {
+    final canonicalZone = ianaLinksSnapshot[ianaZone] ?? ianaZone;
+    final entry = tzDatabase
+        .where((entry) => entry.ianaZoneId == canonicalZone)
+        .firstOrNull;
+    return entry?.displayTitle(locale) ?? ianaZone;
+  }
+
+  /// IANA name (also for the system zone) and the offset at the shown moment.
+  String _zoneSubtitle() {
+    final ianaZone = switch (_zone) {
+      ZoneLocal() => EpochApp.of(context).localIanaZone,
+      ZoneUtc() => null,
+      ZoneNamed(ianaZone: final name) => name,
+    };
+    final offsetText = formatUtcOffset(
+        offsetInZone(_displayedInstant, _zone), withUtcPrefix: true);
+    return ianaZone == null ? offsetText : '$ianaZone  ·  $offsetText';
+  }
+
+  Widget _zoneTile(AppLocalizations l10n) {
+    return ListTile(
+      leading: const Icon(kIconTimeZoneIndicator),
+      title: Text(_zoneTitle(_zone, l10n)),
+      subtitle: Text(_zoneSubtitle(),
+          style: const TextStyle(fontFamily: fontFamilyDefault)),
+      trailing: const Icon(Icons.edit_outlined),
+      onTap: _pickZone,
+    );
+  }
+
+  String _startSummary(AppLocalizations l10n, TimeShiftStart start) {
+    final moment = _wallClockText(wallClockOf(start.momentUtc, start.zone));
+    final zone = _zoneTitle(start.zone, l10n);
+    return start.frozen
+        ? l10n.timeShiftStartSummaryFrozen(moment, zone)
+        : l10n.timeShiftStartSummaryRunning(moment, zone);
+  }
+
+  Widget _buildStartValue(AppLocalizations l10n) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final savedStart = _savedStart;
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: kTabHorizontalPadding, vertical: kTabVerticalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.timeShiftStartHint,
+            style: Theme.of(context).textTheme.bodyMedium
+                ?.copyWith(color: colorScheme.onSurface.withAlpha(170)),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            savedStart == null
+                ? l10n.timeShiftStartNone
+                : _startSummary(l10n, savedStart),
+            style: const TextStyle(fontFamily: fontFamilyDefault),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton.tonalIcon(
+                  icon: const Icon(Icons.save_outlined),
+                  label: Text(l10n.timeShiftStartSave),
+                  onPressed: _canSaveStartValue ? _saveStartValue : null,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.delete_outline),
+                  label: Text(l10n.timeShiftStartRemove),
+                  onPressed: savedStart != null ? _removeStartValue : null,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -213,8 +400,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l10n.timeShiftHint(l10n.timeShiftApply, l10n.timeShiftReset),
-                  style: textStyle
+                    l10n.timeShiftHint(l10n.timeShiftApply, l10n.timeShiftReset),
+                    style: textStyle
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -233,7 +420,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final moment = _displayedMoment;
+    final moment = _displayedWallClock;
     String twoDigits(int value) => value.toString().padLeft(2, '0');
     const sectionPadding = EdgeInsets.symmetric(horizontal: kTabHorizontalPadding);
 
@@ -244,7 +431,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         children: [
           _buildHint(l10n),
           const Divider(height: kDividerHeight),
-          _sectionHeader(l10n.timeShiftDate, date: true),
+          _plainSectionHeader(l10n.timeShiftZone),
+          _zoneTile(l10n),
+          const Divider(height: kDividerHeight),
+          _momentSectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
           _segmentRow([
             _ValueSegment(caption: l10n.labelYear, value: moment.year.toString().padLeft(4, '0'),
@@ -254,7 +444,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
             _ValueSegment(caption: l10n.labelDay, value: twoDigits(moment.day),
                 onPressed: () => _editDate(startWithYear: false)),
           ], '-'),
-          _sectionHeader(l10n.timeShiftTime, date: false),
+          _momentSectionHeader(l10n.timeShiftTime, date: false),
           const SizedBox(height: 8),
           _segmentRow([
             _ValueSegment(caption: l10n.labelHours, value: twoDigits(moment.hour),
@@ -314,6 +504,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
               EpochApp.of(context).setFocusTimeShiftIndicator(value);
             },
           ),
+          const Divider(height: kDividerHeight),
+          _plainSectionHeader(l10n.timeShiftStartSection),
+          _buildStartValue(l10n),
         ],
       ),
     );

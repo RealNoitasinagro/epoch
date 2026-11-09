@@ -8,6 +8,7 @@ import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'prefs_migrations.dart';
+import 'time_shift_start.dart';
 
 const _extJson = 'json';
 final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
@@ -48,6 +49,10 @@ Future<bool> exportSettings(
 
 Future<void> importSettings(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
+
+  EffectiveClock.reset();  // an import starts from a clean slate ...
+  await applyTimeShiftStart();  // ... except for a start value the file brings along
+  await EpochApp.of(context).reloadPreferences();
 
   final result = await FilePicker.pickFiles(
     dialogTitle: l10n.settingsPreferencesImport,

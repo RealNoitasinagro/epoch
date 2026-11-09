@@ -155,6 +155,26 @@
       }
     }
   },
+  "@timeShiftStartSummaryFrozen": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftStartSummaryRunning": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "actionCancel": "Cancel",
   "actionDeleteTab": "Delete tab",
   "actionExitApp": "Exit",
@@ -324,6 +344,7 @@
   "settingsHourFormat": "24-hour format",
   "settingsHourFormatSub": "Off = 12-hour with AM/PM",
   "settingsLanguage": "Language",
+  "settingsLanguageTheme": "Language and theme",
   "settingsLmst": "Local sidereal time",
   "settingsLmstLongitudeAuto": "Use approximate location",
   "settingsLmstLongitudeAutoSub": "One-time, without GPS, no tracking",
@@ -353,7 +374,6 @@
   "settingsTabVisibility": "Tab visibility",
   "settingsTheme": "Theme",
   "settingsThemeDark": "Dark",
-  "settingsLanguageTheme": "Language and theme",
   "settingsThemeLight": "Light",
   "settingsThemeNight": "Night (red)",
   "settingsThemeSystem": "System",
@@ -385,7 +405,7 @@
   "timeShiftFrozen": "Freeze time",
   "timeShiftFrozenSubOff": "The time used in the app keeps running from the set moment.",
   "timeShiftFrozenSubOn": "The time used in the app stays at the set moment.",
-  "timeShiftHint": "\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.",
+  "timeShiftHint": "\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).",
   "timeShiftHintApply": "Applies the selected date and time to the whole app.",
   "timeShiftHintRange": "Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.",
   "timeShiftHintReset": "Sets date and time in the whole app to the values of the system clock.",
@@ -397,7 +417,17 @@
   "timeShiftReset": "Reset to system clock",
   "timeShiftSeconds": "Seconds",
   "timeShiftSkippedTime": "{requested} does not exist because of a clock change, using {used}.",
+  "timeShiftStartHint": "The saved moment is part of your preferences: Epoch starts with this time shift every time.",
+  "timeShiftStartNone": "Not saved – Epoch starts with the system time",
+  "timeShiftStartRemove": "Remove start value",
+  "timeShiftStartRemoved": "Start value removed",
+  "timeShiftStartSave": "Save as start value",
+  "timeShiftStartSaved": "Start value saved",
+  "timeShiftStartSection": "App start",
+  "timeShiftStartSummaryFrozen": "{moment} ({zone}), frozen",
+  "timeShiftStartSummaryRunning": "{moment} ({zone}), then running",
   "timeShiftTime": "Time",
+  "timeShiftZone": "Time zone",
   "valueTypeAnalogClock12h": "Analog clock (12h)",
   "valueTypeAnalogClock24h": "Analog clock (24h)",
   "valueTypeBinaryClockBcd": "Binary clock (BCD)",

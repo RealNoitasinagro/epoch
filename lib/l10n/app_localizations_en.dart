@@ -611,6 +611,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLanguage => 'Language';
 
   @override
+  String get settingsLanguageTheme => 'Language and theme';
+
+  @override
   String get settingsLmst => 'Local sidereal time';
 
   @override
@@ -712,9 +715,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeDark => 'Dark';
 
   @override
-  String get settingsLanguageTheme => 'Language and theme';
-
-  @override
   String get settingsThemeLight => 'Light';
 
   @override
@@ -814,7 +814,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return '\"$apply\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved: after a restart, Epoch always shows the system time.';
+    return '\"$apply\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).';
   }
 
   @override
@@ -863,7 +863,43 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get timeShiftStartHint =>
+      'The saved moment is part of your preferences: Epoch starts with this time shift every time.';
+
+  @override
+  String get timeShiftStartNone =>
+      'Not saved – Epoch starts with the system time';
+
+  @override
+  String get timeShiftStartRemove => 'Remove start value';
+
+  @override
+  String get timeShiftStartRemoved => 'Start value removed';
+
+  @override
+  String get timeShiftStartSave => 'Save as start value';
+
+  @override
+  String get timeShiftStartSaved => 'Start value saved';
+
+  @override
+  String get timeShiftStartSection => 'App start';
+
+  @override
+  String timeShiftStartSummaryFrozen(String moment, String zone) {
+    return '$moment ($zone), frozen';
+  }
+
+  @override
+  String timeShiftStartSummaryRunning(String moment, String zone) {
+    return '$moment ($zone), then running';
+  }
+
+  @override
   String get timeShiftTime => 'Time';
+
+  @override
+  String get timeShiftZone => 'Time zone';
 
   @override
   String get valueTypeAnalogClock12h => 'Analog clock (12h)';

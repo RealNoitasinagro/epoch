@@ -1112,6 +1112,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get settingsLanguage;
 
+  /// No description provided for @settingsLanguageTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Language and theme'**
+  String get settingsLanguageTheme;
+
   /// No description provided for @settingsLmst.
   ///
   /// In en, this message translates to:
@@ -1285,12 +1291,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settingsThemeDark;
-
-  /// No description provided for @settingsLanguageTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Language and theme'**
-  String get settingsLanguageTheme;
 
   /// No description provided for @settingsThemeLight.
   ///
@@ -1481,7 +1481,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  /// **'\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).'**
   String timeShiftHint(String apply, String reset);
 
   /// No description provided for @timeShiftHintApply.
@@ -1550,11 +1550,71 @@ abstract class AppLocalizations {
   /// **'{requested} does not exist because of a clock change, using {used}.'**
   String timeShiftSkippedTime(String requested, String used);
 
+  /// No description provided for @timeShiftStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The saved moment is part of your preferences: Epoch starts with this time shift every time.'**
+  String get timeShiftStartHint;
+
+  /// No description provided for @timeShiftStartNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not saved – Epoch starts with the system time'**
+  String get timeShiftStartNone;
+
+  /// No description provided for @timeShiftStartRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove start value'**
+  String get timeShiftStartRemove;
+
+  /// No description provided for @timeShiftStartRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value removed'**
+  String get timeShiftStartRemoved;
+
+  /// No description provided for @timeShiftStartSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save as start value'**
+  String get timeShiftStartSave;
+
+  /// No description provided for @timeShiftStartSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value saved'**
+  String get timeShiftStartSaved;
+
+  /// No description provided for @timeShiftStartSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App start'**
+  String get timeShiftStartSection;
+
+  /// No description provided for @timeShiftStartSummaryFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), frozen'**
+  String timeShiftStartSummaryFrozen(String moment, String zone);
+
+  /// No description provided for @timeShiftStartSummaryRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), then running'**
+  String timeShiftStartSummaryRunning(String moment, String zone);
+
   /// No description provided for @timeShiftTime.
   ///
   /// In en, this message translates to:
   /// **'Time'**
   String get timeShiftTime;
+
+  /// No description provided for @timeShiftZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get timeShiftZone;
 
   /// No description provided for @valueTypeAnalogClock12h.
   ///

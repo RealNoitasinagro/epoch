@@ -155,6 +155,26 @@
       }
     }
   },
+  "@timeShiftStartSummaryFrozen": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftStartSummaryRunning": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "actionCancel": "Abbrechen",
   "actionDeleteTab": "Tab löschen",
   "actionExitApp": "Beenden",
@@ -324,6 +344,7 @@
   "settingsHourFormat": "24-Stunden-Format",
   "settingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
   "settingsLanguage": "Sprache",
+  "settingsLanguageTheme": "Sprache und Design",
   "settingsLmst": "Lokale Sternzeit",
   "settingsLmstLongitudeAuto": "Ungefähren Standort verwenden",
   "settingsLmstLongitudeAutoSub": "Einmalig, ohne GPS, kein Tracking",
@@ -353,7 +374,6 @@
   "settingsTabVisibility": "Tab-Sichtbarkeit",
   "settingsTheme": "Design",
   "settingsThemeDark": "Dunkel",
-  "settingsLanguageTheme": "Sprache und Design",
   "settingsThemeLight": "Hell",
   "settingsThemeNight": "Nacht (Rot)",
   "settingsThemeSystem": "System",
@@ -385,7 +405,7 @@
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
   "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
-  "timeShiftHint": "Mit „{apply}“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHint": "Mit „{apply}“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Nach dem Start zeigt Epoch die Systemzeit – es sei denn, Du hast unten einen Startwert gespeichert.",
   "timeShiftHintApply": "Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.",
   "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
   "timeShiftHintReset": "Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.",
@@ -397,7 +417,17 @@
   "timeShiftReset": "Zurücksetzen auf Systemuhr",
   "timeShiftSeconds": "Sekunden",
   "timeShiftSkippedTime": "{requested} gibt es wegen einer Zeitumstellung nicht, verwendet wird {used}.",
+  "timeShiftStartHint": "Der gespeicherte Zeitpunkt gehört zu Deinen Einstellungen: Epoch startet jedes Mal mit diesem Time Shift.",
+  "timeShiftStartNone": "Nicht gespeichert – Epoch startet mit der Systemzeit",
+  "timeShiftStartRemove": "Startwert entfernen",
+  "timeShiftStartRemoved": "Startwert entfernt",
+  "timeShiftStartSave": "Als Startwert speichern",
+  "timeShiftStartSaved": "Startwert gespeichert",
+  "timeShiftStartSection": "App-Start",
+  "timeShiftStartSummaryFrozen": "{moment} ({zone}), eingefroren",
+  "timeShiftStartSummaryRunning": "{moment} ({zone}), dann laufend",
   "timeShiftTime": "Uhrzeit",
+  "timeShiftZone": "Zeitzone",
   "valueTypeAnalogClock12h": "Analoguhr (12h)",
   "valueTypeAnalogClock24h": "Analoguhr (24h)",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",

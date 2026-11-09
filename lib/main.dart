@@ -20,6 +20,7 @@ import 'models/prefs_migrations.dart';
 import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
+import 'models/time_shift_start.dart';
 import 'models/time_value.dart';
 import 'models/value_format_settings.dart';
 import 'platform_utils.dart';
@@ -41,6 +42,7 @@ void main(List<String> args) async {
     await runPrefsMigrations();
     tz.initializeTimeZones();
     await _loadConfigFromCommandLine(args);
+    await applyTimeShiftStart();
   } catch (error, stackTrace) {
     runApp(StartupErrorApp(error: error, stackTrace: stackTrace));
     return;
