@@ -103,6 +103,7 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   NightModeSchedule _nightModeSchedule = NightModeSchedule.none;
   late bool _nightModeScheduleActive = false;  // system time is within the window
   Timer? _nightModeTimer;
+  bool _nightModeOverridden = false;  // the user chose a theme within the window
 
   /// True while night mode is in effect (chosen or scheduled), for screens
   /// that must react to a change while they are open (Focus screen).
@@ -142,7 +143,10 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
     final now = EffectiveClock.systemTime();
     final scheduleActive = _nightModeSchedule.isNightAt(now);
     if (scheduleActive != _nightModeScheduleActive) {
-      setState(() => _nightModeScheduleActive = scheduleActive);
+      setState(() {
+        _nightModeScheduleActive = scheduleActive;
+        _nightModeOverridden = false;  // the choice was for the previous window
+      });
     }
     nightModeNotifier.value = isNightMode;
     final nextChange = _nightModeSchedule.nextChangeAfter(now);
@@ -210,6 +214,7 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
         _startupFocusValue       = startupFocusValue;
         _focusTimeShiftIndicator = focusTimeShiftIndicator;
         _optionalPartHiddenTypes = optionalPartHiddenTypes;
+        _nightModeOverridden     = false;
         _settingsLoaded          = true;
       });
     } catch (error, stackTrace) {
@@ -226,7 +231,11 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   }
 
   void setThemeMode(AppThemeMode mode) {
-    setState(() => _themeMode = mode);
+    setState(() {
+      _themeMode = mode;
+      // An explicit choice within the window wins until the window ends.
+      if (_nightModeScheduleActive) _nightModeOverridden = true;
+    });
     saveThemeMode(mode);
     nightModeNotifier.value = isNightMode;
   }
@@ -294,10 +303,11 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   String get localIanaZone => _localIanaZone;
   Locale? get locale => _locale;
 
-  /// The theme in effect: night mode within the night mode window, otherwise
-  /// the user's choice.
-  AppThemeMode get themeMode =>
-      _nightModeScheduleActive ? AppThemeMode.night : _themeMode;
+  /// The theme in effect: night mode within the night mode window (unless the
+  /// user chose a theme meanwhile), otherwise the user's choice.
+  AppThemeMode get themeMode => _nightModeScheduleActive && !_nightModeOverridden
+      ? AppThemeMode.night : _themeMode;
+
 
   /// The user's own choice, which the night mode window never changes.
   AppThemeMode get userThemeMode => _themeMode;
