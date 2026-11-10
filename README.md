@@ -67,12 +67,13 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Time Shift
 - Show any moment from 1970-01-01 to 2038-01-19 (UTC; the limits of Unix time
   and of the available IANA data) in all values – running from there, or frozen
-- Date and time are set separately, with calendar and dial pickers
+- Date and time are set separately, for any time zone, with calendar and dial pickers
 - Your system clock stays untouched; the title bar shows the real system time
   while Time Shift is active, the Focus screen has an optional indicator
 - Past values are historically correct: leap seconds for TAI and GPS time,
   the Doomsday Clock's earlier settings, the time zone rules of that time
-- Not saved: the app always starts with the system time
+- Not saved by itself: the app starts with the system time, unless you save a start value
+  (moment, time zone, frozen or running)
 
 ### Your layout
 - Up to 4 own tabs (Watchlists) with up to 30 values each; all built-in tabs
@@ -84,6 +85,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Formats and display options
 - Date and time formats: presets or custom patterns; 12/24-hour format
+- Seconds or decimals with global default per value type and override on tabs
 - Expanded date (ISO week number, day of the year)
 - Day quarter color on or off
 - Thousands separator switch
@@ -98,13 +100,14 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Focus mode
 - Double-tap any value for a full-screen, always-on display
 - Adjustable color (all platforms) and brightness (Android)
+- Button toggles details (time zone line, expanded date, GMST/LMST in degrees)
+- Long press on the value toggles precision (seconds/decimals on/off)
 - In night mode, the Focus screen starts in night red at low brightness
-- Long press toggles details (seconds, decimals, time zone line)
 - Burn-in protection through regular pixel shift (especially on OLED screens)
 - Optionally start the app directly in Focus mode
 
 ### Look and feel
-- Night mode: red on black, preserving your dark adaptation for stargazing
+- Night mode: red on black, preserving your dark adaptation for stargazing; optionally scheduled
 - Light, dark and system themes; monospaced JetBrains Mono font
 - Full-screen toggle (double-tap on the app's name or logo in the top-left corner)
 - Available in English and German

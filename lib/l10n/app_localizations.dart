@@ -1553,13 +1553,13 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftStartHint.
   ///
   /// In en, this message translates to:
-  /// **'The saved moment is part of your preferences: Epoch starts with this time shift every time.'**
+  /// **'Save the moment set above to your preferences: the app always starts with this time shift until you change it or remove it.'**
   String get timeShiftStartHint;
 
   /// No description provided for @timeShiftStartNone.
   ///
   /// In en, this message translates to:
-  /// **'Not saved – Epoch starts with the system time'**
+  /// **'Not set – app starts with the system time'**
   String get timeShiftStartNone;
 
   /// No description provided for @timeShiftStartRemove.
@@ -1601,7 +1601,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftStartSummaryRunning.
   ///
   /// In en, this message translates to:
-  /// **'{moment} ({zone}), then running'**
+  /// **'{moment} ({zone}), running'**
   String timeShiftStartSummaryRunning(String moment, String zone);
 
   /// No description provided for @timeShiftTime.

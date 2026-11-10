@@ -4,12 +4,14 @@
 
 ### Added
 - new value types: day minute and two graphical analog clocks (12 or 24-hour face), all with seconds optional
-- seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
-with a global default per value type (Settings, "Seconds and decimals"; time and date & time follow the time format)
-and an override for each value on tabs; Focus screen starts with what is shown on the tab
-- the details line (time zone, week and day of the year, angle) can be shown or hidden for each value,
-overriding the global settings
+- Time Shift allows to specify the time zone (e. g. Lord Howe), saves you the trouble of doing the math in your head
+to convert times between zones
+- app can optionally start with a time-shifted moment, running or frozen
 - configurable night mode time window (Settings)
+- seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
+with a global default per value type in Settings and an override for each value on tabs
+- details line (time zone, date: week and day of the year, GMST/LMST: hour angle/degrees) can be shown or hidden for each value,
+overriding the global settings
 - errors during app start are shown on screen, with copyable details, instead of a black screen
 
 ### Changed

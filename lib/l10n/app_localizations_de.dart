@@ -872,11 +872,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftStartHint =>
-      'Der gespeicherte Zeitpunkt gehört zu Deinen Einstellungen: Epoch startet jedes Mal mit diesem Time Shift.';
+      'Den oben eingestellten Zeitpunkt in Deinen Einstellungen speichern: Die App startet jedes Mal mit diesem Time Shift, bis Du ihn änderst oder entfernst.';
 
   @override
   String get timeShiftStartNone =>
-      'Nicht gespeichert – Epoch startet mit der Systemzeit';
+      'Nicht gesetzt – App startet mit der Systemzeit';
 
   @override
   String get timeShiftStartRemove => 'Startwert entfernen';
@@ -885,7 +885,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get timeShiftStartRemoved => 'Startwert entfernt';
 
   @override
-  String get timeShiftStartSave => 'Als Startwert speichern';
+  String get timeShiftStartSave => 'Startwert speichern';
 
   @override
   String get timeShiftStartSaved => 'Startwert gespeichert';
@@ -900,7 +900,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeShiftStartSummaryRunning(String moment, String zone) {
-    return '$moment ($zone), dann laufend';
+    return '$moment ($zone), fortlaufend';
   }
 
   @override

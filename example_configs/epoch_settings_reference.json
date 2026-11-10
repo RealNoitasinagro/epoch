@@ -29,5 +29,8 @@
   "theme_mode": "dark",
   "thousands_sep": false,
   "time_format": "HH:mm",
+  "time_shift_frozen": true,
+  "time_shift_moment": "2000-01-01T08:14:27Z",
+  "time_shift_zone": "Australia/Lord_Howe",
   "zone_display_mode": "abbreviation"
 }

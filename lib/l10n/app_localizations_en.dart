@@ -864,11 +864,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftStartHint =>
-      'The saved moment is part of your preferences: Epoch starts with this time shift every time.';
+      'Save the moment set above to your preferences: the app always starts with this time shift until you change it or remove it.';
 
   @override
-  String get timeShiftStartNone =>
-      'Not saved – Epoch starts with the system time';
+  String get timeShiftStartNone => 'Not set – app starts with the system time';
 
   @override
   String get timeShiftStartRemove => 'Remove start value';
@@ -892,7 +891,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String timeShiftStartSummaryRunning(String moment, String zone) {
-    return '$moment ($zone), then running';
+    return '$moment ($zone), running';
   }
 
   @override

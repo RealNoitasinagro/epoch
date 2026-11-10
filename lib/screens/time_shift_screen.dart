@@ -166,11 +166,12 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       initialDate: currentDate.isBefore(_firstSelectableDate)
           ? _firstSelectableDate
           : currentDate.isAfter(_lastSelectableDate)
-          ? _lastSelectableDate : currentDate,
+            ? _lastSelectableDate
+            : currentDate,
       firstDate: _firstSelectableDate,
       lastDate: _lastSelectableDate,
       initialDatePickerMode:
-      startWithYear ? DatePickerMode.year : DatePickerMode.day,
+          startWithYear ? DatePickerMode.year : DatePickerMode.day,
     );
     if (picked == null || !mounted) return;
     _updateMoment(year: picked.year, month: picked.month, day: picked.day);
@@ -217,7 +218,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       return;
     }
     final start =
-    TimeShiftStart(momentUtc: instant, frozen: _frozen, zone: _zone);
+        TimeShiftStart(momentUtc: instant, frozen: _frozen, zone: _zone);
     await saveTimeShiftStart(start);
     if (!mounted) return;
     setState(() => _savedStart = start);
@@ -255,7 +256,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   void _adoptSystemValues({required bool date}) {
     final system = wallClockOf(EffectiveClock.systemTime().toUtc(), _zone);
     if (date) {
-      _updateMoment(year: system.year, month: system.month, day: system.day);
+      _updateMoment(
+          year: system.year, month: system.month, day: system.day);
     } else {
       _updateMoment(
           hour: system.hour, minute: system.minute, second: system.second);
@@ -432,8 +434,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
           _buildHint(l10n),
           const Divider(height: kDividerHeight),
           _plainSectionHeader(l10n.timeShiftZone),
+          const SizedBox(height: 8),
           _zoneTile(l10n),
-          const Divider(height: kDividerHeight),
           _momentSectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
           _segmentRow([
@@ -504,7 +506,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
               EpochApp.of(context).setFocusTimeShiftIndicator(value);
             },
           ),
-          const Divider(height: kDividerHeight),
+          const SizedBox(height: 16),
           _plainSectionHeader(l10n.timeShiftStartSection),
           _buildStartValue(l10n),
         ],
