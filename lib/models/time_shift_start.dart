@@ -7,6 +7,11 @@ const _kMomentKey = 'time_shift_moment';
 const _kFrozenKey = 'time_shift_frozen';
 const _kZoneKey = 'time_shift_zone';
 
+/// The zone the time shift in effect was entered in. Only the Time Shift
+/// page uses it, to show the shift the way it was set. Not saved; without a
+/// shift it means nothing.
+ZoneSpec activeTimeShiftZone = const ZoneLocal();
+
 /// A time shift the app starts with: the moment, whether time stands still
 /// from there, and the zone the Time Shift page shows the moment in.
 class TimeShiftStart {
@@ -85,4 +90,5 @@ Future<void> applyTimeShiftStart() async {
   final start = await loadTimeShiftStart();
   if (start == null) return;
   EffectiveClock.shiftTo(start.momentUtc, frozen: start.frozen);
+  activeTimeShiftZone = start.zone;
 }

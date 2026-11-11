@@ -33,7 +33,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   /// The zone the moment is entered and shown in. Not a setting of its own:
   /// it only becomes part of the preferences with a saved start value.
-  ZoneSpec _zone = const ZoneLocal();
+  late ZoneSpec _zone;
 
   TimeShiftStart? _savedStart;
 
@@ -67,14 +67,12 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   bool get _canReturnToSystemTime =>
       EffectiveClock.isShifted || _editedWallClock != null;
 
-  /// Without edits and without a shift, "saving" would only store "now".
-  bool get _canSaveStartValue => _canSetAppClock || EffectiveClock.isShifted;
-
   @override
   void initState() {
     super.initState();
     _focusIndicatorEnabled = EpochApp.of(context).focusTimeShiftIndicator;
     _frozen = EffectiveClock.isFrozen;
+    _zone = EffectiveClock.isShifted ? activeTimeShiftZone : const ZoneLocal();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted && _editedWallClock == null) setState(() {});
     });
@@ -90,13 +88,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   Future<void> _loadSavedStart() async {
     final savedStart = await loadTimeShiftStart();
     if (!mounted) return;
-    setState(() {
-      _savedStart = savedStart;
-      // Start with the zone the saved value was entered in:
-      if (savedStart != null && _editedWallClock == null) {
-        _zone = savedStart.zone;
-      }
-    });
+    setState(() => _savedStart = savedStart);
   }
 
   static String _wallClockText(DateTime moment) {
@@ -201,6 +193,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       _showOutOfRange();
       return;
     }
+    activeTimeShiftZone = _zone;
     EffectiveClock.shiftTo(instant, frozen: _frozen);
     Navigator.pop(context);
   }
@@ -330,9 +323,17 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     );
   }
 
+  /// The zone of a saved start value as the config knows it: "Local", "UTC"
+  /// or the IANA name.
+  String _startZoneText(ZoneSpec zone, AppLocalizations l10n) => switch (zone) {
+    ZoneLocal() => l10n.labelLocal,
+    ZoneUtc() => l10n.actionZoneUtc,
+    ZoneNamed(ianaZone: final ianaZone) => ianaZone,
+  };
+
   String _startSummary(AppLocalizations l10n, TimeShiftStart start) {
     final moment = _wallClockText(wallClockOf(start.momentUtc, start.zone));
-    final zone = _zoneTitle(start.zone, l10n);
+    final zone = _startZoneText(start.zone, l10n);
     return start.frozen
         ? l10n.timeShiftStartSummaryFrozen(moment, zone)
         : l10n.timeShiftStartSummaryRunning(moment, zone);
@@ -366,7 +367,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                 child: FilledButton.tonalIcon(
                   icon: const Icon(Icons.save_outlined),
                   label: Text(l10n.timeShiftStartSave),
-                  onPressed: _canSaveStartValue ? _saveStartValue : null,
+                  onPressed: _saveStartValue,
                 ),
               ),
               const SizedBox(width: 12),

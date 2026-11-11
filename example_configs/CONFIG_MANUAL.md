@@ -57,7 +57,7 @@ Default values will show up in config files when a non-default value had been co
 [^4]: The night mode time window is only active if start and end are both set and differ; may span midnight; follows the device's system time, not Time Shift.
 
 > [!TIP]
-> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values).
+> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values, including a time shift).
 > * As an alternative way to reset the whole app to defaults (and bypassing backup!), you can import an empty config (`reset_to_defaults.json`).
 > * If you want to "comment out" a setting, rename its key to make it invalid, e.g. append "ooo" for out-of-order. That way you can keep an entry in the config while making the app ignore it.
 

@@ -123,5 +123,14 @@ void main() {
       await applyTimeShiftStart();
       expect(EffectiveClock.isShifted, isFalse);
     });
+
+    test('remembers the zone the start value was entered in', () async {
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': '2000-01-01T00:00:00Z',
+        'time_shift_zone': 'Australia/Lord_Howe',
+      });
+      await applyTimeShiftStart();
+      expect(timeShiftZoneToConfig(activeTimeShiftZone), 'Australia/Lord_Howe');
+    });
   });
 }

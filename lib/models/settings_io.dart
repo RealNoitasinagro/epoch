@@ -50,10 +50,6 @@ Future<bool> exportSettings(
 Future<void> importSettings(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
 
-  EffectiveClock.reset();  // an import starts from a clean slate ...
-  await applyTimeShiftStart();  // ... except for a start value the file brings along
-  await EpochApp.of(context).reloadPreferences();
-
   final result = await FilePicker.pickFiles(
     dialogTitle: l10n.settingsPreferencesImport,
     type: FileType.custom,
@@ -88,7 +84,8 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
-  EffectiveClock.reset();  // an import starts from a clean slate, Time Shift included
+  EffectiveClock.reset();  // an import starts from a clean slate ...
+  await applyTimeShiftStart();  // ... except for a start value the file brings along
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
