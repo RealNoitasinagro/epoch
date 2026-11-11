@@ -40,7 +40,7 @@ const Map<String, ({List<String>? generic, List<String>? standard, List<String>?
     daylight: null,
   ),
   'Europe_Central':  (  // CET/CEST
-    generic: ['Central Europe Time', 'European Central Time', 'Europe Central Time', 'European Middle Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time'],
+    generic: ['Central Europe Time', 'European Central Time', 'Europe Central Time', 'European Middle Time', 'Europe Middle Time', 'Middle European Time', 'Middle Europe Time', 'Biel Mean Time', 'BMT', '.beat time'],
     standard: [],
     daylight: ['Central Europe Daylight Time', 'European Central Summer Time', 'European Middle Daylight Time', 'Europe Central Daylight Time', 'Europe Middle Daylight Time', 'Middle European Daylight Time', 'Middle Europe Daylight Time', 'CEDT', 'MEST']
   ),

@@ -695,7 +695,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
+  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Swatch calls it \"Biel Mean Time\", or BMT).'**
   String get infoTextSwatchBeats;
 
   /// No description provided for @infoTextTai.
@@ -1553,7 +1553,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftStartHint.
   ///
   /// In en, this message translates to:
-  /// **'Save the moment set above to your preferences: the app always starts with this time shift until you change it or remove it.'**
+  /// **'Save the point of time set above to your preferences: the app always starts with this until you change it or remove it.'**
   String get timeShiftStartHint;
 
   /// No description provided for @timeShiftStartNone.
@@ -1577,7 +1577,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftStartSave.
   ///
   /// In en, this message translates to:
-  /// **'Save as start value'**
+  /// **'Save start value'**
   String get timeShiftStartSave;
 
   /// No description provided for @timeShiftStartSaved.

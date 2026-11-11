@@ -47,8 +47,8 @@ also happen to spell out **E**legant **p**resentation **o**f
 - **Curiosities** – decimal time, Swatch Internet Time, New Earth Time,
   3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals
   time and the Doomsday Clock
-- On days with a clock change, day second, day percent and decimal/octal/hexadecimal
-  time use the real length of the day (23 or 25 hours, 23.5 or 24.5 for Lord Howe)
+- On days with a clock change, day second, day minute, day percent and decimal/octal/hexadecimal
+  time use the real length of the day (23 or 25 hours, Lord Howe: 23.5 or 24.5, Troll: 22 or 26)
 
 ### Time zones
 - Search by city, country, capital, zone name or abbreviation (also historical

@@ -382,7 +382,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextSwatchBeats =>
-      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
+      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (von Swatch „Biel Mean Time“ oder BMT genannt).';
 
   @override
   String get infoTextTai =>
@@ -670,7 +670,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsOn => 'an';
 
   @override
-  String get settingsOptionalPart => 'Sekunden und Dezimalstellen';
+  String get settingsOptionalPart => 'Sekunden und Dezimale';
 
   @override
   String get settingsOptionalPartAll => 'Alle';
@@ -688,7 +688,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsOptionalPartTimeNote =>
-      'Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.';
+      'Uhrzeit und Datum & Uhrzeit folgen dem Zeitformat.';
 
   @override
   String get settingsPreferencesExport => 'Einstellungen exportieren';
@@ -822,7 +822,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return 'Mit „$apply“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Nach dem Start zeigt Epoch die Systemzeit – es sei denn, Du hast unten einen Startwert gespeichert.';
+    return 'Mit „$apply“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus Vergangenheit oder Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Beim nächsten Start zeigt die App Systemzeit – es sei denn, Du hast unten einen Startwert gesetzt.';
   }
 
   @override
@@ -872,7 +872,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftStartHint =>
-      'Den oben eingestellten Zeitpunkt in Deinen Einstellungen speichern: Die App startet jedes Mal mit diesem Time Shift, bis Du ihn änderst oder entfernst.';
+      'Den oben eingestellten Zeitpunkt in Deinen Einstellungen speichern: Die App startet immer damit, bis Du ihn änderst oder entfernst.';
 
   @override
   String get timeShiftStartNone =>

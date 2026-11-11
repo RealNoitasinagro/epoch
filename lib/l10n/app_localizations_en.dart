@@ -376,7 +376,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextSwatchBeats =>
-      'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).';
+      'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Swatch calls it \"Biel Mean Time\", or BMT).';
 
   @override
   String get infoTextTai =>
@@ -864,7 +864,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftStartHint =>
-      'Save the moment set above to your preferences: the app always starts with this time shift until you change it or remove it.';
+      'Save the point of time set above to your preferences: the app always starts with this until you change it or remove it.';
 
   @override
   String get timeShiftStartNone => 'Not set – app starts with the system time';
@@ -876,7 +876,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeShiftStartRemoved => 'Start value removed';
 
   @override
-  String get timeShiftStartSave => 'Save as start value';
+  String get timeShiftStartSave => 'Save start value';
 
   @override
   String get timeShiftStartSaved => 'Start value saved';
