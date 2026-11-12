@@ -12,6 +12,7 @@ import 'build_info.dart';
 import 'bundled_licenses.dart';
 import 'effective_clock.dart';
 import 'l10n/app_localizations.dart';
+import 'l10n/system_locale.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
 import 'models/app_settings.dart';
@@ -169,7 +170,8 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
 
   Future<void> _loadPreferences() async {
     try {
-      final locale                  = await loadLocale() ?? kDefaultLocale;
+      final locale                  = await loadLocale()
+          ?? supportedSystemLocale(fallback: kDefaultLocale);
       final theme                   = await loadThemeMode();
       final nightModeSchedule       = await loadNightModeSchedule();
       final hour24                  = await loadHourFormat24();
