@@ -15,10 +15,11 @@ overriding the global settings
 - errors during app start are shown on screen, with copyable details, instead of a black screen
 
 ### Changed
+- all screens now change their seconds exactly with the system clock
 - Focus screen in night mode always starts in night red at low brightness; changes there are not saved
 - Focus screen starts with what's shown on the tab by default, new button to show/hide details line;
-onLongPress only toggles the value itself (seconds/decimals on/off)
-- Focus screen: long press only on the value area to toggle seconds or decimals
+onLongPress only toggles the value itself
+- Focus screen: long press toggle now only works in the value area (not in controls)
 - clock changes in the info dialog show time zone abbreviations and offsets next to the wall-clock times
 - import and reset of preferences also end Time Shift
 - time zone search finds old and alternative IANA IDs such as Europe/Amsterdam or Asia/Calcutta,
@@ -28,7 +29,7 @@ and IDs with hyphens such as Etc/GMT-5
 - values pinned to standard or summer time lost the pinning on restart or import when their seconds were hidden
 - day quarter color of values pinned to standard or summer time followed the real local time instead of the displayed one
 - scroll position sometimes jumped when toggling between view and edit mode
-- empty custom date pattern and overly long custom date/time patterns not caught, localization missing for a few error messages
+- empty custom date pattern and overly long custom date/time patterns not caught, missing localization for a few error messages
 
 ---
 

@@ -31,6 +31,7 @@ import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
+import 'second_ticker.dart';
 import 'widgets/link_text.dart';
 import 'widgets/time_shift_indicator.dart';
 
@@ -375,7 +376,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin {
-  late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
   List<TabConfig> _tabs = [];
@@ -399,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen>
     _loadData();
   }
 
-  void _onClockChanged() {
+  void _updateNow() {
     if (!mounted) return;
     setState(() => _now = EffectiveClock.now());
   }
@@ -408,18 +408,16 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _now = EffectiveClock.now();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _now = EffectiveClock.now());
-    });
-    EffectiveClock.changeNotifier.addListener(_onClockChanged);
+    SecondTicker.instance.addListener(_updateNow);
+    EffectiveClock.changeNotifier.addListener(_updateNow);
     _loadData();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     _tabController?.dispose();
-    EffectiveClock.changeNotifier.removeListener(_onClockChanged);
+    SecondTicker.instance.removeListener(_updateNow);
+    EffectiveClock.changeNotifier.removeListener(_updateNow);
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }

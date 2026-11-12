@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
@@ -9,6 +8,7 @@ import '../models/time_shift_start.dart';
 import '../models/time_value.dart';
 import '../models/timezone_search_zones.dart';
 import '../models/zone_rules.dart';
+import '../second_ticker.dart';
 import '../wall_clock_in_zone.dart';
 import '../widgets/dial_picker.dart';
 import '../widgets/section_header.dart';
@@ -27,7 +27,6 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   static final _firstSelectableDate = DateTime(1970, 1, 1);
   static final _lastSelectableDate = DateTime(2038, 1, 19);
 
-  late final Timer _ticker;
   late bool _frozen;
   late bool _focusIndicatorEnabled;
 
@@ -67,21 +66,23 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   bool get _canReturnToSystemTime =>
       EffectiveClock.isShifted || _editedWallClock != null;
 
+  void _onTick() {
+    if (mounted && _editedWallClock == null) setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     _focusIndicatorEnabled = EpochApp.of(context).focusTimeShiftIndicator;
     _frozen = EffectiveClock.isFrozen;
     _zone = EffectiveClock.isShifted ? activeTimeShiftZone : const ZoneLocal();
-    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted && _editedWallClock == null) setState(() {});
-    });
+    SecondTicker.instance.addListener(_onTick);
     _loadSavedStart();
   }
 
   @override
   void dispose() {
-    _ticker.cancel();
+    SecondTicker.instance.removeListener(_onTick);
     super.dispose();
   }
 
