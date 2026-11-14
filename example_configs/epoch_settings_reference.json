@@ -32,5 +32,6 @@
   "time_shift_frozen": true,
   "time_shift_moment": "2000-01-01T08:14:27Z",
   "time_shift_zone": "Australia/Lord_Howe",
+  "time_shift_zone_as_local": true,
   "zone_display_mode": "abbreviation"
 }

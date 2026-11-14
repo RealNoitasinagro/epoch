@@ -93,6 +93,31 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getKeys().where((key) => key.startsWith('time_shift_')), isEmpty);
     });
+
+    test('as-local flag: round trip, and ignored for the system zone', () async {
+      SharedPreferences.setMockInitialValues({});
+      await saveTimeShiftStart(TimeShiftStart(
+          momentUtc: DateTime.utc(2026, 12, 24, 18),
+          zone: const ZoneNamed('Pacific/Apia'),
+          zoneAsLocal: true));
+      expect((await loadTimeShiftStart())!.zoneAsLocal, isTrue);
+
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': '2026-12-24T18:00:00Z',
+        'time_shift_zone_as_local': true,   // but no zone = system zone
+      });
+      expect((await loadTimeShiftStart())!.zoneAsLocal, isFalse);
+    });
+
+    test('a start value can redefine local', () async {
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': '2026-12-24T18:00:00Z',
+        'time_shift_zone': 'Pacific/Apia',
+        'time_shift_zone_as_local': true,
+      });
+      await applyTimeShiftStart();
+      expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
+    });
   });
 
   group('applyTimeShiftStart', () {

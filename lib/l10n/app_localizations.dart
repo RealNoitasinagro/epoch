@@ -389,14 +389,26 @@ abstract class AppLocalizations {
   /// No description provided for @hintTimeShiftIndicator.
   ///
   /// In en, this message translates to:
-  /// **'Time Shift {period} · system date: {date}\nTap to change or reset'**
+  /// **'Time Shift {period} · system date: {date}'**
   String hintTimeShiftIndicator(String date, String period);
+
+  /// No description provided for @hintTimeShiftIndicatorTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change or reset'**
+  String get hintTimeShiftIndicatorTap;
 
   /// No description provided for @hintTimeShiftPast.
   ///
   /// In en, this message translates to:
   /// **'into the past'**
   String get hintTimeShiftPast;
+
+  /// No description provided for @hintTimeShiftPlaceIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Local time zone: {zone} (system: {systemZone})'**
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone);
 
   /// No description provided for @hintTimezoneSearch.
   ///
@@ -1481,7 +1493,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).'**
+  /// **'\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below). The chosen time zone can also stand in for \"local\".'**
   String timeShiftHint(String apply, String reset);
 
   /// No description provided for @timeShiftHintApply.
@@ -1499,7 +1511,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHintReset.
   ///
   /// In en, this message translates to:
-  /// **'Sets date and time in the whole app to the values of the system clock.'**
+  /// **'Returns the whole app to the system clock and the system time zone.'**
   String get timeShiftHintReset;
 
   /// No description provided for @timeShiftHintResetToSystemDate.
@@ -1615,6 +1627,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time zone'**
   String get timeShiftZone;
+
+  /// No description provided for @timeShiftZoneAsLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as local time zone'**
+  String get timeShiftZoneAsLocal;
+
+  /// No description provided for @timeShiftZoneAsLocalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Values for \"local\" show this zone instead of your device\'s'**
+  String get timeShiftZoneAsLocalSub;
 
   /// No description provided for @valueTypeAnalogClock12h.
   ///

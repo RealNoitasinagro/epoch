@@ -178,11 +178,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String hintTimeShiftIndicator(String date, String period) {
-    return 'Time Shift $period · system date: $date\nTap to change or reset';
+    return 'Time Shift $period · system date: $date';
   }
 
   @override
+  String get hintTimeShiftIndicatorTap => 'Tap to change or reset';
+
+  @override
   String get hintTimeShiftPast => 'into the past';
+
+  @override
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone) {
+    return 'Local time zone: $zone (system: $systemZone)';
+  }
 
   @override
   String get hintTimezoneSearch =>
@@ -814,7 +822,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return '\"$apply\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).';
+    return '\"$apply\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"$reset\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below). The chosen time zone can also stand in for \"local\".';
   }
 
   @override
@@ -828,7 +836,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftHintReset =>
-      'Sets date and time in the whole app to the values of the system clock.';
+      'Returns the whole app to the system clock and the system time zone.';
 
   @override
   String timeShiftHintResetToSystemDate(String apply) {
@@ -899,6 +907,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftZone => 'Time zone';
+
+  @override
+  String get timeShiftZoneAsLocal => 'Use as local time zone';
+
+  @override
+  String get timeShiftZoneAsLocalSub =>
+      'Values for \"local\" show this zone instead of your device\'s';
 
   @override
   String get valueTypeAnalogClock12h => 'Analog clock (12h)';

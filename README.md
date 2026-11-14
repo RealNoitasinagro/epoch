@@ -70,6 +70,8 @@ also happen to spell out **E**legant **p**resentation **o**f
 - Date and time are set separately, for any time zone, with calendar and dial pickers
 - Your system clock stays untouched; the title bar shows the real system time
   while Time Shift is active, the Focus screen has an optional indicator
+- Optionally redefine "local" as the chosen time zone (virtual relocation),
+  the title bar and the Focus screen show a place icon next to the time icon
 - Past values are historically correct: leap seconds for TAI and GPS time,
   the Doomsday Clock's earlier settings, the time zone rules of that time
 - Not saved by itself: the app starts with the system time, unless you save a start value

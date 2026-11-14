@@ -6,6 +6,7 @@ import 'time_value.dart';
 const _kMomentKey = 'time_shift_moment';
 const _kFrozenKey = 'time_shift_frozen';
 const _kZoneKey = 'time_shift_zone';
+const _kZoneAsLocalKey = 'time_shift_zone_as_local';
 
 /// The zone the time shift in effect was entered in. Only the Time Shift
 /// page uses it, to show the shift the way it was set. Not saved; without a
@@ -19,12 +20,24 @@ class TimeShiftStart {
   final bool frozen;
   final ZoneSpec zone;
 
+  /// Whether "local" stands for [zone] (a virtual relocation).
+  final bool zoneAsLocal;
+
   const TimeShiftStart({
     required this.momentUtc,
     this.frozen = false,
     this.zone = const ZoneLocal(),
+    this.zoneAsLocal = false,
   });
 }
+
+/// The IANA zone "local" stands for when [zone] is used as local; null for
+/// the zone of the system.
+String? virtualLocalIanaZoneOf(ZoneSpec zone) => switch (zone) {
+  ZoneLocal() => null,
+  ZoneUtc() => 'Etc/UTC',
+  ZoneNamed(ianaZone: final ianaZone) => ianaZone,
+};
 
 /// "2026-12-24T18:00:00Z": whole seconds, always UTC.
 String formatTimeShiftMoment(DateTime moment) =>
@@ -63,11 +76,15 @@ Future<TimeShiftStart?> loadTimeShiftStart() async {
   final moment = parseTimeShiftMoment(momentText is String ? momentText : null);
   if (moment == null || !EffectiveClock.isSupported(moment)) return null;
   final frozen = prefs.get(_kFrozenKey);
-  final zone = prefs.get(_kZoneKey);
+  final zoneText = prefs.get(_kZoneKey);
+  final zoneAsLocal = prefs.get(_kZoneAsLocalKey);
+  final zone = timeShiftZoneFromConfig(zoneText is String ? zoneText : null);
   return TimeShiftStart(
     momentUtc: moment,
     frozen: frozen is bool && frozen,
-    zone: timeShiftZoneFromConfig(zone is String ? zone : null),
+    zone: zone,
+    // The zone of the system cannot be redefined as itself:
+    zoneAsLocal: zoneAsLocal is bool && zoneAsLocal && zone is! ZoneLocal,
   );
 }
 
@@ -76,11 +93,12 @@ Future<void> saveTimeShiftStart(TimeShiftStart start) async {
   await prefs.setString(_kMomentKey, formatTimeShiftMoment(start.momentUtc));
   await prefs.setBool(_kFrozenKey, start.frozen);
   await prefs.setString(_kZoneKey, timeShiftZoneToConfig(start.zone));
+  await prefs.setBool(_kZoneAsLocalKey, start.zoneAsLocal);
 }
 
 Future<void> clearTimeShiftStart() async {
   final prefs = await SharedPreferences.getInstance();
-  for (final key in [_kMomentKey, _kFrozenKey, _kZoneKey]) {
+  for (final key in [_kMomentKey, _kFrozenKey, _kZoneKey, _kZoneAsLocalKey]) {
     await prefs.remove(key);
   }
 }
@@ -89,6 +107,12 @@ Future<void> clearTimeShiftStart() async {
 Future<void> applyTimeShiftStart() async {
   final start = await loadTimeShiftStart();
   if (start == null) return;
-  EffectiveClock.shiftTo(start.momentUtc, frozen: start.frozen);
+  EffectiveClock.shiftTo(
+    start.momentUtc,
+    frozen: start.frozen,
+    virtualLocalIanaZone: start.zoneAsLocal
+        ? virtualLocalIanaZoneOf(start.zone)
+        : null,
+  );
   activeTimeShiftZone = start.zone;
 }

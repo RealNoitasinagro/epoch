@@ -28,6 +28,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   static final _lastSelectableDate = DateTime(2038, 1, 19);
 
   late bool _frozen;
+  late bool _zoneAsLocal;
   late bool _focusIndicatorEnabled;
 
   /// The zone the moment is entered and shown in. Not a setting of its own:
@@ -56,10 +57,17 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         instant.minute, instant.second);
   }
 
-  /// Apply would change something: values were edited, or the freeze
-  /// setting differs from the one currently in effect.
+  /// What "local" should stand for after Apply: the chosen zone, or the zone
+  /// of the device (null).
+  String? get _virtualLocalIanaZone =>
+      _zoneAsLocal ? virtualLocalIanaZoneOf(_zone) : null;
+
+  /// Apply would change something: values were edited, or the freeze setting
+  /// or what "local" stands for differs from the one in effect.
   bool get _canSetAppClock =>
-      _editedWallClock != null || _frozen != EffectiveClock.isFrozen;
+      _editedWallClock != null ||
+      _frozen != EffectiveClock.isFrozen ||
+      _virtualLocalIanaZone != EffectiveClock.virtualLocalIanaZone;
 
   /// Reset would change something: the app clock is shifted, or the page
   /// holds unapplied edits.
@@ -75,6 +83,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     super.initState();
     _focusIndicatorEnabled = EpochApp.of(context).focusTimeShiftIndicator;
     _frozen = EffectiveClock.isFrozen;
+    _zoneAsLocal = EffectiveClock.hasVirtualLocalZone;
     _zone = EffectiveClock.isShifted ? activeTimeShiftZone : const ZoneLocal();
     SecondTicker.instance.addListener(_onTick);
     _loadSavedStart();
@@ -114,6 +123,30 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         EffectiveClock.earliestMomentText, EffectiveClock.latestMomentText));
   }
 
+  /// Whether [zone] is the zone of the device: "local" already means it.
+  bool _isSystemZone(ZoneSpec zone) {
+    if (zone is ZoneLocal) return true;
+    if (zone is! ZoneNamed) return false;
+    String canonical(String ianaZone) => ianaLinksSnapshot[ianaZone] ?? ianaZone;
+    return canonical(zone.ianaZone) ==
+        canonical(EpochApp.of(context).systemIanaZone);
+  }
+
+  Future<void> _pickZone() async {
+    final zone = await showZonePicker(context);
+    if (zone == null || !mounted) return;
+    setState(() {
+      // The same moment, read in the new zone (nothing to convert while the
+      // live clock is shown):
+      final edited = _editedWallClock;
+      if (edited != null) {
+        _editedWallClock = wallClockOf(instantOfWallClock(edited, _zone), zone);
+      }
+      _zone = zone;
+      if (_isSystemZone(zone)) _zoneAsLocal = false;  // nothing to redefine
+    });
+  }
+
   void _updateMoment({
     int? year, int? month, int? day, int? hour, int? minute, int? second,
   }) {
@@ -135,20 +168,6 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         duration: const Duration(seconds: 6),
       );
     }
-  }
-
-  Future<void> _pickZone() async {
-    final zone = await showZonePicker(context);
-    if (zone == null || !mounted) return;
-    setState(() {
-      // The same moment, read in the new zone (nothing to convert while the
-      // live clock is shown):
-      final edited = _editedWallClock;
-      if (edited != null) {
-        _editedWallClock = wallClockOf(instantOfWallClock(edited, _zone), zone);
-      }
-      _zone = zone;
-    });
   }
 
   Future<void> _editDate({required bool startWithYear}) async {
@@ -195,7 +214,13 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       return;
     }
     activeTimeShiftZone = _zone;
-    EffectiveClock.shiftTo(instant, frozen: _frozen);
+    if (_editedWallClock == null && _frozen == EffectiveClock.isFrozen) {
+      // Only "local" changes, the time stays exactly as it is:
+      EffectiveClock.setVirtualLocalZone(_virtualLocalIanaZone);
+    } else {
+      EffectiveClock.shiftTo(instant,
+          frozen: _frozen, virtualLocalIanaZone: _virtualLocalIanaZone);
+    }
     Navigator.pop(context);
   }
 
@@ -211,8 +236,12 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       _showOutOfRange();
       return;
     }
-    final start =
-        TimeShiftStart(momentUtc: instant, frozen: _frozen, zone: _zone);
+    final start = TimeShiftStart(
+        momentUtc: instant,
+        frozen: _frozen,
+        zone: _zone,
+        zoneAsLocal: _zoneAsLocal
+    );
     await saveTimeShiftStart(start);
     if (!mounted) return;
     setState(() => _savedStart = start);
@@ -334,7 +363,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   String _startSummary(AppLocalizations l10n, TimeShiftStart start) {
     final moment = _wallClockText(wallClockOf(start.momentUtc, start.zone));
-    final zone = _startZoneText(start.zone, l10n);
+    final zone = _startZoneText(start.zone, l10n) +
+        (start.zoneAsLocal ? ' = ${l10n.labelLocal.toLowerCase()}' : '');
     return start.frozen
         ? l10n.timeShiftStartSummaryFrozen(moment, zone)
         : l10n.timeShiftStartSummaryRunning(moment, zone);
@@ -438,6 +468,15 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
           _plainSectionHeader(l10n.timeShiftZone),
           const SizedBox(height: 8),
           _zoneTile(l10n),
+          SwitchListTile(
+            secondary: const Icon(kIconTimeShiftPlace),
+            title: Text(l10n.timeShiftZoneAsLocal),
+            subtitle: Text(l10n.timeShiftZoneAsLocalSub),
+            value: _zoneAsLocal,
+            onChanged: _isSystemZone(_zone)
+                ? null
+                : (value) => setState(() => _zoneAsLocal = value),
+          ),
           _momentSectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
           _segmentRow([

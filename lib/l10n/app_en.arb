@@ -42,6 +42,16 @@
       }
     }
   },
+  "@hintTimeShiftPlaceIndicator": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      },
+      "systemZone": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDefaultState": {
     "placeholders": {
       "state": {
@@ -223,8 +233,10 @@
   "hintSelectTimezone": "Select timezone",
   "hintSelectValueType": "Select value type",
   "hintTimeShiftFuture": "into the future",
-  "hintTimeShiftIndicator": "Time Shift {period} · system date: {date}\nTap to change or reset",
+  "hintTimeShiftIndicator": "Time Shift {period} · system date: {date}",
+  "hintTimeShiftIndicatorTap": "Tap to change or reset",
   "hintTimeShiftPast": "into the past",
+  "hintTimeShiftPlaceIndicator": "Local time zone: {zone} (system: {systemZone})",
   "hintTimezoneSearch": "City, country, zone or offset (e.g. UTC+5:30)",
   "hintZoneIndicator": "Timezone-dependent value",
   "infoLinkBinaryClockBcd": "https://en.wikipedia.org/wiki/Binary_clock",
@@ -405,10 +417,10 @@
   "timeShiftFrozen": "Freeze time",
   "timeShiftFrozenSubOff": "The time used in the app keeps running from the set moment.",
   "timeShiftFrozenSubOn": "The time used in the app stays at the set moment.",
-  "timeShiftHint": "\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below).",
+  "timeShiftHint": "\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device's clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below). The chosen time zone can also stand in for \"local\".",
   "timeShiftHintApply": "Applies the selected date and time to the whole app.",
   "timeShiftHintRange": "Supported range: {earliest} to {latest}, limited by Unix time and the available IANA time zone data.",
-  "timeShiftHintReset": "Sets date and time in the whole app to the values of the system clock.",
+  "timeShiftHintReset": "Returns the whole app to the system clock and the system time zone.",
   "timeShiftHintResetToSystemDate": "Sets the Time Shift selection date to the system date, time of day stays as set.\nBecomes effective only with the \"{apply}\" button.",
   "timeShiftHintResetToSystemTime": "Sets the Time Shift selection time to the system time, date stays as set.\nBecomes effective only with the \"{apply}\" button.",
   "timeShiftHours": "Hours",
@@ -428,6 +440,8 @@
   "timeShiftStartSummaryRunning": "{moment} ({zone}), running",
   "timeShiftTime": "Time",
   "timeShiftZone": "Time zone",
+  "timeShiftZoneAsLocal": "Use as local time zone",
+  "timeShiftZoneAsLocalSub": "Values for \"local\" show this zone instead of your device's",
   "valueTypeAnalogClock12h": "Analog clock (12h)",
   "valueTypeAnalogClock24h": "Analog clock (24h)",
   "valueTypeBinaryClockBcd": "Binary clock (BCD)",

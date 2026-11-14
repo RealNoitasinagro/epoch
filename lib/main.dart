@@ -296,7 +296,14 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
     saveOptionalPartHiddenTypes(valueTypes);
   }
 
-  String get localIanaZone => _localIanaZone;
+  /// The zone of the device, whatever Time Shift says.
+  String get systemIanaZone => _localIanaZone;
+
+  /// The zone "local" stands for: the zone of the device, unless Time Shift
+  /// has redefined it.
+  String get localIanaZone =>
+      EffectiveClock.virtualLocalIanaZone ?? _localIanaZone;
+
   Locale? get locale => _locale;
 
   /// The theme in effect: night mode within the night mode window, otherwise
@@ -332,7 +339,7 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
       timeFormat: _timeFormat,
       zoneDisplayMode: _zoneDisplayMode,
       dateWithDetails: _dateWithDetails,
-      localIanaZone: _localIanaZone,
+      localIanaZone: localIanaZone,
       longitude: _lmstLongitude,
       optionalPartHiddenTypes: _optionalPartHiddenTypes,
     );

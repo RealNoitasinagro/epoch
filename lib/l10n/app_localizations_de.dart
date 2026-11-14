@@ -184,11 +184,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String hintTimeShiftIndicator(String date, String period) {
-    return 'Time Shift $period · Systemdatum: $date\nAntippen zum Ändern oder Aufheben';
+    return 'Time Shift $period · Systemdatum: $date';
   }
 
   @override
+  String get hintTimeShiftIndicatorTap => 'Antippen zum Ändern oder Aufheben';
+
+  @override
   String get hintTimeShiftPast => 'in die Vergangenheit';
+
+  @override
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone) {
+    return 'Lokale Zeitzone: $zone (System: $systemZone)';
+  }
 
   @override
   String get hintTimezoneSearch =>
@@ -822,7 +830,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return 'Mit „$apply“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus Vergangenheit oder Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Beim nächsten Start zeigt die App Systemzeit – es sei denn, Du hast unten einen Startwert gesetzt.';
+    return 'Mit „$apply“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus Vergangenheit oder Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Beim nächsten Start zeigt die App Systemzeit – es sei denn, Du hast unten einen Startwert gesetzt. Die gewählte Zeitzone kann auch für „lokal“ stehen.';
   }
 
   @override
@@ -836,7 +844,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftHintReset =>
-      'Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.';
+      'Setzt die gesamte App auf Systemuhr und Systemzeitzone zurück.';
 
   @override
   String timeShiftHintResetToSystemDate(String apply) {
@@ -908,6 +916,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftZone => 'Zeitzone';
+
+  @override
+  String get timeShiftZoneAsLocal => 'Als lokale Zeitzone verwenden';
+
+  @override
+  String get timeShiftZoneAsLocalSub =>
+      'Werte mit „lokal“ zeigen diese Zone statt der Zone des Geräts';
 
   @override
   String get valueTypeAnalogClock12h => 'Analoguhr (12h)';

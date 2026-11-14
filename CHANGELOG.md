@@ -4,26 +4,27 @@
 
 ### Added
 - new value types: day minute and two graphical analog clocks (12 or 24-hour face), all with seconds optional
-- Time Shift allows to specify the time zone (e. g. Lord Howe), saves you the trouble of doing the math in your head
-to convert times between zones
-- app can optionally start with a time-shifted moment, running or frozen
-- configurable night mode time window (Settings)
+- Time Shift: app can optionally start with a time-shifted moment, running or frozen
+- Time Shift: allows to specify the time zone (e. g. Lord Howe, saves you the trouble of doing the math in your head
+  to convert times between zones); also allows to redefine "local" as the chosen time zone (virtual relocation)
+- configurable night mode time window in Settings
 - seconds and decimals can be hidden for more values (time, date & time, day minute, decimal time, day percent),
-with a global default per value type in Settings and an override for each value on tabs
+  with a global default per value type in Settings and an override for each value on tabs
 - details line (time zone, date: week and day of the year, GMST/LMST: hour angle/degrees) can be shown or hidden for each value,
-overriding the global settings
+  overriding global settings
 - errors during app start are shown on screen, with copyable details, instead of a black screen
 
 ### Changed
 - all screens now change their seconds exactly with the system clock
 - Focus screen in night mode always starts in night red at low brightness; changes there are not saved
 - Focus screen starts with what's shown on the tab by default, new button to show/hide details line;
-onLongPress only toggles the value itself
+  long press only toggles the value itself (i.e. its precision: seconds or decimals)
 - Focus screen: long press toggle now only works in the value area (not in controls)
 - clock changes in the info dialog show time zone abbreviations and offsets next to the wall-clock times
 - import and reset of preferences also end Time Shift
 - time zone search finds old and alternative IANA IDs such as Europe/Amsterdam or Asia/Calcutta,
-and IDs with hyphens such as Etc/GMT-5
+  and IDs with hyphens such as Etc/GMT-5
+- app follows system locale by default (German on German devices, English otherwise)
 
 ### Fixed
 - values pinned to standard or summer time lost the pinning on restart or import when their seconds were hidden

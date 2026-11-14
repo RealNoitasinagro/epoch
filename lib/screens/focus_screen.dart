@@ -13,6 +13,7 @@ import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../second_ticker.dart';
 import '../widgets/clocks/graphical_clock.dart';
+import '../widgets/time_shift_indicator.dart';
 import '../widgets/time_string_row.dart';
 import '../zoned_moment.dart';
 
@@ -629,11 +630,13 @@ class _FocusScreenState extends State<FocusScreen> {
         Positioned(
           top: -badgeSize,
           left: _horizontalPadding(isLandscape),
-          child: Icon(
-            EffectiveClock.isShiftedIntoPast
-                ? kIconTimeShiftPast : kIconTimeShiftFuture,
-            size: badgeSize,
-            color: _textColor.withAlpha(150),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 4,
+            children: [
+              for (final icon in timeShiftIcons())
+                Icon(icon, size: badgeSize, color: _textColor.withAlpha(150)),
+            ],
           ),
         ),
       ],
