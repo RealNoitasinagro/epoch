@@ -815,7 +815,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftFocusIndicatorSub =>
-      'Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht';
+      'Zeigt ein oder zwei kleine Symbole, solange die angezeigte Zeit und/oder Zone von der Systemzeit abweichen';
 
   @override
   String get timeShiftFrozen => 'Zeit einfrieren';
@@ -904,6 +904,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String timeShiftStartSummaryFrozen(String moment, String zone) {
     return '$moment ($zone), eingefroren';
+  }
+
+  @override
+  String timeShiftStartSummaryPlaceOnly(String zone) {
+    return '$zone, Zeit nicht verschoben';
   }
 
   @override

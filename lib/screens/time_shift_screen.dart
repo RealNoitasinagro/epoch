@@ -333,7 +333,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   /// IANA name (also for the system zone) and the offset at the shown moment.
   String _zoneSubtitle() {
     final ianaZone = switch (_zone) {
-      ZoneLocal() => EpochApp.of(context).localIanaZone,
+      ZoneLocal() => EpochApp.of(context).systemIanaZone,
       ZoneUtc() => null,
       ZoneNamed(ianaZone: final name) => name,
     };
@@ -362,9 +362,11 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   };
 
   String _startSummary(AppLocalizations l10n, TimeShiftStart start) {
-    final moment = _wallClockText(wallClockOf(start.momentUtc, start.zone));
     final zone = _startZoneText(start.zone, l10n) +
         (start.zoneAsLocal ? ' = ${l10n.labelLocal.toLowerCase()}' : '');
+    final momentUtc = start.momentUtc;
+    if (momentUtc == null) return l10n.timeShiftStartSummaryPlaceOnly(zone);
+    final moment = _wallClockText(wallClockOf(momentUtc, start.zone));
     return start.frozen
         ? l10n.timeShiftStartSummaryFrozen(moment, zone)
         : l10n.timeShiftStartSummaryRunning(moment, zone);

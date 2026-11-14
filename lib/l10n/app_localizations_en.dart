@@ -807,7 +807,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeShiftFocusIndicatorSub =>
-      'Shows a small icon while the displayed time deviates from the system time';
+      'Shows a small icon or two while the displayed time and/or zone deviate from the system time';
 
   @override
   String get timeShiftFrozen => 'Freeze time';
@@ -895,6 +895,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String timeShiftStartSummaryFrozen(String moment, String zone) {
     return '$moment ($zone), frozen';
+  }
+
+  @override
+  String timeShiftStartSummaryPlaceOnly(String zone) {
+    return '$zone, time not shifted';
   }
 
   @override

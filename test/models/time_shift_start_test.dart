@@ -118,6 +118,47 @@ void main() {
       await applyTimeShiftStart();
       expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
     });
+
+    test('an empty moment with local redefined: only the place', () async {
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': '',
+        'time_shift_zone': 'Pacific/Apia',
+        'time_shift_zone_as_local': true,
+      });
+      final start = (await loadTimeShiftStart())!;
+      expect(start.momentUtc, isNull);
+      await applyTimeShiftStart();
+      expect(EffectiveClock.isTimeShifted, isFalse);
+      expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
+    });
+
+    test('an empty moment without redefining local means no start value', () async {
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': '',
+        'time_shift_zone': 'Pacific/Apia',
+      });
+      expect(await loadTimeShiftStart(), isNull);
+    });
+
+    test('a broken moment stays unusable, whatever else is set', () async {
+      SharedPreferences.setMockInitialValues({
+        'time_shift_moment': 'garbage',
+        'time_shift_zone': 'Pacific/Apia',
+        'time_shift_zone_as_local': true,
+      });
+      expect(await loadTimeShiftStart(), isNull);
+    });
+
+    test('place only survives saving and loading', () async {
+      SharedPreferences.setMockInitialValues({});
+      await saveTimeShiftStart(const TimeShiftStart(
+          momentUtc: null,
+          zone: ZoneNamed('Pacific/Apia'),
+          zoneAsLocal: true));
+      final loaded = (await loadTimeShiftStart())!;
+      expect(loaded.momentUtc, isNull);
+      expect(loaded.zoneAsLocal, isTrue);
+    });
   });
 
   group('applyTimeShiftStart', () {

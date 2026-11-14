@@ -1469,7 +1469,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftFocusIndicatorSub.
   ///
   /// In en, this message translates to:
-  /// **'Shows a small icon while the displayed time deviates from the system time'**
+  /// **'Shows a small icon or two while the displayed time and/or zone deviate from the system time'**
   String get timeShiftFocusIndicatorSub;
 
   /// No description provided for @timeShiftFrozen.
@@ -1609,6 +1609,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{moment} ({zone}), frozen'**
   String timeShiftStartSummaryFrozen(String moment, String zone);
+
+  /// No description provided for @timeShiftStartSummaryPlaceOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{zone}, time not shifted'**
+  String timeShiftStartSummaryPlaceOnly(String zone);
 
   /// No description provided for @timeShiftStartSummaryRunning.
   ///

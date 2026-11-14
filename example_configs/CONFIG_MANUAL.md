@@ -46,16 +46,17 @@ Default values will show up in config files when a non-default value had been co
 | `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                                                                                                                                          |
 | `time_format`                | string           | `"HH:mm:ss"`                    | Time display format (see tokens below)                                                                                                                                                                              |
 | `time_shift_frozen`          | bool             | `false`                         | Whether time stands still at the start value (see `time_shift_moment`)                                                                                                                                              |
-| `time_shift_moment`          | string           | `—`                             | Start value for Time Shift: the moment Epoch starts at, ISO 8601 with Z or a UTC offset, e. g. "2026-12-24T18:00:00Z", between 1970-01-01 and 2038-01-19; unusable values are ignored                               |
+| `time_shift_moment`          | string           | `—`                             | Start value for Time Shift: the moment Epoch starts at, ISO 8601 with Z or a UTC offset, e. g. "2026-12-24T18:00:00Z", between 1970-01-01 and 2038-01-19; unusable values are ignored[^5]                           |
 | `time_shift_zone`            | string           | `""`                            | Zone the Time Shift page shows the moment in: `"UTC"`, or an IANA name such as `"Australia/Lord_Howe"`; empty or unknown names = system zone; has no effect on the moment itself                                    |  
 | `time_shift_zone_as_local`   | bool             | `false`                         | If true, values with the zone local show `time_shift_zone` instead of the zone of the device (a virtual relocation); ignored if `time_shift_zone` is empty. LMST is not affected: it uses the configured longitude. | 
 | `thousands_sep`              | bool             | `true`                          | Thousands separator in numbers (locale-dependent)                                                                                                                                                                   |
 | `zone_display_mode`          | string           | `"full"`                        | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"`                                                                                                                             |
 
-[^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
-[^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.
-[^3]: In night mode, the Focus screen always starts in night red at low brightness; changes made there are not saved.
-[^4]: The night mode time window is only active if start and end are both set and differ; may span midnight; follows the device's system time, not Time Shift.
+[^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.  \
+[^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.  \
+[^3]: In night mode, the Focus screen always starts in night red at low brightness; changes made there are not saved.  \
+[^4]: The night mode time window is only active if start and end are both set and differ; may span midnight; follows the device's system time, not Time Shift.  \
+[^5]: An empty string (`""`), together with `time_shift_zone` (must differ from system zone) and `time_shift_zone_as_local` set to `true`, starts the app with the current time for the given zone (virtual relocation only). `time_shift_frozen` is ignored then. This scenario must be set manually in the config file since the app always saves a moment.
 
 > [!TIP]
 > * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values, including a time shift).

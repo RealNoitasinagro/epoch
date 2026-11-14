@@ -175,6 +175,13 @@
       }
     }
   },
+  "@timeShiftStartSummaryPlaceOnly": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "@timeShiftStartSummaryRunning": {
     "placeholders": {
       "moment": {
@@ -413,7 +420,7 @@
   "timeShiftApply": "Anwenden",
   "timeShiftDate": "Datum",
   "timeShiftFocusIndicator": "Indikator im Fokus-Screen",
-  "timeShiftFocusIndicatorSub": "Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht",
+  "timeShiftFocusIndicatorSub": "Zeigt ein oder zwei kleine Symbole, solange die angezeigte Zeit und/oder Zone von der Systemzeit abweichen",
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
   "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
@@ -437,6 +444,7 @@
   "timeShiftStartSaved": "Startwert gespeichert",
   "timeShiftStartSection": "App-Start",
   "timeShiftStartSummaryFrozen": "{moment} ({zone}), eingefroren",
+  "timeShiftStartSummaryPlaceOnly": "{zone}, Zeit nicht verschoben",
   "timeShiftStartSummaryRunning": "{moment} ({zone}), fortlaufend",
   "timeShiftTime": "Uhrzeit",
   "timeShiftZone": "Zeitzone",
