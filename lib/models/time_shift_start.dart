@@ -1,0 +1,139 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/timezone.dart' as tz;
+import '../effective_clock.dart';
+import 'time_value.dart';
+
+const _kMomentKey = 'time_shift_moment';
+const _kFrozenKey = 'time_shift_frozen';
+const _kZoneKey = 'time_shift_zone';
+const _kZoneAsLocalKey = 'time_shift_zone_as_local';
+
+/// The zone the time shift in effect was entered in. Only the Time Shift
+/// page uses it, to show the shift the way it was set. Not saved; without a
+/// shift it means nothing.
+ZoneSpec activeTimeShiftZone = const ZoneLocal();
+
+/// A time shift the app starts with: the moment, whether time stands still
+/// from there, and the zone the Time Shift page shows the moment in.
+class TimeShiftStart {
+  /// Null: the time is not shifted, the app starts with the current time
+  /// (then only what "local" stands for can change, see [zoneAsLocal]).
+  final DateTime? momentUtc;
+  final bool frozen;
+  final ZoneSpec zone;
+
+  /// Whether "local" stands for [zone] (a virtual relocation).
+  final bool zoneAsLocal;
+
+  const TimeShiftStart({
+    required this.momentUtc,
+    this.frozen = false,
+    this.zone = const ZoneLocal(),
+    this.zoneAsLocal = false,
+  });
+}
+
+/// The IANA zone "local" stands for when [zone] is used as local; null for
+/// the zone of the system.
+String? virtualLocalIanaZoneOf(ZoneSpec zone) => switch (zone) {
+  ZoneLocal() => null,
+  ZoneUtc() => 'Etc/UTC',
+  ZoneNamed(ianaZone: final ianaZone) => ianaZone,
+};
+
+/// "2026-12-24T18:00:00Z": whole seconds, always UTC.
+String formatTimeShiftMoment(DateTime moment) =>
+    '${moment.toUtc().toIso8601String().substring(0, 19)}Z';
+
+/// Null unless [text] is an ISO 8601 moment with "Z" or a UTC offset
+/// (without one, it would be unclear which zone is meant).
+DateTime? parseTimeShiftMoment(String? text) {
+  if (text == null) return null;
+  final parsed = DateTime.tryParse(text.trim());
+  if (parsed == null || !parsed.isUtc) return null;
+  return DateTime.utc(parsed.year, parsed.month, parsed.day, parsed.hour,
+      parsed.minute, parsed.second);
+}
+
+/// Empty = local, "UTC", or an IANA name.
+String timeShiftZoneToConfig(ZoneSpec zone) => switch (zone) {
+  ZoneLocal() => '',
+  ZoneUtc() => 'UTC',
+  ZoneNamed(ianaZone: final ianaZone) => ianaZone,
+};
+
+/// Unknown names fall back to local; the zone only affects how the Time
+/// Shift page shows the moment. Needs the time zone data to be initialized.
+ZoneSpec timeShiftZoneFromConfig(String? text) {
+  if (text == null || text.isEmpty) return const ZoneLocal();
+  if (!tz.timeZoneDatabase.locations.containsKey(text)) return const ZoneLocal();
+  return canonicalZoneSpec(ZoneNamed(text));
+}
+
+/// The saved start value; null if there is none or it is not usable
+/// (not a moment, outside the supported range).
+Future<TimeShiftStart?> loadTimeShiftStart() async {
+  final prefs = await SharedPreferences.getInstance();
+  final momentText = prefs.get(_kMomentKey);
+  // An empty text is deliberate: do not shift the time.
+  final timeNotShifted = momentText is String && momentText.trim().isEmpty;
+  final moment = timeNotShifted
+      ? null
+      : parseTimeShiftMoment(momentText is String ? momentText : null);
+  if (!timeNotShifted &&
+      (moment == null || !EffectiveClock.isSupported(moment))) {
+    return null;
+  }
+  final frozen = prefs.get(_kFrozenKey);
+  final zoneText = prefs.get(_kZoneKey);
+  final zoneAsLocal = prefs.get(_kZoneAsLocalKey);
+  final zone = timeShiftZoneFromConfig(zoneText is String ? zoneText : null);
+  // The zone of the system cannot be redefined as itself:
+  final redefinesLocal =
+      zoneAsLocal is bool && zoneAsLocal && zone is! ZoneLocal;
+  // Without a moment, only a redefined "local" is worth starting with:
+  if (moment == null && !redefinesLocal) return null;
+  return TimeShiftStart(
+    momentUtc: moment,
+    frozen: frozen is bool && frozen,
+    zone: zone,
+    zoneAsLocal: redefinesLocal,
+  );
+}
+
+Future<void> saveTimeShiftStart(TimeShiftStart start) async {
+  final prefs = await SharedPreferences.getInstance();
+  final moment = start.momentUtc;
+  await prefs.setString(
+      _kMomentKey, moment == null ? '' : formatTimeShiftMoment(moment));
+  await prefs.setBool(_kFrozenKey, start.frozen);
+  await prefs.setString(_kZoneKey, timeShiftZoneToConfig(start.zone));
+  await prefs.setBool(_kZoneAsLocalKey, start.zoneAsLocal);
+}
+
+Future<void> clearTimeShiftStart() async {
+  final prefs = await SharedPreferences.getInstance();
+  for (final key in [_kMomentKey, _kFrozenKey, _kZoneKey, _kZoneAsLocalKey]) {
+    await prefs.remove(key);
+  }
+}
+
+/// Starts the clock at the saved moment, if there is a usable one.
+Future<void> applyTimeShiftStart() async {
+  final start = await loadTimeShiftStart();
+  if (start == null) return;
+  final virtualLocalIanaZone = start.zoneAsLocal
+      ? virtualLocalIanaZoneOf(start.zone)
+      : null;
+  final moment = start.momentUtc;
+  if (moment == null) {
+    EffectiveClock.setVirtualLocalZone(virtualLocalIanaZone);  // time stays as it is
+  } else {
+    EffectiveClock.shiftTo(
+        moment,
+        frozen: start.frozen,
+        virtualLocalIanaZone: virtualLocalIanaZone
+    );
+  }
+  activeTimeShiftZone = start.zone;
+}

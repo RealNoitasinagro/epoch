@@ -11,7 +11,9 @@ import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
+import '../second_ticker.dart';
 import '../widgets/clocks/graphical_clock.dart';
+import '../widgets/time_shift_indicator.dart';
 import '../widgets/time_string_row.dart';
 import '../zoned_moment.dart';
 
@@ -43,7 +45,6 @@ class _FocusScreenState extends State<FocusScreen> {
   static const _controlsHideDuration = Duration(milliseconds: 500);
 
   late DateTime _now;
-  late Timer _timer;
   Color _textColor = Colors.white;
   bool? _showLine2;  // null until the first build, then follows the button
   late bool _showOptionalPart;
@@ -97,6 +98,11 @@ class _FocusScreenState extends State<FocusScreen> {
   bool get _showTimeShiftIndicator =>
       EpochApp.of(context).focusTimeShiftIndicator;
 
+  void _updateNow() {
+    if (!mounted) return;
+    setState(() => _now = EffectiveClock.now());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -104,8 +110,7 @@ class _FocusScreenState extends State<FocusScreen> {
     _nightModeNotifier = app.nightModeNotifier..addListener(_onNightModeChanged);
     _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
-    _timer = Timer.periodic(const Duration(seconds: 1),
-            (_) => setState(() => _now = EffectiveClock.now()));
+    SecondTicker.instance.addListener(_updateNow);
     WakelockPlus.enable();
     _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -301,7 +306,7 @@ class _FocusScreenState extends State<FocusScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    SecondTicker.instance.removeListener(_updateNow);
     _controlsHideTimer?.cancel();
     _pixelShiftTimer?.cancel();
     _nightModeNotifier?.removeListener(_onNightModeChanged);
@@ -625,11 +630,13 @@ class _FocusScreenState extends State<FocusScreen> {
         Positioned(
           top: -badgeSize,
           left: _horizontalPadding(isLandscape),
-          child: Icon(
-            EffectiveClock.isShiftedIntoPast
-                ? kIconTimeShiftPast : kIconTimeShiftFuture,
-            size: badgeSize,
-            color: _textColor.withAlpha(150),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 4,
+            children: [
+              for (final icon in timeShiftIcons())
+                Icon(icon, size: badgeSize, color: _textColor.withAlpha(150)),
+            ],
           ),
         ),
       ],

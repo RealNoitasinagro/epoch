@@ -42,6 +42,16 @@
       }
     }
   },
+  "@hintTimeShiftPlaceIndicator": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      },
+      "systemZone": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDefaultState": {
     "placeholders": {
       "state": {
@@ -155,6 +165,33 @@
       }
     }
   },
+  "@timeShiftStartSummaryFrozen": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftStartSummaryPlaceOnly": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "@timeShiftStartSummaryRunning": {
+    "placeholders": {
+      "moment": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "actionCancel": "Abbrechen",
   "actionDeleteTab": "Tab löschen",
   "actionExitApp": "Beenden",
@@ -203,8 +240,10 @@
   "hintSelectTimezone": "Zeitzone auswählen",
   "hintSelectValueType": "Werttyp auswählen",
   "hintTimeShiftFuture": "in die Zukunft",
-  "hintTimeShiftIndicator": "Time Shift {period} · Systemdatum: {date}\nAntippen zum Ändern oder Aufheben",
+  "hintTimeShiftIndicator": "Time Shift {period} · Systemdatum: {date}",
+  "hintTimeShiftIndicatorTap": "Antippen zum Ändern oder Aufheben",
   "hintTimeShiftPast": "in die Vergangenheit",
+  "hintTimeShiftPlaceIndicator": "Lokale Zeitzone: {zone} (System: {systemZone})",
   "hintTimezoneSearch": "Stadt, Land, Zone oder Offset (z. B. UTC+5:30)",
   "hintZoneIndicator": "Zeitzonen-abhängiger Wert",
   "infoLinkBinaryClockBcd": "https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr",
@@ -254,7 +293,7 @@
   "infoTextReducedJulianDate": "Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.",
   "infoTextRomanNumeralsTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für 'nicht etwas' oder 'nichts'), wird für die Darstellung von Nullen verwendet.",
   "infoTextSevenSegmentClock": "Die aktuelle Uhrzeit in der gewählten Zeitzone im Radiowecker-Design.",
-  "infoTextSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).",
+  "infoTextSwatchBeats": "Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (von Swatch „Biel Mean Time“ oder BMT genannt).",
   "infoTextTai": "Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist 37 Sekunden vor UTC. Letztmalig wurde eine Schaltsekunde am 2016-12-31 um 23:59:60 UTC eingefügt.",
   "infoTextTime": "Die aktuelle Uhrzeit in der gewählten Zeitzone.",
   "infoTextUnixSeconds": "Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.",
@@ -324,6 +363,7 @@
   "settingsHourFormat": "24-Stunden-Format",
   "settingsHourFormatSub": "Aus = 12-Stunden mit AM/PM",
   "settingsLanguage": "Sprache",
+  "settingsLanguageTheme": "Sprache und Design",
   "settingsLmst": "Lokale Sternzeit",
   "settingsLmstLongitudeAuto": "Ungefähren Standort verwenden",
   "settingsLmstLongitudeAutoSub": "Einmalig, ohne GPS, kein Tracking",
@@ -339,10 +379,10 @@
   "settingsNightModeSub": "Ersetzt das Design in diesem Zeitfenster",
   "settingsOff": "aus",
   "settingsOn": "an",
-  "settingsOptionalPart": "Sekunden und Dezimalstellen",
+  "settingsOptionalPart": "Sekunden und Dezimale",
   "settingsOptionalPartAll": "Alle",
   "settingsOptionalPartSummary": "{hidden, plural, =0{Alle angezeigt} other{{hidden} von {total} ausgeblendet}}",
-  "settingsOptionalPartTimeNote": "Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.",
+  "settingsOptionalPartTimeNote": "Uhrzeit und Datum & Uhrzeit folgen dem Zeitformat.",
   "settingsPreferencesExport": "Einstellungen exportieren",
   "settingsPreferencesImport": "Einstellungen importieren",
   "settingsPreferencesReset": "Einstellungen zurücksetzen",
@@ -353,7 +393,6 @@
   "settingsTabVisibility": "Tab-Sichtbarkeit",
   "settingsTheme": "Design",
   "settingsThemeDark": "Dunkel",
-  "settingsLanguageTheme": "Sprache und Design",
   "settingsThemeLight": "Hell",
   "settingsThemeNight": "Nacht (Rot)",
   "settingsThemeSystem": "System",
@@ -381,14 +420,14 @@
   "timeShiftApply": "Anwenden",
   "timeShiftDate": "Datum",
   "timeShiftFocusIndicator": "Indikator im Fokus-Screen",
-  "timeShiftFocusIndicatorSub": "Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht",
+  "timeShiftFocusIndicatorSub": "Zeigt ein oder zwei kleine Symbole, solange die angezeigte Zeit und/oder Zone von der Systemzeit abweichen",
   "timeShiftFrozen": "Zeit einfrieren",
   "timeShiftFrozenSubOff": "Die in der App verwendete Zeit läuft ab dem eingestellten Zeitpunkt weiter.",
   "timeShiftFrozenSubOn": "Die in der App verwendete Zeit bleibt beim eingestellten Zeitpunkt stehen.",
-  "timeShiftHint": "Mit „{apply}“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.",
+  "timeShiftHint": "Mit „{apply}“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus Vergangenheit oder Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „{reset}“ kehrst Du zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Beim nächsten Start zeigt die App Systemzeit – es sei denn, Du hast unten einen Startwert gesetzt. Die gewählte Zeitzone kann auch für „lokal“ stehen.",
   "timeShiftHintApply": "Übernimmt das ausgewählte Datum und die Uhrzeit für die gesamte App.",
   "timeShiftHintRange": "Unterstützter Bereich: {earliest} bis {latest}, begrenzt durch den Unix-Zeitstempel und die verfügbaren IANA-Zeitzonendaten.",
-  "timeShiftHintReset": "Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.",
+  "timeShiftHintReset": "Setzt die gesamte App auf Systemuhr und Systemzeitzone zurück.",
   "timeShiftHintResetToSystemDate": "Setzt das Time-Shift-Auswahl-Datum auf das Systemdatum, die Uhrzeit bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
   "timeShiftHintResetToSystemTime": "Setzt die Time-Shift-Auswahl-Uhrzeit auf die Systemzeit, das Datum bleibt wie eingestellt.\nWird erst mit dem „{apply}“-Knopf wirksam.",
   "timeShiftHours": "Stunden",
@@ -397,7 +436,20 @@
   "timeShiftReset": "Zurücksetzen auf Systemuhr",
   "timeShiftSeconds": "Sekunden",
   "timeShiftSkippedTime": "{requested} gibt es wegen einer Zeitumstellung nicht, verwendet wird {used}.",
+  "timeShiftStartHint": "Den oben eingestellten Zeitpunkt in Deinen Einstellungen speichern: Die App startet immer damit, bis Du ihn änderst oder entfernst.",
+  "timeShiftStartNone": "Nicht gesetzt – App startet mit der Systemzeit",
+  "timeShiftStartRemove": "Startwert entfernen",
+  "timeShiftStartRemoved": "Startwert entfernt",
+  "timeShiftStartSave": "Startwert speichern",
+  "timeShiftStartSaved": "Startwert gespeichert",
+  "timeShiftStartSection": "App-Start",
+  "timeShiftStartSummaryFrozen": "{moment} ({zone}), eingefroren",
+  "timeShiftStartSummaryPlaceOnly": "{zone}, Zeit nicht verschoben",
+  "timeShiftStartSummaryRunning": "{moment} ({zone}), fortlaufend",
   "timeShiftTime": "Uhrzeit",
+  "timeShiftZone": "Zeitzone",
+  "timeShiftZoneAsLocal": "Als lokale Zeitzone verwenden",
+  "timeShiftZoneAsLocalSub": "Werte mit „lokal“ zeigen diese Zone statt der Zone des Geräts",
   "valueTypeAnalogClock12h": "Analoguhr (12h)",
   "valueTypeAnalogClock24h": "Analoguhr (24h)",
   "valueTypeBinaryClockBcd": "Binäruhr (BCD)",

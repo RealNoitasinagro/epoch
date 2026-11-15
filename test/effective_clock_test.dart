@@ -79,4 +79,30 @@ void main() {
     expect(EffectiveClock.earliestMomentText, '1970-01-01 00:00:00 UTC');
     expect(EffectiveClock.latestMomentText, '2038-01-19 03:14:07 UTC');
   });
+
+  group('local zone redefined', () {
+    test('only the place: no time shift, but a shift in effect', () {
+      EffectiveClock.setVirtualLocalZone('Pacific/Apia');
+      expect(EffectiveClock.isTimeShifted, isFalse);
+      expect(EffectiveClock.hasVirtualLocalZone, isTrue);
+      expect(EffectiveClock.isShifted, isTrue);
+      expect(EffectiveClock.now(), equals(fakeSystemTime));
+    });
+
+    test('shiftTo takes the zone along, reset removes it', () {
+      EffectiveClock.shiftTo(DateTime.utc(2030).toLocal(),
+          virtualLocalIanaZone: 'Pacific/Apia');
+      expect(EffectiveClock.isTimeShifted, isTrue);
+      expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
+      EffectiveClock.reset();
+      expect(EffectiveClock.isShifted, isFalse);
+      expect(EffectiveClock.virtualLocalIanaZone, isNull);
+    });
+
+    test('change notifier fires when only the zone changes', () {
+      final before = EffectiveClock.changeNotifier.value;
+      EffectiveClock.setVirtualLocalZone('Pacific/Apia');
+      expect(EffectiveClock.changeNotifier.value, before + 1);
+    });
+  });
 }

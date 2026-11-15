@@ -8,6 +8,7 @@ import '../effective_clock.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'prefs_migrations.dart';
+import 'time_shift_start.dart';
 
 const _extJson = 'json';
 final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
@@ -83,7 +84,8 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
-  EffectiveClock.reset();  // an import starts from a clean slate, Time Shift included
+  EffectiveClock.reset();  // an import starts from a clean slate ...
+  await applyTimeShiftStart();  // ... except for a start value the file brings along
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;

@@ -9,6 +9,7 @@ const Map<String, List<String>> megacityNamesEn = {
   'Asia/Shanghai': ['Bijie', 'Changchun', 'Changde', 'Changsha', 'Changzhou', 'Chengchow', 'Chengdu', 'Dalian', 'Dongguan', 'Foshan', 'Fuzhou', 'Guangzhou', 'Guiyang', 'Hangzhou', 'Hefei', 'Heze', 'Jieyang', 'Jinan', 'Kunming', 'Linyi', 'Luoyang', 'Nanchang', 'Nanking', 'Nanning', 'Qingdao', 'Shanghai', 'Shangqiu', 'Shantou', 'Shenyang', 'Shenzhen', 'Shijiazhuang', 'Suzhou', 'Tai\'an', 'Taiyuan', 'Tangshan', 'Tianjin', 'Weifang', 'Wuhan', 'Wuxi', 'Xi\'an', 'Xiamen', 'Xinyang', 'Yantai', 'Zhanjiang'],
   'Asia/Yangon': ['Nay Pyi Taw'],
   'Europe/Moscow': ['Saint Petersburg'],
+  'Europe/Zurich': ['Biel', 'Bienne'],
 };
 
 const Map<String, List<String>> megacityNamesDe = {

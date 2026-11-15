@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../app_themes.dart';
 import '../build_info.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/system_locale.dart';
 import '../layout_constants.dart';
 import '../link_constants.dart';
 import '../widgets/link_text.dart';
@@ -21,10 +22,8 @@ class StartupErrorScreen extends StatelessWidget {
     required this.stackTrace,
   });
 
-  static AppLocalizations _localizations() {
-    final languageCode = PlatformDispatcher.instance.locale.languageCode;
-    return lookupAppLocalizations(Locale(languageCode == 'de' ? 'de' : 'en'));
-  }
+  static AppLocalizations _localizations() => lookupAppLocalizations(
+      supportedSystemLocale(fallback: const Locale('en')));
 
   @override
   Widget build(BuildContext context) {

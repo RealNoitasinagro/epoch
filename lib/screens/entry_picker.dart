@@ -8,7 +8,7 @@ import '../models/curiosities_tab_config.dart';
 import '../models/tab_entry.dart';
 import '../models/technical_tab_config.dart';
 import '../models/time_value.dart';
-import 'timezone_search_screen.dart';
+import '../widgets/zone_option_list.dart';
 
 // Displays a two-step dialog: value type → timezone (if zone-dependent).
 // [allowedTypes] restricts which types are shown; null means all types.
@@ -229,32 +229,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       contentPadding: const EdgeInsets.symmetric(vertical: 8),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              title: Text(l10n.actionZoneLocal),
-              onTap: () => _confirm(const ZoneLocal()),
-            ),
-            ListTile(
-              title: Text(l10n.actionZoneUtc),
-              onTap: () => _confirm(const ZoneUtc()),
-            ),
-            ListTile(
-              title: Text(l10n.actionZoneNamed),
-              trailing: const Icon(Icons.search),
-              onTap: () async {
-                final zone = await Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TimezoneSearchScreen(),
-                  ),
-                );
-                if (zone != null) _confirm(ZoneNamed(zone));
-              },
-            ),
-          ],
-        ),
+        child: ZoneOptionList(onSelected: _confirm),
       ),
       actions: [
         TextButton(

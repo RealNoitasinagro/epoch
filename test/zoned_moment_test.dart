@@ -1,3 +1,4 @@
+import 'package:epoch/effective_clock.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/zoned_moment.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -85,6 +86,27 @@ void main() {
       );
       expect(moment.ianaZone, 'Europe/Berlin');
       expect(moment.dayProgress.dayLengthSeconds, 90000);
+    });
+  });
+
+  group('local zone redefined in Time Shift', () {
+    tearDown(EffectiveClock.reset);
+
+    test('local follows the chosen zone: wall clock, offset', () {
+      EffectiveClock.setVirtualLocalZone('Pacific/Apia');
+      final moment = ZonedMoment.of(
+          localBerlinValue, DateTime.utc(2026, 6, 15, 12), 'Pacific/Apia');
+      expect(moment.ianaZone, 'Pacific/Apia');
+      expect(moment.wallClock.day, 16);
+      expect(moment.wallClock.hour, 1);
+      expect(moment.offset, const Duration(hours: 13));
+    });
+
+    test('named zones and UTC are not affected', () {
+      EffectiveClock.setVirtualLocalZone('Pacific/Apia');
+      final moment = ZonedMoment.of(
+          berlinValue, DateTime.utc(2026, 6, 15, 12), 'Pacific/Apia');
+      expect(moment.wallClock.hour, 14);
     });
   });
 }

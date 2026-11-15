@@ -17,6 +17,7 @@ const IconData kIconDstInactive       = Icons.update_disabled_sharp;
 const IconData kIconTimeShift         = Icons.manage_history_sharp;
 const IconData kIconTimeShiftPast     = Icons.history_sharp;
 const IconData kIconTimeShiftFuture   = Icons.update_sharp;
+const IconData kIconTimeShiftPlace    = Icons.edit_location_alt_sharp;
 
 const double kDividerHeight                       = 40.0;
 const double kEntrySpacing                        = 12.0;

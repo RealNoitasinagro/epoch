@@ -84,7 +84,7 @@ abstract class TimeValueRow extends StatelessWidget {
     final locale      = l10n.localeName;
 
     Widget transitionRow(DateTime utcTime) {
-      final DateTime localTime = utcTime.toLocal();  // time in device local time
+      final DateTime localTime = localWallClockAt(utcTime, settings.localIanaZone);  // time in the zone "local" stands for
       final tz.TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
 
       final wallClock = TimeUtils.wallClockAroundTransition(ianaZone, utcTime);

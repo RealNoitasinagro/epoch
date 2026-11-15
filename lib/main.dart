@@ -12,6 +12,7 @@ import 'build_info.dart';
 import 'bundled_licenses.dart';
 import 'effective_clock.dart';
 import 'l10n/app_localizations.dart';
+import 'l10n/system_locale.dart';
 import 'layout_constants.dart';
 import 'link_constants.dart';
 import 'models/app_settings.dart';
@@ -20,6 +21,7 @@ import 'models/prefs_migrations.dart';
 import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
+import 'models/time_shift_start.dart';
 import 'models/time_value.dart';
 import 'models/value_format_settings.dart';
 import 'platform_utils.dart';
@@ -29,6 +31,7 @@ import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
+import 'second_ticker.dart';
 import 'widgets/link_text.dart';
 import 'widgets/time_shift_indicator.dart';
 
@@ -41,6 +44,7 @@ void main(List<String> args) async {
     await runPrefsMigrations();
     tz.initializeTimeZones();
     await _loadConfigFromCommandLine(args);
+    await applyTimeShiftStart();
   } catch (error, stackTrace) {
     runApp(StartupErrorApp(error: error, stackTrace: stackTrace));
     return;
@@ -171,7 +175,8 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
 
   Future<void> _loadPreferences() async {
     try {
-      final locale                  = await loadLocale() ?? kDefaultLocale;
+      final locale                  = await loadLocale()
+          ?? supportedSystemLocale(fallback: kDefaultLocale);
       final theme                   = await loadThemeMode();
       final nightModeSchedule       = await loadNightModeSchedule();
       final hour24                  = await loadHourFormat24();
@@ -300,7 +305,14 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
     saveOptionalPartHiddenTypes(valueTypes);
   }
 
-  String get localIanaZone => _localIanaZone;
+  /// The zone of the device, whatever Time Shift says.
+  String get systemIanaZone => _localIanaZone;
+
+  /// The zone "local" stands for: the zone of the device, unless Time Shift
+  /// has redefined it.
+  String get localIanaZone =>
+      EffectiveClock.virtualLocalIanaZone ?? _localIanaZone;
+
   Locale? get locale => _locale;
 
   /// The theme in effect: night mode within the night mode window (unless the
@@ -337,7 +349,7 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
       timeFormat: _timeFormat,
       zoneDisplayMode: _zoneDisplayMode,
       dateWithDetails: _dateWithDetails,
-      localIanaZone: _localIanaZone,
+      localIanaZone: localIanaZone,
       longitude: _lmstLongitude,
       optionalPartHiddenTypes: _optionalPartHiddenTypes,
     );
@@ -381,7 +393,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin {
-  late Timer _timer;
   late DateTime _now;
   TabController? _tabController;
   List<TabConfig> _tabs = [];
@@ -405,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen>
     _loadData();
   }
 
-  void _onClockChanged() {
+  void _updateNow() {
     if (!mounted) return;
     setState(() => _now = EffectiveClock.now());
   }
@@ -414,18 +425,16 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _now = EffectiveClock.now();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _now = EffectiveClock.now());
-    });
-    EffectiveClock.changeNotifier.addListener(_onClockChanged);
+    SecondTicker.instance.addListener(_updateNow);
+    EffectiveClock.changeNotifier.addListener(_updateNow);
     _loadData();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     _tabController?.dispose();
-    EffectiveClock.changeNotifier.removeListener(_onClockChanged);
+    SecondTicker.instance.removeListener(_updateNow);
+    EffectiveClock.changeNotifier.removeListener(_updateNow);
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();
   }

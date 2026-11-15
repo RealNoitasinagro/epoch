@@ -36,25 +36,21 @@ class TimeStringRow extends TimeValueRow {
       settings: settings
     );
 
-    String? subtitle;
-    final zonedNow = switch (timeValue.zone) {
-      ZoneLocal()                  => now,
-      ZoneUtc()                    => now.toUtc(),
-      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-    };
+    final moment = ZonedMoment.of(timeValue, now, settings.localIanaZone);
 
+    String? subtitle;
     if (timeValue.valueType == ValueType.date && settings.showsDetails(timeValue)) {
-      subtitle = l10n.dataDateSub(
-          TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
+      subtitle = l10n.dataDateSub(TimeUtils.isoWeekNumber(moment.wallClock),
+          TimeUtils.dayOfYear(moment.wallClock));
     } else if ((timeValue.valueType == ValueType.gmst ||
         timeValue.valueType == ValueType.lmst) &&
         settings.showsDetails(timeValue)) {
-      final hours = TimeValueFormatter.hmsToHours(formattedValue);
-      if (hours != null) {
-        final deg = TimeValueFormatter.formatDecimal(
-            hours * 15.0, locale, 4, thousandsSep: false);
-        subtitle = '$deg°';
-      }
+        final hours = TimeValueFormatter.hmsToHours(formattedValue);
+        if (hours != null) {
+          final deg = TimeValueFormatter.formatDecimal(
+              hours * 15.0, locale, 4, thousandsSep: false);
+          subtitle = '$deg°';
+        }
     }
 
     final split = splitZoneOffset(formattedValue);
@@ -62,13 +58,12 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      final moment = ZonedMoment.of(timeValue, now, settings.localIanaZone);
       String? ianaZone = moment.ianaZone;
 
       if (ianaZone != null &&
           timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
         // DST warning takes precedence over ZoneDisplayMode:
-        final warning = _dstWarning(ianaZone, now.toUtc(), l10n);
+        final warning = _dstWarning(ianaZone, now.toUtc(), settings.localIanaZone, l10n);
         if (warning != null) {
           zoneLine = warning;
         }
@@ -100,16 +95,18 @@ class TimeStringRow extends TimeValueRow {
     );
   }
 
-  static String? _dstWarning(
-      String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
+  static String? _dstWarning(String ianaZone, DateTime nowUtc,
+      String localIanaZone, AppLocalizations l10n) {
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
-    final localNow  = nowUtc.toLocal();
-    final nowDate   = DateTime(localNow.year, localNow.month, localNow.day);
-    final localNext = next.toLocal();
-    final nextDate  = DateTime(localNext.year, localNext.month, localNext.day);
-    final daysUntil = nextDate.difference(nowDate).inDays;
+    // Calendar days in the zone "local" stands for. Counted in UTC, so that
+    // a clock change of that zone cannot skew the difference by an hour.
+    DateTime localDate(DateTime utc) {
+      final wallClock = localWallClockAt(utc, localIanaZone);
+      return DateTime.utc(wallClock.year, wallClock.month, wallClock.day);
+    }
+    final daysUntil = localDate(next).difference(localDate(nowUtc)).inDays;
     if (daysUntil > 7) return null;
 
     final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, next);

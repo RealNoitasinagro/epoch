@@ -184,11 +184,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String hintTimeShiftIndicator(String date, String period) {
-    return 'Time Shift $period · Systemdatum: $date\nAntippen zum Ändern oder Aufheben';
+    return 'Time Shift $period · Systemdatum: $date';
   }
 
   @override
+  String get hintTimeShiftIndicatorTap => 'Antippen zum Ändern oder Aufheben';
+
+  @override
   String get hintTimeShiftPast => 'in die Vergangenheit';
+
+  @override
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone) {
+    return 'Lokale Zeitzone: $zone (System: $systemZone)';
+  }
 
   @override
   String get hintTimezoneSearch =>
@@ -382,7 +390,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextSwatchBeats =>
-      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (Bieler Meantime).';
+      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (von Swatch „Biel Mean Time“ oder BMT genannt).';
 
   @override
   String get infoTextTai =>
@@ -618,6 +626,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLanguage => 'Sprache';
 
   @override
+  String get settingsLanguageTheme => 'Sprache und Design';
+
+  @override
   String get settingsLmst => 'Lokale Sternzeit';
 
   @override
@@ -667,7 +678,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsOn => 'an';
 
   @override
-  String get settingsOptionalPart => 'Sekunden und Dezimalstellen';
+  String get settingsOptionalPart => 'Sekunden und Dezimale';
 
   @override
   String get settingsOptionalPartAll => 'Alle';
@@ -685,7 +696,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsOptionalPartTimeNote =>
-      'Uhrzeit und Datum & Uhrzeit richten sich nach dem Zeitformat.';
+      'Uhrzeit und Datum & Uhrzeit folgen dem Zeitformat.';
 
   @override
   String get settingsPreferencesExport => 'Einstellungen exportieren';
@@ -718,9 +729,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Dunkel';
-
-  @override
-  String get settingsLanguageTheme => 'Sprache und Design';
 
   @override
   String get settingsThemeLight => 'Hell';
@@ -807,7 +815,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftFocusIndicatorSub =>
-      'Zeigt ein kleines Symbol, solange die angezeigte Zeit von der Systemzeit abweicht';
+      'Zeigt ein oder zwei kleine Symbole, solange die angezeigte Zeit und/oder Zone von der Systemzeit abweichen';
 
   @override
   String get timeShiftFrozen => 'Zeit einfrieren';
@@ -822,7 +830,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String timeShiftHint(String apply, String reset) {
-    return 'Mit „$apply“ legst Du die lokale Zeit fest, die Epoch für alle Zeitwerte verwendet – aus der Vergangenheit oder der Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du jederzeit zur Systemzeit zurück. Die Einstellung wird nicht gespeichert: Nach dem Start zeigt Epoch immer die Systemzeit.';
+    return 'Mit „$apply“ legst Du den Zeitpunkt fest, den Epoch für alle Zeitwerte verwendet – aus Vergangenheit oder Zukunft, fortlaufend oder eingefroren –, ohne die Uhr Deines Geräts zu verändern. Mit „$reset“ kehrst Du zur Systemzeit zurück. Die Einstellung wird nicht von selbst gespeichert: Beim nächsten Start zeigt die App Systemzeit – es sei denn, Du hast unten einen Startwert gesetzt. Die gewählte Zeitzone kann auch für „lokal“ stehen.';
   }
 
   @override
@@ -836,7 +844,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeShiftHintReset =>
-      'Setzt Datum und Uhrzeit in der gesamten App auf die Werte der Systemuhr.';
+      'Setzt die gesamte App auf Systemuhr und Systemzeitzone zurück.';
 
   @override
   String timeShiftHintResetToSystemDate(String apply) {
@@ -871,7 +879,55 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get timeShiftStartHint =>
+      'Den oben eingestellten Zeitpunkt in Deinen Einstellungen speichern: Die App startet immer damit, bis Du ihn änderst oder entfernst.';
+
+  @override
+  String get timeShiftStartNone =>
+      'Nicht gesetzt – App startet mit der Systemzeit';
+
+  @override
+  String get timeShiftStartRemove => 'Startwert entfernen';
+
+  @override
+  String get timeShiftStartRemoved => 'Startwert entfernt';
+
+  @override
+  String get timeShiftStartSave => 'Startwert speichern';
+
+  @override
+  String get timeShiftStartSaved => 'Startwert gespeichert';
+
+  @override
+  String get timeShiftStartSection => 'App-Start';
+
+  @override
+  String timeShiftStartSummaryFrozen(String moment, String zone) {
+    return '$moment ($zone), eingefroren';
+  }
+
+  @override
+  String timeShiftStartSummaryPlaceOnly(String zone) {
+    return '$zone, Zeit nicht verschoben';
+  }
+
+  @override
+  String timeShiftStartSummaryRunning(String moment, String zone) {
+    return '$moment ($zone), fortlaufend';
+  }
+
+  @override
   String get timeShiftTime => 'Uhrzeit';
+
+  @override
+  String get timeShiftZone => 'Zeitzone';
+
+  @override
+  String get timeShiftZoneAsLocal => 'Als lokale Zeitzone verwenden';
+
+  @override
+  String get timeShiftZoneAsLocalSub =>
+      'Werte mit „lokal“ zeigen diese Zone statt der Zone des Geräts';
 
   @override
   String get valueTypeAnalogClock12h => 'Analoguhr (12h)';

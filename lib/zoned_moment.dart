@@ -1,6 +1,14 @@
 import 'package:timezone/timezone.dart' as tz;
+import 'effective_clock.dart';
 import 'models/time_value.dart';
 import 'time_utils.dart';
+
+/// Wall-clock reading of the zone that "local" stands for at [utc]: the zone
+/// of the system, or the zone the user has redefined as local in Time Shift.
+DateTime localWallClockAt(DateTime utc, String localIanaZone) =>
+    EffectiveClock.hasVirtualLocalZone
+        ? TimeUtils.inZone(utc.toUtc(), localIanaZone)
+        : utc.toLocal();
 
 /// A moment as seen in the time zone setting of one value: wall-clock
 /// reading, offset, abbreviation and the progress of the local day.
@@ -53,7 +61,7 @@ class ZonedMoment {
         return ZonedMoment._inZone(
           moment,
           ianaZone: localIanaZone,
-          wallClock: moment.toLocal(),
+          wallClock: localWallClockAt(moment, localIanaZone),
         );
       case ZoneNamed(ianaZone: final zone):
         final mode = timeValue.timezoneClockChangeMode;

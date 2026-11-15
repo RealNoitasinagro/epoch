@@ -389,14 +389,26 @@ abstract class AppLocalizations {
   /// No description provided for @hintTimeShiftIndicator.
   ///
   /// In en, this message translates to:
-  /// **'Time Shift {period} · system date: {date}\nTap to change or reset'**
+  /// **'Time Shift {period} · system date: {date}'**
   String hintTimeShiftIndicator(String date, String period);
+
+  /// No description provided for @hintTimeShiftIndicatorTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change or reset'**
+  String get hintTimeShiftIndicatorTap;
 
   /// No description provided for @hintTimeShiftPast.
   ///
   /// In en, this message translates to:
   /// **'into the past'**
   String get hintTimeShiftPast;
+
+  /// No description provided for @hintTimeShiftPlaceIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Local time zone: {zone} (system: {systemZone})'**
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone);
 
   /// No description provided for @hintTimezoneSearch.
   ///
@@ -695,7 +707,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
+  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Swatch calls it \"Biel Mean Time\", or BMT).'**
   String get infoTextSwatchBeats;
 
   /// No description provided for @infoTextTai.
@@ -1112,6 +1124,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get settingsLanguage;
 
+  /// No description provided for @settingsLanguageTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Language and theme'**
+  String get settingsLanguageTheme;
+
   /// No description provided for @settingsLmst.
   ///
   /// In en, this message translates to:
@@ -1286,12 +1304,6 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
-  /// No description provided for @settingsLanguageTheme.
-  ///
-  /// In en, this message translates to:
-  /// **'Language and theme'**
-  String get settingsLanguageTheme;
-
   /// No description provided for @settingsThemeLight.
   ///
   /// In en, this message translates to:
@@ -1457,7 +1469,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftFocusIndicatorSub.
   ///
   /// In en, this message translates to:
-  /// **'Shows a small icon while the displayed time deviates from the system time'**
+  /// **'Shows a small icon or two while the displayed time and/or zone deviate from the system time'**
   String get timeShiftFocusIndicatorSub;
 
   /// No description provided for @timeShiftFrozen.
@@ -1481,7 +1493,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  /// **'\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below). The chosen time zone can also stand in for \"local\".'**
   String timeShiftHint(String apply, String reset);
 
   /// No description provided for @timeShiftHintApply.
@@ -1499,7 +1511,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHintReset.
   ///
   /// In en, this message translates to:
-  /// **'Sets date and time in the whole app to the values of the system clock.'**
+  /// **'Returns the whole app to the system clock and the system time zone.'**
   String get timeShiftHintReset;
 
   /// No description provided for @timeShiftHintResetToSystemDate.
@@ -1550,11 +1562,89 @@ abstract class AppLocalizations {
   /// **'{requested} does not exist because of a clock change, using {used}.'**
   String timeShiftSkippedTime(String requested, String used);
 
+  /// No description provided for @timeShiftStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the point of time set above to your preferences: the app always starts with this until you change it or remove it.'**
+  String get timeShiftStartHint;
+
+  /// No description provided for @timeShiftStartNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set – app starts with the system time'**
+  String get timeShiftStartNone;
+
+  /// No description provided for @timeShiftStartRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove start value'**
+  String get timeShiftStartRemove;
+
+  /// No description provided for @timeShiftStartRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value removed'**
+  String get timeShiftStartRemoved;
+
+  /// No description provided for @timeShiftStartSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save start value'**
+  String get timeShiftStartSave;
+
+  /// No description provided for @timeShiftStartSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value saved'**
+  String get timeShiftStartSaved;
+
+  /// No description provided for @timeShiftStartSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App start'**
+  String get timeShiftStartSection;
+
+  /// No description provided for @timeShiftStartSummaryFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), frozen'**
+  String timeShiftStartSummaryFrozen(String moment, String zone);
+
+  /// No description provided for @timeShiftStartSummaryPlaceOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{zone}, time not shifted'**
+  String timeShiftStartSummaryPlaceOnly(String zone);
+
+  /// No description provided for @timeShiftStartSummaryRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), running'**
+  String timeShiftStartSummaryRunning(String moment, String zone);
+
   /// No description provided for @timeShiftTime.
   ///
   /// In en, this message translates to:
   /// **'Time'**
   String get timeShiftTime;
+
+  /// No description provided for @timeShiftZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get timeShiftZone;
+
+  /// No description provided for @timeShiftZoneAsLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as local time zone'**
+  String get timeShiftZoneAsLocal;
+
+  /// No description provided for @timeShiftZoneAsLocalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Values for \"local\" show this zone instead of your device\'s'**
+  String get timeShiftZoneAsLocalSub;
 
   /// No description provided for @valueTypeAnalogClock12h.
   ///
