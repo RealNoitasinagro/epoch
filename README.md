@@ -45,8 +45,8 @@ also happen to spell out **E**legant **p**resentation **o**f
   Julian Date (JD), Modified Julian Date (MJD), MJD2000 and 4 other JD variants
   (Reduced, Dublin, CNES, CCSDS)
 - **Curiosities** – decimal time, Swatch Internet Time, New Earth Time,
-  3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals
-  time and the Doomsday Clock
+  3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals time
+  and the Doomsday Clock
 - On days with a clock change, day second, day minute, day percent and decimal/octal/hexadecimal
   time use the real length of the day (23 or 25 hours, Lord Howe: 23.5 or 24.5, Troll: 22 or 26)
 
@@ -328,4 +328,5 @@ the bundled data and the font can also be read in the app (menu, About,
 View licenses).
 
 
-[^1]: These values use a 'seconds since midnight in base N' rather than a 'fraction of day in base N' approach.
+[^1]: These values write the usual units of the day in base N rather than a fraction of the day in base N:
+the binary clocks hours, minutes and seconds of the wall clock, octal and hexadecimal time the seconds since midnight.

@@ -1,4 +1,4 @@
-Epoch shows the current moment across a wide range of time systems — updating every second, all in one place. 29 values, from Unix time and sidereal time to Swatch Internet Time and the Doomsday Clock.
+Epoch shows the current moment across a wide range of time systems — updating every second, all in one place. 31 values, from Unix time and sidereal time to Swatch Internet Time and the Doomsday Clock.
 
 <b>What Epoch gives you</b>
 - Civil: date, time, day second, day minute, day percent, seven-segment clock, analog clock with 12 or 24-hour face — for any time zone

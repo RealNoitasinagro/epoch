@@ -282,83 +282,83 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextAnalogClock12h =>
-      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 12-Stunden-Ziffernblatt.';
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 12-Stunden-Ziffernblatt. Der Stundenzeiger macht zwei Umrundungen pro Tag. Ab Mittag erscheint „+12“ unterhalb der 12.';
 
   @override
   String get infoTextAnalogClock24h =>
-      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 24-Stunden-Ziffernblatt.';
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 24-Stunden-Ziffernblatt. Der Stundenzeiger macht eine Umrundung pro Tag. Minuten und Sekunden sind auf der äußeren Skala abzulesen, die Stunden auf der inneren.';
 
   @override
   String get infoTextBinaryClockBcd =>
-      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Dezimalziffer von Stunden, Minuten und Sekunden wird als eigene Binärspalte dargestellt (BCD = Binär-codierte Dezimalzahl), wie im Wikipedia-Artikel zur Binäruhr.';
+      'Die Stunden, Minuten und Sekunden in der gewählten Zeitzone wie auf einer Wanduhr (24 Stunden zu 60 Minuten zu 60 Sekunden), jede Dezimalziffer binär (BCD, binär codierte Dezimalzahl) in einer eigenen Spalte aus Kreisen dargestellt. Beleuchtete Kreise stehen für 1, unbeleuchtete für 0. Der unterste Kreis zählt 2^0 = 1, darüber 2^1 = 2, 2^2 = 4 usw.; eine Ziffer ist die Summe ihrer beleuchteten Kreise. Zehnerziffern benötigen 2 oder 3 Bits, Einerziffern 4.';
 
   @override
   String get infoTextBinaryClockColumns =>
-      'Die Sekunden seit Mitternacht in Binärdarstellung: Jede Spalte zeigt Stunden, Minuten oder Sekunden zur Basis 2. Das oberste Bit hat den höchsten Wert.';
+      'Die Stunden, Minuten und Sekunden in der gewählten Zeitzone wie auf einer Wanduhr (24 Stunden zu 60 Minuten zu 60 Sekunden), jeweils als eine Binärzahl in einer eigenen Spalte (5 Bits für die Stunden, je 6 für Minuten und Sekunden). Beleuchtete Kreise stehen für 1, unbeleuchtete für 0. Der unterste Kreis zählt 2^0 = 1, darüber 2^1 = 2, 2^2 = 4 usw.; eine Zahl ist die Summe ihrer beleuchteten Kreise.';
 
   @override
   String get infoTextBinaryClockString =>
-      'Die Sekunden seit Mitternacht in kompakter Binärdarstellung: Stunden:Minuten:Sekunden zur Basis 2, z. B. 10:110000:10111.';
+      'Die Stunden, Minuten und Sekunden in der gewählten Zeitzone wie auf einer Wanduhr (24 Stunden zu 60 Minuten zu 60 Sekunden), jeweils als Binärzahl mit 5, 6 und 6 Stellen. Die letzte Stelle einer Zahl zählt 2^0 = 1, links daneben 2^1 = 2, 2^2 = 4 usw. Beispiel: 10110:110000:010111 ist 22:48:23.';
 
   @override
   String get infoTextCcsdsJulianDate =>
-      'Julianisches Datum CCSDS (CCSDS JD) = JD − 2.436.204,5 (Epoche: 1958-01-01 00:00 UT). Vom Consultative Committee for Space Data Systems (CCSDS) für standardisierte Zeitcodes in der Raumfahrt eingeführt, mit 1958 als historischem Referenzdatum der Internationalen Atomzeit (TAI).';
+      'Julianisches Datum CCSDS (CCSDS JD) = JD − 2.436.204,5 (Epoche: 1958-01-01 00:00:00 UT). Vom Consultative Committee for Space Data Systems (CCSDS) für standardisierte Zeitcodes in der Raumfahrt eingeführt, mit 1958 als historischem Referenzdatum der Internationalen Atomzeit (TAI).';
 
   @override
   String get infoTextCnesJulianDate =>
-      'Julianisches Datum CNES (CNES JD) = JD − 2.433.282,5 (Epoche: 1950-01-01 00:00 UT). Vom französischen Raumfahrtzentrum CNES als kompakte Tageszählung für Raumfahrtberechnungen eingeführt, mit dem Beginn des Jahres 1950 als Referenzepoche.';
+      'Julianisches Datum CNES (CNES JD) = JD − 2.433.282,5 (Epoche: 1950-01-01 00:00:00 UT). Vom französischen Raumfahrtzentrum CNES als kompakte Tageszählung für Raumfahrtberechnungen eingeführt, mit dem Beginn des Jahres 1950 als Referenzepoche.';
 
   @override
   String get infoTextDate =>
-      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
+      'Das aktuelle Kalenderdatum in der gewählten Zeitzone, standardmäßig mit ISO-Kalenderwoche (Wochen beginnen am Montag, Woche 1 enthält den ersten Donnerstag) und Tag des Jahres in der Zeile darunter.';
 
   @override
   String get infoTextDateTime =>
-      'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich zum Kopieren eines vollständigen Zeitstempels.';
+      'Das aktuelle Datum und die Uhrzeit in der gewählten Zeitzone, als kombinierter Wert. Nützlich z. B. für Weltzeituhr-Tabs und zum Kopieren eines vollständigen Zeitstempels.';
 
   @override
   String get infoTextDayMinute =>
-      'Minuten seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+      'Die Minuten seit Mitternacht in der gewählten Zeitzone, von 0 bis 1.439. An einem Tag mit Zeitumstellung ist die letzte Minute 1.379 oder 1.499 (Lord Howe: 1.409 oder 1.469; Troll: 1.319 oder 1.559).';
 
   @override
   String get infoTextDayPercent =>
-      'Prozentsatz des verstrichenen Tages in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+      'Der Prozentsatz des verstrichenen Tages in der gewählten Zeitzone, von 0 bis knapp 100. Er bezieht sich auf die echte Tageslänge: an einem Tag mit Zeitumstellung also 23 oder 25 Stunden (Lord Howe: 23,5 oder 24,5; Troll: 22 oder 26) statt 24 Stunden.';
 
   @override
   String get infoTextDaySecond =>
-      'Sekunden seit Mitternacht in der gewählten Zeitzone. Wird um Mitternacht auf 0 zurückgesetzt.';
+      'Die Sekunden seit Mitternacht in der gewählten Zeitzone, von 0 bis 86.399. An einem Tag mit Zeitumstellung ist die letzte Sekunde 82.799 oder 89.999 (Lord Howe: 84.599 oder 88.199; Troll: 79.199 oder 93.599).';
 
   @override
   String get infoTextDecimalTime =>
-      'Dezimalzeit teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein. Für einige Jahre in Gebrauch in Frankreich am Ende des 18. Jahrhunderts.';
+      'Die Dezimalzeit, die für kurze Zeit in Frankreich in den 1790er Jahren in Gebrauch war, teilt den Tag in 10 Dezimalstunden zu je 100 Minuten mit je 100 Sekunden ein, von 0h 00m 00s bis 9h 99m 99s. An einem normalen Tag dauert eine Dezimalsekunde 0,864 s; an einem Tag mit Zeitumstellung verlängert oder verkürzt sich der Dezimaltag entsprechend der echten Tageslänge.';
 
   @override
   String get infoTextDoomsdayClock =>
-      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben vom Bulletin of the Atomic Scientists. Letzte Einstellung: 85 Sekunden vor Mitternacht (Januar 2026). Mit Time Shift werden historische Einstellungen angezeigt.';
+      'Die Weltuntergangsuhr symbolisiert, wie nah die Menschheit der Selbstvernichtung ist. Herausgegeben wird sie seit 1947 vom Bulletin of the Atomic Scientists. Epoch zeigt ihren Wert als Uhrzeit; aktuelle Einstellung: 23:58:35 Uhr, also 85 Sekunden vor Mitternacht (Januar 2026). Mit Time Shift werden historische Einstellungen angezeigt.';
 
   @override
   String get infoTextDublinJulianDate =>
-      'Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: 1899-12-31 12:00 UT). 1955 von der Internationalen Astronomischen Union (IAU) auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.';
+      'Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: 1899-12-31 12:00:00 UT). 1955 von der Internationalen Astronomischen Union (IAU) auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.';
 
   @override
   String get infoTextGmst =>
-      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich. Von Astronomen genutzt, um zu bestimmen, welcher Teil des Himmels sich gerade im Zenit befindet.';
+      'Greenwich Mean Sidereal Time (GMST), mittlere Greenwicher Sternzeit – der Stundenwinkel des Frühlingspunkts in Greenwich; gibt an, welcher Teil des Himmels sich dort gerade im Zenit befindet. Ein Sterntag dauert 23 h 56 min 4,09 s, also fast vier Minuten weniger als ein Sonnentag, so dass GMST etwa 3 min 56 s pro Tag an Zeit gegenüber einer Uhr gewinnt und so im Laufe eines Jahres auf einen ganzen Tag mehr kommt.';
 
   @override
   String get infoTextGps =>
-      'GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC und enthält keine Schaltsekunden. Sie liegt 18 Sekunden vor UTC.';
+      'Die GPS-Zeit zählt Sekunden seit 1980-01-06 00:00:00 UTC ohne Schaltsekunden. Anfangs stimmte sie mit UTC überein; da UTC seitdem 18 Schaltsekunden eingefügt hat, ist GPS-Zeit 18 s vor UTC und 19 s hinter TAI. Ab 2027 wird UTC keine weiteren Schaltsekunden mehr bekommen, so dass der Abstand bei 18 s bestehen bleibt.';
 
   @override
   String get infoTextHexadecimalTime =>
-      'Die Sekunden seit Mitternacht zur Basis 16 (Hexadezimalsystem), mit Gruppierung für bessere Lesbarkeit.';
+      'Die Sekunden seit Mitternacht in der gewählten Zeitzone, dargestellt zur Basis 16 (Hexadezimalsystem), von rechts nach links in Paare gruppiert, von 0_00_00 bis 1_51_7F an einem normalen Tag. Ein Tag mit Zeitumstellung endet entsprechend früher oder später.';
 
   @override
   String get infoTextJulianDate =>
-      'Das Julianische Datum (JD) zählt die Tage seit dem Mittag des 1. Januar 4713 v. Chr. (Epoche: -4712-01-01 12:00:00 UT). Die Standard-Zeitreferenz in der Astronomie zur Berechnung von Zeitintervallen zwischen Ereignissen.';
+      'Das Julianische Datum (JD) zählt die Tage seit dem Mittag des 1. Januar 4713 v. Chr. im proleptischen Julianischen Kalender (Epoche: -4712-01-01 12:00:00 UT). Die Standard-Zeitreferenz in der Astronomie zur Berechnung von Zeitintervallen zwischen Ereignissen. Ein JD-Wert ist die Julianische Tageszahl plus der Bruchteil des Tages seit dem vorangegangenen Mittag UT; um Mitternacht UT endet er daher auf ,5.';
 
   @override
   String get infoTextLmst =>
-      'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an deinem Standort. Wird aus der GMST durch Addition des Längengrads berechnet. Von Astronomen genutzt, um festzustellen, welche Himmelsobjekte gerade beobachtbar sind.';
+      'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an Deinem Standort: GMST plus Dein Längengrad (15° = 1 Stunde).';
 
   @override
   String get infoTextModifiedJulianDate =>
@@ -370,19 +370,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextNewEarthTime =>
-      'New Earth Time (NET) teilt den Tag in 360 NET-Grad ein, wobei jedes Grad 60 NET-Minuten und jede NET-Minute 60 NET-Sekunden hat. Die einzige Zeitzone für die ganze Welt ist UTC.';
+      'Die New Earth Time (NET, 1999) teilt den Tag in 360 Grad ein: 0° entspricht Mitternacht, 180° ist Mittag. Ein Grad dauert 4 Minuten und ist unterteilt in 60 Intervalle von 4 Sekunden. Es gibt keine Zeitzonen — für die ganze Welt gilt dieselbe NET-Zeit. Sie basiert auf UTC+0.';
 
   @override
   String get infoTextOctalTime =>
-      'Die Sekunden seit Mitternacht zur Basis 8 (Oktalsystem).';
+      'Die Sekunden seit Mitternacht in der gewählten Zeitzone, dargestellt zur Basis 8 (Oktalsystem) mit sechs Ziffern, von 000000 bis 250577 an einem normalen Tag. Ein Tag mit Zeitumstellung endet entsprechend früher oder später.';
 
   @override
   String get infoTextReducedJulianDate =>
-      'Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.';
+      'Reduziertes Julianisches Datum (RJD) = JD − 2.400.000 (Epoche: 1858-11-16 12:00:00 UT). Eine einfache Verkürzung des Julianischen Datums, die vor allem in der Astronomie verwendet wird, um kleinere Zahlen zu erhalten, während der ursprüngliche Tageswechsel um Mittag erhalten bleibt.';
 
   @override
   String get infoTextRomanNumeralsTime =>
-      'Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. N, der Anfangsbuchstabe von nulla oder nihil (Lateinisch für \'nicht etwas\' oder \'nichts\'), wird für die Darstellung von Nullen verwendet.';
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone, dargestellt mit römischen Zahlen. Da dieses Zahlsystem keine Null kennt, wird hier stellvertretend N, der Anfangsbuchstabe von nulla (Lateinisch für \'nichts\') verwendet, wie es bereits bei Gelehrten im Mittelalter gebräuchlich war.';
 
   @override
   String get infoTextSevenSegmentClock =>
@@ -390,18 +390,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextSwatchBeats =>
-      'Die Swatch-Internetzeit teilt den Tag in 1000 .beats. Es gibt keine Zeitzonen — die ganze Welt teilt dieselbe .beat-Zeit. Basiert auf UTC+1 (von Swatch „Biel Mean Time“ oder BMT genannt).';
+      'Die Swatch-Internetzeit (1998) teilt den Tag in 1000 .beats von je 86,4 Sekunden. Es gibt keine Zeitzonen — für die ganze Welt gilt dieselbe .beat-Zeit. Sie basiert auf UTC+1, von Swatch „Biel Mean Time“ (BMT) genannt.';
 
   @override
   String get infoTextTai =>
-      'Internationale Atomzeit (französisch Temps Atomique International, TAI) ist eine kontinuierliche Zeitskala ohne Schaltsekunden, die vom Internationalen Büro für Maß und Gewicht (Bureau International des Poids et Mesures, BIPM) gepflegt wird. Für die Anzeige in Sekunden verwendet die App die Unix-Epoche (1970-01-01 00:00:00 UTC) als Bezugswert. TAI ist 37 Sekunden vor UTC. Letztmalig wurde eine Schaltsekunde am 2016-12-31 um 23:59:60 UTC eingefügt.';
+      'Die Internationale Atomzeit (TAI, französisch Temps Atomique International) ist eine kontinuierliche Zeitskala ohne Schaltsekunden. Da Atomuhren regelmäßig ticken und UTC mehrfach angepasst wurde, ist TAI 37 s vor UTC. Epoch zeigt TAI analog zur Unix-Zeit an (Sekunden seit 1970-01-01 00:00:00 UTC), d. h. Unix-Zeit plus 37. Laut Beschluss der Generalkonferenz für Maß und Gewicht im Oktober 2026 wird es keine weiteren Schaltsekunden geben, so dass der Abstand bei 37 s bestehen bleibt.';
 
   @override
-  String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
+  String get infoTextTime =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone, standardmäßig mit dem Zeitzonenkürzel und dem UTC-Versatz in der Zeile darunter. Innerhalb von 7 Tagen vor einer Zeitumstellung werden sie durch einen entsprechenden Hinweis ersetzt.';
 
   @override
   String get infoTextUnixSeconds =>
-      'Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC.';
+      'Die Sekunden seit der Unix-Epoche: 1970-01-01 00:00:00 UTC. Die Unix-Zeit zählt für jeden Tag genau 86.400 Sekunden und ignoriert Schaltsekunden. Ein Zähler in Form einer vorzeichenbehafteten 32-Bit-Ganzzahl läuft am 19.01.2038 03:14:07 UTC über („Jahr-2038-Problem“); das ist auch die Grenze für Time Shift.';
 
   @override
   String get labelDay => 'TT';
