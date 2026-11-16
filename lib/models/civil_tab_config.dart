@@ -21,6 +21,7 @@ const defaultCivilEntries = [
   TimeValue(valueType: ValueType.daySecond,         zone: ZoneLocal()),
   TimeValue(valueType: ValueType.dayMinute,         zone: ZoneLocal()),
   TimeValue(valueType: ValueType.dayPercent,        zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.dateTime,          zone: ZoneLocal()),
   TimeValue(valueType: ValueType.sevenSegmentClock, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.analogClock12h,    zone: ZoneLocal()),
   TimeValue(valueType: ValueType.analogClock24h,    zone: ZoneLocal()),

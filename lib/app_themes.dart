@@ -18,6 +18,7 @@ const _nightRedDim = kColorNightRedDim;
 ThemeData buildNightTheme() => ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
+  disabledColor: _nightRedDim,
   colorScheme: ColorScheme.dark(
     surface: Colors.black,
     primary: _nightRed,
