@@ -9,6 +9,7 @@ import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'prefs_migrations.dart';
 import 'time_shift_start.dart';
+import 'tolerant_prefs.dart';
 
 const _extJson = 'json';
 final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
@@ -182,8 +183,9 @@ Future<void> _writeMapToPrefs(
     else if (v is int)    await prefs.setInt(entry.key, v);
     else if (v is double) await prefs.setDouble(entry.key, v);
     else if (v is String) await prefs.setString(entry.key, v);
-    else if (v is List)   await prefs.setStringList(
-        entry.key, v.cast<String>());
+    else if (v is List && v.every((entry) => entry is String)) {
+      await prefs.setStringList(entry.key, v.cast<String>());
+    }
   }
 }
 
@@ -194,7 +196,7 @@ Future<void> _saveLastExportDirectory(String dir) async {
 
 Future<String?> _loadLastExportDirectory() async {
   final prefs = await SharedPreferences.getInstance();
-  final dir = prefs.getString(_kLastExportDirKey);
+  final dir = prefs.tolerantString(_kLastExportDirKey);
   if (dir == null) return null;
   if (!kIsWeb && !Directory(dir).existsSync()) return null;
   return dir;

@@ -6,6 +6,7 @@ import 'curiosities_tab_config.dart';
 import 'tab_entry.dart';
 import 'technical_tab_config.dart';
 import 'time_value.dart';
+import 'tolerant_prefs.dart';
 
 const _kAllTabsKey = 'all_tabs';
 const int maxCustomTabs = 4;  // limit on user-created (Watchlist) tabs
@@ -114,7 +115,7 @@ Future<({List<TabConfig> tabs, bool backfilled})> loadOrSeedAllTabs() async {
 
 Future<List<TabConfig>> loadAllTabs() async {
   final prefs = await SharedPreferences.getInstance();
-  final stored = prefs.getStringList(_kAllTabsKey);
+  final stored = prefs.tolerantStringList(_kAllTabsKey);
   if (stored == null) return [];  // caller (main.dart) seeds builtin defaults
   return stored
       .map(TabConfig.fromPrefsString)

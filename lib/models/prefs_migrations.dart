@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tab_config.dart';
 import 'tab_entry.dart';
+import 'tolerant_prefs.dart';
 
 /// A single migration step, applied once at every app startup.
 /// Must be idempotent: safe to call repeatedly, only acts if its
@@ -64,7 +65,7 @@ Future<void> _migrateToAllTabs(SharedPreferences prefs) async {
 
   final tabs = defaultBuiltinTabs();
 
-  final civilEntries = (prefs.getStringList(_kLegacyCivilKey) ?? [])
+  final civilEntries = (prefs.tolerantStringList(_kLegacyCivilKey) ?? [])
       .map(TabEntry.fromPrefsString)
       .whereType<TabEntry>()
       .toList();
@@ -72,7 +73,7 @@ Future<void> _migrateToAllTabs(SharedPreferences prefs) async {
     tabs[0] = tabs[0].copyWith(entries: civilEntries);  // tabs[0] is civil
   }
 
-  final legacyCustomTabRows = prefs.getStringList(_kLegacyCustomTabsKey) ?? [];
+  final legacyCustomTabRows = prefs.tolerantStringList(_kLegacyCustomTabsKey) ?? [];
   for (final row in legacyCustomTabRows) {
     final parts = row.split('\t');
     if (parts.length < 2) continue;

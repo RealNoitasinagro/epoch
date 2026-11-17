@@ -205,15 +205,17 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Future<void> _initBrightness() async {
     final isNightMode = EpochApp.of(context).isNightMode;
-    final savedColor = await loadFocusColor(isNightMode);
-    double initial;
+    var savedColor =
+    isNightMode ? kDefaultFocusColorNight : kDefaultFocusColorLight;
+    var initial = kDefaultFocusBrightness;
     try {
+      savedColor = await loadFocusColor(isNightMode);
       initial = await loadFocusBrightness(isNightMode);
       if (!kIsWeb && !Platform.isLinux) {
         await ScreenBrightness().setApplicationScreenBrightness(initial);
       }
     } catch (_) {
-      initial = kDefaultFocusBrightness;
+      // Defaults stay: the screen must always come up and be left again.
     }
     if (mounted) setState(() {
       _brightness = initial;

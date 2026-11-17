@@ -304,7 +304,6 @@ if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ;
     # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
     if [ ! "$dryRun" -eq "1" ] ; then
         cp -v $apk_output_path/*.apk $destination_path
-        cp -v $sha256sums_txt $destination_path
     fi
 fi
 echo | tee -a "$build_all_log"
@@ -330,6 +329,7 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
     cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path
     cp -v $apk_output_path/${target_platform_android_all} $destination_path
+    cp -v $sha256sums_txt $destination_path
     echo
 
     tee -a "$build_all_log" << EOF

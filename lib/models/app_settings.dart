@@ -6,6 +6,7 @@ import '../layout_constants.dart';
 import '../platform_utils.dart';
 import 'night_mode_schedule.dart';
 import 'time_value.dart';
+import 'tolerant_prefs.dart';
 
 const _kActiveTabKey = 'active_tab';
 const _kDateFormatKey = 'date_format';
@@ -17,7 +18,7 @@ const _kFocusPixelShiftKey = 'focus_pixel_shift';
 const _kFocusTimeShiftIndicatorKey = 'focus_time_shift_indicator';
 const _kHourFormatKey = 'hour_format_24';
 const _kLastImportedConfigKey = 'last_imported_config';
-const _kLmstLongitudeKey = 'lmst_longitude';  // double
+const _kLmstLongitudeKey = 'lmst_longitude';
 const _kLmstModeKey = 'lmst_mode';
 const _kLocaleKey = 'locale';
 const _kNightModeEndKey = 'night_mode_end';
@@ -73,7 +74,7 @@ enum LmstMode { off, manual, locationAccess }
 
 Future<Locale?> loadLocale() async {
   final prefs = await SharedPreferences.getInstance();
-  final code = prefs.getString(_kLocaleKey);
+  final code = prefs.tolerantString(_kLocaleKey);
   if (code == null) return null;
   return Locale(code);
 }
@@ -90,7 +91,7 @@ Future<void> clearLocale() async {
 
 Future<AppThemeMode> loadThemeMode() async {
   final prefs = await SharedPreferences.getInstance();
-  final value = prefs.getString(_kThemeModeKey);
+  final value = prefs.tolerantString(_kThemeModeKey);
   return switch (value) {
     'light' => AppThemeMode.light,
     'dark'  => AppThemeMode.dark,
@@ -135,7 +136,7 @@ Future<void> saveNightModeSchedule(NightModeSchedule schedule) async {
 
 Future<bool> loadHourFormat24() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kHourFormatKey) ?? kDefaultHourFormat24;
+  return prefs.tolerantBool(_kHourFormatKey) ?? kDefaultHourFormat24;
 }
 
 Future<void> saveHourFormat24(bool use24) async {
@@ -145,7 +146,7 @@ Future<void> saveHourFormat24(bool use24) async {
 
 Future<bool> loadThousandsSep() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kThousandsSepKey) ?? kDefaultThousandsSep;
+  return prefs.tolerantBool(_kThousandsSepKey) ?? kDefaultThousandsSep;
 }
 
 Future<void> saveThousandsSep(bool enabled) async {
@@ -155,7 +156,7 @@ Future<void> saveThousandsSep(bool enabled) async {
 
 Future<bool> loadDateWithDetails() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kDateWithDetails) ?? kDefaultDateWithDetails;
+  return prefs.tolerantBool(_kDateWithDetails) ?? kDefaultDateWithDetails;
 }
 
 Future<void> saveDateWithDetails(bool showDetails) async {
@@ -165,7 +166,7 @@ Future<void> saveDateWithDetails(bool showDetails) async {
 
 Future<String> loadDateFormat() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(_kDateFormatKey) ?? kDatePatternIso;
+  return prefs.tolerantString(_kDateFormatKey) ?? kDatePatternIso;
 }
 
 Future<void> saveDateFormat(String pattern) async {
@@ -175,7 +176,7 @@ Future<void> saveDateFormat(String pattern) async {
 
 Future<String> loadTimeFormat() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(_kTimeFormatKey) ?? kTimePatternFull;
+  return prefs.tolerantString(_kTimeFormatKey) ?? kTimePatternFull;
 }
 
 Future<void> saveTimeFormat(String pattern) async {
@@ -185,7 +186,7 @@ Future<void> saveTimeFormat(String pattern) async {
 
 Future<ZoneDisplayMode> loadZoneDisplayMode() async {
   final prefs = await SharedPreferences.getInstance();
-  return switch (prefs.getString(_kZoneDisplayModeKey)) {
+  return switch (prefs.tolerantString(_kZoneDisplayModeKey)) {
     'abbreviation' => ZoneDisplayMode.abbreviation,
     'offsetLong'   => ZoneDisplayMode.offsetLong,
     'offsetShort'  => ZoneDisplayMode.offsetShort,
@@ -202,7 +203,7 @@ Future<void> saveZoneDisplayMode(ZoneDisplayMode mode) async {
 
 Future<bool> loadDayQuarterColor() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kDayQuarterColorKey) ?? kDefaultDayQuarterColor;
+  return prefs.tolerantBool(_kDayQuarterColorKey) ?? kDefaultDayQuarterColor;
 }
 
 Future<void> saveDayQuarterColor(bool enabled) async {
@@ -212,7 +213,7 @@ Future<void> saveDayQuarterColor(bool enabled) async {
 
 Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
-  LmstMode mode = switch (prefs.getString(_kLmstModeKey)) {
+  LmstMode mode = switch (prefs.tolerantString(_kLmstModeKey)) {
     'manual'         => LmstMode.manual,
     'locationAccess' => LmstMode.locationAccess,
     _                => kDefaultLmstMode,
@@ -234,7 +235,7 @@ Future<void> saveLmstMode(LmstMode mode) async {
 
 Future<double?> loadLmstLongitude() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getDouble(_kLmstLongitudeKey);
+  return prefs.tolerantDouble(_kLmstLongitudeKey);
 }
 
 Future<void> saveLmstLongitude(double lon) async {
@@ -244,7 +245,7 @@ Future<void> saveLmstLongitude(double lon) async {
 
 Future<int> loadActiveTab() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt(_kActiveTabKey) ?? 0;
+  return prefs.tolerantInt(_kActiveTabKey) ?? 0;
 }
 
 Future<void> saveActiveTab(int index) async {
@@ -256,7 +257,10 @@ Future<void> saveActiveTab(int index) async {
 Future<double> loadFocusBrightness(bool isNightMode) async {
   if (isNightMode) return kDefaultFocusBrightnessNight;
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness;
+  // A hand-edited value may be out of range (the slider would assert).
+  return (prefs.tolerantDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness)
+      .clamp(0.01, 1.0)
+      .toDouble();
 }
 
 Future<void> saveFocusBrightness(double brightness) async {
@@ -268,8 +272,9 @@ Future<void> saveFocusBrightness(double brightness) async {
 Future<Color> loadFocusColor(bool isNightMode) async {
   if (isNightMode) return kDefaultFocusColorNight;
   final prefs = await SharedPreferences.getInstance();
-  final value = prefs.getInt(_kFocusColorKey);
-  return value != null ? Color(value) : kDefaultFocusColorLight;
+  final value = prefs.tolerantInt(_kFocusColorKey);
+  // Always opaque: 0x00FF41 without an alpha byte would be invisible.
+  return value != null ? Color(0xFF000000 | value) : kDefaultFocusColorLight;
 }
 
 Future<void> saveFocusColor(Color color) async {
@@ -279,7 +284,7 @@ Future<void> saveFocusColor(Color color) async {
 
 Future<bool> loadFocusPixelShift() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kFocusPixelShiftKey) ?? kDefaultFocusPixelShift;
+  return prefs.tolerantBool(_kFocusPixelShiftKey) ?? kDefaultFocusPixelShift;
 }
 
 Future<void> saveFocusPixelShift(bool enabled) async {
@@ -289,7 +294,7 @@ Future<void> saveFocusPixelShift(bool enabled) async {
 
 Future<bool> loadFocusTimeShiftIndicator() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool(_kFocusTimeShiftIndicatorKey) ??
+  return prefs.tolerantBool(_kFocusTimeShiftIndicatorKey) ??
       kDefaultFocusTimeShiftIndicator;
 }
 
@@ -300,7 +305,7 @@ Future<void> saveFocusTimeShiftIndicator(bool enabled) async {
 
 Future<String?> loadLastImportedConfig() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(_kLastImportedConfigKey);
+  return prefs.tolerantString(_kLastImportedConfigKey);
 }
 
 Future<void> saveLastImportedConfig(String filename) async {
@@ -310,7 +315,7 @@ Future<void> saveLastImportedConfig(String filename) async {
 
 Future<TimeValue?> loadStartupFocusValue() async {
   final prefs = await SharedPreferences.getInstance();
-  final s = prefs.getString(_kStartupFocusValueKey);
+  final s = prefs.tolerantString(_kStartupFocusValueKey);
   if (s == null || s.isEmpty) return null;
   return TimeValue.fromPrefsString(s);
 }
@@ -326,7 +331,7 @@ Future<void> saveStartupFocusValue(TimeValue? value) async {
 
 Future<Set<ValueType>> loadOptionalPartHiddenTypes() async {
   final prefs = await SharedPreferences.getInstance();
-  final names = prefs.getStringList(_kOptionalPartHiddenKey) ?? const [];
+  final names = prefs.tolerantStringList(_kOptionalPartHiddenKey) ?? const [];
   return {
     for (final valueType in ValueType.values)
       if (names.contains(valueType.name) &&
