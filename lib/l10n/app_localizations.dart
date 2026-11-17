@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenDetailsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide details line'**
+  String get hintFocusScreenDetailsOff;
+
+  /// No description provided for @hintFocusScreenDetailsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get hintFocusScreenDetailsOn;
+
   /// No description provided for @hintFocusScreenExit.
   ///
   /// In en, this message translates to:
@@ -301,18 +313,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold to display seconds'**
   String get hintFocusScreenToggleSecondsOn;
-
-  /// No description provided for @hintFocusScreenToggleToOneLine.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for one line'**
-  String get hintFocusScreenToggleToOneLine;
-
-  /// No description provided for @hintFocusScreenToggleToTwoLines.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold for two lines'**
-  String get hintFocusScreenToggleToTwoLines;
 
   /// No description provided for @hintMatchAlsoCity.
   ///
@@ -389,14 +389,26 @@ abstract class AppLocalizations {
   /// No description provided for @hintTimeShiftIndicator.
   ///
   /// In en, this message translates to:
-  /// **'Time Shift {period} · system date: {date}\nTap to change or reset'**
+  /// **'Time Shift {period} · system date: {date}'**
   String hintTimeShiftIndicator(String date, String period);
+
+  /// No description provided for @hintTimeShiftIndicatorTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change or reset'**
+  String get hintTimeShiftIndicatorTap;
 
   /// No description provided for @hintTimeShiftPast.
   ///
   /// In en, this message translates to:
   /// **'into the past'**
   String get hintTimeShiftPast;
+
+  /// No description provided for @hintTimeShiftPlaceIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Local time zone: {zone} (system: {systemZone})'**
+  String hintTimeShiftPlaceIndicator(String zone, String systemZone);
 
   /// No description provided for @hintTimezoneSearch.
   ///
@@ -530,106 +542,124 @@ abstract class AppLocalizations {
   /// **'https://en.wikipedia.org/wiki/Unix_time'**
   String get infoLinkUnixSeconds;
 
+  /// No description provided for @infoTextAnalogClock12h.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone as an analog clock with a 12-hour face. The hour hand turns twice a day; from noon on, \"+12\" appears below the 12.'**
+  String get infoTextAnalogClock12h;
+
+  /// No description provided for @infoTextAnalogClock24h.
+  ///
+  /// In en, this message translates to:
+  /// **'The current time in the selected timezone as an analog clock with a 24-hour face. The hour hand turns once a day. Minutes and seconds are read on the outer scale, hours on the inner one.'**
+  String get infoTextAnalogClock24h;
+
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Seconds since midnight in binary representation: each decimal digit of hours, minutes and seconds is shown as a separate binary column (BCD = Binary-Coded Decimal), as seen on the Wikipedia binary clock article.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles. Lit circles stand for 1, unlit circles for 0. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.'**
   String get infoTextBinaryClockBcd;
 
   /// No description provided for @infoTextBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Seconds since midnight in binary representation: each column shows hours, minutes, or seconds in base-2. Read top bit as most significant.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column (5 bits for hours, 6 for minutes and seconds). Lit circles stand for 1, unlit circles for 0. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.'**
   String get infoTextBinaryClockColumns;
 
   /// No description provided for @infoTextBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Seconds since midnight in compact binary representation: hours:minutes:seconds in base-2, e.g. 10:110000:10111.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits. The rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: 10110:110000:010111 is 22:48:23.'**
   String get infoTextBinaryClockString;
 
   /// No description provided for @infoTextCcsdsJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'CCSDS Julian Date (CCSDS JD) = JD − 2,436,204.5 (epoch: 1958-01-01 00:00 UT). Introduced by the Consultative Committee for Space Data Systems (CCSDS) for standardized spacecraft time codes, using 1958 as the historical reference date of International Atomic Time (TAI).'**
+  /// **'CCSDS Julian Date (CCSDS JD) = JD − 2,436,204.5 (epoch: 1958-01-01 00:00:00 UT). Introduced by the Consultative Committee for Space Data Systems (CCSDS) for standardized spacecraft time codes, using 1958 as the historical reference date of International Atomic Time (TAI).'**
   String get infoTextCcsdsJulianDate;
 
   /// No description provided for @infoTextCnesJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: 1950-01-01 00:00 UT). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.'**
+  /// **'CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: 1950-01-01 00:00:00 UT). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.'**
   String get infoTextCnesJulianDate;
 
   /// No description provided for @infoTextDate.
   ///
   /// In en, this message translates to:
-  /// **'The current calendar date in the selected timezone.'**
+  /// **'The current calendar date in the selected timezone, by default with the ISO week number (weeks start on Monday, week 1 contains the first Thursday) and the day of the year below.'**
   String get infoTextDate;
 
   /// No description provided for @infoTextDateTime.
   ///
   /// In en, this message translates to:
-  /// **'The current date and time in the selected timezone, combined in one value. Useful for copying a complete timestamp to the clipboard.'**
+  /// **'The current date and time in the selected timezone, combined in one value. Useful e.g. for world clock tabs and copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
+
+  /// No description provided for @infoTextDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes elapsed since midnight in the selected timezone, from 0 to 1,439. On a day with a clock change the last minute is 1,379 or 1,499 (Lord Howe: 1,409 or 1,469; Troll: 1,319 or 1,559).'**
+  String get infoTextDayMinute;
 
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the selected timezone. Resets to 0 at midnight.'**
+  /// **'Percentage of the day elapsed in the selected timezone, from 0 to just under 100. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
   String get infoTextDayPercent;
 
   /// No description provided for @infoTextDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone. Resets to 0 at midnight.'**
+  /// **'Seconds elapsed since midnight in the selected timezone, from 0 to 86,399. On a day with a clock change the last second is 82,799 or 89,999 (Lord Howe: 84,599 or 88,199; Troll: 79,199 or 93,599).'**
   String get infoTextDaySecond;
 
   /// No description provided for @infoTextDecimalTime.
   ///
   /// In en, this message translates to:
-  /// **'Decimal time, in use for a few years at the end of the 18th century in France, divides the day into 10 decimal hours. An hour has 100 decimal minutes, a minute 100 decimal seconds.'**
+  /// **'Decimal time, briefly in use in France in the 1790s, divides the day into 10 decimal hours of 100 decimal minutes of 100 decimal seconds, from 0h 00m 00s to 9h 99m 99s. On a normal day a decimal second lasts 0.864 s; on a day with a clock change the decimal day stretches or shrinks with the real day.'**
   String get infoTextDecimalTime;
 
   /// No description provided for @infoTextDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'The Doomsday Clock is a symbol representing how close humanity is to self-destruction. Maintained by the Bulletin of the Atomic Scientists. Latest setting: 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.'**
+  /// **'The Doomsday Clock is a symbol of how close humanity is to self-destruction, set by the Bulletin of the Atomic Scientists since 1947. Epoch shows the setting as a time of day; latest: 23:58:35, i.e. 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.'**
   String get infoTextDoomsdayClock;
 
   /// No description provided for @infoTextDublinJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.'**
+  /// **'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.'**
   String get infoTextDublinJulianDate;
 
   /// No description provided for @infoTextGmst.
   ///
   /// In en, this message translates to:
-  /// **'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich. Used by astronomers to determine which part of the sky is overhead.'**
+  /// **'Greenwich Mean Sidereal Time (GMST) – the hour angle of the vernal equinox at Greenwich, i.e. which part of the sky is overhead there. A sidereal day lasts 23 h 56 min 4.09 s, almost 4 minutes less than a solar day, so GMST gains about 3 min 56 s per day on the clock and runs through one more day than the clock over a year.'**
   String get infoTextGmst;
 
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC and does not include leap seconds. It is 18 seconds ahead of UTC.'**
+  /// **'GPS time counts seconds since 1980-01-06 00:00:00 UTC without any leap seconds. It matched UTC at the start; UTC has since added 18 leap seconds, so GPS time is 18 s ahead of UTC and 19 s behind TAI. From 2027 UTC adds no more leap seconds, so the gap stays at 18 s.'**
   String get infoTextGps;
 
   /// No description provided for @infoTextHexadecimalTime.
   ///
   /// In en, this message translates to:
-  /// **'Seconds since midnight, shown in base 16 (hexadecimal), grouped in pairs for readability.'**
+  /// **'Seconds elapsed since midnight in the selected timezone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from 0_00_00 to 1_51_7F on a normal day. A day with a clock change ends earlier or later.'**
   String get infoTextHexadecimalTime;
 
   /// No description provided for @infoTextJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC (epoch: -4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events.'**
+  /// **'Julian Date (JD) counts days since noon on January 1, 4713 BC in the proleptic Julian calendar (epoch: -4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events. A JD is the Julian day number plus the fraction of a day since the preceding noon UT; at midnight UT it therefore ends in .5.'**
   String get infoTextJulianDate;
 
   /// No description provided for @infoTextLmst.
   ///
   /// In en, this message translates to:
-  /// **'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location. Derived from GMST by adding your longitude. Used by astronomers to determine which objects are currently observable.'**
+  /// **'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location: GMST plus your longitude (15° = 1 hour).'**
   String get infoTextLmst;
 
   /// No description provided for @infoTextModifiedJulianDate.
@@ -647,55 +677,55 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextNewEarthTime.
   ///
   /// In en, this message translates to:
-  /// **'New Earth Time (or NET), also called degree time, splits a day into 360 NET degrees, where each NET degree has 60 NET minutes and each NET minute 60 NET seconds. UTC is the only time zone.'**
+  /// **'New Earth Time (NET, 1999), also called degree time, splits the day into 360 degrees: 0° is midnight, 180° noon. A degree lasts 4 minutes and is divided into 60 intervals of 4 seconds. There are no time zones: the whole world shares the same degree time. It is based on UTC+0.'**
   String get infoTextNewEarthTime;
 
   /// No description provided for @infoTextOctalTime.
   ///
   /// In en, this message translates to:
-  /// **'Seconds since midnight, shown in base 8 (octal).'**
+  /// **'Seconds elapsed since midnight in the selected timezone, shown in base 8 (octal) with six digits: from 000000 to 250577 on a normal day. A day with a clock change ends earlier or later.'**
   String get infoTextOctalTime;
 
   /// No description provided for @infoTextReducedJulianDate.
   ///
   /// In en, this message translates to:
-  /// **'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.'**
+  /// **'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.'**
   String get infoTextReducedJulianDate;
 
   /// No description provided for @infoTextRomanNumeralsTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone, shown in Roman numerals. N, the initial of nulla or nihil (Latin for \'none\' or \'nothing\'), is used to represent zeros.'**
+  /// **'The current time in the selected timezone, shown in Roman numerals. Roman numerals have no zero, so, as medieval scholars did, N for nulla (Latin for \'none\') stands in for it.'**
   String get infoTextRomanNumeralsTime;
 
-  /// No description provided for @infoTextSevenSegmentTime.
+  /// No description provided for @infoTextSevenSegmentClock.
   ///
   /// In en, this message translates to:
   /// **'The current time in the selected timezone in alarm clock design.'**
-  String get infoTextSevenSegmentTime;
+  String get infoTextSevenSegmentClock;
 
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Swatch Internet Time divides the day into 1000 .beats. There are no time zones — the whole world shares the same .beat. Based on UTC+1 (Biel Mean Time).'**
+  /// **'Swatch Internet Time (1998) divides the day into 1000 .beats of 86.4 seconds each. There are no time zones: the whole world shares the same .beat time. It is based on UTC+1, which Swatch calls Biel Mean Time (BMT).'**
   String get infoTextSwatchBeats;
 
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (Temps Atomique International in French, TAI) is a continuous atomic time scale without leap seconds, maintained by the International Bureau of Weights and Measures (Bureau International des Poids et Mesures, BIPM). For display as seconds, the app uses the Unix epoch (1970-01-01 00:00:00 UTC) as its numerical reference. TAI is 37 seconds ahead of UTC. The last, and final, leap second was added on 2016-12-31 at 23:59:60 UTC.'**
+  /// **'International Atomic Time (TAI, French: Temps Atomique International) is a continuous scale without leap seconds: atomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since 1970-01-01 00:00:00 UTC), i.e. Unix time plus 37. According to a decision by the General Conference on Weights and Measures in October 2026, there will be no more leap seconds, so the 37 s stay.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone.'**
+  /// **'The current time in the selected timezone, by default with the time zone abbreviation and UTC offset below. Within 7 days before a clock change, a notice about it replaces them.'**
   String get infoTextTime;
 
   /// No description provided for @infoTextUnixSeconds.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since the Unix epoch: 1970-01-01 00:00:00 UTC.'**
+  /// **'Seconds since the Unix epoch, 1970-01-01 00:00:00 UTC. Unix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.'**
   String get infoTextUnixSeconds;
 
   /// No description provided for @labelDay.
@@ -703,6 +733,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DD'**
   String get labelDay;
+
+  /// No description provided for @labelDefaultState.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {state}'**
+  String labelDefaultState(String state);
 
   /// No description provided for @labelDstChangeInDays.
   ///
@@ -788,6 +824,12 @@ abstract class AppLocalizations {
   /// **'Show decimals'**
   String get labelShowDecimals;
 
+  /// No description provided for @labelShowDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details line'**
+  String get labelShowDetails;
+
   /// No description provided for @labelShowSeconds.
   ///
   /// In en, this message translates to:
@@ -841,6 +883,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No matching timezone found.'**
   String get messageNoTimezone;
+
+  /// No description provided for @messagePatternNeedsHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour (H or HH) required'**
+  String get messagePatternNeedsHour;
+
+  /// No description provided for @messagePatternNeedsMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes (mm) required'**
+  String get messagePatternNeedsMinutes;
+
+  /// No description provided for @messagePatternNoToken.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one date token required'**
+  String get messagePatternNoToken;
+
+  /// No description provided for @messagePatternTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Too long: the result could exceed {maxLength} characters'**
+  String messagePatternTooLong(int maxLength);
+
+  /// No description provided for @messagePatternUnknownTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown: {tokens}'**
+  String messagePatternUnknownTokens(String tokens);
 
   /// No description provided for @messageSettingsExported.
   ///
@@ -971,7 +1043,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDateWithDetailsSub.
   ///
   /// In en, this message translates to:
-  /// **'calender week, day of the year'**
+  /// **'calendar week, day of the year'**
   String get settingsDateWithDetailsSub;
 
   /// No description provided for @settingsDayQuarterColor.
@@ -1052,6 +1124,12 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get settingsLanguage;
 
+  /// No description provided for @settingsLanguageTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Language and theme'**
+  String get settingsLanguageTheme;
+
   /// No description provided for @settingsLmst.
   ///
   /// In en, this message translates to:
@@ -1106,6 +1184,30 @@ abstract class AppLocalizations {
   /// **'Do not show'**
   String get settingsLmstOff;
 
+  /// No description provided for @settingsNightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Night mode'**
+  String get settingsNightMode;
+
+  /// No description provided for @settingsNightModeClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear time window'**
+  String get settingsNightModeClear;
+
+  /// No description provided for @settingsNightModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Set start and end time to turn on'**
+  String get settingsNightModeHint;
+
+  /// No description provided for @settingsNightModeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaces the theme within this time window'**
+  String get settingsNightModeSub;
+
   /// No description provided for @settingsOff.
   ///
   /// In en, this message translates to:
@@ -1117,6 +1219,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'on'**
   String get settingsOn;
+
+  /// No description provided for @settingsOptionalPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds and decimals'**
+  String get settingsOptionalPart;
+
+  /// No description provided for @settingsOptionalPartAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get settingsOptionalPartAll;
+
+  /// No description provided for @settingsOptionalPartSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{hidden, plural, =0{All shown} other{{hidden} of {total} hidden}}'**
+  String settingsOptionalPartSummary(int hidden, int total);
+
+  /// No description provided for @settingsOptionalPartTimeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Time and Date & Time follow the time format.'**
+  String get settingsOptionalPartTimeNote;
 
   /// No description provided for @settingsPreferencesExport.
   ///
@@ -1177,12 +1303,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settingsThemeDark;
-
-  /// No description provided for @settingsThemeLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme and language'**
-  String get settingsThemeLanguage;
 
   /// No description provided for @settingsThemeLight.
   ///
@@ -1280,6 +1400,30 @@ abstract class AppLocalizations {
   /// **'abbreviation, UTC-offset'**
   String get settingsZoneDisplayModeSub;
 
+  /// No description provided for @startupErrorCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Details copied'**
+  String get startupErrorCopied;
+
+  /// No description provided for @startupErrorCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details'**
+  String get startupErrorCopy;
+
+  /// No description provided for @startupErrorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while loading the app. If possible, please report the details below on GitHub:'**
+  String get startupErrorHint;
+
+  /// No description provided for @startupErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Epoch could not start'**
+  String get startupErrorTitle;
+
   /// No description provided for @tabAstronomical.
   ///
   /// In en, this message translates to:
@@ -1325,7 +1469,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftFocusIndicatorSub.
   ///
   /// In en, this message translates to:
-  /// **'Shows a small icon while the displayed time deviates from the system time'**
+  /// **'Shows a small icon or two while the displayed time and/or zone deviate from the system time'**
   String get timeShiftFocusIndicatorSub;
 
   /// No description provided for @timeShiftFrozen.
@@ -1349,7 +1493,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHint.
   ///
   /// In en, this message translates to:
-  /// **'\"{apply}\" sets the local time Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved: after a restart, Epoch always shows the system time.'**
+  /// **'\"{apply}\" sets the moment Epoch uses for all time values – from the past or the future, running or frozen – without changing your device\'s clock. You can return to the system time at any time with \"{reset}\". The setting is not saved by itself: after a restart, Epoch shows the system time – unless you saved a start value (below). The chosen time zone can also stand in for \"local\".'**
   String timeShiftHint(String apply, String reset);
 
   /// No description provided for @timeShiftHintApply.
@@ -1367,7 +1511,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeShiftHintReset.
   ///
   /// In en, this message translates to:
-  /// **'Sets date and time in the whole app to the values of the system clock.'**
+  /// **'Returns the whole app to the system clock and the system time zone.'**
   String get timeShiftHintReset;
 
   /// No description provided for @timeShiftHintResetToSystemDate.
@@ -1418,22 +1562,112 @@ abstract class AppLocalizations {
   /// **'{requested} does not exist because of a clock change, using {used}.'**
   String timeShiftSkippedTime(String requested, String used);
 
+  /// No description provided for @timeShiftStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the point of time set above to your preferences: the app always starts with this until you change it or remove it.'**
+  String get timeShiftStartHint;
+
+  /// No description provided for @timeShiftStartNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set – app starts with the system time'**
+  String get timeShiftStartNone;
+
+  /// No description provided for @timeShiftStartRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove start value'**
+  String get timeShiftStartRemove;
+
+  /// No description provided for @timeShiftStartRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value removed'**
+  String get timeShiftStartRemoved;
+
+  /// No description provided for @timeShiftStartSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save start value'**
+  String get timeShiftStartSave;
+
+  /// No description provided for @timeShiftStartSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Start value saved'**
+  String get timeShiftStartSaved;
+
+  /// No description provided for @timeShiftStartSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App start'**
+  String get timeShiftStartSection;
+
+  /// No description provided for @timeShiftStartSummaryFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), frozen'**
+  String timeShiftStartSummaryFrozen(String moment, String zone);
+
+  /// No description provided for @timeShiftStartSummaryPlaceOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{zone}, time not shifted'**
+  String timeShiftStartSummaryPlaceOnly(String zone);
+
+  /// No description provided for @timeShiftStartSummaryRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'{moment} ({zone}), running'**
+  String timeShiftStartSummaryRunning(String moment, String zone);
+
   /// No description provided for @timeShiftTime.
   ///
   /// In en, this message translates to:
   /// **'Time'**
   String get timeShiftTime;
 
+  /// No description provided for @timeShiftZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get timeShiftZone;
+
+  /// No description provided for @timeShiftZoneAsLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as local time zone'**
+  String get timeShiftZoneAsLocal;
+
+  /// No description provided for @timeShiftZoneAsLocalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Values for \"local\" show this zone instead of your device\'s'**
+  String get timeShiftZoneAsLocalSub;
+
+  /// No description provided for @valueTypeAnalogClock12h.
+  ///
+  /// In en, this message translates to:
+  /// **'Analog clock (12h)'**
+  String get valueTypeAnalogClock12h;
+
+  /// No description provided for @valueTypeAnalogClock24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Analog clock (24h)'**
+  String get valueTypeAnalogClock24h;
+
   /// No description provided for @valueTypeBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Binary Clock (BCD)'**
+  /// **'Binary clock (BCD)'**
   String get valueTypeBinaryClockBcd;
 
   /// No description provided for @valueTypeBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Binary Clock (columns)'**
+  /// **'Binary clock (columns)'**
   String get valueTypeBinaryClockColumns;
 
   /// No description provided for @valueTypeBinaryClockString.
@@ -1465,6 +1699,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date & Time'**
   String get valueTypeDateTime;
+
+  /// No description provided for @valueTypeDayMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Day minute'**
+  String get valueTypeDayMinute;
 
   /// No description provided for @valueTypeDayPercent.
   ///
@@ -1562,11 +1802,11 @@ abstract class AppLocalizations {
   /// **'Roman numerals time'**
   String get valueTypeRomanNumeralsTime;
 
-  /// No description provided for @valueTypeSevenSegmentTime.
+  /// No description provided for @valueTypeSevenSegmentClock.
   ///
   /// In en, this message translates to:
-  /// **'Seven-segment Clock'**
-  String get valueTypeSevenSegmentTime;
+  /// **'Seven-segment clock'**
+  String get valueTypeSevenSegmentClock;
 
   /// No description provided for @valueTypeSwatchBeats.
   ///

@@ -4,39 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../layout_constants.dart';
 import '../platform_utils.dart';
+import 'night_mode_schedule.dart';
 import 'time_value.dart';
 
-const _kLocaleKey = 'locale';
-const _kThemeModeKey = 'theme_mode';
-const _kHourFormatKey = 'hour_format_24';
-const _kThousandsSepKey = 'thousands_sep';
-const _kDateWithDetails = 'date_cw_doy';
-const _kDateFormatKey = 'date_format';
-const _kTimeFormatKey = 'time_format';
-const _kZoneDisplayModeKey = 'zone_display_mode';
-const _kDayQuarterColorKey = 'day_quarter_color';
-const _kLmstModeKey = 'lmst_mode';
-const _kLmstLongitudeKey = 'lmst_longitude';  // double
 const _kActiveTabKey = 'active_tab';
+const _kDateFormatKey = 'date_format';
+const _kDateWithDetails = 'date_cw_doy';
+const _kDayQuarterColorKey = 'day_quarter_color';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
 const _kFocusPixelShiftKey = 'focus_pixel_shift';
 const _kFocusTimeShiftIndicatorKey = 'focus_time_shift_indicator';
+const _kHourFormatKey = 'hour_format_24';
 const _kLastImportedConfigKey = 'last_imported_config';
+const _kLmstLongitudeKey = 'lmst_longitude';  // double
+const _kLmstModeKey = 'lmst_mode';
+const _kLocaleKey = 'locale';
+const _kNightModeEndKey = 'night_mode_end';
+const _kNightModeStartKey = 'night_mode_start';
+const _kOptionalPartHiddenKey = 'optional_part_hidden';
 const _kStartupFocusValueKey = 'startup_focus_value';
+const _kThemeModeKey = 'theme_mode';
+const _kThousandsSepKey = 'thousands_sep';
+const _kTimeFormatKey = 'time_format';
+const _kZoneDisplayModeKey = 'zone_display_mode';
 
+const kDefaultDateWithDetails = true;
+const kDefaultDayQuarterColor = true;
+const kDefaultFocusBrightness = 0.5;
+const kDefaultFocusBrightnessNight = 0.1;
+const kDefaultFocusColorLight = kColorWhite;
+const kDefaultFocusColorNight = kColorNightRed;
+const kDefaultFocusTimeShiftIndicator = true;
+const kDefaultHourFormat24 = true;
+const kDefaultLmstMode = LmstMode.off;
 const kDefaultLocale = Locale('en');
 const kDefaultThemeMode = AppThemeMode.system;
-const kDefaultHourFormat24 = true;
 const kDefaultThousandsSep = true;
-const kDefaultDateWithDetails = true;
 const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
-const kDefaultDayQuarterColor = true;
-const kDefaultLmstMode = LmstMode.off;
-const kDefaultFocusBrightness = 0.5;
-const kDefaultFocusTimeShiftIndicator = true;
-const kFocusDefaultColorLight = kColorWhite;
-const kFocusDefaultColorNight = kColorNightRed;
 final kDefaultFocusPixelShift = !kIsWeb && Platform.isAndroid;
 
 const kDatePatternIso      = 'EEE, YYYY-MM-DD';  // Tue, 2026-07-29
@@ -103,6 +108,29 @@ Future<void> saveThemeMode(AppThemeMode mode) async {
     AppThemeMode.system => 'system',
   };
   await prefs.setString(_kThemeModeKey, value);
+}
+
+Future<NightModeSchedule> loadNightModeSchedule() async {
+  final prefs = await SharedPreferences.getInstance();
+  // get() and a type check instead of getString(): a hand-edited config may
+  // hold something else than a string.
+  int? minuteOfDay(String key) {
+    final value = prefs.get(key);
+    return parseMinuteOfDay(value is String ? value : null);
+  }
+  return NightModeSchedule(
+    startMinute: minuteOfDay(_kNightModeStartKey),
+    endMinute: minuteOfDay(_kNightModeEndKey),
+  );
+}
+
+Future<void> saveNightModeSchedule(NightModeSchedule schedule) async {
+  final prefs = await SharedPreferences.getInstance();
+  Future<void> save(String key, int? minuteOfDay) => minuteOfDay == null
+      ? prefs.remove(key)
+      : prefs.setString(key, formatMinuteOfDay(minuteOfDay));
+  await save(_kNightModeStartKey, schedule.startMinute);
+  await save(_kNightModeEndKey, schedule.endMinute);
 }
 
 Future<bool> loadHourFormat24() async {
@@ -224,7 +252,9 @@ Future<void> saveActiveTab(int index) async {
   await prefs.setInt(_kActiveTabKey, index);
 }
 
-Future<double?> loadFocusBrightness() async {
+/// Night mode starts dim: a saved brightness is ignored there.
+Future<double> loadFocusBrightness(bool isNightMode) async {
+  if (isNightMode) return kDefaultFocusBrightnessNight;
   final prefs = await SharedPreferences.getInstance();
   return prefs.getDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness;
 }
@@ -234,11 +264,12 @@ Future<void> saveFocusBrightness(double brightness) async {
   await prefs.setDouble(_kFocusBrightnessKey, brightness);
 }
 
+/// Night mode always starts with night red: a saved color is ignored there.
 Future<Color> loadFocusColor(bool isNightMode) async {
+  if (isNightMode) return kDefaultFocusColorNight;
   final prefs = await SharedPreferences.getInstance();
   final value = prefs.getInt(_kFocusColorKey);
-  if (value != null) return Color(value);
-  return isNightMode ? kFocusDefaultColorNight : kFocusDefaultColorLight;
+  return value != null ? Color(value) : kDefaultFocusColorLight;
 }
 
 Future<void> saveFocusColor(Color color) async {
@@ -291,4 +322,26 @@ Future<void> saveStartupFocusValue(TimeValue? value) async {
   } else {
     await prefs.setString(_kStartupFocusValueKey, value.toPrefsString());
   }
+}
+
+Future<Set<ValueType>> loadOptionalPartHiddenTypes() async {
+  final prefs = await SharedPreferences.getInstance();
+  final names = prefs.getStringList(_kOptionalPartHiddenKey) ?? const [];
+  return {
+    for (final valueType in ValueType.values)
+      if (names.contains(valueType.name) &&
+          valueType.optionalPart != OptionalPart.none &&
+          !valueType.optionalPartFollowsTimeFormat)
+        valueType,
+  };
+}
+
+Future<void> saveOptionalPartHiddenTypes(Set<ValueType> valueTypes) async {
+  final prefs = await SharedPreferences.getInstance();
+  // In enum order, so that exported configs are stable.
+  final names = [
+    for (final valueType in ValueType.values)
+      if (valueTypes.contains(valueType)) valueType.name,
+  ];
+  await prefs.setStringList(_kOptionalPartHiddenKey, names);
 }

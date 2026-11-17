@@ -22,34 +22,44 @@ Default values will show up in config files when a non-default value had been co
 
 ### Global Settings
 
-| Key                         | Type             | Default             | Description                                                                                       |
-|-----------------------------|------------------|---------------------|---------------------------------------------------------------------------------------------------|
-| `active_tab`                | string           | `0`                 | app will start with the tab used last                                                             |
-| `all_tabs`                  | array of strings | `[]`                | each line contains the settings for one tab (see below)                                           |
-| `date_cw_doy`               | bool             | `true`              | Show ISO week number and day of year                                                              |
-| `date_format`               | string           | `"EEE, YYYY-MM-DD"` | Date display format (see tokens below)                                                            |
-| `day_quarter_color`         | bool             | `true`              | Show day quarter indicator in night red, cyan, amber, matrix green                                |
-| `focus_brightness`          | number           | `0.5`               | Focus screen brightness (0.01–1.0, mobile-only)                                                   |
-| `focus_color`               | integer          | `4294967295`        | Focus screen text color as ARGB integer (see below)                                               |
-| `focus_pixel_shift`         | bool             | `true` (Android)    | Burn-in protection for Focus screen through regular pixel shift                                   |
-| `focus_time_shift_indicator`| bool             | `true`              | Show a Time Shift icon in the Focus screen while the displayed time deviates from the system time |
-| `hour_format_24`            | bool             | `true`              | 24-hour clock                                                                                     |
-| `last_export_dir`           | string           | `—`                 | Path to a folder (defaults platform-specific)                                                     |
-| `last_imported_config`[^1]  | string           | `—`                 | Filename of the last imported config                                                              |
-| `lmst_longitude`            | number           | `—`                 | Longitude in decimal degrees (−180 to +180)                                                       |
-| `lmst_mode`                 | string           | `"off"`             | `"off"`, `"manual"`, `"locationAccess"`                                                           |
-| `locale`                    | string           | `"en"`              | `"en"` or `"de"`                                                                                  |
-| `startup_focus_value`       | string           | `—`                 | app will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)  |
-| `theme_mode`                | string           | `"system"`          | `"light"`, `"dark"`, `"night"`, `"system"`                                                        |
-| `time_format`               | string           | `"HH:mm:ss"`        | Time display format (see tokens below)                                                            |
-| `thousands_sep`             | bool             | `true`              | Thousands separator in numbers (locale-dependent)                                                 |
-| `zone_display_mode`         | string           | `"full"`            | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"`           |
+| Key                          | Type             | Default                         | Description                                                                                                                                                                                                         |
+|------------------------------|------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `active_tab`                 | string           | `0`                             | App will start with the tab used last                                                                                                                                                                               |
+| `all_tabs`                   | array of strings | `[]`                            | Each line contains the settings for one tab (see below)                                                                                                                                                             |
+| `date_cw_doy`                | bool             | `true`                          | Show ISO week number and day of year                                                                                                                                                                                |
+| `date_format`                | string           | `"EEE, YYYY-MM-DD"`             | Date display format (see tokens below)                                                                                                                                                                              |
+| `day_quarter_color`          | bool             | `true`                          | Show day quarter indicator in night red, cyan, amber, matrix green                                                                                                                                                  |
+| `focus_brightness`           | number           | `0.5` (except night[^3])        | Focus screen brightness (0.01–1.0,  Android only)                                                                                                                                                                   |
+| `focus_color`                | integer          | `4294967295` (except night[^3]) | Focus screen text color as ARGB integer (see below)                                                                                                                                                                 |
+| `focus_pixel_shift`          | bool             | `true` (Android)                | Burn-in protection for Focus screen through regular pixel shift                                                                                                                                                     |
+| `focus_time_shift_indicator` | bool             | `true`                          | Show a Time Shift icon in the Focus screen while the displayed time deviates from the system time                                                                                                                   |
+| `hour_format_24`             | bool             | `true`                          | 24-hour clock                                                                                                                                                                                                       |
+| `last_export_dir`            | string           | `—`                             | Path to a folder (defaults platform-specific)                                                                                                                                                                       |
+| `last_imported_config`[^1]   | string           | `—`                             | Filename of the last imported config                                                                                                                                                                                |
+| `lmst_longitude`             | number           | `—`                             | Longitude in decimal degrees (−180 to +180)                                                                                                                                                                         |
+| `lmst_mode`                  | string           | `"off"`                         | `"off"`, `"manual"`, `"locationAccess"`                                                                                                                                                                             |
+| `locale`                     | string           | `"en"`                          | `"en"` or `"de"`                                                                                                                                                                                                    |
+| `night_mode_end`             | string           | `—`                             | End of the night mode time window, "HH:mm" (24-hour)[^4]                                                                                                                                                            |
+| `night_mode_start`           | string           | `—`                             | Start of the night mode time window, "HH:mm" (24-hour)[^4]                                                                                                                                                          |
+| `optional_part_hidden`       | array of strings | `[]`                            | Value types whose seconds or decimals are hidden by default (not `time` and `dateTime`, they follow `time_format`); unknown names and types without such a part are ignored                                         |
+| `startup_focus_value`        | string           | `—`                             | App will start in Focus screen with the configured value type[^2] (unset or `""` = normal start)                                                                                                                    |
+| `theme_mode`                 | string           | `"system"`                      | `"light"`, `"dark"`, `"night"`, `"system"`                                                                                                                                                                          |
+| `time_format`                | string           | `"HH:mm:ss"`                    | Time display format (see tokens below)                                                                                                                                                                              |
+| `time_shift_frozen`          | bool             | `false`                         | Whether time stands still at the start value (see `time_shift_moment`)                                                                                                                                              |
+| `time_shift_moment`          | string           | `—`                             | Start value for Time Shift: the moment Epoch starts at, ISO 8601 with Z or a UTC offset, e. g. "2026-12-24T18:00:00Z", between 1970-01-01 and 2038-01-19; unusable values are ignored[^5]                           |
+| `time_shift_zone`            | string           | `""`                            | Zone the Time Shift page shows the moment in: `"UTC"`, or an IANA name such as `"Australia/Lord_Howe"`; empty or unknown names = system zone; has no effect on the moment itself                                    |  
+| `time_shift_zone_as_local`   | bool             | `false`                         | If true, values with the zone local show `time_shift_zone` instead of the zone of the device (a virtual relocation); ignored if `time_shift_zone` is empty. LMST is not affected: it uses the configured longitude. | 
+| `thousands_sep`              | bool             | `true`                          | Thousands separator in numbers (locale-dependent)                                                                                                                                                                   |
+| `zone_display_mode`          | string           | `"full"`                        | `"full"`, `"abbreviation"`, `"offsetLong"`, `"offsetShort"`, `"offsetMini"`, `"hidden"`                                                                                                                             |
 
-[^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.
-[^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.
+[^1]: Information only, setting this by hand has no effect, therefore not included in `epoch_settings_reference.json`.  \
+[^2]: If you need a non-default clock change mode for the Focus screen, you will have to configure this in a config file and import the file.  \
+[^3]: In night mode, the Focus screen always starts in night red at low brightness; changes made there are not saved.  \
+[^4]: The night mode time window is only active if start and end are both set and differ; may span midnight; follows the device's system time, not Time Shift.  \
+[^5]: An empty string (`""`), together with `time_shift_zone` (must differ from system zone) and `time_shift_zone_as_local` set to `true`, starts the app with the current time for the given zone (virtual relocation only). `time_shift_frozen` is ignored then. This scenario must be set manually in the config file since the app always saves a moment.
 
 > [!TIP]
-> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values).
+> * If you want to set up your own configuration from scratch, start with a copy of `epoch_settings_reference.json`, which has all the keys (and non-default values, including a time shift).
 > * As an alternative way to reset the whole app to defaults (and bypassing backup!), you can import an empty config (`reset_to_defaults.json`).
 > * If you want to "comment out" a setting, rename its key to make it invalid, e.g. append "ooo" for out-of-order. That way you can keep an entry in the config while making the app ignore it.
 
@@ -135,7 +145,9 @@ valueType/zone|Custom Label
 valueType/zone|Custom Label|dst:forceDst
 valueType/zone||dst:forceStandard
 ```
-Note: `valueType` and `zone` are obligatory, custom label and forced clock change mode settings are optional.
+> [!NOTE]
+> `valueType` and `zone` are obligatory; custom label, forced clock change mode, seconds/decimals and details line settings are optional.  \
+> For example: `time/named:Europe/Brussels|dst:forceStandard|nosec`. An empty label slot (||) is accepted too.
 
 ##### Value types
 
@@ -145,8 +157,11 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `time`                   | Current time                 |
 | `dateTime`               | Date and time combined       |
 | `daySecond`              | Seconds elapsed today        |
+| `dayMinute`              | Minutes elapsed today        |
 | `dayPercent`             | Day progress as percentage   |
-| *`sevenSegmentClock`*    | Seven-segment Clock          |
+| *`sevenSegmentClock`*    | Seven-segment clock          |
+| *`analogClock12h`*       | Analog clock (12-hour face)  |
+| *`analogClock24h`*       | Analog clock (24-hour face)  |
 | `unixSeconds`            | Unix timestamp               |
 | `tai`                    | International Atomic Time    |
 | `gps`                    | GPS Time                     |
@@ -162,8 +177,8 @@ Note: `valueType` and `zone` are obligatory, custom label and forced clock chang
 | `decimalTime`            | Decimal time                 |
 | `swatchBeats`            | Swatch Internet Time         |
 | `newEarthTime`           | New Earth Time               |
-| *`binaryClockBcd`*       | Binary Clock (BCD)           |
-| *`binaryClockColumns`*   | Binary Clock (columns)       |
+| *`binaryClockBcd`*       | Binary clock (BCD)           |
+| *`binaryClockColumns`*   | Binary clock (columns)       |
 | `binaryClockString`      | Binary time (string)         |
 | `octalTime`              | Octal time                   |
 | `hexadecimalTime`        | Hexadecimal time             |
@@ -195,16 +210,38 @@ The optional suffix is only for zones that have DST:
 | `dst:forceDst`      | Always show summer time                        |
 | `dst:forceStandard` | Always show standard time                      |
 
-##### Show seconds / decimals
+##### Seconds and decimals
 
-The optional suffix is for
-- graphical clocks (`sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`),
-- as well as `binaryClockString`, `romanNumeralsTime`, `swatchBeats`, and `newEarthTime`:
+Some value types have an optional part that can be shown or hidden:
 
-| Suffix    | Effect                  |
-|-----------|-------------------------|
-| *(none)*  | Show seconds / decimals |
-| `\|nosec` | Hide seconds / decimals |
+| Optional part | Value types                                                                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| seconds       | `time`, `dateTime`, `dayMinute`, `decimalTime`, `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `romanNumeralsTime` |
+| decimals      | `dayPercent`, `swatchBeats`, `newEarthTime`                                                                                                           |
+
+Whether the part is shown is decided in this order: the suffix of the value itself, then the default for its type, then *shown*. The default is `optional_part_hidden` for all types except `time` and `dateTime`: for these two, a `time_format` with seconds (`ss`) shows them, one without hides them.
+
+| Suffix    | Effect                                                                                      |
+|-----------|---------------------------------------------------------------------------------------------|
+| *(none)*  | the default for the type                                                                    |
+| `\|sec`   | shown (forced on); a `time_format` without seconds is extended: `HH:mm` becomes `HH:mm:ss`  |
+| `\|nosec` | hidden (forced off); seconds are removed from the `time_format`: `HH:mm:ss` becomes `HH:mm` |
+
+Hidden decimals are cut off, not rounded.
+
+##### Details line
+
+The details line below the value is the time zone line (`time`, `dateTime`, `daySecond`, `dayPercent`, `dayMinute`, `decimalTime`), the week and day of the year (`date`), or the angle (`gmst`, `lmst`). All other value types have none.
+
+| Suffix    | Effect                                                                     |
+|-----------|----------------------------------------------------------------------------|
+| *(none)*  | global setting (`zone_display_mode`, `date_cw_doy`; angles always shown)   |
+| `\|det`   | shown (forced on; with `zone_display_mode` `hidden` the full form is used) |
+| `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)     |
+
+> [!IMPORTANT]
+> The suffixes `|sec`, `|nosec`, `|det` and `|nodet` may be combined and are read in any order after the label and the clock change mode, e. g. `time/named:Europe/Brussels|dst:forceStandard|nosec|nodet`.  \
+> As custom labels, these four words cannot be used.
 
 #### Divider
 

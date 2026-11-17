@@ -18,7 +18,7 @@ const Map<String, List<String>> countryNameAliasesDe = {
 
 const Map<String, List<String>> countryNameAliasesEn = {
   'BA': ['Bosnia', 'Bosnia-Herzegovina'],
-  'BN': ['Brunei Darussalam'],
+  //'BN': ['Brunei Darussalam'],
   'CC': ['Cocos Islands', 'Keeling Islands'],
   'CD': ['Congo (DRC)', 'Democratic Republic of the Congo', 'DR Congo', 'DRC'],
   'CG': ['Congo (Republic)', 'Congo Republic', 'Republic of the Congo'],

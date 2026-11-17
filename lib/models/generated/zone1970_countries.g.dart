@@ -1,8 +1,8 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: zone1970.tab
-// Data version: tzdata 2026e
+// Data version: tzdata 2026f
 // Regenerate with: python3 tools/generate_iana_data.py
-// Last generated: 2026-10-22
+// Last generated: 2026-11-02
 
 // Maps an IANA zone identifier to the ISO 3166-1 country
 // code(s) that use it, as assigned by zone1970.tab.

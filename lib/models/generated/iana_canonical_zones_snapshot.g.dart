@@ -1,8 +1,8 @@
 // GENERATED FILE -- DO NOT EDIT BY HAND.
 // Source: tzdata source Zone directives (africa, antarctica, asia, australasia, backward, etcetera, europe, factory, northamerica, southamerica)
-// Data version: tzdata 2026e
+// Data version: tzdata 2026f
 // Regenerate with: python3 tools/generate_iana_data.py
-// Last generated: 2026-10-22
+// Last generated: 2026-11-02
 
 // Snapshot of canonical IANA zone identifiers at
 // generation time. Compared against the live tz package

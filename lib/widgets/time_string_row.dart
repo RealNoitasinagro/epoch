@@ -6,27 +6,21 @@ import '../main.dart';
 import '../models/app_settings.dart';
 import '../models/time_value.dart';
 import '../models/timezone_abbreviation_localization.dart';
+import '../models/value_format_settings.dart';
 import '../time_utils.dart';
 import '../time_value_formatter.dart';
+import '../zoned_moment.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
 
 class TimeStringRow extends TimeValueRow {
   final String locale;
-  final bool hourFormat24;
-  final bool thousandsSep;
-  final bool showDateDetails;
-  final double? longitude;
 
   const TimeStringRow({
     super.key,
     required super.timeValue,
     required super.now,
     required this.locale,
-    this.hourFormat24 = true,
-    this.thousandsSep = true,
-    this.showDateDetails = true,
-    this.longitude,
     super.infoLinkOverride,
   });
 
@@ -35,45 +29,28 @@ class TimeStringRow extends TimeValueRow {
       DateTime now,
       String locale,
       AppLocalizations l10n,
-      {
-        String localIanaZone = 'UTC',
-        bool hourFormat24 = true,
-        bool thousandsSep = true,
-        bool showDateDetails = true,
-        String dateFormat = kDatePatternIso,
-        String timeFormat = kTimePatternFull,
-        ZoneDisplayMode zoneDisplayMode = ZoneDisplayMode.full,
-        double? longitude,
-      }
+      { ValueFormatSettings settings = const ValueFormatSettings(), }
     ) {
     final formattedValue = TimeValueFormatter.format(
       timeValue, now, locale,
-      localIanaZone: localIanaZone,
-      hourFormat24: hourFormat24,
-      thousandsSep: thousandsSep,
-      dateFormat: dateFormat,
-      timeFormat: timeFormat,
-      longitude: longitude,
+      settings: settings
     );
 
-    String? subtitle;
-    final zonedNow = switch (timeValue.zone) {
-      ZoneLocal()                  => now,
-      ZoneUtc()                    => now.toUtc(),
-      ZoneNamed(ianaZone: final z) => TimeUtils.inZone(now.toUtc(), z),
-    };
+    final moment = ZonedMoment.of(timeValue, now, settings.localIanaZone);
 
-    if (timeValue.valueType == ValueType.date && showDateDetails) {
-      subtitle = l10n.dataDateSub(
-          TimeUtils.isoWeekNumber(zonedNow), TimeUtils.dayOfYear(zonedNow));
-    } else if (timeValue.valueType == ValueType.gmst ||
-        timeValue.valueType == ValueType.lmst) {
-      final hours = TimeValueFormatter.hmsToHours(formattedValue);
-      if (hours != null) {
-        final deg = TimeValueFormatter.formatDecimal(
-            hours * 15.0, locale, 4, thousandsSep: false);
-        subtitle = '$deg°';
-      }
+    String? subtitle;
+    if (timeValue.valueType == ValueType.date && settings.showsDetails(timeValue)) {
+      subtitle = l10n.dataDateSub(TimeUtils.isoWeekNumber(moment.wallClock),
+          TimeUtils.dayOfYear(moment.wallClock));
+    } else if ((timeValue.valueType == ValueType.gmst ||
+        timeValue.valueType == ValueType.lmst) &&
+        settings.showsDetails(timeValue)) {
+        final hours = TimeValueFormatter.hmsToHours(formattedValue);
+        if (hours != null) {
+          final deg = TimeValueFormatter.formatDecimal(
+              hours * 15.0, locale, 4, thousandsSep: false);
+          subtitle = '$deg°';
+        }
     }
 
     final split = splitZoneOffset(formattedValue);
@@ -81,12 +58,12 @@ class TimeStringRow extends TimeValueRow {
     // Determine zone-related line2:
     String? zoneLine;
     if (subtitle == null && split.line2.isNotEmpty) {
-      String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+      String? ianaZone = moment.ianaZone;
 
       if (ianaZone != null &&
           timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto) {
         // DST warning takes precedence over ZoneDisplayMode:
-        final warning = _dstWarning(ianaZone, now.toUtc(), l10n);
+        final warning = _dstWarning(ianaZone, now.toUtc(), settings.localIanaZone, l10n);
         if (warning != null) {
           zoneLine = warning;
         }
@@ -94,7 +71,10 @@ class TimeStringRow extends TimeValueRow {
 
       // No warning – apply ZoneDisplayMode to the existing split.line2:
       if (zoneLine == null) {
-        zoneLine = _applyZoneDisplayMode(split.line2, zoneDisplayMode);
+        zoneLine = _applyZoneDisplayMode(
+          split.line2,
+          settings.zoneDisplayModeFor(timeValue),
+        );
       }
     }
 
@@ -115,16 +95,18 @@ class TimeStringRow extends TimeValueRow {
     );
   }
 
-  static String? _dstWarning(
-      String ianaZone, DateTime nowUtc, AppLocalizations l10n) {
+  static String? _dstWarning(String ianaZone, DateTime nowUtc,
+      String localIanaZone, AppLocalizations l10n) {
     final next = TimeUtils.nextDstTransition(ianaZone, nowUtc);
     if (next == null) return null;
 
-    final localNow  = nowUtc.toLocal();
-    final nowDate   = DateTime(localNow.year, localNow.month, localNow.day);
-    final localNext = next.toLocal();
-    final nextDate  = DateTime(localNext.year, localNext.month, localNext.day);
-    final daysUntil = nextDate.difference(nowDate).inDays;
+    // Calendar days in the zone "local" stands for. Counted in UTC, so that
+    // a clock change of that zone cannot skew the difference by an hour.
+    DateTime localDate(DateTime utc) {
+      final wallClock = localWallClockAt(utc, localIanaZone);
+      return DateTime.utc(wallClock.year, wallClock.month, wallClock.day);
+    }
+    final daysUntil = localDate(next).difference(localDate(nowUtc)).inDays;
     if (daysUntil > 7) return null;
 
     final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, next);
@@ -217,29 +199,22 @@ class TimeStringRow extends TimeValueRow {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final localIanaZone = EpochApp.of(context).localIanaZone;
 
     final display = computeDisplay(
       timeValue, now, locale, l10n,
-      localIanaZone: localIanaZone,
-      hourFormat24: hourFormat24,
-      thousandsSep: thousandsSep,
-      showDateDetails: showDateDetails,
-      dateFormat: app.dateFormat,
-      timeFormat: app.timeFormat,
-      zoneDisplayMode: app.zoneDisplayMode,
-      longitude: longitude,
+      settings: settings
     );
-    String label = computeLabel(l10n, timeValue, longitude);
+    String label = computeLabel(l10n, timeValue, settings.longitude);
     String clipboardValue = computeClipboardDisplay(timeValue, display);
 
-    String? ianaZone = TimeUtils.resolveIanaZone(timeValue, localIanaZone);
+    final moment = ZonedMoment.of(timeValue, now, localIanaZone);
 
     final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night &&
-        !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(now.toUtc(), ianaZone)
+        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
+        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
     return ValueTile(

@@ -20,33 +20,36 @@ class TimeShiftIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app = EpochApp.of(context);
+    final settings = app.formatSettings;
     final l10n = AppLocalizations.of(context)!;
     final systemTime = EffectiveClock.systemTime();
     final textStyle = DefaultTextStyle.of(context).style.copyWith(
         fontFamily: fontFamilyDefault, fontSize: 14, fontWeight: FontWeight.w500);
 
-    final timePattern = app.timeFormat.length <= _maxPatternLength
-        ? app.timeFormat : kTimePatternFull;
+    final timePattern = settings.timeFormat.length <= _maxPatternLength
+        ? settings.timeFormat : kTimePatternFull;
     final timeText = TimeValueFormatter.formatTime(
-        app.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
+        settings.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
         pattern: timePattern
     );
     final dateText = TimeValueFormatter.formatDate(
-        l10n.localeName, systemTime, pattern: app.dateFormat);
+        l10n.localeName, systemTime, pattern: settings.dateFormat);
 
-    IconData timeShiftIcon;
-    String timeRange;
-    if (EffectiveClock.isShiftedIntoPast) {
-      timeShiftIcon = kIconTimeShiftPast;
-      timeRange = l10n.hintTimeShiftPast;
-    }
-    else {
-      timeShiftIcon = kIconTimeShiftFuture;
-      timeRange = l10n.hintTimeShiftFuture;
-    }
+    final tooltipLines = [
+      if (EffectiveClock.isTimeShifted)
+        l10n.hintTimeShiftIndicator(
+            dateText,
+            EffectiveClock.isShiftedIntoPast
+                ? l10n.hintTimeShiftPast
+                : l10n.hintTimeShiftFuture),
+      if (EffectiveClock.hasVirtualLocalZone)
+        l10n.hintTimeShiftPlaceIndicator(
+            EffectiveClock.virtualLocalIanaZone!, app.systemIanaZone),
+      l10n.hintTimeShiftIndicatorTap,
+    ];
 
     return Tooltip(
-      message: l10n.hintTimeShiftIndicator(dateText, timeRange),
+      message: tooltipLines.join('\n'),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(kTileBorderRadius),
@@ -56,13 +59,10 @@ class TimeShiftIndicator extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              spacing: 4,
               children: [
-                Icon(
-                  timeShiftIcon,
-                  size: kIconSizeDefault,
-                  color: textStyle.color,
-                ),
-                const SizedBox(width: 6),
+                for (final icon in timeShiftIcons())
+                  Icon(icon, size: kIconSizeDefault, color: textStyle.color),
                 Text(timeText, style: textStyle),
               ],
             ),
@@ -72,3 +72,12 @@ class TimeShiftIndicator extends StatelessWidget {
     );
   }
 }
+
+/// The icons of the Time Shift in effect: the place icon if "local" was
+/// redefined (left), the history/update icon if the time deviates (right).
+/// Shared by the title bar and the Focus screen.
+List<IconData> timeShiftIcons() => [
+  if (EffectiveClock.hasVirtualLocalZone) kIconTimeShiftPlace,
+  if (EffectiveClock.isTimeShifted)
+    EffectiveClock.isShiftedIntoPast ? kIconTimeShiftPast : kIconTimeShiftFuture,
+];

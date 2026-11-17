@@ -80,7 +80,7 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
     final hint = _matchHint(result, locale, l10n);
     final local = TimeUtils.inZone(nowUtc, entry.ianaZoneId);
     final time = TimeValueFormatter.formatTime(
-        app.hourFormat24, local.hour, local.minute, 0,
+        app.formatSettings.hourFormat24, local.hour, local.minute, 0,
         pattern: kTimePatternNoSeconds);
     return ListTile(
       title: Text(entry.displayTitle(locale),

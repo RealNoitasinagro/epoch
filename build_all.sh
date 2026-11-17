@@ -142,9 +142,14 @@ else
 fi
 
 if [ "$cwd" == "$GL_Epoch" ] ; then
-    repo_status=$(tail -1 .git-commit | cut -c1-7)
+    # Release export: update_release_working_dir.sh writes branch and full hash to .git-commit
+    repo_status=$(tail -1 .git-commit 2>/dev/null | cut -c 1-7)
+    repo_status=${repo_status:-unknown}
 else
-    repo_status=$(printf '%s @ %s %s\n' "$(git branch --show-current)" "$(git rev-parse --short HEAD)" "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
+    branch=$(git branch --show-current)
+    commit=$(git rev-parse --short HEAD | cut -c 1-7)
+    repo_status=$(printf '%s @ %s %s\n' "${branch:-detached}" "$commit" \
+        "$(test -z "$(git status --porcelain)" && echo '' || echo '(dirty)')")
 fi
 
 
@@ -320,6 +325,7 @@ if [[ "$cwd" == "$GL_Epoch" && "$what" == "all" && "$mode" == "release" &&
       "$dryRun" -eq "0" && "$skipAnalyze" -eq "0" && "$skipTest" -eq "0" &&
       "$skipChecksums" -eq "0" && "$useLogging" -eq "1" && -e "${GL_Epoch}/.git-commit" ]] ; then
     rm -v -f $destination_path/*.apk
+    rm -v -f $destination_path/$sha256sums_txt
     cp -v $apk_output_path/${target_platform_android_arm} $destination_path
     cp -v $apk_output_path/${target_platform_android_arm64} $destination_path
     cp -v $apk_output_path/${target_platform_android_x86_64} $destination_path

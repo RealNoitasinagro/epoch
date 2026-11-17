@@ -49,3 +49,4 @@ app.*.map.json
 *~
 .logs
 *.bak
+sha256sums.txt

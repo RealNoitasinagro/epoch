@@ -4,7 +4,7 @@
 # F-Droid build recipe (metadata/io.github.RealEarthling.epoch.yml).
 set -euo pipefail
 
-repo_status=$(git rev-parse --short HEAD)
+repo_status=$(git rev-parse --short HEAD | cut -c 1-7)
 
 timezone_version=$("$FLUTTER_BIN/dart" pub deps --json | python3 -c "
 import json, sys

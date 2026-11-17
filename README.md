@@ -18,7 +18,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ## Highlights
 
-- **28 time values in one app** – civil, technical, astronomical and curious:
+- **31 time values in one app** – civil, technical, astronomical and curious:
   from Unix time, TAI and GPS time to sidereal time, Julian Date variants,
   Swatch Internet Time and the Doomsday Clock
 - **Your own time zone engine** – every IANA time zone, found by city, country,
@@ -37,17 +37,18 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Time systems
 - **Civil** – date (with ISO week and day of the year), time, date & time,
-  day second, day percent, seven-segment clock; for any time zone
+  day second, day minute, day percent, seven-segment clock, analog clocks (12 or 24-hour face);
+  for any time zone
 - **Technical** – Unix time, International Atomic Time (TAI), GPS time
   (with historical leap seconds)
 - **Astronomical** – Greenwich and Local Mean Sidereal Time (GMST, LMST),
   Julian Date (JD), Modified Julian Date (MJD), MJD2000 and 4 other JD variants
   (Reduced, Dublin, CNES, CCSDS)
 - **Curiosities** – decimal time, Swatch Internet Time, New Earth Time,
-  3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals
-  time and the Doomsday Clock
-- On days with a clock change, day second, day percent and decimal/octal/hexadecimal
-  time use the real length of the day (23 or 25 hours, 23.5 or 24.5 for Lord Howe)
+  3 binary clocks[^1], octal time[^1], hexadecimal time[^1], Roman numerals time
+  and the Doomsday Clock
+- On days with a clock change, day second, day minute, day percent and decimal/octal/hexadecimal
+  time use the real length of the day (23 or 25 hours, Lord Howe: 23.5 or 24.5, Troll: 22 or 26)
 
 ### Time zones
 - Search by city, country, capital, zone name or abbreviation (also historical
@@ -66,12 +67,15 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Time Shift
 - Show any moment from 1970-01-01 to 2038-01-19 (UTC; the limits of Unix time
   and of the available IANA data) in all values – running from there, or frozen
-- Date and time are set separately, with calendar and dial pickers
+- Date and time are set separately, for any time zone, with calendar and dial pickers
 - Your system clock stays untouched; the title bar shows the real system time
   while Time Shift is active, the Focus screen has an optional indicator
+- Optionally redefine "local" as the chosen time zone (virtual relocation),
+  the title bar and the Focus screen show a place icon next to the time icon
 - Past values are historically correct: leap seconds for TAI and GPS time,
   the Doomsday Clock's earlier settings, the time zone rules of that time
-- Not saved: the app always starts with the system time
+- Not saved by itself: the app starts with the system time, unless you save a start value
+  (moment, time zone, frozen or running)
 
 ### Your layout
 - Up to 4 own tabs (Watchlists) with up to 30 values each; all built-in tabs
@@ -83,6 +87,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 
 ### Formats and display options
 - Date and time formats: presets or custom patterns; 12/24-hour format
+- Seconds or decimals with global default per value type and override on tabs
 - Expanded date (ISO week number, day of the year)
 - Day quarter color on or off
 - Thousands separator switch
@@ -97,12 +102,14 @@ also happen to spell out **E**legant **p**resentation **o**f
 ### Focus mode
 - Double-tap any value for a full-screen, always-on display
 - Adjustable color (all platforms) and brightness (Android)
-- Long press toggles details (seconds, decimals, time zone line)
+- Button toggles details (time zone line, expanded date, GMST/LMST in degrees)
+- Long press on the value toggles precision (seconds/decimals on/off)
+- In night mode, the Focus screen starts in night red at low brightness
 - Burn-in protection through regular pixel shift (especially on OLED screens)
 - Optionally start the app directly in Focus mode
 
 ### Look and feel
-- Night mode: red on black, preserving your dark adaptation for stargazing
+- Night mode: red on black, preserving your dark adaptation for stargazing; optionally scheduled
 - Light, dark and system themes; monospaced JetBrains Mono font
 - Full-screen toggle (double-tap on the app's name or logo in the top-left corner)
 - Available in English and German
@@ -121,7 +128,7 @@ also happen to spell out **E**legant **p**resentation **o**f
 ## What makes Epoch different?
 
 Most clock apps show you one or two time formats.
-Epoch shows you 28 different time values simultaneously, lets you pick exactly
+Epoch shows you 31 different time values simultaneously, lets you pick exactly
 which ones you care about, and explains what each one means.
 
 **Epoch is for you if you...**
@@ -321,4 +328,5 @@ the bundled data and the font can also be read in the app (menu, About,
 View licenses).
 
 
-[^1]: These values use a 'seconds since midnight in base N' rather than a 'fraction of day in base N' approach.
+[^1]: These values write the usual units of the day in base N rather than a fraction of the day in base N:
+the binary clocks hours, minutes and seconds of the wall clock, octal and hexadecimal time the seconds since midnight.

@@ -23,6 +23,8 @@ class EffectiveClock {
   static Duration _offsetFromSystem = Duration.zero;
   static DateTime? _frozenMoment;
 
+  static String? _virtualLocalIanaZone;
+
   /// The moment to display. Always a local-kind DateTime, like DateTime.now().
   static DateTime now() {
     final frozen = _frozenMoment;
@@ -36,8 +38,19 @@ class EffectiveClock {
   /// The real system time, regardless of any shift (for the indicator).
   static DateTime systemTime() => systemNow();
 
+  /// IANA zone that "local" stands for while the user has redefined it in
+  /// Time Shift; null: the zone of the system.
+  static String? get virtualLocalIanaZone => _virtualLocalIanaZone;
+
+  static bool get hasVirtualLocalZone => _virtualLocalIanaZone != null;
+
   /// True if the displayed time deviates from the system time.
-  static bool get isShifted => isFrozen || _offsetFromSystem != Duration.zero;
+  static bool get isTimeShifted =>
+      isFrozen || _offsetFromSystem != Duration.zero;
+
+  /// True if anything deviates from the system: the time, what "local"
+  /// stands for, or both.
+  static bool get isShifted => isTimeShifted || hasVirtualLocalZone;
 
   static bool get isFrozen => _frozenMoment != null;
 
@@ -60,22 +73,27 @@ class EffectiveClock {
     return !utc.isBefore(earliestMoment) && !utc.isAfter(latestMoment);
   }
 
-  /// Makes [target] the displayed moment. Frozen: stays there; otherwise it
-  /// keeps running from there at normal speed.
-  /// The offset is a whole number of seconds (sub-second parts are dropped on
-  /// both sides), so "shifting" to the current time is no shift at all.
-  static void shiftTo(DateTime target, {bool frozen = false}) {
+  static void shiftTo(DateTime target,
+      {bool frozen = false, String? virtualLocalIanaZone}) {
     final targetWholeSecond = _truncateToSeconds(target.toLocal());
     _offsetFromSystem =
         targetWholeSecond.difference(_truncateToSeconds(systemNow()));
     _frozenMoment = frozen ? targetWholeSecond : null;
+    _virtualLocalIanaZone = virtualLocalIanaZone;
     changeNotifier.value++;
   }
 
-  /// Back to the system time.
+  /// Changes what "local" stands for, the time stays as it is.
+  static void setVirtualLocalZone(String? ianaZone) {
+    _virtualLocalIanaZone = ianaZone;
+    changeNotifier.value++;
+  }
+
+  /// Back to the system time and the system zone.
   static void reset() {
     _offsetFromSystem = Duration.zero;
     _frozenMoment = null;
+    _virtualLocalIanaZone = null;
     changeNotifier.value++;
   }
 
