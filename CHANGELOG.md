@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+---
+
+## [1.7.0] - 2026-11-17
+
 ### Added
 - new value types: day minute and two graphical analog clocks (12 or 24-hour face), all with seconds optional
 - Time Shift: allows to specify the time zone (e. g. Lord Howe, saves you the trouble of doing the math in your head

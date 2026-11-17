@@ -1,0 +1,10 @@
+Better Time Shift, Focus mode and night use, new graphical clocks
+
+- Two analog clocks (12/24-hour) and day minute
+- Time Shift: enter moments in any time zone (e.g. Lord Howe), optionally use it as "local", optional start value
+- Night mode time window in Settings
+- Seconds, decimals and details line can be hidden per value or globally
+- App follows the system language by default
+- Seconds now change exactly with the system clock
+
++ many other improvements

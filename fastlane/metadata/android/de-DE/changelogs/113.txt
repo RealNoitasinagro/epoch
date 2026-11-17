@@ -1,0 +1,10 @@
+Time Shift, Fokus- und Nachtmodus verbessert, neue grafische Uhren
+
+- Zwei Analoguhren (12/24 Stunden) und Tagesminute
+- Time Shift: Zeitpunkte in beliebiger Zeitzone eingeben (z. B. Lord Howe), optional als „lokal“ verwenden, optionaler Startwert
+- Nachtmodus-Zeitfenster
+- Sekunden, Dezimalstellen und Detailzeile pro Wert oder global ausblendbar
+- App folgt standardmäßig der Systemsprache
+- Sekundenwechsel jetzt exakt mit der Systemuhr
+
++ viele weitere Verbesserungen
