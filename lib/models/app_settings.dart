@@ -14,6 +14,7 @@ const _kDateWithDetails = 'date_cw_doy';
 const _kDayQuarterColorKey = 'day_quarter_color';
 const _kFocusBrightnessKey = 'focus_brightness';
 const _kFocusColorKey = 'focus_color';
+const _kFocusColorModeKey = 'focus_color_mode';
 const _kFocusPixelShiftKey = 'focus_pixel_shift';
 const _kFocusTimeShiftIndicatorKey = 'focus_time_shift_indicator';
 const _kHourFormatKey = 'hour_format_24';
@@ -70,6 +71,10 @@ enum ZoneDisplayMode {
 }
 
 enum LmstMode { off, manual, locationAccess }
+
+/// How the Focus screen gets its color: a fixed one, one that follows the
+/// quarter of the day, or a random one at every start.
+enum FocusColorMode { fixed, dayQuarter, random }
 
 
 Future<Locale?> loadLocale() async {
@@ -280,6 +285,22 @@ Future<Color> loadFocusColor(bool isNightMode) async {
 Future<void> saveFocusColor(Color color) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt(_kFocusColorKey, color.toARGB32());
+}
+
+/// Night mode always uses its own color: no mode applies there.
+Future<FocusColorMode> loadFocusColorMode(bool isNightMode) async {
+  if (isNightMode) return FocusColorMode.fixed;
+  final prefs = await SharedPreferences.getInstance();
+  final name = prefs.tolerantString(_kFocusColorModeKey);
+  return FocusColorMode.values
+      .where((mode) => mode.name == name)
+      .firstOrNull ??
+      FocusColorMode.fixed;
+}
+
+Future<void> saveFocusColorMode(FocusColorMode mode) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(_kFocusColorModeKey, mode.name);
 }
 
 Future<bool> loadFocusPixelShift() async {

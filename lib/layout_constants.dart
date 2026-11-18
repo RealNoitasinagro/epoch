@@ -5,10 +5,14 @@ const fontFamilyDefault = 'JetBrainsMono';  // 'monospace';
 const Color kColorWhite       = Color(0xFFFFFFFF);  // 4294967295
 const Color kColorNightRed    = Color(0xFFCC1010);  // 4291563536
 const Color kColorNightRedDim = Color(0xFF7A0000);
-const Color kColorMatrixGreen = Color(0xFF00FF41);  // 4278255425
+const Color kColorOrange      = Color(0xFFFF6D00);  // 4294929664
 const Color kColorAmber       = Color(0xFFFFB300);  // 4294947584
+const Color kColorMatrixGreen = Color(0xFF00FF41);  // 4278255425
 const Color kColorCyan        = Color(0xFF00E5FF);  // 4278248959
 const Color kColorGrey        = Color(0xFFB0B0B0);  // 4289769648
+const Color kColorMagenta     = Color(0xFFD81B60);  // 4292352864
+const Color kColorViolet      = Color(0xFFB388FF);  // 4289956095
+const Color kColorAzure       = Color(0xFF448AFF);  // 4282682111
 
 const IconData kIconTimeZoneIndicator = Icons.language_sharp;
 const IconData kIconPinnedIndicator   = Icons.push_pin_sharp;

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
+  choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
+
+### Fixed
+- wrongly typed entries in the config could make the app get stuck on a black screen
+
 ---
 
 ## [1.7.0] - 2026-11-17

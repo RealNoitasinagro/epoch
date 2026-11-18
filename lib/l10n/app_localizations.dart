@@ -266,6 +266,24 @@ abstract class AppLocalizations {
   /// **'Edit time value'**
   String get hintEditTimeValue;
 
+  /// No description provided for @hintFocusScreenColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get hintFocusScreenColor;
+
+  /// No description provided for @hintFocusScreenColorDayQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes with the quarter of the day'**
+  String get hintFocusScreenColorDayQuarter;
+
+  /// No description provided for @hintFocusScreenColorRandom.
+  ///
+  /// In en, this message translates to:
+  /// **'A different color at every start'**
+  String get hintFocusScreenColorRandom;
+
   /// No description provided for @hintFocusScreenDetailsOff.
   ///
   /// In en, this message translates to:

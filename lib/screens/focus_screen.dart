@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,21 +11,14 @@ import '../l10n/app_localizations.dart';
 import '../layout_constants.dart';
 import '../main.dart';
 import '../models/app_settings.dart';
+import '../models/focus_colors.dart';
 import '../models/time_value.dart';
 import '../second_ticker.dart';
+import '../time_utils.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_shift_indicator.dart';
 import '../widgets/time_string_row.dart';
 import '../zoned_moment.dart';
-
-const _colorOptions = [
-  kColorWhite,
-  kColorNightRed,
-  kColorMatrixGreen,
-  kColorAmber,
-  kColorCyan,
-  kColorGrey,
-];
 
 class FocusScreen extends StatefulWidget {
   final TimeValue timeValue;
@@ -43,9 +37,17 @@ class FocusScreen extends StatefulWidget {
 class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
+  static const _pixelShiftInterval = Duration(seconds: 180);
+  static const _safetyMargin = 8.0;  // extra breathing room, both ends
 
   late DateTime _now;
-  Color _textColor = Colors.white;
+
+  Color _fixedColor = Colors.white;
+  FocusColorMode _colorMode = FocusColorMode.fixed;
+  Color _randomColor = Colors.white;
+  bool _paletteOpen = false;
+  static Color? _lastRandomColor;  // different color at every start (within one session)
+
   bool? _showLine2;  // null until the first build, then follows the button
   late bool _showOptionalPart;
 
@@ -60,8 +62,6 @@ class _FocusScreenState extends State<FocusScreen> {
   bool _pixelShiftInitialized = false;
   double _pixelShiftOffsetY = 0;
   Timer? _pixelShiftTimer;
-  static const _pixelShiftInterval = Duration(seconds: 180);
-  static const _safetyMargin = 8.0;  // extra breathing room, both ends
 
   ValueNotifier<bool>? _nightModeNotifier;
 
@@ -97,6 +97,24 @@ class _FocusScreenState extends State<FocusScreen> {
 
   bool get _showTimeShiftIndicator =>
       EpochApp.of(context).focusTimeShiftIndicator;
+
+  /// The color of the value and the controls.
+  Color get _textColor => switch (_colorMode) {
+    FocusColorMode.fixed => _fixedColor,
+    FocusColorMode.dayQuarter => TimeUtils.dayQuarterColor(_quarterHour()),
+    FocusColorMode.random => _randomColor,
+  };
+
+  /// Hour of the wall clock that decides the quarter of the day: that of the
+  /// value's zone, or of "local" for values without a zone.
+  int _quarterHour() {
+    final localIanaZone = EpochApp.of(context).localIanaZone;
+    if (widget.timeValue.isZoneIndependent) {
+      return localWallClockAt(_now, localIanaZone).hour;
+    }
+    return ZonedMoment.of(widget.timeValue, _now.toUtc(), localIanaZone)
+        .wallClock.hour;
+  }
 
   void _updateNow() {
     if (!mounted) return;
@@ -205,11 +223,13 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Future<void> _initBrightness() async {
     final isNightMode = EpochApp.of(context).isNightMode;
-    var savedColor =
+    var fixedColor =
     isNightMode ? kDefaultFocusColorNight : kDefaultFocusColorLight;
+    var colorMode = FocusColorMode.fixed;
     var initial = kDefaultFocusBrightness;
     try {
-      savedColor = await loadFocusColor(isNightMode);
+      fixedColor = await loadFocusColor(isNightMode);
+      colorMode = await loadFocusColorMode(isNightMode);
       initial = await loadFocusBrightness(isNightMode);
       if (!kIsWeb && !Platform.isLinux) {
         await ScreenBrightness().setApplicationScreenBrightness(initial);
@@ -219,8 +239,31 @@ class _FocusScreenState extends State<FocusScreen> {
     }
     if (mounted) setState(() {
       _brightness = initial;
-      _textColor = savedColor;
+      _fixedColor = fixedColor;
+      _colorMode = colorMode;
+      if (colorMode == FocusColorMode.random) _pickRandomColor();
     });
+  }
+
+  void _pickRandomColor() {
+    _randomColor = pickRandomFocusColor(Random(), exclude: _lastRandomColor);
+    _lastRandomColor = _randomColor;
+  }
+
+  /// A solid [color], or one of the automatic modes. In night mode this only
+  /// holds for the session.
+  void _selectColor({Color? color, FocusColorMode mode = FocusColorMode.fixed}) {
+    setState(() {
+      _colorMode = mode;
+      if (color != null) _fixedColor = color;
+      if (mode == FocusColorMode.random) _pickRandomColor();
+      _paletteOpen = false;
+    });
+    if (!EpochApp.of(context).isNightMode) {
+      if (color != null) saveFocusColor(color);
+      saveFocusColorMode(mode);
+    }
+    _scheduleControlsHide();
   }
 
   Future<void> _saveBrightness(double value) async {
@@ -237,7 +280,12 @@ class _FocusScreenState extends State<FocusScreen> {
   void _scheduleControlsHide() {
     _controlsHideTimer?.cancel();
     _controlsHideTimer = Timer(_controlsAutoHideDelay, () {
-      if (mounted) setState(() => _controlsVisible = false);
+      if (mounted) {
+        setState(() {
+          _controlsVisible = false;
+          _paletteOpen = false;
+        });
+      }
     });
   }
 
@@ -320,6 +368,111 @@ class _FocusScreenState extends State<FocusScreen> {
     super.dispose();
   }
 
+  Widget _paletteButton(AppLocalizations l10n) {
+    return IconButton(
+      icon: Icon(Icons.palette, color: _textColor, size: 28),
+      tooltip: l10n.hintFocusScreenColor,
+      onPressed: () {
+        setState(() => _paletteOpen = !_paletteOpen);
+        _scheduleControlsHide();
+      },
+    );
+  }
+
+  /// Four fields in the colors of the quarters of the day.
+  Widget _dayQuarterSwatch() {
+    Widget quarter(int hour) => Expanded(
+      child: ColoredBox(
+          color: TimeUtils.dayQuarterColor(hour),
+          child: const SizedBox.expand()),
+    );
+    return Column(children: [
+      Expanded(child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [quarter(0), quarter(6)])),
+      Expanded(child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [quarter(12), quarter(18)])),
+    ]);
+  }
+
+  Widget _palettePanel(AppLocalizations l10n) {
+    Widget cell({
+      required Widget content,
+      required bool selected,
+      required VoidCallback onTap,
+      String? tooltip,
+      Color? glowColor,
+    }) {
+      final field = GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+                color: selected ? Colors.white : Colors.white24,
+                width: selected ? 2.5 : 1),
+            boxShadow: selected && glowColor != null
+                ? [BoxShadow(
+                color: glowColor.withAlpha(200),
+                blurRadius: 12,
+                spreadRadius: 2)]
+                : null,
+          ),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(4), child: content),
+        ),
+      );
+      return tooltip == null ? field : Tooltip(message: tooltip, child: field);
+    }
+
+    return Material(
+      color: Colors.black.withAlpha(230),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Colors.white24),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 6 * 44 + 5 * 10),
+          child: Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              for (final color in focusSolidColors)
+                cell(
+                  content: ColoredBox(color: color),
+                  selected:
+                  _colorMode == FocusColorMode.fixed && _fixedColor == color,
+                  glowColor: color,
+                  onTap: () => _selectColor(color: color),
+                ),
+              cell(
+                content: _dayQuarterSwatch(),
+                selected: _colorMode == FocusColorMode.dayQuarter,
+                tooltip: l10n.hintFocusScreenColorDayQuarter,
+                onTap: () => _selectColor(mode: FocusColorMode.dayQuarter),
+              ),
+              cell(
+                content: const ColoredBox(
+                  color: Color(0xFF2A2A2A),
+                  child: Center(
+                      child: Icon(Icons.shuffle, color: Colors.white70)),
+                ),
+                selected: _colorMode == FocusColorMode.random,
+                tooltip: l10n.hintFocusScreenColorRandom,
+                onTap: () => _selectColor(mode: FocusColorMode.random),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
@@ -340,10 +493,10 @@ class _FocusScreenState extends State<FocusScreen> {
       backgroundColor: Colors.black,
       body: GestureDetector(
         onDoubleTap: _exit,
-        onTap: _showControls,
-        // onLongPress: optionalPart != OptionalPart.none
-        //   ? _toggleOptionalPart
-        //   : null,
+        onTap: () {
+          if (_paletteOpen) setState(() => _paletteOpen = false);
+          _showControls();
+        },
         behavior: HitTestBehavior.opaque,
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -415,13 +568,19 @@ class _FocusScreenState extends State<FocusScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ..._colorSwatches(),
-              const SizedBox(width: 16),
+              _paletteButton(l10n),
               _pixelShiftToggle(l10n),
               if (hasLine2) _detailsToggle(l10n),
             ],
           ),
         ),
+        if (_paletteOpen)
+          Positioned(
+            top: mediaPadding.top + 8 + 56,
+            left: 16,
+            right: 16,
+            child: Center(child: _palettePanel(l10n)),
+          ),
         // Brightness slider – bottom, above hint:
         if (_showBrightnessSlider) Positioned(
           left: 32,
@@ -459,11 +618,20 @@ class _FocusScreenState extends State<FocusScreen> {
             children: [
               if (hasLine2) _detailsToggle(l10n),
               _pixelShiftToggle(l10n),
-              const SizedBox(height: 16),
-              ..._colorSwatches(vertical: true),
+              _paletteButton(l10n),
             ]
           ),
         ),
+        if (_paletteOpen)
+          Positioned(
+            left: mediaPadding.left + 8 + 56,
+            top: 0,
+            bottom: 0,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _palettePanel(l10n),
+            ),
+          ),
         // Brightness slider – right side, vertically centered:
         if (_showBrightnessSlider) Positioned(
           right: mediaPadding.right + 8,
@@ -497,43 +665,6 @@ class _FocusScreenState extends State<FocusScreen> {
           : l10n.hintPixelShiftOff,
       onPressed: _togglePixelShift,
     );
-  }
-
-  List<Widget> _colorSwatches({bool vertical = false}) {
-    List<Color> colorOptions =
-      vertical ? _colorOptions.reversed.toList() : _colorOptions;
-    return colorOptions.map((color) {
-      final isSelected = _textColor == color;
-      return GestureDetector(
-        onTap: () {
-          setState(() => _textColor = color);
-          if (!EpochApp.of(context).isNightMode) saveFocusColor(color);
-          _scheduleControlsHide();
-        },
-        child: Container(
-          margin: vertical
-              ? const EdgeInsets.symmetric(vertical: 6)
-              : const EdgeInsets.symmetric(horizontal: 8),
-          width: 28,
-          height: 28,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: isSelected ? Colors.white : Colors.transparent,
-              width: 2.5,
-            ),
-            boxShadow: isSelected ? [
-              BoxShadow(
-                  color: color.withAlpha(200),
-                  blurRadius: 12,
-                  spreadRadius: 2),
-            ] : null,
-          ),
-        ),
-      );
-    }).toList();
   }
 
   Widget _brightnessSliderHorizontal() {

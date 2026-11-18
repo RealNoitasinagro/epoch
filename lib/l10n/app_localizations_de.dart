@@ -112,6 +112,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintEditTimeValue => 'Zeitwert bearbeiten';
 
   @override
+  String get hintFocusScreenColor => 'Farbe';
+
+  @override
+  String get hintFocusScreenColorDayQuarter => 'Wechselt mit dem Tagesviertel';
+
+  @override
+  String get hintFocusScreenColorRandom => 'Bei jedem Start eine andere Farbe';
+
+  @override
   String get hintFocusScreenDetailsOff => 'Detailzeile ausblenden';
 
   @override

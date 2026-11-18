@@ -30,7 +30,7 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'active_tab': 'one', 'all_tabs': 'not a list', 'date_cw_doy': 'yes',
       'date_format': 5, 'day_quarter_color': 1, 'focus_brightness': 'bright',
-      'focus_color': '4278248959', 'focus_pixel_shift': 'on',
+      'focus_color': '4278248959', 'focus_color_mode': 3, 'focus_pixel_shift': 'on',
       'focus_time_shift_indicator': 0, 'hour_format_24': 'true',
       'last_imported_config': 7, 'lmst_longitude': 'east', 'lmst_mode': 3,
       'locale': 1, 'optional_part_hidden': 'time', 'startup_focus_value': 9,
@@ -39,6 +39,7 @@ void main() {
     });
     expect(await loadActiveTab(), 0);
     expect(await loadFocusColor(false), kDefaultFocusColorLight);
+    expect(await loadFocusColorMode(false), FocusColorMode.fixed);
     expect(await loadFocusBrightness(false), kDefaultFocusBrightness);
     expect(await loadHourFormat24(), kDefaultHourFormat24);
     expect(await loadLmstLongitude(), isNull);

@@ -113,6 +113,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintEditTimeValue => 'Edit time value';
 
   @override
+  String get hintFocusScreenColor => 'Color';
+
+  @override
+  String get hintFocusScreenColorDayQuarter =>
+      'Changes with the quarter of the day';
+
+  @override
+  String get hintFocusScreenColorRandom => 'A different color at every start';
+
+  @override
   String get hintFocusScreenDetailsOff => 'Hide details line';
 
   @override

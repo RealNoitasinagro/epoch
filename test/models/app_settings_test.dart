@@ -50,4 +50,16 @@ void main() {
     schedule = await loadNightModeSchedule();
     expect(schedule.isActive, isFalse);
   });
+
+  test('focus color mode: default, round trip, night mode, wrong values', () async {
+    SharedPreferences.setMockInitialValues({});
+    expect(await loadFocusColorMode(false), FocusColorMode.fixed);
+    await saveFocusColorMode(FocusColorMode.dayQuarter);
+    expect(await loadFocusColorMode(false), FocusColorMode.dayQuarter);
+    expect(await loadFocusColorMode(true), FocusColorMode.fixed);
+    for (final wrong in ['rainbow', 5, true]) {
+      SharedPreferences.setMockInitialValues({'focus_color_mode': wrong});
+      expect(await loadFocusColorMode(false), FocusColorMode.fixed);
+    }
+  });
 }
