@@ -4,6 +4,7 @@ import '../../app/day_quarter_color.dart';
 import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/time_value_formatter.dart';
+import '../../formatting/time_value_texts.dart';
 import '../../formatting/value_format_settings.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/time_value.dart';
@@ -11,6 +12,7 @@ import '../../settings/app_settings.dart';
 import '../../time/time_utils.dart';
 import '../../time/zone_abbreviations.dart';
 import '../../time/zoned_moment.dart';
+import 'dst_status_icon.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
 
@@ -257,7 +259,7 @@ class TimeStringRow extends TimeValueRow {
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
-      dstStatusIndicator: timeValue.getDstStatusIndicator(
+      dstStatusIndicator: timeValue.dstStatusIcon(
         now.toUtc(),
         localIanaZone,
       ),

@@ -3,6 +3,7 @@ import '../app/day_quarter_color.dart';
 import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/entry_picker.dart';
+import '../formatting/time_value_texts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
@@ -11,6 +12,7 @@ import '../time/time_utils.dart';
 import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/section_header.dart';
+import '../widgets/value_tiles/dst_status_icon.dart';
 import '../widgets/value_tiles/time_graphical_row.dart';
 import '../widgets/value_tiles/time_string_row.dart';
 import '../widgets/value_tiles/value_tile.dart';
@@ -777,7 +779,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
           widget.now.toUtc(),
           settings.localIanaZone,
         ),
-        dstStatusIndicator: timeValue.getDstStatusIndicator(
+        dstStatusIndicator: timeValue.dstStatusIcon(
           widget.now.toUtc(),
           settings.localIanaZone,
         ),

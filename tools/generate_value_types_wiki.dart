@@ -9,6 +9,7 @@
 // Result: build/wiki/Value-Types.md
 import 'dart:io';
 import 'dart:ui';
+import 'package:epoch/formatting/time_value_texts.dart';
 import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/astronomical_tab_config.dart';

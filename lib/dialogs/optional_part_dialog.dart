@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../formatting/time_value_texts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
 import '../widgets/section_header.dart';
@@ -62,7 +63,7 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
             dense: true,
             contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.leading,
-            title: Text(TimeValue.localizedTypeLabel(valueType, l10n)),
+            title: Text(localizedValueTypeLabel(valueType, l10n)),
             value: !_hiddenTypes.contains(valueType),
             onChanged: (shown) => _setShown(valueType, shown ?? true),
           ),

@@ -6,6 +6,7 @@ import '../dialogs/entry_picker.dart';
 import '../dialogs/optional_part_dialog.dart';
 import '../formatting/pattern_tokens.dart';
 import '../formatting/time_value_formatter.dart';
+import '../formatting/time_value_texts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../app/day_quarter_color.dart';
 import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
+import '../../formatting/time_value_texts.dart';
 import '../../l10n/app_localizations.dart';
 import '../../settings/app_settings.dart';
 import '../../time/zoned_moment.dart';
 import '../clocks/graphical_clock.dart';
+import 'dst_status_icon.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
 
@@ -49,7 +51,7 @@ class TimeGraphicalRow extends TimeValueRow {
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
-      dstStatusIndicator: timeValue.getDstStatusIndicator(
+      dstStatusIndicator: timeValue.dstStatusIcon(
         now.toUtc(),
         localIanaZone,
       ),

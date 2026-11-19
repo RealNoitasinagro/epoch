@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../app/layout_constants.dart';
+import '../formatting/time_value_texts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/astronomical_tab_config.dart';
 import '../models/civil_tab_config.dart';
@@ -175,7 +176,7 @@ class _EntryPickerState extends State<_EntryPicker> {
       onPressed: disabled ? null : () => _selectType(type),
       child: _typeLabel(
         context,
-        TimeValue.localizedTypeLabel(type, l10n),
+        localizedValueTypeLabel(type, l10n),
         disabled,
         !type.isZoneIndependent,
         type.isGraphical,
@@ -248,7 +249,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         kTabVerticalPadding,
       ),
       title: EntryPickerDialogTitle(
-        superLabel: TimeValue.localizedTypeLabel(_type!, l10n),
+        superLabel: localizedValueTypeLabel(_type!, l10n),
         title: l10n.hintSelectTimezone,
         onBack: _goBack,
       ),
