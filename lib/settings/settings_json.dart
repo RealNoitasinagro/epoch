@@ -34,7 +34,7 @@ Future<List<String>> importSettingsJson(String json) async {
   await prefs.clear();
   try {
     await _writeMapToPrefs(prefs, decoded);
-    await runPrefsMigrations();  // handle configs exported before 1.5.0
+    await runPrefsMigrations(); // handle configs exported before 1.5.0
   } catch (e) {
     await prefs.clear();
     await _writeMapToPrefs(prefs, backup);
@@ -44,7 +44,9 @@ Future<List<String>> importSettingsJson(String json) async {
 }
 
 Future<void> _writeMapToPrefs(
-    SharedPreferences prefs, Map<String, dynamic> map) async {
+  SharedPreferences prefs,
+  Map<String, dynamic> map,
+) async {
   for (final entry in map.entries) {
     final value = entry.value;
     if (value is bool) {

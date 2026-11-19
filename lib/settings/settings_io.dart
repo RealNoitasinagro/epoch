@@ -91,8 +91,8 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
-  EffectiveClock.reset();  // an import starts from a clean slate ...
-  await applyTimeShiftStart();  // ... except for a start value the file brings along
+  EffectiveClock.reset(); // an import starts from a clean slate ...
+  await applyTimeShiftStart(); // ... except for a start value the file brings along
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
@@ -101,7 +101,9 @@ Future<void> importSettings(BuildContext context) async {
     ignoredKeys.isEmpty
         ? l10n.messageSettingsImported
         : l10n.messageSettingsImportedIgnored(
-        ignoredKeys.length, _keyList(ignoredKeys)),
+            ignoredKeys.length,
+            _keyList(ignoredKeys),
+          ),
     duration: ignoredKeys.isEmpty ? null : const Duration(seconds: 6),
   );
 }
@@ -177,11 +179,12 @@ String _keyList(List<String> keys) => keys.length <= _maxListedKeys
     ? keys.join(', ')
     : '${keys.take(_maxListedKeys).join(', ')}, …';
 
-void _showSnackBar(BuildContext context, String message,
-    {Duration? duration}) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    duration: duration ?? const Duration(seconds: 4),
-    behavior: SnackBarBehavior.floating,
-  ));
+void _showSnackBar(BuildContext context, String message, {Duration? duration}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: duration ?? const Duration(seconds: 4),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
 }

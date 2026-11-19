@@ -259,10 +259,7 @@ class TimeStringRow extends TimeValueRow {
       label: label,
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
-      dstStatusIndicator: timeValue.dstStatusIcon(
-        now.toUtc(),
-        localIanaZone,
-      ),
+      dstStatusIndicator: timeValue.dstStatusIcon(now.toUtc(), localIanaZone),
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,
         waitDuration: const Duration(milliseconds: 1000),

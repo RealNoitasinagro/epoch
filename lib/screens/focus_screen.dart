@@ -17,6 +17,7 @@ import '../time/effective_clock.dart';
 import '../time/seconds_ticker.dart';
 import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
+import '../widgets/focus_palette.dart';
 import '../widgets/time_shift_indicator.dart';
 import '../widgets/value_tiles/time_string_row.dart';
 import 'home_screen.dart';
@@ -398,117 +399,6 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  /// Four fields in the colors of the quarters of the day.
-  Widget _dayQuarterSwatch() {
-    Widget quarter(int hour) => Expanded(
-      child: ColoredBox(
-        color: dayQuarterColorOfHour(hour),
-        child: const SizedBox.expand(),
-      ),
-    );
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [quarter(0), quarter(6)],
-          ),
-        ),
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [quarter(12), quarter(18)],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _palettePanel(AppLocalizations l10n) {
-    Widget cell({
-      required Widget content,
-      required bool selected,
-      required VoidCallback onTap,
-      String? tooltip,
-      Color? glowColor,
-    }) {
-      final field = GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-              color: selected ? Colors.white : Colors.white24,
-              width: selected ? 2.5 : 1,
-            ),
-            boxShadow: selected && glowColor != null
-                ? [
-                    BoxShadow(
-                      color: glowColor.withAlpha(200),
-                      blurRadius: 12,
-                      spreadRadius: 2,
-                    ),
-                  ]
-                : null,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: content,
-          ),
-        ),
-      );
-      return tooltip == null ? field : Tooltip(message: tooltip, child: field);
-    }
-
-    return Material(
-      color: Colors.black.withAlpha(230),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.white24),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 6 * 44 + 5 * 10),
-          child: Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (final color in focusSolidColors)
-                cell(
-                  content: ColoredBox(color: color),
-                  selected:
-                      _colorMode == FocusColorMode.fixed &&
-                      _fixedColor == color,
-                  glowColor: color,
-                  onTap: () => _selectColor(color: color),
-                ),
-              cell(
-                content: _dayQuarterSwatch(),
-                selected: _colorMode == FocusColorMode.dayQuarter,
-                tooltip: l10n.hintFocusScreenColorDayQuarter,
-                onTap: () => _selectColor(mode: FocusColorMode.dayQuarter),
-              ),
-              cell(
-                content: const ColoredBox(
-                  color: Color(0xFF2A2A2A),
-                  child: Center(
-                    child: Icon(Icons.shuffle, color: Colors.white70),
-                  ),
-                ),
-                selected: _colorMode == FocusColorMode.random,
-                tooltip: l10n.hintFocusScreenColorRandom,
-                onTap: () => _selectColor(mode: FocusColorMode.random),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _remeasureContent());
@@ -630,7 +520,14 @@ class _FocusScreenState extends State<FocusScreen> {
             top: mediaPadding.top + 8 + 56,
             left: 16,
             right: 16,
-            child: Center(child: _palettePanel(l10n)),
+            child: Center(
+              child: FocusPalette(
+                mode: _colorMode,
+                fixedColor: _fixedColor,
+                onSelectColor: (color) => _selectColor(color: color),
+                onSelectMode: (mode) => _selectColor(mode: mode),
+              ),
+            ),
           ),
         // Brightness slider – bottom, above hint:
         if (_showBrightnessSlider)
@@ -682,7 +579,12 @@ class _FocusScreenState extends State<FocusScreen> {
             bottom: 0,
             child: Align(
               alignment: Alignment.centerLeft,
-              child: _palettePanel(l10n),
+              child: FocusPalette(
+                mode: _colorMode,
+                fixedColor: _fixedColor,
+                onSelectColor: (color) => _selectColor(color: color),
+                onSelectMode: (mode) => _selectColor(mode: mode),
+              ),
             ),
           ),
         // Brightness slider – right side, vertically centered:

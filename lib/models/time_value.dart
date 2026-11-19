@@ -288,8 +288,6 @@ class TimeValue implements TabEntry {
     if (rules == null || !rules.hasDst) return null;
     return TimeUtils.inZone(nowUtc, ianaZone).timeZone.isDst;
   }
-
-
 }
 
 extension ValueTypeProps on ValueType {

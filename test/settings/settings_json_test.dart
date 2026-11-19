@@ -16,7 +16,8 @@ void main() {
     test('everything is replaced, unusable values are reported', () async {
       SharedPreferences.setMockInitialValues({'locale': 'en'});
       final ignored = await importSettingsJson(
-          '{"theme_mode": "night", "focus_color": "x", "thousands_sep": false}');
+        '{"theme_mode": "night", "focus_color": "x", "thousands_sep": false}',
+      );
       expect(ignored, ['focus_color']);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.get('theme_mode'), 'night');
