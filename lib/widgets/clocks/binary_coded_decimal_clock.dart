@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../app/layout_constants.dart';
 import '../../l10n/app_localizations.dart';
-import '../../layout_constants.dart';
-import '../../time_utils.dart';
+import '../../time/time_utils.dart';
 
 // BCD-style: two columns per unit (tens digit, units digit).
 class BinaryCodedDecimalClock extends StatelessWidget {

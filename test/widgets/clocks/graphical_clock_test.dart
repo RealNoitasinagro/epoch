@@ -1,7 +1,7 @@
+import 'package:epoch/app/layout_constants.dart';
 import 'package:epoch/l10n/app_localizations.dart';
-import 'package:epoch/layout_constants.dart';
-import 'package:epoch/models/app_settings.dart';
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/settings/app_settings.dart';
 import 'package:epoch/widgets/clocks/binary_coded_decimal_clock.dart';
 import 'package:epoch/widgets/clocks/binary_columns_clock.dart';
 import 'package:epoch/widgets/clocks/graphical_clock.dart';

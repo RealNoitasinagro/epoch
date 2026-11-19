@@ -6,19 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import '../effective_clock.dart';
+import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
 import '../main.dart';
-import '../models/app_settings.dart';
-import '../models/focus_colors.dart';
 import '../models/time_value.dart';
-import '../second_ticker.dart';
-import '../time_utils.dart';
+import '../settings/app_settings.dart';
+import '../settings/focus_colors.dart';
+import '../time/effective_clock.dart';
+import '../time/seconds_ticker.dart';
+import '../time/time_utils.dart';
+import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_shift_indicator.dart';
-import '../widgets/time_string_row.dart';
-import '../zoned_moment.dart';
+import '../widgets/value_tiles/time_string_row.dart';
 
 class FocusScreen extends StatefulWidget {
   final TimeValue timeValue;
@@ -128,7 +128,7 @@ class _FocusScreenState extends State<FocusScreen> {
     _nightModeNotifier = app.nightModeNotifier..addListener(_onNightModeChanged);
     _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
-    SecondTicker.instance.addListener(_updateNow);
+    SecondsTicker.instance.addListener(_updateNow);
     WakelockPlus.enable();
     _initPixelShift();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -356,7 +356,7 @@ class _FocusScreenState extends State<FocusScreen> {
 
   @override
   void dispose() {
-    SecondTicker.instance.removeListener(_updateNow);
+    SecondsTicker.instance.removeListener(_updateNow);
     _controlsHideTimer?.cancel();
     _pixelShiftTimer?.cancel();
     _nightModeNotifier?.removeListener(_onNightModeChanged);

@@ -7,7 +7,7 @@ Reads:
   <cldr-json-dir>/cldr-dates-full/main/{de,en}/timeZoneNames.json
 
 Writes:
-  lib/models/generated/cldr_exemplar_cities_{de,en}.g.dart
+  lib/time_zone_search/generated/cldr_exemplar_cities_{de,en}.g.dart
 
 Usage:
   python3 tools/generate_cldr_exemplar_cities.py
@@ -20,7 +20,7 @@ import os
 import sys
 from generated_header import write_header, cldr_data_version
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 DEFAULT_OUT_FILE_CITIES_DE = "cldr_exemplar_cities_de.g.dart"
 DEFAULT_OUT_FILE_CITIES_EN = "cldr_exemplar_cities_en.g.dart"
 DEFAULT_OUT_FILE_ZONE_LONG_DE = "cldr_zone_long_names_de.g.dart"

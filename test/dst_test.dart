@@ -1,8 +1,8 @@
+import 'package:epoch/formatting/time_value_formatter.dart';
+import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/models/value_format_settings.dart';
-import 'package:epoch/time_utils.dart';
-import 'package:epoch/time_value_formatter.dart';
-import 'package:epoch/widgets/time_string_row.dart';
+import 'package:epoch/time/time_utils.dart';
+import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 

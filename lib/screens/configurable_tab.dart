@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import '../app/layout_constants.dart';
+import '../dialogs/entry_picker.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
 import '../main.dart';
-import '../models/app_settings.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
-import '../time_utils.dart';
+import '../settings/app_settings.dart';
+import '../time/time_utils.dart';
+import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/section_header.dart';
-import '../widgets/time_graphical_row.dart';
-import '../widgets/time_string_row.dart';
-import '../widgets/value_tile.dart';
-import '../zoned_moment.dart';
-import 'entry_picker.dart';
+import '../widgets/value_tiles/time_graphical_row.dart';
+import '../widgets/value_tiles/time_string_row.dart';
+import '../widgets/value_tiles/value_tile.dart';
 
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
 // [entries] and [onEntriesChanged] are managed by the parent.

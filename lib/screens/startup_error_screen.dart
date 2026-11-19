@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../app_themes.dart';
-import '../build_info.dart';
+import '../app/app_themes.dart';
+import '../app/build_info.dart';
+import '../app/layout_constants.dart';
+import '../app/link_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/system_locale.dart';
-import '../layout_constants.dart';
-import '../link_constants.dart';
 import '../widgets/link_text.dart';
 
 /// Shown instead of a blank screen when the app cannot start, e.g. because

@@ -16,7 +16,7 @@ Reads, from <tzdata-source-dir>:
     (source files containing "Zone" and "Link" directives -- parsed
     directly to classify canonical zones vs. Link aliases)
 
-Writes (relative to --out-dir, default: lib/models/generated):
+Writes (relative to --out-dir, default: lib/time_zone_search/generated):
   - zone1970_countries.g.dart
   - iso3166_country_names_en.g.dart
   - iana_canonical_zones_snapshot.g.dart
@@ -59,7 +59,7 @@ import re
 import sys
 from generated_header import write_header, tzdata_data_version
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 
 # Source files parsed for Zone/Link directives. Deliberately excludes
 # "backzone" (zones retired from the primary data, only compiled in with

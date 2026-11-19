@@ -5,13 +5,13 @@
 //   dart run tools/explain_tz_search.dart --transitions Africa/El_Aaiun
 //   dart run tools/explain_tz_search.dart --redundant
 import 'dart:io';
-import 'package:epoch/models/generated/iana_links_snapshot.g.dart';
-import 'package:epoch/models/timezone_match_labels.dart';
-import 'package:epoch/models/timezone_search.dart';
-import 'package:epoch/models/timezone_search_normalize.dart';
-import 'package:epoch/models/timezone_search_zones.dart';
-import 'package:epoch/models/tz_entry.dart';
-import 'package:epoch/models/zone_rules.dart';
+import 'package:epoch/time/zone_rules.dart';
+import 'package:epoch/time_zone_search/generated/iana_links_snapshot.g.dart';
+import 'package:epoch/time_zone_search/match_labels.dart';
+import 'package:epoch/time_zone_search/normalize.dart';
+import 'package:epoch/time_zone_search/search.dart';
+import 'package:epoch/time_zone_search/tz_entry.dart';
+import 'package:epoch/time_zone_search/zones.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 import 'package:timezone/timezone.dart' as tz;
 

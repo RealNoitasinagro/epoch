@@ -1,7 +1,7 @@
 import 'dart:ui';
+import 'package:epoch/formatting/time_value_formatter.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/time_value_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

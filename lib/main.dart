@@ -7,31 +7,31 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
-import 'app_themes.dart';
-import 'build_info.dart';
-import 'bundled_licenses.dart';
-import 'effective_clock.dart';
+import 'app/app_themes.dart';
+import 'app/build_info.dart';
+import 'app/bundled_licenses.dart';
+import 'app/layout_constants.dart';
+import 'app/link_constants.dart';
+import 'formatting/value_format_settings.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/system_locale.dart';
-import 'layout_constants.dart';
-import 'link_constants.dart';
-import 'models/app_settings.dart';
-import 'models/night_mode_schedule.dart';
-import 'models/prefs_migrations.dart';
-import 'models/settings_io.dart';
 import 'models/tab_config.dart';
 import 'models/tab_entry.dart';
-import 'models/time_shift_start.dart';
 import 'models/time_value.dart';
-import 'models/value_format_settings.dart';
-import 'platform_utils.dart';
+import 'platform/platform_utils.dart';
 import 'screens/configurable_tab.dart';
 import 'screens/focus_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/startup_error_screen.dart';
 import 'screens/time_shift_screen.dart';
-import 'second_ticker.dart';
+import 'settings/app_settings.dart';
+import 'settings/night_mode_schedule.dart';
+import 'settings/prefs_migrations.dart';
+import 'settings/settings_io.dart';
+import 'settings/time_shift_start.dart';
+import 'time/effective_clock.dart';
+import 'time/seconds_ticker.dart';
 import 'widgets/link_text.dart';
 import 'widgets/time_shift_indicator.dart';
 
@@ -425,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _now = EffectiveClock.now();
-    SecondTicker.instance.addListener(_updateNow);
+    SecondsTicker.instance.addListener(_updateNow);
     EffectiveClock.changeNotifier.addListener(_updateNow);
     _loadData();
   }
@@ -433,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void dispose() {
     _tabController?.dispose();
-    SecondTicker.instance.removeListener(_updateNow);
+    SecondsTicker.instance.removeListener(_updateNow);
     EffectiveClock.changeNotifier.removeListener(_updateNow);
     _settingsReloadNotifier?.removeListener(_onExternalReload);
     super.dispose();

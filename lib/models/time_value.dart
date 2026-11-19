@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
-import '../time_utils.dart';
-import 'generated/iana_links_snapshot.g.dart';
+import '../time/time_utils.dart';
+import '../time/zone_rules.dart';
+import '../time_zone_search/generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
-import 'zone_rules.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {

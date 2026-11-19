@@ -5,8 +5,8 @@ Capitals essentially never change -- this is NOT meant to run as part
 of the routine IANA/CLDR regeneration cycle, just occasionally.
 
 Writes:
-  lib/models/generated/wikidata_capitals_en.g.dart
-  lib/models/generated/wikidata_capitals_de.g.dart
+  lib/time_zone_search/generated/wikidata_capitals_en.g.dart
+  lib/time_zone_search/generated/wikidata_capitals_de.g.dart
 
 Usage:
   python3 tools/generate_wikidata_capitals.py
@@ -20,7 +20,7 @@ import urllib.request
 from collections import defaultdict
 from datetime import datetime, timezone
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 WIKIDATA_ENDPOINT = "https://query.wikidata.org/sparql"
 
 QUERY = """

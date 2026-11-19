@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../effective_clock.dart';
+import '../app/layout_constants.dart';
+import '../formatting/time_value_formatter.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
 import '../main.dart';
-import '../models/app_settings.dart';
-import '../time_value_formatter.dart';
+import '../settings/app_settings.dart';
+import '../time/effective_clock.dart';
 
 /// Shown in the title bar while the displayed time deviates from the system
 /// time: direction icon plus the real system time (running, never frozen).

@@ -16,7 +16,7 @@ Reads (from --tzdata-source-dir, e.g. $WORK/tzdata/tzdata2016a):
   africa antarctica asia australasia backward etcetera europe factory
   northamerica southamerica
 
-Writes (to --out-dir, default lib/models/generated):
+Writes (to --out-dir, default lib/time_zone_search/generated):
   legacy_abbreviations.g.dart
 
 Usage:
@@ -35,7 +35,7 @@ import zoneinfo
 from collections import defaultdict
 from datetime import datetime, timezone
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 SOURCE_FILES = [
     "africa", "antarctica", "asia", "australasia", "backward",
     "etcetera", "europe", "factory", "northamerica", "southamerica",

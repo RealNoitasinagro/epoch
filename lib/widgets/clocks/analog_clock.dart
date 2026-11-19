@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../../layout_constants.dart';
+
+import '../../app/layout_constants.dart';
 
 /// Which time span one revolution of the hour hand covers.
 enum AnalogClockScale { twelveHour, twentyFourHour }

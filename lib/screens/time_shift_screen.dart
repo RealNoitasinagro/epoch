@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import '../effective_clock.dart';
+import '../app/layout_constants.dart';
+import '../dialogs/dial_picker.dart';
+import '../dialogs/zone_picker.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
 import '../main.dart';
-import '../models/generated/iana_links_snapshot.g.dart';
-import '../models/time_shift_start.dart';
 import '../models/time_value.dart';
-import '../models/timezone_search_zones.dart';
-import '../models/zone_rules.dart';
-import '../second_ticker.dart';
-import '../wall_clock_in_zone.dart';
-import '../widgets/dial_picker.dart';
+import '../settings/time_shift_start.dart';
+import '../time/effective_clock.dart';
+import '../time/seconds_ticker.dart';
+import '../time/wall_clock_in_zone.dart';
+import '../time/zone_rules.dart';
+import '../time_zone_search/generated/iana_links_snapshot.g.dart';
+import '../time_zone_search/zones.dart';
 import '../widgets/section_header.dart';
-import '../widgets/zone_option_list.dart';
 
 enum _TimeUnit { hour, minute, second }
 
@@ -85,13 +85,13 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     _frozen = EffectiveClock.isFrozen;
     _zoneAsLocal = EffectiveClock.hasVirtualLocalZone;
     _zone = EffectiveClock.isShifted ? activeTimeShiftZone : const ZoneLocal();
-    SecondTicker.instance.addListener(_onTick);
+    SecondsTicker.instance.addListener(_onTick);
     _loadSavedStart();
   }
 
   @override
   void dispose() {
-    SecondTicker.instance.removeListener(_onTick);
+    SecondsTicker.instance.removeListener(_onTick);
     super.dispose();
   }
 

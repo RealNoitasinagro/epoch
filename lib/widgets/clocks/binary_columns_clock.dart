@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../app/layout_constants.dart';
 import '../../l10n/app_localizations.dart';
-import '../../layout_constants.dart';
-import '../../time_utils.dart';
+import '../../time/time_utils.dart';
 
 // One column per unit (H, M, S), top-aligned, most significant bit at top.
 class BinaryColumnsClock extends StatelessWidget {

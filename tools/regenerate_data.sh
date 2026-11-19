@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerates lib/models/generated/*.g.dart. Run from the repo root.
+# Regenerates lib/time_zone_search/generated/*.g.dart. Run from the repo root.
 #   tools/regenerate_data.sh iana <tzdata-source-dir>   # every IANA release
 #   tools/regenerate_data.sh cldr [<cldr-json-dir>]     # every CLDR release
 #   tools/regenerate_data.sh rare <tzdata2016a-dir>     # legacy abbreviations, Wikidata capitals
@@ -24,5 +24,5 @@ case "${1:-}" in
   *) sed -n '2,5p' "$0"; exit 64 ;;
 esac
 
-git status --short lib/models/generated
+git status --short lib/time_zone_search/generated
 echo "Next: flutter test test/timezone_data_test.dart && dart run tools/explain_tz_search.dart --redundant"

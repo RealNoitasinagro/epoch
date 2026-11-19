@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import '../app/layout_constants.dart';
+import '../dialogs/dial_picker.dart';
+import '../dialogs/entry_picker.dart';
+import '../dialogs/optional_part_dialog.dart';
+import '../formatting/pattern_tokens.dart';
+import '../formatting/time_value_formatter.dart';
 import '../l10n/app_localizations.dart';
-import '../layout_constants.dart';
 import '../main.dart';
-import '../models/app_settings.dart';
-import '../models/night_mode_schedule.dart';
-import '../models/pattern_tokens.dart';
-import '../models/settings_io.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';
-import '../platform_utils.dart';
-import '../services/location_service.dart';
-import '../time_value_formatter.dart';
-import '../widgets/dial_picker.dart';
+import '../platform/location_service.dart';
+import '../platform/platform_utils.dart';
+import '../settings/app_settings.dart';
+import '../settings/night_mode_schedule.dart';
+import '../settings/settings_io.dart';
 import '../widgets/section_header.dart';
-import 'entry_picker.dart';
-import 'optional_part_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

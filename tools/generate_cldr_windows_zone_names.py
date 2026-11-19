@@ -7,7 +7,7 @@ Reads:
   <cldr-json-dir>/cldr-core/supplemental/windowsZones.json
 
 Writes:
-  lib/models/generated/cldr_windows_zone_names.g.dart
+  lib/time_zone_search/generated/cldr_windows_zone_names.g.dart
 
 Usage:
   python3 tools/generate_cldr_windows_zone_names.py
@@ -20,7 +20,7 @@ import os
 import sys
 from generated_header import write_header, cldr_data_version
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 DEFAULT_CLDR_JSON_DIR = os.path.expanduser("~/Work/cldr-json/cldr-json")
 
 # Only territory="001" (the global default) is used: it gives exactly

@@ -9,14 +9,14 @@
 // Result: build/wiki/Value-Types.md
 import 'dart:io';
 import 'dart:ui';
+import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/astronomical_tab_config.dart';
 import 'package:epoch/models/civil_tab_config.dart';
 import 'package:epoch/models/curiosities_tab_config.dart';
 import 'package:epoch/models/technical_tab_config.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/models/value_format_settings.dart';
-import 'package:epoch/widgets/time_string_row.dart';
+import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;

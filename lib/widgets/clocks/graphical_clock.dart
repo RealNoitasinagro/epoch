@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../app/layout_constants.dart';
 import '../../l10n/app_localizations.dart';
-import '../../layout_constants.dart';
-import '../../models/app_settings.dart';
 import '../../models/time_value.dart';
+import '../../settings/app_settings.dart';
 import 'analog_clock.dart';
 import 'binary_coded_decimal_clock.dart';
 import 'binary_columns_clock.dart';

@@ -7,8 +7,8 @@ Reads:
   <cldr-json-dir>/cldr-localenames-full/main/{de,en}/territories.json
 
 Writes:
-  lib/models/generated/cldr_country_names_de.g.dart
-  lib/models/generated/cldr_country_names_en.g.dart
+  lib/time_zone_search/generated/cldr_country_names_de.g.dart
+  lib/time_zone_search/generated/cldr_country_names_en.g.dart
 
 Usage:
   python3 tools/generate_cldr_country_names.py
@@ -22,7 +22,7 @@ import re
 import sys
 from generated_header import write_header, cldr_data_version
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 DEFAULT_OUT_FILE_DE = "cldr_country_names_de.g.dart"
 DEFAULT_OUT_FILE_EN = "cldr_country_names_en.g.dart"
 DEFAULT_CLDR_JSON_DIR = os.path.expanduser("~/Work/cldr-json/cldr-json")

@@ -24,9 +24,9 @@ Reads:
   <cldr-json-dir>/cldr-dates-full/main/{de,en}/timeZoneNames.json
 
 Writes:
-  lib/models/generated/cldr_zone_metazone.g.dart
-  lib/models/generated/cldr_metazone_names_en.g.dart
-  lib/models/generated/cldr_metazone_names_de.g.dart
+  lib/time_zone_search/generated/cldr_zone_metazone.g.dart
+  lib/time_zone_search/generated/cldr_metazone_names_en.g.dart
+  lib/time_zone_search/generated/cldr_metazone_names_de.g.dart
 
 Usage:
   python3 tools/generate_cldr_metazone_names.py
@@ -39,7 +39,7 @@ import os
 import sys
 from generated_header import write_header, cldr_data_version
 
-DEFAULT_OUT_DIR = "lib/models/generated"
+DEFAULT_OUT_DIR = "lib/time_zone_search/generated"
 DEFAULT_CLDR_JSON_DIR = os.path.expanduser("~/Work/cldr-json/cldr-json")
 
 

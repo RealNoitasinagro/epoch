@@ -24,7 +24,7 @@ https://github.com/eggert/tz). The tz code and data are in the public domain
 Epoch uses the compiled database through the
 [timezone](https://pub.dev/packages/timezone) package at runtime. The files
 `zone1970.tab`, `iso3166.tab` and the `Zone` / `Link` directives of the tzdata
-sources are the basis of `lib/models/generated/zone1970_countries.g.dart`,
+sources are the basis of `lib/time_zone_search/generated/zone1970_countries.g.dart`,
 `iso3166_country_names_en.g.dart`, `iana_canonical_zones_snapshot.g.dart` and
 `iana_links_snapshot.g.dart`. The alphabetic time zone abbreviations that
 tzdata dropped in 2016 (such as BRST or ICT) were recovered from tzdata 2016a
@@ -38,7 +38,7 @@ Unicode Common Locale Data Repository, https://cldr.unicode.org).
 Data used: `territories.json` (country names), `timeZoneNames.json` (city and
 time zone names, metazone names), `metaZones.json` and `windowsZones.json`.
 Epoch extracts and transforms this data into
-`lib/models/generated/cldr_*.g.dart`.
+`lib/time_zone_search/generated/cldr_*.g.dart`.
 
 Copyright © 1991-2026 Unicode, Inc. Distributed under the Unicode License v3.
 The full text is in `assets/licenses/unicode_cldr.txt` and at
@@ -48,7 +48,7 @@ https://www.unicode.org/license.txt.
 
 Source: https://www.wikidata.org. Capital city names were queried with the
 Wikidata Query Service (property P36) and stored in
-`lib/models/generated/wikidata_capitals_{en,de}.g.dart`. Structured data in
+`lib/time_zone_search/generated/wikidata_capitals_{en,de}.g.dart`. Structured data in
 Wikidata is available under
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); no attribution is
 required, but it is gratefully given.
@@ -66,7 +66,7 @@ License, Version 1.1. The full text is in
   published facts (IERS Bulletin C, Bulletin of the Atomic Scientists,
   https://thebulletin.org/doomsday-clock/). Epoch is not affiliated with the
   Bulletin of the Atomic Scientists.
-- Search aliases, city and country name variants in `lib/models/timezone_search_*.dart`
+- Search aliases, city and country name variants in `lib/time_zone_search`
   and `manualTerms` are maintained by hand as part of Epoch.
 - All trademarks and names mentioned belong to their respective owners.
 
