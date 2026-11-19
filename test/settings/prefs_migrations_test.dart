@@ -50,20 +50,25 @@ void main() {
       });
       await runPrefsMigrations();
       final tabs = await loadAllTabs();
-      final civil = tabs.firstWhere((t) => t.builtinKind == BuiltinTabKind.civil);
+      final civil = tabs.firstWhere(
+        (t) => t.builtinKind == BuiltinTabKind.civil,
+      );
       expect(civil.entries.length, equals(2));
     });
 
-    test('migrates legacy custom_tabs rows as Watchlist tabs, appended after builtins', () async {
-      SharedPreferences.setMockInitialValues({
-        'custom_tabs': ['999\tMy Old Tab\ttime/utc'],
-      });
-      await runPrefsMigrations();
-      final tabs = await loadAllTabs();
-      expect(tabs.length, equals(5)); // 4 builtins + 1 legacy custom tab
-      expect(tabs.last.customName, equals('My Old Tab'));
-      expect(tabs.last.isBuiltin, isFalse);
-    });
+    test(
+      'migrates legacy custom_tabs rows as Watchlist tabs, appended after builtins',
+      () async {
+        SharedPreferences.setMockInitialValues({
+          'custom_tabs': ['999\tMy Old Tab\ttime/utc'],
+        });
+        await runPrefsMigrations();
+        final tabs = await loadAllTabs();
+        expect(tabs.length, equals(5)); // 4 builtins + 1 legacy custom tab
+        expect(tabs.last.customName, equals('My Old Tab'));
+        expect(tabs.last.isBuiltin, isFalse);
+      },
+    );
 
     test('is a no-op on a fresh install (no legacy keys at all)', () async {
       await runPrefsMigrations();
@@ -74,7 +79,7 @@ void main() {
     test('does not re-run once all_tabs already exists', () async {
       SharedPreferences.setMockInitialValues({
         'civil_tab_entries': ['time/local'],
-        'all_tabs': ['999\t\tcivil\t1'],  // already migrated, different content
+        'all_tabs': ['999\t\tcivil\t1'], // already migrated, different content
       });
       await runPrefsMigrations();
       final prefs = await SharedPreferences.getInstance();

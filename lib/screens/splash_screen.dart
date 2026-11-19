@@ -42,7 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           Positioned(
-            left: 0, right: 0, bottom: 32,
+            left: 0,
+            right: 0,
+            bottom: 32,
             child: Text(
               _version,
               textAlign: TextAlign.center,

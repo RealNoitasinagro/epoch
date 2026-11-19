@@ -12,17 +12,16 @@ import 'time_pattern.dart';
 import 'value_format_settings.dart';
 
 class TimeValueFormatter {
-  static const CommonRomanNumeralsConfig _romanNumeralsConfig = CommonRomanNumeralsConfig(nulla: 'N');
+  static const CommonRomanNumeralsConfig _romanNumeralsConfig =
+      CommonRomanNumeralsConfig(nulla: 'N');
 
   /// Computes the display string for a given TimeValue at a given moment.
   static String format(
-      TimeValue timeValue,
-      DateTime now,
-      String locale,
-      {
-        ValueFormatSettings settings = const ValueFormatSettings(),
-      }
-  ) {
+    TimeValue timeValue,
+    DateTime now,
+    String locale, {
+    ValueFormatSettings settings = const ValueFormatSettings(),
+  }) {
     final hourFormat24 = settings.hourFormat24;
     final thousandsSep = settings.thousandsSep;
     final dateFormat = settings.dateFormat;
@@ -58,43 +57,60 @@ class TimeValueFormatter {
         return TimeValueFormatter.hoursToHms(TimeUtils.lmst(utcNow, longitude));
       case ValueType.julianDate:
         return formatDecimal(
-            TimeUtils.julianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.julianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.reducedJulianDate:
         return formatDecimal(
-            TimeUtils.reducedJulianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.reducedJulianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.modifiedJulianDate:
         return formatDecimal(
-            TimeUtils.modifiedJulianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.modifiedJulianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.dublinJulianDate:
         return formatDecimal(
-            TimeUtils.dublinJulianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.dublinJulianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.cnesJulianDate:
         return formatDecimal(
-            TimeUtils.cnesJulianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.cnesJulianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.ccsdsJulianDate:
         return formatDecimal(
-            TimeUtils.ccsdsJulianDate(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.ccsdsJulianDate(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       case ValueType.modifiedJulianDate2000:
         return formatDecimal(
-            TimeUtils.modifiedJulianDate2000(utcNow), locale, 5,
-            thousandsSep: thousandsSep);
+          TimeUtils.modifiedJulianDate2000(utcNow),
+          locale,
+          5,
+          thousandsSep: thousandsSep,
+        );
       // Curiosities
       case ValueType.swatchBeats:
         final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${showOptionalPart
-            ? swatchBeats.toStringAsFixed(2)
-            : swatchBeats.toInt()}';
+        return '@${showOptionalPart ? swatchBeats.toStringAsFixed(2) : swatchBeats.toInt()}';
       case ValueType.newEarthTime:
         final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${showOptionalPart
-            ? formatDecimal(deg, locale, 2, thousandsSep:  false)
-            : deg.toInt()}°';
+        return '${showOptionalPart ? formatDecimal(deg, locale, 2, thousandsSep: false) : deg.toInt()}°';
       case ValueType.doomsdayClock:
         final secondOfDay = TimeUtils.doomsdayClockSecondOfDay(utcNow);
         return formatTime(
@@ -113,7 +129,9 @@ class TimeValueFormatter {
     final wallClock = moment.wallClock;
     final tzLabel = localizeTimezoneAbbr(moment.abbreviation, locale);
     final utcOffset = formatUtcOffset(
-        moment.offset, withUtcPrefix: true, typographicMinus: true
+      moment.offset,
+      withUtcPrefix: true,
+      typographicMinus: true,
     );
     final tzSuffix = '$tzLabel (${utcOffset})';
     final timePattern = showOptionalPart
@@ -121,7 +139,7 @@ class TimeValueFormatter {
         : timePatternWithoutSeconds(timeFormat);
 
     switch (timeValue.valueType) {
-    // Civil
+      // Civil
       case ValueType.date:
         return formatDate(locale, wallClock, pattern: dateFormat);
       case ValueType.time:
@@ -164,9 +182,14 @@ class TimeValueFormatter {
         // Hidden decimals are cut off, not rounded: 99.9 % is not yet 100 %.
         final formattedPercent = showOptionalPart
             ? formatDecimal(percent, locale, 3, thousandsSep: false)
-            : formatDecimal(percent.floorToDouble(), locale, 0, thousandsSep: false);
+            : formatDecimal(
+                percent.floorToDouble(),
+                locale,
+                0,
+                thousandsSep: false,
+              );
         return '$formattedPercent $tzSuffix';
-    // Curiosities
+      // Curiosities
       case ValueType.decimalTime:
         final decimalTime = TimeUtils.decimalTime(moment.dayProgress);
         final decimalTimeText = _decimalTimeText(
@@ -175,10 +198,7 @@ class TimeValueFormatter {
         );
         return '$decimalTimeText $tzSuffix';
       case ValueType.binaryClockString:
-        return binaryTimeString(
-          wallClock,
-          showSeconds: showOptionalPart,
-        );
+        return binaryTimeString(wallClock, showSeconds: showOptionalPart);
       case ValueType.octalTime:
         return _secondsInBase(moment.dayProgress.elapsedSeconds, 8, 6);
       case ValueType.hexadecimalTime:
@@ -222,62 +242,79 @@ class TimeValueFormatter {
   }
 
   /// Format a date to EEE, yyyy-MMM-dd, e. g. "Tue, 2026-05-12".
-  static String formatDate(String locale, DateTime dt,
-      {String pattern = kDatePatternIso}) =>
-      formatDatePattern(dt, pattern, locale);
+  static String formatDate(
+    String locale,
+    DateTime dt, {
+    String pattern = kDatePatternIso,
+  }) => formatDatePattern(dt, pattern, locale);
 
-  static String formatTime(bool hourFormat24, int hour, int minute,
-      int second, { String? tzSuffix, String pattern = kTimePatternFull }) {
+  static String formatTime(
+    bool hourFormat24,
+    int hour,
+    int minute,
+    int second, {
+    String? tzSuffix,
+    String pattern = kTimePatternFull,
+  }) {
     final dt = DateTime(2000, 1, 1, hour, minute, second);
     final timeStr = formatTimePattern(dt, pattern, hourFormat24: hourFormat24);
     final period = !hourFormat24 ? (hour < 12 ? ' AM' : ' PM') : '';
-    return tzSuffix != null
-        ? '$timeStr$period $tzSuffix'
-        : '$timeStr$period';
+    return tzSuffix != null ? '$timeStr$period $tzSuffix' : '$timeStr$period';
   }
 
   static String formatDateTime(
-      bool hourFormat24, String locale, DateTime dt, String? tzSuffix,
-      {String datePattern = kDatePatternIso, String timePattern = kTimePatternFull}
-    ) {
+    bool hourFormat24,
+    String locale,
+    DateTime dt,
+    String? tzSuffix, {
+    String datePattern = kDatePatternIso,
+    String timePattern = kTimePatternFull,
+  }) {
     String formattedDate = formatDate(locale, dt, pattern: datePattern);
     String formattedTime = formatTime(
-        hourFormat24, dt.hour, dt.minute, dt.second,
-        tzSuffix: tzSuffix, pattern: timePattern);
+      hourFormat24,
+      dt.hour,
+      dt.minute,
+      dt.second,
+      tzSuffix: tzSuffix,
+      pattern: timePattern,
+    );
     return '$formattedDate $formattedTime';
   }
 
   /// The value of every date token for [dt]. The keys are exactly the tokens
   /// a date pattern may contain (see [datePatternWorstCase]).
   static Map<String, String> dateTokenValues(DateTime dt, String locale) {
-    final monthLong    = DateFormat('MMMM', locale).format(dt);
-    final monthShort   = DateFormat('MMM',  locale).format(dt);
-    final weekDayLong  = DateFormat('EEEE', locale).format(dt);
-    final weekDayShort = DateFormat('EEE',  locale).format(dt);
+    final monthLong = DateFormat('MMMM', locale).format(dt);
+    final monthShort = DateFormat('MMM', locale).format(dt);
+    final weekDayLong = DateFormat('EEEE', locale).format(dt);
+    final weekDayShort = DateFormat('EEE', locale).format(dt);
     return {
       'YYYY': dt.year.toString().padLeft(4, '0'),
-      'YY':   (dt.year % 100).toString().padLeft(2, '0'),
+      'YY': (dt.year % 100).toString().padLeft(2, '0'),
       'MMMM': monthLong,
-      'MMM':  monthShort,
-      'MM':   dt.month.toString().padLeft(2, '0'),
-      'M':    dt.month.toString(),
+      'MMM': monthShort,
+      'MM': dt.month.toString().padLeft(2, '0'),
+      'M': dt.month.toString(),
       'EEEE': weekDayLong,
-      'EEE':  weekDayShort,
-      'DD':   dt.day.toString().padLeft(2, '0'),
-      'D':    dt.day.toString(),
+      'EEE': weekDayShort,
+      'DD': dt.day.toString().padLeft(2, '0'),
+      'D': dt.day.toString(),
     };
   }
 
   /// The value of every time token for [dt]; the keys are the tokens of a
   /// time pattern (see [timePatternWorstCase]).
-  static Map<String, String> timeTokenValues(DateTime dt,
-      {bool hourFormat24 = true}) {
+  static Map<String, String> timeTokenValues(
+    DateTime dt, {
+    bool hourFormat24 = true,
+  }) {
     final displayHour = hourFormat24
         ? dt.hour
         : (dt.hour % 12 == 0 ? 12 : dt.hour % 12);
     return {
       'HH': displayHour.toString().padLeft(2, '0'),
-      'H':  displayHour.toString(),
+      'H': displayHour.toString(),
       'mm': dt.minute.toString().padLeft(2, '0'),
       'ss': dt.second.toString().padLeft(2, '0'),
     };
@@ -286,24 +323,37 @@ class TimeValueFormatter {
   static String formatDatePattern(DateTime dt, String pattern, String locale) =>
       applyPatternTokens(pattern, dateTokenValues(dt, locale));
 
-  static String formatTimePattern(DateTime dt, String pattern,
-      {bool hourFormat24 = true}) =>
-      applyPatternTokens(
-          pattern, timeTokenValues(dt, hourFormat24: hourFormat24));
+  static String formatTimePattern(
+    DateTime dt,
+    String pattern, {
+    bool hourFormat24 = true,
+  }) => applyPatternTokens(
+    pattern,
+    timeTokenValues(dt, hourFormat24: hourFormat24),
+  );
 
   /// Returns a double formatted to a given number of decimal digits.
-  static String formatDecimal(double value, String locale, int decimals,
-      { bool thousandsSep = true,}) {
+  static String formatDecimal(
+    double value,
+    String locale,
+    int decimals, {
+    bool thousandsSep = true,
+  }) {
     final fmt = NumberFormat.decimalPatternDigits(
-        locale: locale, decimalDigits: decimals);
+      locale: locale,
+      decimalDigits: decimals,
+    );
     fmt.minimumFractionDigits = decimals;
     if (!thousandsSep) fmt.turnOffGrouping();
     return fmt.format(value);
   }
 
   /// Adds longitude to the LMST label.
-  static String lmstLabelWithLon(AppLocalizations l10n, TimeValue timeValue,
-      double? longitude) {
+  static String lmstLabelWithLon(
+    AppLocalizations l10n,
+    TimeValue timeValue,
+    double? longitude,
+  ) {
     String locale = l10n.localeName;
     if (longitude == null) return timeValue.localizedDisplayLabel(l10n);
     final dir = longitude >= 0 ? 'E' : 'W';
@@ -312,10 +362,11 @@ class TimeValueFormatter {
   }
 
   static String _decimalTimeText(
-      ({int hours, int minutes, int seconds}) decimalTime, {
-        required bool showSeconds,
-      }) {
-    final hoursAndMinutes = '${decimalTime.hours}\u02b0'
+    ({int hours, int minutes, int seconds}) decimalTime, {
+    required bool showSeconds,
+  }) {
+    final hoursAndMinutes =
+        '${decimalTime.hours}\u02b0'
         '${decimalTime.minutes.toString().padLeft(2, '0')}\u1d50';
     if (!showSeconds) return hoursAndMinutes;
     return '$hoursAndMinutes'
@@ -323,7 +374,10 @@ class TimeValueFormatter {
   }
 
   /// Binary clock string representation, e.g. "10:110000:10111".
-  static String binaryTimeString(DateTime wallClock, {bool showSeconds = true}) {
+  static String binaryTimeString(
+    DateTime wallClock, {
+    bool showSeconds = true,
+  }) {
     final bin = TimeUtils.binaryTime(wallClock);
     if (!showSeconds) return [bin.hours, bin.minutes].join(':');
     return [bin.hours, bin.minutes, bin.seconds].join(':');
@@ -347,14 +401,21 @@ class TimeValueFormatter {
   }
 
   /// Roman numerals time: time shown in Roman numerals. N for zeros.
-  static String romanNumeralsTime(bool hourFormat24, DateTime wallClock,
-      {bool showSeconds = true}) {
+  static String romanNumeralsTime(
+    bool hourFormat24,
+    DateTime wallClock, {
+    bool showSeconds = true,
+  }) {
     final displayHour = hourFormat24
         ? wallClock.hour
         : (wallClock.hour % 12 == 0 ? 12 : wallClock.hour % 12);
     final period = hourFormat24 ? '' : (wallClock.hour < 12 ? ' AM' : ' PM');
-    final fields = [displayHour, wallClock.minute, if (showSeconds) wallClock.second]
-        .map((value) => _centered(value.toRomanNumeralString(config: _romanNumeralsConfig) ?? '--'));
+    final fields =
+        [displayHour, wallClock.minute, if (showSeconds) wallClock.second].map(
+          (value) => _centered(
+            value.toRomanNumeralString(config: _romanNumeralsConfig) ?? '--',
+          ),
+        );
     return '${fields.join(':')}$period';
   }
 

@@ -27,12 +27,13 @@ int dialValueAtOffset(Offset offsetFromCenter, DialScale scale) {
   // Clockwise angle from the top, in [0, 2π):
   final angle =
       (math.atan2(offsetFromCenter.dx, -offsetFromCenter.dy) + 2 * math.pi) %
-          (2 * math.pi);
+      (2 * math.pi);
   switch (scale) {
     case DialScale.hours24:
       return hourFromDialPosition(
         (angle / (math.pi / 6)).round() % 12,
-        isInnerRing: offsetFromCenter.distance < _dialSize / 2 * _ringSwitchFraction,
+        isInnerRing:
+            offsetFromCenter.distance < _dialSize / 2 * _ringSwitchFraction,
       );
     case DialScale.sixty:
       return (angle / (math.pi / 30)).round() % 60;
@@ -41,15 +42,15 @@ int dialValueAtOffset(Offset offsetFromCenter, DialScale scale) {
 
 /// Shows a circular picker; returns the chosen value or null if cancelled.
 Future<int?> showDialPicker(
-    BuildContext context, {
-      required String title,
-      required DialScale scale,
-      required int initialValue,
-    }) {
+  BuildContext context, {
+  required String title,
+  required DialScale scale,
+  required int initialValue,
+}) {
   return showDialog<int>(
     context: context,
-    builder: (_) => _DialPicker(
-        title: title, scale: scale, initialValue: initialValue),
+    builder: (_) =>
+        _DialPicker(title: title, scale: scale, initialValue: initialValue),
   );
 }
 
@@ -88,12 +89,18 @@ class _DialPickerState extends State<_DialPicker> {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title,
-              style: textTheme.labelMedium
-                  ?.copyWith(color: colorScheme.onSurface.withAlpha(150))),
-          Text(_value.toString().padLeft(2, '0'),
-              style: textTheme.displayMedium
-                  ?.copyWith(fontFamily: fontFamilyDefault)),
+          Text(
+            widget.title,
+            style: textTheme.labelMedium?.copyWith(
+              color: colorScheme.onSurface.withAlpha(150),
+            ),
+          ),
+          Text(
+            _value.toString().padLeft(2, '0'),
+            style: textTheme.displayMedium?.copyWith(
+              fontFamily: fontFamilyDefault,
+            ),
+          ),
         ],
       ),
       content: SizedBox(
@@ -150,19 +157,29 @@ class _DialPainter extends CustomPainter {
 
   ({double angle, double radiusFraction}) get _selection => switch (scale) {
     DialScale.hours24 => (
-    angle: (value % 12) * math.pi / 6,
-    radiusFraction: dialPositionOfHour(value).isInnerRing
-        ? _innerRingFraction : _outerRingFraction,
+      angle: (value % 12) * math.pi / 6,
+      radiusFraction: dialPositionOfHour(value).isInnerRing
+          ? _innerRingFraction
+          : _outerRingFraction,
     ),
-    DialScale.sixty => (angle: value * math.pi / 30, radiusFraction: _outerRingFraction),
+    DialScale.sixty => (
+      angle: value * math.pi / 30,
+      radiusFraction: _outerRingFraction,
+    ),
   };
 
   void _paintText(Canvas canvas, String text, Offset center, Color color) {
     final painter = TextPainter(
-      text: TextSpan(text: text, style: TextStyle(color: color, fontSize: 16)),
+      text: TextSpan(
+        text: text,
+        style: TextStyle(color: color, fontSize: 16),
+      ),
       textDirection: TextDirection.ltr,
     )..layout();
-    painter.paint(canvas, center - Offset(painter.width / 2, painter.height / 2));
+    painter.paint(
+      canvas,
+      center - Offset(painter.width / 2, painter.height / 2),
+    );
   }
 
   @override
@@ -177,12 +194,19 @@ class _DialPainter extends CustomPainter {
       switch (scale) {
         case DialScale.hours24:
           for (final isInnerRing in [false, true]) {
-            final hour = hourFromDialPosition(clockPosition, isInnerRing: isInnerRing);
+            final hour = hourFromDialPosition(
+              clockPosition,
+              isInnerRing: isInnerRing,
+            );
             _paintText(
               canvas,
               hour.toString().padLeft(2, '0'),
-              _pointOnDial(center,
-                  radius * (isInnerRing ? _innerRingFraction : _outerRingFraction), angle),
+              _pointOnDial(
+                center,
+                radius *
+                    (isInnerRing ? _innerRingFraction : _outerRingFraction),
+                angle,
+              ),
               labelColor,
             );
           }
@@ -197,20 +221,31 @@ class _DialPainter extends CustomPainter {
     }
 
     final selection = _selection;
-    final bubbleCenter =
-    _pointOnDial(center, radius * selection.radiusFraction, selection.angle);
+    final bubbleCenter = _pointOnDial(
+      center,
+      radius * selection.radiusFraction,
+      selection.angle,
+    );
     final accent = Paint()
       ..color = accentColor
       ..strokeWidth = 2;
     canvas.drawLine(center, bubbleCenter, accent);
     canvas.drawCircle(center, 4, accent);
     canvas.drawCircle(bubbleCenter, _bubbleRadius, accent);
-    _paintText(canvas, value.toString().padLeft(2, '0'), bubbleCenter, selectedLabelColor);
+    _paintText(
+      canvas,
+      value.toString().padLeft(2, '0'),
+      bubbleCenter,
+      selectedLabelColor,
+    );
   }
 
   @override
   bool shouldRepaint(_DialPainter old) =>
-      old.scale != scale || old.value != value ||
-          old.dialColor != dialColor || old.accentColor != accentColor ||
-          old.labelColor != labelColor || old.selectedLabelColor != selectedLabelColor;
+      old.scale != scale ||
+      old.value != value ||
+      old.dialColor != dialColor ||
+      old.accentColor != accentColor ||
+      old.labelColor != labelColor ||
+      old.selectedLabelColor != selectedLabelColor;
 }

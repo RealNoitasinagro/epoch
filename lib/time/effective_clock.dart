@@ -73,11 +73,15 @@ class EffectiveClock {
     return !utc.isBefore(earliestMoment) && !utc.isAfter(latestMoment);
   }
 
-  static void shiftTo(DateTime target,
-      {bool frozen = false, String? virtualLocalIanaZone}) {
+  static void shiftTo(
+    DateTime target, {
+    bool frozen = false,
+    String? virtualLocalIanaZone,
+  }) {
     final targetWholeSecond = _truncateToSeconds(target.toLocal());
-    _offsetFromSystem =
-        targetWholeSecond.difference(_truncateToSeconds(systemNow()));
+    _offsetFromSystem = targetWholeSecond.difference(
+      _truncateToSeconds(systemNow()),
+    );
     _frozenMoment = frozen ? targetWholeSecond : null;
     _virtualLocalIanaZone = virtualLocalIanaZone;
     changeNotifier.value++;
@@ -98,5 +102,9 @@ class EffectiveClock {
   }
 
   static DateTime _truncateToSeconds(DateTime moment) => moment.subtract(
-      Duration(milliseconds: moment.millisecond, microseconds: moment.microsecond));
+    Duration(
+      milliseconds: moment.millisecond,
+      microseconds: moment.microsecond,
+    ),
+  );
 }

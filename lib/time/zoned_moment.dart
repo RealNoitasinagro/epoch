@@ -7,8 +7,8 @@ import 'time_utils.dart';
 /// of the system, or the zone the user has redefined as local in Time Shift.
 DateTime localWallClockAt(DateTime utc, String localIanaZone) =>
     EffectiveClock.hasVirtualLocalZone
-        ? TimeUtils.inZone(utc.toUtc(), localIanaZone)
-        : utc.toLocal();
+    ? TimeUtils.inZone(utc.toUtc(), localIanaZone)
+    : utc.toLocal();
 
 /// A moment as seen in the time zone setting of one value: wall-clock
 /// reading, offset, abbreviation and the progress of the local day.
@@ -44,10 +44,10 @@ class ZonedMoment {
   });
 
   factory ZonedMoment.of(
-      TimeValue timeValue,
-      DateTime utc,
-      String localIanaZone,
-      ) {
+    TimeValue timeValue,
+    DateTime utc,
+    String localIanaZone,
+  ) {
     final moment = utc.toUtc();
     switch (timeValue.zone) {
       case ZoneUtc():
@@ -90,11 +90,11 @@ class ZonedMoment {
   /// UTC and values pinned to standard or summer time: no clock changes,
   /// every day has 86,400 seconds.
   factory ZonedMoment._fixedOffset(
-      DateTime utc, {
-        required String? ianaZone,
-        required Duration offset,
-        required String abbreviation,
-      }) {
+    DateTime utc, {
+    required String? ianaZone,
+    required Duration offset,
+    required String abbreviation,
+  }) {
     final wallClock = utc.add(offset);
     final dayProgress = TimeUtils.dayProgressFixedOffset(wallClock);
     return ZonedMoment._(
@@ -109,10 +109,10 @@ class ZonedMoment {
 
   /// A real zone with clock changes.
   factory ZonedMoment._inZone(
-      DateTime utc, {
-        required String ianaZone,
-        required DateTime wallClock,
-      }) {
+    DateTime utc, {
+    required String ianaZone,
+    required DateTime wallClock,
+  }) {
     final dayProgress = TimeUtils.dayProgressInZone(utc, ianaZone);
     return ZonedMoment._(
       utc: utc,
@@ -125,10 +125,10 @@ class ZonedMoment {
   }
 
   static String _abbreviationAt(
-      DateTime utc,
-      String ianaZone,
-      DateTime wallClock,
-      ) {
+    DateTime utc,
+    String ianaZone,
+    DateTime wallClock,
+  ) {
     try {
       final location = tz.getLocation(ianaZone);
       return tz.TZDateTime.from(utc, location).timeZone.abbreviation;

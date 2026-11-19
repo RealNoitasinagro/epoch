@@ -8,11 +8,17 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('every value type is in exactly one category list', () {
     const categoryLists = [
-      civilTypes, technicalTypes, astronomicalTypes, curiosityTypes,
+      civilTypes,
+      technicalTypes,
+      astronomicalTypes,
+      curiosityTypes,
     ];
     for (final type in ValueType.values) {
-      expect(categoryLists.where((list) => list.contains(type)).length, 1,
-          reason: type.name);
+      expect(
+        categoryLists.where((list) => list.contains(type)).length,
+        1,
+        reason: type.name,
+      );
     }
   });
 }

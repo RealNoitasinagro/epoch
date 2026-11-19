@@ -51,8 +51,14 @@ DateTime? parseTimeShiftMoment(String? text) {
   if (text == null) return null;
   final parsed = DateTime.tryParse(text.trim());
   if (parsed == null || !parsed.isUtc) return null;
-  return DateTime.utc(parsed.year, parsed.month, parsed.day, parsed.hour,
-      parsed.minute, parsed.second);
+  return DateTime.utc(
+    parsed.year,
+    parsed.month,
+    parsed.day,
+    parsed.hour,
+    parsed.minute,
+    parsed.second,
+  );
 }
 
 /// Empty = local, "UTC", or an IANA name.
@@ -66,7 +72,8 @@ String timeShiftZoneToConfig(ZoneSpec zone) => switch (zone) {
 /// Shift page shows the moment. Needs the time zone data to be initialized.
 ZoneSpec timeShiftZoneFromConfig(String? text) {
   if (text == null || text.isEmpty) return const ZoneLocal();
-  if (!tz.timeZoneDatabase.locations.containsKey(text)) return const ZoneLocal();
+  if (!tz.timeZoneDatabase.locations.containsKey(text))
+    return const ZoneLocal();
   return canonicalZoneSpec(ZoneNamed(text));
 }
 
@@ -105,7 +112,9 @@ Future<void> saveTimeShiftStart(TimeShiftStart start) async {
   final prefs = await SharedPreferences.getInstance();
   final moment = start.momentUtc;
   await prefs.setString(
-      _kMomentKey, moment == null ? '' : formatTimeShiftMoment(moment));
+    _kMomentKey,
+    moment == null ? '' : formatTimeShiftMoment(moment),
+  );
   await prefs.setBool(_kFrozenKey, start.frozen);
   await prefs.setString(_kZoneKey, timeShiftZoneToConfig(start.zone));
   await prefs.setBool(_kZoneAsLocalKey, start.zoneAsLocal);
@@ -127,12 +136,14 @@ Future<void> applyTimeShiftStart() async {
       : null;
   final moment = start.momentUtc;
   if (moment == null) {
-    EffectiveClock.setVirtualLocalZone(virtualLocalIanaZone);  // time stays as it is
+    EffectiveClock.setVirtualLocalZone(
+      virtualLocalIanaZone,
+    ); // time stays as it is
   } else {
     EffectiveClock.shiftTo(
-        moment,
-        frozen: start.frozen,
-        virtualLocalIanaZone: virtualLocalIanaZone
+      moment,
+      frozen: start.frozen,
+      virtualLocalIanaZone: virtualLocalIanaZone,
     );
   }
   activeTimeShiftZone = start.zone;

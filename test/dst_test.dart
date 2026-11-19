@@ -13,7 +13,10 @@ void main() {
 
   group('TimeValue.timezoneClockChangeMode serialization', () {
     test('default timezoneClockChangeMode is auto', () {
-      const tv = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
       expect(tv.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
     });
 
@@ -26,7 +29,10 @@ void main() {
       final s = tv.toPrefsString();
       expect(s.contains('dst:'), isFalse);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
+      expect(
+        tv2?.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.auto),
+      );
     });
 
     test('forceDst roundtrips correctly', () {
@@ -38,7 +44,10 @@ void main() {
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceDst'), isTrue);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceDst));
+      expect(
+        tv2?.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.forceDst),
+      );
     });
 
     test('forceStandard roundtrips correctly', () {
@@ -50,7 +59,10 @@ void main() {
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceStandard'), isTrue);
       final tv2 = TimeValue.fromPrefsString(s);
-      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
+      expect(
+        tv2?.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.forceStandard),
+      );
     });
 
     test('timezoneClockChangeMode roundtrip preserves customLabel', () {
@@ -63,7 +75,10 @@ void main() {
       final s = tv.toPrefsString();
       final tv2 = TimeValue.fromPrefsString(s);
       expect(tv2?.customLabel, equals('My Berlin Time'));
-      expect(tv2?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
+      expect(
+        tv2?.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.forceStandard),
+      );
     });
 
     test('no duplicate dst suffix on repeated serialization', () {
@@ -149,7 +164,10 @@ void main() {
     });
 
     test('New York standard time is UTC-05:00 / EST', () {
-      final info = TimeUtils.daylightOrStandardOffset('America/New_York', false);
+      final info = TimeUtils.daylightOrStandardOffset(
+        'America/New_York',
+        false,
+      );
       expect(info, isNotNull);
       expect(info!.offset, equals(const Duration(hours: -5)));
       expect(info.abbreviation, equals('EST'));
@@ -168,8 +186,14 @@ void main() {
     });
 
     test('Lord Howe DST offset is +30min relative to standard', () {
-      final std = TimeUtils.daylightOrStandardOffset('Australia/Lord_Howe', false);
-      final dst = TimeUtils.daylightOrStandardOffset('Australia/Lord_Howe', true);
+      final std = TimeUtils.daylightOrStandardOffset(
+        'Australia/Lord_Howe',
+        false,
+      );
+      final dst = TimeUtils.daylightOrStandardOffset(
+        'Australia/Lord_Howe',
+        true,
+      );
       expect(std, isNotNull);
       expect(dst, isNotNull);
       final diff = dst!.offset - std!.offset;
@@ -302,14 +326,18 @@ void main() {
         timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
       );
       final autoValFormatted = TimeValueFormatter.format(
-          tvAuto, summerUtc,'en',
-          settings: const ValueFormatSettings(thousandsSep: false)
+        tvAuto,
+        summerUtc,
+        'en',
+        settings: const ValueFormatSettings(thousandsSep: false),
       );
       var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
       final autoVal = int.parse(splitAutoVal.line1);
       final stdValFormatted = TimeValueFormatter.format(
-          tvStd, summerUtc,'en',
-          settings: const ValueFormatSettings(thousandsSep: false)
+        tvStd,
+        summerUtc,
+        'en',
+        settings: const ValueFormatSettings(thousandsSep: false),
       );
       var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
       final stdVal = int.parse(splitStdVal.line1);
@@ -326,8 +354,13 @@ void main() {
         zone: ZoneNamed('Europe/Berlin'),
         timezoneClockChangeMode: TimezoneClockChangeMode.auto,
       );
-      final tv2 = tv.withTimezoneClockChangeMode(TimezoneClockChangeMode.forceStandard);
-      expect(tv2.timezoneClockChangeMode, equals(TimezoneClockChangeMode.forceStandard));
+      final tv2 = tv.withTimezoneClockChangeMode(
+        TimezoneClockChangeMode.forceStandard,
+      );
+      expect(
+        tv2.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.forceStandard),
+      );
       expect(tv2.valueType, equals(tv.valueType));
       expect(tv2.zone, equals(tv.zone));
       expect(tv2.customLabel, equals(tv.customLabel));
@@ -338,7 +371,9 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final tv2 = tv.withTimezoneClockChangeMode(TimezoneClockChangeMode.forceStandard);
+      final tv2 = tv.withTimezoneClockChangeMode(
+        TimezoneClockChangeMode.forceStandard,
+      );
       expect(tv2.key, isNot(equals(tv.key)));
       expect(tv2.key, equals('time/named:Europe/Berlin/std'));
     });

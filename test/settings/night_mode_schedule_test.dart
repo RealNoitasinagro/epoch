@@ -2,13 +2,19 @@ import 'package:epoch/settings/night_mode_schedule.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const overMidnight = NightModeSchedule(startMinute: 23 * 60, endMinute: 7 * 60);
+  const overMidnight = NightModeSchedule(
+    startMinute: 23 * 60,
+    endMinute: 7 * 60,
+  );
   const sameDay = NightModeSchedule(startMinute: 13 * 60, endMinute: 15 * 60);
 
   test('only two different times switch the window on', () {
     expect(const NightModeSchedule(startMinute: 60).isActive, isFalse);
     expect(const NightModeSchedule(endMinute: 60).isActive, isFalse);
-    expect(const NightModeSchedule(startMinute: 60, endMinute: 60).isActive, isFalse);
+    expect(
+      const NightModeSchedule(startMinute: 60, endMinute: 60).isActive,
+      isFalse,
+    );
     expect(NightModeSchedule.none.isActive, isFalse);
     expect(overMidnight.isActive, isTrue);
   });
@@ -30,29 +36,45 @@ void main() {
     });
 
     test('never at night without an active window', () {
-      expect(NightModeSchedule.none.isNightAt(DateTime(2026, 1, 1, 3)), isFalse);
+      expect(
+        NightModeSchedule.none.isNightAt(DateTime(2026, 1, 1, 3)),
+        isFalse,
+      );
     });
   });
 
   group('nextChangeAfter', () {
     test('before the start, inside the window, before the end', () {
-      expect(overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 22)),
-          DateTime(2026, 1, 1, 23));
-      expect(overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 23, 30)),
-          DateTime(2026, 1, 2, 7));
-      expect(overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 6, 59, 30)),
-          DateTime(2026, 1, 1, 7));
+      expect(
+        overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 22)),
+        DateTime(2026, 1, 1, 23),
+      );
+      expect(
+        overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 23, 30)),
+        DateTime(2026, 1, 2, 7),
+      );
+      expect(
+        overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 6, 59, 30)),
+        DateTime(2026, 1, 1, 7),
+      );
     });
 
     test('exactly on a boundary the next one counts', () {
-      expect(overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 7)),
-          DateTime(2026, 1, 1, 23));
-      expect(overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 23)),
-          DateTime(2026, 1, 2, 7));
+      expect(
+        overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 7)),
+        DateTime(2026, 1, 1, 23),
+      );
+      expect(
+        overMidnight.nextChangeAfter(DateTime(2026, 1, 1, 23)),
+        DateTime(2026, 1, 2, 7),
+      );
     });
 
     test('none without an active window', () {
-      expect(NightModeSchedule.none.nextChangeAfter(DateTime(2026, 1, 1)), isNull);
+      expect(
+        NightModeSchedule.none.nextChangeAfter(DateTime(2026, 1, 1)),
+        isNull,
+      );
     });
   });
 

@@ -26,8 +26,11 @@ class ZoneRules {
 }
 
 /// "+05:30" / "-07:00" (ASCII sign, as users type it).
-String formatUtcOffset(Duration offset,
-    {bool withUtcPrefix = false, bool typographicMinus = false}) {
+String formatUtcOffset(
+  Duration offset, {
+  bool withUtcPrefix = false,
+  bool typographicMinus = false,
+}) {
   final sign = offset.isNegative ? (typographicMinus ? '\u2212' : '-') : '+';
   final hh = offset.inHours.abs().toString().padLeft(2, '0');
   final mm = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
@@ -59,18 +62,22 @@ ZoneRules? zoneRulesAt(String ianaZoneId, DateTime referenceUtc) {
   }
 
   final refMs = ref.millisecondsSinceEpoch;
-  final endMs =
-      ref.add(const Duration(days: _lookaheadDays)).millisecondsSinceEpoch;
+  final endMs = ref
+      .add(const Duration(days: _lookaheadDays))
+      .millisecondsSinceEpoch;
   final samples = <tz.TZDateTime>[
     tz.TZDateTime.from(ref, location),
     for (final t in location.transitionAt)
       if (t > refMs && t <= endMs)
         tz.TZDateTime.from(
-            DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true), location),
+          DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true),
+          location,
+        ),
   ];
 
   tz.TZDateTime closest(Iterable<tz.TZDateTime> list) => list.reduce(
-          (a, b) => a.difference(ref).abs() < b.difference(ref).abs() ? a : b);
+    (a, b) => a.difference(ref).abs() < b.difference(ref).abs() ? a : b,
+  );
 
   final standardSamples = samples.where((s) => !s.timeZone.isDst).toList();
   final dstSamples = samples.where((s) => s.timeZone.isDst).toList();

@@ -9,7 +9,7 @@ import 'technical_tab_config.dart';
 import 'time_value.dart';
 
 const _kAllTabsKey = 'all_tabs';
-const int maxCustomTabs = 4;  // limit on user-created (Watchlist) tabs
+const int maxCustomTabs = 4; // limit on user-created (Watchlist) tabs
 
 // Identifies one of the four preinstalled tab categories.
 // Order here has no bearing on display order – that comes purely from
@@ -18,8 +18,8 @@ enum BuiltinTabKind { civil, technical, astronomical, curiosities }
 
 class TabConfig {
   final String id;
-  String? customName;           // null = use localized builtin name
-  final BuiltinTabKind? builtinKind;  // null = user-created (Watchlist) tab
+  String? customName; // null = use localized builtin name
+  final BuiltinTabKind? builtinKind; // null = user-created (Watchlist) tab
   final bool isVisible;
   List<TabEntry> entries;
 
@@ -37,10 +37,10 @@ class TabConfig {
   String displayName(AppLocalizations l10n) {
     if (customName != null) return customName!;
     return switch (builtinKind!) {
-      BuiltinTabKind.civil         => l10n.tabCivil,
-      BuiltinTabKind.technical     => l10n.tabTechnical,
-      BuiltinTabKind.astronomical  => l10n.tabAstronomical,
-      BuiltinTabKind.curiosities   => l10n.tabCuriosities,
+      BuiltinTabKind.civil => l10n.tabCivil,
+      BuiltinTabKind.technical => l10n.tabTechnical,
+      BuiltinTabKind.astronomical => l10n.tabAstronomical,
+      BuiltinTabKind.curiosities => l10n.tabCuriosities,
     };
   }
 
@@ -105,7 +105,7 @@ Future<({List<TabConfig> tabs, bool backfilled})> loadOrSeedAllTabs() async {
   if (tabs.isEmpty) {
     tabs = defaultBuiltinTabs();
     await saveAllTabs(tabs);
-    return (tabs: tabs, backfilled: false);  // fresh seed, not worth notifying
+    return (tabs: tabs, backfilled: false); // fresh seed, not worth notifying
   }
   final withBuiltins = ensureBuiltinTabs(tabs);
   final backfilled = withBuiltins.length != tabs.length;
@@ -116,15 +116,11 @@ Future<({List<TabConfig> tabs, bool backfilled})> loadOrSeedAllTabs() async {
 Future<List<TabConfig>> loadAllTabs() async {
   final prefs = await SharedPreferences.getInstance();
   final stored = prefs.tolerantStringList(_kAllTabsKey);
-  if (stored == null) return [];  // caller (main.dart) seeds builtin defaults
-  return stored
-      .map(TabConfig.fromPrefsString)
-      .whereType<TabConfig>()
-      .toList();
+  if (stored == null) return []; // caller (main.dart) seeds builtin defaults
+  return stored.map(TabConfig.fromPrefsString).whereType<TabConfig>().toList();
 }
 
 Future<void> saveAllTabs(List<TabConfig> tabs) async {
-
   final prefs = await SharedPreferences.getInstance();
   await prefs.setStringList(
     _kAllTabsKey,
@@ -151,14 +147,26 @@ String generateId() {
 // Fresh set of the four builtin tabs, used both for brand-new installs
 // and for migrating pre-1.5.0 preferences.
 List<TabConfig> defaultBuiltinTabs() => [
-  TabConfig(id: generateId(), builtinKind: BuiltinTabKind.civil,
-      entries: List.of(defaultCivilEntries)),
-  TabConfig(id: generateId(), builtinKind: BuiltinTabKind.technical,
-      entries: List.of(defaultTechnicalEntries)),
-  TabConfig(id: generateId(), builtinKind: BuiltinTabKind.astronomical,
-      entries: List.of(defaultAstronomicalEntries)),
-  TabConfig(id: generateId(), builtinKind: BuiltinTabKind.curiosities,
-      entries: List.of(defaultCuriositiesEntries)),
+  TabConfig(
+    id: generateId(),
+    builtinKind: BuiltinTabKind.civil,
+    entries: List.of(defaultCivilEntries),
+  ),
+  TabConfig(
+    id: generateId(),
+    builtinKind: BuiltinTabKind.technical,
+    entries: List.of(defaultTechnicalEntries),
+  ),
+  TabConfig(
+    id: generateId(),
+    builtinKind: BuiltinTabKind.astronomical,
+    entries: List.of(defaultAstronomicalEntries),
+  ),
+  TabConfig(
+    id: generateId(),
+    builtinKind: BuiltinTabKind.curiosities,
+    entries: List.of(defaultCuriositiesEntries),
+  ),
 ];
 
 // Ensures all four builtin tab kinds are present, appending any missing
@@ -167,23 +175,30 @@ List<TabConfig> defaultBuiltinTabs() => [
 // builtin category – without this, a missing kind would permanently
 // disable its Settings switch (no tab to toggle).
 List<TabConfig> ensureBuiltinTabs(List<TabConfig> tabs) {
-  final present = tabs.map((t) => t.builtinKind).whereType<BuiltinTabKind>().toSet();
+  final present = tabs
+      .map((t) => t.builtinKind)
+      .whereType<BuiltinTabKind>()
+      .toSet();
   final missing = BuiltinTabKind.values.where((k) => !present.contains(k));
   if (missing.isEmpty) return tabs;
   return [
     ...tabs,
     for (final kind in missing)
-      TabConfig(id: generateId(), builtinKind: kind, entries: defaultEntriesFor(kind)),
+      TabConfig(
+        id: generateId(),
+        builtinKind: kind,
+        entries: defaultEntriesFor(kind),
+      ),
   ];
 }
 
 // Returns the correct default-entry list for a builtin tab kind –
 // used by ConfigurableTab's per-tab "reset to defaults".
 List<TabEntry> defaultEntriesFor(BuiltinTabKind kind) => switch (kind) {
-  BuiltinTabKind.civil        => List.of(defaultCivilEntries),
-  BuiltinTabKind.technical    => List.of(defaultTechnicalEntries),
+  BuiltinTabKind.civil => List.of(defaultCivilEntries),
+  BuiltinTabKind.technical => List.of(defaultTechnicalEntries),
   BuiltinTabKind.astronomical => List.of(defaultAstronomicalEntries),
-  BuiltinTabKind.curiosities  => List.of(defaultCuriositiesEntries),
+  BuiltinTabKind.curiosities => List.of(defaultCuriositiesEntries),
 };
 
 const List<TabEntry> defaultWatchlistEntries = [

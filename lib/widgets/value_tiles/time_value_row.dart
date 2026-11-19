@@ -44,7 +44,8 @@ abstract class TimeValueRow extends StatelessWidget {
               LinkText(url: link),
             ],
             if (ianaZone != null &&
-                timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto)
+                timeValue.timezoneClockChangeMode ==
+                    TimezoneClockChangeMode.auto)
               ..._buildDstTransitionsSection(ianaZone, ctx, l10n),
           ],
         ),
@@ -62,67 +63,98 @@ abstract class TimeValueRow extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => FocusScreen(
-          timeValue: timeValue,
-          locale: locale,
-        ),
+        builder: (_) => FocusScreen(timeValue: timeValue, locale: locale),
         fullscreenDialog: true,
       ),
     );
   }
 
   List<Widget> _buildDstTransitionsSection(
-      String ianaZone, BuildContext context, AppLocalizations l10n) {
+    String ianaZone,
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
     final app = EpochApp.of(context);
     final settings = app.formatSettings;
     final transitions = TimeUtils.nextDstTransitions(
-        ianaZone, EffectiveClock.now().toUtc(), count: 4);
+      ianaZone,
+      EffectiveClock.now().toUtc(),
+      count: 4,
+    );
     if (transitions.isEmpty) return [];
 
-    final textTheme   = Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final locale      = l10n.localeName;
+    final locale = l10n.localeName;
 
     Widget transitionRow(DateTime utcTime) {
-      final DateTime localTime = localWallClockAt(utcTime, settings.localIanaZone);  // time in the zone "local" stands for
-      final tz.TZDateTime zonedTime = TimeUtils.inZone(utcTime, ianaZone);  // time in the named zone
+      final DateTime localTime = localWallClockAt(
+        utcTime,
+        settings.localIanaZone,
+      ); // time in the zone "local" stands for
+      final tz.TZDateTime zonedTime = TimeUtils.inZone(
+        utcTime,
+        ianaZone,
+      ); // time in the named zone
 
       final wallClock = TimeUtils.wallClockAroundTransition(ianaZone, utcTime);
-      final sameDay = wallClock.before.year == wallClock.after.year &&
+      final sameDay =
+          wallClock.before.year == wallClock.after.year &&
           wallClock.before.month == wallClock.after.month &&
           wallClock.before.day == wallClock.after.day;
       final abbrs = TimeUtils.dstTransitionAbbreviations(ianaZone, utcTime);
       final abbrBefore = localizeTimezoneAbbr(abbrs.before, l10n.localeName);
-      final abbrAfter  = localizeTimezoneAbbr(abbrs.after,  l10n.localeName);
+      final abbrAfter = localizeTimezoneAbbr(abbrs.after, l10n.localeName);
 
       // Abbreviation and offset, as in the time zone search: tells apart the
       // two occurrences of a repeated hour even if the abbreviations are unfamiliar.
       String describeWallClock(
-          DateTime wall, String abbreviation, Duration offset) {
-        final zone = '$abbreviation ${formatUtcOffset(offset, withUtcPrefix: true)}';
+        DateTime wall,
+        String abbreviation,
+        Duration offset,
+      ) {
+        final zone =
+            '$abbreviation ${formatUtcOffset(offset, withUtcPrefix: true)}';
         return sameDay
             ? TimeValueFormatter.formatTime(
-                settings.hourFormat24, wall.hour, wall.minute, wall.second,
-                tzSuffix: zone)
+                settings.hourFormat24,
+                wall.hour,
+                wall.minute,
+                wall.second,
+                tzSuffix: zone,
+              )
             : TimeValueFormatter.formatDateTime(
-                settings.hourFormat24, locale, wall, zone);
+                settings.hourFormat24,
+                locale,
+                wall,
+                zone,
+              );
       }
+
       final zonedStr =
           '${TimeValueFormatter.formatDate(locale, wallClock.after)}\n'
           '  ${describeWallClock(wallClock.before, abbrBefore.padRight(5), wallClock.offsetBefore)}\n'
           '→ ${describeWallClock(wallClock.after, abbrAfter.padRight(5), wallClock.offsetAfter)}';
 
       final localStr = TimeValueFormatter.formatDateTime(
-          settings.hourFormat24, locale, localTime, null);
+        settings.hourFormat24,
+        locale,
+        localTime,
+        null,
+      );
       // Only show local time if it differs from zoned time (different day or hour):
-      final showLocal = zonedTime.day != localTime.day ||
+      final showLocal =
+          zonedTime.day != localTime.day ||
           zonedTime.hour != localTime.hour ||
           zonedTime.month != localTime.month;
 
       final localAbbrAtTransition = () {
         try {
           final localLoc = tz.getLocation(settings.localIanaZone);
-          final abbr = tz.TZDateTime.from(utcTime, localLoc).timeZone.abbreviation;
+          final abbr = tz.TZDateTime.from(
+            utcTime,
+            localLoc,
+          ).timeZone.abbreviation;
           return localizeTimezoneAbbr(abbr, l10n.localeName);
         } catch (_) {
           return '';
@@ -132,7 +164,8 @@ abstract class TimeValueRow extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(zonedStr,
+          Text(
+            zonedStr,
             style: textTheme.bodySmall?.copyWith(fontFamily: fontFamilyDefault),
           ),
           if (showLocal)

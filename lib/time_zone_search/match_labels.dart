@@ -13,7 +13,8 @@ abstract final class TzRule {
 abstract final class TzSource {
   static const none = '-';
   static const rulePrefix = 'rule:';
-  static const variantSuffix = '~'; // marks terms produced by name-variant expansion
+  static const variantSuffix =
+      '~'; // marks terms produced by name-variant expansion
   static const ianaLinks = 'iana_links';
   static const iso3166NamesEn = 'iso3166_names_EN';
   static const cldrCountryNamesEn = 'cldr_country_names_EN';
@@ -32,10 +33,16 @@ abstract final class TzSource {
 
   /// Hits that name another city / another country of the same zone (hint text).
   static const otherCity = {
-    ianaLinks, cldrExemplarCities, wikidataCapitals, majorCities
+    ianaLinks,
+    cldrExemplarCities,
+    wikidataCapitals,
+    majorCities,
   };
   static const otherCountry = {
-    iso3166NamesEn, cldrCountryNamesEn, cldrCountryNamesDe,
-    countryAliasesEn, countryAliasesDe,
+    iso3166NamesEn,
+    cldrCountryNamesEn,
+    cldrCountryNamesDe,
+    countryAliasesEn,
+    countryAliasesDe,
   };
 }

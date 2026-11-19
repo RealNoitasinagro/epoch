@@ -42,11 +42,16 @@ Future<void> _renameSimpleKeys(SharedPreferences prefs) async {
 
     final value = prefs.get(oldKey);
     switch (value) {
-      case bool v:          await prefs.setBool(newKey, v);
-      case int v:           await prefs.setInt(newKey, v);
-      case double v:        await prefs.setDouble(newKey, v);
-      case String v:        await prefs.setString(newKey, v);
-      case List<String> v:  await prefs.setStringList(newKey, v);
+      case bool v:
+        await prefs.setBool(newKey, v);
+      case int v:
+        await prefs.setInt(newKey, v);
+      case double v:
+        await prefs.setDouble(newKey, v);
+      case String v:
+        await prefs.setString(newKey, v);
+      case List<String> v:
+        await prefs.setStringList(newKey, v);
     }
     await prefs.remove(oldKey);
   }
@@ -61,7 +66,8 @@ const _kAllTabsKey = 'all_tabs';
 Future<void> _migrateToAllTabs(SharedPreferences prefs) async {
   if (prefs.containsKey(_kAllTabsKey)) return;
   if (!prefs.containsKey(_kLegacyCivilKey) &&
-      !prefs.containsKey(_kLegacyCustomTabsKey)) return;
+      !prefs.containsKey(_kLegacyCustomTabsKey))
+    return;
 
   final tabs = defaultBuiltinTabs();
 
@@ -70,10 +76,11 @@ Future<void> _migrateToAllTabs(SharedPreferences prefs) async {
       .whereType<TabEntry>()
       .toList();
   if (civilEntries.isNotEmpty) {
-    tabs[0] = tabs[0].copyWith(entries: civilEntries);  // tabs[0] is civil
+    tabs[0] = tabs[0].copyWith(entries: civilEntries); // tabs[0] is civil
   }
 
-  final legacyCustomTabRows = prefs.tolerantStringList(_kLegacyCustomTabsKey) ?? [];
+  final legacyCustomTabRows =
+      prefs.tolerantStringList(_kLegacyCustomTabsKey) ?? [];
   for (final row in legacyCustomTabRows) {
     final parts = row.split('\t');
     if (parts.length < 2) continue;

@@ -23,14 +23,16 @@ class StartupErrorScreen extends StatelessWidget {
   });
 
   static AppLocalizations _localizations() => lookupAppLocalizations(
-      supportedSystemLocale(fallback: const Locale('en')));
+    supportedSystemLocale(fallback: const Locale('en')),
+  );
 
   @override
   Widget build(BuildContext context) {
     final l10n = _localizations();
     final textTheme = Theme.of(context).textTheme;
     final platform = kIsWeb
-        ? 'web (${defaultTargetPlatform.name})' : defaultTargetPlatform.name;
+        ? 'web (${defaultTargetPlatform.name})'
+        : defaultTargetPlatform.name;
     final details = '$kBuildInfo\n$platform\n\n$error\n\n$stackTrace';
     return Scaffold(
       body: SafeArea(
@@ -41,12 +43,16 @@ class StartupErrorScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.error_outline,
-                      color: Theme.of(context).colorScheme.error),
+                  Icon(
+                    Icons.error_outline,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(l10n.startupErrorTitle,
-                        style: textTheme.titleLarge),
+                    child: Text(
+                      l10n.startupErrorTitle,
+                      style: textTheme.titleLarge,
+                    ),
                   ),
                 ],
               ),
@@ -60,7 +66,9 @@ class StartupErrorScreen extends StatelessWidget {
                   child: SelectableText(
                     details,
                     style: const TextStyle(
-                        fontFamily: fontFamilyDefault, fontSize: 12),
+                      fontFamily: fontFamilyDefault,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
@@ -70,13 +78,15 @@ class StartupErrorScreen extends StatelessWidget {
                 label: Text(l10n.startupErrorCopy),
                 onPressed: () async {
                   await Clipboard.setData(
-                      ClipboardData(text: '$issuesLink\n\n$details')
+                    ClipboardData(text: '$issuesLink\n\n$details'),
                   );
                   if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(l10n.startupErrorCopied),
-                    behavior: SnackBarBehavior.floating,
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(l10n.startupErrorCopied),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 },
               ),
             ],

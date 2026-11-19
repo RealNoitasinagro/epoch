@@ -18,6 +18,8 @@ const focusSolidColors = [
 
 /// A random solid color, never [exclude]: every start looks different.
 Color pickRandomFocusColor(Random random, {Color? exclude}) {
-  final candidates = focusSolidColors.where((color) => color != exclude).toList();
+  final candidates = focusSolidColors
+      .where((color) => color != exclude)
+      .toList();
   return candidates[random.nextInt(candidates.length)];
 }

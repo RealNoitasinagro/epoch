@@ -11,7 +11,7 @@ import 'zone_rules.dart';
 typedef DayProgress = ({int elapsedSeconds, int dayLengthSeconds});
 
 class TimeUtils {
-  static const int secondsPerNormalDay = 24 * 60 * 60;  // 86400
+  static const int secondsPerNormalDay = 24 * 60 * 60; // 86400
 
   /// TAI − UTC at the start of 1972, when UTC was defined as it is today.
   static const _taiMinusUtcAtStartOf1972 = 10;
@@ -23,11 +23,33 @@ class TimeUtils {
   /// All 27 insertions to date; none are scheduled, abolition in 2027.
   static final List<DateTime> _leapSecondBoundaries = [
     for (final (year, month) in const [
-      (1972, 7), (1973, 1), (1974, 1), (1975, 1), (1976, 1), (1977, 1),
-      (1978, 1), (1979, 1), (1980, 1), (1981, 7), (1982, 7), (1983, 7),
-      (1985, 7), (1988, 1), (1990, 1), (1991, 1), (1992, 7), (1993, 7),
-      (1994, 7), (1996, 1), (1997, 7), (1999, 1), (2006, 1), (2009, 1),
-      (2012, 7), (2015, 7), (2017, 1),
+      (1972, 7),
+      (1973, 1),
+      (1974, 1),
+      (1975, 1),
+      (1976, 1),
+      (1977, 1),
+      (1978, 1),
+      (1979, 1),
+      (1980, 1),
+      (1981, 7),
+      (1982, 7),
+      (1983, 7),
+      (1985, 7),
+      (1988, 1),
+      (1990, 1),
+      (1991, 1),
+      (1992, 7),
+      (1993, 7),
+      (1994, 7),
+      (1996, 1),
+      (1997, 7),
+      (1999, 1),
+      (2006, 1),
+      (2009, 1),
+      (2012, 7),
+      (2015, 7),
+      (2017, 1),
     ])
       DateTime.utc(year, month),
   ];
@@ -51,13 +73,26 @@ class TimeUtils {
   static String tzAbbr(tz.TZDateTime dt) => dt.timeZone.abbreviation;
 
   /// Returns true/false for a given time zone independently of current date.
-  static bool hasDaylightSavingTime(String ianaZone, {DateTime? referenceUtc}) =>
-      zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc())?.hasDst ?? false;
+  static bool hasDaylightSavingTime(
+    String ianaZone, {
+    DateTime? referenceUtc,
+  }) =>
+      zoneRulesAt(
+        ianaZone,
+        referenceUtc ?? EffectiveClock.now().toUtc(),
+      )?.hasDst ??
+      false;
 
   /// Returns the summer or winter/standard offset for a given IANA time zone.
   static ({Duration offset, String abbreviation})? daylightOrStandardOffset(
-      String ianaZone, bool dst, {DateTime? referenceUtc}) {
-    final rules = zoneRulesAt(ianaZone, referenceUtc ?? EffectiveClock.now().toUtc());
+    String ianaZone,
+    bool dst, {
+    DateTime? referenceUtc,
+  }) {
+    final rules = zoneRulesAt(
+      ianaZone,
+      referenceUtc ?? EffectiveClock.now().toUtc(),
+    );
     if (rules == null || !rules.hasDst) return null;
     return dst
         ? (offset: rules.dstOffset, abbreviation: rules.dstAbbr)
@@ -70,8 +105,11 @@ class TimeUtils {
   }
 
   /// Returns a list of DateTime for the next n clock changes for a ianaZone.
-  static List<DateTime> nextDstTransitions(String ianaZone,
-      DateTime afterUtc, {int count = 4}) {
+  static List<DateTime> nextDstTransitions(
+    String ianaZone,
+    DateTime afterUtc, {
+    int count = 4,
+  }) {
     try {
       final loc = tz.getLocation(ianaZone);
       final afterUtcMs = afterUtc.millisecondsSinceEpoch;
@@ -84,14 +122,18 @@ class TimeUtils {
         if (result.length >= count) break;
       }
       return result;
-    } catch (_) { return []; }
+    } catch (_) {
+      return [];
+    }
   }
 
   /// The package data ends with a pseudo-transition (2038-01-19 03:14:08 UTC)
   /// into the very same state; real changes alter offset, DST flag or abbreviation.
   static bool _changesClock(tz.Location loc, DateTime transitionUtc) {
     final before = tz.TZDateTime.from(
-        transitionUtc.subtract(const Duration(seconds: 1)), loc).timeZone;
+      transitionUtc.subtract(const Duration(seconds: 1)),
+      loc,
+    ).timeZone;
     final after = tz.TZDateTime.from(transitionUtc, loc).timeZone;
     return before.offset != after.offset ||
         before.isDst != after.isDst ||
@@ -101,15 +143,19 @@ class TimeUtils {
   /// Returns the timezone abbreviations immediately before and after
   /// a DST transition, e.g. ('CEST', 'CET').
   static ({String before, String after}) dstTransitionAbbreviations(
-      String ianaZone, DateTime transitionUtc) {
+    String ianaZone,
+    DateTime transitionUtc,
+  ) {
     try {
       final loc = tz.getLocation(ianaZone);
       final before = tz.TZDateTime.from(
-          transitionUtc.subtract(const Duration(hours: 1)), loc)
-          .timeZone.abbreviation;
+        transitionUtc.subtract(const Duration(hours: 1)),
+        loc,
+      ).timeZone.abbreviation;
       final after = tz.TZDateTime.from(
-          transitionUtc.add(const Duration(hours: 1)), loc)
-          .timeZone.abbreviation;
+        transitionUtc.add(const Duration(hours: 1)),
+        loc,
+      ).timeZone.abbreviation;
       return (before: before, after: after);
     } catch (_) {
       return (before: '?', after: '?');
@@ -125,10 +171,12 @@ class TimeUtils {
     DateTime after,
     Duration offsetBefore,
     Duration offsetAfter,
-  }) wallClockAroundTransition(String ianaZone, DateTime transitionUtc) {
+  })
+  wallClockAroundTransition(String ianaZone, DateTime transitionUtc) {
     final offsetBefore = inZone(
-        transitionUtc.subtract(const Duration(seconds: 1)), ianaZone)
-        .timeZoneOffset;
+      transitionUtc.subtract(const Duration(seconds: 1)),
+      ianaZone,
+    ).timeZoneOffset;
     final offsetAfter = inZone(transitionUtc, ianaZone).timeZoneOffset;
     return (
       before: transitionUtc.add(offsetBefore),
@@ -142,19 +190,26 @@ class TimeUtils {
   /// that day in [ianaZone]: 82,800 or 90,000 on days with a clock change.
   /// A midnight skipped by a clock change resolves to the transition instant,
   /// so that day simply starts later.
-  static DayProgress dayProgressInZone(
-      DateTime utc, String ianaZone) {
+  static DayProgress dayProgressInZone(DateTime utc, String ianaZone) {
     tz.Location location;
     try {
       location = tz.getLocation(ianaZone);
     } catch (_) {
-      location = tz.UTC;  // same fallback as inZone()
+      location = tz.UTC; // same fallback as inZone()
     }
     final moment = tz.TZDateTime.from(utc, location);
-    final dayStart =
-        tz.TZDateTime(location, moment.year, moment.month, moment.day);
-    final nextDayStart =
-        tz.TZDateTime(location, moment.year, moment.month, moment.day + 1);
+    final dayStart = tz.TZDateTime(
+      location,
+      moment.year,
+      moment.month,
+      moment.day,
+    );
+    final nextDayStart = tz.TZDateTime(
+      location,
+      moment.year,
+      moment.month,
+      moment.day + 1,
+    );
     return (
       elapsedSeconds: moment.difference(dayStart).inSeconds,
       dayLengthSeconds: nextDayStart.difference(dayStart).inSeconds,
@@ -163,11 +218,10 @@ class TimeUtils {
 
   /// For fixed offsets (UTC, pinned standard or summer time) every day has
   /// exactly 86,400 seconds.
-  static DayProgress dayProgressFixedOffset(
-      DateTime wallClock) {
+  static DayProgress dayProgressFixedOffset(DateTime wallClock) {
     return (
       elapsedSeconds: _secondsSinceMidnight(wallClock),
-      dayLengthSeconds: secondsPerNormalDay
+      dayLengthSeconds: secondsPerNormalDay,
     );
   }
 
@@ -178,7 +232,6 @@ class TimeUtils {
     if (wallClockHour < 18) return kColorAmber;
     return kColorMatrixGreen;
   }
-
 
   // ── Value Type functions ───────────────────────────────────────────────────
 
@@ -224,7 +277,8 @@ class TimeUtils {
     final gpsEpoch = DateTime.utc(1980, 1, 6);
     final leapSecondsSinceGpsEpoch =
         taiMinusUtcSeconds(utc) - _taiMinusGpsSeconds;
-    return utc.toUtc().difference(gpsEpoch).inSeconds + leapSecondsSinceGpsEpoch;
+    return utc.toUtc().difference(gpsEpoch).inSeconds +
+        leapSecondsSinceGpsEpoch;
   }
 
   /// Greenwich Mean Sidereal Time (GMST) in hours (0–24).
@@ -234,10 +288,11 @@ class TimeUtils {
     // Julian centuries since J2000.0
     final t = (jd - 2451545.0) / 36525.0;
     // GMST in seconds at 0h UT
-    double gmstSec = 24110.54841
-        + 8640184.812866 * t
-        + 0.093104 * t * t
-        - 6.2e-6 * t * t * t;
+    double gmstSec =
+        24110.54841 +
+        8640184.812866 * t +
+        0.093104 * t * t -
+        6.2e-6 * t * t * t;
     // Add UT seconds elapsed today.
     final ut = utc.toUtc();
     final secondsToday =
@@ -260,7 +315,8 @@ class TimeUtils {
   static double julianDate(DateTime utc) {
     final y = utc.year;
     final mo = utc.month;
-    final d = utc.day +
+    final d =
+        utc.day +
         (utc.hour + utc.minute / 60.0 + utc.second / 3600.0 - 12.0) / 24.0;
     final a = ((14 - mo) / 12).floor();
     final yy = y + 4800 - a;
@@ -301,8 +357,8 @@ class TimeUtils {
   /// Decimal time (French Revolutionary time): the day has 10 decimal hours
   /// of 100 decimal minutes of 100 decimal seconds, whatever its real length.
   static ({int hours, int minutes, int seconds}) decimalTime(
-      DayProgress dayProgress,
-      ) {
+    DayProgress dayProgress,
+  ) {
     final fractionOfDay =
         dayProgress.elapsedSeconds / dayProgress.dayLengthSeconds;
     final decimalSeconds = (fractionOfDay * 100000).round() % 100000;
@@ -327,13 +383,15 @@ class TimeUtils {
     return secondsSinceMidnight / secondsPerNormalDay * 360;
   }
 
-  static String _toBin(int n, int width) => n.toRadixString(2).padLeft(width, '0');
+  static String _toBin(int n, int width) =>
+      n.toRadixString(2).padLeft(width, '0');
 
   /// Binary clock representation: hours, minutes, seconds as binary strings.
   static ({String hours, String minutes, String seconds}) binaryTime(
-      DateTime wallClock) {
+    DateTime wallClock,
+  ) {
     return (
-      hours:   _toBin(wallClock.hour,   5),
+      hours: _toBin(wallClock.hour, 5),
       minutes: _toBin(wallClock.minute, 6),
       seconds: _toBin(wallClock.second, 6),
     );
@@ -342,17 +400,21 @@ class TimeUtils {
   /// BCD (two-column) binary clock: each decimal digit as separate 4-bit value.
   /// Returns pairs (tens, units) for hours, minutes, seconds.
   static ({
-    String hourTens,   String hourUnits,
-    String minTens,    String minUnits,
-    String secTens,    String secUnits,
-  }) bcdTime(DateTime wallClock) {
+    String hourTens,
+    String hourUnits,
+    String minTens,
+    String minUnits,
+    String secTens,
+    String secUnits,
+  })
+  bcdTime(DateTime wallClock) {
     return (
-      hourTens:  _toBin(wallClock.hour   ~/ 10, 2),
-      hourUnits: _toBin(wallClock.hour    % 10, 4),
-      minTens:   _toBin(wallClock.minute ~/ 10, 3),
-      minUnits:  _toBin(wallClock.minute  % 10, 4),
-      secTens:   _toBin(wallClock.second ~/ 10, 3),
-      secUnits:  _toBin(wallClock.second  % 10, 4),
+      hourTens: _toBin(wallClock.hour ~/ 10, 2),
+      hourUnits: _toBin(wallClock.hour % 10, 4),
+      minTens: _toBin(wallClock.minute ~/ 10, 3),
+      minUnits: _toBin(wallClock.minute % 10, 4),
+      secTens: _toBin(wallClock.second ~/ 10, 3),
+      secUnits: _toBin(wallClock.second % 10, 4),
     );
   }
 
@@ -362,11 +424,28 @@ class TimeUtils {
   /// https://en.wikipedia.org/wiki/Doomsday_Clock – verify when adding entries.
   /// Last check for accuracy of hardcoded values: 2026-10-27.
   static const Map<int, int> _doomsdaySecondsToMidnightByYear = {
-    1969: 600,  1972: 720,  1974: 540,  1980: 420,  1981: 240,
-    1984: 180,  1988: 360,  1990: 600,  1991: 1020, 1995: 840,
-    1998: 540,  2002: 420,  2007: 300,  2010: 360,  2012: 300,
-    2015: 180,  2017: 150,  2018: 120,  2020: 100,  2023: 90,
-    2025: 89,   2026: 85,
+    1969: 600,
+    1972: 720,
+    1974: 540,
+    1980: 420,
+    1981: 240,
+    1984: 180,
+    1988: 360,
+    1990: 600,
+    1991: 1020,
+    1995: 840,
+    1998: 540,
+    2002: 420,
+    2007: 300,
+    2010: 360,
+    2012: 300,
+    2015: 180,
+    2017: 150,
+    2018: 120,
+    2020: 100,
+    2023: 90,
+    2025: 89,
+    2026: 85,
   };
 
   /// Seconds to midnight at the given moment; the latest known setting
@@ -374,8 +453,9 @@ class TimeUtils {
   static int doomsdaySecondsToMidnight(DateTime utc) {
     final year = utc.toUtc().year;
     final settingYear = _doomsdaySecondsToMidnightByYear.keys.lastWhere(
-            (candidate) => candidate <= year,
-        orElse: () => _doomsdaySecondsToMidnightByYear.keys.first);
+      (candidate) => candidate <= year,
+      orElse: () => _doomsdaySecondsToMidnightByYear.keys.first,
+    );
     return _doomsdaySecondsToMidnightByYear[settingYear]!;
   }
 

@@ -85,29 +85,30 @@ class EpochApp extends StatefulWidget {
 
 class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   ({Object error, StackTrace stackTrace})? _startupError;
-  bool _settingsLoaded             = false;
-  bool _splashMinDurationElapsed   = false;
-  String _localIanaZone            = 'UTC';
-  Locale _locale                   = kDefaultLocale;
-  AppThemeMode _themeMode          = kDefaultThemeMode;
-  bool _hourFormat24               = kDefaultHourFormat24;
-  bool _thousandsSep               = kDefaultThousandsSep;
-  bool _dateWithDetails            = kDefaultDateWithDetails;
-  String _dateFormat               = kDatePatternIso;
-  String _timeFormat               = kTimePatternFull;
+  bool _settingsLoaded = false;
+  bool _splashMinDurationElapsed = false;
+  String _localIanaZone = 'UTC';
+  Locale _locale = kDefaultLocale;
+  AppThemeMode _themeMode = kDefaultThemeMode;
+  bool _hourFormat24 = kDefaultHourFormat24;
+  bool _thousandsSep = kDefaultThousandsSep;
+  bool _dateWithDetails = kDefaultDateWithDetails;
+  String _dateFormat = kDatePatternIso;
+  String _timeFormat = kTimePatternFull;
   ZoneDisplayMode _zoneDisplayMode = kDefaultZoneDisplayMode;
-  bool _dayQuarterColor            = kDefaultDayQuarterColor;
-  LmstMode _lmstMode               = kDefaultLmstMode;
+  bool _dayQuarterColor = kDefaultDayQuarterColor;
+  LmstMode _lmstMode = kDefaultLmstMode;
   double? _lmstLongitude;
   String? _lastImportedConfig;
   TimeValue? _startupFocusValue;
-  bool _focusTimeShiftIndicator    = kDefaultFocusTimeShiftIndicator;
+  bool _focusTimeShiftIndicator = kDefaultFocusTimeShiftIndicator;
   Set<ValueType> _optionalPartHiddenTypes = {};
 
   NightModeSchedule _nightModeSchedule = NightModeSchedule.none;
-  late bool _nightModeScheduleActive = false;  // system time is within the window
+  late bool _nightModeScheduleActive =
+      false; // system time is within the window
   Timer? _nightModeTimer;
-  bool _nightModeOverridden = false;  // the user chose a theme within the window
+  bool _nightModeOverridden = false; // the user chose a theme within the window
 
   /// True while night mode is in effect (chosen or scheduled), for screens
   /// that must react to a change while they are open (Focus screen).
@@ -149,14 +150,16 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
     if (scheduleActive != _nightModeScheduleActive) {
       setState(() {
         _nightModeScheduleActive = scheduleActive;
-        _nightModeOverridden = false;  // the choice was for the previous window
+        _nightModeOverridden = false; // the choice was for the previous window
       });
     }
     nightModeNotifier.value = isNightMode;
     final nextChange = _nightModeSchedule.nextChangeAfter(now);
     if (nextChange == null) return;
-    _nightModeTimer =
-        Timer(nextChange.difference(now), _applyNightModeSchedule);
+    _nightModeTimer = Timer(
+      nextChange.difference(now),
+      _applyNightModeSchedule,
+    );
   }
 
   void setNightModeSchedule(NightModeSchedule schedule) {
@@ -169,58 +172,59 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
     await _loadPreferences();
     if (mounted) {
       setState(() => _homeKey = UniqueKey());
-      settingsReloadNotifier.value++;  // signals SettingsScreen to refresh
+      settingsReloadNotifier.value++; // signals SettingsScreen to refresh
     }
   }
 
   Future<void> _loadPreferences() async {
     try {
-      final locale                  = await loadLocale()
-          ?? supportedSystemLocale(fallback: kDefaultLocale);
-      final theme                   = await loadThemeMode();
-      final nightModeSchedule       = await loadNightModeSchedule();
-      final hour24                  = await loadHourFormat24();
-      final thousands               = await loadThousandsSep();
-      final dateWithDetails         = await loadDateWithDetails();
-      final dateFormat              = await loadDateFormat();
-      final timeFormat              = await loadTimeFormat();
-      final zoneDisplayMode         = await loadZoneDisplayMode();
-      final dayQuarterColor         = await loadDayQuarterColor();
-      final lmstMode                = await loadLmstMode();
-      final lmstLongitude           = await loadLmstLongitude();
-      final lastImportedConfig      = await loadLastImportedConfig();
-      final startupFocusValue       = await loadStartupFocusValue();
+      final locale =
+          await loadLocale() ?? supportedSystemLocale(fallback: kDefaultLocale);
+      final theme = await loadThemeMode();
+      final nightModeSchedule = await loadNightModeSchedule();
+      final hour24 = await loadHourFormat24();
+      final thousands = await loadThousandsSep();
+      final dateWithDetails = await loadDateWithDetails();
+      final dateFormat = await loadDateFormat();
+      final timeFormat = await loadTimeFormat();
+      final zoneDisplayMode = await loadZoneDisplayMode();
+      final dayQuarterColor = await loadDayQuarterColor();
+      final lmstMode = await loadLmstMode();
+      final lmstLongitude = await loadLmstLongitude();
+      final lastImportedConfig = await loadLastImportedConfig();
+      final startupFocusValue = await loadStartupFocusValue();
       final focusTimeShiftIndicator = await loadFocusTimeShiftIndicator();
       final optionalPartHiddenTypes = await loadOptionalPartHiddenTypes();
 
       String localZone = 'UTC';
       try {
-        final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+        final TimezoneInfo currentTimeZone =
+            await FlutterTimezone.getLocalTimezone();
         localZone = currentTimeZone.identifier;
       } catch (_) {
         localZone = 'UTC';
       }
 
       setState(() {
-        _localIanaZone           = localZone;
-        _locale                  = locale;
-        _nightModeSchedule       = nightModeSchedule;
-        _themeMode               = theme;
-        _hourFormat24            = hour24;
-        _thousandsSep            = thousands;
-        _dateWithDetails         = dateWithDetails;
-        _dateFormat              = dateFormat;
-        _timeFormat              = timeFormat;
-        _zoneDisplayMode         = zoneDisplayMode;
-        _dayQuarterColor         = dayQuarterColor;
-        _lmstMode                = lmstMode;
-        _lmstLongitude           = lmstLongitude;
-        _lastImportedConfig      = lastImportedConfig;
-        _startupFocusValue       = startupFocusValue;
+        _localIanaZone = localZone;
+        _locale = locale;
+        _nightModeSchedule = nightModeSchedule;
+        _themeMode = theme;
+        _hourFormat24 = hour24;
+        _thousandsSep = thousands;
+        _dateWithDetails = dateWithDetails;
+        _dateFormat = dateFormat;
+        _timeFormat = timeFormat;
+        _zoneDisplayMode = zoneDisplayMode;
+        _dayQuarterColor = dayQuarterColor;
+        _lmstMode = lmstMode;
+        _lmstLongitude = lmstLongitude;
+        _lastImportedConfig = lastImportedConfig;
+        _startupFocusValue = startupFocusValue;
         _focusTimeShiftIndicator = focusTimeShiftIndicator;
         _optionalPartHiddenTypes = optionalPartHiddenTypes;
-        _nightModeOverridden     = false;
-        _settingsLoaded          = true;
+        _nightModeOverridden = false;
+        _settingsLoaded = true;
       });
     } catch (error, stackTrace) {
       if (mounted) {
@@ -317,9 +321,10 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
 
   /// The theme in effect: night mode within the night mode window (unless the
   /// user chose a theme meanwhile), otherwise the user's choice.
-  AppThemeMode get themeMode => _nightModeScheduleActive && !_nightModeOverridden
-      ? AppThemeMode.night : _themeMode;
-
+  AppThemeMode get themeMode =>
+      _nightModeScheduleActive && !_nightModeOverridden
+      ? AppThemeMode.night
+      : _themeMode;
 
   /// The user's own choice, which the night mode window never changes.
   AppThemeMode get userThemeMode => _themeMode;
@@ -327,9 +332,9 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
   NightModeSchedule get nightModeSchedule => _nightModeSchedule;
 
   ThemeMode get _flutterThemeMode => switch (themeMode) {
-    AppThemeMode.light  => ThemeMode.light,
-    AppThemeMode.dark   => ThemeMode.dark,
-    AppThemeMode.night  => ThemeMode.dark,
+    AppThemeMode.light => ThemeMode.light,
+    AppThemeMode.dark => ThemeMode.dark,
+    AppThemeMode.night => ThemeMode.dark,
     AppThemeMode.system => ThemeMode.system,
   };
 
@@ -337,7 +342,7 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
 
   bool get dayQuarterColor => _dayQuarterColor;
   LmstMode get lmstMode => _lmstMode;
-  double?  get lmstLongitude => _lmstLongitude;
+  double? get lmstLongitude => _lmstLongitude;
   String? get lastImportedConfig => _lastImportedConfig;
   bool get focusTimeShiftIndicator => _focusTimeShiftIndicator;
 
@@ -373,14 +378,17 @@ class EpochAppState extends State<EpochApp> with WidgetsBindingObserver {
       home: _startupError != null
           ? StartupErrorScreen(
               error: _startupError!.error,
-              stackTrace: _startupError!.stackTrace
+              stackTrace: _startupError!.stackTrace,
             )
           : showSplash
-            ? const SplashScreen()
-            : (_startupFocusValue != null
-              ? FocusScreen(timeValue: _startupFocusValue!, locale: _locale.languageCode)
-              : HomeScreen(key: _homeKey)),
-      );
+          ? const SplashScreen()
+          : (_startupFocusValue != null
+                ? FocusScreen(
+                    timeValue: _startupFocusValue!,
+                    locale: _locale.languageCode,
+                  )
+                : HomeScreen(key: _homeKey)),
+    );
   }
 }
 
@@ -391,8 +399,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late DateTime _now;
   TabController? _tabController;
   List<TabConfig> _tabs = [];
@@ -439,8 +446,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  List<TabConfig> get _visibleTabs =>
-      _tabs.where((t) => t.isVisible).toList();
+  List<TabConfig> get _visibleTabs => _tabs.where((t) => t.isVisible).toList();
   int get _tabCount => _visibleTabs.length;
   int get _watchlistCount => _visibleTabs.where((t) => !t.isBuiltin).length;
 
@@ -449,7 +455,7 @@ class _HomeScreenState extends State<HomeScreen>
     final activeTab = await loadActiveTab();
     if (!mounted) return;
     setState(() {
-      _tabs   = result.tabs;
+      _tabs = result.tabs;
       _loaded = true;
     });
     if (EpochApp.of(context).lmstMode == LmstMode.off) _removeLmstFromAllTabs();
@@ -479,10 +485,10 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController = newCount == 0
         ? null
         : (TabController(
-      length: newCount,
-      vsync: this,
-      initialIndex: oldIndex.clamp(0, newCount - 1),
-    )..addListener(_onTabChanged));
+            length: newCount,
+            vsync: this,
+            initialIndex: oldIndex.clamp(0, newCount - 1),
+          )..addListener(_onTabChanged));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       oldController?.dispose();
     });
@@ -515,9 +521,9 @@ class _HomeScreenState extends State<HomeScreen>
     final idx = _visibleTabs.indexWhere((t) => t.id == id);
     _tabs.removeWhere((t) => t.id == id);
     saveAllTabs(_tabs);
-    final newCount = _tabCount;  // recomputed after removal
+    final newCount = _tabCount; // recomputed after removal
     _updateTabController();
-    if (newCount == 0) return;   // nothing left to animate to
+    if (newCount == 0) return; // nothing left to animate to
     final targetIndex = (idx - 1).clamp(0, newCount - 1);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -526,7 +532,10 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Future<void> _renameCustomTab(
-      BuildContext context, AppLocalizations l10n, String id) async {
+    BuildContext context,
+    AppLocalizations l10n,
+    String id,
+  ) async {
     final tab = _tabs.firstWhere((t) => t.id == id);
     final controller = TextEditingController(text: tab.customName);
     final result = await showDialog<String>(
@@ -594,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen>
         anyChanged = true;
       }
     }
-    if (!anyChanged) return;  // avoid pointless/harmful writes
+    if (!anyChanged) return; // avoid pointless/harmful writes
     saveAllTabs(_tabs);
     setState(() {});
   }
@@ -604,9 +613,7 @@ class _HomeScreenState extends State<HomeScreen>
     final l10n = AppLocalizations.of(context)!;
 
     if (!_loaded) {
-      return Scaffold(
-        backgroundColor: Colors.black,
-      );
+      return Scaffold(backgroundColor: Colors.black);
     }
     if (_tabController == null) {
       return _buildNoTabsScreen(context, l10n);
@@ -655,7 +662,8 @@ class _HomeScreenState extends State<HomeScreen>
               Expanded(
                 child: Center(
                   child: TimeShiftIndicator(
-                      onTap: () => _openTimeShift(context)),
+                    onTap: () => _openTimeShift(context),
+                  ),
                 ),
               ),
           ],
@@ -690,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen>
                 case 'whats_new':
                   launchUrl(
                     Uri.parse(changelogLink),
-                    mode: LaunchMode.externalApplication
+                    mode: LaunchMode.externalApplication,
                   );
                 case 'exit':
                   SystemNavigator.pop();
@@ -736,7 +744,7 @@ class _HomeScreenState extends State<HomeScreen>
                     dense: true,
                   ),
                 ),
-                if (! isDesktopPlatform) ...[
+                if (!isDesktopPlatform) ...[
                   PopupMenuDivider(),
                   PopupMenuItem(
                     value: 'exit',
@@ -757,28 +765,36 @@ class _HomeScreenState extends State<HomeScreen>
           controller: _tabController,
           isScrollable: true,
           tabAlignment: TabAlignment.start,
-          tabs: _visibleTabs.map((tab) => _AppTab(
-            tabConfig: tab,
-            onRename: tab.isBuiltin
-                ? null
-                : () => _renameCustomTab(context, l10n, tab.id),
-            onHideOrDelete: tab.isBuiltin
-                ? () => _hideBuiltinTab(tab.id)
-                : () => _deleteCustomTab(tab.id),
-          )).toList(),
+          tabs: _visibleTabs
+              .map(
+                (tab) => _AppTab(
+                  tabConfig: tab,
+                  onRename: tab.isBuiltin
+                      ? null
+                      : () => _renameCustomTab(context, l10n, tab.id),
+                  onHideOrDelete: tab.isBuiltin
+                      ? () => _hideBuiltinTab(tab.id)
+                      : () => _deleteCustomTab(tab.id),
+                ),
+              )
+              .toList(),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: _visibleTabs.map((tab) => ConfigurableTab(
-          key: ValueKey(tab.id),
-          now: _now,
-          entries: tab.entries,
-          defaultEntries: tab.isBuiltin
-              ? defaultEntriesFor(tab.builtinKind!)
-              : List.of(defaultWatchlistEntries),
-          onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
-        )).toList(),
+        children: _visibleTabs
+            .map(
+              (tab) => ConfigurableTab(
+                key: ValueKey(tab.id),
+                now: _now,
+                entries: tab.entries,
+                defaultEntries: tab.isBuiltin
+                    ? defaultEntriesFor(tab.builtinKind!)
+                    : List.of(defaultWatchlistEntries),
+                onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
+              ),
+            )
+            .toList(),
       ),
     );
   }
@@ -792,8 +808,11 @@ class _HomeScreenState extends State<HomeScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.visibility_off_outlined, size: 48,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(120)),
+              Icon(
+                Icons.visibility_off_outlined,
+                size: 48,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(120),
+              ),
               const SizedBox(height: 16),
               Text(l10n.messageNoTabsVisible, textAlign: TextAlign.center),
               const SizedBox(height: 24),
@@ -827,10 +846,13 @@ class _HomeScreenState extends State<HomeScreen>
     // Only builds that show a bare commit ("Repo: <hash>") are linked: release,
     // F-Droid and CI builds. Local development builds add branch and dirty
     // marker and may refer to commits that do not exist on GitHub.
-    final commitId = RegExp(r'^Repo: ([0-9a-f]{7,40})$', multiLine: true)
-        .firstMatch(kBuildInfo);
+    final commitId = RegExp(
+      r'^Repo: ([0-9a-f]{7,40})$',
+      multiLine: true,
+    ).firstMatch(kBuildInfo);
     final commitLink = commitId != null
-        ? '$repoLink/commit/${commitId.group(1)!}' : '';
+        ? '$repoLink/commit/${commitId.group(1)!}'
+        : '';
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -870,7 +892,9 @@ class _HomeScreenState extends State<HomeScreen>
     try {
       final PackageInfo info = await PackageInfo.fromPlatform();
       version = info.version.isNotEmpty ? info.version : _fallbackVersion;
-      build = info.buildNumber.isNotEmpty ? info.buildNumber : _fallbackBuildNumber;
+      build = info.buildNumber.isNotEmpty
+          ? info.buildNumber
+          : _fallbackBuildNumber;
     } catch (_) {
       version = _fallbackVersion;
       build = _fallbackBuildNumber;
@@ -881,17 +905,14 @@ class _HomeScreenState extends State<HomeScreen>
       applicationName: l10n.appName,
       applicationVersion: '$version (build $build)',
       applicationLegalese: l10n.dialogueAboutLegalese,
-      children: [
-        SizedBox(height: 16),
-        Text(l10n.dialogueAbout),
-      ],
+      children: [SizedBox(height: 16), Text(l10n.dialogueAbout)],
     );
   }
 }
 
 class _AppTab extends StatelessWidget {
   final TabConfig tabConfig;
-  final VoidCallback? onRename;  // null for builtin tabs (no rename)
+  final VoidCallback? onRename; // null for builtin tabs (no rename)
   final VoidCallback onHideOrDelete;
 
   const _AppTab({
@@ -918,7 +939,9 @@ class _AppTab extends StatelessWidget {
               ),
             ListTile(
               leading: Icon(
-                tabConfig.isBuiltin ? Icons.visibility_off_outlined : Icons.delete_outline,
+                tabConfig.isBuiltin
+                    ? Icons.visibility_off_outlined
+                    : Icons.delete_outline,
                 color: Colors.redAccent,
               ),
               title: Text(

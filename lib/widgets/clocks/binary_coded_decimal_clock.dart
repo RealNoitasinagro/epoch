@@ -29,21 +29,26 @@ class BinaryCodedDecimalClock extends StatelessWidget {
     Widget bitColumn(String bits, int totalRows) {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        children: bits.split('').map((b) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3),
-          child: Container(
-            width: dotSize,
-            height: dotSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: b == '1' ? litColor : dimColor.withAlpha(60),
-              border: Border.all(
-                color: b == '1' ? litColor : dimColor,
-                width: 1.5,
+        children: bits
+            .split('')
+            .map(
+              (b) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Container(
+                  width: dotSize,
+                  height: dotSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: b == '1' ? litColor : dimColor.withAlpha(60),
+                    border: Border.all(
+                      color: b == '1' ? litColor : dimColor,
+                      width: 1.5,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        )).toList(),
+            )
+            .toList(),
       );
     }
 
@@ -52,10 +57,9 @@ class BinaryCodedDecimalClock extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Text(
         label,
-        style: Theme.of(context)
-            .textTheme
-            .labelSmall
-            ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150),),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+        ),
         textAlign: TextAlign.center,
       ),
     );
@@ -66,18 +70,19 @@ class BinaryCodedDecimalClock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Group headers.
-        if (showLabels) Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SizedBox(width: 50, child: groupLabel(l10n.labelHours)),
-            const SizedBox(width: 8),
-            SizedBox(width: 50, child: groupLabel(l10n.labelMinutes)),
-            if (showSeconds) ...[
+        if (showLabels)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(width: 50, child: groupLabel(l10n.labelHours)),
               const SizedBox(width: 8),
-              SizedBox(width: 50, child: groupLabel(l10n.labelSeconds)),
+              SizedBox(width: 50, child: groupLabel(l10n.labelMinutes)),
+              if (showSeconds) ...[
+                const SizedBox(width: 8),
+                SizedBox(width: 50, child: groupLabel(l10n.labelSeconds)),
+              ],
             ],
-          ],
-        ),
+          ),
         const SizedBox(height: 4),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end, // align bottoms
@@ -86,12 +91,12 @@ class BinaryCodedDecimalClock extends StatelessWidget {
             SizedBox(width: dotSize * 0.25),
             bitColumn(bcd.hourUnits, 4),
             SizedBox(width: dotSize * 0.75),
-            bitColumn(bcd.minTens,  3),
+            bitColumn(bcd.minTens, 3),
             SizedBox(width: dotSize * 0.25),
-            bitColumn(bcd.minUnits,  4),
+            bitColumn(bcd.minUnits, 4),
             if (showSeconds) ...[
               SizedBox(width: dotSize * 0.75),
-              bitColumn(bcd.secTens,  3),
+              bitColumn(bcd.secTens, 3),
               SizedBox(width: dotSize * 0.25),
               bitColumn(bcd.secUnits, 4),
             ],

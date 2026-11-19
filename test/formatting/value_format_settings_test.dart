@@ -11,7 +11,10 @@ void main() {
     zone: ZoneUtc(),
     showOptionalPart: true,
   );
-  const swatchBeats = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
+  const swatchBeats = TimeValue(
+    valueType: ValueType.swatchBeats,
+    zone: ZoneUtc(),
+  );
 
   test('everything is shown by default', () {
     const settings = ValueFormatSettings();
@@ -94,17 +97,26 @@ void main() {
       expect(shownZones.showsDetails(timeHidden), isFalse);
     });
 
-    test('zone display mode: shown details with a hidden mode use the full form', () {
-      const hiddenZones = ValueFormatSettings(
-        zoneDisplayMode: ZoneDisplayMode.hidden,
-      );
-      const abbreviations = ValueFormatSettings(
-        zoneDisplayMode: ZoneDisplayMode.abbreviation,
-      );
-      expect(hiddenZones.zoneDisplayModeFor(timeShown), ZoneDisplayMode.full);
-      expect(hiddenZones.zoneDisplayModeFor(time), ZoneDisplayMode.hidden);
-      expect(abbreviations.zoneDisplayModeFor(time), ZoneDisplayMode.abbreviation);
-      expect(abbreviations.zoneDisplayModeFor(timeHidden), ZoneDisplayMode.hidden);
-    });
+    test(
+      'zone display mode: shown details with a hidden mode use the full form',
+      () {
+        const hiddenZones = ValueFormatSettings(
+          zoneDisplayMode: ZoneDisplayMode.hidden,
+        );
+        const abbreviations = ValueFormatSettings(
+          zoneDisplayMode: ZoneDisplayMode.abbreviation,
+        );
+        expect(hiddenZones.zoneDisplayModeFor(timeShown), ZoneDisplayMode.full);
+        expect(hiddenZones.zoneDisplayModeFor(time), ZoneDisplayMode.hidden);
+        expect(
+          abbreviations.zoneDisplayModeFor(time),
+          ZoneDisplayMode.abbreviation,
+        );
+        expect(
+          abbreviations.zoneDisplayModeFor(timeHidden),
+          ZoneDisplayMode.hidden,
+        );
+      },
+    );
   });
 }

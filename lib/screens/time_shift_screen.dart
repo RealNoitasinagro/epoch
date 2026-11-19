@@ -53,8 +53,14 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final instant = edited == null
         ? EffectiveClock.now().toUtc()
         : instantOfWallClock(edited, _zone);
-    return DateTime.utc(instant.year, instant.month, instant.day, instant.hour,
-        instant.minute, instant.second);
+    return DateTime.utc(
+      instant.year,
+      instant.month,
+      instant.day,
+      instant.hour,
+      instant.minute,
+      instant.second,
+    );
   }
 
   /// What "local" should stand for after Apply: the chosen zone, or the zone
@@ -111,23 +117,30 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   void _showSnackBar(String text, {Duration? duration}) {
     ScaffoldMessenger.of(context)
       ..clearSnackBars()
-      ..showSnackBar(SnackBar(
-        content: Text(text),
-        duration: duration ?? const Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating,
-      ));
+      ..showSnackBar(
+        SnackBar(
+          content: Text(text),
+          duration: duration ?? const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
   }
 
   void _showOutOfRange() {
-    _showSnackBar(AppLocalizations.of(context)!.timeShiftOutOfRange(
-        EffectiveClock.earliestMomentText, EffectiveClock.latestMomentText));
+    _showSnackBar(
+      AppLocalizations.of(context)!.timeShiftOutOfRange(
+        EffectiveClock.earliestMomentText,
+        EffectiveClock.latestMomentText,
+      ),
+    );
   }
 
   /// Whether [zone] is the zone of the device: "local" already means it.
   bool _isSystemZone(ZoneSpec zone) {
     if (zone is ZoneLocal) return true;
     if (zone is! ZoneNamed) return false;
-    String canonical(String ianaZone) => ianaLinksSnapshot[ianaZone] ?? ianaZone;
+    String canonical(String ianaZone) =>
+        ianaLinksSnapshot[ianaZone] ?? ianaZone;
     return canonical(zone.ianaZone) ==
         canonical(EpochApp.of(context).systemIanaZone);
   }
@@ -143,18 +156,27 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         _editedWallClock = wallClockOf(instantOfWallClock(edited, _zone), zone);
       }
       _zone = zone;
-      if (_isSystemZone(zone)) _zoneAsLocal = false;  // nothing to redefine
+      if (_isSystemZone(zone)) _zoneAsLocal = false; // nothing to redefine
     });
   }
 
   void _updateMoment({
-    int? year, int? month, int? day, int? hour, int? minute, int? second,
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+    int? second,
   }) {
     final current = _displayedWallClock;
     // UTC has no clock changes, so this keeps exactly what was requested:
     final requested = DateTime.utc(
-      year ?? current.year, month ?? current.month, day ?? current.day,
-      hour ?? current.hour, minute ?? current.minute, second ?? current.second,
+      year ?? current.year,
+      month ?? current.month,
+      day ?? current.day,
+      hour ?? current.hour,
+      minute ?? current.minute,
+      second ?? current.second,
     );
     // A zone with clock changes may not know that reading:
     final used = wallClockOf(instantOfWallClock(requested, _zone), _zone);
@@ -163,8 +185,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final usedText = _wallClockText(used);
     if (requestedText != usedText) {
       _showSnackBar(
-        AppLocalizations.of(context)!
-            .timeShiftSkippedTime(requestedText, usedText),
+        AppLocalizations.of(
+          context,
+        )!.timeShiftSkippedTime(requestedText, usedText),
         duration: const Duration(seconds: 6),
       );
     }
@@ -178,12 +201,13 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       initialDate: currentDate.isBefore(_firstSelectableDate)
           ? _firstSelectableDate
           : currentDate.isAfter(_lastSelectableDate)
-            ? _lastSelectableDate
-            : currentDate,
+          ? _lastSelectableDate
+          : currentDate,
       firstDate: _firstSelectableDate,
       lastDate: _lastSelectableDate,
-      initialDatePickerMode:
-          startWithYear ? DatePickerMode.year : DatePickerMode.day,
+      initialDatePickerMode: startWithYear
+          ? DatePickerMode.year
+          : DatePickerMode.day,
     );
     if (picked == null || !mounted) return;
     _updateMoment(year: picked.year, month: picked.month, day: picked.day);
@@ -193,15 +217,27 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final l10n = AppLocalizations.of(context)!;
     final current = _displayedWallClock;
     final (title, scale, initialValue) = switch (unit) {
-      _TimeUnit.hour   => (l10n.timeShiftHours, DialScale.hours24, current.hour),
-      _TimeUnit.minute => (l10n.timeShiftMinutes, DialScale.sixty, current.minute),
-      _TimeUnit.second => (l10n.timeShiftSeconds, DialScale.sixty, current.second),
+      _TimeUnit.hour => (l10n.timeShiftHours, DialScale.hours24, current.hour),
+      _TimeUnit.minute => (
+        l10n.timeShiftMinutes,
+        DialScale.sixty,
+        current.minute,
+      ),
+      _TimeUnit.second => (
+        l10n.timeShiftSeconds,
+        DialScale.sixty,
+        current.second,
+      ),
     };
     final picked = await showDialPicker(
-        context, title: title, scale: scale, initialValue: initialValue);
+      context,
+      title: title,
+      scale: scale,
+      initialValue: initialValue,
+    );
     if (picked == null || !mounted) return;
     _updateMoment(
-      hour:   unit == _TimeUnit.hour   ? picked : null,
+      hour: unit == _TimeUnit.hour ? picked : null,
       minute: unit == _TimeUnit.minute ? picked : null,
       second: unit == _TimeUnit.second ? picked : null,
     );
@@ -218,8 +254,11 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       // Only "local" changes, the time stays exactly as it is:
       EffectiveClock.setVirtualLocalZone(_virtualLocalIanaZone);
     } else {
-      EffectiveClock.shiftTo(instant,
-          frozen: _frozen, virtualLocalIanaZone: _virtualLocalIanaZone);
+      EffectiveClock.shiftTo(
+        instant,
+        frozen: _frozen,
+        virtualLocalIanaZone: _virtualLocalIanaZone,
+      );
     }
     Navigator.pop(context);
   }
@@ -237,10 +276,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       return;
     }
     final start = TimeShiftStart(
-        momentUtc: instant,
-        frozen: _frozen,
-        zone: _zone,
-        zoneAsLocal: _zoneAsLocal
+      momentUtc: instant,
+      frozen: _frozen,
+      zone: _zone,
+      zoneAsLocal: _zoneAsLocal,
     );
     await saveTimeShiftStart(start);
     if (!mounted) return;
@@ -265,8 +304,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
           if (index > 0)
             Padding(
               padding: const EdgeInsets.only(bottom: 14, left: 4, right: 4),
-              child: Text(separator,
-                  style: Theme.of(context).textTheme.headlineSmall),
+              child: Text(
+                separator,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
             ),
           segments[index],
         ],
@@ -279,11 +320,13 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   void _adoptSystemValues({required bool date}) {
     final system = wallClockOf(EffectiveClock.systemTime().toUtc(), _zone);
     if (date) {
-      _updateMoment(
-          year: system.year, month: system.month, day: system.day);
+      _updateMoment(year: system.year, month: system.month, day: system.day);
     } else {
       _updateMoment(
-          hour: system.hour, minute: system.minute, second: system.second);
+        hour: system.hour,
+        minute: system.minute,
+        second: system.second,
+      );
     }
   }
 
@@ -318,8 +361,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   String _zoneTitle(ZoneSpec zone, AppLocalizations l10n) => switch (zone) {
     ZoneLocal() => l10n.actionZoneLocal,
     ZoneUtc() => l10n.actionZoneUtc,
-    ZoneNamed(ianaZone: final ianaZone) =>
-        _namedZoneTitle(ianaZone, l10n.localeName),
+    ZoneNamed(ianaZone: final ianaZone) => _namedZoneTitle(
+      ianaZone,
+      l10n.localeName,
+    ),
   };
 
   String _namedZoneTitle(String ianaZone, String locale) {
@@ -338,7 +383,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       ZoneNamed(ianaZone: final name) => name,
     };
     final offsetText = formatUtcOffset(
-        offsetInZone(_displayedInstant, _zone), withUtcPrefix: true);
+      offsetInZone(_displayedInstant, _zone),
+      withUtcPrefix: true,
+    );
     return ianaZone == null ? offsetText : '$ianaZone  ·  $offsetText';
   }
 
@@ -346,8 +393,10 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     return ListTile(
       leading: const Icon(kIconTimeZoneIndicator),
       title: Text(_zoneTitle(_zone, l10n)),
-      subtitle: Text(_zoneSubtitle(),
-          style: const TextStyle(fontFamily: fontFamilyDefault)),
+      subtitle: Text(
+        _zoneSubtitle(),
+        style: const TextStyle(fontFamily: fontFamilyDefault),
+      ),
       trailing: const Icon(Icons.edit_outlined),
       onTap: _pickZone,
     );
@@ -362,7 +411,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
   };
 
   String _startSummary(AppLocalizations l10n, TimeShiftStart start) {
-    final zone = _startZoneText(start.zone, l10n) +
+    final zone =
+        _startZoneText(start.zone, l10n) +
         (start.zoneAsLocal ? ' = ${l10n.labelLocal.toLowerCase()}' : '');
     final momentUtc = start.momentUtc;
     if (momentUtc == null) return l10n.timeShiftStartSummaryPlaceOnly(zone);
@@ -377,14 +427,17 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final savedStart = _savedStart;
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: kTabHorizontalPadding, vertical: kTabVerticalPadding),
+        horizontal: kTabHorizontalPadding,
+        vertical: kTabVerticalPadding,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.timeShiftStartHint,
-            style: Theme.of(context).textTheme.bodyMedium
-                ?.copyWith(color: colorScheme.onSurface.withAlpha(170)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurface.withAlpha(170),
+            ),
           ),
           const SizedBox(height: 12),
           Text(
@@ -420,29 +473,37 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
 
   Widget _buildHint(AppLocalizations l10n) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme.bodyMedium
-        ?.copyWith(color: colorScheme.onSurface.withAlpha(170));
+    final textStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+      color: colorScheme.onSurface.withAlpha(170),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: kTabHorizontalPadding, vertical: kTabVerticalPadding),
+        horizontal: kTabHorizontalPadding,
+        vertical: kTabVerticalPadding,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info_outline, size: kIconSizeDefault,
-              color: colorScheme.onSurface.withAlpha(150)),
+          Icon(
+            Icons.info_outline,
+            size: kIconSizeDefault,
+            color: colorScheme.onSurface.withAlpha(150),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    l10n.timeShiftHint(l10n.timeShiftApply, l10n.timeShiftReset),
-                    style: textStyle
+                  l10n.timeShiftHint(l10n.timeShiftApply, l10n.timeShiftReset),
+                  style: textStyle,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  l10n.timeShiftHintRange(EffectiveClock.earliestMomentText,
-                      EffectiveClock.latestMomentText),
+                  l10n.timeShiftHintRange(
+                    EffectiveClock.earliestMomentText,
+                    EffectiveClock.latestMomentText,
+                  ),
                   style: textStyle,
                 ),
               ],
@@ -458,7 +519,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final l10n = AppLocalizations.of(context)!;
     final moment = _displayedWallClock;
     String twoDigits(int value) => value.toString().padLeft(2, '0');
-    const sectionPadding = EdgeInsets.symmetric(horizontal: kTabHorizontalPadding);
+    const sectionPadding = EdgeInsets.symmetric(
+      horizontal: kTabHorizontalPadding,
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.pageTimeShift)),
@@ -482,30 +545,49 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
           _momentSectionHeader(l10n.timeShiftDate, date: true),
           const SizedBox(height: 8),
           _segmentRow([
-            _ValueSegment(caption: l10n.labelYear, value: moment.year.toString().padLeft(4, '0'),
-                width: 104, onPressed: () => _editDate(startWithYear: true)),
-            _ValueSegment(caption: l10n.labelMonth, value: twoDigits(moment.month),
-                onPressed: () => _editDate(startWithYear: false)),
-            _ValueSegment(caption: l10n.labelDay, value: twoDigits(moment.day),
-                onPressed: () => _editDate(startWithYear: false)),
+            _ValueSegment(
+              caption: l10n.labelYear,
+              value: moment.year.toString().padLeft(4, '0'),
+              width: 104,
+              onPressed: () => _editDate(startWithYear: true),
+            ),
+            _ValueSegment(
+              caption: l10n.labelMonth,
+              value: twoDigits(moment.month),
+              onPressed: () => _editDate(startWithYear: false),
+            ),
+            _ValueSegment(
+              caption: l10n.labelDay,
+              value: twoDigits(moment.day),
+              onPressed: () => _editDate(startWithYear: false),
+            ),
           ], '-'),
           _momentSectionHeader(l10n.timeShiftTime, date: false),
           const SizedBox(height: 8),
           _segmentRow([
-            _ValueSegment(caption: l10n.labelHours, value: twoDigits(moment.hour),
-                onPressed: () => _editTimeUnit(_TimeUnit.hour)),
-            _ValueSegment(caption: l10n.labelMinutes, value: twoDigits(moment.minute),
-                onPressed: () => _editTimeUnit(_TimeUnit.minute)),
-            _ValueSegment(caption: l10n.labelSeconds, value: twoDigits(moment.second),
-                onPressed: () => _editTimeUnit(_TimeUnit.second)),
+            _ValueSegment(
+              caption: l10n.labelHours,
+              value: twoDigits(moment.hour),
+              onPressed: () => _editTimeUnit(_TimeUnit.hour),
+            ),
+            _ValueSegment(
+              caption: l10n.labelMinutes,
+              value: twoDigits(moment.minute),
+              onPressed: () => _editTimeUnit(_TimeUnit.minute),
+            ),
+            _ValueSegment(
+              caption: l10n.labelSeconds,
+              value: twoDigits(moment.second),
+              onPressed: () => _editTimeUnit(_TimeUnit.second),
+            ),
           ], ':'),
           const SizedBox(height: 16),
           SwitchListTile(
             secondary: const Icon(Icons.pause_circle_outline),
             title: Text(l10n.timeShiftFrozen),
-            subtitle: Text(_frozen
-                ? l10n.timeShiftFrozenSubOn
-                : l10n.timeShiftFrozenSubOff),
+            subtitle: Text(
+              _frozen ? l10n.timeShiftFrozenSubOn : l10n.timeShiftFrozenSubOff,
+            ),
             value: _frozen,
             onChanged: (value) => setState(() => _frozen = value),
           ),
@@ -531,7 +613,9 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
                     child: OutlinedButton.icon(
                       icon: const Icon(Icons.restart_alt),
                       label: Text(l10n.timeShiftReset),
-                      onPressed: _canReturnToSystemTime ? _resetToSystemTime : null,
+                      onPressed: _canReturnToSystemTime
+                          ? _resetToSystemTime
+                          : null,
                     ),
                   ),
                 ),
@@ -578,10 +662,13 @@ class _ValueSegment extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(caption,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                letterSpacing: 1.5,
-                color: colorScheme.onSurface.withAlpha(150))),
+        Text(
+          caption,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            letterSpacing: 1.5,
+            color: colorScheme.onSurface.withAlpha(150),
+          ),
+        ),
         const SizedBox(height: 4),
         SizedBox(
           width: width,
@@ -589,10 +676,13 @@ class _ValueSegment extends StatelessWidget {
           child: OutlinedButton(
             onPressed: onPressed,
             style: OutlinedButton.styleFrom(padding: EdgeInsets.zero),
-            child: Text(value,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontFamily: fontFamilyDefault,
-                    fontWeight: FontWeight.w500)),
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontFamily: fontFamilyDefault,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ),
       ],

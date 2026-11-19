@@ -124,11 +124,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     setState(() => _tabs = result.tabs);
     if (result.backfilled) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.messageMissingTabsRestored),
-        duration: const Duration(seconds: 6),
-        behavior: SnackBarBehavior.floating,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.messageMissingTabsRestored,
+          ),
+          duration: const Duration(seconds: 6),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 
@@ -142,14 +146,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  Future<void> _showFormatPicker(BuildContext context,
-      AppLocalizations l10n, {required bool isDate}) async {
+  Future<void> _showFormatPicker(
+    BuildContext context,
+    AppLocalizations l10n, {
+    required bool isDate,
+  }) async {
     final app = EpochApp.of(context);
     final presets = isDate
-        ? [kDatePatternIso, kDatePatternDe, kDatePatternUk,
-      kDatePatternUs, kDatePatternIsoTight, kDatePatternCompact]
-        : [kTimePatternFull, kTimePatternNoSeconds,
-      kTimePatternNoLeadingZero, kTimePatternCompact];
+        ? [
+            kDatePatternIso,
+            kDatePatternDe,
+            kDatePatternUk,
+            kDatePatternUs,
+            kDatePatternIsoTight,
+            kDatePatternCompact,
+          ]
+        : [
+            kTimePatternFull,
+            kTimePatternNoSeconds,
+            kTimePatternNoLeadingZero,
+            kTimePatternCompact,
+          ];
 
     final current = isDate ? _dateFormat : _timeFormat;
     // If current is a custom pattern, start with it; otherwise start with preset:
@@ -162,9 +179,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           final isCustom = !presets.contains(selected);
 
           return AlertDialog(
-            title: Text(isDate
-                ? l10n.settingsDateFormat
-                : l10n.settingsTimeFormat),
+            title: Text(
+              isDate ? l10n.settingsDateFormat : l10n.settingsTimeFormat,
+            ),
             content: SizedBox(
               width: 340,
               child: SingleChildScrollView(
@@ -174,8 +191,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     if (v == '__custom__') {
                       // Open custom dialog with current pattern as starting point:
                       final custom = await _showCustomFormatDialog(
-                          ctx, l10n, selected, isDate);
-                      if (custom != null) setDialogState(() => selected = custom);
+                        ctx,
+                        l10n,
+                        selected,
+                        isDate,
+                      );
+                      if (custom != null)
+                        setDialogState(() => selected = custom);
                     } else if (v != null) {
                       setDialogState(() => selected = v);
                     }
@@ -184,7 +206,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Preset options:
-                      ...presets.map( (pattern) => RadioListTile<String>(
+                      ...presets.map(
+                        (pattern) => RadioListTile<String>(
                           value: pattern,
                           contentPadding: EdgeInsets.zero,
                           dense: true,
@@ -201,7 +224,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: TextStyle(
                               fontFamily: fontFamilyDefault,
                               fontSize: 14,
-                              color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
+                              color: Theme.of(
+                                ctx,
+                              ).colorScheme.onSurface.withAlpha(120),
                             ),
                           ),
                         ),
@@ -224,30 +249,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                               subtitle: isCustom
                                   ? Text(
-                                    '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
-                                    style: TextStyle(
-                                      fontFamily: fontFamilyDefault,
-                                      fontSize: 14,
-                                      color: Theme.of(ctx).colorScheme.onSurface.withAlpha(120),
-                                    ),
-                                  )
+                                      '${_formatPreview(selected, isDate, l10n.localeName)}\n$selected',
+                                      style: TextStyle(
+                                        fontFamily: fontFamilyDefault,
+                                        fontSize: 14,
+                                        color: Theme.of(
+                                          ctx,
+                                        ).colorScheme.onSurface.withAlpha(120),
+                                      ),
+                                    )
                                   : null,
                             ),
                           ),
-                          if (isCustom) IconButton(
-                            icon: const Icon(Icons.edit, size: kIconSizeDefault),
-                            onPressed: () async {
-                              final custom = await _showCustomFormatDialog(
-                                  ctx, l10n, selected, isDate);
-                              if (custom != null) setDialogState(() => selected = custom);
-                            },
-                          ),
+                          if (isCustom)
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                size: kIconSizeDefault,
+                              ),
+                              onPressed: () async {
+                                final custom = await _showCustomFormatDialog(
+                                  ctx,
+                                  l10n,
+                                  selected,
+                                  isDate,
+                                );
+                                if (custom != null)
+                                  setDialogState(() => selected = custom);
+                              },
+                            ),
                         ],
                       ),
                       Divider(),
                       isDate
                           ? _expandedDateCheckbox(app, l10n)
-                          : _hourFormat24Checkbox(app, l10n)
+                          : _hourFormat24Checkbox(app, l10n),
                     ],
                   ),
                 ),
@@ -297,13 +333,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         contentPadding: EdgeInsets.zero,
         controlAffinity: ListTileControlAffinity.leading,
         onChanged: (newValue) => onChanged(newValue!),
-        title: Text(title,
-            style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14)),
-        subtitle: Text(subtitle,
-            style: TextStyle(
-                fontFamily: fontFamilyDefault,
-                fontSize: 12,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
+        title: Text(
+          title,
+          style: const TextStyle(fontFamily: fontFamilyDefault, fontSize: 14),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+            fontFamily: fontFamilyDefault,
+            fontSize: 12,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          ),
+        ),
       ),
     );
   }
@@ -331,26 +372,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
 
   Future<String?> _showCustomFormatDialog(
-      BuildContext context, AppLocalizations l10n,
-      String initialPattern, bool isDate) async {
+    BuildContext context,
+    AppLocalizations l10n,
+    String initialPattern,
+    bool isDate,
+  ) async {
     final locale = Localizations.localeOf(context).toString();
     final controller = TextEditingController(text: initialPattern);
     final previewNow = DateTime.now();
     final referenceDateTime = DateTime(2026, 1, 9, 8, 14, 27);
 
     final leftRows = isDate
-        ? [('YYYY','2026'), ('YY','26'), ('MM','01'), ('M','1'),
-          ('DD','09'), ('D','9')]
-        : [('HH','08'), ('H','8'), ('mm','14'), ('ss','27')];
+        ? [
+            ('YYYY', '2026'),
+            ('YY', '26'),
+            ('MM', '01'),
+            ('M', '1'),
+            ('DD', '09'),
+            ('D', '9'),
+          ]
+        : [('HH', '08'), ('H', '8'), ('mm', '14'), ('ss', '27')];
 
     final rightRows = isDate
-        ? [('',     ''),
-          ('',     ''),
-          ('MMMM',  TimeValueFormatter.formatDatePattern(referenceDateTime,'MMMM',locale)),
-          ('MMM',   TimeValueFormatter.formatDatePattern(referenceDateTime,'MMM', locale)),
-          ('EEEE',  TimeValueFormatter.formatDatePattern(referenceDateTime,'EEEE',locale)),
-          ('EEE',   TimeValueFormatter.formatDatePattern(referenceDateTime,'EEE', locale))]
-        : [('',''),('',''),('',''),('','')];
+        ? [
+            ('', ''),
+            ('', ''),
+            (
+              'MMMM',
+              TimeValueFormatter.formatDatePattern(
+                referenceDateTime,
+                'MMMM',
+                locale,
+              ),
+            ),
+            (
+              'MMM',
+              TimeValueFormatter.formatDatePattern(
+                referenceDateTime,
+                'MMM',
+                locale,
+              ),
+            ),
+            (
+              'EEEE',
+              TimeValueFormatter.formatDatePattern(
+                referenceDateTime,
+                'EEEE',
+                locale,
+              ),
+            ),
+            (
+              'EEE',
+              TimeValueFormatter.formatDatePattern(
+                referenceDateTime,
+                'EEE',
+                locale,
+              ),
+            ),
+          ]
+        : [('', ''), ('', ''), ('', ''), ('', '')];
 
     final rowCount = leftRows.length;
 
@@ -361,23 +441,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
           final issue = isDate
               ? validateDatePattern(controller.text)
               : validateTimePattern(controller.text);
-          final error =
-          issue == null ? null : _patternIssueMessage(l10n, issue);
+          final error = issue == null
+              ? null
+              : _patternIssueMessage(l10n, issue);
           final preview = issue == null
               ? (isDate
-                  ? TimeValueFormatter.formatDatePattern(
-                      previewNow, controller.text, l10n.localeName
-                    )
-                  : TimeValueFormatter.formatTimePattern(
-                      previewNow, controller.text,
-                      hourFormat24: _hourFormat24)
-                  )
+                    ? TimeValueFormatter.formatDatePattern(
+                        previewNow,
+                        controller.text,
+                        l10n.localeName,
+                      )
+                    : TimeValueFormatter.formatTimePattern(
+                        previewNow,
+                        controller.text,
+                        hourFormat24: _hourFormat24,
+                      ))
               : null;
 
           return AlertDialog(
-            title: Text(isDate
-                ? l10n.settingsDateFormat
-                : l10n.settingsTimeFormat),
+            title: Text(
+              isDate ? l10n.settingsDateFormat : l10n.settingsTimeFormat,
+            ),
             content: SizedBox(
               width: 340,
               child: ConstrainedBox(
@@ -391,22 +475,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Table(
                         columnWidths: const {
-                          0: FixedColumnWidth(52),   // Token left
-                          1: FixedColumnWidth(48),   // Example left
-                          2: FixedColumnWidth(16),   // Distance
-                          3: FixedColumnWidth(52),   // Token right
-                          4: FlexColumnWidth(),      // Example right
+                          0: FixedColumnWidth(52), // Token left
+                          1: FixedColumnWidth(48), // Example left
+                          2: FixedColumnWidth(16), // Distance
+                          3: FixedColumnWidth(52), // Token right
+                          4: FlexColumnWidth(), // Example right
                         },
                         children: List.generate(rowCount, (i) {
                           final l = leftRows[i];
-                          final r = i < rightRows.length ? rightRows[i] : ('', '');
-                          return TableRow(children: [
-                            _tokenCell(l.$1, bold: true, ctx: ctx),
-                            _tokenCell(l.$2, ctx: ctx),
-                            const SizedBox(),
-                            _tokenCell(r.$1, bold: true, ctx: ctx),
-                            _tokenCell(r.$2, ctx: ctx),
-                          ]);
+                          final r = i < rightRows.length
+                              ? rightRows[i]
+                              : ('', '');
+                          return TableRow(
+                            children: [
+                              _tokenCell(l.$1, bold: true, ctx: ctx),
+                              _tokenCell(l.$2, ctx: ctx),
+                              const SizedBox(),
+                              _tokenCell(r.$1, bold: true, ctx: ctx),
+                              _tokenCell(r.$2, ctx: ctx),
+                            ],
+                          );
                         }),
                       ),
                       const SizedBox(height: 8),
@@ -456,29 +544,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _patternIssueMessage(AppLocalizations l10n, PatternIssue issue) =>
       switch (issue) {
         PatternMissingToken() => l10n.messagePatternNoToken,
-        PatternUnknownTokens(:final tokens) =>
-            l10n.messagePatternUnknownTokens(tokens.join(', ')),
+        PatternUnknownTokens(:final tokens) => l10n.messagePatternUnknownTokens(
+          tokens.join(', '),
+        ),
         PatternMissingHour() => l10n.messagePatternNeedsHour,
         PatternMissingMinutes() => l10n.messagePatternNeedsMinutes,
-        PatternTooLong(:final maxLength) =>
-            l10n.messagePatternTooLong(maxLength),
+        PatternTooLong(:final maxLength) => l10n.messagePatternTooLong(
+          maxLength,
+        ),
       };
 
-  Widget _tokenCell(String text, {required BuildContext ctx, bool bold = false}) {
+  Widget _tokenCell(
+    String text, {
+    required BuildContext ctx,
+    bool bold = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1),
-      child: Text(text,
+      child: Text(
+        text,
         style: TextStyle(
           fontFamily: fontFamilyDefault,
           fontSize: 11,
           fontWeight: bold ? FontWeight.bold : FontWeight.normal,
           color: bold
               ? null
-              : Theme
-              .of(ctx)
-              .colorScheme
-              .onSurface
-              .withAlpha(160),
+              : Theme.of(ctx).colorScheme.onSurface.withAlpha(160),
         ),
       ),
     );
@@ -489,8 +580,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (isDate) {
       return TimeValueFormatter.formatDatePattern(reference, pattern, locale);
     }
-    return TimeValueFormatter.formatTimePattern(reference, pattern,
-        hourFormat24: _hourFormat24);
+    return TimeValueFormatter.formatTimePattern(
+      reference,
+      pattern,
+      hourFormat24: _hourFormat24,
+    );
   }
 
   Future<void> _showOptionalPartDialog(BuildContext context) async {
@@ -514,21 +608,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (value && wasHidden) {
       final l10n = AppLocalizations.of(context)!;
       final messenger = ScaffoldMessenger.of(context);
-      messenger.clearSnackBars();  // drop any queued ones – show only the latest
-      messenger.showSnackBar(SnackBar(
-        content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
-        duration: const Duration(seconds: 6),
-        behavior: SnackBarBehavior.floating,
-      ));
+      messenger.clearSnackBars(); // drop any queued ones – show only the latest
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
+          duration: const Duration(seconds: 6),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 
-  String _tabLabel(BuiltinTabKind kind, AppLocalizations l10n) => switch (kind) {
-    BuiltinTabKind.civil        => l10n.tabCivil,
-    BuiltinTabKind.technical    => l10n.tabTechnical,
-    BuiltinTabKind.astronomical => l10n.tabAstronomical,
-    BuiltinTabKind.curiosities  => l10n.tabCuriosities,
-  };
+  String _tabLabel(BuiltinTabKind kind, AppLocalizations l10n) =>
+      switch (kind) {
+        BuiltinTabKind.civil => l10n.tabCivil,
+        BuiltinTabKind.technical => l10n.tabTechnical,
+        BuiltinTabKind.astronomical => l10n.tabAstronomical,
+        BuiltinTabKind.curiosities => l10n.tabCuriosities,
+      };
 
   Future<void> _pickStartupFocusValue(BuildContext context) async {
     final app = EpochApp.of(context);
@@ -538,7 +635,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       lmstLongitude: app.lmstLongitude,
       valueTypesOnly: true,
     );
-    if (result is! TimeValue) return;  // safety net, should not trigger
+    if (result is! TimeValue) return; // safety net, should not trigger
     setState(() => _startupFocusValue = result);
     saveStartupFocusValue(result);
   }
@@ -561,24 +658,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// Hours, then minutes, with the dial pickers of Time Shift.
   Future<void> _pickNightModeTime({required bool isStart}) async {
     final l10n = AppLocalizations.of(context)!;
-    final current =
-    isStart ? _nightModeSchedule.startMinute : _nightModeSchedule.endMinute;
-    final initial = current ??
+    final current = isStart
+        ? _nightModeSchedule.startMinute
+        : _nightModeSchedule.endMinute;
+    final initial =
+        current ??
         (isStart ? kDefaultNightModeStartMinute : kDefaultNightModeEndMinute);
-    final pickedHour = await showDialPicker(context,
-        title: l10n.timeShiftHours,
-        scale: DialScale.hours24,
-        initialValue: initial ~/ 60);
+    final pickedHour = await showDialPicker(
+      context,
+      title: l10n.timeShiftHours,
+      scale: DialScale.hours24,
+      initialValue: initial ~/ 60,
+    );
     if (pickedHour == null || !mounted) return;
-    final pickedMinute = await showDialPicker(context,
-        title: l10n.timeShiftMinutes,
-        scale: DialScale.sixty,
-        initialValue: initial % 60);
+    final pickedMinute = await showDialPicker(
+      context,
+      title: l10n.timeShiftMinutes,
+      scale: DialScale.sixty,
+      initialValue: initial % 60,
+    );
     if (pickedMinute == null || !mounted) return;
     final picked = pickedHour * 60 + pickedMinute;
-    _setNightModeSchedule(isStart
-        ? _nightModeSchedule.withStart(picked)
-        : _nightModeSchedule.withEnd(picked));
+    _setNightModeSchedule(
+      isStart
+          ? _nightModeSchedule.withStart(picked)
+          : _nightModeSchedule.withEnd(picked),
+    );
   }
 
   Widget _nightModeTile(AppLocalizations l10n) {
@@ -590,8 +695,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Text(
           minuteOfDay == null ? '--:--' : formatMinuteOfDay(minuteOfDay),
           style: const TextStyle(
-              fontFamily: fontFamilyDefault,
-              decoration: TextDecoration.underline),
+            fontFamily: fontFamilyDefault,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );
@@ -606,15 +712,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           timeLink(schedule.endMinute, isStart: false),
         ],
       ),
-      subtitle: Text(schedule.isActive
-          ? l10n.settingsNightModeSub
-          : l10n.settingsNightModeHint),
+      subtitle: Text(
+        schedule.isActive
+            ? l10n.settingsNightModeSub
+            : l10n.settingsNightModeHint,
+      ),
       trailing: schedule.startMinute != null || schedule.endMinute != null
           ? IconButton(
-        icon: const Icon(Icons.clear),
-        tooltip: l10n.settingsNightModeClear,
-        onPressed: () => _setNightModeSchedule(NightModeSchedule.none),
-      )
+              icon: const Icon(Icons.clear),
+              tooltip: l10n.settingsNightModeClear,
+              onPressed: () => _setNightModeSchedule(NightModeSchedule.none),
+            )
           : null,
     );
   }
@@ -625,18 +733,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final isNight = app.themeMode == AppThemeMode.night;
 
-    final dateFormatString = _dateWithDetails ? l10n.settingsOn : l10n.settingsOff;
-    final subTitleDateFormat = _dateFormat
-        + ' | ' + l10n.settingsDateWithDetails + ': ' + dateFormatString;
+    final dateFormatString = _dateWithDetails
+        ? l10n.settingsOn
+        : l10n.settingsOff;
+    final subTitleDateFormat =
+        _dateFormat +
+        ' | ' +
+        l10n.settingsDateWithDetails +
+        ': ' +
+        dateFormatString;
 
     final hourFormatString = _hourFormat24 ? l10n.settingsOn : l10n.settingsOff;
-    final subTitleTimeFormat = _timeFormat
-        + ' | ' + l10n.settingsHourFormat + ': ' + hourFormatString;
+    final subTitleTimeFormat =
+        _timeFormat + ' | ' + l10n.settingsHourFormat + ': ' + hourFormatString;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.pageSettings),
-      ),
+      appBar: AppBar(title: Text(l10n.pageSettings)),
       body: ListView(
         children: [
           _sectionHeader(l10n.settingsLanguageTheme),
@@ -697,22 +809,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.calendar_today),
             title: Text(l10n.settingsDateFormat),
-            subtitle: Text(subTitleDateFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            subtitle: Text(
+              subTitleDateFormat,
+              style: TextStyle(fontFamily: fontFamilyDefault),
+            ),
             onTap: () => _showFormatPicker(context, l10n, isDate: true),
           ),
           ListTile(
             leading: const Icon(Icons.access_time),
             title: Text(l10n.settingsTimeFormat),
-            subtitle: Text(subTitleTimeFormat, style: TextStyle(fontFamily: fontFamilyDefault)),
+            subtitle: Text(
+              subTitleTimeFormat,
+              style: TextStyle(fontFamily: fontFamilyDefault),
+            ),
             onTap: () => _showFormatPicker(context, l10n, isDate: false),
           ),
           ListTile(
             leading: const Icon(Icons.timer_outlined),
             title: Text(l10n.settingsOptionalPart),
-            subtitle: Text(l10n.settingsOptionalPartSummary(
-              _optionalPartHiddenTypes.length,
-              globalOptionalPartTypes.length,
-            )),
+            subtitle: Text(
+              l10n.settingsOptionalPartSummary(
+                _optionalPartHiddenTypes.length,
+                globalOptionalPartTypes.length,
+              ),
+            ),
             onTap: () => _showOptionalPartDialog(context),
           ),
           ListTile(
@@ -765,17 +885,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.settingsDayQuarterColor),
             subtitle: Row(
               children: [
-                Text(l10n.settingsDayQuarterColorSub1st,
-                    style: TextStyle(color: isNight ? null : kColorNightRed)),
+                Text(
+                  l10n.settingsDayQuarterColorSub1st,
+                  style: TextStyle(color: isNight ? null : kColorNightRed),
+                ),
                 Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub2nd,
-                    style: TextStyle(color: isNight ? null : kColorCyan)),
+                Text(
+                  l10n.settingsDayQuarterColorSub2nd,
+                  style: TextStyle(color: isNight ? null : kColorCyan),
+                ),
                 Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub3rd,
-                    style: TextStyle(color: isNight ? null : kColorAmber)),
+                Text(
+                  l10n.settingsDayQuarterColorSub3rd,
+                  style: TextStyle(color: isNight ? null : kColorAmber),
+                ),
                 Text(' | '),
-                Text(l10n.settingsDayQuarterColorSub4th,
-                    style: TextStyle(color: isNight ? null : kColorMatrixGreen)),
+                Text(
+                  l10n.settingsDayQuarterColorSub4th,
+                  style: TextStyle(color: isNight ? null : kColorMatrixGreen),
+                ),
               ],
             ),
             value: _dayQuarterColor,
@@ -797,103 +925,115 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(height: kDividerHeight),
           _sectionHeader(l10n.settingsLmst),
           RadioGroup<LmstMode>(
-              groupValue: _lmstMode,
-              onChanged: (v) {
-                if (v == null) return;
-                setState(() => _lmstMode = v);
-                app.setLmstMode(v);
-              },
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: LmstMode.off,
-                    title: Text(l10n.settingsLmstOff),
-                    secondary: const Icon(Icons.visibility_off_outlined),
+            groupValue: _lmstMode,
+            onChanged: (v) {
+              if (v == null) return;
+              setState(() => _lmstMode = v);
+              app.setLmstMode(v);
+            },
+            child: Column(
+              children: [
+                RadioListTile(
+                  value: LmstMode.off,
+                  title: Text(l10n.settingsLmstOff),
+                  secondary: const Icon(Icons.visibility_off_outlined),
+                ),
+                RadioListTile(
+                  value: LmstMode.manual,
+                  title: Text(l10n.settingsLmstLongitudeManual),
+                  subtitle: Text(l10n.settingsLmstLongitudeManualSub),
+                  secondary: const Icon(Icons.edit_location_outlined),
+                ),
+                if (_lmstMode == LmstMode.manual)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            keyboardType: const TextInputType.numberWithOptions(
+                              signed: true,
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: l10n.labelLongitude,
+                              suffixText: '°',
+                              hintText: TimeValueFormatter.formatDecimal(
+                                8.1427,
+                                _locale.toString(),
+                                4,
+                                thousandsSep: false,
+                              ),
+                              isDense: true,
+                            ),
+                            controller: _longitudeController,
+                            onSubmitted: (v) {
+                              final normalized = v.replaceAll(',', '.');
+                              final lon = double.tryParse(normalized);
+                              if (lon != null && lon >= -180 && lon <= 180) {
+                                setState(() => _lmstLongitude = lon);
+                                app.setLmstLongitude(lon);
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  RadioListTile(
-                    value: LmstMode.manual,
-                    title: Text(l10n.settingsLmstLongitudeManual),
-                    subtitle: Text(l10n.settingsLmstLongitudeManualSub),
-                    secondary: const Icon(Icons.edit_location_outlined),
+                if (!isDesktopPlatform) ...[
+                  RadioListTile<LmstMode>(
+                    value: LmstMode.locationAccess,
+                    title: Text(l10n.settingsLmstLongitudeAuto),
+                    subtitle: Text(l10n.settingsLmstLongitudeAutoSub),
+                    secondary: const Icon(Icons.my_location),
                   ),
-                  if (_lmstMode == LmstMode.manual)
+                  if (_lmstMode == LmstMode.locationAccess)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
                       child: Row(
                         children: [
-                          Expanded(
-                            child: TextField(
-                              keyboardType: const TextInputType.numberWithOptions(
-                                  signed: true, decimal: true),
-                              decoration: InputDecoration(
-                                labelText: l10n.labelLongitude,
-                                suffixText: '°',
-                                hintText: TimeValueFormatter.formatDecimal(
-                                    8.1427,
-                                    _locale.toString(),
-                                    4,
-                                    thousandsSep: false
-                                ),
-                                isDense: true,
+                          if (_locationLoading)
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else if (_lmstLongitude != null)
+                            Text(
+                              TimeValueFormatter.formatDecimal(
+                                _lmstLongitude!,
+                                _locale.toString(),
+                                4,
+                                thousandsSep: false,
                               ),
-                              controller: _longitudeController,
-                              onSubmitted: (v) {
-                                final normalized = v.replaceAll(',', '.');
-                                final lon = double.tryParse(normalized);
-                                if (lon != null && lon >= -180 && lon <= 180) {
-                                  setState(() => _lmstLongitude = lon);
-                                  app.setLmstLongitude(lon);
-                                }
-                              },
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            )
+                          else
+                            Text(
+                              l10n.settingsLmstLongitudeNotYetDetermined,
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface.withAlpha(150),
+                                  ),
                             ),
+                          const SizedBox(width: 12),
+                          TextButton.icon(
+                            icon: const Icon(Icons.refresh, size: 16),
+                            label: Text(
+                              l10n.settingsLmstLongitudeDetermineLocation,
+                            ),
+                            onPressed: _locationLoading
+                                ? null
+                                : () => _determineLocation(),
                           ),
                         ],
                       ),
                     ),
-                  if (! isDesktopPlatform) ...[
-                    RadioListTile<LmstMode>(
-                      value: LmstMode.locationAccess,
-                      title: Text(l10n.settingsLmstLongitudeAuto),
-                      subtitle: Text(l10n.settingsLmstLongitudeAutoSub),
-                      secondary: const Icon(Icons.my_location),
-                    ),
-                    if (_lmstMode == LmstMode.locationAccess)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(72, 0, 16, 8),
-                        child: Row(
-                          children: [
-                            if (_locationLoading)
-                              const SizedBox(
-                                width: 20, height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            else if (_lmstLongitude != null)
-                              Text(
-                                  TimeValueFormatter.formatDecimal(
-                                      _lmstLongitude!,
-                                      _locale.toString(),
-                                      4,
-                                      thousandsSep: false
-                                  ),
-                                  style: Theme.of(context).textTheme.bodyMedium
-                              )
-                            else
-                              Text(l10n.settingsLmstLongitudeNotYetDetermined,
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurface.withAlpha(150))),
-                            const SizedBox(width: 12),
-                            TextButton.icon(
-                              icon: const Icon(Icons.refresh, size: 16),
-                              label: Text(l10n.settingsLmstLongitudeDetermineLocation),
-                              onPressed: _locationLoading ? null
-                                  : () => _determineLocation(),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
                 ],
-              )
+              ],
+            ),
           ),
           const Divider(height: kDividerHeight),
           _sectionHeader(l10n.settingsTabVisibility),
@@ -907,16 +1047,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               value: tab?.isVisible ?? true,
               onChanged: tab == null
-                  ? null  // tabs not loaded yet
+                  ? null // tabs not loaded yet
                   : (val) => _toggleTabVisibility(kind, val),
             );
           }),
           ListTile(
             leading: const Icon(Icons.fullscreen),
             title: Text(l10n.settingsStartupFocusValue),
-            subtitle: Text(_startupFocusValue == null
-                ? l10n.settingsStartupFocusValueNone
-                : _startupFocusValue!.localizedDisplayLabel(l10n)),
+            subtitle: Text(
+              _startupFocusValue == null
+                  ? l10n.settingsStartupFocusValueNone
+                  : _startupFocusValue!.localizedDisplayLabel(l10n),
+            ),
             trailing: _startupFocusValue != null
                 ? IconButton(
                     icon: const Icon(Icons.clear),
@@ -939,8 +1081,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.settingsPreferencesImport),
             enabled: !_ioInProgress,
             subtitle: _lastImportedConfig != null
-                ? Text(_lastImportedConfig!,
-                style: TextStyle(fontFamily: fontFamilyDefault))
+                ? Text(
+                    _lastImportedConfig!,
+                    style: TextStyle(fontFamily: fontFamilyDefault),
+                  )
                 : null,
             onTap: () => _guardedIO(() => importSettings(context)),
           ),

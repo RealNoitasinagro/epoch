@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 class LocationService {
   static const _channel = MethodChannel(
-      'io.github.RealEarthling.epoch/location');
+    'io.github.RealEarthling.epoch/location',
+  );
 
   /// Returns the last known longitude, or null if unavailable.
   /// Does not request GPS, only uses cached network/passive location.

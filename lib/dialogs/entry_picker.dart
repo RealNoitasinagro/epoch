@@ -13,13 +13,14 @@ import 'zone_picker.dart';
 // Displays a two-step dialog: value type → timezone (if zone-dependent).
 // [allowedTypes] restricts which types are shown; null means all types.
 Future<TabEntry?> showEntryPicker(
-    BuildContext context, {
-      List<ValueType>? allowedTypes,
-      List<TabEntry> existingEntries = const [],
-      LmstMode lmstMode = LmstMode.off,
-      double? lmstLongitude,
-      bool valueTypesOnly = false,  // hide divider/section options, e.g. for startup focus value
-    }) {
+  BuildContext context, {
+  List<ValueType>? allowedTypes,
+  List<TabEntry> existingEntries = const [],
+  LmstMode lmstMode = LmstMode.off,
+  double? lmstLongitude,
+  bool valueTypesOnly =
+      false, // hide divider/section options, e.g. for startup focus value
+}) {
   return showDialog<TabEntry>(
     context: context,
     builder: (ctx) => _EntryPicker(
@@ -91,15 +92,16 @@ class _EntryPickerState extends State<_EntryPicker> {
     });
   }
 
-  void _confirm(ZoneSpec zone) =>
-      Navigator.pop(context,
-          TimeValue(valueType: _type!, zone: canonicalZoneSpec(zone)));
+  void _confirm(ZoneSpec zone) => Navigator.pop(
+    context,
+    TimeValue(valueType: _type!, zone: canonicalZoneSpec(zone)),
+  );
 
   @override
   Widget build(BuildContext context) {
     return switch (_step) {
       _Step.valueType => _buildValueTypeStep(),
-      _Step.zone      => _buildZoneStep(),
+      _Step.zone => _buildZoneStep(),
     };
   }
 
@@ -108,26 +110,36 @@ class _EntryPickerState extends State<_EntryPicker> {
 
     // Categories in display order; a category is only shown if at least one
     // of its types is allowed.
-    final categories = [
-      (title: l10n.tabCivil, types: civilTypes),
-      (title: l10n.tabTechnical, types: technicalTypes),
-      (title: l10n.tabAstronomical, types: astronomicalTypes),
-      (title: l10n.tabCuriosities, types: curiosityTypes),
-    ].map((category) => (
-        title: category.title,
-        types: category.types.where(_isAllowed).toList(),
-    )).where((category) => category.types.isNotEmpty)
-      .toList();
+    final categories =
+        [
+              (title: l10n.tabCivil, types: civilTypes),
+              (title: l10n.tabTechnical, types: technicalTypes),
+              (title: l10n.tabAstronomical, types: astronomicalTypes),
+              (title: l10n.tabCuriosities, types: curiosityTypes),
+            ]
+            .map(
+              (category) => (
+                title: category.title,
+                types: category.types.where(_isAllowed).toList(),
+              ),
+            )
+            .where((category) => category.types.isNotEmpty)
+            .toList();
     final totalAllowed = categories.fold<int>(
-        0, (total, category) => total + category.types.length);
+      0,
+      (total, category) => total + category.types.length,
+    );
 
     return SimpleDialog(
       title: Text('${l10n.hintSelectValueType} ($totalAllowed)'),
       children: [
         for (var index = 0; index < categories.length; index++) ...[
           if (index > 0) const Divider(),
-          _sectionLabel(context, categories[index].title,
-              categories[index].types.length),
+          _sectionLabel(
+            context,
+            categories[index].title,
+            categories[index].types.length,
+          ),
           ...categories[index].types.map((type) => _typeOption(context, type)),
         ],
         const Divider(),
@@ -174,11 +186,11 @@ class _EntryPickerState extends State<_EntryPicker> {
   /// Divider and section header options; disabled when only value types may
   /// be picked (e.g. for the startup focus value).
   Widget _structureOption(
-      BuildContext context, {
-        required IconData icon,
-        required String label,
-        required VoidCallback onPressed,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
     final dimmedColor = widget.valueTypesOnly
         ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
         : null;
@@ -195,8 +207,13 @@ class _EntryPickerState extends State<_EntryPicker> {
     );
   }
 
-  Widget _typeLabel(BuildContext context, String label,
-      bool disabled, bool zoneDependent, bool isGraphical) {
+  Widget _typeLabel(
+    BuildContext context,
+    String label,
+    bool disabled,
+    bool zoneDependent,
+    bool isGraphical,
+  ) {
     final color = disabled
         ? Theme.of(context).colorScheme.onSurface.withAlpha(80)
         : null;
@@ -205,11 +222,17 @@ class _EntryPickerState extends State<_EntryPicker> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: TextStyle(color: color, fontStyle: fontStyle)),
+        Text(
+          label,
+          style: TextStyle(color: color, fontStyle: fontStyle),
+        ),
         if (zoneDependent) ...[
           const SizedBox(width: 4),
-          Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
+          Icon(
+            kIconTimeZoneIndicator,
+            size: kIconSizeLabel,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          ),
         ],
       ],
     );
@@ -219,8 +242,11 @@ class _EntryPickerState extends State<_EntryPicker> {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       titlePadding: const EdgeInsets.fromLTRB(
-          kTabHorizontalPadding, kTabVerticalPadding,
-          kTabHorizontalPadding, kTabVerticalPadding),
+        kTabHorizontalPadding,
+        kTabVerticalPadding,
+        kTabHorizontalPadding,
+        kTabVerticalPadding,
+      ),
       title: EntryPickerDialogTitle(
         superLabel: TimeValue.localizedTypeLabel(_type!, l10n),
         title: l10n.hintSelectTimezone,
@@ -242,8 +268,11 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   Widget _sectionLabel(BuildContext context, String text, int count) => Padding(
     padding: const EdgeInsets.fromLTRB(
-        kTabHorizontalPadding, kTabVerticalPadding,
-        kTabHorizontalPadding, kTabVerticalPadding),
+      kTabHorizontalPadding,
+      kTabVerticalPadding,
+      kTabHorizontalPadding,
+      kTabVerticalPadding,
+    ),
     child: Text(
       text.toUpperCase() + ' (${count})',
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -253,8 +282,7 @@ class _EntryPickerState extends State<_EntryPicker> {
     ),
   );
 
-  Future<void> _addSection(
-      BuildContext context, AppLocalizations l10n) async {
+  Future<void> _addSection(BuildContext context, AppLocalizations l10n) async {
     final controller = TextEditingController();
     final result = await showDialog<String>(
       context: context,
@@ -263,9 +291,7 @@ class _EntryPickerState extends State<_EntryPicker> {
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: InputDecoration(
-            labelText: l10n.labelNewSectionName,
-          ),
+          decoration: InputDecoration(labelText: l10n.labelNewSectionName),
           onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
         ),
         actions: [
@@ -320,8 +346,7 @@ class EntryPickerDialogTitle extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
               ),
             ),
-            Text(title,
-                style: Theme.of(context).textTheme.titleLarge),
+            Text(title, style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
       ],

@@ -7,11 +7,18 @@ DateTime wallClockOf(DateTime utc, ZoneSpec zone) {
   final DateTime reading = switch (zone) {
     ZoneUtc() => utc.toUtc(),
     ZoneLocal() => utc.toLocal(),
-    ZoneNamed(ianaZone: final ianaZone) => TimeUtils.inZone(utc.toUtc(), ianaZone),
+    ZoneNamed(ianaZone: final ianaZone) => TimeUtils.inZone(
+      utc.toUtc(),
+      ianaZone,
+    ),
   };
   return DateTime.utc(
-      reading.year, reading.month, reading.day,
-      reading.hour, reading.minute, reading.second
+    reading.year,
+    reading.month,
+    reading.day,
+    reading.hour,
+    reading.minute,
+    reading.second,
   );
 }
 
@@ -19,15 +26,25 @@ DateTime wallClockOf(DateTime utc, ZoneSpec zone) {
 /// [zone]. A reading that a clock change skips continues after the change
 /// (02:30 becomes 03:30); a reading that occurs twice means its first occurrence.
 DateTime instantOfWallClock(DateTime wallClock, ZoneSpec zone) {
-  final reading = DateTime.utc(wallClock.year, wallClock.month, wallClock.day,
-      wallClock.hour, wallClock.minute, wallClock.second);
+  final reading = DateTime.utc(
+    wallClock.year,
+    wallClock.month,
+    wallClock.day,
+    wallClock.hour,
+    wallClock.minute,
+    wallClock.second,
+  );
   switch (zone) {
     case ZoneUtc():
       return reading;
     case ZoneLocal():
       return DateTime(
-          reading.year, reading.month, reading.day,
-          reading.hour, reading.minute, reading.second
+        reading.year,
+        reading.month,
+        reading.day,
+        reading.hour,
+        reading.minute,
+        reading.second,
       ).toUtc();
     case ZoneNamed(ianaZone: final ianaZone):
       return _instantInNamedZone(reading, ianaZone);
@@ -38,18 +55,24 @@ DateTime instantOfWallClock(DateTime wallClock, ZoneSpec zone) {
 Duration offsetInZone(DateTime utc, ZoneSpec zone) => switch (zone) {
   ZoneUtc() => Duration.zero,
   ZoneLocal() => utc.toLocal().timeZoneOffset,
-  ZoneNamed(ianaZone: final ianaZone) =>
-  TimeUtils.inZone(utc.toUtc(), ianaZone).timeZoneOffset,
+  ZoneNamed(ianaZone: final ianaZone) => TimeUtils.inZone(
+    utc.toUtc(),
+    ianaZone,
+  ).timeZoneOffset,
 };
 
 DateTime _instantInNamedZone(DateTime reading, String ianaZone) {
   const margin = Duration(days: 1);
   // The offsets before and after a clock change near the reading (the same
   // one twice if there is none):
-  final offsetBefore =
-      TimeUtils.inZone(reading.subtract(margin), ianaZone).timeZoneOffset;
-  final offsetAfter =
-      TimeUtils.inZone(reading.add(margin), ianaZone).timeZoneOffset;
+  final offsetBefore = TimeUtils.inZone(
+    reading.subtract(margin),
+    ianaZone,
+  ).timeZoneOffset;
+  final offsetAfter = TimeUtils.inZone(
+    reading.add(margin),
+    ianaZone,
+  ).timeZoneOffset;
 
   final possibleInstants = <DateTime>[
     for (final offset in {offsetBefore, offsetAfter})

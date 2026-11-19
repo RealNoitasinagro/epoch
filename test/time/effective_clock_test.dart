@@ -25,7 +25,10 @@ void main() {
     EffectiveClock.shiftTo(target);
     expect(EffectiveClock.now(), equals(target));
     fakeSystemTime = fakeSystemTime.add(const Duration(seconds: 5));
-    expect(EffectiveClock.now(), equals(target.add(const Duration(seconds: 5))));
+    expect(
+      EffectiveClock.now(),
+      equals(target.add(const Duration(seconds: 5))),
+    );
     expect(EffectiveClock.isShifted, isTrue);
     expect(EffectiveClock.isFrozen, isFalse);
   });
@@ -90,8 +93,10 @@ void main() {
     });
 
     test('shiftTo takes the zone along, reset removes it', () {
-      EffectiveClock.shiftTo(DateTime.utc(2030).toLocal(),
-          virtualLocalIanaZone: 'Pacific/Apia');
+      EffectiveClock.shiftTo(
+        DateTime.utc(2030).toLocal(),
+        virtualLocalIanaZone: 'Pacific/Apia',
+      );
       expect(EffectiveClock.isTimeShifted, isTrue);
       expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
       EffectiveClock.reset();

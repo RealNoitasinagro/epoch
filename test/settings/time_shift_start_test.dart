@@ -20,10 +20,18 @@ void main() {
 
   group('moment', () {
     test('needs Z or an offset, whole seconds', () {
-      expect(parseTimeShiftMoment('2026-12-24T18:00:00Z'), DateTime.utc(2026, 12, 24, 18));
-      expect(parseTimeShiftMoment('2026-12-24T18:00:00.750Z'), DateTime.utc(2026, 12, 24, 18));
-      expect(parseTimeShiftMoment('2026-12-24T18:00:00+10:30'),
-          DateTime.utc(2026, 12, 24, 7, 30));
+      expect(
+        parseTimeShiftMoment('2026-12-24T18:00:00Z'),
+        DateTime.utc(2026, 12, 24, 18),
+      );
+      expect(
+        parseTimeShiftMoment('2026-12-24T18:00:00.750Z'),
+        DateTime.utc(2026, 12, 24, 18),
+      );
+      expect(
+        parseTimeShiftMoment('2026-12-24T18:00:00+10:30'),
+        DateTime.utc(2026, 12, 24, 7, 30),
+      );
       expect(parseTimeShiftMoment('2026-12-24 18:00:00'), isNull);
       expect(parseTimeShiftMoment('garbage'), isNull);
       expect(parseTimeShiftMoment(null), isNull);
@@ -37,25 +45,29 @@ void main() {
   });
 
   group('zone in the config', () {
-    test('empty is local, UTC aliases collapse, unknown falls back to local', () {
-      expect(timeShiftZoneFromConfig(''), isA<ZoneLocal>());
-      expect(timeShiftZoneFromConfig(null), isA<ZoneLocal>());
-      expect(timeShiftZoneFromConfig('UTC'), isA<ZoneUtc>());
-      expect(timeShiftZoneFromConfig('Etc/UTC'), isA<ZoneUtc>());
-      expect(timeShiftZoneFromConfig('Nowhere/Land'), isA<ZoneLocal>());
-      final lordHowe = timeShiftZoneFromConfig('Australia/Lord_Howe');
-      expect(lordHowe, isA<ZoneNamed>());
-      expect(timeShiftZoneToConfig(lordHowe), 'Australia/Lord_Howe');
-      expect(timeShiftZoneToConfig(const ZoneLocal()), '');
-      expect(timeShiftZoneToConfig(const ZoneUtc()), 'UTC');
-    });
+    test(
+      'empty is local, UTC aliases collapse, unknown falls back to local',
+      () {
+        expect(timeShiftZoneFromConfig(''), isA<ZoneLocal>());
+        expect(timeShiftZoneFromConfig(null), isA<ZoneLocal>());
+        expect(timeShiftZoneFromConfig('UTC'), isA<ZoneUtc>());
+        expect(timeShiftZoneFromConfig('Etc/UTC'), isA<ZoneUtc>());
+        expect(timeShiftZoneFromConfig('Nowhere/Land'), isA<ZoneLocal>());
+        final lordHowe = timeShiftZoneFromConfig('Australia/Lord_Howe');
+        expect(lordHowe, isA<ZoneNamed>());
+        expect(timeShiftZoneToConfig(lordHowe), 'Australia/Lord_Howe');
+        expect(timeShiftZoneToConfig(const ZoneLocal()), '');
+        expect(timeShiftZoneToConfig(const ZoneUtc()), 'UTC');
+      },
+    );
   });
 
   group('load and save', () {
     test('round trip, local zone is saved as an empty string', () async {
       SharedPreferences.setMockInitialValues({});
-      await saveTimeShiftStart(TimeShiftStart(
-          momentUtc: DateTime.utc(2026, 12, 24, 18), frozen: true));
+      await saveTimeShiftStart(
+        TimeShiftStart(momentUtc: DateTime.utc(2026, 12, 24, 18), frozen: true),
+      );
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('time_shift_zone'), '');
       final loaded = (await loadTimeShiftStart())!;
@@ -65,7 +77,11 @@ void main() {
     });
 
     test('unusable values mean no start value', () async {
-      for (final moment in ['garbage', '2040-01-01T00:00:00Z', '1960-01-01T00:00:00Z']) {
+      for (final moment in [
+        'garbage',
+        '2040-01-01T00:00:00Z',
+        '1960-01-01T00:00:00Z',
+      ]) {
         SharedPreferences.setMockInitialValues({'time_shift_moment': moment});
         expect(await loadTimeShiftStart(), isNull, reason: moment);
       }
@@ -91,23 +107,32 @@ void main() {
       });
       await clearTimeShiftStart();
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getKeys().where((key) => key.startsWith('time_shift_')), isEmpty);
+      expect(
+        prefs.getKeys().where((key) => key.startsWith('time_shift_')),
+        isEmpty,
+      );
     });
 
-    test('as-local flag: round trip, and ignored for the system zone', () async {
-      SharedPreferences.setMockInitialValues({});
-      await saveTimeShiftStart(TimeShiftStart(
-          momentUtc: DateTime.utc(2026, 12, 24, 18),
-          zone: const ZoneNamed('Pacific/Apia'),
-          zoneAsLocal: true));
-      expect((await loadTimeShiftStart())!.zoneAsLocal, isTrue);
+    test(
+      'as-local flag: round trip, and ignored for the system zone',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        await saveTimeShiftStart(
+          TimeShiftStart(
+            momentUtc: DateTime.utc(2026, 12, 24, 18),
+            zone: const ZoneNamed('Pacific/Apia'),
+            zoneAsLocal: true,
+          ),
+        );
+        expect((await loadTimeShiftStart())!.zoneAsLocal, isTrue);
 
-      SharedPreferences.setMockInitialValues({
-        'time_shift_moment': '2026-12-24T18:00:00Z',
-        'time_shift_zone_as_local': true,   // but no zone = system zone
-      });
-      expect((await loadTimeShiftStart())!.zoneAsLocal, isFalse);
-    });
+        SharedPreferences.setMockInitialValues({
+          'time_shift_moment': '2026-12-24T18:00:00Z',
+          'time_shift_zone_as_local': true, // but no zone = system zone
+        });
+        expect((await loadTimeShiftStart())!.zoneAsLocal, isFalse);
+      },
+    );
 
     test('a start value can redefine local', () async {
       SharedPreferences.setMockInitialValues({
@@ -132,13 +157,16 @@ void main() {
       expect(EffectiveClock.virtualLocalIanaZone, 'Pacific/Apia');
     });
 
-    test('an empty moment without redefining local means no start value', () async {
-      SharedPreferences.setMockInitialValues({
-        'time_shift_moment': '',
-        'time_shift_zone': 'Pacific/Apia',
-      });
-      expect(await loadTimeShiftStart(), isNull);
-    });
+    test(
+      'an empty moment without redefining local means no start value',
+      () async {
+        SharedPreferences.setMockInitialValues({
+          'time_shift_moment': '',
+          'time_shift_zone': 'Pacific/Apia',
+        });
+        expect(await loadTimeShiftStart(), isNull);
+      },
+    );
 
     test('a broken moment stays unusable, whatever else is set', () async {
       SharedPreferences.setMockInitialValues({
@@ -151,10 +179,13 @@ void main() {
 
     test('place only survives saving and loading', () async {
       SharedPreferences.setMockInitialValues({});
-      await saveTimeShiftStart(const TimeShiftStart(
+      await saveTimeShiftStart(
+        const TimeShiftStart(
           momentUtc: null,
           zone: ZoneNamed('Pacific/Apia'),
-          zoneAsLocal: true));
+          zoneAsLocal: true,
+        ),
+      );
       final loaded = (await loadTimeShiftStart())!;
       expect(loaded.momentUtc, isNull);
       expect(loaded.zoneAsLocal, isTrue);

@@ -8,7 +8,7 @@ Locale supportedSystemLocale({required Locale fallback}) {
   final systemLanguage =
       WidgetsBinding.instance.platformDispatcher.locale.languageCode;
   return AppLocalizations.supportedLocales
-      .where((locale) => locale.languageCode == systemLanguage)
-      .firstOrNull ??
+          .where((locale) => locale.languageCode == systemLanguage)
+          .firstOrNull ??
       fallback;
 }

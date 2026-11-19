@@ -43,12 +43,12 @@ class _OptionalPartDialogState extends State<OptionalPartDialog> {
   }
 
   Widget _group(
-      String title,
-      OptionalPart optionalPart,
-      AppLocalizations l10n,
-      ) {
+    String title,
+    OptionalPart optionalPart,
+    AppLocalizations l10n,
+  ) {
     final valueTypes = globalOptionalPartTypes.where(
-          (valueType) => valueType.optionalPart == optionalPart,
+      (valueType) => valueType.optionalPart == optionalPart,
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

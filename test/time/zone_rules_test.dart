@@ -36,6 +36,9 @@ void main() {
   });
 
   test('Berlin in November: spring change still ahead', () {
-    expect(zoneRulesAt('Europe/Berlin', DateTime.utc(2026, 11, 15))!.hasDst, isTrue);
+    expect(
+      zoneRulesAt('Europe/Berlin', DateTime.utc(2026, 11, 15))!.hasDst,
+      isTrue,
+    );
   });
 }

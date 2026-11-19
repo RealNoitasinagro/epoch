@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 /// Underlined, tappable link text that opens [url] in the external browser.
 class LinkText extends StatelessWidget {
   final String url;
-  final String? label;  // defaults to the URL itself
+  final String? label; // defaults to the URL itself
 
   const LinkText({super.key, required this.url, this.label});
 
@@ -14,7 +14,7 @@ class LinkText extends StatelessWidget {
       onTap: () async {
         try {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } catch (_) {}  // no browser available: nothing to do
+        } catch (_) {} // no browser available: nothing to do
       },
       child: Text(
         label ?? url,

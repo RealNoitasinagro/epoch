@@ -18,7 +18,9 @@ void main() {
 
     test('named zone key', () {
       const e = TimeValue(
-          valueType: ValueType.time, zone: ZoneNamed('Europe/Berlin'));
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
       expect(e.key, equals('time/named:Europe/Berlin'));
     });
   });
@@ -35,9 +37,10 @@ void main() {
 
     test('roundtrip with label', () {
       const e = TimeValue(
-          valueType: ValueType.time,
-          zone: ZoneLocal(),
-          customLabel: 'My Time');
+        valueType: ValueType.time,
+        zone: ZoneLocal(),
+        customLabel: 'My Time',
+      );
       final s = e.toPrefsString();
       final e2 = TimeValue.fromPrefsString(s);
       expect(e2!.customLabel, equals('My Time'));
@@ -48,7 +51,9 @@ void main() {
     });
 
     test('empty label slot (||) means no custom label', () {
-      final tv = TimeValue.fromPrefsString('time/named:Europe/Kiev||dst:forceStandard')!;
+      final tv = TimeValue.fromPrefsString(
+        'time/named:Europe/Kiev||dst:forceStandard',
+      )!;
       expect(tv.customLabel, isNull);
       expect(tv.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
     });
@@ -56,7 +61,10 @@ void main() {
     test('UTC aliases collapse to ZoneUtc, everything else stays', () {
       expect(canonicalZoneSpec(const ZoneNamed('Etc/UTC')), isA<ZoneUtc>());
       expect(canonicalZoneSpec(const ZoneNamed('Zulu')), isA<ZoneUtc>());
-      expect(canonicalZoneSpec(const ZoneNamed('Europe/Berlin')), isA<ZoneNamed>());
+      expect(
+        canonicalZoneSpec(const ZoneNamed('Europe/Berlin')),
+        isA<ZoneNamed>(),
+      );
       expect(canonicalZoneSpec(const ZoneLocal()), isA<ZoneLocal>());
     });
   });
@@ -73,8 +81,11 @@ void main() {
     });
 
     test('zones without clock change are treated as unpinned', () {
-      const e = TimeValue(valueType: ValueType.time, zone: ZoneNamed('Asia/Tokyo'),
-          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard);
+      const e = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Asia/Tokyo'),
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+      );
       expect(e.isPinned(DateTime.utc(2026), 'UTC'), isFalse);
     });
   });
@@ -112,50 +123,74 @@ void main() {
     bool hourFormat24 = false;
 
     test('midnight = 12:00:00 AM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, tzSuffix: null),
-          equals('12:00:00 AM'));
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, tzSuffix: null),
+        equals('12:00:00 AM'),
+      );
     });
 
     test('noon = 12:00:00 PM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, tzSuffix: null),
-          equals('12:00:00 PM'));
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, tzSuffix: null),
+        equals('12:00:00 PM'),
+      );
     });
 
     test('13:30:00 = 01:30:00 PM', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, tzSuffix: null),
-          equals('01:30:00 PM'));
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, tzSuffix: null),
+        equals('01:30:00 PM'),
+      );
     });
 
     test('with timezone suffix', () {
-      expect(TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, tzSuffix: 'UTC'),
-          equals('09:00:00 AM UTC'));
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, tzSuffix: 'UTC'),
+        equals('09:00:00 AM UTC'),
+      );
     });
   });
 
   group('TimeValueFormatter.formatDecimal', () {
     test('decimal with thousands separator EN', () {
-      expect(TimeValueFormatter.formatDecimal(2461196.382, 'en', 3),
-          equals('2,461,196.382'));
+      expect(
+        TimeValueFormatter.formatDecimal(2461196.382, 'en', 3),
+        equals('2,461,196.382'),
+      );
     });
     test('decimal with thousands separator DE', () {
-      expect(TimeValueFormatter.formatDecimal(2461196.382, 'de', 3),
-          equals('2.461.196,382'));
+      expect(
+        TimeValueFormatter.formatDecimal(2461196.382, 'de', 3),
+        equals('2.461.196,382'),
+      );
     });
     test('decimal without thousands separator EN', () {
       expect(
-          TimeValueFormatter.formatDecimal(2461196.382, 'en', 3,
-              thousandsSep: false),
-          equals('2461196.382'));
+        TimeValueFormatter.formatDecimal(
+          2461196.382,
+          'en',
+          3,
+          thousandsSep: false,
+        ),
+        equals('2461196.382'),
+      );
     });
     test('decimal without thousands separator DE uses comma', () {
       expect(
-          TimeValueFormatter.formatDecimal(61195.879, 'de', 3,
-              thousandsSep: false),
-          equals('61195,879'));
+        TimeValueFormatter.formatDecimal(
+          61195.879,
+          'de',
+          3,
+          thousandsSep: false,
+        ),
+        equals('61195,879'),
+      );
     });
     test('small decimal no thousands needed', () {
-      expect(TimeValueFormatter.formatDecimal(96.348, 'en', 3),
-          equals('96.348'));
+      expect(
+        TimeValueFormatter.formatDecimal(96.348, 'en', 3),
+        equals('96.348'),
+      );
     });
   });
 
@@ -224,9 +259,15 @@ void main() {
     });
     test('|nosec roundtrip still works after the rename', () {
       const value = TimeValue(
-          valueType: ValueType.swatchBeats, zone: ZoneUtc(), showOptionalPart: false);
+        valueType: ValueType.swatchBeats,
+        zone: ZoneUtc(),
+        showOptionalPart: false,
+      );
       expect(value.toPrefsString(), endsWith('|nosec'));
-      expect(TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart, isFalse);
+      expect(
+        TimeValue.fromPrefsString(value.toPrefsString())!.showOptionalPart,
+        isFalse,
+      );
     });
   });
 
@@ -251,8 +292,14 @@ void main() {
 
     test('parses the three variants; old configs mean "default"', () {
       expect(TimeValue.fromPrefsString('time/utc')!.showOptionalPart, isNull);
-      expect(TimeValue.fromPrefsString('time/utc|sec')!.showOptionalPart, isTrue);
-      expect(TimeValue.fromPrefsString('time/utc|nosec')!.showOptionalPart, isFalse);
+      expect(
+        TimeValue.fromPrefsString('time/utc|sec')!.showOptionalPart,
+        isTrue,
+      );
+      expect(
+        TimeValue.fromPrefsString('time/utc|nosec')!.showOptionalPart,
+        isFalse,
+      );
     });
 
     test('works together with label and clock change mode', () {
@@ -265,7 +312,10 @@ void main() {
       );
       final parsed = TimeValue.fromPrefsString(value.toPrefsString())!;
       expect(parsed.customLabel, 'Home');
-      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(
+        parsed.timezoneClockChangeMode,
+        TimezoneClockChangeMode.forceStandard,
+      );
       expect(parsed.showOptionalPart, isFalse);
     });
 
@@ -277,7 +327,10 @@ void main() {
       final parsed = TimeValue.fromPrefsString(
         'sevenSegmentClock/named:Europe/Berlin||dst:forceStandard|nosec',
       )!;
-      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(
+        parsed.timezoneClockChangeMode,
+        TimezoneClockChangeMode.forceStandard,
+      );
       expect(parsed.showOptionalPart, isFalse);
       expect(parsed.customLabel, isNull);
     });
@@ -310,7 +363,10 @@ void main() {
         'time/named:Europe/Berlin|Home|dst:forceStandard|nosec|nodet',
       )!;
       expect(parsed.customLabel, 'Home');
-      expect(parsed.timezoneClockChangeMode, TimezoneClockChangeMode.forceStandard);
+      expect(
+        parsed.timezoneClockChangeMode,
+        TimezoneClockChangeMode.forceStandard,
+      );
       expect(parsed.showOptionalPart, isFalse);
       expect(parsed.showDetails, isFalse);
     });

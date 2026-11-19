@@ -1,13 +1,32 @@
 const _diacriticsFoldMap = {
-  'á':'a','à':'a','â':'a','ã':'a','ä':'a','å':'a',
-  'ç':'c',
-  'é':'e','è':'e','ê':'e','ë':'e',
-  'í':'i','ì':'i','î':'i','ï':'i',
-  'ñ':'n',
-  'ó':'o','ò':'o','ô':'o','õ':'o','ö':'o',
-  'ú':'u','ù':'u','û':'u','ü':'u',
-  'ý':'y','ÿ':'y',
-  'ß':'ss',
+  'á': 'a',
+  'à': 'a',
+  'â': 'a',
+  'ã': 'a',
+  'ä': 'a',
+  'å': 'a',
+  'ç': 'c',
+  'é': 'e',
+  'è': 'e',
+  'ê': 'e',
+  'ë': 'e',
+  'í': 'i',
+  'ì': 'i',
+  'î': 'i',
+  'ï': 'i',
+  'ñ': 'n',
+  'ó': 'o',
+  'ò': 'o',
+  'ô': 'o',
+  'õ': 'o',
+  'ö': 'o',
+  'ú': 'u',
+  'ù': 'u',
+  'û': 'u',
+  'ü': 'u',
+  'ý': 'y',
+  'ÿ': 'y',
+  'ß': 'ss',
 };
 
 String _foldDiacritics(String input) {
@@ -23,20 +42,20 @@ String _stripCombiningMarks(String input) =>
     input.replaceAll(RegExp(r'\p{Mn}', unicode: true), '');
 
 String _stripApostrophes(String input) => input.replaceAll(
-    RegExp("['\u2018\u2019\u201B\u02B9\u02BC\u02BB\u02BD\u0060\u00B4]"), '');
+  RegExp("['\u2018\u2019\u201B\u02B9\u02BC\u02BB\u02BD\u0060\u00B4]"),
+  '',
+);
 
 String _foldSaintAbbreviation(String input) => input
     .replaceAll(RegExp(r'\bsankt\b', caseSensitive: false), 'st')
     .replaceAll(RegExp(r'\bsaint\b', caseSensitive: false), 'st')
     .replaceAll(RegExp(r'\bst\.', caseSensitive: false), 'st');
 
-String _foldHyphens(String input) =>
-    input.replaceAll('-', ' ');
+String _foldHyphens(String input) => input.replaceAll('-', ' ');
 
 String _foldUnderscores(String input) => input.replaceAll('_', ' ');
 
-String _foldPunctuation(String input) =>
-    input.replaceAll(RegExp(r'[,.]'), '');
+String _foldPunctuation(String input) => input.replaceAll(RegExp(r'[,.]'), '');
 
 String normalize(String s) {
   var result = s.toLowerCase();
@@ -68,10 +87,9 @@ Iterable<String> expandTimeZoneNameVariants(String term) {
     variants.add('${stem}Normal-Zeit');
     variants.add('${stem}Standardzeit');
     variants.add('${stem}Standard-Zeit');
-    variants.add('${stem}Winterzeit');   // not always correct, but not harmful
-    variants.add('${stem}Winter-Zeit');  // not always correct, but not harmful
-  }
-  else if (lower.endsWith('sommerzeit')) {
+    variants.add('${stem}Winterzeit'); // not always correct, but not harmful
+    variants.add('${stem}Winter-Zeit'); // not always correct, but not harmful
+  } else if (lower.endsWith('sommerzeit')) {
     final stem = term.substring(0, term.length - 'sommerzeit'.length);
     variants.add('${stem}Sommer-Zeit');
   }
@@ -81,14 +99,12 @@ Iterable<String> expandTimeZoneNameVariants(String term) {
     variants.add('${stem}Daylight Saving Time');
     variants.add('${stem}Daylight Savings Time');
     variants.add('${stem}Summer Time');
-  }
-  else if (lower.endsWith('summer time')) {
+  } else if (lower.endsWith('summer time')) {
     final stem = term.substring(0, term.length - 'summer time'.length);
     variants.add('${stem}Daylight Time');
     variants.add('${stem}Daylight Saving Time');
     variants.add('${stem}Daylight Savings Time');
-  }
-  else if (lower.endsWith('time') && !lower.endsWith('standard time')) {
+  } else if (lower.endsWith('time') && !lower.endsWith('standard time')) {
     final stem = term.substring(0, term.length - 'time'.length);
     variants.add('${stem}Standard Time');
   }

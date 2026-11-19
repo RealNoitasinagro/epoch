@@ -6,8 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('no palette color is too dark on black (contrast at least 3:1)', () {
     for (final color in focusSolidColors) {
-      expect((color.computeLuminance() + 0.05) / 0.05,
-          greaterThanOrEqualTo(3.0), reason: '$color');
+      expect(
+        (color.computeLuminance() + 0.05) / 0.05,
+        greaterThanOrEqualTo(3.0),
+        reason: '$color',
+      );
     }
   });
 

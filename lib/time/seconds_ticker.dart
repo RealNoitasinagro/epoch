@@ -26,8 +26,9 @@ class SecondsTicker extends ChangeNotifier {
     final microsecondsIntoSecond =
         systemTime.millisecond * 1000 + systemTime.microsecond;
     return Duration(
-        microseconds: Duration.microsecondsPerSecond - microsecondsIntoSecond
-    ) + _margin;
+          microseconds: Duration.microsecondsPerSecond - microsecondsIntoSecond,
+        ) +
+        _margin;
   }
 
   /// Every tick sets the next timer from the clock again: a late tick (device
@@ -36,7 +37,8 @@ class SecondsTicker extends ChangeNotifier {
       Timer(delayUntilNextTick(EffectiveClock.systemTime()), _tick);
 
   void _tick() {
-    _timer = _scheduleNextTick();  // before notifying: listeners may remove themselves
+    _timer =
+        _scheduleNextTick(); // before notifying: listeners may remove themselves
     notifyListeners();
   }
 

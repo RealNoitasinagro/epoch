@@ -6,14 +6,15 @@ import '../../l10n/app_localizations.dart';
 
 class ValueTile extends StatelessWidget {
   final String label;
-  final Widget content;  // text field or graphical clock
-  final List<Widget?> actionSlots;  // always 3 slots
-  static const double textTileHeight    = 88.0;
-  static const double graphicTileHeight = 222.0;  // fits 6 bit rows
-  final double? height;  // null = textTileHeight
+  final Widget content; // text field or graphical clock
+  final List<Widget?> actionSlots; // always 3 slots
+  static const double textTileHeight = 88.0;
+  static const double graphicTileHeight = 222.0; // fits 6 bit rows
+  final double? height; // null = textTileHeight
   final bool showZoneIndicator;
-  final IconData? dstStatusIndicator;  // null, or originally Icons.wb_sunny_outlined, Icons.brightness_3
-  final bool showPinnedIndicator;  // timezoneClockChangeMode != auto
+  final IconData?
+  dstStatusIndicator; // null, or originally Icons.wb_sunny_outlined, Icons.brightness_3
+  final bool showPinnedIndicator; // timezoneClockChangeMode != auto
 
   const ValueTile({
     super.key,
@@ -40,8 +41,11 @@ class ValueTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(kTileBorderRadius),
       ),
       padding: const EdgeInsets.fromLTRB(
-          kTabHorizontalPadding, kTabVerticalPadding,
-          kTabHorizontalPadding, kTabVerticalPadding),
+        kTabHorizontalPadding,
+        kTabVerticalPadding,
+        kTabHorizontalPadding,
+        kTabVerticalPadding,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -62,16 +66,22 @@ class ValueTile extends StatelessWidget {
                     if (showZoneIndicator) ...[
                       const SizedBox(width: 4),
                       Tooltip(
-                        child: Icon(kIconTimeZoneIndicator, size: kIconSizeLabel,
-                          color: colorScheme.onSurface.withAlpha(150)),
+                        child: Icon(
+                          kIconTimeZoneIndicator,
+                          size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150),
+                        ),
                         message: l10n.hintZoneIndicator,
                       ),
                     ],
                     if (dstStatusIndicator != null) ...[
                       const SizedBox(width: 4),
                       Tooltip(
-                        child: Icon(dstStatusIndicator, size: kIconSizeLabel,
-                          color: colorScheme.onSurface.withAlpha(150)),
+                        child: Icon(
+                          dstStatusIndicator,
+                          size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150),
+                        ),
                         message: dstStatusIndicator == kIconDstActive
                             ? l10n.hintDstStatusIndicatorActive
                             : l10n.hintDstStatusIndicatorInactive,
@@ -80,8 +90,11 @@ class ValueTile extends StatelessWidget {
                     if (showPinnedIndicator) ...[
                       const SizedBox(width: 4),
                       Tooltip(
-                        child: Icon(kIconPinnedIndicator, size: kIconSizeLabel,
-                          color: colorScheme.onSurface.withAlpha(150)),
+                        child: Icon(
+                          kIconPinnedIndicator,
+                          size: kIconSizeLabel,
+                          color: colorScheme.onSurface.withAlpha(150),
+                        ),
                         message: l10n.hintPinnedIndicator,
                       ),
                     ],
@@ -103,7 +116,7 @@ class TextValueContent extends StatelessWidget {
   final String line1;
   final String line2;
   final VoidCallback? onDoubleTap;
-  final Color? dayQuarterColor;  // not: night mode, zone-independent values
+  final Color? dayQuarterColor; // not: night mode, zone-independent values
 
   const TextValueContent({
     super.key,
@@ -124,14 +137,14 @@ class TextValueContent extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.onSurface.withAlpha(30),
         borderRadius: BorderRadius.circular(kTileBorderRadius),
-          border: dayQuarterColor != null
-              ? Border(
-                  left: BorderSide(
-                    color: dayQuarterColor!,
-                    width: kDayQuarterColorIndicatorWidth
-                  )
-                )
-              : Border()
+        border: dayQuarterColor != null
+            ? Border(
+                left: BorderSide(
+                  color: dayQuarterColor!,
+                  width: kDayQuarterColorIndicatorWidth,
+                ),
+              )
+            : Border(),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,17 +177,14 @@ class TextValueContent extends StatelessWidget {
       ),
     );
     if (onDoubleTap == null) return container;
-    return GestureDetector(
-      onDoubleTap: onDoubleTap,
-      child: container,
-    );
+    return GestureDetector(onDoubleTap: onDoubleTap, child: container);
   }
 }
 
 class GraphicValueContent extends StatelessWidget {
   final Widget clock;
   final VoidCallback? onDoubleTap;
-  final Color? dayQuarterColor;  // not: night mode, zone-independent values
+  final Color? dayQuarterColor; // not: night mode, zone-independent values
 
   const GraphicValueContent({
     super.key,
@@ -195,10 +205,10 @@ class GraphicValueContent extends StatelessWidget {
             ? Border(
                 left: BorderSide(
                   color: dayQuarterColor!,
-                  width: kDayQuarterColorIndicatorWidth
-                )
+                  width: kDayQuarterColorIndicatorWidth,
+                ),
               )
-            : Border()
+            : Border(),
       ),
       child: FittedBox(
         alignment: Alignment.centerLeft,
@@ -207,10 +217,7 @@ class GraphicValueContent extends StatelessWidget {
       ),
     );
     if (onDoubleTap == null) return container;
-    return GestureDetector(
-      onDoubleTap: onDoubleTap,
-      child: container,
-    );
+    return GestureDetector(onDoubleTap: onDoubleTap, child: container);
   }
 }
 
@@ -224,11 +231,15 @@ class _ActionArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: slots.map((slot) => SizedBox(
-        width: 40,
-        height: 40,
-        child: slot ?? const SizedBox.shrink(),
-      )).toList(),
+      children: slots
+          .map(
+            (slot) => SizedBox(
+              width: 40,
+              height: 40,
+              child: slot ?? const SizedBox.shrink(),
+            ),
+          )
+          .toList(),
     );
   }
 }

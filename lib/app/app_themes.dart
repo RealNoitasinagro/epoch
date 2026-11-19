@@ -5,12 +5,11 @@ import 'layout_constants.dart';
 /// cannot start, so that both look the same.
 ThemeData buildDarkTheme() => ThemeData(
   colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blueGrey,
-      brightness: Brightness.dark
+    seedColor: Colors.blueGrey,
+    brightness: Brightness.dark,
   ),
   useMaterial3: true,
 );
-
 
 const _nightRed = kColorNightRed;
 const _nightRedDim = kColorNightRedDim;

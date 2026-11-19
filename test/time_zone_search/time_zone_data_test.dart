@@ -23,13 +23,21 @@ void main() {
       final added = actual.difference(expectedAll);
       final removed = expectedAll.difference(actual);
 
-      expect(added, isEmpty, reason:
-          'New zone identifiers since the last snapshot: $added -- '
-          'regenerate with tools/generate_iana_data.py and consider '
-          'adding search coverage for anything relevant.');
-      expect(removed, isEmpty, reason:
-          'Zone identifiers disappeared since the last snapshot: $removed '
-          '-- this would be unusual, investigate before regenerating.');
+      expect(
+        added,
+        isEmpty,
+        reason:
+            'New zone identifiers since the last snapshot: $added -- '
+            'regenerate with tools/generate_iana_data.py and consider '
+            'adding search coverage for anything relevant.',
+      );
+      expect(
+        removed,
+        isEmpty,
+        reason:
+            'Zone identifiers disappeared since the last snapshot: $removed '
+            '-- this would be unusual, investigate before regenerating.',
+      );
     });
 
     for (final zoneId in ianaCanonicalZonesSnapshot) {
@@ -52,8 +60,10 @@ void main() {
   group('IANA Link identifiers are searchable', () {
     for (final entry in ianaLinksSnapshot.entries) {
       test('${entry.key} finds ${entry.value}', () {
-        final found = searchTimezones(entry.key, tzDatabase)
-            .map((e) => e.ianaZoneId);
+        final found = searchTimezones(
+          entry.key,
+          tzDatabase,
+        ).map((e) => e.ianaZoneId);
         expect(found, contains(entry.value));
       });
     }
@@ -66,8 +76,10 @@ void main() {
         firstPerSource.putIfAbsent(c.source, () => c.term);
       }
       firstPerSource.forEach((source, term) {
-        test('${entry.ianaZoneId} <- $source "$term"',
-                () => expect(entry.match(term), isNotNull));
+        test(
+          '${entry.ianaZoneId} <- $source "$term"',
+          () => expect(entry.match(term), isNotNull),
+        );
       });
     }
   });
@@ -75,10 +87,15 @@ void main() {
   group('legacy abbreviations resolve to their zone', () {
     legacyAbbreviationsByZone.forEach((zoneId, abbrs) {
       final canonical = ianaLinksSnapshot[zoneId] ?? zoneId;
-      final entry = tzDatabase.where((e) => e.ianaZoneId == canonical).firstOrNull;
+      final entry = tzDatabase
+          .where((e) => e.ianaZoneId == canonical)
+          .firstOrNull;
       if (entry == null) return;
       for (final abbr in abbrs) {
-        test('$abbr -> $canonical', () => expect(entry.match(abbr) != null, isTrue));
+        test(
+          '$abbr -> $canonical',
+          () => expect(entry.match(abbr) != null, isTrue),
+        );
       }
     });
   });
@@ -90,21 +107,35 @@ void main() {
       final hh = '$h'.padLeft(2, '0'), mm = '$m'.padLeft(2, '0');
       final decimal = '${h + m / 60}';
       return [
-        'UTC$sign$hh:$mm', '$sign$hh:$mm', '$sign$h:$mm',
+        'UTC$sign$hh:$mm',
+        '$sign$hh:$mm',
+        '$sign$h:$mm',
         if (m == 0) ...['UTC$sign$h', '$sign$h'],
-        if (m != 0) ...['$sign$decimal', '$sign${decimal.replaceFirst('.', ',')}'],
+        if (m != 0) ...[
+          '$sign$decimal',
+          '$sign${decimal.replaceFirst('.', ',')}',
+        ],
       ];
     }
+
     final offsets = {
-      for (final e in tzDatabase) ...[e.rules.standardOffset, e.rules.dstOffset],
+      for (final e in tzDatabase) ...[
+        e.rules.standardOffset,
+        e.rules.dstOffset,
+      ],
     };
     for (final offset in offsets) {
       for (final q in spellings(offset)) {
         test('$q finds a zone with ${formatUtcOffset(offset)}', () {
           final found = searchTimezones(q, tzDatabase);
-          expect(found.any((e) =>
-            e.rules.standardOffset == offset || e.rules.dstOffset == offset),
-              isTrue);
+          expect(
+            found.any(
+              (e) =>
+                  e.rules.standardOffset == offset ||
+                  e.rules.dstOffset == offset,
+            ),
+            isTrue,
+          );
         });
       }
     }
@@ -112,27 +143,41 @@ void main() {
 
   group('searchTimezonesRanked', () {
     test('searchTimezones returns the same entries, unranked', () {
-      final plain = searchTimezones('Berlin', tzDatabase).map((e) => e.ianaZoneId).toSet();
-      final ranked = searchTimezonesRanked('Berlin', tzDatabase, locale: 'en')
-          .map((r) => r.entry.ianaZoneId).toSet();
+      final plain = searchTimezones(
+        'Berlin',
+        tzDatabase,
+      ).map((e) => e.ianaZoneId).toSet();
+      final ranked = searchTimezonesRanked(
+        'Berlin',
+        tzDatabase,
+        locale: 'en',
+      ).map((r) => r.entry.ianaZoneId).toSet();
       expect(plain, equals(ranked));
     });
 
     test('own zone ranks before zones that merely share the capital', () {
-      final ids = searchTimezonesRanked('Berlin', tzDatabase, locale: 'en')
-          .map((r) => r.entry.ianaZoneId).toList();
+      final ids = searchTimezonesRanked(
+        'Berlin',
+        tzDatabase,
+        locale: 'en',
+      ).map((r) => r.entry.ianaZoneId).toList();
       expect(ids.first, 'Europe/Berlin');
-      expect(ids, contains('Europe/Zurich'));  // Büsingen
+      expect(ids, contains('Europe/Zurich')); // Büsingen
     });
 
     test('empty query lists every zone', () {
-      expect(searchTimezonesRanked('', tzDatabase, locale: 'de').length,
-          tzDatabase.length);
+      expect(
+        searchTimezonesRanked('', tzDatabase, locale: 'de').length,
+        tzDatabase.length,
+      );
     });
 
     test('Etc zones are ordered by offset, not alphabetically', () {
-      final ids = searchTimezonesRanked('Etc/GMT', tzDatabase, locale: 'en')
-          .map((r) => r.entry.ianaZoneId).toList();
+      final ids = searchTimezonesRanked(
+        'Etc/GMT',
+        tzDatabase,
+        locale: 'en',
+      ).map((r) => r.entry.ianaZoneId).toList();
       expect(ids.indexOf('Etc/GMT+12'), lessThan(ids.indexOf('Etc/GMT+2')));
       expect(ids.indexOf('Etc/GMT+2'), lessThan(ids.indexOf('Etc/GMT')));
       expect(ids.indexOf('Etc/GMT'), lessThan(ids.indexOf('Etc/GMT-2')));
@@ -145,16 +190,24 @@ void main() {
       if (entry.hasDst) continue;
       final metaId = cldrZoneMetaZone[entry.ianaZoneId];
       if (metaId == null) continue;
-      for (final term in [cldrMetazoneNamesEn[metaId]?.daylight,
-        cldrMetazoneNamesDe[metaId]?.daylight].whereType<String>()) {
-        expect(entry.match(term) != null, isFalse,
-            reason: '${entry.ianaZoneId} has no DST but matched daylight term "$term"');
+      for (final term in [
+        cldrMetazoneNamesEn[metaId]?.daylight,
+        cldrMetazoneNamesDe[metaId]?.daylight,
+      ].whereType<String>()) {
+        expect(
+          entry.match(term) != null,
+          isFalse,
+          reason:
+              '${entry.ianaZoneId} has no DST but matched daylight term "$term"',
+        );
       }
     }
   });
 
   test('display city never comes from a link (Berlin is not Copenhagen)', () {
-    final berlin = tzDatabase.firstWhere((e) => e.ianaZoneId == 'Europe/Berlin');
+    final berlin = tzDatabase.firstWhere(
+      (e) => e.ianaZoneId == 'Europe/Berlin',
+    );
     expect(berlin.displayCity('de'), 'Berlin');
     expect(berlin.displayCity('en'), 'Berlin');
   });

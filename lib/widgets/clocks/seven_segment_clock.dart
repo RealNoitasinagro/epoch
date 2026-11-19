@@ -18,16 +18,16 @@ import '../../l10n/app_localizations.dart';
 //
 // Digit segments [a, b, c, d, e, f, g]:
 const _digitSegments = <int, List<bool>>{
-  0: [true,  true,  true,  true,  true,  true,  false],
-  1: [false, true,  true,  false, false, false, false],
-  2: [true,  true,  false, true,  true,  false, true ],
-  3: [true,  true,  true,  true,  false, false, true ],
-  4: [false, true,  true,  false, false, true,  true ],
-  5: [true,  false, true,  true,  false, true,  true ],
-  6: [true,  false, true,  true,  true,  true,  true ],
-  7: [true,  true,  true,  false, false, false, false],
-  8: [true,  true,  true,  true,  true,  true,  true ],
-  9: [true,  true,  true,  true,  false, true,  true ],
+  0: [true, true, true, true, true, true, false],
+  1: [false, true, true, false, false, false, false],
+  2: [true, true, false, true, true, false, true],
+  3: [true, true, true, true, false, false, true],
+  4: [false, true, true, false, false, true, true],
+  5: [true, false, true, true, false, true, true],
+  6: [true, false, true, true, true, true, true],
+  7: [true, true, true, false, false, false, false],
+  8: [true, true, true, true, true, true, true],
+  9: [true, true, true, true, false, true, true],
 };
 
 class SevenSegmentClock extends StatelessWidget {
@@ -36,6 +36,7 @@ class SevenSegmentClock extends StatelessWidget {
   final bool showSeconds;
   final bool hourFormat24;
   final Color color;
+
   /// Base digit height in logical pixels. FittedBox scales this further.
   /// Use a larger value (e.g. 180) for the Focus Screen.
   final double digitHeight;
@@ -54,18 +55,18 @@ class SevenSegmentClock extends StatelessWidget {
   Widget build(BuildContext context) {
     // All dimensions derived from digitHeight to keep proportions.
     // Reference SVG: digits are 10 units wide × 18 units tall.
-    final double digitWidth  = digitHeight * (10 / 18);
-    final double colonWidth  = digitHeight * (3  / 18);
-    final double amPmHeight  = digitHeight * (10 / 18);
-    final double amPmWidth   = digitHeight * (5  / 18);
-    final double gap         = digitHeight * (2  / 18);
+    final double digitWidth = digitHeight * (10 / 18);
+    final double colonWidth = digitHeight * (3 / 18);
+    final double amPmHeight = digitHeight * (10 / 18);
+    final double amPmWidth = digitHeight * (5 / 18);
+    final double gap = digitHeight * (2 / 18);
 
     final int h = hourFormat24
         ? now.hour
         : (now.hour % 12 == 0 ? 12 : now.hour % 12);
     final int m = now.minute;
     final int s = now.second;
-    final bool isPm   = now.hour >= 12;
+    final bool isPm = now.hour >= 12;
     final bool show12 = !hourFormat24;
 
     // Null = colon separator:
@@ -159,9 +160,9 @@ class _SevenSegmentPainter extends CustomPainter {
   // We scale: sx = digitWidth/10, sy = digitHeight/18.
   void _drawDigit(Canvas canvas, double ox, int digit) {
     final segments = _digitSegments[digit]!;
-    final sx = digitWidth  / 10;
+    final sx = digitWidth / 10;
     final sy = digitHeight / 18;
-    const i = 0.12;  // inset in SVG units – creates visible gap between segments
+    const i = 0.12; // inset in SVG units – creates visible gap between segments
 
     // Helper to map SVG coordinates to canvas coordinates:
     Path p(List<List<num>> pts) {
@@ -175,30 +176,98 @@ class _SevenSegmentPainter extends CustomPainter {
     }
 
     // Segment a – top, inset bottom corners toward center:
-    canvas.drawPath(p([[1+i,1],[2,0],[8,0],[9-i,1],[8-i,2],[2+i,2]]), _paint(segments[0]));
+    canvas.drawPath(
+      p([
+        [1 + i, 1],
+        [2, 0],
+        [8, 0],
+        [9 - i, 1],
+        [8 - i, 2],
+        [2 + i, 2],
+      ]),
+      _paint(segments[0]),
+    );
     // Segment b – top-right, inset left corners:
-    canvas.drawPath(p([[9-i,1],[10,2],[10,8],[9-i,9],[8,8-i],[8,2+i]]), _paint(segments[1]));
+    canvas.drawPath(
+      p([
+        [9 - i, 1],
+        [10, 2],
+        [10, 8],
+        [9 - i, 9],
+        [8, 8 - i],
+        [8, 2 + i],
+      ]),
+      _paint(segments[1]),
+    );
     // Segment c – bottom-right, inset left corners:
-    canvas.drawPath(p([[9-i,9],[10,10],[10,16],[9-i,17],[8,16-i],[8,10+i]]), _paint(segments[2]));
+    canvas.drawPath(
+      p([
+        [9 - i, 9],
+        [10, 10],
+        [10, 16],
+        [9 - i, 17],
+        [8, 16 - i],
+        [8, 10 + i],
+      ]),
+      _paint(segments[2]),
+    );
     // Segment d – bottom, inset top corners:
-    canvas.drawPath(p([[9-i,17],[8,18],[2,18],[1+i,17],[2+i,16],[8-i,16]]), _paint(segments[3]));
+    canvas.drawPath(
+      p([
+        [9 - i, 17],
+        [8, 18],
+        [2, 18],
+        [1 + i, 17],
+        [2 + i, 16],
+        [8 - i, 16],
+      ]),
+      _paint(segments[3]),
+    );
     // Segment e – bottom-left, inset right corners:
-    canvas.drawPath(p([[1+i,17],[0,16],[0,10],[1+i,9],[2,10+i],[2,16-i]]), _paint(segments[4]));
+    canvas.drawPath(
+      p([
+        [1 + i, 17],
+        [0, 16],
+        [0, 10],
+        [1 + i, 9],
+        [2, 10 + i],
+        [2, 16 - i],
+      ]),
+      _paint(segments[4]),
+    );
     // Segment f – top-left, inset right corners:
-    canvas.drawPath(p([[1+i,9],[0,8],[0,2],[1+i,1],[2,2+i],[2,8-i]]), _paint(segments[5]));
+    canvas.drawPath(
+      p([
+        [1 + i, 9],
+        [0, 8],
+        [0, 2],
+        [1 + i, 1],
+        [2, 2 + i],
+        [2, 8 - i],
+      ]),
+      _paint(segments[5]),
+    );
     // Segment g – middle, inset all corners:
-    canvas.drawPath(p([[1+i,9],[2+i,8],[8-i,8],[9-i,9],[8-i,10],[2+i,10]]), _paint(segments[6]));
+    canvas.drawPath(
+      p([
+        [1 + i, 9],
+        [2 + i, 8],
+        [8 - i, 8],
+        [9 - i, 9],
+        [8 - i, 10],
+        [2 + i, 10],
+      ]),
+      _paint(segments[6]),
+    );
   }
 
   // Colon: two circles at 1/3 and 2/3 height, centered in colonWidth.
   void _drawColon(Canvas canvas, double ox, double w) {
     final cx = ox + w / 2;
     // Dot radius proportional to segment thickness (~1 unit in SVG = sy):
-    final r  = digitHeight / 18 * 1.1;
-    canvas.drawCircle(
-        Offset(cx, digitHeight / 3),      r, _paint(true));
-    canvas.drawCircle(
-        Offset(cx, digitHeight * 2 / 3),  r, _paint(true));
+    final r = digitHeight / 18 * 1.1;
+    canvas.drawCircle(Offset(cx, digitHeight / 3), r, _paint(true));
+    canvas.drawCircle(Offset(cx, digitHeight * 2 / 3), r, _paint(true));
   }
 
   void _drawAmPm(Canvas canvas, double ox) {
@@ -216,11 +285,10 @@ class _SevenSegmentPainter extends CustomPainter {
     );
 
     void drawText(String text, ui.TextStyle style, double y) {
-      final pb = ui.ParagraphBuilder(ui.ParagraphStyle(
-        textAlign: TextAlign.center,
-      ))
-        ..pushStyle(style)
-        ..addText(text);
+      final pb =
+          ui.ParagraphBuilder(ui.ParagraphStyle(textAlign: TextAlign.center))
+            ..pushStyle(style)
+            ..addText(text);
       final paragraph = pb.build()
         ..layout(ui.ParagraphConstraints(width: amPmWidth));
       canvas.drawParagraph(paragraph, Offset(ox, y));
@@ -232,8 +300,8 @@ class _SevenSegmentPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SevenSegmentPainter old) =>
-      old.digits   != digits   ||
-      old.color    != color    ||
+      old.digits != digits ||
+      old.color != color ||
       old.showAmPm != showAmPm ||
-      old.isPm     != isPm;
+      old.isPm != isPm;
 }

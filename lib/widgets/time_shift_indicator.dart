@@ -24,27 +24,40 @@ class TimeShiftIndicator extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final systemTime = EffectiveClock.systemTime();
     final textStyle = DefaultTextStyle.of(context).style.copyWith(
-        fontFamily: fontFamilyDefault, fontSize: 14, fontWeight: FontWeight.w500);
+      fontFamily: fontFamilyDefault,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    );
 
     final timePattern = settings.timeFormat.length <= _maxPatternLength
-        ? settings.timeFormat : kTimePatternFull;
+        ? settings.timeFormat
+        : kTimePatternFull;
     final timeText = TimeValueFormatter.formatTime(
-        settings.hourFormat24, systemTime.hour, systemTime.minute, systemTime.second,
-        pattern: timePattern
+      settings.hourFormat24,
+      systemTime.hour,
+      systemTime.minute,
+      systemTime.second,
+      pattern: timePattern,
     );
     final dateText = TimeValueFormatter.formatDate(
-        l10n.localeName, systemTime, pattern: settings.dateFormat);
+      l10n.localeName,
+      systemTime,
+      pattern: settings.dateFormat,
+    );
 
     final tooltipLines = [
       if (EffectiveClock.isTimeShifted)
         l10n.hintTimeShiftIndicator(
-            dateText,
-            EffectiveClock.isShiftedIntoPast
-                ? l10n.hintTimeShiftPast
-                : l10n.hintTimeShiftFuture),
+          dateText,
+          EffectiveClock.isShiftedIntoPast
+              ? l10n.hintTimeShiftPast
+              : l10n.hintTimeShiftFuture,
+        ),
       if (EffectiveClock.hasVirtualLocalZone)
         l10n.hintTimeShiftPlaceIndicator(
-            EffectiveClock.virtualLocalIanaZone!, app.systemIanaZone),
+          EffectiveClock.virtualLocalIanaZone!,
+          app.systemIanaZone,
+        ),
       l10n.hintTimeShiftIndicatorTap,
     ];
 
@@ -79,5 +92,7 @@ class TimeShiftIndicator extends StatelessWidget {
 List<IconData> timeShiftIcons() => [
   if (EffectiveClock.hasVirtualLocalZone) kIconTimeShiftPlace,
   if (EffectiveClock.isTimeShifted)
-    EffectiveClock.isShiftedIntoPast ? kIconTimeShiftPast : kIconTimeShiftFuture,
+    EffectiveClock.isShiftedIntoPast
+        ? kIconTimeShiftPast
+        : kIconTimeShiftFuture,
 ];

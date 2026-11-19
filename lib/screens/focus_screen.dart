@@ -24,11 +24,7 @@ class FocusScreen extends StatefulWidget {
   final TimeValue timeValue;
   final String locale;
 
-  const FocusScreen({
-    super.key,
-    required this.timeValue,
-    required this.locale,
-  });
+  const FocusScreen({super.key, required this.timeValue, required this.locale});
 
   @override
   State<FocusScreen> createState() => _FocusScreenState();
@@ -38,7 +34,7 @@ class _FocusScreenState extends State<FocusScreen> {
   static const _controlsAutoHideDelay = Duration(seconds: 8);
   static const _controlsHideDuration = Duration(milliseconds: 500);
   static const _pixelShiftInterval = Duration(seconds: 180);
-  static const _safetyMargin = 8.0;  // extra breathing room, both ends
+  static const _safetyMargin = 8.0; // extra breathing room, both ends
 
   late DateTime _now;
 
@@ -46,9 +42,10 @@ class _FocusScreenState extends State<FocusScreen> {
   FocusColorMode _colorMode = FocusColorMode.fixed;
   Color _randomColor = Colors.white;
   bool _paletteOpen = false;
-  static Color? _lastRandomColor;  // different color at every start (within one session)
+  static Color?
+  _lastRandomColor; // different color at every start (within one session)
 
-  bool? _showLine2;  // null until the first build, then follows the button
+  bool? _showLine2; // null until the first build, then follows the button
   late bool _showOptionalPart;
 
   double? _brightness;
@@ -57,7 +54,7 @@ class _FocusScreenState extends State<FocusScreen> {
 
   final _valueDisplayKey = GlobalKey();
   bool _pixelShiftEnabled = kDefaultFocusPixelShift;
-  int _pixelShiftDirection = 1;  // +1 or -1
+  int _pixelShiftDirection = 1; // +1 or -1
   int _pixelShiftIndex = 0;
   bool _pixelShiftInitialized = false;
   double _pixelShiftOffsetY = 0;
@@ -74,18 +71,23 @@ class _FocusScreenState extends State<FocusScreen> {
   List<double> get _pixelShiftLevels {
     final screenHeight = MediaQuery.of(context).size.height;
     final contentHeight = _measuredContentHeight ?? 0;
-    final available = screenHeight
-        - _topReservedForShift
-        - _bottomReservedForShift
-        - contentHeight;
-    final maxOffset = ((available / 2) - _safetyMargin).clamp(0.0, double.infinity);
+    final available =
+        screenHeight -
+        _topReservedForShift -
+        _bottomReservedForShift -
+        contentHeight;
+    final maxOffset = ((available / 2) - _safetyMargin).clamp(
+      0.0,
+      double.infinity,
+    );
 
     if (maxOffset < 2) return const [0.0];
-    const targetStepSize = 18.0;  // aim for ~18px between adjacent levels
+    const targetStepSize = 18.0; // aim for ~18px between adjacent levels
     final halfSteps = (maxOffset / targetStepSize).floor().clamp(1, 6);
-    final steps = halfSteps * 2 + 1;  // odd count, always includes center (0.0)
+    final steps = halfSteps * 2 + 1; // odd count, always includes center (0.0)
     return List.generate(
-        steps, (i) => -maxOffset + (2 * maxOffset * i / (steps - 1))
+      steps,
+      (i) => -maxOffset + (2 * maxOffset * i / (steps - 1)),
     );
   }
 
@@ -112,8 +114,11 @@ class _FocusScreenState extends State<FocusScreen> {
     if (widget.timeValue.isZoneIndependent) {
       return localWallClockAt(_now, localIanaZone).hour;
     }
-    return ZonedMoment.of(widget.timeValue, _now.toUtc(), localIanaZone)
-        .wallClock.hour;
+    return ZonedMoment.of(
+      widget.timeValue,
+      _now.toUtc(),
+      localIanaZone,
+    ).wallClock.hour;
   }
 
   void _updateNow() {
@@ -125,7 +130,8 @@ class _FocusScreenState extends State<FocusScreen> {
   void initState() {
     super.initState();
     final app = EpochApp.of(context);
-    _nightModeNotifier = app.nightModeNotifier..addListener(_onNightModeChanged);
+    _nightModeNotifier = app.nightModeNotifier
+      ..addListener(_onNightModeChanged);
     _showOptionalPart = app.formatSettings.showsOptionalPart(widget.timeValue);
     _now = EffectiveClock.now();
     SecondsTicker.instance.addListener(_updateNow);
@@ -150,13 +156,15 @@ class _FocusScreenState extends State<FocusScreen> {
   }
 
   void _remeasureContent() {
-    final box = _valueDisplayKey.currentContext?.findRenderObject() as RenderBox?;
+    final box =
+        _valueDisplayKey.currentContext?.findRenderObject() as RenderBox?;
     if (box == null || !box.hasSize) return;
-    final height = (box.size.height / 4).round() * 4.0;  // quantize to 4px steps
+    final height = (box.size.height / 4).round() * 4.0; // quantize to 4px steps
     if (height != _measuredContentHeight) {
       setState(() {
         _measuredContentHeight = height;
-        if (_pixelShiftEnabled && _pixelShiftInitialized) _resetPixelShiftPosition();
+        if (_pixelShiftEnabled && _pixelShiftInitialized)
+          _resetPixelShiftPosition();
       });
     }
   }
@@ -167,7 +175,7 @@ class _FocusScreenState extends State<FocusScreen> {
     setState(() => _pixelShiftEnabled = enabled);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _resetPixelShiftPosition();  // context/MediaQuery is safe here
+      _resetPixelShiftPosition(); // context/MediaQuery is safe here
       _pixelShiftInitialized = true;
       if (enabled) _startPixelShiftTimer();
     });
@@ -175,7 +183,10 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _startPixelShiftTimer() {
     _pixelShiftTimer?.cancel();
-    _pixelShiftTimer = Timer.periodic(_pixelShiftInterval, (_) => _rerollPixelShift());
+    _pixelShiftTimer = Timer.periodic(
+      _pixelShiftInterval,
+      (_) => _rerollPixelShift(),
+    );
   }
 
   void _rerollPixelShift() {
@@ -223,8 +234,9 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Future<void> _initBrightness() async {
     final isNightMode = EpochApp.of(context).isNightMode;
-    var fixedColor =
-    isNightMode ? kDefaultFocusColorNight : kDefaultFocusColorLight;
+    var fixedColor = isNightMode
+        ? kDefaultFocusColorNight
+        : kDefaultFocusColorLight;
     var colorMode = FocusColorMode.fixed;
     var initial = kDefaultFocusBrightness;
     try {
@@ -237,12 +249,13 @@ class _FocusScreenState extends State<FocusScreen> {
     } catch (_) {
       // Defaults stay: the screen must always come up and be left again.
     }
-    if (mounted) setState(() {
-      _brightness = initial;
-      _fixedColor = fixedColor;
-      _colorMode = colorMode;
-      if (colorMode == FocusColorMode.random) _pickRandomColor();
-    });
+    if (mounted)
+      setState(() {
+        _brightness = initial;
+        _fixedColor = fixedColor;
+        _colorMode = colorMode;
+        if (colorMode == FocusColorMode.random) _pickRandomColor();
+      });
   }
 
   void _pickRandomColor() {
@@ -252,7 +265,10 @@ class _FocusScreenState extends State<FocusScreen> {
 
   /// A solid [color], or one of the automatic modes. In night mode this only
   /// holds for the session.
-  void _selectColor({Color? color, FocusColorMode mode = FocusColorMode.fixed}) {
+  void _selectColor({
+    Color? color,
+    FocusColorMode mode = FocusColorMode.fixed,
+  }) {
     setState(() {
       _colorMode = mode;
       if (color != null) _fixedColor = color;
@@ -341,16 +357,17 @@ class _FocusScreenState extends State<FocusScreen> {
 
   void _exit() {
     WakelockPlus.disable();
-    if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
+    if (!kIsWeb && !Platform.isLinux)
+      ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     } else {
       // FocusScreen was the initial route (startup focus value set) –
       // there's nothing to pop back to, so replace with HomeScreen instead:
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
     }
   }
 
@@ -363,7 +380,8 @@ class _FocusScreenState extends State<FocusScreen> {
     // Cleanup is in _exit(); if disposed without _exit (e.g. back button),
     // restore here too:
     WakelockPlus.disable();
-    if (!kIsWeb && !Platform.isLinux) ScreenBrightness().resetApplicationScreenBrightness();
+    if (!kIsWeb && !Platform.isLinux)
+      ScreenBrightness().resetApplicationScreenBrightness();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
@@ -383,17 +401,26 @@ class _FocusScreenState extends State<FocusScreen> {
   Widget _dayQuarterSwatch() {
     Widget quarter(int hour) => Expanded(
       child: ColoredBox(
-          color: TimeUtils.dayQuarterColor(hour),
-          child: const SizedBox.expand()),
+        color: TimeUtils.dayQuarterColor(hour),
+        child: const SizedBox.expand(),
+      ),
     );
-    return Column(children: [
-      Expanded(child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [quarter(0), quarter(6)])),
-      Expanded(child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [quarter(12), quarter(18)])),
-    ]);
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [quarter(0), quarter(6)],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [quarter(12), quarter(18)],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _palettePanel(AppLocalizations l10n) {
@@ -412,17 +439,23 @@ class _FocusScreenState extends State<FocusScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-                color: selected ? Colors.white : Colors.white24,
-                width: selected ? 2.5 : 1),
+              color: selected ? Colors.white : Colors.white24,
+              width: selected ? 2.5 : 1,
+            ),
             boxShadow: selected && glowColor != null
-                ? [BoxShadow(
-                color: glowColor.withAlpha(200),
-                blurRadius: 12,
-                spreadRadius: 2)]
+                ? [
+                    BoxShadow(
+                      color: glowColor.withAlpha(200),
+                      blurRadius: 12,
+                      spreadRadius: 2,
+                    ),
+                  ]
                 : null,
           ),
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(4), child: content),
+            borderRadius: BorderRadius.circular(4),
+            child: content,
+          ),
         ),
       );
       return tooltip == null ? field : Tooltip(message: tooltip, child: field);
@@ -446,7 +479,8 @@ class _FocusScreenState extends State<FocusScreen> {
                 cell(
                   content: ColoredBox(color: color),
                   selected:
-                  _colorMode == FocusColorMode.fixed && _fixedColor == color,
+                      _colorMode == FocusColorMode.fixed &&
+                      _fixedColor == color,
                   glowColor: color,
                   onTap: () => _selectColor(color: color),
                 ),
@@ -460,7 +494,8 @@ class _FocusScreenState extends State<FocusScreen> {
                 content: const ColoredBox(
                   color: Color(0xFF2A2A2A),
                   child: Center(
-                      child: Icon(Icons.shuffle, color: Colors.white70)),
+                    child: Icon(Icons.shuffle, color: Colors.white70),
+                  ),
                 ),
                 selected: _colorMode == FocusColorMode.random,
                 tooltip: l10n.hintFocusScreenColorRandom,
@@ -525,12 +560,15 @@ class _FocusScreenState extends State<FocusScreen> {
                     duration: const Duration(seconds: 2),
                     curve: Curves.easeInOut,
                     transform: Matrix4.translationValues(
-                        0, _pixelShiftOffsetY, 0),
+                      0,
+                      _pixelShiftOffsetY,
+                      0,
+                    ),
                     child: GestureDetector(
-                        onLongPress: optionalPart != OptionalPart.none
-                            ? _toggleOptionalPart
-                            : null,
-                        child: _buildValueDisplay(isLandscape)
+                      onLongPress: optionalPart != OptionalPart.none
+                          ? _toggleOptionalPart
+                          : null,
+                      child: _buildValueDisplay(isLandscape),
                     ),
                   ),
                 ),
@@ -542,9 +580,17 @@ class _FocusScreenState extends State<FocusScreen> {
                     duration: _controlsHideDuration,
                     child: isLandscape
                         ? _buildLandscapeControls(
-                        l10n, hasLine2, optionalPart, mediaPadding)
+                            l10n,
+                            hasLine2,
+                            optionalPart,
+                            mediaPadding,
+                          )
                         : _buildPortraitControls(
-                        l10n, hasLine2, optionalPart, mediaPadding),
+                            l10n,
+                            hasLine2,
+                            optionalPart,
+                            mediaPadding,
+                          ),
                   ),
                 ),
               ],
@@ -555,8 +601,12 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  Widget _buildPortraitControls(AppLocalizations l10n,
-      bool hasLine2, OptionalPart? optionalPart, EdgeInsets mediaPadding) {
+  Widget _buildPortraitControls(
+    AppLocalizations l10n,
+    bool hasLine2,
+    OptionalPart? optionalPart,
+    EdgeInsets mediaPadding,
+  ) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -582,28 +632,30 @@ class _FocusScreenState extends State<FocusScreen> {
             child: Center(child: _palettePanel(l10n)),
           ),
         // Brightness slider – bottom, above hint:
-        if (_showBrightnessSlider) Positioned(
-          left: 32,
-          right: 32,
-          bottom: mediaPadding.bottom + 44,  // above hint text
-          child: _brightnessSliderHorizontal(),
-        ),
+        if (_showBrightnessSlider)
+          Positioned(
+            left: 32,
+            right: 32,
+            bottom: mediaPadding.bottom + 44, // above hint text
+            child: _brightnessSliderHorizontal(),
+          ),
         // Exit hint – bottom center:
         Positioned(
           left: 0,
           right: 0,
           bottom: mediaPadding.bottom + 12,
-          child: _exitHint(
-              optionalPart: optionalPart,
-              l10n: l10n
-          ),
+          child: _exitHint(optionalPart: optionalPart, l10n: l10n),
         ),
       ],
     );
   }
 
-  Widget _buildLandscapeControls(AppLocalizations l10n,
-      bool hasLine2, OptionalPart? optionalPart, EdgeInsets mediaPadding) {
+  Widget _buildLandscapeControls(
+    AppLocalizations l10n,
+    bool hasLine2,
+    OptionalPart? optionalPart,
+    EdgeInsets mediaPadding,
+  ) {
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -619,7 +671,7 @@ class _FocusScreenState extends State<FocusScreen> {
               if (hasLine2) _detailsToggle(l10n),
               _pixelShiftToggle(l10n),
               _paletteButton(l10n),
-            ]
+            ],
           ),
         ),
         if (_paletteOpen)
@@ -633,21 +685,19 @@ class _FocusScreenState extends State<FocusScreen> {
             ),
           ),
         // Brightness slider – right side, vertically centered:
-        if (_showBrightnessSlider) Positioned(
-          right: mediaPadding.right + 8,
-          top: 8,
-          bottom: 40,  // above hint
-          child: _brightnessSliderVertical(),
-        ),
+        if (_showBrightnessSlider)
+          Positioned(
+            right: mediaPadding.right + 8,
+            top: 8,
+            bottom: 40, // above hint
+            child: _brightnessSliderVertical(),
+          ),
         // Exit hint – bottom center:
         Positioned(
           left: 0,
           right: 0,
           bottom: mediaPadding.bottom + 12,
-          child: _exitHint(
-              optionalPart: optionalPart,
-              l10n: l10n
-          ),
+          child: _exitHint(optionalPart: optionalPart, l10n: l10n),
         ),
       ],
     );
@@ -709,10 +759,12 @@ class _FocusScreenState extends State<FocusScreen> {
         ),
         Expanded(
           child: RotatedBox(
-            quarterTurns: 3,  // bottom=dark, top=bright
+            quarterTurns: 3, // bottom=dark, top=bright
             child: Slider(
               value: _brightness!,
-              min: 0.01, max: 1.0, divisions: 20,
+              min: 0.01,
+              max: 1.0,
+              divisions: 20,
               activeColor: _textColor,
               inactiveColor: Colors.white24,
               onChanged: (v) {
@@ -730,15 +782,20 @@ class _FocusScreenState extends State<FocusScreen> {
     );
   }
 
-  Widget _exitHint({required OptionalPart? optionalPart, required AppLocalizations l10n}) {
+  Widget _exitHint({
+    required OptionalPart? optionalPart,
+    required AppLocalizations l10n,
+  }) {
     final exit = l10n.hintFocusScreenExit;
     final toggleHint = switch (optionalPart) {
-      OptionalPart.decimals => _showOptionalPart
-          ? l10n.hintFocusScreenToggleDecimalsOff
-          : l10n.hintFocusScreenToggleDecimalsOn,
-      OptionalPart.seconds => _showOptionalPart
-          ? l10n.hintFocusScreenToggleSecondsOff
-          : l10n.hintFocusScreenToggleSecondsOn,
+      OptionalPart.decimals =>
+        _showOptionalPart
+            ? l10n.hintFocusScreenToggleDecimalsOff
+            : l10n.hintFocusScreenToggleDecimalsOn,
+      OptionalPart.seconds =>
+        _showOptionalPart
+            ? l10n.hintFocusScreenToggleSecondsOff
+            : l10n.hintFocusScreenToggleSecondsOn,
       _ => null,
     };
     return Text(
@@ -786,7 +843,9 @@ class _FocusScreenState extends State<FocusScreen> {
     if (widget.timeValue.valueType.isGraphical) {
       final localIanaZone = EpochApp.of(context).localIanaZone;
       final wallClock = ZonedMoment.of(
-          widget.timeValue, _now.toUtc(), localIanaZone
+        widget.timeValue,
+        _now.toUtc(),
+        localIanaZone,
       ).wallClock;
       final l10n = AppLocalizations.of(context)!;
 
@@ -800,16 +859,18 @@ class _FocusScreenState extends State<FocusScreen> {
         focusSize: true,
       );
       return Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: hPadding, vertical: vPadding),
-        child: FittedBox(fit: BoxFit.contain, key: _valueDisplayKey, child: clock),
+        padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          key: _valueDisplayKey,
+          child: clock,
+        ),
       );
     }
 
     final display = _display(withDetails: true);
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: hPadding, vertical: vPadding),
+      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       child: FittedBox(
         fit: BoxFit.contain,
         key: _valueDisplayKey,
@@ -850,14 +911,13 @@ class _FocusScreenState extends State<FocusScreen> {
     return Positioned(
       left: 8,
       top: 100,
-      child:
-        Text(
-          'idx ${_pixelShiftIndex}/${_pixelShiftLevels.length - 1}  |  '
-          'off ${_pixelShiftOffsetY.toStringAsFixed(1)}  |  '
-          'dir ${_pixelShiftDirection > 0 ? "↓" : "↑"}   |  '
-           'h ${_measuredContentHeight?.toStringAsFixed(0) ?? "?"}',
-          style: const TextStyle(color: Colors.yellow, fontSize: 16),
-        ),
+      child: Text(
+        'idx ${_pixelShiftIndex}/${_pixelShiftLevels.length - 1}  |  '
+        'off ${_pixelShiftOffsetY.toStringAsFixed(1)}  |  '
+        'dir ${_pixelShiftDirection > 0 ? "↓" : "↑"}   |  '
+        'h ${_measuredContentHeight?.toStringAsFixed(0) ?? "?"}',
+        style: const TextStyle(color: Colors.yellow, fontSize: 16),
+      ),
     );
   }
 }

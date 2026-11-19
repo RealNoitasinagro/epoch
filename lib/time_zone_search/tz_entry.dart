@@ -27,13 +27,18 @@ import 'normalize.dart';
 typedef TzMatch = ({String rule, String source, String term});
 
 extension TzMatchRank on TzMatch {
-  int get rank => rule == TzRule.zoneId ? 0 : switch (source) {
-    TzSource.cldrExemplarCities || TzSource.ianaLinks => 1,
-    TzSource.wikidataCapitals || TzSource.majorCities => 2,
-    TzSource.iso3166NamesEn || TzSource.cldrCountryNamesEn || TzSource.cldrCountryNamesDe ||
-    TzSource.countryAliasesEn || TzSource.countryAliasesDe => 3,
-    _ => 4,
-  };
+  int get rank => rule == TzRule.zoneId
+      ? 0
+      : switch (source) {
+          TzSource.cldrExemplarCities || TzSource.ianaLinks => 1,
+          TzSource.wikidataCapitals || TzSource.majorCities => 2,
+          TzSource.iso3166NamesEn ||
+          TzSource.cldrCountryNamesEn ||
+          TzSource.cldrCountryNamesDe ||
+          TzSource.countryAliasesEn ||
+          TzSource.countryAliasesDe => 3,
+          _ => 4,
+        };
 }
 
 /// A searchable term and the source that produced it.
@@ -44,7 +49,9 @@ typedef NormalizedCandidate = ({String source, String term, String normalized});
 final Map<String, Set<String>> _legacyAbbreviationsByCanonical = () {
   final result = <String, Set<String>>{};
   legacyAbbreviationsByZone.forEach((zoneId, abbrs) {
-    result.putIfAbsent(ianaLinksSnapshot[zoneId] ?? zoneId, () => {}).addAll(abbrs);
+    result
+        .putIfAbsent(ianaLinksSnapshot[zoneId] ?? zoneId, () => {})
+        .addAll(abbrs);
   });
   return result;
 }();
@@ -71,7 +78,7 @@ class _DailyData {
   final String day; // UTC, yyyy-MM-dd
   final List<NormalizedCandidate> candidates;
   final Set<String> abbreviationAliases;
-  final String normalizedZoneId;  // "etc/gmt 5" for Etc/GMT-5
+  final String normalizedZoneId; // "etc/gmt 5" for Etc/GMT-5
 }
 
 final Expando<_DailyData> _dailyDataByEntry = Expando();
@@ -86,7 +93,9 @@ class TzEntry {
 
   ZoneRules get rules =>
       zoneRulesAt(ianaZoneId, DateTime.now().toUtc()) ??
-          (throw StateError('No zone data for $ianaZoneId -- initializeTimeZones() first'));
+      (throw StateError(
+        'No zone data for $ianaZoneId -- initializeTimeZones() first',
+      ));
 
   bool get hasDst => rules.hasDst;
   String get offsetWinter => formatUtcOffset(rules.standardOffset);
@@ -97,7 +106,8 @@ class TzEntry {
   String get offsetLabel {
     if (!hasDst) return '$abbrWinter  UTC$offsetWinter';
     final offsets = offsetWinter == offsetSummer
-        ? 'UTC$offsetWinter' : 'UTC$offsetWinter/UTC$offsetSummer';
+        ? 'UTC$offsetWinter'
+        : 'UTC$offsetWinter/UTC$offsetSummer';
     return '$abbrWinter/$abbrSummer  $offsets';
   }
 
@@ -109,12 +119,15 @@ class TzEntry {
   /// The zone's own CLDR city, never one found via a link (otherwise Berlin
   /// would be titled "Copenhagen").
   String displayCity(String locale) =>
-      (locale.startsWith('de') ? cldrCityNamesDe : cldrCityNamesEn)[ianaZoneId] ??
-          cityName;
+      (locale.startsWith('de')
+          ? cldrCityNamesDe
+          : cldrCityNamesEn)[ianaZoneId] ??
+      cityName;
 
   String? displayCountry(String locale) {
     if (_countryCodes.isEmpty) return null;
-    final code = _countryCodes.first; // zone1970.tab: the location's own country first
+    final code =
+        _countryCodes.first; // zone1970.tab: the location's own country first
     return locale.startsWith('de')
         ? cldrCountryNamesDe[code]
         : (cldrCountryNamesEn[code] ?? countryNamesEn[code]);
@@ -133,8 +146,11 @@ class TzEntry {
     if (_countryCodes.isEmpty) return const [];
     final code = _countryCodes.first;
     return [
-      ?countryNamesEn[code], ?cldrCountryNamesEn[code], ?cldrCountryNamesDe[code],
-      ...?countryNameAliasesEn[code], ...?countryNameAliasesDe[code],
+      ?countryNamesEn[code],
+      ?cldrCountryNamesEn[code],
+      ?cldrCountryNamesDe[code],
+      ...?countryNameAliasesEn[code],
+      ...?countryNameAliasesDe[code],
     ];
   }
 
@@ -150,7 +166,8 @@ class TzEntry {
   /// [normalizedQuery] saves normalizing the same query once per zone.
   TzMatch? match(String query, {String? normalizedQuery}) {
     final queryOrig = query.trim();
-    if (queryOrig.isEmpty) return (rule: TzRule.empty, source: TzSource.none, term: '');
+    if (queryOrig.isEmpty)
+      return (rule: TzRule.empty, source: TzSource.none, term: '');
     final queryPlain = queryOrig.toLowerCase();
     final queryNorm = normalizedQuery ?? normalize(queryOrig);
 
@@ -158,10 +175,15 @@ class TzEntry {
     final zoneRules = rules;
     final winterOffset = formatUtcOffset(zoneRules.standardOffset);
     final summerOffset = formatUtcOffset(zoneRules.dstOffset);
-    if (winterOffset.contains(queryPlain) || summerOffset.contains(queryPlain) ||
+    if (winterOffset.contains(queryPlain) ||
+        summerOffset.contains(queryPlain) ||
         winterOffset.replaceAll(':', '').contains(queryPlain) ||
         summerOffset.replaceAll(':', '').contains(queryPlain)) {
-      return (rule: TzRule.offset, source: TzSource.none, term: '$winterOffset/$summerOffset');
+      return (
+        rule: TzRule.offset,
+        source: TzSource.none,
+        term: '$winterOffset/$summerOffset',
+      );
     }
     if (zoneRules.standardAbbr == queryOrig || zoneRules.dstAbbr == queryOrig) {
       return (
@@ -207,19 +229,35 @@ class TzEntry {
     return [
       for (final t in linkCityNames) (source: TzSource.ianaLinks, term: t),
       for (final id in _linkIds) (source: TzSource.ianaLinks, term: id),
-      for (final t in _countryNamesIsoEn) (source: TzSource.iso3166NamesEn, term: t),
-      for (final t in _countryNamesCldrEn) (source: TzSource.cldrCountryNamesEn, term: t),
-      for (final t in _countryNamesCldrDe) (source: TzSource.cldrCountryNamesDe, term: t),
-      for (final t in _countryAliasesEn) (source: TzSource.countryAliasesEn, term: t),
-      for (final t in _countryAliasesDe) (source: TzSource.countryAliasesDe, term: t),
-      for (final t in _timeSuffixTerms) (source: TzSource.timeSuffixRule, term: t),
-      for (final t in _windowsNames) (source: TzSource.cldrWindowsZoneNames, term: t),
-      for (final t in _zoneSpecificTerms) (source: TzSource.cldrZoneLongNames, term: t),
-      for (final t in _exemplarCityNames) (source: TzSource.cldrExemplarCities, term: t),
-      for (final t in _capitalNames) (source: TzSource.wikidataCapitals, term: t),
+      for (final t in _countryNamesIsoEn)
+        (source: TzSource.iso3166NamesEn, term: t),
+      for (final t in _countryNamesCldrEn)
+        (source: TzSource.cldrCountryNamesEn, term: t),
+      for (final t in _countryNamesCldrDe)
+        (source: TzSource.cldrCountryNamesDe, term: t),
+      for (final t in _countryAliasesEn)
+        (source: TzSource.countryAliasesEn, term: t),
+      for (final t in _countryAliasesDe)
+        (source: TzSource.countryAliasesDe, term: t),
+      for (final t in _timeSuffixTerms)
+        (source: TzSource.timeSuffixRule, term: t),
+      for (final t in _windowsNames)
+        (source: TzSource.cldrWindowsZoneNames, term: t),
+      for (final t in _zoneSpecificTerms)
+        (source: TzSource.cldrZoneLongNames, term: t),
+      for (final t in _exemplarCityNames)
+        (source: TzSource.cldrExemplarCities, term: t),
+      for (final t in _capitalNames)
+        (source: TzSource.wikidataCapitals, term: t),
       for (final t in _megacityNames) (source: TzSource.majorCities, term: t),
-      ..._tagged(TzSource.cldrMetazoneNames, metazoneIds.expand(_generatedBaseTermsFor)),
-      ..._tagged(TzSource.metazoneAliases, metazoneIds.expand(_aliasBaseTermsFor)),
+      ..._tagged(
+        TzSource.cldrMetazoneNames,
+        metazoneIds.expand(_generatedBaseTermsFor),
+      ),
+      ..._tagged(
+        TzSource.metazoneAliases,
+        metazoneIds.expand(_aliasBaseTermsFor),
+      ),
       ..._tagged(TzSource.terms, terms),
     ];
   }
@@ -298,23 +336,29 @@ class TzEntry {
       _countryCodes.expand((code) => [?cldrCountryNamesEn[code]]);
   Iterable<String> get _countryNamesCldrDe =>
       _countryCodes.expand((code) => [?cldrCountryNamesDe[code]]);
-  Iterable<String> get _countryAliasesEn => _countryCodes
-      .expand((code) => countryNameAliasesEn[code] ?? const <String>[]);
-  Iterable<String> get _countryAliasesDe => _countryCodes
-      .expand((code) => countryNameAliasesDe[code] ?? const <String>[]);
+  Iterable<String> get _countryAliasesEn => _countryCodes.expand(
+    (code) => countryNameAliasesEn[code] ?? const <String>[],
+  );
+  Iterable<String> get _countryAliasesDe => _countryCodes.expand(
+    (code) => countryNameAliasesDe[code] ?? const <String>[],
+  );
 
   // Language-separated, aliases included: input for the time-suffix rule.
-  Iterable<String> get _countryNamesEn =>
-      [..._countryNamesIsoEn, ..._countryNamesCldrEn, ..._countryAliasesEn];
-  Iterable<String> get _countryNamesDe =>
-      [..._countryNamesCldrDe, ..._countryAliasesDe];
+  Iterable<String> get _countryNamesEn => [
+    ..._countryNamesIsoEn,
+    ..._countryNamesCldrEn,
+    ..._countryAliasesEn,
+  ];
+  Iterable<String> get _countryNamesDe => [
+    ..._countryNamesCldrDe,
+    ..._countryAliasesDe,
+  ];
 
   /// Capital cities (EN + DE) of the countries assigned to this zone; there
   /// can be several (e.g. Zurich: CH, DE, LI).
-  Iterable<String> get _capitalNames => _countryCodes.expand((code) => [
-    ...?wikidataCapitalsEn[code],
-    ...?wikidataCapitalsDe[code],
-  ]);
+  Iterable<String> get _capitalNames => _countryCodes.expand(
+    (code) => [...?wikidataCapitalsEn[code], ...?wikidataCapitalsDe[code]],
+  );
 
   // ── Term sources: cities ──────────────────────────────────────────────────
 
@@ -329,8 +373,10 @@ class TzEntry {
   String? get _exemplarCityDe => _resolveViaLinks(cldrCityNamesDe);
 
   /// CLDR exemplar city for this zone (EN + DE), where available.
-  Iterable<String> get _exemplarCityNames =>
-      [?_exemplarCityEn, ?_exemplarCityDe];
+  Iterable<String> get _exemplarCityNames => [
+    ?_exemplarCityEn,
+    ?_exemplarCityDe,
+  ];
 
   // ── Term sources: zone and metazone names ─────────────────────────────────
 
@@ -342,7 +388,10 @@ class TzEntry {
     final en = _resolveViaLinks(cldrZoneLongNamesEn);
     final de = _resolveViaLinks(cldrZoneLongNamesDe);
     return [
-      en?.generic, en?.standard, de?.generic, de?.standard,
+      en?.generic,
+      en?.standard,
+      de?.generic,
+      de?.standard,
       if (hasDst) ...[en?.daylight, de?.daylight],
     ].whereType<String>().expand(expandTimeZoneNameVariants);
   }
@@ -351,7 +400,10 @@ class TzEntry {
     final en = cldrMetazoneNamesEn[metazoneId];
     final de = cldrMetazoneNamesDe[metazoneId];
     return [
-      en?.generic, en?.standard, de?.generic, de?.standard,
+      en?.generic,
+      en?.standard,
+      de?.generic,
+      de?.standard,
       if (hasDst) ...[en?.daylight, de?.daylight],
     ].whereType<String>();
   }
@@ -360,15 +412,21 @@ class TzEntry {
     final en = metazoneNameAliasesEn[metazoneId];
     final de = metazoneNameAliasesDe[metazoneId];
     return [
-      ...?en?.generic, ...?en?.standard, ...?de?.generic, ...?de?.standard,
+      ...?en?.generic,
+      ...?en?.standard,
+      ...?de?.generic,
+      ...?de?.standard,
       if (hasDst) ...[...?en?.daylight, ...?de?.daylight],
     ];
   }
 
   Iterable<String> _shortNames(String metazoneId) {
     final short = cldrMetazoneShortNames[metazoneId];
-    return [short?.generic, short?.standard, if (hasDst) short?.daylight]
-        .whereType<String>();
+    return [
+      short?.generic,
+      short?.standard,
+      if (hasDst) short?.daylight,
+    ].whereType<String>();
   }
 
   // ── Term sources: rule-based ──────────────────────────────────────────────
@@ -381,9 +439,15 @@ class TzEntry {
     };
     final germanNames = _countryNamesDe.map(stripParenthetical).toSet();
     return [
-      for (final n in englishNames) ...['$n Time', if (hasDst) '$n Daylight Time'],
-      for (final n in germanNames)
-        ...['$n-Zeit', '$n-Normalzeit', if (hasDst) '$n-Sommerzeit'],
+      for (final n in englishNames) ...[
+        '$n Time',
+        if (hasDst) '$n Daylight Time',
+      ],
+      for (final n in germanNames) ...[
+        '$n-Zeit',
+        '$n-Normalzeit',
+        if (hasDst) '$n-Sommerzeit',
+      ],
     ].expand(expandTimeZoneNameVariants);
   }
 
@@ -392,6 +456,9 @@ class TzEntry {
   Iterable<TzCandidate> _tagged(String source, Iterable<String> bases) => [
     for (final base in bases)
       for (final variant in expandTimeZoneNameVariants(base))
-        (source: variant == base ? source : '$source${TzSource.variantSuffix}', term: variant),
+        (
+          source: variant == base ? source : '$source${TzSource.variantSuffix}',
+          term: variant,
+        ),
   ];
 }

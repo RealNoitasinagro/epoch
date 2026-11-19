@@ -16,8 +16,9 @@ final _defaultExportFilename = const ['epoch_settings', _extJson].join('.');
 const _kLastExportDirKey = 'last_export_dir';
 
 Future<bool> exportSettings(
-    BuildContext context,
-    {bool doBackup = false}) async {
+  BuildContext context, {
+  bool doBackup = false,
+}) async {
   final l10n = AppLocalizations.of(context)!;
   final json = await _exportSettingsJson();
   final bytes = Uint8List.fromList(utf8.encode(json));
@@ -29,13 +30,17 @@ Future<bool> exportSettings(
       ? _getBackupFilename()
       : _defaultExportFilename;
 
-  String? path = await _openSaveDialog(  // triggers download on web
-      l10n, bytes, dialogTitle, exportFilename
+  String? path = await _openSaveDialog(
+    // triggers download on web
+    l10n,
+    bytes,
+    dialogTitle,
+    exportFilename,
   );
 
   if (!context.mounted) return false;
-  if (kIsWeb) return true;  // no SnackBar on web – timing unreliable
-  if (path == null) return false;  // Android, Linux: user cancelled
+  if (kIsWeb) return true; // no SnackBar on web – timing unreliable
+  if (path == null) return false; // Android, Linux: user cancelled
 
   if (Platform.isLinux) {
     await File(path).writeAsString(json);
@@ -69,7 +74,8 @@ Future<void> importSettings(BuildContext context) async {
   } else if (file.path != null) {
     json = await File(file.path!).readAsString();
     await _saveLastExportDirectory(File(file.path!).parent.path);
-  } else return;
+  } else
+    return;
 
   try {
     await importSettingsJson(json);
@@ -77,7 +83,6 @@ Future<void> importSettings(BuildContext context) async {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('last_imported_config', file.name);
     }
-
   } on FormatException {
     if (!context.mounted) return;
     _showSnackBar(context, l10n.messageSettingsImportFailed);
@@ -85,8 +90,8 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
-  EffectiveClock.reset();  // an import starts from a clean slate ...
-  await applyTimeShiftStart();  // ... except for a start value the file brings along
+  EffectiveClock.reset(); // an import starts from a clean slate ...
+  await applyTimeShiftStart(); // ... except for a start value the file brings along
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
@@ -98,12 +103,12 @@ Future<void> resetSettings(BuildContext context) async {
 
   // backup first
   final backupSaved = await exportSettings(context, doBackup: true);
-  if (!backupSaved) return;  // User cancelled backup → abort reset
+  if (!backupSaved) return; // User cancelled backup → abort reset
 
   // reset
   final prefs = await SharedPreferences.getInstance();
   await prefs.clear();
-  EffectiveClock.reset();  // reset includes Time Shift
+  EffectiveClock.reset(); // reset includes Time Shift
 
   // reload
   if (!context.mounted) return;
@@ -129,7 +134,7 @@ Future<void> importSettingsJson(String json) async {
 
   try {
     await _writeMapToPrefs(prefs, map);
-    await runPrefsMigrations();  // handle configs exported before 1.5.0
+    await runPrefsMigrations(); // handle configs exported before 1.5.0
   } catch (e) {
     await prefs.clear();
     await _writeMapToPrefs(prefs, backup);
@@ -151,8 +156,11 @@ String _getBackupFilename() {
 }
 
 Future<String?> _openSaveDialog(
-    AppLocalizations l10n, Uint8List bytes, String dialogTitle, String fileName
-    ) async {
+  AppLocalizations l10n,
+  Uint8List bytes,
+  String dialogTitle,
+  String fileName,
+) async {
   String? path = await FilePicker.saveFile(
     dialogTitle: dialogTitle,
     fileName: fileName,
@@ -176,13 +184,19 @@ Future<String> _exportSettingsJson() async {
 }
 
 Future<void> _writeMapToPrefs(
-    SharedPreferences prefs, Map<String, dynamic> map) async {
+  SharedPreferences prefs,
+  Map<String, dynamic> map,
+) async {
   for (final entry in map.entries) {
     final v = entry.value;
-    if (v is bool)        await prefs.setBool(entry.key, v);
-    else if (v is int)    await prefs.setInt(entry.key, v);
-    else if (v is double) await prefs.setDouble(entry.key, v);
-    else if (v is String) await prefs.setString(entry.key, v);
+    if (v is bool)
+      await prefs.setBool(entry.key, v);
+    else if (v is int)
+      await prefs.setInt(entry.key, v);
+    else if (v is double)
+      await prefs.setDouble(entry.key, v);
+    else if (v is String)
+      await prefs.setString(entry.key, v);
     else if (v is List && v.every((entry) => entry is String)) {
       await prefs.setStringList(entry.key, v.cast<String>());
     }
@@ -203,8 +217,7 @@ Future<String?> _loadLastExportDirectory() async {
 }
 
 void _showSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    behavior: SnackBarBehavior.floating,
-  ));
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+  );
 }

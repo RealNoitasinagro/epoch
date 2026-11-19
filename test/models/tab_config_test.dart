@@ -33,11 +33,7 @@ void main() {
     });
 
     test('roundtrip for a custom (Watchlist) tab', () {
-      final tab = TabConfig(
-        id: '456',
-        customName: 'My Tab',
-        entries: [],
-      );
+      final tab = TabConfig(id: '456', customName: 'My Tab', entries: []);
       final s = tab.toPrefsString();
       final tab2 = TabConfig.fromPrefsString(s);
       expect(tab2!.builtinKind, isNull);
@@ -54,15 +50,18 @@ void main() {
     final l10nEn = lookupAppLocalizations(const Locale('en'));
     final l10nDe = lookupAppLocalizations(const Locale('de'));
 
-    test('builtin tab uses the localized name, ignoring any stored customName', () {
-      final tab = TabConfig(
-        id: '1',
-        builtinKind: BuiltinTabKind.technical,
-        entries: [],
-      );
-      expect(tab.displayName(l10nEn), equals(l10nEn.tabTechnical));
-      expect(tab.displayName(l10nDe), equals(l10nDe.tabTechnical));
-    });
+    test(
+      'builtin tab uses the localized name, ignoring any stored customName',
+      () {
+        final tab = TabConfig(
+          id: '1',
+          builtinKind: BuiltinTabKind.technical,
+          entries: [],
+        );
+        expect(tab.displayName(l10nEn), equals(l10nEn.tabTechnical));
+        expect(tab.displayName(l10nDe), equals(l10nDe.tabTechnical));
+      },
+    );
 
     test('custom tab uses the stored customName, independent of locale', () {
       final tab = TabConfig(id: '2', customName: 'My Tab', entries: []);
@@ -73,7 +72,12 @@ void main() {
 
   group('TabConfig.copyWith', () {
     test('changes only the requested fields', () {
-      final tab = TabConfig(id: '1', customName: 'A', isVisible: true, entries: []);
+      final tab = TabConfig(
+        id: '1',
+        customName: 'A',
+        isVisible: true,
+        entries: [],
+      );
       final updated = tab.copyWith(isVisible: false);
       expect(updated.id, equals('1'));
       expect(updated.customName, equals('A'));

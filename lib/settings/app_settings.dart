@@ -46,28 +46,28 @@ const kDefaultThousandsSep = true;
 const kDefaultZoneDisplayMode = ZoneDisplayMode.full;
 final kDefaultFocusPixelShift = !kIsWeb && Platform.isAndroid;
 
-const kDatePatternIso      = 'EEE, YYYY-MM-DD';  // Tue, 2026-07-29
-const kDatePatternDe       = 'EEE, DD.MM.YYYY';  // Di., 29.07.2026
-const kDatePatternUk       = 'EEE, DD/MM/YYYY';  // Tue, 29/07/2026
-const kDatePatternUs       = 'EEE, MM/DD/YYYY';  // Tue, 07/29/2026
-const kDatePatternIsoTight = 'YYYY-MM-DD';       // 2026-07-29
-const kDatePatternCompact  = 'YYYYMMDD';         // 20260729
+const kDatePatternIso = 'EEE, YYYY-MM-DD'; // Tue, 2026-07-29
+const kDatePatternDe = 'EEE, DD.MM.YYYY'; // Di., 29.07.2026
+const kDatePatternUk = 'EEE, DD/MM/YYYY'; // Tue, 29/07/2026
+const kDatePatternUs = 'EEE, MM/DD/YYYY'; // Tue, 07/29/2026
+const kDatePatternIsoTight = 'YYYY-MM-DD'; // 2026-07-29
+const kDatePatternCompact = 'YYYYMMDD'; // 20260729
 
-const kTimePatternFull          = 'HH:mm:ss';    // 14:05:09
-const kTimePatternNoSeconds     = 'HH:mm';       // 14:05
-const kTimePatternNoLeadingZero = 'H:mm:ss';     // 9:05:09 -> 14:05:09
-const kTimePatternCompact       = 'HHmm';        // 1405
+const kTimePatternFull = 'HH:mm:ss'; // 14:05:09
+const kTimePatternNoSeconds = 'HH:mm'; // 14:05
+const kTimePatternNoLeadingZero = 'H:mm:ss'; // 9:05:09 -> 14:05:09
+const kTimePatternCompact = 'HHmm'; // 1405
 
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
 
 enum ZoneDisplayMode {
-  full,              // CEST (UTC+02:00)  – default
-  abbreviation,      // CEST
-  offsetLong,        // UTC+02:00
-  offsetShort,       // +02:00
-  offsetMini,        // +2
-  hidden,            // (empty)
+  full, // CEST (UTC+02:00)  – default
+  abbreviation, // CEST
+  offsetLong, // UTC+02:00
+  offsetShort, // +02:00
+  offsetMini, // +2
+  hidden, // (empty)
 }
 
 enum LmstMode { off, manual, locationAccess }
@@ -75,7 +75,6 @@ enum LmstMode { off, manual, locationAccess }
 /// How the Focus screen gets its color: a fixed one, one that follows the
 /// quarter of the day, or a random one at every start.
 enum FocusColorMode { fixed, dayQuarter, random }
-
 
 Future<Locale?> loadLocale() async {
   final prefs = await SharedPreferences.getInstance();
@@ -99,18 +98,18 @@ Future<AppThemeMode> loadThemeMode() async {
   final value = prefs.tolerantString(_kThemeModeKey);
   return switch (value) {
     'light' => AppThemeMode.light,
-    'dark'  => AppThemeMode.dark,
+    'dark' => AppThemeMode.dark,
     'night' => AppThemeMode.night,
-    _       => kDefaultThemeMode,
+    _ => kDefaultThemeMode,
   };
 }
 
 Future<void> saveThemeMode(AppThemeMode mode) async {
   final prefs = await SharedPreferences.getInstance();
   final value = switch (mode) {
-    AppThemeMode.light  => 'light',
-    AppThemeMode.dark   => 'dark',
-    AppThemeMode.night  => 'night',
+    AppThemeMode.light => 'light',
+    AppThemeMode.dark => 'dark',
+    AppThemeMode.night => 'night',
     AppThemeMode.system => 'system',
   };
   await prefs.setString(_kThemeModeKey, value);
@@ -124,6 +123,7 @@ Future<NightModeSchedule> loadNightModeSchedule() async {
     final value = prefs.get(key);
     return parseMinuteOfDay(value is String ? value : null);
   }
+
   return NightModeSchedule(
     startMinute: minuteOfDay(_kNightModeStartKey),
     endMinute: minuteOfDay(_kNightModeEndKey),
@@ -193,11 +193,11 @@ Future<ZoneDisplayMode> loadZoneDisplayMode() async {
   final prefs = await SharedPreferences.getInstance();
   return switch (prefs.tolerantString(_kZoneDisplayModeKey)) {
     'abbreviation' => ZoneDisplayMode.abbreviation,
-    'offsetLong'   => ZoneDisplayMode.offsetLong,
-    'offsetShort'  => ZoneDisplayMode.offsetShort,
-    'offsetMini'   => ZoneDisplayMode.offsetMini,
-    'hidden'       => ZoneDisplayMode.hidden,
-    _              => kDefaultZoneDisplayMode,  // full
+    'offsetLong' => ZoneDisplayMode.offsetLong,
+    'offsetShort' => ZoneDisplayMode.offsetShort,
+    'offsetMini' => ZoneDisplayMode.offsetMini,
+    'hidden' => ZoneDisplayMode.hidden,
+    _ => kDefaultZoneDisplayMode, // full
   };
 }
 
@@ -219,9 +219,9 @@ Future<void> saveDayQuarterColor(bool enabled) async {
 Future<LmstMode> loadLmstMode() async {
   final prefs = await SharedPreferences.getInstance();
   LmstMode mode = switch (prefs.tolerantString(_kLmstModeKey)) {
-    'manual'         => LmstMode.manual,
+    'manual' => LmstMode.manual,
     'locationAccess' => LmstMode.locationAccess,
-    _                => kDefaultLmstMode,
+    _ => kDefaultLmstMode,
   };
   // locationAccess has no meaning on desktop platforms (no location API) –
   // silently degrade to manual so the longitude field is at least visible,
@@ -292,9 +292,7 @@ Future<FocusColorMode> loadFocusColorMode(bool isNightMode) async {
   if (isNightMode) return FocusColorMode.fixed;
   final prefs = await SharedPreferences.getInstance();
   final name = prefs.tolerantString(_kFocusColorModeKey);
-  return FocusColorMode.values
-      .where((mode) => mode.name == name)
-      .firstOrNull ??
+  return FocusColorMode.values.where((mode) => mode.name == name).firstOrNull ??
       FocusColorMode.fixed;
 }
 

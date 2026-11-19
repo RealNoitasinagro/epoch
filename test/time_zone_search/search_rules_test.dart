@@ -12,11 +12,18 @@ void main() {
   group('name variants find the zone', () {
     const kathmandu = 'Asia/Kathmandu';
     const nepalVariants = [
-      'Nepalesische Normalzeit', 'Nepalesische Normal-Zeit',
-      'Nepalesische Standardzeit', 'Nepalesische Standard-Zeit',
-      'Nepalesische Zeit', 'Nepal-Normalzeit', 'Nepal-Normal-Zeit',
-      'Nepal Standard Time', 'Nepal-Standardzeit', 'Nepal-Standard-Zeit',
-      'Nepal Time', 'Nepal-Zeit',
+      'Nepalesische Normalzeit',
+      'Nepalesische Normal-Zeit',
+      'Nepalesische Standardzeit',
+      'Nepalesische Standard-Zeit',
+      'Nepalesische Zeit',
+      'Nepal-Normalzeit',
+      'Nepal-Normal-Zeit',
+      'Nepal Standard Time',
+      'Nepal-Standardzeit',
+      'Nepal-Standard-Zeit',
+      'Nepal Time',
+      'Nepal-Zeit',
     ];
     for (final variant in nepalVariants) {
       test('"$variant"', () => expect(findIds(variant), contains(kathmandu)));
@@ -33,7 +40,10 @@ void main() {
       'Saint Petersburg': 'Europe/Moscow',
     };
     cases.forEach((query, zoneId) {
-      test('"$query" finds $zoneId', () => expect(findIds(query), contains(zoneId)));
+      test(
+        '"$query" finds $zoneId',
+        () => expect(findIds(query), contains(zoneId)),
+      );
     });
   });
 
@@ -43,24 +53,36 @@ void main() {
       expect(findIds('ist'), contains('Europe/Istanbul'));
     });
     test('daylight names only for zones that have DST today', () {
-      expect(findIds('Central European Summer Time'), contains('Europe/Berlin'));
-      expect(findIds('Central European Summer Time'), isNot(contains('Africa/Tunis')));
+      expect(
+        findIds('Central European Summer Time'),
+        contains('Europe/Berlin'),
+      );
+      expect(
+        findIds('Central European Summer Time'),
+        isNot(contains('Africa/Tunis')),
+      );
     });
   });
 
   group('IDs with signs and hyphens', () {
-    test('Etc/GMT zones keep IANA sign convention and are found in any case', () {
-      for (final query in ['Etc/GMT-5', 'etc/gmt-5', 'GMT-5', 'gmt-5']) {
-        expect(findIds(query), contains('Etc/GMT-5'), reason: query);
-        expect(findIds(query), isNot(contains('Etc/GMT+5')), reason: query);
-      }
-      for (final query in ['Etc/GMT+5', 'etc/gmt+5', 'GMT+5', 'gmt+5']) {
-        expect(findIds(query), contains('Etc/GMT+5'), reason: query);
-        expect(findIds(query), isNot(contains('Etc/GMT-5')), reason: query);
-      }
-    });
+    test(
+      'Etc/GMT zones keep IANA sign convention and are found in any case',
+      () {
+        for (final query in ['Etc/GMT-5', 'etc/gmt-5', 'GMT-5', 'gmt-5']) {
+          expect(findIds(query), contains('Etc/GMT-5'), reason: query);
+          expect(findIds(query), isNot(contains('Etc/GMT+5')), reason: query);
+        }
+        for (final query in ['Etc/GMT+5', 'etc/gmt+5', 'GMT+5', 'gmt+5']) {
+          expect(findIds(query), contains('Etc/GMT+5'), reason: query);
+          expect(findIds(query), isNot(contains('Etc/GMT-5')), reason: query);
+        }
+      },
+    );
     test('hyphenated IDs are found by their full ID', () {
-      expect(findIds('America/Port-au-Prince'), contains('America/Port-au-Prince'));
+      expect(
+        findIds('America/Port-au-Prince'),
+        contains('America/Port-au-Prince'),
+      );
       expect(findIds('Asia/Ust-Nera'), contains('Asia/Ust-Nera'));
     });
     test('abbreviations still do not match inside IDs', () {

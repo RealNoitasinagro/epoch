@@ -19,7 +19,8 @@ const double _fullCircle = 2 * math.pi;
 
 /// Hour hand: moves continuously, never jumps.
 double analogHourHandAngle(DateTime wallClock, AnalogClockScale scale) {
-  final hoursIntoRevolution = wallClock.hour % scale.hoursPerRevolution +
+  final hoursIntoRevolution =
+      wallClock.hour % scale.hoursPerRevolution +
       wallClock.minute / 60 +
       wallClock.second / 3600;
   return hoursIntoRevolution / scale.hoursPerRevolution * _fullCircle;
@@ -176,14 +177,20 @@ class _AnalogClockPainter extends CustomPainter {
     canvas.translate(size.width / 2, size.height / 2);
 
     canvas.drawCircle(
-        Offset.zero, radius * _rimRadius, _strokePaint(radius * _rimWidth));
+      Offset.zero,
+      radius * _rimRadius,
+      _strokePaint(radius * _rimWidth),
+    );
     _paintMinuteScale(canvas, radius);
     _paintHourTickRing(canvas, radius);
     _paintLabels(canvas, radius);
     _paintPlusTwelve(canvas, radius);
     _paintHands(canvas, radius);
-    canvas.drawCircle(Offset.zero, radius * _centerRingRadius,
-        _strokePaint(radius * _centerRingWidth));
+    canvas.drawCircle(
+      Offset.zero,
+      radius * _centerRingRadius,
+      _strokePaint(radius * _centerRingWidth),
+    );
 
     canvas.restore();
   }
@@ -198,8 +205,14 @@ class _AnalogClockPainter extends CustomPainter {
   static Offset _pointAt(double angle, double distance) =>
       Offset(distance * math.sin(angle), -distance * math.cos(angle));
 
-  void _paintTick(Canvas canvas, double radius, double angle,
-      double outerRadius, double length, Paint paint) {
+  void _paintTick(
+    Canvas canvas,
+    double radius,
+    double angle,
+    double outerRadius,
+    double length,
+    Paint paint,
+  ) {
     canvas.drawLine(
       _pointAt(angle, radius * outerRadius),
       _pointAt(angle, radius * (outerRadius - length)),
@@ -210,13 +223,18 @@ class _AnalogClockPainter extends CustomPainter {
   /// 60 minute ticks, every fifth one longer and thicker. On the 12-hour
   /// dial these are at the same time the hour ticks.
   void _paintMinuteScale(Canvas canvas, double radius) {
-    final minutePaint =
-    _strokePaint(radius * _minuteTickWidth, alpha: _minuteTickAlpha);
+    final minutePaint = _strokePaint(
+      radius * _minuteTickWidth,
+      alpha: _minuteTickAlpha,
+    );
     final fiveMinutePaint = _strokePaint(radius * _fiveMinuteTickWidth);
     for (var minute = 0; minute < 60; minute++) {
       final isFiveMinuteMark = minute % 5 == 0;
       _paintTick(
-        canvas, radius, minute / 60 * _fullCircle, _minuteScaleOuterRadius,
+        canvas,
+        radius,
+        minute / 60 * _fullCircle,
+        _minuteScaleOuterRadius,
         isFiveMinuteMark ? _fiveMinuteTickLength : _minuteTickLength,
         isFiveMinuteMark ? fiveMinutePaint : minutePaint,
       );
@@ -229,8 +247,14 @@ class _AnalogClockPainter extends CustomPainter {
     final paint = _strokePaint(radius * _hourRingTickWidth);
     final markCount = scale.hoursPerRevolution;
     for (var mark = 0; mark < markCount; mark++) {
-      _paintTick(canvas, radius, mark / markCount * _fullCircle, ringRadius,
-          _hourRingTickLength, paint);
+      _paintTick(
+        canvas,
+        radius,
+        mark / markCount * _fullCircle,
+        ringRadius,
+        _hourRingTickLength,
+        paint,
+      );
     }
   }
 
@@ -240,7 +264,9 @@ class _AnalogClockPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout();
     painter.paint(
-        canvas, center - Offset(painter.width / 2, painter.height / 2));
+      canvas,
+      center - Offset(painter.width / 2, painter.height / 2),
+    );
   }
 
   void _paintLabels(Canvas canvas, double radius) {
@@ -257,9 +283,12 @@ class _AnalogClockPainter extends CustomPainter {
           ? index.toString().padLeft(2, '0')
           : (index == 0 ? 12 : index).toString();
       _paintText(
-        canvas, text,
-        _pointAt(index / labelCount * _fullCircle,
-            radius * _layout.labelRadius),
+        canvas,
+        text,
+        _pointAt(
+          index / labelCount * _fullCircle,
+          radius * _layout.labelRadius,
+        ),
         style,
       );
     }
@@ -269,7 +298,8 @@ class _AnalogClockPainter extends CustomPainter {
   void _paintPlusTwelve(Canvas canvas, double radius) {
     if (!analogClockShowsPlusTwelve(now.hour, scale)) return;
     _paintText(
-      canvas, '+12',
+      canvas,
+      '+12',
       Offset(0, -radius * _plusTwelveRadius),
       TextStyle(
         color: color.withAlpha(_plusTwelveAlpha),
@@ -282,52 +312,90 @@ class _AnalogClockPainter extends CustomPainter {
 
   void _paintHands(Canvas canvas, double radius) {
     _paintHand(
-      canvas, radius, analogHourHandAngle(now, scale),
+      canvas,
+      radius,
+      analogHourHandAngle(now, scale),
       outline: _handOutline(
-          radius * _layout.hourHandLength, radius * _hourHandWidth),
+        radius * _layout.hourHandLength,
+        radius * _hourHandWidth,
+      ),
       cutout: _handCutout(
-          radius * _layout.hourHandLength, radius * _hourHandWidth),
+        radius * _layout.hourHandLength,
+        radius * _hourHandWidth,
+      ),
     );
     _paintHand(
-      canvas, radius, analogMinuteHandAngle(now),
+      canvas,
+      radius,
+      analogMinuteHandAngle(now),
       outline: _handOutline(
-          radius * _layout.minuteHandLength, radius * _minuteHandWidth),
+        radius * _layout.minuteHandLength,
+        radius * _minuteHandWidth,
+      ),
       cutout: _handCutout(
-          radius * _layout.minuteHandLength, radius * _minuteHandWidth),
+        radius * _layout.minuteHandLength,
+        radius * _minuteHandWidth,
+      ),
     );
     if (showSeconds) {
       final width = radius * _secondHandWidth;
       _paintHand(
-        canvas, radius, analogSecondHandAngle(now),
+        canvas,
+        radius,
+        analogSecondHandAngle(now),
         outline: RRect.fromLTRBR(
-            -width / 2, -radius * _secondHandLength,
-            width / 2, radius * _secondHandTailLength,
-            Radius.circular(width / 2)),
+          -width / 2,
+          -radius * _secondHandLength,
+          width / 2,
+          radius * _secondHandTailLength,
+          Radius.circular(width / 2),
+        ),
       );
     }
   }
 
   /// Hand pointing up from the center, rounded at both ends.
   RRect _handOutline(double length, double width) => RRect.fromLTRBR(
-      -width / 2, -length, width / 2, width / 2, Radius.circular(width / 2));
+    -width / 2,
+    -length,
+    width / 2,
+    width / 2,
+    Radius.circular(width / 2),
+  );
 
   RRect _handCutout(double length, double width) {
     final halfWidth = width * _cutoutWidthFraction / 2;
     return RRect.fromLTRBR(
-        -halfWidth, -length * _cutoutEnd, halfWidth, -length * _cutoutStart,
-        Radius.circular(halfWidth));
+      -halfWidth,
+      -length * _cutoutEnd,
+      halfWidth,
+      -length * _cutoutStart,
+      Radius.circular(halfWidth),
+    );
   }
 
   /// Every hand gets its own layer: the holes (cutout, inside of the center
   /// ring) are erased with BlendMode.clear, which works on every backend and
   /// neither touches the other hands nor the dial.
-  void _paintHand(Canvas canvas, double radius, double angle,
-      {required RRect outline, RRect? cutout}) {
+  void _paintHand(
+    Canvas canvas,
+    double radius,
+    double angle, {
+    required RRect outline,
+    RRect? cutout,
+  }) {
     final clearPaint = Paint()..blendMode = BlendMode.clear;
-    canvas.saveLayer(Rect.fromCircle(center: Offset.zero, radius: radius),
-        Paint());
+    canvas.saveLayer(
+      Rect.fromCircle(center: Offset.zero, radius: radius),
+      Paint(),
+    );
     canvas.rotate(angle);
-    canvas.drawRRect(outline, Paint()..color = color..isAntiAlias = true);
+    canvas.drawRRect(
+      outline,
+      Paint()
+        ..color = color
+        ..isAntiAlias = true,
+    );
     if (cutout != null) canvas.drawRRect(cutout, clearPaint);
     canvas.drawCircle(Offset.zero, radius * _centerRingRadius, clearPaint);
     canvas.restore();

@@ -8,17 +8,15 @@ const bundledLicenses = <({String name, String asset})>[
     name: 'Unicode CLDR (country, city and time zone names)',
     asset: 'assets/licenses/unicode_cldr.txt',
   ),
-  (
-    name: 'JetBrains Mono font',
-    asset: 'assets/licenses/jetbrains_mono.txt',
-  ),
+  (name: 'JetBrains Mono font', asset: 'assets/licenses/jetbrains_mono.txt'),
 ];
 
 void registerBundledLicenses() {
   LicenseRegistry.addLicense(() async* {
     for (final license in bundledLicenses) {
-      yield LicenseEntryWithLineBreaks(
-          [license.name], await rootBundle.loadString(license.asset));
+      yield LicenseEntryWithLineBreaks([
+        license.name,
+      ], await rootBundle.loadString(license.asset));
     }
   });
 }

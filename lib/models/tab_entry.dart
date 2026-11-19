@@ -34,22 +34,24 @@ class TabDivider extends TabEntry {
 }
 
 enum BuiltinSectionKey {
-  local, other,                               // Civil
-  unix, atomic, gps,                          // Technical
-  sidereal, julian,                           // Astronomical
-  alternative, numberSystems, doomsdayClock,  // Curiosities
+  local,
+  other, // Civil
+  unix,
+  atomic,
+  gps, // Technical
+  sidereal,
+  julian, // Astronomical
+  alternative,
+  numberSystems,
+  doomsdayClock, // Curiosities
 }
 
 class TabSection extends TabEntry {
   final String id;
-  final String label;  // ignored when builtinKey != null
+  final String label; // ignored when builtinKey != null
   final BuiltinSectionKey? builtinKey;
 
-  const TabSection({
-    required this.id,
-    required this.label,
-    this.builtinKey,
-  });
+  const TabSection({required this.id, required this.label, this.builtinKey});
 
   @override
   String get key => 'section:$id';
@@ -59,14 +61,14 @@ class TabSection extends TabEntry {
   String localizedLabel(AppLocalizations l10n) {
     if (builtinKey == null) return label;
     return switch (builtinKey!) {
-      BuiltinSectionKey.local         => l10n.sectionLocal,
-      BuiltinSectionKey.other         => l10n.sectionOther,
-      BuiltinSectionKey.unix          => l10n.sectionUnix,
-      BuiltinSectionKey.atomic        => l10n.sectionAtomic,
-      BuiltinSectionKey.gps           => l10n.sectionGps,
-      BuiltinSectionKey.sidereal      => l10n.sectionSidereal,
-      BuiltinSectionKey.julian        => l10n.sectionJulian,
-      BuiltinSectionKey.alternative   => l10n.sectionAlternative,
+      BuiltinSectionKey.local => l10n.sectionLocal,
+      BuiltinSectionKey.other => l10n.sectionOther,
+      BuiltinSectionKey.unix => l10n.sectionUnix,
+      BuiltinSectionKey.atomic => l10n.sectionAtomic,
+      BuiltinSectionKey.gps => l10n.sectionGps,
+      BuiltinSectionKey.sidereal => l10n.sectionSidereal,
+      BuiltinSectionKey.julian => l10n.sectionJulian,
+      BuiltinSectionKey.alternative => l10n.sectionAlternative,
       BuiltinSectionKey.numberSystems => l10n.sectionNumberSystems,
       BuiltinSectionKey.doomsdayClock => l10n.sectionDoomsdayClock,
     };
@@ -89,7 +91,9 @@ class TabSection extends TabEntry {
     final labelPart = rest.substring(colonIdx + 1);
     if (labelPart.startsWith('@')) {
       final keyName = labelPart.substring(1);
-      final key = BuiltinSectionKey.values.where((k) => k.name == keyName).firstOrNull;
+      final key = BuiltinSectionKey.values
+          .where((k) => k.name == keyName)
+          .firstOrNull;
       if (key != null) return TabSection(id: id, label: '', builtinKey: key);
       // Not a recognized builtin key (e.g. a user section that happens to
       // start with '@', or an unknown key from a future app version) –
@@ -105,6 +109,9 @@ class TabSection extends TabEntry {
   static TabSection generateBuiltinSectionId(BuiltinSectionKey key) =>
       TabSection(id: generateId(), label: '', builtinKey: key);
 
-  TabSection withLabel(String newLabel) =>
-      TabSection(id: id, label: newLabel, builtinKey: null);  // editing detaches from builtin
+  TabSection withLabel(String newLabel) => TabSection(
+    id: id,
+    label: newLabel,
+    builtinKey: null,
+  ); // editing detaches from builtin
 }

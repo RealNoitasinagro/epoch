@@ -26,8 +26,10 @@ class TimeGraphicalRow extends TimeValueRow {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);
 
-    final Color? dayQuarterColor = app.dayQuarterColor &&
-        app.themeMode != AppThemeMode.night && !timeValue.isZoneIndependent
+    final Color? dayQuarterColor =
+        app.dayQuarterColor &&
+            app.themeMode != AppThemeMode.night &&
+            !timeValue.isZoneIndependent
         ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
         : null;
 
@@ -37,14 +39,20 @@ class TimeGraphicalRow extends TimeValueRow {
       l10n: l10n,
       showSeconds: settings.showsOptionalPart(timeValue),
       hourFormat24: settings.hourFormat24,
-      segmentColor: graphicalClockColor(app.themeMode, Theme.of(context).brightness),
+      segmentColor: graphicalClockColor(
+        app.themeMode,
+        Theme.of(context).brightness,
+      ),
     );
 
     return ValueTile(
       label: timeValue.localizedDisplayLabel(l10n),
       showZoneIndicator: !timeValue.isZoneIndependent,
       showPinnedIndicator: timeValue.isPinned(now.toUtc(), localIanaZone),
-      dstStatusIndicator: timeValue.getDstStatusIndicator(now.toUtc(), localIanaZone),
+      dstStatusIndicator: timeValue.getDstStatusIndicator(
+        now.toUtc(),
+        localIanaZone,
+      ),
       height: ValueTile.graphicTileHeight,
       content: Tooltip(
         message: l10n.hintFocusScreenOpen,

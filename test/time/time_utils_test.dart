@@ -5,19 +5,18 @@ import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
 
 void main() {
-
   // Civil
 
   group('TimeUtils.dayProgressFixedOffset', () {
     test('midnight, noon and the last second of a normal day', () {
-      expect(
-        TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1)),
-        (elapsedSeconds: 0, dayLengthSeconds: 86400),
-      );
-      expect(
-        TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1, 12)),
-        (elapsedSeconds: 43200, dayLengthSeconds: 86400),
-      );
+      expect(TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1)), (
+        elapsedSeconds: 0,
+        dayLengthSeconds: 86400,
+      ));
+      expect(TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1, 12)), (
+        elapsedSeconds: 43200,
+        dayLengthSeconds: 86400,
+      ));
       expect(
         TimeUtils.dayProgressFixedOffset(DateTime.utc(2026, 1, 1, 23, 59, 59)),
         (elapsedSeconds: 86399, dayLengthSeconds: 86400),
@@ -27,25 +26,42 @@ void main() {
 
   group('values derived from the day progress', () {
     const noonOfNormalDay = (elapsedSeconds: 43200, dayLengthSeconds: 86400);
-    const lastSecondOf25HourDay = (elapsedSeconds: 89999, dayLengthSeconds: 90000);
-    const after24HoursOf25HourDay = (elapsedSeconds: 86400, dayLengthSeconds: 90000);
+    const lastSecondOf25HourDay = (
+      elapsedSeconds: 89999,
+      dayLengthSeconds: 90000,
+    );
+    const after24HoursOf25HourDay = (
+      elapsedSeconds: 86400,
+      dayLengthSeconds: 90000,
+    );
 
     test('day percent relates to the real day length', () {
       expect(TimeUtils.dayPercent(noonOfNormalDay), 50.0);
-      expect(TimeUtils.dayPercent(after24HoursOf25HourDay), closeTo(96.0, 0.0001));
+      expect(
+        TimeUtils.dayPercent(after24HoursOf25HourDay),
+        closeTo(96.0, 0.0001),
+      );
     });
 
     test('day minute', () {
       expect(TimeUtils.dayMinute(noonOfNormalDay), (minutes: 720, seconds: 0));
-      expect(TimeUtils.dayMinute(lastSecondOf25HourDay), (minutes: 1499, seconds: 59));
+      expect(TimeUtils.dayMinute(lastSecondOf25HourDay), (
+        minutes: 1499,
+        seconds: 59,
+      ));
     });
 
     test('decimal time is a share of the real day length', () {
-      expect(TimeUtils.decimalTime(noonOfNormalDay), (hours: 5, minutes: 0, seconds: 0));
-      expect(
-        TimeUtils.decimalTime(lastSecondOf25HourDay),
-        (hours: 9, minutes: 99, seconds: 99),
-      );
+      expect(TimeUtils.decimalTime(noonOfNormalDay), (
+        hours: 5,
+        minutes: 0,
+        seconds: 0,
+      ));
+      expect(TimeUtils.decimalTime(lastSecondOf25HourDay), (
+        hours: 9,
+        minutes: 99,
+        seconds: 99,
+      ));
     });
   });
 
@@ -87,7 +103,6 @@ void main() {
     });
   });
 
-
   // Technical
 
   group('TimeUtils.unixTimestamp', () {
@@ -105,12 +120,18 @@ void main() {
   group('TimeUtils.taiMinusUtcSeconds', () {
     test('10 s when UTC started in 1972', () {
       expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 1, 1)), 10);
-      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 6, 30, 23, 59, 59)), 10);
+      expect(
+        TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 6, 30, 23, 59, 59)),
+        10,
+      );
     });
     test('each inserted leap second adds one', () {
       expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1972, 7, 1)), 11);
       expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(1999, 1, 1)), 32);
-      expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2016, 12, 31, 23, 59, 59)), 36);
+      expect(
+        TimeUtils.taiMinusUtcSeconds(DateTime.utc(2016, 12, 31, 23, 59, 59)),
+        36,
+      );
     });
     test('37 s since 2017-01-01 (all 27 leap seconds counted)', () {
       expect(TimeUtils.taiMinusUtcSeconds(DateTime.utc(2017, 1, 1)), 37);
@@ -137,11 +158,13 @@ void main() {
     test('leap second in 1981 shifts GPS by one', () {
       final before = DateTime.utc(1981, 6, 30, 23, 59, 59);
       final after = DateTime.utc(1981, 7, 1);
-      final elapsedSeconds = after.difference(before).inSeconds;  // 1
-      expect(TimeUtils.gpsTime(after) - TimeUtils.gpsTime(before), elapsedSeconds + 1);
+      final elapsedSeconds = after.difference(before).inSeconds; // 1
+      expect(
+        TimeUtils.gpsTime(after) - TimeUtils.gpsTime(before),
+        elapsedSeconds + 1,
+      );
     });
   });
-
 
   // Astronomical
 
@@ -272,7 +295,6 @@ void main() {
     });
   });
 
-
   // Curiosities
 
   group('TimeUtils.swatchBeats', () {
@@ -292,45 +314,70 @@ void main() {
 
   group('TimeUtils.newEarthTimeDegrees', () {
     test('midnight = 0°', () {
-      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 0, 0, 0)),
-          closeTo(0.0, 0.001));
+      expect(
+        TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 0, 0, 0)),
+        closeTo(0.0, 0.001),
+      );
     });
 
     test('noon = 180°', () {
-      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 12, 0, 0)),
-          closeTo(180.0, 0.001));
+      expect(
+        TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 12, 0, 0)),
+        closeTo(180.0, 0.001),
+      );
     });
 
     test('one second before midnight ≈ 360°', () {
-      final deg = TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 23, 59, 59));
+      final deg = TimeUtils.newEarthTimeDegrees(
+        DateTime.utc(2026, 1, 1, 23, 59, 59),
+      );
       expect(deg, greaterThan(359.9));
       expect(deg, lessThan(360.0));
     });
 
     test('quarter day = 90°', () {
-      expect(TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 6, 0, 0)),
-          closeTo(90.0, 0.001));
+      expect(
+        TimeUtils.newEarthTimeDegrees(DateTime.utc(2026, 1, 1, 6, 0, 0)),
+        closeTo(90.0, 0.001),
+      );
     });
   });
 
   group('TimeUtils.doomsdaySecondsToMidnight', () {
     test('1970 still shows the setting of 1969 (10 minutes)', () {
-      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(1970, 1, 1)), 600);
+      expect(
+        TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(1970, 1, 1)),
+        600,
+      );
     });
     test('a setting applies from 1 January of its year', () {
-      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2016, 12, 31)), 180);
-      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2017, 1, 1)), 150);
-      expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2018, 1, 1)), 120);
+      expect(
+        TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2016, 12, 31)),
+        180,
+      );
+      expect(
+        TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2017, 1, 1)),
+        150,
+      );
+      expect(
+        TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2018, 1, 1)),
+        120,
+      );
     });
     test('the latest setting applies to all later dates', () {
       expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2037, 6, 1)), 85);
     });
     test('second of day for today and for the 1991 maximum', () {
-      expect(TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(2026, 10, 24)), 86315);  // 23:58:35
-      expect(TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(1991, 6, 1)), 85380);    // 23:43:00
+      expect(
+        TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(2026, 10, 24)),
+        86315,
+      ); // 23:58:35
+      expect(
+        TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(1991, 6, 1)),
+        85380,
+      ); // 23:43:00
     });
   });
-
 
   // Other
 
@@ -339,7 +386,9 @@ void main() {
 
     test('Berlin CEST -> CET 2026', () {
       final transition = TimeUtils.nextDstTransition(
-          'Europe/Berlin', DateTime.utc(2026, 9, 30));
+        'Europe/Berlin',
+        DateTime.utc(2026, 9, 30),
+      );
       // Clocks go back: 3:00 CEST (UTC+2) = 1:00 UTC
       expect(transition, equals(DateTime.utc(2026, 10, 25, 1, 0, 0)));
     });
@@ -347,31 +396,39 @@ void main() {
     test('Berlin CET -> CEST 2027', () {
       // After the October 2026 transition, next is spring 2027
       final transition = TimeUtils.nextDstTransition(
-          'Europe/Berlin', DateTime.utc(2026, 10, 26));
+        'Europe/Berlin',
+        DateTime.utc(2026, 10, 26),
+      );
       // Clocks go forward: last Sunday March = 28.03.2027, 2:00 CET (UTC+1) = 1:00 UTC
       expect(transition, equals(DateTime.utc(2027, 3, 28, 1, 0, 0)));
     });
 
     test('no transition for UTC', () {
-      expect(TimeUtils.nextDstTransition('UTC', DateTime.utc(2026, 1, 1)), isNull);
+      expect(
+        TimeUtils.nextDstTransition('UTC', DateTime.utc(2026, 1, 1)),
+        isNull,
+      );
     });
 
     test('no transition for Tokyo', () {
-      expect(TimeUtils.nextDstTransition(
-          'Asia/Tokyo', DateTime.utc(2026, 1, 1)), isNull);
+      expect(
+        TimeUtils.nextDstTransition('Asia/Tokyo', DateTime.utc(2026, 1, 1)),
+        isNull,
+      );
     });
 
     test('no transition found after last entry returns null', () {
       // After 2037 there are no more entries in the timezone package:
-      expect(TimeUtils.nextDstTransition(
-          'Europe/Berlin', DateTime.utc(2038, 1, 1)), isNull);
+      expect(
+        TimeUtils.nextDstTransition('Europe/Berlin', DateTime.utc(2038, 1, 1)),
+        isNull,
+      );
     });
 
     test('transition found when exactly at afterUtc boundary', () {
       // Should return next transition AFTER the given time, not at it:
       final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
-      final result = TimeUtils.nextDstTransition(
-          'Europe/Berlin', transition);
+      final result = TimeUtils.nextDstTransition('Europe/Berlin', transition);
       // Should return 2027 spring transition, not 2026 itself:
       expect(result, isNot(equals(transition)));
       expect(result!.isAfter(transition), isTrue);
@@ -379,7 +436,9 @@ void main() {
 
     test('New York EDT -> EST 2026', () {
       final next = TimeUtils.nextDstTransition(
-          'America/New_York', DateTime.utc(2026, 10, 1));
+        'America/New_York',
+        DateTime.utc(2026, 10, 1),
+      );
       // First Sunday November 2026 = Nov 1, 02:00 EST = 07:00 UTC
       expect(next, equals(DateTime.utc(2026, 11, 1, 6, 0, 0)));
     });
@@ -395,14 +454,20 @@ void main() {
 
     test('Lord Howe transition has 30min offset change', () {
       final next = TimeUtils.nextDstTransition(
-          'Australia/Lord_Howe', DateTime.utc(2026, 3, 1));
+        'Australia/Lord_Howe',
+        DateTime.utc(2026, 3, 1),
+      );
       expect(next, isNotNull);
       // Verify the offset change is indeed 30 minutes:
       final loc = tz.getLocation('Australia/Lord_Howe');
       final before = tz.TZDateTime.from(
-          next!.subtract(const Duration(hours: 1)), loc).timeZone.offset;
+        next!.subtract(const Duration(hours: 1)),
+        loc,
+      ).timeZone.offset;
       final after = tz.TZDateTime.from(
-          next.add(const Duration(hours: 1)), loc).timeZone.offset;
+        next.add(const Duration(hours: 1)),
+        loc,
+      ).timeZone.offset;
       expect((after - before).abs(), equals(Duration(minutes: 30)));
     });
 
@@ -426,9 +491,16 @@ void main() {
     });
 
     test('zones without upcoming changes report none (no 2038 end marker)', () {
-      for (final zone in ['Asia/Kathmandu', 'Pacific/Kiritimati', 'Asia/Colombo']) {
-        expect(TimeUtils.nextDstTransitions(zone, DateTime.utc(2026, 10, 18)), isEmpty,
-            reason: zone);
+      for (final zone in [
+        'Asia/Kathmandu',
+        'Pacific/Kiritimati',
+        'Asia/Colombo',
+      ]) {
+        expect(
+          TimeUtils.nextDstTransitions(zone, DateTime.utc(2026, 10, 18)),
+          isEmpty,
+          reason: zone,
+        );
       }
     });
   });
@@ -440,59 +512,78 @@ void main() {
       // 2026-10-25 01:00 UTC: clocks go back from 03:00 CEST to 02:00 CET
       final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
       final result = TimeUtils.dstTransitionAbbreviations(
-          'Europe/Berlin', transition);
+        'Europe/Berlin',
+        transition,
+      );
       expect(result.before, equals('CEST'));
-      expect(result.after,  equals('CET'));
+      expect(result.after, equals('CET'));
     });
 
     test('Berlin spring transition 2027: CET -> CEST', () {
       final transition = DateTime.utc(2027, 3, 28, 1, 0, 0);
       final result = TimeUtils.dstTransitionAbbreviations(
-          'Europe/Berlin', transition);
+        'Europe/Berlin',
+        transition,
+      );
       expect(result.before, equals('CET'));
-      expect(result.after,  equals('CEST'));
+      expect(result.after, equals('CEST'));
     });
 
     test('Lord Howe spring transition: LHST -> LHDT', () {
       // Lord Howe goes to summer time in October
       final transitions = TimeUtils.nextDstTransitions(
-          'Australia/Lord_Howe',
-          DateTime.utc(2026, 9, 1), count: 1);
+        'Australia/Lord_Howe',
+        DateTime.utc(2026, 9, 1),
+        count: 1,
+      );
       expect(transitions, isNotEmpty);
       final result = TimeUtils.dstTransitionAbbreviations(
-          'Australia/Lord_Howe', transitions.first);
+        'Australia/Lord_Howe',
+        transitions.first,
+      );
       // +10:30 -> +11:00
       expect(result.before, equals('+1030'));
-      expect(result.after,  equals('+11'));
+      expect(result.after, equals('+11'));
     });
 
     test('Chatham autumn transition: NZDT -> NZST direction', () {
       // Chatham: +13:45 summer / +12:45 winter
       final transitions = TimeUtils.nextDstTransitions(
-          'Pacific/Chatham',
-          DateTime.utc(2026, 1, 1), count: 2);
+        'Pacific/Chatham',
+        DateTime.utc(2026, 1, 1),
+        count: 2,
+      );
       expect(transitions.length, equals(2));
       // First transition in 2026 is autumn (clocks back):
       final autumnAbbrs = TimeUtils.dstTransitionAbbreviations(
-          'Pacific/Chatham', transitions[0]);
+        'Pacific/Chatham',
+        transitions[0],
+      );
       final springAbbrs = TimeUtils.dstTransitionAbbreviations(
-          'Pacific/Chatham', transitions[1]);
+        'Pacific/Chatham',
+        transitions[1],
+      );
       // Autumn: summer abbr -> winter abbr
       expect(autumnAbbrs.before, isNot(equals(autumnAbbrs.after)));
       // Spring: winter abbr -> summer abbr (reversed)
       expect(springAbbrs.before, equals(autumnAbbrs.after));
-      expect(springAbbrs.after,  equals(autumnAbbrs.before));
+      expect(springAbbrs.after, equals(autumnAbbrs.before));
     });
 
     test('UTC has no transitions', () {
       final transitions = TimeUtils.nextDstTransitions(
-          'UTC', DateTime.utc(2026, 1, 1));
+        'UTC',
+        DateTime.utc(2026, 1, 1),
+      );
       expect(transitions, isEmpty);
     });
 
     test('nextDstTransitions returns correct count', () {
       final transitions = TimeUtils.nextDstTransitions(
-          'Europe/Berlin', DateTime.utc(2026, 1, 1), count: 4);
+        'Europe/Berlin',
+        DateTime.utc(2026, 1, 1),
+        count: 4,
+      );
       expect(transitions.length, equals(4));
       // All transitions are in the future:
       for (final t in transitions) {
@@ -500,17 +591,23 @@ void main() {
       }
       // Transitions are sorted chronologically:
       for (int i = 1; i < transitions.length; i++) {
-        expect(transitions[i].isAfter(transitions[i-1]), isTrue);
+        expect(transitions[i].isAfter(transitions[i - 1]), isTrue);
       }
     });
 
-    test('nextDstTransition (singular) matches first of nextDstTransitions', () {
-      final afterUtc = DateTime.utc(2026, 6, 1);
-      final single   = TimeUtils.nextDstTransition('Europe/Berlin', afterUtc);
-      final list     = TimeUtils.nextDstTransitions('Europe/Berlin', afterUtc,
-          count: 1);
-      expect(single, equals(list.firstOrNull));
-    });
+    test(
+      'nextDstTransition (singular) matches first of nextDstTransitions',
+      () {
+        final afterUtc = DateTime.utc(2026, 6, 1);
+        final single = TimeUtils.nextDstTransition('Europe/Berlin', afterUtc);
+        final list = TimeUtils.nextDstTransitions(
+          'Europe/Berlin',
+          afterUtc,
+          count: 1,
+        );
+        expect(single, equals(list.firstOrNull));
+      },
+    );
   });
 
   group('TimeUtils.wallClockAroundTransition', () {
@@ -518,25 +615,34 @@ void main() {
 
     test('Berlin autumn: 03:00 CEST becomes 02:00 CET (the hour repeats)', () {
       final wall = TimeUtils.wallClockAroundTransition(
-          'Europe/Berlin', DateTime.utc(2026, 10, 25, 1));
+        'Europe/Berlin',
+        DateTime.utc(2026, 10, 25, 1),
+      );
       expect(wall.before, equals(DateTime.utc(2026, 10, 25, 3)));
       expect(wall.after, equals(DateTime.utc(2026, 10, 25, 2)));
       expect(wall.offsetBefore, const Duration(hours: 2));
       expect(wall.offsetAfter, const Duration(hours: 1));
     });
 
-    test('Berlin spring: 02:00 CET becomes 03:00 CEST (the hour is skipped)', () {
-      final wall = TimeUtils.wallClockAroundTransition(
-          'Europe/Berlin', DateTime.utc(2027, 3, 28, 1));
-      expect(wall.before, equals(DateTime.utc(2027, 3, 28, 2)));
-      expect(wall.after, equals(DateTime.utc(2027, 3, 28, 3)));
-      expect(wall.offsetBefore, const Duration(hours: 1));
-      expect(wall.offsetAfter, const Duration(hours: 2));
-    });
+    test(
+      'Berlin spring: 02:00 CET becomes 03:00 CEST (the hour is skipped)',
+      () {
+        final wall = TimeUtils.wallClockAroundTransition(
+          'Europe/Berlin',
+          DateTime.utc(2027, 3, 28, 1),
+        );
+        expect(wall.before, equals(DateTime.utc(2027, 3, 28, 2)));
+        expect(wall.after, equals(DateTime.utc(2027, 3, 28, 3)));
+        expect(wall.offsetBefore, const Duration(hours: 1));
+        expect(wall.offsetAfter, const Duration(hours: 2));
+      },
+    );
 
     test('Lord Howe: 30-minute change', () {
       final wall = TimeUtils.wallClockAroundTransition(
-          'Australia/Lord_Howe', DateTime.utc(2026, 10, 3, 15, 30));
+        'Australia/Lord_Howe',
+        DateTime.utc(2026, 10, 3, 15, 30),
+      );
       expect(wall.before, equals(DateTime.utc(2026, 10, 4, 2, 0)));
       expect(wall.after, equals(DateTime.utc(2026, 10, 4, 2, 30)));
       expect(wall.offsetBefore, const Duration(hours: 10, minutes: 30));
@@ -549,37 +655,68 @@ void main() {
 
     test('a normal day has 86,400 seconds', () {
       final progress = TimeUtils.dayProgressInZone(
-          DateTime.utc(2026, 6, 15, 12), 'Europe/Berlin');  // 14:00 CEST
+        DateTime.utc(2026, 6, 15, 12),
+        'Europe/Berlin',
+      ); // 14:00 CEST
       expect(progress, (elapsedSeconds: 50400, dayLengthSeconds: 86400));
     });
 
-    test('autumn: 25-hour day, the count continues through the repeated hour', () {
-      expect(
-          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 0, 59, 59), 'Europe/Berlin'),
-          (elapsedSeconds: 10799, dayLengthSeconds: 90000));  // 02:59:59 CEST
-      expect(
-          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 1), 'Europe/Berlin'),
-          (elapsedSeconds: 10800, dayLengthSeconds: 90000));  // 02:00:00 CET
-      expect(
-          TimeUtils.dayProgressInZone(DateTime.utc(2026, 10, 25, 22, 59, 59), 'Europe/Berlin')
-              .elapsedSeconds, 89999);                       // 23:59:59 CET
-    });
+    test(
+      'autumn: 25-hour day, the count continues through the repeated hour',
+      () {
+        expect(
+          TimeUtils.dayProgressInZone(
+            DateTime.utc(2026, 10, 25, 0, 59, 59),
+            'Europe/Berlin',
+          ),
+          (elapsedSeconds: 10799, dayLengthSeconds: 90000),
+        ); // 02:59:59 CEST
+        expect(
+          TimeUtils.dayProgressInZone(
+            DateTime.utc(2026, 10, 25, 1),
+            'Europe/Berlin',
+          ),
+          (elapsedSeconds: 10800, dayLengthSeconds: 90000),
+        ); // 02:00:00 CET
+        expect(
+          TimeUtils.dayProgressInZone(
+            DateTime.utc(2026, 10, 25, 22, 59, 59),
+            'Europe/Berlin',
+          ).elapsedSeconds,
+          89999,
+        ); // 23:59:59 CET
+      },
+    );
 
     test('spring: 23-hour day', () {
       expect(
-          TimeUtils.dayProgressInZone(DateTime.utc(2027, 3, 28, 1), 'Europe/Berlin'),
-          (elapsedSeconds: 7200, dayLengthSeconds: 82800));   // 03:00:00 CEST
+        TimeUtils.dayProgressInZone(
+          DateTime.utc(2027, 3, 28, 1),
+          'Europe/Berlin',
+        ),
+        (elapsedSeconds: 7200, dayLengthSeconds: 82800),
+      ); // 03:00:00 CEST
     });
 
     test('skipped midnight: the day starts at the transition', () {
       // São Paulo, 2018-11-04: 00:00 BRT became 01:00 BRST.
       expect(
-          TimeUtils.dayProgressInZone(DateTime.utc(2018, 11, 4, 3), 'America/Sao_Paulo'),
-          (elapsedSeconds: 0, dayLengthSeconds: 82800));
+        TimeUtils.dayProgressInZone(
+          DateTime.utc(2018, 11, 4, 3),
+          'America/Sao_Paulo',
+        ),
+        (elapsedSeconds: 0, dayLengthSeconds: 82800),
+      );
     });
 
     test('unknown zone falls back to UTC', () {
-      expect(TimeUtils.dayProgressInZone(DateTime.utc(2026, 6, 15, 12), 'Nowhere/Land').dayLengthSeconds, 86400);
+      expect(
+        TimeUtils.dayProgressInZone(
+          DateTime.utc(2026, 6, 15, 12),
+          'Nowhere/Land',
+        ).dayLengthSeconds,
+        86400,
+      );
     });
   });
 

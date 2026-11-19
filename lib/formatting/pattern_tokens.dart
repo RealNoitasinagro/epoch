@@ -86,7 +86,10 @@ PatternIssue? validateDatePattern(String pattern) {
     return const PatternMissingToken();
   }
   return _lengthIssue(
-      pattern, datePatternWorstCase, maxDatePatternRenderedLength);
+    pattern,
+    datePatternWorstCase,
+    maxDatePatternRenderedLength,
+  );
 }
 
 /// Null: the time pattern is fine. It needs the hour and the minutes.
@@ -96,7 +99,10 @@ PatternIssue? validateTimePattern(String pattern) {
   if (!pattern.contains('H')) return const PatternMissingHour();
   if (!pattern.contains('mm')) return const PatternMissingMinutes();
   return _lengthIssue(
-      pattern, timePatternWorstCase, maxTimePatternRenderedLength);
+    pattern,
+    timePatternWorstCase,
+    maxTimePatternRenderedLength,
+  );
 }
 
 /// Uppercase letters left over once all tokens are removed. (Lowercase
@@ -108,16 +114,17 @@ PatternIssue? _unknownTokens(String pattern, Iterable<String> validTokens) {
   for (final token in longestFirst) {
     remaining = remaining.replaceAll(token, '');
   }
-  final unknown = RegExp(r'[A-Z]+')
-      .allMatches(remaining)
-      .map((match) => match.group(0)!)
-      .toSet()
-      .toList();
+  final unknown = RegExp(
+    r'[A-Z]+',
+  ).allMatches(remaining).map((match) => match.group(0)!).toSet().toList();
   return unknown.isEmpty ? null : PatternUnknownTokens(unknown);
 }
 
 PatternIssue? _lengthIssue(
-    String pattern, Map<String, String> worstCase, int maxLength) {
+  String pattern,
+  Map<String, String> worstCase,
+  int maxLength,
+) {
   return applyPatternTokens(pattern, worstCase).length > maxLength
       ? PatternTooLong(maxLength)
       : null;

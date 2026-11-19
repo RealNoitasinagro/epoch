@@ -18,7 +18,7 @@ Widget buildGraphicalClock({
   required bool hourFormat24,
   required Color segmentColor,
   bool focusSize = false,
-  Color? dayQuarterColor
+  Color? dayQuarterColor,
 }) {
   return switch (valueType) {
     ValueType.sevenSegmentClock => SevenSegmentClock(
@@ -34,7 +34,8 @@ Widget buildGraphicalClock({
     ValueType.analogClock12h || ValueType.analogClock24h => AnalogClock(
       now: now,
       scale: valueType == ValueType.analogClock12h
-          ? AnalogClockScale.twelveHour : AnalogClockScale.twentyFourHour,
+          ? AnalogClockScale.twelveHour
+          : AnalogClockScale.twentyFourHour,
       showSeconds: showSeconds,
       color: segmentColor,
       diameter: focusSize
@@ -64,11 +65,13 @@ Widget buildGraphicalClock({
 }
 
 /// Foreground color of the seven-segment clock for the theme setting.
-Color graphicalClockColor(AppThemeMode themeMode, Brightness systemBrightness) =>
-    switch (themeMode) {
-      AppThemeMode.light  => Colors.black,
-      AppThemeMode.dark   => Colors.white,
-      AppThemeMode.night  => kColorNightRed,
-      AppThemeMode.system => systemBrightness == Brightness.dark
-          ? Colors.white : Colors.black,
-    };
+Color graphicalClockColor(
+  AppThemeMode themeMode,
+  Brightness systemBrightness,
+) => switch (themeMode) {
+  AppThemeMode.light => Colors.black,
+  AppThemeMode.dark => Colors.white,
+  AppThemeMode.night => kColorNightRed,
+  AppThemeMode.system =>
+    systemBrightness == Brightness.dark ? Colors.white : Colors.black,
+};

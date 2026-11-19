@@ -33,31 +33,35 @@ class BinaryColumnsClock extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (showLabels) Text(
-            header,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(150),),
-          ),
+          if (showLabels)
+            Text(
+              header,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+              ),
+            ),
           const SizedBox(height: 6),
           // Empty spacers for alignment.
           ...List.generate(padding, (_) => SizedBox(height: dotSize + 6)),
-          ...bits.split('').map((b) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 3),
-            child: Container(
-              width: dotSize,
-              height: dotSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: b == '1' ? litColor : dimColor.withAlpha(60),
-                border: Border.all(
-                  color: b == '1' ? litColor : dimColor,
-                  width: 1.5,
+          ...bits
+              .split('')
+              .map(
+                (b) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Container(
+                    width: dotSize,
+                    height: dotSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: b == '1' ? litColor : dimColor.withAlpha(60),
+                      border: Border.all(
+                        color: b == '1' ? litColor : dimColor,
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          )),
         ],
       );
     }
@@ -66,7 +70,7 @@ class BinaryColumnsClock extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        bitColumn(bin.hours, l10n.labelHours,   6),
+        bitColumn(bin.hours, l10n.labelHours, 6),
         SizedBox(width: dotSize * 0.75),
         bitColumn(bin.minutes, l10n.labelMinutes, 6),
         if (showSeconds) ...[

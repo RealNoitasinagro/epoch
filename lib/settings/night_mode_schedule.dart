@@ -28,8 +28,10 @@ class NightModeSchedule {
     final start = startMinute!;
     final end = endMinute!;
     return start < end
-        ? minuteOfDay >= start && minuteOfDay < end   // 17:00 -- 23:00
-        : minuteOfDay >= start || minuteOfDay < end;  // 23:00 -- 07:00
+        ? minuteOfDay >= start &&
+              minuteOfDay <
+                  end // 17:00 -- 23:00
+        : minuteOfDay >= start || minuteOfDay < end; // 23:00 -- 07:00
   }
 
   /// The next moment after [localTime] at which the window starts or ends;
@@ -39,8 +41,13 @@ class NightModeSchedule {
     DateTime? next;
     for (var dayOffset = 0; dayOffset <= 1; dayOffset++) {
       for (final minuteOfDay in [startMinute!, endMinute!]) {
-        final candidate = DateTime(localTime.year, localTime.month,
-            localTime.day + dayOffset, minuteOfDay ~/ 60, minuteOfDay % 60);
+        final candidate = DateTime(
+          localTime.year,
+          localTime.month,
+          localTime.day + dayOffset,
+          minuteOfDay ~/ 60,
+          minuteOfDay % 60,
+        );
         if (candidate.isAfter(localTime) &&
             (next == null || candidate.isBefore(next))) {
           next = candidate;
@@ -58,8 +65,7 @@ const int kDefaultNightModeEndMinute = 7 * 60;
 /// "23:00" or "7:30" to minutes since midnight; null if not a valid time.
 int? parseMinuteOfDay(String? text) {
   if (text == null) return null;
-  final match =
-      RegExp(r'^([01]?\d|2[0-3]):([0-5]\d)$').firstMatch(text.trim());
+  final match = RegExp(r'^([01]?\d|2[0-3]):([0-5]\d)$').firstMatch(text.trim());
   if (match == null) return null;
   return int.parse(match.group(1)!) * 60 + int.parse(match.group(2)!);
 }
@@ -67,4 +73,4 @@ int? parseMinuteOfDay(String? text) {
 /// Minutes since midnight to "07:30" (always 24-hour, like the dial picker).
 String formatMinuteOfDay(int minuteOfDay) =>
     '${(minuteOfDay ~/ 60).toString().padLeft(2, '0')}:'
-        '${(minuteOfDay % 60).toString().padLeft(2, '0')}';
+    '${(minuteOfDay % 60).toString().padLeft(2, '0')}';

@@ -38,7 +38,9 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      for (final entry in tzDatabase) { entry.normalizedCandidates; }
+      for (final entry in tzDatabase) {
+        entry.normalizedCandidates;
+      }
     });
   }
 
@@ -58,7 +60,8 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
   // Why does this zone show up, if the reason is not already in the title?
   String? _matchHint(TzResult result, String locale, AppLocalizations l10n) {
     final match = result.match;
-    if (match == null || (match.rule != TzRule.exact && match.rule != TzRule.prefix)) {
+    if (match == null ||
+        (match.rule != TzRule.exact && match.rule != TzRule.prefix)) {
       return null;
     }
     final isCity = TzSource.otherCity.contains(match.source);
@@ -74,22 +77,40 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
         : l10n.hintMatchAlsoCountry(match.term);
   }
 
-  Widget _buildTile(BuildContext context, TzResult result, String locale,
-      AppLocalizations l10n, EpochAppState app, DateTime nowUtc) {
+  Widget _buildTile(
+    BuildContext context,
+    TzResult result,
+    String locale,
+    AppLocalizations l10n,
+    EpochAppState app,
+    DateTime nowUtc,
+  ) {
     final entry = result.entry;
     final hint = _matchHint(result, locale, l10n);
     final local = TimeUtils.inZone(nowUtc, entry.ianaZoneId);
     final time = TimeValueFormatter.formatTime(
-        app.formatSettings.hourFormat24, local.hour, local.minute, 0,
-        pattern: kTimePatternNoSeconds);
+      app.formatSettings.hourFormat24,
+      local.hour,
+      local.minute,
+      0,
+      pattern: kTimePatternNoSeconds,
+    );
     return ListTile(
-      title: Text(entry.displayTitle(locale),
-          maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: Text('${hint ?? entry.ianaZoneId}  ·  ${entry.offsetLabel}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodySmall),
-      trailing: Text(time, style: const TextStyle(fontFamily: fontFamilyDefault)),
+      title: Text(
+        entry.displayTitle(locale),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        '${hint ?? entry.ianaZoneId}  ·  ${entry.offsetLabel}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+      trailing: Text(
+        time,
+        style: const TextStyle(fontFamily: fontFamilyDefault),
+      ),
       onTap: () => Navigator.pop(context, entry.ianaZoneId),
     );
   }
@@ -116,12 +137,12 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _controller.text.isNotEmpty
                     ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _controller.clear();
-                    _onQueryChanged('');
-                  },
-                )
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _controller.clear();
+                          _onQueryChanged('');
+                        },
+                      )
                     : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -137,10 +158,16 @@ class _TimezoneSearchScreenState extends State<TimezoneSearchScreen> {
       body: results.isEmpty
           ? Center(child: Text(l10n.messageNoTimezone))
           : ListView.builder(
-        itemCount: results.length,
-        itemBuilder: (context, index) => _buildTile(
-            context, results[index], locale, l10n, app, nowUtc),
-      ),
+              itemCount: results.length,
+              itemBuilder: (context, index) => _buildTile(
+                context,
+                results[index],
+                locale,
+                l10n,
+                app,
+                nowUtc,
+              ),
+            ),
     );
   }
 }

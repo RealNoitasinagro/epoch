@@ -7,27 +7,29 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Future<Set<ValueType>?> openDialogAndTap(
-      WidgetTester tester, {
-        required Set<ValueType> hiddenTypes,
-        required List<String> tapTexts,
-      }) async {
+    WidgetTester tester, {
+    required Set<ValueType> hiddenTypes,
+    required List<String> tapTexts,
+  }) async {
     Set<ValueType>? result;
-    await tester.pumpWidget(MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('en'),
-      home: Builder(
-        builder: (context) => TextButton(
-          onPressed: () async {
-            result = await showDialog<Set<ValueType>>(
-              context: context,
-              builder: (_) => OptionalPartDialog(hiddenTypes: hiddenTypes),
-            );
-          },
-          child: const Text('open'),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () async {
+              result = await showDialog<Set<ValueType>>(
+                context: context,
+                builder: (_) => OptionalPartDialog(hiddenTypes: hiddenTypes),
+              );
+            },
+            child: const Text('open'),
+          ),
         ),
       ),
-    ));
+    );
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
     for (final text in tapTexts) {
@@ -39,7 +41,9 @@ void main() {
     return result;
   }
 
-  testWidgets('the master checkbox hides everything when all are shown', (tester) async {
+  testWidgets('the master checkbox hides everything when all are shown', (
+    tester,
+  ) async {
     final result = await openDialogAndTap(
       tester,
       hiddenTypes: {},
@@ -48,7 +52,9 @@ void main() {
     expect(result, globalOptionalPartTypes.toSet());
   });
 
-  testWidgets('the master checkbox shows everything when some are hidden', (tester) async {
+  testWidgets('the master checkbox shows everything when some are hidden', (
+    tester,
+  ) async {
     final result = await openDialogAndTap(
       tester,
       hiddenTypes: {ValueType.dayMinute},
@@ -68,22 +74,24 @@ void main() {
 
   testWidgets('cancel discards the changes', (tester) async {
     Set<ValueType>? result = {};
-    await tester.pumpWidget(MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('en'),
-      home: Builder(
-        builder: (context) => TextButton(
-          onPressed: () async {
-            result = await showDialog<Set<ValueType>>(
-              context: context,
-              builder: (_) => const OptionalPartDialog(hiddenTypes: {}),
-            );
-          },
-          child: const Text('open'),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () async {
+              result = await showDialog<Set<ValueType>>(
+                context: context,
+                builder: (_) => const OptionalPartDialog(hiddenTypes: {}),
+              );
+            },
+            child: const Text('open'),
+          ),
         ),
       ),
-    ));
+    );
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('All'));

@@ -14,10 +14,13 @@ void main() {
       expect(timePatternWithoutSeconds('HH:mm:ss Uhr'), 'HH:mm Uhr');
     });
 
-    test('leaves patterns without seconds, or with them before the minutes, alone', () {
-      expect(timePatternWithoutSeconds('HH:mm'), 'HH:mm');
-      expect(timePatternWithoutSeconds('ss:mm:HH'), 'ss:mm:HH');
-    });
+    test(
+      'leaves patterns without seconds, or with them before the minutes, alone',
+      () {
+        expect(timePatternWithoutSeconds('HH:mm'), 'HH:mm');
+        expect(timePatternWithoutSeconds('ss:mm:HH'), 'ss:mm:HH');
+      },
+    );
   });
 
   group('timePatternWithSeconds', () {
