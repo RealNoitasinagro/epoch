@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' as tz;
+import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/time_value_formatter.dart';
 import '../../l10n/app_localizations.dart';
-import '../../main.dart';
 import '../../models/time_value.dart';
 import '../../screens/focus_screen.dart';
 import '../../time/effective_clock.dart';

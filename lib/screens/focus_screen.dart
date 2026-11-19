@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import '../app/day_quarter_color.dart';
+import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
-import '../main.dart';
 import '../models/time_value.dart';
 import '../settings/app_settings.dart';
 import '../settings/focus_colors.dart';
@@ -19,6 +19,7 @@ import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_shift_indicator.dart';
 import '../widgets/value_tiles/time_string_row.dart';
+import 'home_screen.dart';
 
 class FocusScreen extends StatefulWidget {
   final TimeValue timeValue;

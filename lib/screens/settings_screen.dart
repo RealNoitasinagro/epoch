@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/dial_picker.dart';
 import '../dialogs/entry_picker.dart';
@@ -6,7 +7,6 @@ import '../dialogs/optional_part_dialog.dart';
 import '../formatting/pattern_tokens.dart';
 import '../formatting/time_value_formatter.dart';
 import '../l10n/app_localizations.dart';
-import '../main.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';
 import '../platform/location_service.dart';

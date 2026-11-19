@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../formatting/time_value_formatter.dart';
 import '../l10n/app_localizations.dart';
-import '../main.dart';
 import '../settings/app_settings.dart';
 import '../time/effective_clock.dart';
 

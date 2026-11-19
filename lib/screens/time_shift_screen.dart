@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/dial_picker.dart';
 import '../dialogs/zone_picker.dart';
 import '../l10n/app_localizations.dart';
-import '../main.dart';
 import '../models/time_value.dart';
 import '../settings/time_shift_start.dart';
 import '../time/effective_clock.dart';

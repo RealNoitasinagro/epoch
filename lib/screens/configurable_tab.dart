@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../app/day_quarter_color.dart';
+import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/entry_picker.dart';
 import '../l10n/app_localizations.dart';
-import '../main.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
 import '../settings/app_settings.dart';

@@ -223,7 +223,6 @@ class TimeUtils {
     );
   }
 
-
   // ── Value Type functions ───────────────────────────────────────────────────
 
   static int _secondsSinceMidnight(DateTime wallClock) {

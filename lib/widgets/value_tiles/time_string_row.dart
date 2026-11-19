@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../app/day_quarter_color.dart';
+import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/time_value_formatter.dart';
 import '../../formatting/value_format_settings.dart';
 import '../../l10n/app_localizations.dart';
-import '../../main.dart';
 import '../../models/time_value.dart';
 import '../../settings/app_settings.dart';
 import '../../time/time_utils.dart';

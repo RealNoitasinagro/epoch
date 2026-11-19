@@ -1,0 +1,619 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../app/build_info.dart';
+import '../app/epoch_app.dart';
+import '../app/layout_constants.dart';
+import '../app/link_constants.dart';
+import '../l10n/app_localizations.dart';
+import '../models/tab_config.dart';
+import '../models/tab_entry.dart';
+import '../models/time_value.dart';
+import '../platform/platform_utils.dart';
+import '../settings/app_settings.dart';
+import '../time/effective_clock.dart';
+import '../time/seconds_ticker.dart';
+import '../widgets/link_text.dart';
+import '../widgets/time_shift_indicator.dart';
+import 'configurable_tab.dart';
+import 'settings_screen.dart';
+import 'time_shift_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late DateTime _now;
+  TabController? _tabController;
+  List<TabConfig> _tabs = [];
+  ValueNotifier<int>? _settingsReloadNotifier;
+  bool _loaded = false;
+  bool _isFullscreen = false;
+
+  static const _fallbackVersion = '0.0.0';
+  static const _fallbackBuildNumber = '0';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
+    _settingsReloadNotifier = EpochApp.of(context).settingsReloadNotifier;
+    _settingsReloadNotifier!.addListener(_onExternalReload);
+  }
+
+  void _onExternalReload() {
+    if (!mounted) return;
+    _loadData();
+  }
+
+  void _updateNow() {
+    if (!mounted) return;
+    setState(() => _now = EffectiveClock.now());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _now = EffectiveClock.now();
+    SecondsTicker.instance.addListener(_updateNow);
+    EffectiveClock.changeNotifier.addListener(_updateNow);
+    _loadData();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    SecondsTicker.instance.removeListener(_updateNow);
+    EffectiveClock.changeNotifier.removeListener(_updateNow);
+    _settingsReloadNotifier?.removeListener(_onExternalReload);
+    super.dispose();
+  }
+
+  List<TabConfig> get _visibleTabs => _tabs.where((t) => t.isVisible).toList();
+  int get _tabCount => _visibleTabs.length;
+  int get _watchlistCount => _visibleTabs.where((t) => !t.isBuiltin).length;
+
+  Future<void> _loadData() async {
+    final result = await loadOrSeedAllTabs();
+    final activeTab = await loadActiveTab();
+    if (!mounted) return;
+    setState(() {
+      _tabs = result.tabs;
+      _loaded = true;
+    });
+    if (EpochApp.of(context).lmstMode == LmstMode.off) _removeLmstFromAllTabs();
+    _updateTabController(initialIndex: activeTab);
+  }
+
+  void _toggleFullscreen() {
+    setState(() => _isFullscreen = !_isFullscreen);
+    if (_isFullscreen) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+  }
+
+  void _onTabEntriesChanged(String id, List<TabEntry> entries) {
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    tab.entries = entries;
+    saveAllTabs(_tabs);
+    setState(() {});
+  }
+
+  void _updateTabController({int? initialIndex}) {
+    final newCount = _tabCount;
+    final oldIndex = initialIndex ?? _tabController?.index ?? 0;
+    final oldController = _tabController;
+    _tabController = newCount == 0
+        ? null
+        : (TabController(
+            length: newCount,
+            vsync: this,
+            initialIndex: oldIndex.clamp(0, newCount - 1),
+          )..addListener(_onTabChanged));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      oldController?.dispose();
+    });
+    setState(() {});
+  }
+
+  void _onTabChanged() {
+    if (!mounted) return;
+    if (_tabController!.indexIsChanging) return;
+    saveActiveTab(_tabController!.index);
+  }
+
+  void _addCustomTab(AppLocalizations l10n) {
+    if (_watchlistCount >= maxCustomTabs) return;
+    final tab = TabConfig(
+      id: generateId(),
+      customName: defaultTabName(_watchlistCount),
+      entries: [],
+    );
+    _tabs.add(tab);
+    saveAllTabs(_tabs);
+    _updateTabController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _tabController?.animateTo(_visibleTabs.length - 1);
+    });
+  }
+
+  void _deleteCustomTab(String id) {
+    final idx = _visibleTabs.indexWhere((t) => t.id == id);
+    _tabs.removeWhere((t) => t.id == id);
+    saveAllTabs(_tabs);
+    final newCount = _tabCount; // recomputed after removal
+    _updateTabController();
+    if (newCount == 0) return; // nothing left to animate to
+    final targetIndex = (idx - 1).clamp(0, newCount - 1);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _tabController?.animateTo(targetIndex);
+    });
+  }
+
+  Future<void> _renameCustomTab(
+    BuildContext context,
+    AppLocalizations l10n,
+    String id,
+  ) async {
+    final tab = _tabs.firstWhere((t) => t.id == id);
+    final controller = TextEditingController(text: tab.customName);
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.actionRenameTab),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(labelText: l10n.labelNewTabName),
+          onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    // Note: controller.dispose() intentionally omitted – causes a
+    // post-frame assertion on Linux when the dialog rebuilds after pop.
+    // The GC will collect it correctly since no further references exist.
+    if (result == null || result.isEmpty) return;
+    setState(() => tab.customName = result);
+    saveAllTabs(_tabs);
+  }
+
+  // The listener now keeps _tabs live-synced regardless of Settings being
+  // open/closed or Home being rebuilt in between, so the explicit reload here
+  // is no longer needed –
+  // only the LMST cleanup still belongs here (it's tied to leaving Settings,
+  // not to a tab-data change as such):
+  void _openSettings(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const SettingsScreen()),
+    ).then((_) {
+      if (!mounted) return;
+      if (EpochApp.of(context).lmstMode == LmstMode.off) {
+        _removeLmstFromAllTabs();
+      }
+    });
+  }
+
+  void _openTimeShift(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const TimeShiftScreen()),
+    );
+  }
+
+  void _removeLmstFromAllTabs() {
+    var anyChanged = false;
+    for (final tab in _tabs) {
+      final newEntries = tab.entries
+          .where((e) => e.valueType != ValueType.lmst)
+          .toList();
+      if (newEntries.length != tab.entries.length) {
+        tab.entries = newEntries;
+        anyChanged = true;
+      }
+    }
+    if (!anyChanged) return; // avoid pointless/harmful writes
+    saveAllTabs(_tabs);
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (!_loaded) {
+      return Scaffold(backgroundColor: Colors.black);
+    }
+    if (_tabController == null) {
+      return _buildNoTabsScreen(context, l10n);
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        titleSpacing: NavigationToolbar.kMiddleSpacing,
+        flexibleSpace: Builder(
+          builder: (context) {
+            final isNight = EpochApp.of(context).isNightMode;
+            if (isNight) return const SizedBox.shrink();
+            final colorScheme = Theme.of(context).colorScheme;
+            return Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.primaryContainer,
+                    colorScheme.inversePrimary,
+                    colorScheme.secondaryContainer,
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            GestureDetector(
+              onDoubleTap: _toggleFullscreen,
+              onLongPress: () => _showBuildInfo(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!EpochApp.of(context).isNightMode) ...[
+                    Image.asset('assets/icon/epoch_icon.png', height: 28),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(l10n.appName),
+                ],
+              ),
+            ),
+            if (EffectiveClock.isShifted)
+              Expanded(
+                child: Center(
+                  child: TimeShiftIndicator(
+                    onTap: () => _openTimeShift(context),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          if (_watchlistCount < maxCustomTabs)
+            IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: l10n.hintAddTab,
+              onPressed: () {
+                final l10n = AppLocalizations.of(context)!;
+                _addCustomTab(l10n);
+              },
+            ),
+          // If we still need a direct shortcut...
+          // IconButton(
+          //   icon: const Icon(Icons.settings),
+          //   tooltip: l10n.pageSettings,
+          //   onPressed: () => _openSettings(context),
+          // ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              switch (value) {
+                case 'time_shift':
+                  _openTimeShift(context);
+                case 'settings':
+                  _openSettings(context);
+                case 'about':
+                  _showAbout(context, l10n);
+                case 'wiki':
+                  launchUrl(
+                    Uri.parse(wikiLink),
+                    mode: LaunchMode.externalApplication,
+                  );
+                case 'exit':
+                  SystemNavigator.pop();
+              }
+            },
+            itemBuilder: (context) {
+              final l10n = AppLocalizations.of(context)!;
+              return [
+                PopupMenuItem(
+                  value: 'time_shift',
+                  child: ListTile(
+                    leading: const Icon(kIconTimeShift),
+                    title: Text(l10n.pageTimeShift),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'settings',
+                  child: ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: Text(l10n.pageSettings),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuDivider(),
+                PopupMenuItem(
+                  value: 'about',
+                  child: ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: Text(l10n.dialogAbout),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'wiki',
+                  child: Tooltip(
+                    message: wikiLink,
+                    child: ListTile(
+                      leading: const Icon(Icons.wysiwyg_outlined),
+                      title: Text(l10n.linkWiki),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                    ),
+                  ),
+                ),
+                if (!isDesktopPlatform) ...[
+                  PopupMenuDivider(),
+                  PopupMenuItem(
+                    value: 'exit',
+                    child: ListTile(
+                      leading: const Icon(Icons.exit_to_app_outlined),
+                      title: Text(l10n.actionExitApp),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                    ),
+                  ),
+                ],
+              ];
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          tabs: _visibleTabs
+              .map(
+                (tab) => _AppTab(
+                  tabConfig: tab,
+                  onRename: tab.isBuiltin
+                      ? null
+                      : () => _renameCustomTab(context, l10n, tab.id),
+                  onHideOrDelete: tab.isBuiltin
+                      ? () => _hideBuiltinTab(tab.id)
+                      : () => _deleteCustomTab(tab.id),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: _visibleTabs
+            .map(
+              (tab) => ConfigurableTab(
+                key: ValueKey(tab.id),
+                now: _now,
+                entries: tab.entries,
+                defaultEntries: tab.isBuiltin
+                    ? defaultEntriesFor(tab.builtinKind!)
+                    : List.of(defaultWatchlistEntries),
+                onEntriesChanged: (e) => _onTabEntriesChanged(tab.id, e),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _buildNoTabsScreen(BuildContext context, AppLocalizations l10n) {
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.appName)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.visibility_off_outlined,
+                size: 48,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(120),
+              ),
+              const SizedBox(height: 16),
+              Text(l10n.messageNoTabsVisible, textAlign: TextAlign.center),
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                icon: const Icon(Icons.settings),
+                label: Text(l10n.pageSettings),
+                onPressed: () => _openSettings(context),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.add),
+                label: Text(l10n.hintAddTab),
+                onPressed: () => _addCustomTab(l10n),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _hideBuiltinTab(String id) {
+    final idx = _tabs.indexWhere((t) => t.id == id);
+    _tabs[idx] = _tabs[idx].copyWith(isVisible: false);
+    saveAllTabs(_tabs);
+    _updateTabController();
+    setState(() {});
+  }
+
+  void _showBuildInfo(BuildContext context) {
+    // Only builds that show a bare commit ("Repo: <hash>") are linked: release,
+    // F-Droid and CI builds. Local development builds add branch and dirty
+    // marker and may refer to commits that do not exist on GitHub.
+    final commitId = RegExp(
+      r'^Repo: ([0-9a-f]{7,40})$',
+      multiLine: true,
+    ).firstMatch(kBuildInfo);
+    final commitLink = commitId != null
+        ? '$repoLink/commit/${commitId.group(1)!}'
+        : '';
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Build info'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              kBuildInfo,
+              style: const TextStyle(fontFamily: fontFamilyDefault),
+            ),
+            const Divider(height: kDividerHeight),
+            if (commitLink.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              LinkText(url: commitLink, label: 'Commit (GitHub)'),
+              const SizedBox(height: 24),
+            ],
+            LinkText(url: timezoneLink, label: 'timezone package website'),
+            const SizedBox(height: 24),
+            LinkText(url: ianaLink, label: 'IANA Time Zones website'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showAbout(BuildContext context, AppLocalizations l10n) async {
+    String version;
+    String build;
+    try {
+      final PackageInfo info = await PackageInfo.fromPlatform();
+      version = info.version.isNotEmpty ? info.version : _fallbackVersion;
+      build = info.buildNumber.isNotEmpty
+          ? info.buildNumber
+          : _fallbackBuildNumber;
+    } catch (_) {
+      version = _fallbackVersion;
+      build = _fallbackBuildNumber;
+    }
+    if (!context.mounted) return;
+    showAboutDialog(
+      context: context,
+      applicationName: l10n.appName,
+      applicationVersion: '$version (build $build)',
+      applicationLegalese: l10n.dialogAboutLegalese,
+      applicationIcon: EpochApp.of(context).isNightMode
+          ? null
+          : Image.asset('assets/icon/epoch_icon.png', height: 48),
+      children: [
+        SizedBox(height: 16),
+        Text(l10n.dialogAboutText),
+        SizedBox(height: 8),
+        LinkText(url: readmeLink, label: l10n.dialogAboutReadme),
+        SizedBox(height: 8),
+        LinkText(url: changelogLink, label: l10n.dialogAboutChangelog),
+      ],
+    );
+  }
+}
+
+class _AppTab extends StatelessWidget {
+  final TabConfig tabConfig;
+  final VoidCallback? onRename; // null for builtin tabs (no rename)
+  final VoidCallback onHideOrDelete;
+
+  const _AppTab({
+    required this.tabConfig,
+    required this.onRename,
+    required this.onHideOrDelete,
+  });
+
+  void _showOptions(BuildContext context, AppLocalizations l10n) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (onRename != null)
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: Text(l10n.actionRenameTab),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  onRename!();
+                },
+              ),
+            ListTile(
+              leading: Icon(
+                tabConfig.isBuiltin
+                    ? Icons.visibility_off_outlined
+                    : Icons.delete_outline,
+                color: Colors.redAccent,
+              ),
+              title: Text(
+                tabConfig.isBuiltin ? l10n.actionHideTab : l10n.actionDeleteTab,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
+              onTap: () {
+                Navigator.pop(ctx);
+                onHideOrDelete();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Tab(
+      child: GestureDetector(
+        onLongPress: () => _showOptions(context, l10n),
+        child: Text(
+          tabConfig.displayName(l10n),
+          style: tabConfig.isBuiltin
+              ? const TextStyle(fontStyle: FontStyle.italic)
+              : null,
+        ),
+      ),
+    );
+  }
+}
