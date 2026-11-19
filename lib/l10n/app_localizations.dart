@@ -974,6 +974,12 @@ abstract class AppLocalizations {
   /// **'Settings imported'**
   String get messageSettingsImported;
 
+  /// No description provided for @messageSettingsImportedIgnored.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Settings imported, 1 value ignored: {keys}} other{Settings imported, {count} values ignored: {keys}}}'**
+  String messageSettingsImportedIgnored(int count, String keys);
+
   /// No description provided for @messageSettingsReset.
   ///
   /// In en, this message translates to:

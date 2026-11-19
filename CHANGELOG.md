@@ -11,7 +11,8 @@
 - external links now have tooltips showing the URL
 
 ### Fixed
-- wrongly typed entries in the config could make the app get stuck on a black screen
+- wrongly typed entries in the config could make the app get stuck on a black screen; import
+  now warns about values that cannot be used
 
 ---
 

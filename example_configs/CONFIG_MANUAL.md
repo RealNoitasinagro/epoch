@@ -18,7 +18,10 @@ Try these configs out, tweak them to your liking, and perhaps create your own co
 ## File Format
 
 The configuration file is a flat JSON object. All keys are optional — missing keys fall back to Epoch's defaults. \
-Default values will show up in config files when a non-default value had been configured previously.
+Default values will show up in config files when a non-default value had been configured previously. \
+Values that cannot be used (wrong type, out of range, not parsable) are ignored and the default applies.
+The import lists them. \
+Keys Epoch does not know are not reported: renaming a key is how to comment out a setting.
 
 ### Global Settings
 

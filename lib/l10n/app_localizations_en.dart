@@ -544,6 +544,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSettingsImported => 'Settings imported';
 
   @override
+  String messageSettingsImportedIgnored(int count, String keys) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Settings imported, $count values ignored: $keys',
+      one: 'Settings imported, 1 value ignored: $keys',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get messageSettingsReset => 'Settings reset to defaults';
 
   @override

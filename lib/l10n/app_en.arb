@@ -94,6 +94,16 @@
       }
     }
   },
+  "@messageSettingsImportedIgnored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "keys": {
+        "type": "String"
+      }
+    }
+  },
   "@messageTabReactivated": {
     "placeholders": {
       "resetAction": {
@@ -338,6 +348,7 @@
   "messageSettingsExported": "Settings exported",
   "messageSettingsImportFailed": "Import failed – invalid file",
   "messageSettingsImported": "Settings imported",
+  "messageSettingsImportedIgnored": "{count, plural, one{Settings imported, 1 value ignored: {keys}} other{Settings imported, {count} values ignored: {keys}}}",
   "messageSettingsReset": "Settings reset to defaults",
   "messageTabReactivated": "Tab reactivated – it may not match the default configuration anymore. Use \"{resetAction}\" on the tab if needed.",
   "pageSettings": "Settings",

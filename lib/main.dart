@@ -7,7 +7,7 @@ import 'app/bundled_licenses.dart';
 import 'app/epoch_app.dart';
 import 'screens/startup_error_screen.dart';
 import 'settings/prefs_migrations.dart';
-import 'settings/settings_io.dart';
+import 'settings/settings_json.dart';
 import 'settings/time_shift_start.dart';
 
 void main(List<String> args) async {
@@ -41,7 +41,10 @@ Future<void> _loadConfigFromCommandLine(List<String> args) async {
     exit(1);
   }
   try {
-    await importSettingsJson(await file.readAsString());
+    final ignoredKeys = await importSettingsJson(await file.readAsString());
+    if (ignoredKeys.isNotEmpty) {
+      stderr.writeln('Ignored values: ${ignoredKeys.join(', ')}');
+    }
   } catch (e) {
     stderr.writeln('Failed to load config: $e');
     exit(1);

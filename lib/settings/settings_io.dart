@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../app/epoch_app.dart';
 import '../l10n/app_localizations.dart';
 import '../time/effective_clock.dart';
-import 'prefs_migrations.dart';
+import 'settings_json.dart';
 import 'time_shift_start.dart';
 import 'tolerant_prefs.dart';
 
@@ -20,7 +20,7 @@ Future<bool> exportSettings(
   bool doBackup = false,
 }) async {
   final l10n = AppLocalizations.of(context)!;
-  final json = await _exportSettingsJson();
+  final json = await exportSettingsJson();
   final bytes = Uint8List.fromList(utf8.encode(json));
 
   String dialogTitle = doBackup
@@ -77,8 +77,9 @@ Future<void> importSettings(BuildContext context) async {
   } else
     return;
 
+  final List<String> ignoredKeys;
   try {
-    await importSettingsJson(json);
+    ignoredKeys = await importSettingsJson(json);
     if (file.path != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('last_imported_config', file.name);
@@ -90,12 +91,19 @@ Future<void> importSettings(BuildContext context) async {
   }
 
   if (!context.mounted) return;
-  EffectiveClock.reset(); // an import starts from a clean slate ...
-  await applyTimeShiftStart(); // ... except for a start value the file brings along
+  EffectiveClock.reset();  // an import starts from a clean slate ...
+  await applyTimeShiftStart();  // ... except for a start value the file brings along
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
-  _showSnackBar(context, l10n.messageSettingsImported);
+  _showSnackBar(
+    context,
+    ignoredKeys.isEmpty
+        ? l10n.messageSettingsImported
+        : l10n.messageSettingsImportedIgnored(
+        ignoredKeys.length, _keyList(ignoredKeys)),
+    duration: ignoredKeys.isEmpty ? null : const Duration(seconds: 6),
+  );
 }
 
 Future<void> resetSettings(BuildContext context) async {
@@ -117,29 +125,6 @@ Future<void> resetSettings(BuildContext context) async {
   // report
   if (!context.mounted) return;
   _showSnackBar(context, l10n.messageSettingsReset);
-}
-
-Future<void> importSettingsJson(String json) async {
-  final prefs = await SharedPreferences.getInstance();
-
-  // Parse first – throws FormatException before any changes if invalid:
-  final map = jsonDecode(json) as Map<String, dynamic>;
-
-  // Snapshot for rollback:
-  final backup = <String, dynamic>{
-    for (final key in prefs.getKeys()) key: prefs.get(key),
-  };
-
-  await prefs.clear();
-
-  try {
-    await _writeMapToPrefs(prefs, map);
-    await runPrefsMigrations(); // handle configs exported before 1.5.0
-  } catch (e) {
-    await prefs.clear();
-    await _writeMapToPrefs(prefs, backup);
-    rethrow;
-  }
 }
 
 // ── Private helpers ──────────────────────────────────────────────────────────
@@ -172,37 +157,6 @@ Future<String?> _openSaveDialog(
   return path;
 }
 
-Future<String> _exportSettingsJson() async {
-  final prefs = await SharedPreferences.getInstance();
-  // Sort keys for deterministic output and easier diffing:
-  final sortedKeys = prefs.getKeys().toList()..sort();
-  final map = <String, dynamic>{
-    for (final key in sortedKeys) key: prefs.get(key),
-  };
-  const encoder = JsonEncoder.withIndent('  ');
-  return '${encoder.convert(map)}\n';
-}
-
-Future<void> _writeMapToPrefs(
-  SharedPreferences prefs,
-  Map<String, dynamic> map,
-) async {
-  for (final entry in map.entries) {
-    final v = entry.value;
-    if (v is bool)
-      await prefs.setBool(entry.key, v);
-    else if (v is int)
-      await prefs.setInt(entry.key, v);
-    else if (v is double)
-      await prefs.setDouble(entry.key, v);
-    else if (v is String)
-      await prefs.setString(entry.key, v);
-    else if (v is List && v.every((entry) => entry is String)) {
-      await prefs.setStringList(entry.key, v.cast<String>());
-    }
-  }
-}
-
 Future<void> _saveLastExportDirectory(String dir) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(_kLastExportDirKey, dir);
@@ -216,8 +170,18 @@ Future<String?> _loadLastExportDirectory() async {
   return dir;
 }
 
-void _showSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
-  );
+const _maxListedKeys = 4;
+
+/// "a, b, c, d, …": a snack bar has little room.
+String _keyList(List<String> keys) => keys.length <= _maxListedKeys
+    ? keys.join(', ')
+    : '${keys.take(_maxListedKeys).join(', ')}, …';
+
+void _showSnackBar(BuildContext context, String message,
+    {Duration? duration}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(message),
+    duration: duration ?? const Duration(seconds: 4),
+    behavior: SnackBarBehavior.floating,
+  ));
 }
