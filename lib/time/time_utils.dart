@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:week_number/iso.dart';
-import '../app/layout_constants.dart';
 import 'effective_clock.dart';
 import 'zone_rules.dart';
 
@@ -225,13 +223,6 @@ class TimeUtils {
     );
   }
 
-  /// Color of the quarter of the day an hour of the wall clock belongs to.
-  static Color dayQuarterColor(int wallClockHour) {
-    if (wallClockHour < 6) return kColorNightRed;
-    if (wallClockHour < 12) return kColorCyan;
-    if (wallClockHour < 18) return kColorAmber;
-    return kColorMatrixGreen;
-  }
 
   // ── Value Type functions ───────────────────────────────────────────────────
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app/day_quarter_color.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/entry_picker.dart';
 import '../l10n/app_localizations.dart';
@@ -741,7 +742,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         app.dayQuarterColor &&
             app.themeMode != AppThemeMode.night &&
             !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
+        ? dayQuarterColorOfHour(moment.wallClock.hour)
         : null;
 
     late final Widget clock;

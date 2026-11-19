@@ -1,4 +1,3 @@
-import 'package:epoch/app/layout_constants.dart';
 import 'package:epoch/time/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
@@ -718,16 +717,5 @@ void main() {
         86400,
       );
     });
-  });
-
-  test('day quarter colors', () {
-    expect(TimeUtils.dayQuarterColor(0), kColorNightRed);
-    expect(TimeUtils.dayQuarterColor(5), kColorNightRed);
-    expect(TimeUtils.dayQuarterColor(6), kColorCyan);
-    expect(TimeUtils.dayQuarterColor(11), kColorCyan);
-    expect(TimeUtils.dayQuarterColor(12), kColorAmber);
-    expect(TimeUtils.dayQuarterColor(17), kColorAmber);
-    expect(TimeUtils.dayQuarterColor(18), kColorMatrixGreen);
-    expect(TimeUtils.dayQuarterColor(23), kColorMatrixGreen);
   });
 }

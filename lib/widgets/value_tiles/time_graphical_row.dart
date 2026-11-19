@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../app/day_quarter_color.dart';
 import '../../app/layout_constants.dart';
 import '../../l10n/app_localizations.dart';
 import '../../main.dart';
 import '../../settings/app_settings.dart';
-import '../../time/time_utils.dart';
 import '../../time/zoned_moment.dart';
 import '../clocks/graphical_clock.dart';
 import 'time_value_row.dart';
@@ -30,7 +30,7 @@ class TimeGraphicalRow extends TimeValueRow {
         app.dayQuarterColor &&
             app.themeMode != AppThemeMode.night &&
             !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
+        ? dayQuarterColorOfHour(moment.wallClock.hour)
         : null;
 
     final Widget clock = buildGraphicalClock(

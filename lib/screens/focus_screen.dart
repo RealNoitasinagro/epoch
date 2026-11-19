@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import '../app/day_quarter_color.dart';
 import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
@@ -14,7 +15,6 @@ import '../settings/app_settings.dart';
 import '../settings/focus_colors.dart';
 import '../time/effective_clock.dart';
 import '../time/seconds_ticker.dart';
-import '../time/time_utils.dart';
 import '../time/zoned_moment.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/time_shift_indicator.dart';
@@ -103,7 +103,7 @@ class _FocusScreenState extends State<FocusScreen> {
   /// The color of the value and the controls.
   Color get _textColor => switch (_colorMode) {
     FocusColorMode.fixed => _fixedColor,
-    FocusColorMode.dayQuarter => TimeUtils.dayQuarterColor(_quarterHour()),
+    FocusColorMode.dayQuarter => dayQuarterColorOfHour(_quarterHour()),
     FocusColorMode.random => _randomColor,
   };
 
@@ -401,7 +401,7 @@ class _FocusScreenState extends State<FocusScreen> {
   Widget _dayQuarterSwatch() {
     Widget quarter(int hour) => Expanded(
       child: ColoredBox(
-        color: TimeUtils.dayQuarterColor(hour),
+        color: dayQuarterColorOfHour(hour),
         child: const SizedBox.expand(),
       ),
     );

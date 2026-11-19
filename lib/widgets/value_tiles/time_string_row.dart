@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../app/day_quarter_color.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/time_value_formatter.dart';
 import '../../formatting/value_format_settings.dart';
@@ -249,7 +250,7 @@ class TimeStringRow extends TimeValueRow {
         app.dayQuarterColor &&
             app.themeMode != AppThemeMode.night &&
             !timeValue.isZoneIndependent
-        ? TimeUtils.dayQuarterColor(moment.wallClock.hour)
+        ? dayQuarterColorOfHour(moment.wallClock.hour)
         : null;
 
     return ValueTile(
