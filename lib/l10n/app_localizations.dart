@@ -164,17 +164,35 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{no values} =1{1 value} other{{count} values}}'**
   String dataTabValueCount(num count);
 
-  /// No description provided for @dialogueAbout.
+  /// No description provided for @dialogAbout.
   ///
   /// In en, this message translates to:
-  /// **'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.'**
-  String get dialogueAbout;
+  /// **'About'**
+  String get dialogAbout;
 
-  /// No description provided for @dialogueAboutLegalese.
+  /// No description provided for @dialogAboutChangelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes in each version (CHANGELOG)'**
+  String get dialogAboutChangelog;
+
+  /// No description provided for @dialogAboutLegalese.
   ///
   /// In en, this message translates to:
   /// **'© 2026 RealEarthling'**
-  String get dialogueAboutLegalese;
+  String get dialogAboutLegalese;
+
+  /// No description provided for @dialogAboutReadme.
+  ///
+  /// In en, this message translates to:
+  /// **'Description of the features (README)'**
+  String get dialogAboutReadme;
+
+  /// No description provided for @dialogAboutText.
+  ///
+  /// In en, this message translates to:
+  /// **'A feature-rich time display app for nerds and amateur astronomers. Displays the current time in civil, technical and astronomical time systems, and a few curiosities.'**
+  String get dialogAboutText;
 
   /// No description provided for @hintAboutThisValue.
   ///
@@ -860,6 +878,12 @@ abstract class AppLocalizations {
   /// **'YYYY'**
   String get labelYear;
 
+  /// No description provided for @linkWiki.
+  ///
+  /// In en, this message translates to:
+  /// **'Wiki'**
+  String get linkWiki;
+
   /// No description provided for @messageAlreadyDisplayed.
   ///
   /// In en, this message translates to:
@@ -1033,12 +1057,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unix Epoch'**
   String get sectionUnix;
-
-  /// No description provided for @settingsAbout.
-  ///
-  /// In en, this message translates to:
-  /// **'About'**
-  String get settingsAbout;
 
   /// No description provided for @settingsCustomFormat.
   ///
@@ -1363,12 +1381,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Value display'**
   String get settingsValueDisplay;
-
-  /// No description provided for @settingsWhatsNew.
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s New'**
-  String get settingsWhatsNew;
 
   /// No description provided for @settingsZoneDisplayMode.
   ///

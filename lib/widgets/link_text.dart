@@ -10,17 +10,23 @@ class LinkText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        try {
-          await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        } catch (_) {} // no browser available: nothing to do
-      },
-      child: Text(
-        label ?? url,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          decoration: TextDecoration.underline,
+    return Tooltip(
+      message: url,
+      child: InkWell(
+        onTap: () async {
+          try {
+            await launchUrl(
+              Uri.parse(url),
+              mode: LaunchMode.externalApplication,
+            );
+          } catch (_) {} // no browser available: nothing to do
+        },
+        child: Text(
+          label ?? url,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );

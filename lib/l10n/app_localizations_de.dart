@@ -58,11 +58,20 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get dialogueAbout =>
-      'Eine Zeitanzeige-App für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an.';
+  String get dialogAbout => 'Über die App';
 
   @override
-  String get dialogueAboutLegalese => '© 2026 RealEarthling';
+  String get dialogAboutChangelog => 'Änderungshistorie (CHANGELOG)';
+
+  @override
+  String get dialogAboutLegalese => '© 2026 RealEarthling';
+
+  @override
+  String get dialogAboutReadme => 'Beschreibung der Funktionen (README)';
+
+  @override
+  String get dialogAboutText =>
+      'Eine Zeitanzeige-App mit vielen Funktionen für Nerds und Hobbyastronomen. Zeigt die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an, und ein paar Kuriositäten.';
 
   @override
   String get hintAboutThisValue => 'Über diesen Wert';
@@ -481,6 +490,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelYear => 'JJJJ';
 
   @override
+  String get linkWiki => 'Wiki';
+
+  @override
   String get messageAlreadyDisplayed => 'Dieser Wert wird bereits angezeigt.';
 
   @override
@@ -580,9 +592,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sectionUnix => 'Unix-Epoche';
-
-  @override
-  String get settingsAbout => 'Über die App';
 
   @override
   String get settingsCustomFormat => 'Benutzerdefiniert…';
@@ -760,9 +769,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsValueDisplay => 'Wertanzeige';
-
-  @override
-  String get settingsWhatsNew => 'Was ist neu';
 
   @override
   String get settingsZoneDisplayMode => 'Zeitzonenangabe';

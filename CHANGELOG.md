@@ -6,6 +6,10 @@
 - redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
   choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
 
+### Changed
+- CHANGELOG and README links in About dialog, new Wiki link replacing changelog link in Menu
+- external links now have tooltips showing the URL
+
 ### Fixed
 - wrongly typed entries in the config could make the app get stuck on a black screen
 

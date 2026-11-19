@@ -58,11 +58,20 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dialogueAbout =>
-      'A time display app for nerds and amateur astronomers. Displays the current time in civil, technical, and astronomical time systems.';
+  String get dialogAbout => 'About';
 
   @override
-  String get dialogueAboutLegalese => '© 2026 RealEarthling';
+  String get dialogAboutChangelog => 'Changes in each version (CHANGELOG)';
+
+  @override
+  String get dialogAboutLegalese => '© 2026 RealEarthling';
+
+  @override
+  String get dialogAboutReadme => 'Description of the features (README)';
+
+  @override
+  String get dialogAboutText =>
+      'A feature-rich time display app for nerds and amateur astronomers. Displays the current time in civil, technical and astronomical time systems, and a few curiosities.';
 
   @override
   String get hintAboutThisValue => 'About this value';
@@ -476,6 +485,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelYear => 'YYYY';
 
   @override
+  String get linkWiki => 'Wiki';
+
+  @override
   String get messageAlreadyDisplayed => 'This value is already displayed.';
 
   @override
@@ -574,9 +586,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sectionUnix => 'Unix Epoch';
-
-  @override
-  String get settingsAbout => 'About';
 
   @override
   String get settingsCustomFormat => 'Custom…';
@@ -753,9 +762,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsValueDisplay => 'Value display';
-
-  @override
-  String get settingsWhatsNew => 'What\'s New';
 
   @override
   String get settingsZoneDisplayMode => 'Time zone display';

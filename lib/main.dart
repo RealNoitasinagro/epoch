@@ -695,9 +695,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   _openSettings(context);
                 case 'about':
                   _showAbout(context, l10n);
-                case 'whats_new':
+                case 'wiki':
                   launchUrl(
-                    Uri.parse(changelogLink),
+                    Uri.parse(wikiLink),
                     mode: LaunchMode.externalApplication,
                   );
                 case 'exit':
@@ -730,18 +730,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   value: 'about',
                   child: ListTile(
                     leading: const Icon(Icons.info_outline),
-                    title: Text(l10n.settingsAbout),
+                    title: Text(l10n.dialogAbout),
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                   ),
                 ),
                 PopupMenuItem(
-                  value: 'whats_new',
-                  child: ListTile(
-                    leading: const Icon(Icons.new_releases_outlined),
-                    title: Text(l10n.settingsWhatsNew),
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
+                  value: 'wiki',
+                  child: Tooltip(
+                    message: wikiLink,
+                    child: ListTile(
+                      leading: const Icon(Icons.wysiwyg_outlined),
+                      title: Text(l10n.linkWiki),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                    ),
                   ),
                 ),
                 if (!isDesktopPlatform) ...[
@@ -904,8 +907,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       context: context,
       applicationName: l10n.appName,
       applicationVersion: '$version (build $build)',
-      applicationLegalese: l10n.dialogueAboutLegalese,
-      children: [SizedBox(height: 16), Text(l10n.dialogueAbout)],
+      applicationLegalese: l10n.dialogAboutLegalese,
+      applicationIcon: EpochApp.of(context).isNightMode
+          ? null
+          : Image.asset('assets/icon/epoch_icon.png', height: 48),
+      children: [
+        SizedBox(height: 16),
+        Text(l10n.dialogAboutText),
+        SizedBox(height: 8),
+        LinkText(url: readmeLink, label: l10n.dialogAboutReadme),
+        SizedBox(height: 8),
+        LinkText(url: changelogLink, label: l10n.dialogAboutChangelog),
+      ],
     );
   }
 }
