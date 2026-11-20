@@ -51,7 +51,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final result = TimeStringRow.computeDisplay(tv, summerUtc, 'en', l10n);
       expect(result.line2, contains('CET'));
@@ -232,7 +234,7 @@ void main() {
       const timeHidden = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        showDetails: false,
+        options: ValueOptions(showDetails: false),
       );
       final result = TimeStringRow.computeDisplay(
         timeHidden,
@@ -249,7 +251,7 @@ void main() {
         const timeShown = TimeValue(
           valueType: ValueType.time,
           zone: ZoneNamed('Europe/Berlin'),
-          showDetails: true,
+          options: ValueOptions(showDetails: true),
         );
         final result = TimeStringRow.computeDisplay(
           timeShown,
@@ -270,12 +272,12 @@ void main() {
         const date = TimeValue(
           valueType: ValueType.date,
           zone: ZoneLocal(),
-          showDetails: false,
+          options: ValueOptions(showDetails: false),
         );
         const gmst = TimeValue(
           valueType: ValueType.gmst,
           zone: ZoneUtc(),
-          showDetails: false,
+          options: ValueOptions(showDetails: false),
         );
         expect(
           TimeStringRow.computeDisplay(date, summerUtc, 'en', l10n).line2,
@@ -294,7 +296,7 @@ void main() {
         const timeHidden = TimeValue(
           valueType: ValueType.time,
           zone: ZoneNamed('Europe/Berlin'),
-          showDetails: false,
+          options: ValueOptions(showDetails: false),
         );
         final threeDaysBefore = DateTime.utc(2027, 3, 25, 12);
         final result = TimeStringRow.computeDisplay(

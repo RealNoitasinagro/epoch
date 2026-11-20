@@ -2,6 +2,8 @@ import '../time/time_utils.dart';
 import '../time/zone_rules.dart';
 import '../time_zone_search/generated/iana_links_snapshot.g.dart';
 import 'tab_entry.dart';
+import 'value_options.dart';
+export 'value_options.dart';
 
 // All displayable value types across all tabs.
 enum ValueType {
@@ -42,9 +44,6 @@ enum ValueType {
   doomsdayClock,
 }
 
-// For time zones with DST: automatic changes, or one pinned value.
-enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
-
 // How a value type can be shortened by the user: seconds or decimals can be hidden.
 enum OptionalPart { none, seconds, decimals }
 
@@ -72,34 +71,27 @@ ZoneSpec canonicalZoneSpec(ZoneSpec zone) {
   return canonical == 'Etc/UTC' ? const ZoneUtc() : zone;
 }
 
-// A single displayable entry: type + zone + optional custom label.
+// A single displayable entry: type, zone and the options of the user.
 class TimeValue implements TabEntry {
   final ValueType valueType;
   final ZoneSpec zone;
-  final String? customLabel;
-  final TimezoneClockChangeMode timezoneClockChangeMode;
-
-  /// Whether the optional part (seconds or decimals, see
-  /// [ValueTypeProps.optionalPart]) is shown. Null: the global default for
-  /// the value type applies.
-  final bool? showOptionalPart;
-
-  /// Whether the details line (time zone, week and day of the year, degrees)
-  /// is shown, see [ValueTypeProps.hasDetailsLine]. Null: the global
-  /// settings apply.
-  final bool? showDetails;
+  final ValueOptions options;
 
   const TimeValue({
     required this.valueType,
     required this.zone,
-    this.customLabel,
-    this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
-    this.showOptionalPart,
-    this.showDetails,
+    this.options = ValueOptions.none,
   });
 
-  // Unique key for deduplication within a tab.
-  // Custom label does not affect the key.
+  // Shortcuts for the options that are read most often.
+  String? get customLabel => options.customLabel;
+  TimezoneClockChangeMode get timezoneClockChangeMode =>
+      options.timezoneClockChangeMode;
+  bool? get showOptionalPart => options.showOptionalPart;
+  bool? get showDetails => options.showDetails;
+
+  // Type and zone; the options that make a different value are added in
+  // [key]. The label and the display options do not matter here.
   String get _baseKey {
     final z = switch (zone) {
       ZoneLocal() => 'local',
@@ -109,14 +101,56 @@ class TimeValue implements TabEntry {
     return '${valueType.name}/$z';
   }
 
+  // Unique key for deduplication within a tab.
   @override
-  String get key => switch (timezoneClockChangeMode) {
-    TimezoneClockChangeMode.auto => _baseKey,
-    TimezoneClockChangeMode.forceDst => '${_baseKey}/dst',
-    TimezoneClockChangeMode.forceStandard => '${_baseKey}/std',
-  };
+  String get key => '$_baseKey${options.identitySuffix}';
 
   bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
+
+  // Serialisation: see ValueOptions.splitPrefsString for the syntax.
+  @override
+  String toPrefsString() => options.appendTo(_baseKey);
+
+  static TimeValue? fromPrefsString(String s) {
+    final (:keyPart, :options) = ValueOptions.splitPrefsString(s);
+    final parts = keyPart.split('/');
+    if (parts.length < 2) return null;
+    final valueType = ValueType.values
+        .where((candidate) => candidate.name == parts[0])
+        .firstOrNull;
+    if (valueType == null) return null;
+
+    final zoneText = parts.sublist(1).join('/');
+    final ZoneSpec zone;
+    if (zoneText == 'local') {
+      zone = const ZoneLocal();
+    } else if (zoneText == 'utc') {
+      zone = const ZoneUtc();
+    } else if (zoneText.startsWith('named:')) {
+      zone = ZoneNamed(zoneText.substring('named:'.length));
+    } else {
+      return null;
+    }
+    return TimeValue(valueType: valueType, zone: zone, options: options);
+  }
+
+  TimeValue withOptions(ValueOptions newOptions) =>
+      TimeValue(valueType: valueType, zone: zone, options: newOptions);
+
+  TimeValue withCustomLabel(String? label) =>
+      withOptions(options.copyWith(customLabel: NewValue(label)));
+
+  TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
+      withOptions(options.copyWith(timezoneClockChangeMode: mode));
+
+  TimeValue withShowOptionalPart(bool? value) =>
+      withOptions(options.copyWith(showOptionalPart: NewValue(value)));
+
+  TimeValue withShowDetails(bool? value) =>
+      withOptions(options.copyWith(showDetails: NewValue(value)));
+
+  // ianaZoneFor, isZoneIndependent, effectiveClockChangeMode, isPinned,
+  // isDstCurrentlyActive: unchanged ...
 
   /// The IANA zone whose rules apply to this value; null for UTC.
   String? ianaZoneFor(String localIanaZone) {
@@ -125,135 +159,6 @@ class TimeValue implements TabEntry {
       ZoneNamed(ianaZone: final zoneName) => zoneName,
       ZoneUtc() => null,
     };
-  }
-
-  // Serialisation
-  @override
-  String toPrefsString() {
-    var result = customLabel != null ? '$_baseKey|$customLabel' : _baseKey;
-    if (timezoneClockChangeMode != TimezoneClockChangeMode.auto) {
-      result = '$result|dst:${timezoneClockChangeMode.name}';
-    }
-    final optionalPartChoice = showOptionalPart;
-    if (optionalPartChoice != null) {
-      result = '$result|${optionalPartChoice ? 'sec' : 'nosec'}';
-    }
-    final detailsChoice = showDetails;
-    if (detailsChoice != null) {
-      result = '$result|${detailsChoice ? 'det' : 'nodet'}';
-    }
-    return result;
-  }
-
-  static TimeValue? fromPrefsString(String s) {
-    var workStr = s;
-
-    // The flags are written as "|sec" or "|nosec", then "|det" or "|nodet",
-    // but are accepted in any order. They are taken off the end first,
-    // then "|dst:<mode>".
-    bool? showOptionalPart;
-    bool? showDetails;
-    while (true) {
-      if (workStr.endsWith('|nosec')) {
-        showOptionalPart = false;
-        workStr = _withoutSuffix(workStr, '|nosec');
-      } else if (workStr.endsWith('|sec')) {
-        showOptionalPart = true;
-        workStr = _withoutSuffix(workStr, '|sec');
-      } else if (workStr.endsWith('|nodet')) {
-        showDetails = false;
-        workStr = _withoutSuffix(workStr, '|nodet');
-      } else if (workStr.endsWith('|det')) {
-        showDetails = true;
-        workStr = _withoutSuffix(workStr, '|det');
-      } else {
-        break;
-      }
-    }
-
-    TimezoneClockChangeMode timezoneClockChangeMode =
-        TimezoneClockChangeMode.auto;
-    final dstIdx = workStr.lastIndexOf('|dst:');
-    if (dstIdx >= 0) {
-      final dstName = workStr.substring(dstIdx + '|dst:'.length);
-      timezoneClockChangeMode =
-          TimezoneClockChangeMode.values
-              .where((mode) => mode.name == dstName)
-              .firstOrNull ??
-          TimezoneClockChangeMode.auto;
-      workStr = workStr.substring(0, dstIdx);
-    }
-
-    final pipeIdx = workStr.indexOf('|');
-    final keyPart = pipeIdx >= 0 ? workStr.substring(0, pipeIdx) : workStr;
-    final labelPart = pipeIdx >= 0 ? workStr.substring(pipeIdx + 1) : null;
-
-    final parts = keyPart.split('/');
-    if (parts.length < 2) return null;
-    final valueType = ValueType.values
-        .where((e) => e.name == parts[0])
-        .firstOrNull;
-    if (valueType == null) return null;
-    final zoneStr = parts.sublist(1).join('/');
-    final ZoneSpec zone;
-    if (zoneStr == 'local')
-      zone = const ZoneLocal();
-    else if (zoneStr == 'utc')
-      zone = const ZoneUtc();
-    else if (zoneStr.startsWith('named:'))
-      zone = ZoneNamed(zoneStr.substring(6));
-    else
-      return null;
-
-    return TimeValue(
-      valueType: valueType,
-      zone: zone,
-      customLabel: (labelPart == null || labelPart.isEmpty) ? null : labelPart,
-      timezoneClockChangeMode: timezoneClockChangeMode,
-      showOptionalPart: showOptionalPart,
-      showDetails: showDetails,
-    );
-  }
-
-  static String _withoutSuffix(String text, String suffix) {
-    return text.substring(0, text.length - suffix.length);
-  }
-
-  TimeValue copyWith({
-    String? customLabel,
-    bool clearCustomLabel = false,
-    TimezoneClockChangeMode? timezoneClockChangeMode,
-    bool? showOptionalPart,
-    bool clearShowOptionalPart = false,
-    bool? showDetails,
-    bool clearShowDetails = false,
-  }) => TimeValue(
-    valueType: valueType,
-    zone: zone,
-    customLabel: clearCustomLabel ? null : (customLabel ?? this.customLabel),
-    timezoneClockChangeMode:
-        timezoneClockChangeMode ?? this.timezoneClockChangeMode,
-    showOptionalPart: clearShowOptionalPart
-        ? null
-        : (showOptionalPart ?? this.showOptionalPart),
-    showDetails: clearShowDetails ? null : (showDetails ?? this.showDetails),
-  );
-
-  TimeValue withCustomLabel(String? label) =>
-      copyWith(customLabel: label, clearCustomLabel: label == null);
-
-  TimeValue withTimezoneClockChangeMode(TimezoneClockChangeMode mode) =>
-      copyWith(timezoneClockChangeMode: mode);
-
-  TimeValue withShowOptionalPart(bool? value) {
-    return copyWith(
-      showOptionalPart: value,
-      clearShowOptionalPart: value == null,
-    );
-  }
-
-  TimeValue withShowDetails(bool? value) {
-    return copyWith(showDetails: value, clearShowDetails: value == null);
   }
 
   // Whether this type is zone-independent (Technical/Astronomical/Curiosities).

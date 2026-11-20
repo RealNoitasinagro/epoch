@@ -594,7 +594,7 @@ void main() {
     const utcNoSeconds = TimeValue(
       valueType: ValueType.dayMinute,
       zone: ZoneUtc(),
-      showOptionalPart: false,
+      options: ValueOptions(showOptionalPart: false),
     );
     const berlin = TimeValue(
       valueType: ValueType.dayMinute,
@@ -669,7 +669,7 @@ void main() {
     const timeWithoutSeconds = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
-      showOptionalPart: false,
+      options: ValueOptions(showOptionalPart: false),
     );
 
     test('time without seconds', () {
@@ -685,7 +685,7 @@ void main() {
       const dayPercent = TimeValue(
         valueType: ValueType.dayPercent,
         zone: ZoneUtc(),
-        showOptionalPart: false,
+        options: ValueOptions(showOptionalPart: false),
       );
       expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 23, 59, 59)), '99');
       expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 12)), '50');
@@ -695,7 +695,7 @@ void main() {
       const decimalTime = TimeValue(
         valueType: ValueType.decimalTime,
         zone: ZoneUtc(),
-        showOptionalPart: false,
+        options: ValueOptions(showOptionalPart: false),
       );
       expect(line1(decimalTime, DateTime.utc(2026, 6, 15, 12)), '5ʰ00ᵐ');
     });
@@ -704,7 +704,7 @@ void main() {
       const timeWithSeconds = TimeValue(
         valueType: ValueType.time,
         zone: ZoneUtc(),
-        showOptionalPart: true,
+        options: ValueOptions(showOptionalPart: true),
       );
       expect(line1(timeWithSeconds, moment, timeFormat: 'HH:mm'), '14:05:09');
       expect(

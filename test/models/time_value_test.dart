@@ -39,7 +39,7 @@ void main() {
       const e = TimeValue(
         valueType: ValueType.time,
         zone: ZoneLocal(),
-        customLabel: 'My Time',
+        options: ValueOptions(customLabel: 'My Time'),
       );
       final s = e.toPrefsString();
       final e2 = TimeValue.fromPrefsString(s);
@@ -84,7 +84,9 @@ void main() {
       const e = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Asia/Tokyo'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       expect(e.isPinned(DateTime.utc(2026), 'UTC'), isFalse);
     });
@@ -261,7 +263,7 @@ void main() {
       const value = TimeValue(
         valueType: ValueType.swatchBeats,
         zone: ZoneUtc(),
-        showOptionalPart: false,
+        options: ValueOptions(showOptionalPart: false),
       );
       expect(value.toPrefsString(), endsWith('|nosec'));
       expect(
@@ -276,12 +278,12 @@ void main() {
     const shown = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
-      showOptionalPart: true,
+      options: ValueOptions(showOptionalPart: true),
     );
     const hidden = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
-      showOptionalPart: false,
+      options: ValueOptions(showOptionalPart: false),
     );
 
     test('serializes default, shown and hidden', () {
@@ -306,9 +308,11 @@ void main() {
       const value = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        customLabel: 'Home',
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
-        showOptionalPart: false,
+        options: ValueOptions(
+          customLabel: 'Home',
+          showOptionalPart: false,
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final parsed = TimeValue.fromPrefsString(value.toPrefsString())!;
       expect(parsed.customLabel, 'Home');
@@ -341,15 +345,17 @@ void main() {
       const shown = TimeValue(
         valueType: ValueType.time,
         zone: ZoneUtc(),
-        showDetails: true,
+        options: ValueOptions(showDetails: true),
       );
       const hidden = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        customLabel: 'Home',
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
-        showOptionalPart: false,
-        showDetails: false,
+        options: ValueOptions(
+          customLabel: 'Home',
+          showOptionalPart: false,
+          showDetails: false,
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       expect(shown.toPrefsString(), 'time/utc|det');
       expect(

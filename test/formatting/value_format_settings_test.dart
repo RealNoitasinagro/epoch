@@ -9,7 +9,7 @@ void main() {
   const timeShown = TimeValue(
     valueType: ValueType.time,
     zone: ZoneUtc(),
-    showOptionalPart: true,
+    options: ValueOptions(showOptionalPart: true),
   );
   const swatchBeats = TimeValue(
     valueType: ValueType.swatchBeats,
@@ -64,12 +64,12 @@ void main() {
     const timeShown = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
-      showDetails: true,
+      options: ValueOptions(showDetails: true),
     );
     const timeHidden = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
-      showDetails: false,
+      options: ValueOptions(showDetails: false),
     );
     const date = TimeValue(valueType: ValueType.date, zone: ZoneLocal());
     const gmst = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());

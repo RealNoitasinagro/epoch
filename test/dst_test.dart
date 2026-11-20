@@ -24,7 +24,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:'), isFalse);
@@ -39,7 +41,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceDst'), isTrue);
@@ -54,7 +58,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final s = tv.toPrefsString();
       expect(s.contains('dst:forceStandard'), isTrue);
@@ -69,8 +75,10 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        customLabel: 'My Berlin Time',
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          customLabel: 'My Berlin Time',
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final s = tv.toPrefsString();
       final tv2 = TimeValue.fromPrefsString(s);
@@ -85,7 +93,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       final s1 = tv.toPrefsString();
       final tv2 = TimeValue.fromPrefsString(s1)!;
@@ -222,7 +232,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('CEST'));
@@ -232,7 +244,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('CET'));
@@ -242,7 +256,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('CET'));
@@ -253,7 +269,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('CEST'));
@@ -264,7 +282,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final result = TimeValueFormatter.format(tv, summerUtc, 'en');
       expect(result, contains('UTC+01:00'));
@@ -274,7 +294,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       final result = TimeValueFormatter.format(tv, winterUtc, 'en');
       expect(result, contains('UTC+02:00'));
@@ -284,12 +306,16 @@ void main() {
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       const tvStd = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final autoResult = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
       final stdResult = TimeValueFormatter.format(tvStd, summerUtc, 'en');
@@ -302,12 +328,16 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Asia/Tokyo'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Asia/Tokyo'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       final forced = TimeValueFormatter.format(tv, summerUtc, 'en');
       final auto = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
@@ -318,12 +348,16 @@ void main() {
       const tvAuto = TimeValue(
         valueType: ValueType.daySecond,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       const tvStd = TimeValue(
         valueType: ValueType.daySecond,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       final autoValFormatted = TimeValueFormatter.format(
         tvAuto,
@@ -352,7 +386,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       final tv2 = tv.withTimezoneClockChangeMode(
         TimezoneClockChangeMode.forceStandard,
@@ -382,7 +418,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       expect(tv.key, equals('time/named:Europe/Berlin/dst'));
     });
@@ -391,7 +429,9 @@ void main() {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       expect(tv.key, equals('time/named:Europe/Berlin/std'));
     });
@@ -400,17 +440,23 @@ void main() {
       const tvAuto = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+        ),
       );
       const tvDst = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+        ),
       );
       const tvStd = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
-        timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
       expect(tvAuto.sameZoneAndType(tvDst), isTrue);
       expect(tvAuto.sameZoneAndType(tvStd), isTrue);

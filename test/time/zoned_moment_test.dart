@@ -17,7 +17,9 @@ void main() {
   const berlinStandardValue = TimeValue(
     valueType: ValueType.time,
     zone: ZoneNamed('Europe/Berlin'),
-    timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+    options: ValueOptions(
+      timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+    ),
   );
   const localBerlinValue = TimeValue(
     valueType: ValueType.time,

@@ -207,7 +207,9 @@ const List<TabEntry> defaultWatchlistEntries = [
   TimeValue(
     valueType: ValueType.time,
     zone: ZoneNamed('Europe/Berlin'),
-    timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+    options: ValueOptions(
+      timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+    ),
   ),
   TabDivider(id: 'builtin_divider_watchlist_1'),
   TimeValue(valueType: ValueType.gmst, zone: ZoneUtc()),
