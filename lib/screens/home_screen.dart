@@ -374,6 +374,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       contentPadding: EdgeInsets.zero,
                       dense: true,
                     ),
+                    waitDuration: const Duration(milliseconds: 1000),
                   ),
                 ),
                 if (!isDesktopPlatform) ...[
@@ -500,10 +501,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             const Divider(height: kDividerHeight),
             if (commitLink.isNotEmpty) ...[
               const SizedBox(height: 12),
-              LinkText(url: commitLink, label: 'Commit (GitHub)'),
+              LinkText(url: commitLink, label: commitLinkText),
               const SizedBox(height: 24),
             ],
-            LinkText(url: timezoneLink, label: 'timezone package website'),
+            LinkText(url: timezoneLink, label: timezoneLinkText),
             const SizedBox(height: 24),
             LinkText(url: ianaLink, label: 'IANA Time Zones website'),
           ],

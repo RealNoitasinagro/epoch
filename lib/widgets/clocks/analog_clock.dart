@@ -43,7 +43,7 @@ bool analogClockShowsPlusTwelve(int wallClockHour, AnalogClockScale scale) =>
 
 const double _rimWidth = 0.035;
 const double _rimRadius = 1 - _rimWidth / 2;
-const double _minuteScaleOuterRadius = 1 - _rimWidth - 0.01;
+const double _minuteScaleOuterRadius = 1 - _rimWidth - 0.04;
 
 const double _minuteTickLength = 0.035;
 const double _minuteTickWidth = 0.008;
