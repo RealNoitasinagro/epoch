@@ -1,5 +1,4 @@
 import 'package:timezone/timezone.dart' as tz;
-import '../formatting/pattern_tokens.dart';
 import '../l10n/app_localizations.dart';
 import '../models/tab_config.dart';
 import '../models/time_value.dart';
@@ -52,19 +51,19 @@ final Map<String, _Check> _configChecks = {
   'civil_tab_entries': _isStringList,
   'custom_tabs': _isStringList,
   'date_cw_doy': _isBool,
-  'date_format': (value) =>
-      value is String && validateDatePattern(value) == null,
+  'date_format': _isString, // any text is used: nonsense in a config may stay
   'day_quarter_color': _isBool,
-  'focus_brightness': _isNumberIn(0.01, 1.0),
-  'focus_color': (value) => value is int && value >= 0 && value <= 0xFFFFFFFF,
+  'focus_brightness': _isNumberIn(kMinFocusBrightness, 1.0),
+  'focus_color': (value) =>
+      value is int && value >= 0 && value <= kMaxArgbValue,
   'focus_color_mode': _isOneOf(FocusColorMode.values.map((mode) => mode.name)),
   'focus_pixel_shift': _isBool,
   'focus_time_shift_indicator': _isBool,
   'hour_format_24': _isBool,
   'last_export_dir': _isString,
   'last_imported_config': _isString,
-  'lmst_lon': _isNumberIn(-180, 180),
-  'lmst_longitude': _isNumberIn(-180, 180),
+  'lmst_lon': _isNumberIn(-kMaxLongitude, kMaxLongitude),
+  'lmst_longitude': _isNumberIn(-kMaxLongitude, kMaxLongitude),
   'lmst_mode': _isOneOf(LmstMode.values.map((mode) => mode.name)),
   'locale': (value) =>
       value is String &&
@@ -81,8 +80,7 @@ final Map<String, _Check> _configChecks = {
       (value.isEmpty || TimeValue.fromPrefsString(value) != null),
   'theme_mode': _isOneOf(AppThemeMode.values.map((mode) => mode.name)),
   'thousands_sep': _isBool,
-  'time_format': (value) =>
-      value is String && validateTimePattern(value) == null,
+  'time_format': _isString,
   'time_shift_frozen': _isBool,
   'time_shift_moment': _isUsableMoment,
   'time_shift_zone': (value) =>

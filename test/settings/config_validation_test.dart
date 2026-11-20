@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:epoch/settings/app_settings.dart';
 import 'package:epoch/settings/config_validation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
 
 void main() {
@@ -64,21 +66,12 @@ void main() {
     test('patterns, names, times and zones', () {
       expect(
         findIgnoredConfigKeys({
-          'date_format': 'YYYY-ZZ',
-          'time_format': 'mm:ss',
           'theme_mode': 'sepia',
           'night_mode_start': '25:00',
           'time_shift_zone': 'Nowhere/Land',
           'locale': 'fr',
         }),
-        [
-          'date_format',
-          'locale',
-          'night_mode_start',
-          'theme_mode',
-          'time_format',
-          'time_shift_zone',
-        ],
+        ['locale', 'night_mode_start', 'theme_mode', 'time_shift_zone'],
       );
     });
 
@@ -119,6 +112,50 @@ void main() {
           reason: broken,
         );
       }
+    });
+  });
+
+  group('findIgnoredConfigKeys: the loaders agree', () {
+    Future<void> expectIgnored(
+      String key,
+      Object badValue,
+      Future<Object?> Function() load,
+      Object? defaultValue,
+    ) async {
+      SharedPreferences.setMockInitialValues({key: badValue});
+      expect(findIgnoredConfigKeys({key: badValue}), [
+        key,
+      ], reason: 'validator');
+      expect(await load(), defaultValue, reason: 'loader');
+    }
+
+    test('focus_color', () async {
+      for (final bad in [-999, 0x1FFFFFFFF]) {
+        await expectIgnored(
+          'focus_color',
+          bad,
+          () => loadFocusColor(false),
+          kDefaultFocusColorLight,
+        );
+      }
+    });
+    test('focus_brightness', () async {
+      for (final bad in [5, 0.0]) {
+        await expectIgnored(
+          'focus_brightness',
+          bad,
+          () => loadFocusBrightness(false),
+          kDefaultFocusBrightness,
+        );
+      }
+    });
+    test('lmst_longitude', () async {
+      for (final bad in [200, -181]) {
+        await expectIgnored('lmst_longitude', bad, loadLmstLongitude, null);
+      }
+    });
+    test('locale', () async {
+      await expectIgnored('locale', 'fr', loadLocale, null);
     });
   });
 }

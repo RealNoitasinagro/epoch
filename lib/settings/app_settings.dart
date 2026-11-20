@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app/layout_constants.dart';
+import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
 import '../platform/platform_utils.dart';
 import 'night_mode_schedule.dart';
@@ -58,6 +59,11 @@ const kTimePatternNoSeconds = 'HH:mm'; // 14:05
 const kTimePatternNoLeadingZero = 'H:mm:ss'; // 9:05:09 -> 14:05:09
 const kTimePatternCompact = 'HHmm'; // 1405
 
+/// Largest valid ARGB value.
+const kMaxArgbValue = 0xFFFFFFFF;
+const kMinFocusBrightness = 0.01;
+const kMaxLongitude = 180.0;
+
 // Extended theme mode including night (red-on-black) mode.
 enum AppThemeMode { system, light, dark, night }
 
@@ -79,8 +85,11 @@ enum FocusColorMode { fixed, dayQuarter, random }
 Future<Locale?> loadLocale() async {
   final prefs = await SharedPreferences.getInstance();
   final code = prefs.tolerantString(_kLocaleKey);
-  if (code == null) return null;
-  return Locale(code);
+  // A language without a translation would leave the app without texts.
+  final isSupported = AppLocalizations.supportedLocales.any(
+    (locale) => locale.languageCode == code,
+  );
+  return code != null && isSupported ? Locale(code) : null;
 }
 
 Future<void> saveLocale(String languageCode) async {
@@ -240,7 +249,10 @@ Future<void> saveLmstMode(LmstMode mode) async {
 
 Future<double?> loadLmstLongitude() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.tolerantDouble(_kLmstLongitudeKey);
+  final longitude = prefs.tolerantDouble(_kLmstLongitudeKey);
+  return longitude != null && longitude.abs() <= kMaxLongitude
+      ? longitude
+      : null;
 }
 
 Future<void> saveLmstLongitude(double lon) async {
@@ -262,10 +274,13 @@ Future<void> saveActiveTab(int index) async {
 Future<double> loadFocusBrightness(bool isNightMode) async {
   if (isNightMode) return kDefaultFocusBrightnessNight;
   final prefs = await SharedPreferences.getInstance();
-  // A hand-edited value may be out of range (the slider would assert).
-  return (prefs.tolerantDouble(_kFocusBrightnessKey) ?? kDefaultFocusBrightness)
-      .clamp(0.01, 1.0)
-      .toDouble();
+  final brightness = prefs.tolerantDouble(_kFocusBrightnessKey);
+  // Out of range (the slider would assert): the default applies.
+  return brightness != null &&
+          brightness >= kMinFocusBrightness &&
+          brightness <= 1.0
+      ? brightness
+      : kDefaultFocusBrightness;
 }
 
 Future<void> saveFocusBrightness(double brightness) async {
@@ -278,8 +293,13 @@ Future<Color> loadFocusColor(bool isNightMode) async {
   if (isNightMode) return kDefaultFocusColorNight;
   final prefs = await SharedPreferences.getInstance();
   final value = prefs.tolerantInt(_kFocusColorKey);
+  // Only a real ARGB value counts: any other integer would be cut to its
+  // lower 32 bits and give an arbitrary color.
+  if (value == null || value < 0 || value > kMaxArgbValue) {
+    return kDefaultFocusColorLight;
+  }
   // Always opaque: 0x00FF41 without an alpha byte would be invisible.
-  return value != null ? Color(0xFF000000 | value) : kDefaultFocusColorLight;
+  return Color(0xFF000000 | value);
 }
 
 Future<void> saveFocusColor(Color color) async {

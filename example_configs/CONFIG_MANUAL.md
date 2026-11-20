@@ -248,8 +248,8 @@ The details line below the value is the time zone line (`time`, `dateTime`, `day
 | `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)     |
 
 > [!IMPORTANT]
-> The suffixes `|sec`, `|nosec`, `|det` and `|nodet` may be combined and are read in any order after the label and the clock change mode, e. g. `time/named:Europe/Brussels|dst:forceStandard|nosec|nodet`.  \
-> As custom labels, these four words cannot be used.
+> The clock change mode (`|dst:forceDst`, `|dst:forceStandard`) and the flags `|sec`, `|nosec`, `|det` and `|nodet` may be combined and are read in any order after the label, e. g. `time/named:Europe/Brussels|nosec|dst:forceStandard|nodet`. Epoch itself writes them in a fixed order.
+> As custom labels, these words cannot be used.
 
 #### Divider
 

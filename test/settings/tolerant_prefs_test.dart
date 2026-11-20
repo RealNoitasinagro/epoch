@@ -71,7 +71,7 @@ void main() {
       'focus_brightness': 5, // integer, out of range
       'focus_color': 0x00FF41, // no alpha byte
     });
-    expect(await loadFocusBrightness(false), 1.0);
+    expect(await loadFocusBrightness(false), kDefaultFocusBrightness);
     expect(await loadFocusColor(false), const Color(0xFF00FF41));
   });
 
