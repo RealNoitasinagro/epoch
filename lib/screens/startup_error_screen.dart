@@ -85,6 +85,7 @@ class StartupErrorScreen extends StatelessWidget {
                     SnackBar(
                       content: Text(l10n.startupErrorCopied),
                       behavior: SnackBarBehavior.floating,
+                      duration: kSnackBarShort,
                     ),
                   );
                 },

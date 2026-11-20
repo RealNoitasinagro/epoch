@@ -223,8 +223,8 @@ class TimeStringRow extends TimeValueRow {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.messageCopiedToClipboard(label)),
-        duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
+        duration: kSnackBarShort,
       ),
     );
   }

@@ -543,9 +543,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       children: [
         SizedBox(height: 16),
         Text(l10n.dialogAboutText),
-        SizedBox(height: 8),
+        Divider(height: kDividerHeight),
         LinkText(url: readmeLink, label: l10n.dialogAboutReadme),
-        SizedBox(height: 8),
+        SizedBox(height: 24),
         LinkText(url: changelogLink, label: l10n.dialogAboutChangelog),
       ],
     );

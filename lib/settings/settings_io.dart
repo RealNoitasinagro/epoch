@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app/epoch_app.dart';
+import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../time/effective_clock.dart';
 import 'settings_json.dart';
@@ -104,7 +105,7 @@ Future<void> importSettings(BuildContext context) async {
             ignoredKeys.length,
             _keyList(ignoredKeys),
           ),
-    duration: ignoredKeys.isEmpty ? null : const Duration(seconds: 6),
+    duration: ignoredKeys.isEmpty ? null : kSnackBarLong,
   );
 }
 
@@ -183,8 +184,8 @@ void _showSnackBar(BuildContext context, String message, {Duration? duration}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
-      duration: duration ?? const Duration(seconds: 4),
       behavior: SnackBarBehavior.floating,
+      duration: duration ?? kSnackBarStandard,
     ),
   );
 }

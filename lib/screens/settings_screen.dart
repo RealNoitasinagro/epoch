@@ -103,8 +103,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.settingsLmstLongitudeUnavailable),
-          duration: const Duration(seconds: 8),
           behavior: SnackBarBehavior.floating,
+          duration: kSnackBarLongest,
         ),
       );
       return;
@@ -130,8 +130,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           content: Text(
             AppLocalizations.of(context)!.messageMissingTabsRestored,
           ),
-          duration: const Duration(seconds: 6),
           behavior: SnackBarBehavior.floating,
+          duration: kSnackBarLong,
         ),
       );
     }
@@ -613,8 +613,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       messenger.showSnackBar(
         SnackBar(
           content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
-          duration: const Duration(seconds: 6),
           behavior: SnackBarBehavior.floating,
+          duration: kSnackBarLong,
         ),
       );
     }

@@ -38,3 +38,10 @@ const double kGraphicalAnalogClockDiameterDefault = 160.0;
 const double kGraphicalAnalogClockDiameterFocus = 400.0;
 const double kGraphicalBinaryClockDotSizeDefault = 20.0;
 const double kGraphicalBinaryClockDotSizeFocus = 80.0;
+
+const Duration kSnackBarShort = Duration(
+  seconds: 2,
+); // e.g. copied to clipboard
+const Duration kSnackBarStandard = Duration(seconds: 4);
+const Duration kSnackBarLong = Duration(seconds: 6);
+const Duration kSnackBarLongest = Duration(seconds: 8); // long text only

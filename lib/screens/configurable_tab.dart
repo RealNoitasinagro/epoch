@@ -473,6 +473,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         SnackBar(
           content: Text(l10n.messageMaxValues(widget.maxEntries)),
           behavior: SnackBarBehavior.floating,
+          duration: kSnackBarStandard,
         ),
       );
       return;
@@ -494,6 +495,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         SnackBar(
           content: Text(l10n.messageAlreadyDisplayed),
           behavior: SnackBarBehavior.floating,
+          duration: kSnackBarStandard,
         ),
       );
       return;

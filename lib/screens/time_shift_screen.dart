@@ -120,8 +120,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
       ..showSnackBar(
         SnackBar(
           content: Text(text),
-          duration: duration ?? const Duration(seconds: 4),
           behavior: SnackBarBehavior.floating,
+          duration: duration ?? kSnackBarStandard,
         ),
       );
   }
@@ -188,7 +188,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         AppLocalizations.of(
           context,
         )!.timeShiftSkippedTime(requestedText, usedText),
-        duration: const Duration(seconds: 6),
+        duration: kSnackBarLong,
       );
     }
   }
@@ -284,7 +284,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     await saveTimeShiftStart(start);
     if (!mounted) return;
     setState(() => _savedStart = start);
-    _showSnackBar(l10n.timeShiftStartSaved);
+    _showSnackBar(l10n.timeShiftStartSaved, duration: kSnackBarShort);
   }
 
   Future<void> _removeStartValue() async {
@@ -292,7 +292,7 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     await clearTimeShiftStart();
     if (!mounted) return;
     setState(() => _savedStart = null);
-    _showSnackBar(l10n.timeShiftStartRemoved);
+    _showSnackBar(l10n.timeShiftStartRemoved, duration: kSnackBarShort);
   }
 
   Widget _segmentRow(List<Widget> segments, String separator) {
