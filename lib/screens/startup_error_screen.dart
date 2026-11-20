@@ -7,6 +7,7 @@ import '../app/layout_constants.dart';
 import '../app/link_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/system_locale.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/link_text.dart';
 
 /// Shown instead of a blank screen when the app cannot start, e.g. because
@@ -81,12 +82,10 @@ class StartupErrorScreen extends StatelessWidget {
                     ClipboardData(text: '$issuesLink\n\n$details'),
                   );
                   if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.startupErrorCopied),
-                      behavior: SnackBarBehavior.floating,
-                      duration: kSnackBarShort,
-                    ),
+                  showAppSnackBar(
+                    context,
+                    l10n.startupErrorCopied,
+                    duration: kSnackBarShort,
                   );
                 },
               ),

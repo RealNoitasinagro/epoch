@@ -12,6 +12,7 @@ import '../../settings/app_settings.dart';
 import '../../time/time_utils.dart';
 import '../../time/zone_abbreviations.dart';
 import '../../time/zoned_moment.dart';
+import '../app_snack_bar.dart';
 import 'dst_status_icon.dart';
 import 'time_value_row.dart';
 import 'value_tile.dart';
@@ -220,12 +221,10 @@ class TimeStringRow extends TimeValueRow {
         ? '$label: $displayValue'
         : displayValue;
     Clipboard.setData(ClipboardData(text: clipboardText));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.messageCopiedToClipboard(label)),
-        behavior: SnackBarBehavior.floating,
-        duration: kSnackBarShort,
-      ),
+    showAppSnackBar(
+      context,
+      l10n.messageCopiedToClipboard(label),
+      duration: kSnackBarShort,
     );
   }
 

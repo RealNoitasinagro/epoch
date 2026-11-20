@@ -12,6 +12,7 @@ import '../time/wall_clock_in_zone.dart';
 import '../time/zone_rules.dart';
 import '../time_zone_search/generated/iana_links_snapshot.g.dart';
 import '../time_zone_search/zones.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/section_header.dart';
 
 enum _TimeUnit { hour, minute, second }
@@ -114,24 +115,14 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
         '${twoDigits(moment.minute)}:${twoDigits(moment.second)}';
   }
 
-  void _showSnackBar(String text, {Duration? duration}) {
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(text),
-          behavior: SnackBarBehavior.floating,
-          duration: duration ?? kSnackBarStandard,
-        ),
-      );
-  }
-
   void _showOutOfRange() {
-    _showSnackBar(
+    showAppSnackBar(
+      context,
       AppLocalizations.of(context)!.timeShiftOutOfRange(
         EffectiveClock.earliestMomentText,
         EffectiveClock.latestMomentText,
       ),
+      duration: kSnackBarStandard,
     );
   }
 
@@ -184,7 +175,8 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     final requestedText = _wallClockText(requested);
     final usedText = _wallClockText(used);
     if (requestedText != usedText) {
-      _showSnackBar(
+      showAppSnackBar(
+        context,
         AppLocalizations.of(
           context,
         )!.timeShiftSkippedTime(requestedText, usedText),
@@ -284,7 +276,11 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     await saveTimeShiftStart(start);
     if (!mounted) return;
     setState(() => _savedStart = start);
-    _showSnackBar(l10n.timeShiftStartSaved, duration: kSnackBarShort);
+    showAppSnackBar(
+      context,
+      l10n.timeShiftStartSaved,
+      duration: kSnackBarShort,
+    );
   }
 
   Future<void> _removeStartValue() async {
@@ -292,7 +288,11 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     await clearTimeShiftStart();
     if (!mounted) return;
     setState(() => _savedStart = null);
-    _showSnackBar(l10n.timeShiftStartRemoved, duration: kSnackBarShort);
+    showAppSnackBar(
+      context,
+      l10n.timeShiftStartRemoved,
+      duration: kSnackBarShort,
+    );
   }
 
   Widget _segmentRow(List<Widget> segments, String separator) {

@@ -10,6 +10,7 @@ import '../models/time_value.dart';
 import '../settings/app_settings.dart';
 import '../time/time_utils.dart';
 import '../time/zoned_moment.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/clocks/graphical_clock.dart';
 import '../widgets/section_header.dart';
 import '../widgets/value_tiles/dst_status_icon.dart';
@@ -469,12 +470,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final l10n = AppLocalizations.of(context)!;
     int timeValueEntries = widget.entries.where((e) => e is TimeValue).length;
     if (timeValueEntries >= widget.maxEntries) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.messageMaxValues(widget.maxEntries)),
-          behavior: SnackBarBehavior.floating,
-          duration: kSnackBarStandard,
-        ),
+      showAppSnackBar(
+        context,
+        l10n.messageMaxValues(widget.maxEntries),
+        duration: kSnackBarStandard,
       );
       return;
     }
@@ -491,12 +490,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (result is TimeValue &&
         widget.entries.any((e) => e is TimeValue && e.key == result.key)) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.messageAlreadyDisplayed),
-          behavior: SnackBarBehavior.floating,
-          duration: kSnackBarStandard,
-        ),
+      showAppSnackBar(
+        context,
+        l10n.messageAlreadyDisplayed,
+        duration: kSnackBarStandard,
       );
       return;
     }

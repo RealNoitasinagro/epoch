@@ -8,6 +8,7 @@ import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../time/effective_clock.dart';
+import '../widgets/app_snack_bar.dart';
 import 'settings_json.dart';
 import 'time_shift_start.dart';
 import 'tolerant_prefs.dart';
@@ -49,7 +50,7 @@ Future<bool> exportSettings(
   }
 
   if (!doBackup) {
-    _showSnackBar(context, l10n.messageSettingsExported); // Android, Linux
+    showAppSnackBar(context, l10n.messageSettingsExported); // Android, Linux
   }
   return true;
 }
@@ -87,7 +88,7 @@ Future<void> importSettings(BuildContext context) async {
     }
   } on FormatException {
     if (!context.mounted) return;
-    _showSnackBar(context, l10n.messageSettingsImportFailed);
+    showAppSnackBar(context, l10n.messageSettingsImportFailed);
     return;
   }
 
@@ -97,7 +98,7 @@ Future<void> importSettings(BuildContext context) async {
   await EpochApp.of(context).reloadPreferences();
 
   if (!context.mounted) return;
-  _showSnackBar(
+  showAppSnackBar(
     context,
     ignoredKeys.isEmpty
         ? l10n.messageSettingsImported
@@ -105,7 +106,7 @@ Future<void> importSettings(BuildContext context) async {
             ignoredKeys.length,
             _keyList(ignoredKeys),
           ),
-    duration: ignoredKeys.isEmpty ? null : kSnackBarLong,
+    duration: ignoredKeys.isEmpty ? kSnackBarStandard : kSnackBarLong,
   );
 }
 
@@ -127,7 +128,7 @@ Future<void> resetSettings(BuildContext context) async {
 
   // report
   if (!context.mounted) return;
-  _showSnackBar(context, l10n.messageSettingsReset);
+  showAppSnackBar(context, l10n.messageSettingsReset);
 }
 
 // ── Private helpers ──────────────────────────────────────────────────────────
@@ -179,13 +180,3 @@ const _maxListedKeys = 4;
 String _keyList(List<String> keys) => keys.length <= _maxListedKeys
     ? keys.join(', ')
     : '${keys.take(_maxListedKeys).join(', ')}, …';
-
-void _showSnackBar(BuildContext context, String message, {Duration? duration}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      behavior: SnackBarBehavior.floating,
-      duration: duration ?? kSnackBarStandard,
-    ),
-  );
-}

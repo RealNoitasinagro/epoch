@@ -15,6 +15,7 @@ import '../platform/platform_utils.dart';
 import '../settings/app_settings.dart';
 import '../settings/night_mode_schedule.dart';
 import '../settings/settings_io.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/section_header.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -100,12 +101,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final longitude = await LocationService.getLastKnownLongitude();
     if (longitude == null) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.settingsLmstLongitudeUnavailable),
-          behavior: SnackBarBehavior.floating,
-          duration: kSnackBarLongest,
-        ),
+      showAppSnackBar(
+        context,
+        l10n.settingsLmstLongitudeUnavailable,
+        duration: kSnackBarLongest,
       );
       return;
     }
@@ -125,14 +124,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     setState(() => _tabs = result.tabs);
     if (result.backfilled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.messageMissingTabsRestored,
-          ),
-          behavior: SnackBarBehavior.floating,
-          duration: kSnackBarLong,
-        ),
+      showAppSnackBar(
+        context,
+        AppLocalizations.of(context)!.messageMissingTabsRestored,
+        duration: kSnackBarLong,
       );
     }
   }
@@ -608,14 +603,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (value && wasHidden) {
       final l10n = AppLocalizations.of(context)!;
-      final messenger = ScaffoldMessenger.of(context);
-      messenger.clearSnackBars(); // drop any queued ones – show only the latest
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(l10n.messageTabReactivated(l10n.hintResetToDefaults)),
-          behavior: SnackBarBehavior.floating,
-          duration: kSnackBarLong,
-        ),
+      showAppSnackBar(
+        context,
+        l10n.messageTabReactivated(l10n.hintResetToDefaults),
+        duration: kSnackBarLong,
       );
     }
   }
