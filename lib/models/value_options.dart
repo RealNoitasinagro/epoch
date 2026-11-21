@@ -22,11 +22,16 @@ class ValueOptions {
   /// is shown, see [ValueTypeProps.hasDetailsLine].
   final bool? showDetails;
 
+  /// Whether what is left of the day is shown instead of what has elapsed,
+  /// see [ValueTypeProps.supportsRemaining].
+  final bool remaining;
+
   const ValueOptions({
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showOptionalPart,
     this.showDetails,
+    this.remaining = false,
   });
 
   static const none = ValueOptions();
@@ -36,6 +41,7 @@ class ValueOptions {
     TimezoneClockChangeMode? timezoneClockChangeMode,
     NewValue<bool>? showOptionalPart,
     NewValue<bool>? showDetails,
+    bool? remaining,
   }) => ValueOptions(
     customLabel: customLabel != null ? customLabel.value : this.customLabel,
     timezoneClockChangeMode:
@@ -44,16 +50,20 @@ class ValueOptions {
         ? showOptionalPart.value
         : this.showOptionalPart,
     showDetails: showDetails != null ? showDetails.value : this.showDetails,
+    remaining: remaining ?? this.remaining,
   );
 
   /// What makes values of the same type and zone different values, so that
   /// they can be on the same tab (Berlin automatic and Berlin standard time).
   /// Appended to the key of a value.
-  String get identitySuffix => switch (timezoneClockChangeMode) {
-    TimezoneClockChangeMode.auto => '',
-    TimezoneClockChangeMode.forceDst => '/dst',
-    TimezoneClockChangeMode.forceStandard => '/std',
-  };
+  String get identitySuffix {
+    final modeSuffix = switch (timezoneClockChangeMode) {
+      TimezoneClockChangeMode.auto => '',
+      TimezoneClockChangeMode.forceDst => '/dst',
+      TimezoneClockChangeMode.forceStandard => '/std',
+    };
+    return remaining ? '$modeSuffix/rem' : modeSuffix;
+  }
 
   /// [baseKey] ("valueType/zone") with the options behind it: label, clock
   /// change mode, flags. Everything that is not set is left out.
@@ -64,6 +74,7 @@ class ValueOptions {
       '|dst:${timezoneClockChangeMode.name}',
     if (showOptionalPart != null) showOptionalPart! ? '|sec' : '|nosec',
     if (showDetails != null) showDetails! ? '|det' : '|nodet',
+    if (remaining) '|rem',
   ].join();
 
   static final _dstSuffix = RegExp(r'\|dst:([^|]*)$');
@@ -79,6 +90,7 @@ class ValueOptions {
     var mode = TimezoneClockChangeMode.auto;
     bool? showOptionalPart;
     bool? showDetails;
+    bool remaining = false;
 
     while (true) {
       final dstMatch = _dstSuffix.firstMatch(rest);
@@ -102,6 +114,9 @@ class ValueOptions {
                 .firstOrNull ??
             TimezoneClockChangeMode.auto;
         rest = rest.substring(0, dstMatch.start);
+      } else if (rest.endsWith('|rem')) {
+        remaining = true;
+        rest = _withoutSuffix(rest, '|rem');
       } else {
         break;
       }
@@ -117,6 +132,7 @@ class ValueOptions {
         timezoneClockChangeMode: mode,
         showOptionalPart: showOptionalPart,
         showDetails: showDetails,
+        remaining: remaining,
       ),
     );
   }

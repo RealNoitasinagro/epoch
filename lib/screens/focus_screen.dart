@@ -627,8 +627,8 @@ class _FocusScreenState extends State<FocusScreen> {
         Expanded(
           child: Slider(
             value: _brightness!,
-            min: 0.01,
-            max: 1.0,
+            min: kMinFocusBrightness,
+            max: kMaxFocusBrightness,
             divisions: 20,
             activeColor: _textColor,
             inactiveColor: Colors.white24,
@@ -665,8 +665,8 @@ class _FocusScreenState extends State<FocusScreen> {
             quarterTurns: 3, // bottom=dark, top=bright
             child: Slider(
               value: _brightness!,
-              min: 0.01,
-              max: 1.0,
+              min: kMinFocusBrightness,
+              max: kMaxFocusBrightness,
               divisions: 20,
               activeColor: _textColor,
               inactiveColor: Colors.white24,

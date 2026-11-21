@@ -475,6 +475,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelNextClockChanges => 'Nächste Zeitumstellungen';
 
   @override
+  String get labelRemaining => 'Rest';
+
+  @override
   String get labelSeconds => 'Sek';
 
   @override
@@ -482,6 +485,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelShowDetails => 'Detailzeile anzeigen';
+
+  @override
+  String get labelShowRemaining => 'Rest des Tages anzeigen';
 
   @override
   String get labelShowSeconds => 'Sekunden anzeigen';

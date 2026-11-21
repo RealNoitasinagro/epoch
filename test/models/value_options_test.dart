@@ -91,26 +91,47 @@ void main() {
         for (final mode in TimezoneClockChangeMode.values) {
           for (final optionalPart in [null, true, false]) {
             for (final details in [null, true, false]) {
-              final value = TimeValue(
-                valueType: ValueType.time,
-                zone: const ZoneNamed('Europe/Berlin'),
-                options: ValueOptions(
-                  customLabel: label,
-                  timezoneClockChangeMode: mode,
-                  showOptionalPart: optionalPart,
-                  showDetails: details,
-                ),
-              );
-              final parsed = TimeValue.fromPrefsString(value.toPrefsString())!;
-              expect(parsed.toPrefsString(), value.toPrefsString());
-              expect(parsed.customLabel, label);
-              expect(parsed.timezoneClockChangeMode, mode);
-              expect(parsed.showOptionalPart, optionalPart);
-              expect(parsed.showDetails, details);
+              for (final remaining in [false, true]) {
+                final value = TimeValue(
+                  valueType: ValueType.time,
+                  zone: const ZoneNamed('Europe/Berlin'),
+                  options: ValueOptions(
+                    customLabel: label,
+                    timezoneClockChangeMode: mode,
+                    showOptionalPart: optionalPart,
+                    showDetails: details,
+                    remaining: remaining,
+                  ),
+                );
+                final parsed = TimeValue.fromPrefsString(
+                  value.toPrefsString(),
+                )!;
+                expect(parsed.toPrefsString(), value.toPrefsString());
+                expect(parsed.customLabel, label);
+                expect(parsed.timezoneClockChangeMode, mode);
+                expect(parsed.showOptionalPart, optionalPart);
+                expect(parsed.showDetails, details);
+                expect(parsed.remaining, remaining);
+              }
             }
           }
         }
       }
+    });
+
+    test('the remaining flag is written last and read in any order', () {
+      const options = ValueOptions(showDetails: false, remaining: true);
+      expect(options.appendTo('time/utc'), 'time/utc|nodet|rem');
+      final parsed = ValueOptions.splitPrefsString(
+        'time/utc|rem|nosec|dst:forceDst',
+      );
+      expect(parsed.options.remaining, isTrue);
+      expect(parsed.options.showOptionalPart, isFalse);
+      expect(
+        parsed.options.timezoneClockChangeMode,
+        TimezoneClockChangeMode.forceDst,
+      );
+      expect(parsed.options.customLabel, isNull);
     });
   });
 
@@ -127,6 +148,16 @@ void main() {
         ).identitySuffix,
         '/dst',
       );
+    });
+
+    test('a value and its remaining time are different values', () {
+      const rem = ValueOptions(remaining: true);
+      const remForcedDst = ValueOptions(
+        remaining: true,
+        timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+      );
+      expect(rem.identitySuffix, '/rem');
+      expect(remForcedDst.identitySuffix, '/dst/rem');
     });
   });
 }

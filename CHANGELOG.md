@@ -5,6 +5,8 @@
 ### Added
 - redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
   choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
+- remaining time of the day as an option for time, day second, day minute, day percent, decimal
+  time, Swatch beats, New Earth Time and the Doomsday Clock
 
 ### Changed
 - CHANGELOG and README links in About dialog, new Wiki link replacing changelog link in Menu
@@ -13,6 +15,7 @@
 ### Fixed
 - wrongly typed entries in the config could make the app get stuck on a black screen; import
   now warns about values that cannot be used
+- resetting a pinned value to automatic clock changes could cause duplicates on a tab
 
 ---
 

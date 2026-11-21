@@ -97,6 +97,10 @@ void main() {
       TimeValueFormatter.timeTokenValues(reference).keys.toSet(),
       timePatternWorstCase.keys.toSet(),
     );
+    expect(
+      TimeValueFormatter.durationTokenValues(3661).keys.toSet(),
+      timePatternWorstCase.keys.toSet(),
+    );
   });
 
   test('no real value is longer than its worst case (a whole leap year)', () {

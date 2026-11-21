@@ -719,4 +719,113 @@ void main() {
       expect(line1(time, moment, timeFormat: 'HH:mm:ss'), '14:05:09');
     });
   });
+
+  group('TimeValueFormatter: remaining time of the day', () {
+    const rem = ValueOptions(remaining: true);
+
+    String line1Of(
+      ValueType type,
+      DateTime utc, {
+      ZoneSpec zone = const ZoneUtc(),
+      ValueOptions options = rem,
+      String timeFormat = kTimePatternFull,
+    }) {
+      final timeValue = TimeValue(
+        valueType: type,
+        zone: zone,
+        options: options,
+      );
+      final text = TimeValueFormatter.format(
+        timeValue,
+        utc,
+        'en',
+        settings: ValueFormatSettings(
+          thousandsSep: false,
+          timeFormat: timeFormat,
+        ),
+      );
+      return TimeStringRow.splitZoneOffset(text).line1;
+    }
+
+    final afternoon = DateTime.utc(2026, 6, 15, 14, 5, 9); // 35,691 s left
+
+    test('time, day second, day minute, day percent', () {
+      expect(line1Of(ValueType.time, afternoon), '09:54:51');
+      expect(line1Of(ValueType.daySecond, afternoon), '35691');
+      expect(line1Of(ValueType.dayMinute, afternoon), '594:51');
+      expect(
+        line1Of(ValueType.dayPercent, DateTime.utc(2026, 6, 15, 12)),
+        '50.000',
+      );
+    });
+
+    test('the first and the last second of the day', () {
+      expect(line1Of(ValueType.daySecond, DateTime.utc(2026, 6, 15)), '86400');
+      expect(
+        line1Of(ValueType.daySecond, DateTime.utc(2026, 6, 15, 23, 59, 59)),
+        '1',
+      );
+      expect(line1Of(ValueType.time, DateTime.utc(2026, 6, 15)), '24:00:00');
+    });
+
+    test('a 25-hour day starts with 25:00:00 left', () {
+      expect(
+        line1Of(
+          ValueType.time,
+          DateTime.utc(2026, 10, 24, 22),
+          zone: const ZoneNamed('Europe/Berlin'),
+        ),
+        '25:00:00',
+      );
+    });
+
+    test('time follows the seconds setting of the value', () {
+      expect(
+        line1Of(
+          ValueType.time,
+          afternoon,
+          options: const ValueOptions(remaining: true, showOptionalPart: false),
+        ),
+        '09:54',
+      );
+    });
+
+    test('decimal time, Swatch beats, New Earth Time, Doomsday Clock', () {
+      expect(
+        line1Of(ValueType.decimalTime, DateTime.utc(2026, 6, 15, 12)),
+        '5ʰ00ᵐ00ˢ',
+      );
+      expect(
+        line1Of(ValueType.decimalTime, DateTime.utc(2026, 6, 15)),
+        '10ʰ00ᵐ00ˢ',
+      );
+      expect(
+        line1Of(ValueType.swatchBeats, DateTime.utc(2026, 6, 14, 23)),
+        '1000.00',
+      );
+      expect(
+        line1Of(ValueType.swatchBeats, DateTime.utc(2026, 6, 15, 12)),
+        '458.33',
+      );
+      expect(
+        line1Of(ValueType.newEarthTime, DateTime.utc(2026, 6, 15, 12)),
+        '180.00°',
+      );
+      expect(
+        line1Of(ValueType.doomsdayClock, DateTime.utc(2026, 6, 15)),
+        '00:01:25',
+      );
+    });
+
+    test('types without a remaining time ignore the flag', () {
+      expect(
+        line1Of(ValueType.date, afternoon),
+        line1Of(ValueType.date, afternoon, options: ValueOptions.none),
+      );
+      expect(
+        line1Of(ValueType.unixSeconds, afternoon),
+        line1Of(ValueType.unixSeconds, afternoon, options: ValueOptions.none),
+      );
+    });
+  });
 }

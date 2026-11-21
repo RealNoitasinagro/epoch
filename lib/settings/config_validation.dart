@@ -53,7 +53,7 @@ final Map<String, _Check> _configChecks = {
   'date_cw_doy': _isBool,
   'date_format': _isString, // any text is used: nonsense in a config may stay
   'day_quarter_color': _isBool,
-  'focus_brightness': _isNumberIn(kMinFocusBrightness, 1.0),
+  'focus_brightness': _isNumberIn(kMinFocusBrightness, kMaxFocusBrightness),
   'focus_color': (value) =>
       value is int && value >= 0 && value <= kMaxArgbValue,
   'focus_color_mode': _isOneOf(FocusColorMode.values.map((mode) => mode.name)),

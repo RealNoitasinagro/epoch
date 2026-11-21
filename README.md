@@ -49,6 +49,7 @@ also happen to spell out **E**legant **p**resentation **o**f
   and the Doomsday Clock
 - On days with a clock change, day second, day minute, day percent and decimal/octal/hexadecimal
   time use the real length of the day (23 or 25 hours, Lord Howe: 23.5 or 24.5, Troll: 22 or 26)
+- Many of the Civil types, and some of the Curiosities, can show the remaining time of the day
 
 ### Time zones
 - Search by city, country, capital, zone name or abbreviation (also historical

@@ -470,6 +470,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelNextClockChanges => 'Next clock changes';
 
   @override
+  String get labelRemaining => 'remaining';
+
+  @override
   String get labelSeconds => 'ss';
 
   @override
@@ -477,6 +480,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelShowDetails => 'Show details line';
+
+  @override
+  String get labelShowRemaining => 'Show what is left of the day';
 
   @override
   String get labelShowSeconds => 'Show seconds';

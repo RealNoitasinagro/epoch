@@ -40,14 +40,17 @@ extension TimeValueTexts on TimeValue {
   // Localized display label shown in the UI.
   String localizedDisplayLabel(AppLocalizations l10n) {
     if (customLabel != null) return customLabel!;
+    final remainingSuffix = options.remaining
+        ? ' – ${l10n.labelRemaining}'
+        : '';
     final _localizedTypeLabel = localizedValueTypeLabel(valueType, l10n);
-    if (isZoneIndependent) return _localizedTypeLabel;
+    if (isZoneIndependent) return '$_localizedTypeLabel$remainingSuffix';
     final zoneLabel = switch (zone) {
       ZoneLocal() => l10n.labelLocal.toLowerCase(),
       ZoneUtc() => l10n.actionZoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
-    return '$_localizedTypeLabel ($zoneLabel)';
+    return '$_localizedTypeLabel ($zoneLabel)$remainingSuffix';
   }
 
   // Localized info text.

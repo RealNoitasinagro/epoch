@@ -215,20 +215,32 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     bool? selectedShowDetails = timeValue.showDetails;
 
     // Modes already used by other TimeValues with the same key (same type/zone):
-    final existingModes = widget.entries
-        .whereType<TimeValue>()
-        .where(
-          (e) =>
-              e.sameZoneAndType(timeValue) &&
-              e.timezoneClockChangeMode != timeValue.timezoneClockChangeMode,
-        )
-        .map((e) => e.timezoneClockChangeMode)
-        .toSet();
+    // final existingModes = widget.entries
+    //     .whereType<TimeValue>()
+    //     .where(
+    //       (e) =>
+    //           e.sameZoneAndType(timeValue) &&
+    //           e.timezoneClockChangeMode != timeValue.timezoneClockChangeMode,
+    //     )
+    //     .map((e) => e.timezoneClockChangeMode)
+    //     .toSet();
 
     final controller = TextEditingController(
       text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n),
     );
     var selectedMode = timeValue.timezoneClockChangeMode;
+    var selectedRemaining = timeValue.remaining;
+
+    // Two values on a tab must not be identical: does another entry already
+    // have the key that a choice would give this value?
+    bool isTaken(TimezoneClockChangeMode mode, bool remaining) {
+      final candidateKey = timeValue
+          .withTimezoneClockChangeMode(mode)
+          .withRemaining(remaining)
+          .key;
+      return candidateKey != timeValue.key &&
+          widget.entries.any((entry) => entry.key == candidateKey);
+    }
 
     final result =
         await showDialog<
@@ -238,6 +250,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             bool reset,
             bool? showOptionalPart,
             bool? showDetails,
+            bool remaining,
           })
         >(
           context: context,
@@ -271,75 +284,43 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     const SizedBox(height: 4),
                     RadioGroup<TimezoneClockChangeMode>(
                       groupValue: selectedMode,
-                      onChanged: (v) {
-                        if (v == null || existingModes.contains(v)) return;
-                        setDialogState(() => selectedMode = v);
+                      onChanged: (mode) {
+                        if (mode == null || isTaken(mode, selectedRemaining))
+                          return;
+                        setDialogState(() => selectedMode = mode);
                       },
                       child: Column(
                         children: [
-                          RadioListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(
-                              l10n.settingsDstAuto,
-                              style:
-                                  existingModes.contains(
-                                    TimezoneClockChangeMode.auto,
-                                  )
-                                  ? TextStyle(
-                                      color: Theme.of(
-                                        ctx,
-                                      ).colorScheme.onSurface.withAlpha(80),
-                                    )
-                                  : null,
-                            ),
-                            value: TimezoneClockChangeMode.auto,
-                            enabled: !existingModes.contains(
+                          for (final (mode, title) in [
+                            (
                               TimezoneClockChangeMode.auto,
+                              l10n.settingsDstAuto,
                             ),
-                          ),
-                          RadioListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(
-                              l10n.settingsDstAlwaysOn,
-                              style:
-                                  existingModes.contains(
-                                    TimezoneClockChangeMode.forceDst,
-                                  )
-                                  ? TextStyle(
-                                      color: Theme.of(
-                                        ctx,
-                                      ).colorScheme.onSurface.withAlpha(80),
-                                    )
-                                  : null,
-                            ),
-                            value: TimezoneClockChangeMode.forceDst,
-                            enabled: !existingModes.contains(
+                            (
                               TimezoneClockChangeMode.forceDst,
+                              l10n.settingsDstAlwaysOn,
                             ),
-                          ),
-                          RadioListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(
-                              l10n.settingsDstAlwaysOff,
-                              style:
-                                  existingModes.contains(
-                                    TimezoneClockChangeMode.forceStandard,
-                                  )
-                                  ? TextStyle(
-                                      color: Theme.of(
-                                        ctx,
-                                      ).colorScheme.onSurface.withAlpha(80),
-                                    )
-                                  : null,
-                            ),
-                            value: TimezoneClockChangeMode.forceStandard,
-                            enabled: !existingModes.contains(
+                            (
                               TimezoneClockChangeMode.forceStandard,
+                              l10n.settingsDstAlwaysOff,
                             ),
-                          ),
+                          ])
+                            RadioListTile(
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text(
+                                title,
+                                style: isTaken(mode, selectedRemaining)
+                                    ? TextStyle(
+                                        color: Theme.of(
+                                          ctx,
+                                        ).colorScheme.onSurface.withAlpha(80),
+                                      )
+                                    : null,
+                              ),
+                              value: mode,
+                              enabled: !isTaken(mode, selectedRemaining),
+                            ),
                         ],
                       ),
                     ),
@@ -390,6 +371,18 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                           setDialogState(() => selectedShowDetails = value),
                     ),
                   ],
+                  if (timeValue.valueType.supportsRemaining)
+                    CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(l10n.labelShowRemaining),
+                      value: selectedRemaining,
+                      onChanged: isTaken(selectedMode, !selectedRemaining)
+                          ? null
+                          : (value) => setDialogState(
+                              () => selectedRemaining = value ?? false,
+                            ),
+                    ),
                 ],
               ),
               actions: [
@@ -400,11 +393,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     reset: true,
                     showOptionalPart: null,
                     showDetails: null,
+                    remaining: false,
                   )),
                   child: Text(l10n.hintResetToDefaults),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pop(ctx), // null = cancel
+                  onPressed: isTaken(TimezoneClockChangeMode.auto, false)
+                      ? null
+                      : () => Navigator.pop(ctx), // null = cancel
                   child: Text(l10n.actionCancel),
                 ),
                 TextButton(
@@ -414,6 +410,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     reset: false,
                     showOptionalPart: selectedShowOptionalPart,
                     showDetails: selectedShowDetails,
+                    remaining: selectedRemaining,
                   )),
                   child: const Text('OK'),
                 ),
@@ -438,7 +435,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         .withCustomLabel(newLabel)
         .withTimezoneClockChangeMode(newMode)
         .withShowOptionalPart(newShowOptionalPart)
-        .withShowDetails(newShowDetails);
+        .withShowDetails(newShowDetails)
+        .withRemaining(result.reset ? false : result.remaining);
     widget.onEntriesChanged(updated);
   }
 

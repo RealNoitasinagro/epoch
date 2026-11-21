@@ -718,4 +718,56 @@ void main() {
       );
     });
   });
+
+  group('TimeUtils: remaining time of the day', () {
+    const start = (elapsedSeconds: 0, dayLengthSeconds: 86400);
+    const noon = (elapsedSeconds: 43200, dayLengthSeconds: 86400);
+    const lastSecond = (elapsedSeconds: 86399, dayLengthSeconds: 86400);
+    const lastSecondOf25HourDay = (
+      elapsedSeconds: 89999,
+      dayLengthSeconds: 90000,
+    );
+
+    test('seconds: the day length at the start, 1 in the last second', () {
+      expect(TimeUtils.remainingSeconds(start), 86400);
+      expect(TimeUtils.remainingSeconds(lastSecond), 1);
+      expect(TimeUtils.remainingSeconds(lastSecondOf25HourDay), 1);
+    });
+
+    test('day minute, day percent', () {
+      expect(TimeUtils.dayMinuteRemaining(noon), (minutes: 720, seconds: 0));
+      expect(TimeUtils.dayMinuteRemaining(start), (minutes: 1440, seconds: 0));
+      expect(TimeUtils.dayPercentRemaining(noon), 50.0);
+      expect(TimeUtils.dayPercentRemaining(start), 100.0);
+    });
+
+    test('decimal time adds up to 10 hours with the elapsed time', () {
+      expect(TimeUtils.decimalTimeRemaining(start), (
+        hours: 10,
+        minutes: 0,
+        seconds: 0,
+      ));
+      expect(TimeUtils.decimalTimeRemaining(noon), (
+        hours: 5,
+        minutes: 0,
+        seconds: 0,
+      ));
+      expect(TimeUtils.decimalTimeRemaining(lastSecond), (
+        hours: 0,
+        minutes: 0,
+        seconds: 1,
+      ));
+    });
+
+    test('Swatch beats and New Earth Time', () {
+      expect(
+        TimeUtils.swatchBeatsRemaining(DateTime.utc(2026, 1, 1, 23)),
+        closeTo(1000, 1e-9),
+      );
+      expect(
+        TimeUtils.newEarthTimeDegreesRemaining(DateTime.utc(2026, 1, 1, 12)),
+        closeTo(180, 1e-9),
+      );
+    });
+  });
 }

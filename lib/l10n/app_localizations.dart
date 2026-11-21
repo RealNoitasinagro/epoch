@@ -848,6 +848,12 @@ abstract class AppLocalizations {
   /// **'Next clock changes'**
   String get labelNextClockChanges;
 
+  /// No description provided for @labelRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'remaining'**
+  String get labelRemaining;
+
   /// No description provided for @labelSeconds.
   ///
   /// In en, this message translates to:
@@ -865,6 +871,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show details line'**
   String get labelShowDetails;
+
+  /// No description provided for @labelShowRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Show what is left of the day'**
+  String get labelShowRemaining;
 
   /// No description provided for @labelShowSeconds.
   ///

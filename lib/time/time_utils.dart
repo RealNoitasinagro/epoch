@@ -223,6 +223,41 @@ class TimeUtils {
     );
   }
 
+  // ── What is left of the day ────────────────────────────────────────────
+
+  /// Seconds until the end of the local day: its length at the start, 1 in
+  /// its last second.
+  static int remainingSeconds(DayProgress dayProgress) =>
+      dayProgress.dayLengthSeconds - dayProgress.elapsedSeconds;
+
+  static ({int minutes, int seconds}) dayMinuteRemaining(
+    DayProgress dayProgress,
+  ) {
+    final left = remainingSeconds(dayProgress);
+    return (minutes: left ~/ 60, seconds: left % 60);
+  }
+
+  static double dayPercentRemaining(DayProgress dayProgress) =>
+      remainingSeconds(dayProgress) / dayProgress.dayLengthSeconds * 100;
+
+  /// Decimal time left in the day: together with the elapsed decimal time it
+  /// adds up to 10h 00m 00s.
+  static ({int hours, int minutes, int seconds}) decimalTimeRemaining(
+    DayProgress dayProgress,
+  ) {
+    final decimalSeconds = 100000 - _elapsedDecimalSeconds(dayProgress);
+    return (
+      hours: decimalSeconds ~/ 10000,
+      minutes: (decimalSeconds % 10000) ~/ 100,
+      seconds: decimalSeconds % 100,
+    );
+  }
+
+  static double swatchBeatsRemaining(DateTime utc) => 1000 - swatchBeats(utc);
+
+  static double newEarthTimeDegreesRemaining(DateTime utc) =>
+      360 - newEarthTimeDegrees(utc);
+
   // ── Value Type functions ───────────────────────────────────────────────────
 
   static int _secondsSinceMidnight(DateTime wallClock) {
@@ -344,14 +379,20 @@ class TimeUtils {
   static double modifiedJulianDate2000(DateTime utc) =>
       julianDate(utc.toUtc()) - 2451544.5;
 
+  /// Decimal seconds of the day that have elapsed (0 ... 99,999), relative to
+  /// the real length of the day.
+  static int _elapsedDecimalSeconds(DayProgress dayProgress) {
+    final fractionOfDay =
+        dayProgress.elapsedSeconds / dayProgress.dayLengthSeconds;
+    return (fractionOfDay * 100000).round() % 100000;
+  }
+
   /// Decimal time (French Revolutionary time): the day has 10 decimal hours
   /// of 100 decimal minutes of 100 decimal seconds, whatever its real length.
   static ({int hours, int minutes, int seconds}) decimalTime(
     DayProgress dayProgress,
   ) {
-    final fractionOfDay =
-        dayProgress.elapsedSeconds / dayProgress.dayLengthSeconds;
-    final decimalSeconds = (fractionOfDay * 100000).round() % 100000;
+    final decimalSeconds = _elapsedDecimalSeconds(dayProgress);
     return (
       hours: decimalSeconds ~/ 10000,
       minutes: (decimalSeconds % 10000) ~/ 100,

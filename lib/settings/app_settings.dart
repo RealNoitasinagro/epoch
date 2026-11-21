@@ -62,6 +62,7 @@ const kTimePatternCompact = 'HHmm'; // 1405
 /// Largest valid ARGB value.
 const kMaxArgbValue = 0xFFFFFFFF;
 const kMinFocusBrightness = 0.01;
+const kMaxFocusBrightness = 1.00;
 const kMaxLongitude = 180.0;
 
 // Extended theme mode including night (red-on-black) mode.
@@ -278,7 +279,7 @@ Future<double> loadFocusBrightness(bool isNightMode) async {
   // Out of range (the slider would assert): the default applies.
   return brightness != null &&
           brightness >= kMinFocusBrightness &&
-          brightness <= 1.0
+          brightness <= kMaxFocusBrightness
       ? brightness
       : kDefaultFocusBrightness;
 }

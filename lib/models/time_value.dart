@@ -89,6 +89,7 @@ class TimeValue implements TabEntry {
       options.timezoneClockChangeMode;
   bool? get showOptionalPart => options.showOptionalPart;
   bool? get showDetails => options.showDetails;
+  bool get remaining => options.remaining;
 
   // Type and zone; the options that make a different value are added in
   // [key]. The label and the display options do not matter here.
@@ -149,8 +150,8 @@ class TimeValue implements TabEntry {
   TimeValue withShowDetails(bool? value) =>
       withOptions(options.copyWith(showDetails: NewValue(value)));
 
-  // ianaZoneFor, isZoneIndependent, effectiveClockChangeMode, isPinned,
-  // isDstCurrentlyActive: unchanged ...
+  TimeValue withRemaining(bool value) =>
+      withOptions(options.copyWith(remaining: value));
 
   /// The IANA zone whose rules apply to this value; null for UTC.
   String? ianaZoneFor(String localIanaZone) {
@@ -272,6 +273,19 @@ extension ValueTypeProps on ValueType {
     ValueType.decimalTime ||
     ValueType.gmst ||
     ValueType.lmst => true,
+    _ => false,
+  };
+
+  /// Values that can show what is left of the day instead of what has elapsed.
+  bool get supportsRemaining => switch (this) {
+    ValueType.time ||
+    ValueType.daySecond ||
+    ValueType.dayMinute ||
+    ValueType.dayPercent ||
+    ValueType.decimalTime ||
+    ValueType.swatchBeats ||
+    ValueType.newEarthTime ||
+    ValueType.doomsdayClock => true,
     _ => false,
   };
 }

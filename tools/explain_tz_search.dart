@@ -17,14 +17,18 @@ import 'package:timezone/timezone.dart' as tz;
 
 /// Hand-maintained sources.
 const manualSources = {
-  TzSource.terms, TzSource.countryAliasesEn, TzSource.countryAliasesDe,
-  TzSource.metazoneAliases, TzSource.majorCities,
+  TzSource.terms,
+  TzSource.countryAliasesEn,
+  TzSource.countryAliasesDe,
+  TzSource.metazoneAliases,
+  TzSource.majorCities,
 };
 
 bool isManual(String source) =>
     manualSources.contains(source.replaceAll(TzSource.variantSuffix, ''));
 
-bool isRule(String s) => s.startsWith(TzSource.rulePrefix) || s.endsWith(TzSource.variantSuffix);
+bool isRule(String s) =>
+    s.startsWith(TzSource.rulePrefix) || s.endsWith(TzSource.variantSuffix);
 
 /// Accepts canonical ids and link ids (Asia/Brunei -> Asia/Kuching).
 TzEntry? findEntry(String zoneId) {
@@ -37,7 +41,9 @@ TzEntry? findEntry(String zoneId) {
 
 /// All sources that match [query] for [entry], not only the first one.
 ({Set<String> exact, Set<String> prefix}) matchingSources(
-    TzEntry entry, String query) {
+  TzEntry entry,
+  String query,
+) {
   final queryNorm = normalize(query);
   final allCaps = query.trim() == query.trim().toUpperCase();
   final exact = <String>{}, prefix = <String>{};
@@ -53,7 +59,9 @@ TzEntry? findEntry(String zoneId) {
 }
 
 ({String how, List<({String source, String term})> hits}) strongestHits(
-    TzEntry entry, String query) {
+  TzEntry entry,
+  String query,
+) {
   final queryNorm = normalize(query);
   final allCaps = query.trim() == query.trim().toUpperCase();
   final exact = <({String source, String term})>[];
@@ -75,8 +83,10 @@ void explainQuery(String query) {
   final byOffset = searchByOffset(query, tzDatabase);
   if (byOffset.isNotEmpty) {
     for (final entry in byOffset) {
-      print('TZ-MATCH q="$query" zone=${entry.ianaZoneId} '
-          'by=${TzRule.offset} term="${entry.offsetLabel}"');
+      print(
+        'TZ-MATCH q="$query" zone=${entry.ianaZoneId} '
+        'by=${TzRule.offset} term="${entry.offsetLabel}"',
+      );
     }
     return;
   }
@@ -90,8 +100,10 @@ void explainQuery(String query) {
     if ((reason.rule == TzRule.exact || reason.rule == TzRule.prefix) &&
         strongest.hits.isNotEmpty) {
       final sources = strongest.hits.map((h) => h.source).toSet();
-      line.write(' by=${strongest.how} term="${strongest.hits.first.term}"'
-          ' via=${sources.join(',')}');
+      line.write(
+        ' by=${strongest.how} term="${strongest.hits.first.term}"'
+        ' via=${sources.join(',')}',
+      );
       if (sources.every(isRule)) line.write(' DERIVED');
       if (sources.every(manualSources.contains)) line.write(' MANUAL-ONLY');
     } else {
@@ -111,9 +123,11 @@ void dumpZone(String zoneId) {
     return;
   }
   final rules = entry.rules;
-  print('TZ-RULES zone=${entry.ianaZoneId} hasDst=${rules.hasDst} '
-      'std=${rules.standardAbbr}/${formatUtcOffset(rules.standardOffset)} '
-      'dst=${rules.dstAbbr}/${formatUtcOffset(rules.dstOffset)}');
+  print(
+    'TZ-RULES zone=${entry.ianaZoneId} hasDst=${rules.hasDst} '
+    'std=${rules.standardAbbr}/${formatUtcOffset(rules.standardOffset)} '
+    'dst=${rules.dstAbbr}/${formatUtcOffset(rules.dstOffset)}',
+  );
   for (final c in entry.candidatesWithSource) {
     print('TZ-CAND zone=${entry.ianaZoneId} src=${c.source} term="${c.term}"');
   }
@@ -126,10 +140,14 @@ void dumpTransitions(String zoneId) {
   for (final t in location.transitionAt) {
     if (t <= nowMs) continue;
     final s = tz.TZDateTime.from(
-        DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true), location);
-    print('TZ-TRANS zone=$zoneId at=${s.toIso8601String()} '
-        'abbr=${s.timeZone.abbreviation} '
-        'offset=${formatUtcOffset(s.timeZone.offset)} isDst=${s.timeZone.isDst}');
+      DateTime.fromMillisecondsSinceEpoch(t + 1000, isUtc: true),
+      location,
+    );
+    print(
+      'TZ-TRANS zone=$zoneId at=${s.toIso8601String()} '
+      'abbr=${s.timeZone.abbreviation} '
+      'offset=${formatUtcOffset(s.timeZone.offset)} isDst=${s.timeZone.isDst}',
+    );
     if (++shown == 6) break;
   }
 }
@@ -150,12 +168,17 @@ void listRedundant() {
           .where((s) => !manualSources.contains(s.replaceAll('~', '')))
           .toSet();
       final shown = generated
-          .where((s) =>
-      !(s.endsWith('~') && generated.contains(s.substring(0, s.length - 1))))
+          .where(
+            (s) =>
+                !(s.endsWith('~') &&
+                    generated.contains(s.substring(0, s.length - 1))),
+          )
           .toSet();
       if (manual.isNotEmpty && shown.isNotEmpty) {
-        print('TZ-REDUNDANT zone=${entry.ianaZoneId} term="$term" '
-            'manual=${manual.join(',')} also=${shown.join(',')}');
+        print(
+          'TZ-REDUNDANT zone=${entry.ianaZoneId} term="$term" '
+          'manual=${manual.join(',')} also=${shown.join(',')}',
+        );
       }
     });
   }
@@ -164,7 +187,8 @@ void listRedundant() {
 void main(List<String> args) {
   tzd.initializeTimeZones();
   if (args.isEmpty ||
-      (['--zone', '--transitions', '--file'].contains(args.first) && args.length < 2)) {
+      (['--zone', '--transitions', '--file'].contains(args.first) &&
+          args.length < 2)) {
     stderr.writeln('usage: see header comment');
     exit(64);
   }

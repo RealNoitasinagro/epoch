@@ -247,9 +247,20 @@ The details line below the value is the time zone line (`time`, `dateTime`, `day
 | `\|det`   | shown (forced on; with `zone_display_mode` `hidden` the full form is used) |
 | `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)     |
 
+##### Remaining time of the day
+
+Some value types can show what is left until the next midnight of their zone instead of what has elapsed: `time`, `daySecond`, `dayMinute`, `dayPercent`, `decimalTime`, `swatchBeats`, `newEarthTime`, `doomsdayClock`. On other types the suffix has no effect. A value and its remaining time can be on the same tab.
+
+| Suffix   | Effect                                                                                                               |
+|----------|----------------------------------------------------------------------------------------------------------------------|
+| *(none)* | what has elapsed                                                                                                     |
+| `\|rem`  | what is left of the day, e. g. `daySecond` from `86400` (midnight) down to `1`, `time` as a duration from `24:00:00` |  
+
 > [!IMPORTANT]
-> The clock change mode (`|dst:forceDst`, `|dst:forceStandard`) and the flags `|sec`, `|nosec`, `|det` and `|nodet` may be combined and are read in any order after the label, e. g. `time/named:Europe/Brussels|nosec|dst:forceStandard|nodet`. Epoch itself writes them in a fixed order.
-> As custom labels, these words cannot be used.
+> The clock change mode (`|dst:forceDst`, `|dst:forceStandard`) and the flags `|sec` and 
+> `|nosec`, `|det` and `|nodet` as well as `|rem` may be combined and are read in any order after 
+> the label, e. g. `time/named:Europe/Brussels|nosec|dst:forceStandard|nodet`.  
+> Epoch itself writes them in a fixed order. As custom labels, these words cannot be used.
 
 #### Divider
 

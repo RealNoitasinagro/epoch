@@ -31,6 +31,8 @@ class TimeValueFormatter {
     final longitude = settings.longitude;
     final showOptionalPart = settings.showsOptionalPart(timeValue);
     final utcNow = now.toUtc();
+    final remaining =
+        timeValue.options.remaining && timeValue.valueType.supportsRemaining;
 
     // Zone-independent values.
     switch (timeValue.valueType) {
@@ -107,12 +109,22 @@ class TimeValueFormatter {
         );
       // Curiosities
       case ValueType.swatchBeats:
-        final double swatchBeats = TimeUtils.swatchBeats(utcNow);
-        return '@${showOptionalPart ? swatchBeats.toStringAsFixed(2) : swatchBeats.toInt()}';
+        final double beats = remaining
+            ? TimeUtils.swatchBeatsRemaining(utcNow)
+            : TimeUtils.swatchBeats(utcNow);
+        final beatsText = showOptionalPart
+            ? beats.toStringAsFixed(2)
+            : '${beats.toInt()}';
+        return remaining ? beatsText : '@$beatsText'; // @ marks a moment
       case ValueType.newEarthTime:
-        final double deg = TimeUtils.newEarthTimeDegrees(utcNow);
-        return '${showOptionalPart ? formatDecimal(deg, locale, 2, thousandsSep: false) : deg.toInt()}°';
+        final double degrees = remaining
+            ? TimeUtils.newEarthTimeDegreesRemaining(utcNow)
+            : TimeUtils.newEarthTimeDegrees(utcNow);
+        return '${showOptionalPart ? formatDecimal(degrees, locale, 2, thousandsSep: false) : degrees.toInt()}°';
       case ValueType.doomsdayClock:
+        if (remaining) {
+          return formatDuration(TimeUtils.doomsdaySecondsToMidnight(utcNow));
+        }
         final secondOfDay = TimeUtils.doomsdayClockSecondOfDay(utcNow);
         return formatTime(
           hourFormat24,
@@ -144,6 +156,10 @@ class TimeValueFormatter {
       case ValueType.date:
         return formatDate(locale, wallClock, pattern: dateFormat);
       case ValueType.time:
+        if (remaining) {
+          final left = TimeUtils.remainingSeconds(moment.dayProgress);
+          return '${formatDuration(left, pattern: timePattern)} $tzSuffix';
+        }
         return formatTime(
           hourFormat24,
           wallClock.hour,
@@ -162,14 +178,18 @@ class TimeValueFormatter {
           timePattern: timePattern,
         );
       case ValueType.daySecond:
-        final value = moment.dayProgress.elapsedSeconds;
+        final value = remaining
+            ? TimeUtils.remainingSeconds(moment.dayProgress)
+            : moment.dayProgress.elapsedSeconds;
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(value)
             : value.toString();
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.dayMinute:
-        final dayMinute = TimeUtils.dayMinute(moment.dayProgress);
+        final dayMinute = remaining
+            ? TimeUtils.dayMinuteRemaining(moment.dayProgress)
+            : TimeUtils.dayMinute(moment.dayProgress);
         String formattedValue = thousandsSep
             ? NumberFormat.decimalPattern(locale).format(dayMinute.minutes)
             : dayMinute.minutes.toString();
@@ -179,7 +199,9 @@ class TimeValueFormatter {
         formattedValue += ' $tzSuffix';
         return formattedValue;
       case ValueType.dayPercent:
-        final percent = TimeUtils.dayPercent(moment.dayProgress);
+        final percent = remaining
+            ? TimeUtils.dayPercentRemaining(moment.dayProgress)
+            : TimeUtils.dayPercent(moment.dayProgress);
         // Hidden decimals are cut off, not rounded: 99.9 % is not yet 100 %.
         final formattedPercent = showOptionalPart
             ? formatDecimal(percent, locale, 3, thousandsSep: false)
@@ -192,7 +214,9 @@ class TimeValueFormatter {
         return '$formattedPercent $tzSuffix';
       // Curiosities
       case ValueType.decimalTime:
-        final decimalTime = TimeUtils.decimalTime(moment.dayProgress);
+        final decimalTime = remaining
+            ? TimeUtils.decimalTimeRemaining(moment.dayProgress)
+            : TimeUtils.decimalTime(moment.dayProgress);
         final decimalTimeText = _decimalTimeText(
           decimalTime,
           showSeconds: showOptionalPart,
@@ -318,6 +342,25 @@ class TimeValueFormatter {
       'H': displayHour.toString(),
       'mm': dt.minute.toString().padLeft(2, '0'),
       'ss': dt.second.toString().padLeft(2, '0'),
+    };
+  }
+
+  /// A duration as text in the pattern of a time: the hours are those of the
+  /// duration (up to 26 on a day with a clock change), no AM/PM.
+  static String formatDuration(
+    int totalSeconds, {
+    String pattern = kTimePatternFull,
+  }) => applyPatternTokens(pattern, durationTokenValues(totalSeconds));
+
+  /// The value of every time token for a duration; the keys are those of
+  /// [timePatternWorstCase].
+  static Map<String, String> durationTokenValues(int totalSeconds) {
+    final hours = totalSeconds ~/ 3600;
+    return {
+      'HH': hours.toString().padLeft(2, '0'),
+      'H': hours.toString(),
+      'mm': ((totalSeconds % 3600) ~/ 60).toString().padLeft(2, '0'),
+      'ss': (totalSeconds % 60).toString().padLeft(2, '0'),
     };
   }
 
