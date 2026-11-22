@@ -73,6 +73,13 @@
       }
     }
   },
+  "@messageDuplicateValue": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "@messageMaxValues": {
     "placeholders": {
       "count": {
@@ -335,8 +342,8 @@
   "labelShowSeconds": "Show seconds",
   "labelYear": "YYYY",
   "linkWiki": "Wiki",
-  "messageAlreadyDisplayed": "This value is already displayed.",
   "messageCopiedToClipboard": "Copied: {label}",
+  "messageDuplicateValue": "\"{label}\" is shown twice. Change or remove one of them to finish editing.",
   "messageEmptyTab": "Configurable tab.\nUse the edit mode to add values.",
   "messageMaxValues": "Maximum of {count} values reached.",
   "messageMissingTabsRestored": "Some built-in tabs were missing from the loaded configuration and have been restored.",

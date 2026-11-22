@@ -72,7 +72,8 @@ class _EntryPickerState extends State<_EntryPicker> {
       if (widget.lmstLongitude == null) return true;
     }
     if (!t.isZoneIndependent) return false;
-    return widget.existingEntries.any((e) => e.valueType == t);
+    final candidateKey = TimeValue(valueType: t, zone: const ZoneUtc()).key;
+    return widget.existingEntries.any((entry) => entry.key == candidateKey);
   }
 
   void _selectType(ValueType t) {

@@ -15,7 +15,9 @@
 ### Fixed
 - wrongly typed entries in the config could make the app get stuck on a black screen; import
   now warns about values that cannot be used
-- resetting a pinned value to automatic clock changes could cause duplicates on a tab
+- the same value could end up twice on a tab (e.g. by resetting a standard-time value to
+  automatic), and the second one was hidden in edit mode; now both are shown and edit mode
+  cannot be left before the duplicate is resolved
 
 ---
 

@@ -896,17 +896,17 @@ abstract class AppLocalizations {
   /// **'Wiki'**
   String get linkWiki;
 
-  /// No description provided for @messageAlreadyDisplayed.
-  ///
-  /// In en, this message translates to:
-  /// **'This value is already displayed.'**
-  String get messageAlreadyDisplayed;
-
   /// No description provided for @messageCopiedToClipboard.
   ///
   /// In en, this message translates to:
   /// **'Copied: {label}'**
   String messageCopiedToClipboard(String label);
+
+  /// No description provided for @messageDuplicateValue.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{label}\" is shown twice. Change or remove one of them to finish editing.'**
+  String messageDuplicateValue(String label);
 
   /// No description provided for @messageEmptyTab.
   ///

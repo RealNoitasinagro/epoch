@@ -18,6 +18,32 @@ import '../widgets/value_tiles/time_graphical_row.dart';
 import '../widgets/value_tiles/time_string_row.dart';
 import '../widgets/value_tiles/value_tile.dart';
 
+/// One id per entry, unique even if entries repeat: the first entry keeps its
+/// key, later ones get a counter ("time/utc", "time/utc#1", ...).
+List<String> uniqueEntryIds(List<TabEntry> entries) {
+  final occurrences = <String, int>{};
+  return [
+    for (final entry in entries)
+      () {
+        final earlier = occurrences.update(
+          entry.key,
+          (count) => count + 1,
+          ifAbsent: () => 0,
+        );
+        return earlier == 0 ? entry.key : '${entry.key}#$earlier';
+      }(),
+  ];
+}
+
+/// The first value that is shown a second time, or null.
+TimeValue? firstDuplicateValue(List<TabEntry> entries) {
+  final seenKeys = <String>{};
+  for (final value in entries.whereType<TimeValue>()) {
+    if (!seenKeys.add(value.key)) return value;
+  }
+  return null;
+}
+
 // A fully configurable tab used by both Civil and custom Watchlist tabs.
 // [entries] and [onEntriesChanged] are managed by the parent.
 class ConfigurableTab extends StatefulWidget {
@@ -53,6 +79,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
 
   void _toggleEditMode() {
     if (_editMode) {
+      final duplicate = firstDuplicateValue(widget.entries);
+      if (duplicate != null) {
+        final l10n = AppLocalizations.of(context)!;
+        showAppSnackBar(
+          context,
+          l10n.messageDuplicateValue(duplicate.localizedDisplayLabel(l10n)),
+          duration: kSnackBarLong,
+        );
+        return; // stay in edit mode until the duplicate is resolved
+      }
+
       // leaving edit mode: clean trailing entries
       final cleaned = _cleanTrailing(widget.entries.toList());
       if (cleaned.length != widget.entries.length) {
@@ -78,30 +115,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     );
   }
 
-  bool get _allChecked =>
-      widget.entries.isNotEmpty &&
-      widget.entries.every((e) => _checked.contains(e.key));
-
   int get _valueCount => widget.entries.whereType<TimeValue>().length;
-
-  void _toggleMasterCheck() {
-    setState(() {
-      if (_allChecked) {
-        _checked.clear();
-      } else {
-        _checked.addAll(widget.entries.map((e) => e.key));
-      }
-    });
-  }
-
-  void _removeChecked() {
-    final updated = widget.entries
-        .where((e) => !_checked.contains(e.key))
-        .toList();
-    _checked.clear();
-    widget.onEntriesChanged(updated);
-    setState(() {});
-  }
 
   void _resetToDefaults() {
     _checked.clear();
@@ -109,14 +123,39 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     setState(() {});
   }
 
-  void _removeEntry(TabEntry entry, int index) {
-    final updated = List<TabEntry>.of(widget.entries);
-    updated.removeAt(index);
-    _checked.remove(entry.key);
+  bool get _allChecked {
+    final ids = uniqueEntryIds(widget.entries);
+    return ids.isNotEmpty && ids.every(_checked.contains);
+  }
+
+  void _toggleMasterCheck() {
+    setState(() {
+      if (_allChecked) {
+        _checked.clear();
+      } else {
+        _checked.addAll(uniqueEntryIds(widget.entries));
+      }
+    });
+  }
+
+  void _removeChecked() {
+    final ids = uniqueEntryIds(widget.entries);
+    final updated = [
+      for (var index = 0; index < ids.length; index++)
+        if (!_checked.contains(ids[index])) widget.entries[index],
+    ];
+    _checked.clear();
+    widget.onEntriesChanged(updated);
+    setState(() {});
+  }
+
+  void _removeEntry(String id, int index) {
+    final updated = List<TabEntry>.of(widget.entries)..removeAt(index);
+    _checked.remove(id);
     widget.onEntriesChanged(updated);
   }
 
-  Widget _entryCheckbox(BuildContext context, TabEntry entry) {
+  Widget _entryCheckbox(BuildContext context, String id) {
     final l10n = AppLocalizations.of(context)!;
     return SizedBox(
       width: 40,
@@ -124,18 +163,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => setState(() {
-          if (_checked.contains(entry.key)) {
-            _checked.remove(entry.key);
+          if (_checked.contains(id)) {
+            _checked.remove(id);
           } else {
-            _checked.add(entry.key);
+            _checked.add(id);
           }
         }),
         child: Tooltip(
-          message: _checked.contains(entry.key)
-              ? l10n.hintDeselect
-              : l10n.hintSelect,
+          message: _checked.contains(id) ? l10n.hintDeselect : l10n.hintSelect,
           child: Checkbox(
-            value: _checked.contains(entry.key),
+            value: _checked.contains(id),
             tristate: false,
             // onChanged: null disables the checkbox's own tap handling;
             // taps are handled by the GestureDetector above for a larger hit area.
@@ -214,33 +251,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     bool? selectedShowOptionalPart = timeValue.showOptionalPart;
     bool? selectedShowDetails = timeValue.showDetails;
 
-    // Modes already used by other TimeValues with the same key (same type/zone):
-    // final existingModes = widget.entries
-    //     .whereType<TimeValue>()
-    //     .where(
-    //       (e) =>
-    //           e.sameZoneAndType(timeValue) &&
-    //           e.timezoneClockChangeMode != timeValue.timezoneClockChangeMode,
-    //     )
-    //     .map((e) => e.timezoneClockChangeMode)
-    //     .toSet();
-
     final controller = TextEditingController(
       text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n),
     );
     var selectedMode = timeValue.timezoneClockChangeMode;
     var selectedRemaining = timeValue.remaining;
-
-    // Two values on a tab must not be identical: does another entry already
-    // have the key that a choice would give this value?
-    bool isTaken(TimezoneClockChangeMode mode, bool remaining) {
-      final candidateKey = timeValue
-          .withTimezoneClockChangeMode(mode)
-          .withRemaining(remaining)
-          .key;
-      return candidateKey != timeValue.key &&
-          widget.entries.any((entry) => entry.key == candidateKey);
-    }
 
     final result =
         await showDialog<
@@ -285,8 +300,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     RadioGroup<TimezoneClockChangeMode>(
                       groupValue: selectedMode,
                       onChanged: (mode) {
-                        if (mode == null || isTaken(mode, selectedRemaining))
-                          return;
+                        if (mode == null) return;
                         setDialogState(() => selectedMode = mode);
                       },
                       child: Column(
@@ -308,18 +322,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                             RadioListTile(
                               contentPadding: EdgeInsets.zero,
                               dense: true,
-                              title: Text(
-                                title,
-                                style: isTaken(mode, selectedRemaining)
-                                    ? TextStyle(
-                                        color: Theme.of(
-                                          ctx,
-                                        ).colorScheme.onSurface.withAlpha(80),
-                                      )
-                                    : null,
-                              ),
+                              title: Text(title),
                               value: mode,
-                              enabled: !isTaken(mode, selectedRemaining),
                             ),
                         ],
                       ),
@@ -377,11 +381,9 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       dense: true,
                       title: Text(l10n.labelShowRemaining),
                       value: selectedRemaining,
-                      onChanged: isTaken(selectedMode, !selectedRemaining)
-                          ? null
-                          : (value) => setDialogState(
-                              () => selectedRemaining = value ?? false,
-                            ),
+                      onChanged: (value) => setDialogState(
+                        () => selectedRemaining = value ?? false,
+                      ),
                     ),
                 ],
               ),
@@ -398,9 +400,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   child: Text(l10n.hintResetToDefaults),
                 ),
                 TextButton(
-                  onPressed: isTaken(TimezoneClockChangeMode.auto, false)
-                      ? null
-                      : () => Navigator.pop(ctx), // null = cancel
+                  onPressed: () => Navigator.pop(ctx), // null = cancel
                   child: Text(l10n.actionCancel),
                 ),
                 TextButton(
@@ -485,21 +485,11 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     );
     if (result == null) return;
 
-    if (result is TimeValue &&
-        widget.entries.any((e) => e is TimeValue && e.key == result.key)) {
-      if (!mounted) return;
-      showAppSnackBar(
-        context,
-        l10n.messageAlreadyDisplayed,
-        duration: kSnackBarStandard,
-      );
-      return;
-    }
-
     widget.onEntriesChanged([...widget.entries, result]);
   }
 
   Widget _buildDisplayList(AppLocalizations l10n, String locale) {
+    final ids = uniqueEntryIds(widget.entries);
     return ListView.separated(
       controller: _scrollController,
       padding: const EdgeInsets.fromLTRB(
@@ -512,17 +502,19 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       separatorBuilder: (_, __) => const SizedBox.shrink(),
       itemBuilder: (context, index) {
         final entry = widget.entries[index];
-        final bottomPadding = _getItemPadding(index, widget.entries);
         return Padding(
-          key: ValueKey(entry.key),
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: _buildTabEntry(context, entry, null, l10n, locale),
+          key: ValueKey(ids[index]),
+          padding: EdgeInsets.only(
+            bottom: _getItemPadding(index, widget.entries),
+          ),
+          child: _buildTabEntry(context, entry, ids[index], null, l10n, locale),
         );
       },
     );
   }
 
   Widget _buildEditList(AppLocalizations l10n, String locale) {
+    final ids = uniqueEntryIds(widget.entries);
     return ReorderableListView.builder(
       scrollController: _scrollController,
       buildDefaultDragHandles: false,
@@ -543,9 +535,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         final entry = widget.entries[index];
         final bottomPadding = _getItemPadding(index, widget.entries);
         return Padding(
-          key: ValueKey(entry.key),
+          key: ValueKey(ids[index]),
           padding: EdgeInsets.only(bottom: bottomPadding),
-          child: _buildTabEntry(context, entry, index, l10n, locale),
+          child: _buildTabEntry(
+            context,
+            entry,
+            ids[index],
+            index,
+            l10n,
+            locale,
+          ),
         );
       },
     );
@@ -562,14 +561,15 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Widget _buildTabEntry(
     BuildContext context,
     TabEntry entry,
+    String id,
     int? editIndex,
     AppLocalizations l10n,
     String locale,
   ) {
     return switch (entry) {
-      TimeValue tv => _buildRow(context, tv, editIndex, l10n, locale),
-      TabDivider d => _buildDividerEntry(context, d, editIndex),
-      TabSection s => _buildSectionEntry(context, s, editIndex, l10n),
+      TimeValue tv => _buildRow(context, tv, id, editIndex, l10n, locale),
+      TabDivider d => _buildDividerEntry(context, d, id, editIndex),
+      TabSection s => _buildSectionEntry(context, s, id, editIndex, l10n),
       TabEntry() => throw StateError('Unknown TabEntry subtype: $entry'),
     };
   }
@@ -577,16 +577,17 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Widget _buildDividerEntry(
     BuildContext context,
     TabDivider d,
+    String id,
     int? editIndex,
   ) {
     if (editIndex == null) {
       return const Divider(height: kDividerHeight);
     }
     return Dismissible(
-      key: ValueKey(d.key),
+      key: ValueKey(id),
       direction: DismissDirection.endToStart,
       background: _dismissBackground(),
-      onDismissed: (_) => _removeEntry(d, editIndex),
+      onDismissed: (_) => _removeEntry(id, editIndex),
       child: SizedBox(
         height: kDividerHeight,
         child: Padding(
@@ -615,7 +616,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   ),
                 ),
               ),
-              _entryCheckbox(context, d),
+              _entryCheckbox(context, id),
             ],
           ),
         ),
@@ -626,6 +627,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Widget _buildSectionEntry(
     BuildContext context,
     TabSection s,
+    String id,
     int? editIndex,
     AppLocalizations l10n,
   ) {
@@ -639,10 +641,10 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       );
     }
     return Dismissible(
-      key: ValueKey(s.key),
+      key: ValueKey(id),
       direction: DismissDirection.endToStart,
       background: _dismissBackground(),
-      onDismissed: (_) => _removeEntry(s, editIndex),
+      onDismissed: (_) => _removeEntry(id, editIndex),
       child: SizedBox(
         height: kSectionHeaderHeight,
         child: Padding(
@@ -681,7 +683,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                   ),
                 ),
               ),
-              _entryCheckbox(context, s),
+              _entryCheckbox(context, id),
             ],
           ),
         ),
@@ -692,6 +694,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   Widget _buildRow(
     BuildContext context,
     TimeValue timeValue,
+    String id,
     int? editIndex, // null = view mode
     AppLocalizations l10n,
     String locale,
@@ -704,13 +707,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     if (editIndex == null) {
       if (isGraphical) {
         return TimeGraphicalRow(
-          key: ValueKey(timeValue.key),
+          key: ValueKey(id),
           timeValue: timeValue,
           now: widget.now,
         );
       }
       return TimeStringRow(
-        key: ValueKey(timeValue.key),
+        key: ValueKey(id),
         timeValue: timeValue,
         now: widget.now,
         locale: locale,
@@ -760,13 +763,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     }
 
     return Dismissible(
-      key: ValueKey(timeValue.key),
+      key: ValueKey(id),
       direction: DismissDirection.endToStart,
       background: _dismissBackground(),
       onDismissed: (_) {
         final updated = List<TabEntry>.of(widget.entries);
         updated.removeAt(editIndex);
-        _checked.remove(timeValue.key);
+        _checked.remove(id);
         widget.onEntriesChanged(updated);
       },
       child: ValueTile(
@@ -791,7 +794,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                 line2: display.line2,
                 dayQuarterColor: dayQuarterColor,
               ),
-        actionSlots: _editActionSlots(context, timeValue, editIndex, l10n),
+        actionSlots: _editActionSlots(context, timeValue, id, editIndex, l10n),
       ),
     );
   }
@@ -806,6 +809,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
   List<Widget?> _editActionSlots(
     BuildContext context,
     TimeValue timeValue,
+    String id,
     int index,
     AppLocalizations l10n,
   ) {
@@ -827,18 +831,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => setState(() {
-          if (_checked.contains(timeValue.key)) {
-            _checked.remove(timeValue.key);
+          if (_checked.contains(id)) {
+            _checked.remove(id);
           } else {
-            _checked.add(timeValue.key);
+            _checked.add(id);
           }
         }),
         child: Tooltip(
-          message: _checked.contains(timeValue.key)
-              ? l10n.hintDeselect
-              : l10n.hintSelect,
+          message: _checked.contains(id) ? l10n.hintDeselect : l10n.hintSelect,
           child: Checkbox(
-            value: _checked.contains(timeValue.key),
+            value: _checked.contains(id),
             tristate: false,
             onChanged: null,
           ),

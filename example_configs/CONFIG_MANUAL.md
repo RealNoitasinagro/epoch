@@ -307,8 +307,9 @@ In case you have the `all_tabs` array in your config and want to see only your c
 > The app keeps JSON keys in alphabetical order.
 > Though not necessary technically, you might want to do the same when creating configs manually to facilitate comparing files. 
 
-> [!NOTE]
+> [!WARNING]
 > Manually editing configuration files can exceed limits enforced by the app UI  (e.g. more than the max number of values per tab, duplicate entries, trailing dividers). \
+> Duplicates (e. g. the same value twice on a tab) are shown, but the app does not let you leave edit mode until they are resolved. \
 > The app does not validate imported files beyond basic JSON syntax. Use with care.
 
 ## Contributing

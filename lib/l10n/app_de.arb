@@ -73,6 +73,13 @@
       }
     }
   },
+  "@messageDuplicateValue": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "@messageMaxValues": {
     "placeholders": {
       "count": {
@@ -336,8 +343,8 @@
   "labelShowSeconds": "Sekunden anzeigen",
   "labelYear": "JJJJ",
   "linkWiki": "Wiki",
-  "messageAlreadyDisplayed": "Dieser Wert wird bereits angezeigt.",
   "messageCopiedToClipboard": "Kopiert: {label}",
+  "messageDuplicateValue": "„{label}“ wird zweimal angezeigt. Ändere oder entferne einen der beiden, um die Bearbeitung zu beenden.",
   "messageEmptyTab": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
   "messageMaxValues": "Maximal {count} Werte erlaubt.",
   "messageMissingTabsRestored": "Einige eingebaute Tabs fehlten in der geladenen Konfiguration und wurden wiederhergestellt.",

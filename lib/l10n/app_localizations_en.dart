@@ -494,11 +494,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get linkWiki => 'Wiki';
 
   @override
-  String get messageAlreadyDisplayed => 'This value is already displayed.';
-
-  @override
   String messageCopiedToClipboard(String label) {
     return 'Copied: $label';
+  }
+
+  @override
+  String messageDuplicateValue(String label) {
+    return '\"$label\" is shown twice. Change or remove one of them to finish editing.';
   }
 
   @override
