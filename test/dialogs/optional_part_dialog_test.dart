@@ -10,6 +10,7 @@ void main() {
     WidgetTester tester, {
     required Set<ValueType> hiddenTypes,
     required List<String> tapTexts,
+    String confirmText = 'OK',
   }) async {
     Set<ValueType>? result;
     await tester.pumpWidget(
@@ -36,7 +37,7 @@ void main() {
       await tester.tap(find.text(text));
       await tester.pump();
     }
-    await tester.tap(find.text('OK'));
+    await tester.tap(find.text(confirmText));
     await tester.pumpAndSettle();
     return result;
   }
@@ -73,30 +74,13 @@ void main() {
   });
 
   testWidgets('cancel discards the changes', (tester) async {
-    Set<ValueType>? result = {};
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('en'),
-        home: Builder(
-          builder: (context) => TextButton(
-            onPressed: () async {
-              result = await showDialog<Set<ValueType>>(
-                context: context,
-                builder: (_) => const OptionalPartDialog(hiddenTypes: {}),
-              );
-            },
-            child: const Text('open'),
-          ),
-        ),
-      ),
+    final result = await openDialogAndTap(
+      tester,
+      hiddenTypes: {},
+      tapTexts: ['All'],
+      confirmText: 'Cancel',
     );
-    await tester.tap(find.text('open'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('All'));
-    await tester.tap(find.text('Cancel'));
-    await tester.pumpAndSettle();
+    expect(find.byType(OptionalPartDialog), findsNothing);
     expect(result, isNull);
   });
 }

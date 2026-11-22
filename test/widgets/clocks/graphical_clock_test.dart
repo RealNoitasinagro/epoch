@@ -2,6 +2,7 @@ import 'package:epoch/app/layout_constants.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/settings/app_settings.dart';
+import 'package:epoch/widgets/clocks/analog_clock.dart';
 import 'package:epoch/widgets/clocks/binary_coded_decimal_clock.dart';
 import 'package:epoch/widgets/clocks/binary_columns_clock.dart';
 import 'package:epoch/widgets/clocks/graphical_clock.dart';
@@ -26,8 +27,16 @@ void main() {
   group('buildGraphicalClock', () {
     test('returns the clock widget of each graphical type', () {
       expect(clockOf(ValueType.sevenSegmentClock), isA<SevenSegmentClock>());
+      expect(clockOf(ValueType.analogClock12h), isA<AnalogClock>());
+      expect(clockOf(ValueType.analogClock24h), isA<AnalogClock>());
       expect(clockOf(ValueType.binaryClockColumns), isA<BinaryColumnsClock>());
       expect(clockOf(ValueType.binaryClockBcd), isA<BinaryCodedDecimalClock>());
+    });
+
+    test('every graphical value type has a clock', () {
+      for (final type in ValueType.values.where((type) => type.isGraphical)) {
+        expect(() => clockOf(type), returnsNormally, reason: type.name);
+      }
     });
 
     test(
@@ -42,6 +51,10 @@ void main() {
                 as BinaryColumnsClock;
         expect(columns.dotSize, kGraphicalBinaryClockDotSizeFocus);
         expect(columns.showLabels, isFalse);
+
+        final analog =
+            clockOf(ValueType.analogClock24h, focusSize: true) as AnalogClock;
+        expect(analog.diameter, kGraphicalAnalogClockDiameterFocus);
       },
     );
 

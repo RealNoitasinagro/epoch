@@ -1,6 +1,3 @@
-import 'dart:ui';
-import 'package:epoch/formatting/time_value_formatter.dart';
-import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -67,6 +64,12 @@ void main() {
       );
       expect(canonicalZoneSpec(const ZoneLocal()), isA<ZoneLocal>());
     });
+
+    test('legacy prefs string (no dst suffix) parses as auto', () {
+      const legacy = 'time/named:Europe/Berlin';
+      final tv = TimeValue.fromPrefsString(legacy);
+      expect(tv?.timezoneClockChangeMode, equals(TimezoneClockChangeMode.auto));
+    });
   });
 
   group('TimeValue.isZoneIndependent', () {
@@ -92,131 +95,59 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.hoursToHms', () {
-    test('0.0 hours = 00:00:00', () {
-      expect(TimeValueFormatter.hoursToHms(0.0), equals('00:00:00'));
-    });
-
-    test('12.5 hours = 12:30:00', () {
-      expect(TimeValueFormatter.hoursToHms(12.5), equals('12:30:00'));
-    });
-
-    test('23.0 hours = 23:00:00', () {
-      expect(TimeValueFormatter.hoursToHms(23.0), equals('23:00:00'));
-    });
-  });
-
-  group('TimeValueFormatter.hmsToHours', () {
-    test('00:00:00 = 0.0', () {
-      expect(TimeValueFormatter.hmsToHours('00:00:00'), equals(0.0));
-    });
-
-    test('12:00:00 = 12.0', () {
-      expect(TimeValueFormatter.hmsToHours('12:00:00'), equals(12.0));
-    });
-
-    test('invalid format returns null', () {
-      expect(TimeValueFormatter.hmsToHours('not-a-time'), isNull);
-      expect(TimeValueFormatter.hmsToHours('12:00'), isNull);
-    });
-  });
-
-  group('TimeValueFormatter.formatTime 12h', () {
-    bool hourFormat24 = false;
-
-    test('midnight = 12:00:00 AM', () {
-      expect(
-        TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, tzSuffix: null),
-        equals('12:00:00 AM'),
-      );
-    });
-
-    test('noon = 12:00:00 PM', () {
-      expect(
-        TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, tzSuffix: null),
-        equals('12:00:00 PM'),
-      );
-    });
-
-    test('13:30:00 = 01:30:00 PM', () {
-      expect(
-        TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, tzSuffix: null),
-        equals('01:30:00 PM'),
-      );
-    });
-
-    test('with timezone suffix', () {
-      expect(
-        TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, tzSuffix: 'UTC'),
-        equals('09:00:00 AM UTC'),
-      );
-    });
-  });
-
-  group('TimeValueFormatter.formatDecimal', () {
-    test('decimal with thousands separator EN', () {
-      expect(
-        TimeValueFormatter.formatDecimal(2461196.382, 'en', 3),
-        equals('2,461,196.382'),
-      );
-    });
-    test('decimal with thousands separator DE', () {
-      expect(
-        TimeValueFormatter.formatDecimal(2461196.382, 'de', 3),
-        equals('2.461.196,382'),
-      );
-    });
-    test('decimal without thousands separator EN', () {
-      expect(
-        TimeValueFormatter.formatDecimal(
-          2461196.382,
-          'en',
-          3,
-          thousandsSep: false,
+  group('clock change mode', () {
+    test('creates new instance with updated timezoneClockChangeMode', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.auto,
         ),
-        equals('2461196.382'),
       );
-    });
-    test('decimal without thousands separator DE uses comma', () {
+      final tv2 = tv.withTimezoneClockChangeMode(
+        TimezoneClockChangeMode.forceStandard,
+      );
       expect(
-        TimeValueFormatter.formatDecimal(
-          61195.879,
-          'de',
-          3,
-          thousandsSep: false,
+        tv2.timezoneClockChangeMode,
+        equals(TimezoneClockChangeMode.forceStandard),
+      );
+      expect(tv2.valueType, equals(tv.valueType));
+      expect(tv2.zone, equals(tv.zone));
+      expect(tv2.customLabel, equals(tv.customLabel));
+    });
+
+    test('key changes when timezoneClockChangeMode changes', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+      );
+      final tv2 = tv.withTimezoneClockChangeMode(
+        TimezoneClockChangeMode.forceStandard,
+      );
+      expect(tv2.key, isNot(equals(tv.key)));
+      expect(tv2.key, equals('time/named:Europe/Berlin/std'));
+    });
+
+    test('key for forceDst has /dst suffix', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
         ),
-        equals('61195,879'),
       );
+      expect(tv.key, equals('time/named:Europe/Berlin/dst'));
     });
-    test('small decimal no thousands needed', () {
-      expect(
-        TimeValueFormatter.formatDecimal(96.348, 'en', 3),
-        equals('96.348'),
+
+    test('key for forceStandard has /std suffix', () {
+      const tv = TimeValue(
+        valueType: ValueType.time,
+        zone: ZoneNamed('Europe/Berlin'),
+        options: ValueOptions(
+          timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+        ),
       );
-    });
-  });
-
-  group('TimeValueFormatter.lmstLabelWithLon', () {
-    final l10n = lookupAppLocalizations(const Locale('en'));
-
-    test('null longitude returns base label', () {
-      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, null);
-      expect(result, equals('LMST'));
-    });
-
-    test('positive longitude shows E', () {
-      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, 8.68);
-      expect(result, contains('E'));
-      expect(result, contains('8.68'));
-    });
-
-    test('negative longitude shows W', () {
-      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, -74.0);
-      expect(result, contains('W'));
-      expect(result, contains('74'));
+      expect(tv.key, equals('time/named:Europe/Berlin/std'));
     });
   });
 

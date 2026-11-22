@@ -4,6 +4,8 @@ import 'package:timezone/data/latest_all.dart' as tzl;
 import 'package:timezone/timezone.dart' as tz;
 
 void main() {
+  setUpAll(() => tzl.initializeTimeZones());
+
   // Civil
 
   group('TimeUtils.dayProgressFixedOffset', () {
@@ -349,6 +351,7 @@ void main() {
         600,
       );
     });
+
     test('a setting applies from 1 January of its year', () {
       expect(
         TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2016, 12, 31)),
@@ -363,10 +366,12 @@ void main() {
         120,
       );
     });
+
     test('the latest setting applies to all later dates', () {
       expect(TimeUtils.doomsdaySecondsToMidnight(DateTime.utc(2037, 6, 1)), 85);
     });
-    test('second of day for today and for the 1991 maximum', () {
+
+    test('second of day for the 2026 setting and for the 1991 maximum', () {
       expect(
         TimeUtils.doomsdayClockSecondOfDay(DateTime.utc(2026, 10, 24)),
         86315,
@@ -380,9 +385,104 @@ void main() {
 
   // Other
 
-  group('TimeUtils.nextDstTransition', () {
-    setUpAll(() => tzl.initializeTimeZones());
+  group('TimeUtils.hasDaylightSavingTime', () {
+    test('Europe/Berlin has DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('Europe/Berlin'), isTrue);
+    });
 
+    test('Europe/Paris has DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('Europe/Paris'), isTrue);
+    });
+
+    test('America/New_York has DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('America/New_York'), isTrue);
+    });
+
+    test('Australia/Lord_Howe has DST', () {
+      // Lord Howe Island: +00:30 offset DST, unusual
+      expect(TimeUtils.hasDaylightSavingTime('Australia/Lord_Howe'), isTrue);
+    });
+
+    test('Asia/Tokyo has no DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('Asia/Tokyo'), isFalse);
+    });
+
+    test('UTC has no DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('UTC'), isFalse);
+    });
+
+    test('America/Bogota has no DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('America/Bogota'), isFalse);
+    });
+
+    test('Europe/Moscow has no DST', () {
+      expect(TimeUtils.hasDaylightSavingTime('Europe/Moscow'), isFalse);
+    });
+  });
+
+  group('TimeUtils.daylightOrStandardOffset', () {
+    test('Berlin standard time is UTC+01:00 / CET', () {
+      final info = TimeUtils.daylightOrStandardOffset('Europe/Berlin', false);
+      expect(info, isNotNull);
+      expect(info!.offset, equals(const Duration(hours: 1)));
+      expect(info.abbreviation, equals('CET'));
+    });
+
+    test('Berlin daylight time is UTC+02:00 / CEST', () {
+      final info = TimeUtils.daylightOrStandardOffset('Europe/Berlin', true);
+      expect(info, isNotNull);
+      expect(info!.offset, equals(const Duration(hours: 2)));
+      expect(info.abbreviation, equals('CEST'));
+    });
+
+    test('New York standard time is UTC-05:00 / EST', () {
+      final info = TimeUtils.daylightOrStandardOffset(
+        'America/New_York',
+        false,
+      );
+      expect(info, isNotNull);
+      expect(info!.offset, equals(const Duration(hours: -5)));
+      expect(info.abbreviation, equals('EST'));
+    });
+
+    test('New York daylight time is UTC-04:00 / EDT', () {
+      final info = TimeUtils.daylightOrStandardOffset('America/New_York', true);
+      expect(info, isNotNull);
+      expect(info!.offset, equals(const Duration(hours: -4)));
+      expect(info.abbreviation, equals('EDT'));
+    });
+
+    test('Tokyo returns null (no DST)', () {
+      expect(TimeUtils.daylightOrStandardOffset('Asia/Tokyo', false), isNull);
+      expect(TimeUtils.daylightOrStandardOffset('Asia/Tokyo', true), isNull);
+    });
+
+    test('Lord Howe DST offset is +30min relative to standard', () {
+      final std = TimeUtils.daylightOrStandardOffset(
+        'Australia/Lord_Howe',
+        false,
+      );
+      final dst = TimeUtils.daylightOrStandardOffset(
+        'Australia/Lord_Howe',
+        true,
+      );
+      expect(std, isNotNull);
+      expect(dst, isNotNull);
+      final diff = dst!.offset - std!.offset;
+      expect(diff, equals(const Duration(minutes: 30)));
+    });
+
+    test('Troll DST offset is +120min relative to standard', () {
+      final std = TimeUtils.daylightOrStandardOffset('Antarctica/Troll', false);
+      final dst = TimeUtils.daylightOrStandardOffset('Antarctica/Troll', true);
+      expect(std, isNotNull);
+      expect(dst, isNotNull);
+      final diff = dst!.offset - std!.offset;
+      expect(diff, equals(const Duration(minutes: 120)));
+    });
+  });
+
+  group('TimeUtils.nextDstTransition', () {
     test('Berlin CEST -> CET 2026', () {
       final transition = TimeUtils.nextDstTransition(
         'Europe/Berlin',
@@ -504,28 +604,22 @@ void main() {
     });
   });
 
-  group('TimeUtils.dstTransitionAbbreviations', () {
-    setUpAll(() => tzl.initializeTimeZones());
-
-    test('Berlin autumn transition 2026: CEST -> CET', () {
-      // 2026-10-25 01:00 UTC: clocks go back from 03:00 CEST to 02:00 CET
-      final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
-      final result = TimeUtils.dstTransitionAbbreviations(
+  group('TimeUtils.nextDstTransitions', () {
+    test('nextDstTransitions returns correct count', () {
+      final transitions = TimeUtils.nextDstTransitions(
         'Europe/Berlin',
-        transition,
+        DateTime.utc(2026, 1, 1),
+        count: 4,
       );
-      expect(result.before, equals('CEST'));
-      expect(result.after, equals('CET'));
-    });
-
-    test('Berlin spring transition 2027: CET -> CEST', () {
-      final transition = DateTime.utc(2027, 3, 28, 1, 0, 0);
-      final result = TimeUtils.dstTransitionAbbreviations(
-        'Europe/Berlin',
-        transition,
-      );
-      expect(result.before, equals('CET'));
-      expect(result.after, equals('CEST'));
+      expect(transitions.length, equals(4));
+      // All transitions are in the future:
+      for (final t in transitions) {
+        expect(t.isAfter(DateTime.utc(2026, 1, 1)), isTrue);
+      }
+      // Transitions are sorted chronologically:
+      for (int i = 1; i < transitions.length; i++) {
+        expect(transitions[i].isAfter(transitions[i - 1]), isTrue);
+      }
     });
 
     test('Lord Howe spring transition: LHST -> LHDT', () {
@@ -576,22 +670,28 @@ void main() {
       );
       expect(transitions, isEmpty);
     });
+  });
 
-    test('nextDstTransitions returns correct count', () {
-      final transitions = TimeUtils.nextDstTransitions(
+  group('TimeUtils.dstTransitionAbbreviations', () {
+    test('Berlin autumn transition 2026: CEST -> CET', () {
+      // 2026-10-25 01:00 UTC: clocks go back from 03:00 CEST to 02:00 CET
+      final transition = DateTime.utc(2026, 10, 25, 1, 0, 0);
+      final result = TimeUtils.dstTransitionAbbreviations(
         'Europe/Berlin',
-        DateTime.utc(2026, 1, 1),
-        count: 4,
+        transition,
       );
-      expect(transitions.length, equals(4));
-      // All transitions are in the future:
-      for (final t in transitions) {
-        expect(t.isAfter(DateTime.utc(2026, 1, 1)), isTrue);
-      }
-      // Transitions are sorted chronologically:
-      for (int i = 1; i < transitions.length; i++) {
-        expect(transitions[i].isAfter(transitions[i - 1]), isTrue);
-      }
+      expect(result.before, equals('CEST'));
+      expect(result.after, equals('CET'));
+    });
+
+    test('Berlin spring transition 2027: CET -> CEST', () {
+      final transition = DateTime.utc(2027, 3, 28, 1, 0, 0);
+      final result = TimeUtils.dstTransitionAbbreviations(
+        'Europe/Berlin',
+        transition,
+      );
+      expect(result.before, equals('CET'));
+      expect(result.after, equals('CEST'));
     });
 
     test(
@@ -610,8 +710,6 @@ void main() {
   });
 
   group('TimeUtils.wallClockAroundTransition', () {
-    setUpAll(() => tzl.initializeTimeZones());
-
     test('Berlin autumn: 03:00 CEST becomes 02:00 CET (the hour repeats)', () {
       final wall = TimeUtils.wallClockAroundTransition(
         'Europe/Berlin',
@@ -650,8 +748,6 @@ void main() {
   });
 
   group('TimeUtils.dayProgressInZone', () {
-    setUpAll(() => tzl.initializeTimeZones());
-
     test('a normal day has 86,400 seconds', () {
       final progress = TimeUtils.dayProgressInZone(
         DateTime.utc(2026, 6, 15, 12),

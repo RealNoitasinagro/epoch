@@ -16,57 +16,61 @@ void main() {
     zone: ZoneUtc(),
   );
 
-  test('everything is shown by default', () {
-    const settings = ValueFormatSettings();
-    expect(settings.showsOptionalPart(time), isTrue);
-  });
+  group('optional part', () {
+    test('everything is shown by default', () {
+      const settings = ValueFormatSettings();
+      expect(settings.showsOptionalPart(time), isTrue);
+    });
 
-  test('the global default applies per value type', () {
-    const settings = ValueFormatSettings(
-      optionalPartHiddenTypes: {ValueType.dayMinute},
-    );
-    expect(settings.showsOptionalPart(dayMinute), isFalse);
-    expect(settings.showsOptionalPart(swatchBeats), isTrue);
-  });
+    test('the global default applies per value type', () {
+      const settings = ValueFormatSettings(
+        optionalPartHiddenTypes: {ValueType.dayMinute},
+      );
+      expect(settings.showsOptionalPart(dayMinute), isFalse);
+      expect(settings.showsOptionalPart(swatchBeats), isTrue);
+    });
 
-  test("a value's own choice wins over the global default", () {
-    const settings = ValueFormatSettings(
-      optionalPartHiddenTypes: {ValueType.time},
-    );
-    expect(settings.showsOptionalPart(timeShown), isTrue);
-  });
+    test("a value's own choice wins over the global default", () {
+      const settings = ValueFormatSettings(
+        optionalPartHiddenTypes: {ValueType.time},
+      );
+      expect(settings.showsOptionalPart(timeShown), isTrue);
+    });
 
-  test('time and date & time follow the time format', () {
-    const dateTime = TimeValue(valueType: ValueType.dateTime, zone: ZoneUtc());
-    const withSeconds = ValueFormatSettings(timeFormat: 'HH:mm:ss');
-    const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
-    expect(withSeconds.showsOptionalPart(time), isTrue);
-    expect(withSeconds.showsOptionalPart(dateTime), isTrue);
-    expect(withoutSeconds.showsOptionalPart(time), isFalse);
-    expect(withoutSeconds.showsOptionalPart(dateTime), isFalse);
-  });
+    test('time and date & time follow the time format', () {
+      const dateTime = TimeValue(
+        valueType: ValueType.dateTime,
+        zone: ZoneUtc(),
+      );
+      const withSeconds = ValueFormatSettings(timeFormat: 'HH:mm:ss');
+      const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
+      expect(withSeconds.showsOptionalPart(time), isTrue);
+      expect(withSeconds.showsOptionalPart(dateTime), isTrue);
+      expect(withoutSeconds.showsOptionalPart(time), isFalse);
+      expect(withoutSeconds.showsOptionalPart(dateTime), isFalse);
+    });
 
-  test("a value's own choice wins over the time format", () {
-    const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
-    expect(withoutSeconds.showsOptionalPart(timeShown), isTrue);
-  });
+    test("a value's own choice wins over the time format", () {
+      const withoutSeconds = ValueFormatSettings(timeFormat: 'HH:mm');
+      expect(withoutSeconds.showsOptionalPart(timeShown), isTrue);
+    });
 
-  test('the global hidden types do not apply to time', () {
-    const settings = ValueFormatSettings(
-      timeFormat: 'HH:mm:ss',
-      optionalPartHiddenTypes: {ValueType.time},
-    );
-    expect(settings.showsOptionalPart(time), isTrue);
+    test('the global hidden types do not apply to time', () {
+      const settings = ValueFormatSettings(
+        timeFormat: 'HH:mm:ss',
+        optionalPartHiddenTypes: {ValueType.time},
+      );
+      expect(settings.showsOptionalPart(time), isTrue);
+    });
   });
 
   group('details line', () {
-    const time = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-    const timeShown = TimeValue(
+    const detailsShown = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
       options: ValueOptions(showDetails: true),
     );
-    const timeHidden = TimeValue(
+    const detailsHidden = TimeValue(
       valueType: ValueType.time,
       zone: ZoneUtc(),
       options: ValueOptions(showDetails: false),
@@ -93,8 +97,8 @@ void main() {
         zoneDisplayMode: ZoneDisplayMode.hidden,
       );
       const shownZones = ValueFormatSettings();
-      expect(hiddenZones.showsDetails(timeShown), isTrue);
-      expect(shownZones.showsDetails(timeHidden), isFalse);
+      expect(hiddenZones.showsDetails(detailsShown), isTrue);
+      expect(shownZones.showsDetails(detailsHidden), isFalse);
     });
 
     test(
@@ -106,14 +110,17 @@ void main() {
         const abbreviations = ValueFormatSettings(
           zoneDisplayMode: ZoneDisplayMode.abbreviation,
         );
-        expect(hiddenZones.zoneDisplayModeFor(timeShown), ZoneDisplayMode.full);
+        expect(
+          hiddenZones.zoneDisplayModeFor(detailsShown),
+          ZoneDisplayMode.full,
+        );
         expect(hiddenZones.zoneDisplayModeFor(time), ZoneDisplayMode.hidden);
         expect(
           abbreviations.zoneDisplayModeFor(time),
           ZoneDisplayMode.abbreviation,
         );
         expect(
-          abbreviations.zoneDisplayModeFor(timeHidden),
+          abbreviations.zoneDisplayModeFor(detailsHidden),
           ZoneDisplayMode.hidden,
         );
       },

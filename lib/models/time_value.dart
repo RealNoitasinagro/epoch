@@ -106,8 +106,6 @@ class TimeValue implements TabEntry {
   @override
   String get key => '$_baseKey${options.identitySuffix}';
 
-  bool sameZoneAndType(TimeValue other) => _baseKey == other._baseKey;
-
   // Serialisation: see ValueOptions.splitPrefsString for the syntax.
   @override
   String toPrefsString() => options.appendTo(_baseKey);

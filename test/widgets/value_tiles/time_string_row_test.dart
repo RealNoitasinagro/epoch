@@ -194,7 +194,7 @@ void main() {
       expect(result.line2, equals('+02:00'));
     });
 
-    test('ZoneDisplayMode.offsetShort shows only offsetMini', () {
+    test('ZoneDisplayMode.offsetMini shows only offsetMini', () {
       const tv = TimeValue(
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),

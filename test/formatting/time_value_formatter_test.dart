@@ -1,7 +1,8 @@
+import 'dart:ui';
 import 'package:epoch/formatting/time_value_formatter.dart';
 import 'package:epoch/formatting/value_format_settings.dart';
+import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/settings/app_settings.dart';
 import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -13,6 +14,16 @@ void main() {
     await initializeDateFormatting('en');
     await initializeDateFormatting('de');
   });
+
+  // ── helpers ──
+  String line1Of(
+    TimeValue timeValue,
+    DateTime utc, {
+    ValueFormatSettings settings = const ValueFormatSettings(),
+    String locale = 'en',
+  }) => TimeStringRow.splitZoneOffset(
+    TimeValueFormatter.format(timeValue, utc, locale, settings: settings),
+  ).line1;
 
   String formatWith(
     TimeValue timeValue,
@@ -28,179 +39,674 @@ void main() {
     );
   }
 
-  String line1(
-    TimeValue timeValue,
-    DateTime utcMoment, {
-    bool hourFormat24 = true,
-    String timeFormat = kTimePatternFull,
-  }) {
-    final formatted = TimeValueFormatter.format(
-      timeValue,
-      utcMoment,
-      'en',
-      settings: ValueFormatSettings(
-        hourFormat24: hourFormat24,
-        timeFormat: timeFormat,
-      ),
-    );
-    return TimeStringRow.splitZoneOffset(formatted).line1;
-  }
+  group('format', () {
+    group('zone-independent', () {
+      final t = DateTime.utc(2001, 9, 9, 1, 46, 40); // Unix 1000000000
 
-  group('TimeValueFormatter.format – zone-independent', () {
-    final t = DateTime.utc(2001, 9, 9, 1, 46, 40); // Unix 1000000000
+      // Technical
 
-    // Technical
+      test('unixSeconds formats correctly', () {
+        const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        expect(result, equals('1,000,000,000'));
+      });
 
-    test('unixSeconds formats correctly', () {
-      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      expect(result, equals('1,000,000,000'));
+      test('unixSeconds without thousands separator', () {
+        const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(thousandsSep: false),
+        );
+        expect(result, equals('1000000000'));
+      });
+
+      test('unixSeconds DE locale uses period as thousands separator', () {
+        const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
+        final result = formatWith(tv, t, locale: 'de');
+        expect(result, equals('1.000.000.000'));
+      });
+
+      // Astronomical
+
+      test('gmst returns HH:MM:SS format', () {
+        const tv = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        expect(result, matches(RegExp(r'^\d{2}:\d{2}:\d{2}$')));
+      });
+
+      test('lmst returns placeholder without longitude', () {
+        const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        expect(result, equals('--:--:--'));
+      });
+
+      test('lmst with longitude returns HH:MM:SS', () {
+        const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(longitude: 8.68),
+        );
+        final parts = result.split(':');
+        expect(parts.length, equals(3));
+        expect(int.tryParse(parts[0]), isNotNull);
+      });
+
+      test('julianDate has 5 decimal places', () {
+        const tv = TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(thousandsSep: false),
+        );
+        final parts = result.split('.');
+        expect(parts.length, equals(2));
+        expect(parts[1].length, equals(5));
+      });
+
+      // Curiosities
+
+      test('swatchBeats format starts with @', () {
+        const tv = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        expect(result, startsWith('@'));
+        //final beats = int.tryParse(result.substring(1));
+        final beats = double.tryParse(result.substring(1));
+        expect(beats, isNotNull);
+        expect(beats, greaterThanOrEqualTo(0));
+        expect(beats, lessThan(1000));
+      });
     });
 
-    test('unixSeconds without thousands separator', () {
-      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(thousandsSep: false),
+    group('zone-dependent', () {
+      final t = DateTime(2026, 6, 10, 14, 30, 0); // local time
+
+      // Civil
+
+      test('time local returns HH:MM:SS with timezone suffix', () {
+        const tv = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(localIanaZone: 'Europe/Berlin'),
+        );
+        expect(result, contains(':'));
+        expect(result, contains('UTC'));
+      });
+
+      test('time UTC returns UTC suffix', () {
+        const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        expect(result, contains('UTC'));
+      });
+
+      test('time 12h format contains AM or PM', () {
+        const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(hourFormat24: false),
+        );
+        expect(result, anyOf(contains('AM'), contains('PM')));
+      });
+
+      test('daySecond is between 0 and 86399', () {
+        const tv = TimeValue(valueType: ValueType.daySecond, zone: ZoneUtc());
+        final result = formatWith(
+          tv,
+          t,
+          settings: const ValueFormatSettings(thousandsSep: false),
+        );
+        var split = TimeStringRow.splitZoneOffset(result);
+        final v = int.tryParse(split.line1);
+        expect(v, isNotNull);
+        expect(v, greaterThanOrEqualTo(0));
+        expect(v, lessThanOrEqualTo(86399));
+      });
+
+      test('dayPercent is between 0.000 and 99.999', () {
+        const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
+        final result = formatWith(tv, t);
+        var split = TimeStringRow.splitZoneOffset(result);
+        final v = double.tryParse(split.line1);
+        expect(v, isNotNull);
+        expect(v, greaterThanOrEqualTo(0.0));
+        expect(v, lessThan(100.0));
+      });
+
+      test('binaryClockString matches pattern', () {
+        const tv = TimeValue(
+          valueType: ValueType.binaryClockString,
+          zone: ZoneLocal(),
+        );
+        final result = formatWith(tv, t);
+        expect(result, matches(RegExp(r'^\d{5}:\d{6}:\d{6}$')));
+      });
+
+      test('named timezone formats correctly', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Asia/Tokyo'),
+        );
+        final result = formatWith(tv, t);
+        expect(result, contains('JST'));
+      });
+    });
+
+    group('day minute', () {
+      const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
+      const utcNoSeconds = TimeValue(
+        valueType: ValueType.dayMinute,
+        zone: ZoneUtc(),
+        options: ValueOptions(showOptionalPart: false),
       );
-      expect(result, equals('1000000000'));
-    });
-
-    test('unixSeconds DE locale uses period as thousands separator', () {
-      const tv = TimeValue(valueType: ValueType.unixSeconds, zone: ZoneUtc());
-      final result = formatWith(tv, t, locale: 'de');
-      expect(result, equals('1.000.000.000'));
-    });
-
-    // Astronomical
-
-    test('gmst returns HH:MM:SS format', () {
-      const tv = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      expect(result, matches(RegExp(r'^\d{2}:\d{2}:\d{2}$')));
-    });
-
-    test('lmst returns placeholder without longitude', () {
-      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      expect(result, equals('--:--:--'));
-    });
-
-    test('lmst with longitude returns HH:MM:SS', () {
-      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(longitude: 8.68),
+      const berlin = TimeValue(
+        valueType: ValueType.dayMinute,
+        zone: ZoneNamed('Europe/Berlin'),
       );
-      final parts = result.split(':');
-      expect(parts.length, equals(3));
-      expect(int.tryParse(parts[0]), isNotNull);
+
+      test('counts minutes since midnight, seconds follow the colon', () {
+        expect(line1Of(utc, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845:09');
+        expect(
+          line1Of(utcNoSeconds, DateTime.utc(2026, 6, 15, 14, 5, 9)),
+          '845',
+        );
+      });
+
+      test('midnight and last minute of the day', () {
+        expect(line1Of(utc, DateTime.utc(2026, 6, 15)), '0:00');
+        expect(
+          line1Of(
+            utc,
+            DateTime.utc(2026, 6, 15, 23, 59, 59),
+            settings: const ValueFormatSettings(thousandsSep: false),
+          ),
+          '1439:59',
+        );
+      });
+
+      test('thousands separator follows the setting', () {
+        final lastMinute = DateTime.utc(2026, 6, 15, 23, 59, 59);
+        expect(
+          line1Of(
+            utcNoSeconds,
+            lastMinute,
+            settings: const ValueFormatSettings(thousandsSep: true),
+          ),
+          '1,439',
+        );
+        expect(
+          line1Of(
+            utcNoSeconds,
+            lastMinute,
+            settings: const ValueFormatSettings(thousandsSep: true),
+            locale: 'de',
+          ),
+          '1.439',
+        );
+        expect(
+          line1Of(
+            utcNoSeconds,
+            lastMinute,
+            settings: const ValueFormatSettings(thousandsSep: false),
+            locale: 'en',
+          ),
+          '1439',
+        );
+        expect(
+          line1Of(
+            utcNoSeconds,
+            lastMinute,
+            settings: const ValueFormatSettings(thousandsSep: false),
+            locale: 'de',
+          ),
+          '1439',
+        );
+      });
+
+      test('clock change days use the real day length', () {
+        expect(
+          line1Of(
+            berlin,
+            DateTime.utc(2026, 10, 25, 22, 59, 59),
+            settings: const ValueFormatSettings(thousandsSep: false),
+          ),
+          '1499:59',
+        ); // 25-hour day
+        expect(
+          line1Of(
+            berlin,
+            DateTime.utc(2027, 3, 28, 21, 59, 59),
+            settings: const ValueFormatSettings(thousandsSep: false),
+          ),
+          '1379:59',
+        ); // 23-hour day
+        expect(
+          line1Of(
+            berlin,
+            DateTime.utc(2026, 6, 15, 21, 59, 59),
+            settings: const ValueFormatSettings(thousandsSep: false),
+          ),
+          '1439:59',
+        ); // normal day
+      });
     });
 
-    test('julianDate has 5 decimal places', () {
-      const tv = TimeValue(valueType: ValueType.julianDate, zone: ZoneUtc());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(thousandsSep: false),
+    group('octal and hexadecimal time', () {
+      const octalTime = TimeValue(
+        valueType: ValueType.octalTime,
+        zone: const ZoneUtc(),
       );
-      final parts = result.split('.');
-      expect(parts.length, equals(2));
-      expect(parts[1].length, equals(5));
-    });
-
-    // Curiosities
-
-    test('swatchBeats format starts with @', () {
-      const tv = TimeValue(valueType: ValueType.swatchBeats, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      expect(result, startsWith('@'));
-      //final beats = int.tryParse(result.substring(1));
-      final beats = double.tryParse(result.substring(1));
-      expect(beats, isNotNull);
-      expect(beats, greaterThanOrEqualTo(0));
-      expect(beats, lessThan(1000));
-    });
-  });
-
-  group('TimeValueFormatter.format – zone-dependent', () {
-    final t = DateTime(2026, 6, 10, 14, 30, 0); // local time
-
-    // Civil
-
-    test('time local returns HH:MM:SS with timezone suffix', () {
-      const tv = TimeValue(valueType: ValueType.time, zone: ZoneLocal());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(localIanaZone: 'Europe/Berlin'),
+      const hexadecimalTime = TimeValue(
+        valueType: ValueType.hexadecimalTime,
+        zone: const ZoneUtc(),
       );
-      expect(result, contains(':'));
-      expect(result, contains('UTC'));
+
+      test('midnight is all zeros', () {
+        final midnight = DateTime.utc(2026, 1, 1);
+        expect(formatWith(octalTime, midnight), '000000');
+        expect(formatWith(hexadecimalTime, midnight), '0_00_00');
+      });
+
+      test('one second before midnight (day second 86399)', () {
+        final lastSecond = DateTime.utc(2026, 1, 1, 23, 59, 59);
+        expect(formatWith(octalTime, lastSecond), '250577');
+        expect(formatWith(hexadecimalTime, lastSecond), '1_51_7F');
+      });
     });
 
-    test('time UTC returns UTC suffix', () {
-      const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      expect(result, contains('UTC'));
+    group('Doomsday Clock display', () {
+      String doomsdayClock(DateTime utcMoment, {bool hourFormat24 = true}) {
+        const timeValue = TimeValue(
+          valueType: ValueType.doomsdayClock,
+          zone: ZoneUtc(),
+        );
+        return formatWith(
+          timeValue,
+          utcMoment,
+          settings: ValueFormatSettings(hourFormat24: hourFormat24),
+        );
+      }
+
+      test('shows the setting as a time of day', () {
+        expect(doomsdayClock(DateTime.utc(2026, 10, 24)), '23:58:35');
+        expect(doomsdayClock(DateTime.utc(1991, 6, 1)), '23:43:00');
+      });
+
+      test('12-hour format', () {
+        expect(
+          doomsdayClock(DateTime.utc(1991, 6, 1), hourFormat24: false),
+          '11:43:00 PM',
+        );
+      });
     });
 
-    test('time 12h format contains AM or PM', () {
-      const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(hourFormat24: false),
-      );
-      expect(result, anyOf(contains('AM'), contains('PM')));
+    group('clock change mode', () {
+      // June = DST active in Berlin (CEST = UTC+2)
+      final summerUtc = DateTime.utc(2026, 6, 15, 12, 0, 0);
+      // January = standard time in Berlin (CET = UTC+1)
+      final winterUtc = DateTime.utc(2026, 1, 15, 12, 0, 0);
+
+      test('auto in summer shows CEST', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, summerUtc, 'en');
+        expect(result, contains('CEST'));
+      });
+
+      test('auto in winter shows CET', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, winterUtc, 'en');
+        expect(result, contains('CET'));
+      });
+
+      test('forceStandard in summer shows CET (winter abbreviation)', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, summerUtc, 'en');
+        expect(result, contains('CET'));
+        expect(result, isNot(contains('CEST')));
+      });
+
+      test('forceDst in winter shows CEST (summer abbreviation)', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, winterUtc, 'en');
+        expect(result, contains('CEST'));
+        expect(result, isNot(contains('CET ')));
+      });
+
+      test('forceStandard shows UTC+01:00 in summer', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, summerUtc, 'en');
+        expect(result, contains('UTC+01:00'));
+      });
+
+      test('forceDst shows UTC+02:00 in winter', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceDst,
+          ),
+        );
+        final result = TimeValueFormatter.format(tv, winterUtc, 'en');
+        expect(result, contains('UTC+02:00'));
+      });
+
+      test('forceStandard shifts time by 1h compared to auto in summer', () {
+        const tvAuto = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+          ),
+        );
+        const tvStd = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+          ),
+        );
+        final autoResult = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
+        final stdResult = TimeValueFormatter.format(tvStd, summerUtc, 'en');
+        // auto = 14:00 CEST, forceStandard = 13:00 CET
+        expect(autoResult, startsWith('14:00:00'));
+        expect(stdResult, startsWith('13:00:00'));
+      });
+
+      test('forceStandard on Tokyo (no DST) falls back to auto', () {
+        const tv = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Asia/Tokyo'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+          ),
+        );
+        const tvAuto = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneNamed('Asia/Tokyo'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+          ),
+        );
+        final forced = TimeValueFormatter.format(tv, summerUtc, 'en');
+        final auto = TimeValueFormatter.format(tvAuto, summerUtc, 'en');
+        expect(forced, equals(auto));
+      });
+
+      test('daySecond shifts by 3600 with forceStandard in summer', () {
+        const tvAuto = TimeValue(
+          valueType: ValueType.daySecond,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.auto,
+          ),
+        );
+        const tvStd = TimeValue(
+          valueType: ValueType.daySecond,
+          zone: ZoneNamed('Europe/Berlin'),
+          options: ValueOptions(
+            timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
+          ),
+        );
+        final autoValFormatted = TimeValueFormatter.format(
+          tvAuto,
+          summerUtc,
+          'en',
+          settings: const ValueFormatSettings(thousandsSep: false),
+        );
+        var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
+        final autoVal = int.parse(splitAutoVal.line1);
+        final stdValFormatted = TimeValueFormatter.format(
+          tvStd,
+          summerUtc,
+          'en',
+          settings: const ValueFormatSettings(thousandsSep: false),
+        );
+        var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
+        final stdVal = int.parse(splitStdVal.line1);
+        expect(autoVal - stdVal, equals(3600));
+      });
     });
 
-    test('daySecond is between 0 and 86399', () {
-      const tv = TimeValue(valueType: ValueType.daySecond, zone: ZoneUtc());
-      final result = formatWith(
-        tv,
-        t,
-        settings: const ValueFormatSettings(thousandsSep: false),
-      );
-      var split = TimeStringRow.splitZoneOffset(result);
-      final v = int.tryParse(split.line1);
-      expect(v, isNotNull);
-      expect(v, greaterThanOrEqualTo(0));
-      expect(v, lessThanOrEqualTo(86399));
-    });
-
-    test('dayPercent is between 0.000 and 99.999', () {
-      const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
-      final result = formatWith(tv, t);
-      var split = TimeStringRow.splitZoneOffset(result);
-      final v = double.tryParse(split.line1);
-      expect(v, isNotNull);
-      expect(v, greaterThanOrEqualTo(0.0));
-      expect(v, lessThan(100.0));
-    });
-
-    test('binaryClockString matches pattern', () {
-      const tv = TimeValue(
-        valueType: ValueType.binaryClockString,
-        zone: ZoneLocal(),
-      );
-      final result = formatWith(tv, t);
-      expect(result, matches(RegExp(r'^\d{5}:\d{6}:\d{6}$')));
-    });
-
-    test('named timezone formats correctly', () {
-      const tv = TimeValue(
+    group('optional part', () {
+      final moment = DateTime.utc(2026, 6, 15, 14, 5, 9);
+      const timeWithoutSeconds = TimeValue(
         valueType: ValueType.time,
-        zone: ZoneNamed('Asia/Tokyo'),
+        zone: ZoneUtc(),
+        options: ValueOptions(showOptionalPart: false),
       );
-      final result = formatWith(tv, t);
-      expect(result, contains('JST'));
+
+      test('time without seconds', () {
+        expect(line1Of(timeWithoutSeconds, moment), '14:05');
+        expect(
+          line1Of(
+            timeWithoutSeconds,
+            moment,
+            settings: const ValueFormatSettings(hourFormat24: false),
+          ),
+          '02:05 PM',
+        );
+        expect(
+          line1Of(
+            timeWithoutSeconds,
+            moment,
+            settings: const ValueFormatSettings(timeFormat: 'H.mm.ss'),
+          ),
+          '14.05',
+        );
+      });
+
+      test('day percent without decimals is cut off, not rounded', () {
+        const dayPercent = TimeValue(
+          valueType: ValueType.dayPercent,
+          zone: ZoneUtc(),
+          options: ValueOptions(showOptionalPart: false),
+        );
+        expect(
+          line1Of(dayPercent, DateTime.utc(2026, 6, 15, 23, 59, 59)),
+          '99',
+        );
+        expect(line1Of(dayPercent, DateTime.utc(2026, 6, 15, 12)), '50');
+      });
+
+      test('decimal time without seconds', () {
+        const decimalTime = TimeValue(
+          valueType: ValueType.decimalTime,
+          zone: ZoneUtc(),
+          options: ValueOptions(showOptionalPart: false),
+        );
+        expect(line1Of(decimalTime, DateTime.utc(2026, 6, 15, 12)), '5ʰ00ᵐ');
+      });
+
+      test('forcing seconds adds them to a format without seconds', () {
+        const timeWithSeconds = TimeValue(
+          valueType: ValueType.time,
+          zone: ZoneUtc(),
+          options: ValueOptions(showOptionalPart: true),
+        );
+        expect(
+          line1Of(
+            timeWithSeconds,
+            moment,
+            settings: const ValueFormatSettings(timeFormat: 'HH:mm'),
+          ),
+          '14:05:09',
+        );
+        expect(
+          line1Of(
+            timeWithSeconds,
+            moment,
+            settings: const ValueFormatSettings(
+              timeFormat: 'H.mm',
+              hourFormat24: false,
+            ),
+          ),
+          '2.05.09 PM',
+        );
+      });
+
+      test('without a choice the time format decides', () {
+        const time = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
+        expect(
+          line1Of(
+            time,
+            moment,
+            settings: const ValueFormatSettings(timeFormat: 'HH:mm'),
+          ),
+          '14:05',
+        );
+        expect(
+          line1Of(
+            time,
+            moment,
+            settings: const ValueFormatSettings(timeFormat: 'HH:mm:ss'),
+          ),
+          '14:05:09',
+        );
+      });
+    });
+
+    group('remaining time', () {
+      String remainingLine1(type, utc, {zone, options}) {
+        final timeValue = TimeValue(
+          valueType: type,
+          zone: zone ?? ZoneUtc(),
+          options: options ?? ValueOptions(remaining: true),
+        );
+        return line1Of(timeValue, utc);
+      }
+
+      final afternoon = DateTime.utc(2026, 6, 15, 14, 5, 9); // 35,691 s left
+
+      test('time, day second, day minute, day percent', () {
+        expect(remainingLine1(ValueType.time, afternoon), '09:54:51');
+        expect(remainingLine1(ValueType.daySecond, afternoon), '35,691');
+        expect(remainingLine1(ValueType.dayMinute, afternoon), '594:51');
+        expect(
+          remainingLine1(ValueType.dayPercent, DateTime.utc(2026, 6, 15, 12)),
+          '50.000',
+        );
+      });
+
+      test('the first and the last second of the day', () {
+        expect(
+          remainingLine1(ValueType.daySecond, DateTime.utc(2026, 6, 15)),
+          '86,400',
+        );
+        expect(
+          remainingLine1(
+            ValueType.daySecond,
+            DateTime.utc(2026, 6, 15, 23, 59, 59),
+          ),
+          '1',
+        );
+        expect(
+          remainingLine1(ValueType.time, DateTime.utc(2026, 6, 15)),
+          '24:00:00',
+        );
+      });
+
+      test('a 25-hour day starts with 25:00:00 left', () {
+        expect(
+          remainingLine1(
+            ValueType.time,
+            DateTime.utc(2026, 10, 24, 22),
+            zone: const ZoneNamed('Europe/Berlin'),
+          ),
+          '25:00:00',
+        );
+      });
+
+      test('time follows the seconds setting of the value', () {
+        expect(
+          remainingLine1(
+            ValueType.time,
+            afternoon,
+            options: const ValueOptions(
+              remaining: true,
+              showOptionalPart: false,
+            ),
+          ),
+          '09:54',
+        );
+      });
+
+      test('decimal time, Swatch beats, New Earth Time, Doomsday Clock', () {
+        expect(
+          remainingLine1(ValueType.decimalTime, DateTime.utc(2026, 6, 15, 12)),
+          '5ʰ00ᵐ00ˢ',
+        );
+        expect(
+          remainingLine1(ValueType.decimalTime, DateTime.utc(2026, 6, 15)),
+          '10ʰ00ᵐ00ˢ',
+        );
+        expect(
+          remainingLine1(ValueType.swatchBeats, DateTime.utc(2026, 6, 14, 23)),
+          '1000.00',
+        );
+        expect(
+          remainingLine1(ValueType.swatchBeats, DateTime.utc(2026, 6, 15, 12)),
+          '458.33',
+        );
+        expect(
+          remainingLine1(ValueType.newEarthTime, DateTime.utc(2026, 6, 15, 12)),
+          '180.00°',
+        );
+        expect(
+          remainingLine1(ValueType.doomsdayClock, DateTime.utc(2026, 6, 15)),
+          '00:01:25',
+        );
+      });
+
+      test('types without a remaining time ignore the flag', () {
+        expect(
+          remainingLine1(ValueType.date, afternoon),
+          remainingLine1(ValueType.date, afternoon, options: ValueOptions.none),
+        );
+        expect(
+          remainingLine1(ValueType.unixSeconds, afternoon),
+          remainingLine1(
+            ValueType.unixSeconds,
+            afternoon,
+            options: ValueOptions.none,
+          ),
+        );
+      });
     });
   });
 
-  group('TimeValueFormatter.formatDatePattern', () {
+  group('formatDatePattern', () {
     // Reference: 2026-01-09 (Fri) – distinct values for D/DD/M/MM
     final ref = DateTime(2026, 1, 9, 8, 14, 27);
 
@@ -361,7 +867,7 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.formatTimePattern', () {
+  group('formatTimePattern', () {
     // Reference hour 8 to distinguish H from HH:
     final ref = DateTime(2026, 1, 9, 8, 14, 27);
 
@@ -459,7 +965,82 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.binaryTimeString', () {
+  group('formatTime 12h', () {
+    bool hourFormat24 = false;
+
+    test('midnight = 12:00:00 AM', () {
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 0, 0, 0, tzSuffix: null),
+        equals('12:00:00 AM'),
+      );
+    });
+
+    test('noon = 12:00:00 PM', () {
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 12, 0, 0, tzSuffix: null),
+        equals('12:00:00 PM'),
+      );
+    });
+
+    test('13:30:00 = 01:30:00 PM', () {
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 13, 30, 0, tzSuffix: null),
+        equals('01:30:00 PM'),
+      );
+    });
+
+    test('with timezone suffix', () {
+      expect(
+        TimeValueFormatter.formatTime(hourFormat24, 9, 0, 0, tzSuffix: 'UTC'),
+        equals('09:00:00 AM UTC'),
+      );
+    });
+  });
+
+  group('formatDecimal', () {
+    test('decimal with thousands separator EN', () {
+      expect(
+        TimeValueFormatter.formatDecimal(2461196.382, 'en', 3),
+        equals('2,461,196.382'),
+      );
+    });
+    test('decimal with thousands separator DE', () {
+      expect(
+        TimeValueFormatter.formatDecimal(2461196.382, 'de', 3),
+        equals('2.461.196,382'),
+      );
+    });
+    test('decimal without thousands separator EN', () {
+      expect(
+        TimeValueFormatter.formatDecimal(
+          2461196.382,
+          'en',
+          3,
+          thousandsSep: false,
+        ),
+        equals('2461196.382'),
+      );
+    });
+    test('decimal without thousands separator DE uses comma', () {
+      expect(
+        TimeValueFormatter.formatDecimal(
+          61195.879,
+          'de',
+          3,
+          thousandsSep: false,
+        ),
+        equals('61195,879'),
+      );
+    });
+    test('small decimal no thousands needed', () {
+      expect(
+        TimeValueFormatter.formatDecimal(96.348, 'en', 3),
+        equals('96.348'),
+      );
+    });
+  });
+
+  group('binaryTimeString', () {
     test('midnight = 00000:000000:000000', () {
       final dt = DateTime(2026, 1, 1, 0, 0, 0);
       expect(
@@ -479,7 +1060,7 @@ void main() {
     });
   });
 
-  group('TimeValueFormatter.romanNumeralsTime', () {
+  group('romanNumeralsTime', () {
     test('midnight uses N for zero, all fields 7 wide', () {
       expect(
         TimeValueFormatter.romanNumeralsTime(
@@ -543,289 +1124,56 @@ void main() {
     });
   });
 
-  group('Doomsday Clock display', () {
-    String doomsdayClock(DateTime utcMoment, {bool hourFormat24 = true}) {
-      const timeValue = TimeValue(
-        valueType: ValueType.doomsdayClock,
-        zone: ZoneUtc(),
-      );
-      return formatWith(
-        timeValue,
-        utcMoment,
-        settings: ValueFormatSettings(hourFormat24: hourFormat24),
-      );
-    }
-
-    test('shows the setting as a time of day', () {
-      expect(doomsdayClock(DateTime.utc(2026, 10, 24)), '23:58:35');
-      expect(doomsdayClock(DateTime.utc(1991, 6, 1)), '23:43:00');
+  group('hoursToHms', () {
+    test('0.0 hours = 00:00:00', () {
+      expect(TimeValueFormatter.hoursToHms(0.0), equals('00:00:00'));
     });
 
-    test('12-hour format', () {
-      expect(
-        doomsdayClock(DateTime.utc(1991, 6, 1), hourFormat24: false),
-        '11:43:00 PM',
-      );
+    test('12.5 hours = 12:30:00', () {
+      expect(TimeValueFormatter.hoursToHms(12.5), equals('12:30:00'));
+    });
+
+    test('23.0 hours = 23:00:00', () {
+      expect(TimeValueFormatter.hoursToHms(23.0), equals('23:00:00'));
     });
   });
 
-  group('day minute', () {
-    setUpAll(() {
-      tzl.initializeTimeZones();
+  group('hmsToHours', () {
+    test('00:00:00 = 0.0', () {
+      expect(TimeValueFormatter.hmsToHours('00:00:00'), equals(0.0));
     });
 
-    String line1(
-      TimeValue timeValue,
-      DateTime utc, {
-      bool thousandsSep = false,
-      String locale = 'en',
-    }) {
-      return TimeStringRow.splitZoneOffset(
-        TimeValueFormatter.format(
-          timeValue,
-          utc,
-          locale,
-          settings: ValueFormatSettings(thousandsSep: thousandsSep),
-        ),
-      ).line1;
-    }
+    test('12:00:00 = 12.0', () {
+      expect(TimeValueFormatter.hmsToHours('12:00:00'), equals(12.0));
+    });
 
-    const utc = TimeValue(valueType: ValueType.dayMinute, zone: ZoneUtc());
-    const utcNoSeconds = TimeValue(
-      valueType: ValueType.dayMinute,
-      zone: ZoneUtc(),
-      options: ValueOptions(showOptionalPart: false),
-    );
-    const berlin = TimeValue(
-      valueType: ValueType.dayMinute,
-      zone: ZoneNamed('Europe/Berlin'),
-    );
-
-    test('counts minutes since midnight, seconds follow the colon', () {
-      expect(line1(utc, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845:09');
-      expect(line1(utcNoSeconds, DateTime.utc(2026, 6, 15, 14, 5, 9)), '845');
-    });
-    test('midnight and last minute of the day', () {
-      expect(line1(utc, DateTime.utc(2026, 6, 15)), '0:00');
-      expect(line1(utc, DateTime.utc(2026, 6, 15, 23, 59, 59)), '1439:59');
-    });
-    test('thousands separator follows the setting', () {
-      final lastMinute = DateTime.utc(2026, 6, 15, 23, 59, 59);
-      expect(line1(utcNoSeconds, lastMinute, thousandsSep: true), '1,439');
-      expect(
-        line1(utcNoSeconds, lastMinute, thousandsSep: true, locale: 'de'),
-        '1.439',
-      );
-      expect(
-        line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'en'),
-        '1439',
-      );
-      expect(
-        line1(utcNoSeconds, lastMinute, thousandsSep: false, locale: 'de'),
-        '1439',
-      );
-    });
-    test('clock change days use the real day length', () {
-      expect(
-        line1(berlin, DateTime.utc(2026, 10, 25, 22, 59, 59)),
-        '1499:59',
-      ); // 25-hour day
-      expect(
-        line1(berlin, DateTime.utc(2027, 3, 28, 21, 59, 59)),
-        '1379:59',
-      ); // 23-hour day
-      expect(
-        line1(berlin, DateTime.utc(2026, 6, 15, 21, 59, 59)),
-        '1439:59',
-      ); // normal day
+    test('invalid format returns null', () {
+      expect(TimeValueFormatter.hmsToHours('not-a-time'), isNull);
+      expect(TimeValueFormatter.hmsToHours('12:00'), isNull);
     });
   });
 
-  group('octal and hexadecimal time', () {
-    final t_oct = TimeValue(
-      valueType: ValueType.octalTime,
-      zone: const ZoneUtc(),
-    );
-    final t_hex = TimeValue(
-      valueType: ValueType.hexadecimalTime,
-      zone: const ZoneUtc(),
-    );
+  group('lmstLabelWithLon', () {
+    final l10n = lookupAppLocalizations(const Locale('en'));
 
-    test('midnight is all zeros', () {
-      final midnight = DateTime.utc(2026, 1, 1);
-      expect(formatWith(t_oct, midnight), '000000');
-      expect(formatWith(t_hex, midnight), '0_00_00');
+    test('null longitude returns base label', () {
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
+      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, null);
+      expect(result, equals('LMST'));
     });
 
-    test('one second before midnight (day second 86399)', () {
-      final lastSecond = DateTime.utc(2026, 1, 1, 23, 59, 59);
-      expect(formatWith(t_oct, lastSecond), '250577');
-      expect(formatWith(t_hex, lastSecond), '1_51_7F');
-    });
-  });
-
-  group('optional part in the formatter', () {
-    final moment = DateTime.utc(2026, 6, 15, 14, 5, 9);
-    const timeWithoutSeconds = TimeValue(
-      valueType: ValueType.time,
-      zone: ZoneUtc(),
-      options: ValueOptions(showOptionalPart: false),
-    );
-
-    test('time without seconds', () {
-      expect(line1(timeWithoutSeconds, moment), '14:05');
-      expect(
-        line1(timeWithoutSeconds, moment, hourFormat24: false),
-        '02:05 PM',
-      );
-      expect(line1(timeWithoutSeconds, moment, timeFormat: 'H.mm.ss'), '14.05');
+    test('positive longitude shows E', () {
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
+      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, 8.68);
+      expect(result, contains('E'));
+      expect(result, contains('8.68'));
     });
 
-    test('day percent without decimals is cut off, not rounded', () {
-      const dayPercent = TimeValue(
-        valueType: ValueType.dayPercent,
-        zone: ZoneUtc(),
-        options: ValueOptions(showOptionalPart: false),
-      );
-      expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 23, 59, 59)), '99');
-      expect(line1(dayPercent, DateTime.utc(2026, 6, 15, 12)), '50');
-    });
-
-    test('decimal time without seconds', () {
-      const decimalTime = TimeValue(
-        valueType: ValueType.decimalTime,
-        zone: ZoneUtc(),
-        options: ValueOptions(showOptionalPart: false),
-      );
-      expect(line1(decimalTime, DateTime.utc(2026, 6, 15, 12)), '5ʰ00ᵐ');
-    });
-
-    test('forcing seconds adds them to a format without seconds', () {
-      const timeWithSeconds = TimeValue(
-        valueType: ValueType.time,
-        zone: ZoneUtc(),
-        options: ValueOptions(showOptionalPart: true),
-      );
-      expect(line1(timeWithSeconds, moment, timeFormat: 'HH:mm'), '14:05:09');
-      expect(
-        line1(timeWithSeconds, moment, timeFormat: 'H.mm', hourFormat24: false),
-        '2.05.09 PM',
-      );
-    });
-
-    test('without a choice the time format decides', () {
-      const time = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      expect(line1(time, moment, timeFormat: 'HH:mm'), '14:05');
-      expect(line1(time, moment, timeFormat: 'HH:mm:ss'), '14:05:09');
-    });
-  });
-
-  group('TimeValueFormatter: remaining time of the day', () {
-    const rem = ValueOptions(remaining: true);
-
-    String line1Of(
-      ValueType type,
-      DateTime utc, {
-      ZoneSpec zone = const ZoneUtc(),
-      ValueOptions options = rem,
-      String timeFormat = kTimePatternFull,
-    }) {
-      final timeValue = TimeValue(
-        valueType: type,
-        zone: zone,
-        options: options,
-      );
-      final text = TimeValueFormatter.format(
-        timeValue,
-        utc,
-        'en',
-        settings: ValueFormatSettings(
-          thousandsSep: false,
-          timeFormat: timeFormat,
-        ),
-      );
-      return TimeStringRow.splitZoneOffset(text).line1;
-    }
-
-    final afternoon = DateTime.utc(2026, 6, 15, 14, 5, 9); // 35,691 s left
-
-    test('time, day second, day minute, day percent', () {
-      expect(line1Of(ValueType.time, afternoon), '09:54:51');
-      expect(line1Of(ValueType.daySecond, afternoon), '35691');
-      expect(line1Of(ValueType.dayMinute, afternoon), '594:51');
-      expect(
-        line1Of(ValueType.dayPercent, DateTime.utc(2026, 6, 15, 12)),
-        '50.000',
-      );
-    });
-
-    test('the first and the last second of the day', () {
-      expect(line1Of(ValueType.daySecond, DateTime.utc(2026, 6, 15)), '86400');
-      expect(
-        line1Of(ValueType.daySecond, DateTime.utc(2026, 6, 15, 23, 59, 59)),
-        '1',
-      );
-      expect(line1Of(ValueType.time, DateTime.utc(2026, 6, 15)), '24:00:00');
-    });
-
-    test('a 25-hour day starts with 25:00:00 left', () {
-      expect(
-        line1Of(
-          ValueType.time,
-          DateTime.utc(2026, 10, 24, 22),
-          zone: const ZoneNamed('Europe/Berlin'),
-        ),
-        '25:00:00',
-      );
-    });
-
-    test('time follows the seconds setting of the value', () {
-      expect(
-        line1Of(
-          ValueType.time,
-          afternoon,
-          options: const ValueOptions(remaining: true, showOptionalPart: false),
-        ),
-        '09:54',
-      );
-    });
-
-    test('decimal time, Swatch beats, New Earth Time, Doomsday Clock', () {
-      expect(
-        line1Of(ValueType.decimalTime, DateTime.utc(2026, 6, 15, 12)),
-        '5ʰ00ᵐ00ˢ',
-      );
-      expect(
-        line1Of(ValueType.decimalTime, DateTime.utc(2026, 6, 15)),
-        '10ʰ00ᵐ00ˢ',
-      );
-      expect(
-        line1Of(ValueType.swatchBeats, DateTime.utc(2026, 6, 14, 23)),
-        '1000.00',
-      );
-      expect(
-        line1Of(ValueType.swatchBeats, DateTime.utc(2026, 6, 15, 12)),
-        '458.33',
-      );
-      expect(
-        line1Of(ValueType.newEarthTime, DateTime.utc(2026, 6, 15, 12)),
-        '180.00°',
-      );
-      expect(
-        line1Of(ValueType.doomsdayClock, DateTime.utc(2026, 6, 15)),
-        '00:01:25',
-      );
-    });
-
-    test('types without a remaining time ignore the flag', () {
-      expect(
-        line1Of(ValueType.date, afternoon),
-        line1Of(ValueType.date, afternoon, options: ValueOptions.none),
-      );
-      expect(
-        line1Of(ValueType.unixSeconds, afternoon),
-        line1Of(ValueType.unixSeconds, afternoon, options: ValueOptions.none),
-      );
+    test('negative longitude shows W', () {
+      const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
+      final result = TimeValueFormatter.lmstLabelWithLon(l10n, tv, -74.0);
+      expect(result, contains('W'));
+      expect(result, contains('74'));
     });
   });
 }

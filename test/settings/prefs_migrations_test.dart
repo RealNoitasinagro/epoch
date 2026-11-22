@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  group('_renameSimpleKeys (via runPrefsMigrations)', () {
+  group('key renames', () {
     setUp(() {
       SharedPreferences.setMockInitialValues({});
     });
@@ -39,7 +39,7 @@ void main() {
     });
   });
 
-  group('_migrateToAllTabs (via runPrefsMigrations)', () {
+  group('migration to all_tabs', () {
     setUp(() {
       SharedPreferences.setMockInitialValues({});
     });

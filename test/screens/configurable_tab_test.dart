@@ -14,13 +14,20 @@ void main() {
 
   group('uniqueEntryIds', () {
     test('entries that differ keep their keys', () {
-      expect(uniqueEntryIds([time, timeRemaining, divider]),
-          ['time/utc', 'time/utc/rem', 'divider:a']);
+      expect(uniqueEntryIds([time, timeRemaining, divider]), [
+        'time/utc',
+        'time/utc/rem',
+        'divider:a',
+      ]);
     });
 
     test('repeated entries get a counter, the first keeps its key', () {
-      expect(uniqueEntryIds([time, time, divider, time]),
-          ['time/utc', 'time/utc#1', 'divider:a', 'time/utc#2']);
+      expect(uniqueEntryIds([time, time, divider, time]), [
+        'time/utc',
+        'time/utc#1',
+        'divider:a',
+        'time/utc#2',
+      ]);
     });
   });
 
