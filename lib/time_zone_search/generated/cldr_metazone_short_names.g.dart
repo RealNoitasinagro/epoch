@@ -7,7 +7,8 @@
 // Localized short generic/standard/daylight names by CLDR
 // metazone identifier. Any of the three may be null if CLDR
 // has no name for that variant in this locale.
-const Map<String, ({String? generic, String? standard, String? daylight})> cldrMetazoneShortNames = {
+const Map<String, ({String? generic, String? standard, String? daylight})>
+cldrMetazoneShortNames = {
   'Alaska': (generic: 'AKT', standard: 'AKST', daylight: 'AKDT'),
   'America_Central': (generic: 'CT', standard: 'CST', daylight: 'CDT'),
   'America_Eastern': (generic: 'ET', standard: 'EST', daylight: 'EDT'),

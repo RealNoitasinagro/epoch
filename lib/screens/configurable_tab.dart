@@ -4,6 +4,7 @@ import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/entry_picker.dart';
 import '../formatting/time_value_texts.dart';
+import '../formatting/value_display.dart';
 import '../l10n/app_localizations.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
@@ -727,18 +728,14 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
       settings.localIanaZone,
     );
 
-    final display = TimeStringRow.computeDisplay(
+    final display = computeDisplay(
       timeValue,
       widget.now,
       locale,
       l10n,
       settings: settings,
     );
-    final label = TimeStringRow.computeLabel(
-      l10n,
-      timeValue,
-      settings.longitude,
-    );
+    final label = computeLabel(l10n, timeValue, settings.longitude);
 
     final Color? dayQuarterColor =
         app.dayQuarterColor &&

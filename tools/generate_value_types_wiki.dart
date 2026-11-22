@@ -10,6 +10,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:epoch/formatting/time_value_texts.dart';
+import 'package:epoch/formatting/value_display.dart';
 import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/astronomical_tab_config.dart';
@@ -17,7 +18,6 @@ import 'package:epoch/models/civil_tab_config.dart';
 import 'package:epoch/models/curiosities_tab_config.dart';
 import 'package:epoch/models/technical_tab_config.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest_all.dart' as tzd;
@@ -245,14 +245,14 @@ TimeValue _timeValueOf(ValueType type) => TimeValue(
 String _exampleOf(ValueType type, AppLocalizations l10n) {
   if (type.isGraphical) return '(graphic)';
   final timeValue = _timeValueOf(type);
-  final display = TimeStringRow.computeDisplay(
+  final display = computeDisplay(
     timeValue,
     _exampleMoment,
     'en',
     l10n,
     settings: _exampleSettings,
   );
-  final text = TimeStringRow.computeClipboardDisplay(
+  final text = computeClipboardDisplay(
     timeValue,
     display,
   ).replaceAll('\n', ' / ');

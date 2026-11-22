@@ -1,9 +1,9 @@
 import 'dart:ui';
+import 'package:epoch/formatting/value_display.dart';
 import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/settings/app_settings.dart';
-import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
@@ -15,7 +15,7 @@ void main() {
     await initializeDateFormatting('de');
   });
 
-  group('TimeStringRow.computeDisplay', () {
+  group('computeDisplay', () {
     final l10n = lookupAppLocalizations(const Locale('en'));
 
     final summerUtc = DateTime.utc(2026, 6, 15, 12, 0, 0);
@@ -23,7 +23,7 @@ void main() {
 
     test('time ZoneUtc shows UTC in line2', () {
       const tv = TimeValue(valueType: ValueType.time, zone: ZoneUtc());
-      final result = TimeStringRow.computeDisplay(tv, summerUtc, 'en', l10n);
+      final result = computeDisplay(tv, summerUtc, 'en', l10n);
       expect(result.line2, contains('UTC'));
     });
 
@@ -32,7 +32,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(tv, summerUtc, 'en', l10n);
+      final result = computeDisplay(tv, summerUtc, 'en', l10n);
       expect(result.line2, contains('CEST'));
       expect(result.line2, contains('UTC+02:00'));
     });
@@ -42,7 +42,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(tv, winterUtc, 'en', l10n);
+      final result = computeDisplay(tv, winterUtc, 'en', l10n);
       expect(result.line2, contains('CET'));
       expect(result.line2, contains('UTC+01:00'));
     });
@@ -55,20 +55,20 @@ void main() {
           timezoneClockChangeMode: TimezoneClockChangeMode.forceStandard,
         ),
       );
-      final result = TimeStringRow.computeDisplay(tv, summerUtc, 'en', l10n);
+      final result = computeDisplay(tv, summerUtc, 'en', l10n);
       expect(result.line2, contains('CET'));
       expect(result.line2, isNot(contains('CEST')));
     });
 
     test('gmst has degree subtitle in line2', () {
       const tv = TimeValue(valueType: ValueType.gmst, zone: ZoneUtc());
-      final result = TimeStringRow.computeDisplay(tv, summerUtc, 'en', l10n);
+      final result = computeDisplay(tv, summerUtc, 'en', l10n);
       expect(result.line2, contains('°'));
     });
 
     test('lmst with longitude has degree subtitle', () {
       const tv = TimeValue(valueType: ValueType.lmst, zone: ZoneUtc());
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         summerUtc,
         'en',
@@ -80,7 +80,7 @@ void main() {
 
     test('date with details shows week and day in line2', () {
       const tv = TimeValue(valueType: ValueType.date, zone: ZoneLocal());
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         DateTime(2026, 6, 15),
         'en',
@@ -93,7 +93,7 @@ void main() {
 
     test('date without details has no line2', () {
       const tv = TimeValue(valueType: ValueType.date, zone: ZoneLocal());
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         DateTime(2026, 6, 15),
         'en',
@@ -110,7 +110,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(tv, before, 'en', l10n);
+      final result = computeDisplay(tv, before, 'en', l10n);
       expect(result.line2, contains('CET'));
       expect(result.line2, contains('CEST'));
       expect(result.line2, contains('3'));
@@ -123,7 +123,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(tv, sameDay, 'en', l10n);
+      final result = computeDisplay(tv, sameDay, 'en', l10n);
       expect(result.line2, contains('today'));
     });
 
@@ -133,12 +133,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
-        tv,
-        eightDaysBefore,
-        'en',
-        l10n,
-      );
+      final result = computeDisplay(tv, eightDaysBefore, 'en', l10n);
       // Normal suffix expected, no arrow:
       expect(result.line2, isNot(contains('→')));
     });
@@ -148,7 +143,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         summerUtc,
         'en',
@@ -165,7 +160,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         summerUtc,
         'en',
@@ -182,7 +177,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         summerUtc,
         'en',
@@ -199,7 +194,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         summerUtc,
         'en',
@@ -217,7 +212,7 @@ void main() {
         valueType: ValueType.time,
         zone: ZoneNamed('Europe/Berlin'),
       );
-      final result = TimeStringRow.computeDisplay(
+      final result = computeDisplay(
         tv,
         before,
         'en',
@@ -236,12 +231,7 @@ void main() {
         zone: ZoneNamed('Europe/Berlin'),
         options: ValueOptions(showDetails: false),
       );
-      final result = TimeStringRow.computeDisplay(
-        timeHidden,
-        summerUtc,
-        'en',
-        l10n,
-      );
+      final result = computeDisplay(timeHidden, summerUtc, 'en', l10n);
       expect(result.line2, isEmpty);
     });
 
@@ -253,7 +243,7 @@ void main() {
           zone: ZoneNamed('Europe/Berlin'),
           options: ValueOptions(showDetails: true),
         );
-        final result = TimeStringRow.computeDisplay(
+        final result = computeDisplay(
           timeShown,
           summerUtc,
           'en',
@@ -279,14 +269,8 @@ void main() {
           zone: ZoneUtc(),
           options: ValueOptions(showDetails: false),
         );
-        expect(
-          TimeStringRow.computeDisplay(date, summerUtc, 'en', l10n).line2,
-          isEmpty,
-        );
-        expect(
-          TimeStringRow.computeDisplay(gmst, summerUtc, 'en', l10n).line2,
-          isEmpty,
-        );
+        expect(computeDisplay(date, summerUtc, 'en', l10n).line2, isEmpty);
+        expect(computeDisplay(gmst, summerUtc, 'en', l10n).line2, isEmpty);
       },
     );
 
@@ -299,12 +283,7 @@ void main() {
           options: ValueOptions(showDetails: false),
         );
         final threeDaysBefore = DateTime.utc(2027, 3, 25, 12);
-        final result = TimeStringRow.computeDisplay(
-          timeHidden,
-          threeDaysBefore,
-          'en',
-          l10n,
-        );
+        final result = computeDisplay(timeHidden, threeDaysBefore, 'en', l10n);
         expect(result.line2, contains('→'));
       },
     );
@@ -320,7 +299,7 @@ void main() {
           valueType: valueType,
           zone: const ZoneUtc(),
         );
-        final display = TimeStringRow.computeDisplay(
+        final display = computeDisplay(
           timeValue,
           summerUtc,
           'en',

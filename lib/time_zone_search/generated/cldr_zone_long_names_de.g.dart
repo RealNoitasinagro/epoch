@@ -7,6 +7,7 @@
 // Localized long generic/standard/daylight names by IANA
 // zone identifier. Any of the three may be null if CLDR
 // has no name for that variant in this locale.
-const Map<String, ({String? generic, String? standard, String? daylight})> cldrZoneLongNamesDe = {
+const Map<String, ({String? generic, String? standard, String? daylight})>
+cldrZoneLongNamesDe = {
   'Etc/UTC': (generic: null, standard: 'Koordinierte Weltzeit', daylight: null),
 };

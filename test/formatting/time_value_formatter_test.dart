@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:epoch/formatting/time_value_formatter.dart';
+import 'package:epoch/formatting/value_display.dart';
 import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
-import 'package:epoch/widgets/value_tiles/time_string_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
@@ -21,7 +21,7 @@ void main() {
     DateTime utc, {
     ValueFormatSettings settings = const ValueFormatSettings(),
     String locale = 'en',
-  }) => TimeStringRow.splitZoneOffset(
+  }) => splitZoneOffset(
     TimeValueFormatter.format(timeValue, utc, locale, settings: settings),
   ).line1;
 
@@ -158,7 +158,7 @@ void main() {
           t,
           settings: const ValueFormatSettings(thousandsSep: false),
         );
-        var split = TimeStringRow.splitZoneOffset(result);
+        var split = splitZoneOffset(result);
         final v = int.tryParse(split.line1);
         expect(v, isNotNull);
         expect(v, greaterThanOrEqualTo(0));
@@ -168,7 +168,7 @@ void main() {
       test('dayPercent is between 0.000 and 99.999', () {
         const tv = TimeValue(valueType: ValueType.dayPercent, zone: ZoneUtc());
         final result = formatWith(tv, t);
-        var split = TimeStringRow.splitZoneOffset(result);
+        var split = splitZoneOffset(result);
         final v = double.tryParse(split.line1);
         expect(v, isNotNull);
         expect(v, greaterThanOrEqualTo(0.0));
@@ -485,7 +485,7 @@ void main() {
           'en',
           settings: const ValueFormatSettings(thousandsSep: false),
         );
-        var splitAutoVal = TimeStringRow.splitZoneOffset(autoValFormatted);
+        var splitAutoVal = splitZoneOffset(autoValFormatted);
         final autoVal = int.parse(splitAutoVal.line1);
         final stdValFormatted = TimeValueFormatter.format(
           tvStd,
@@ -493,7 +493,7 @@ void main() {
           'en',
           settings: const ValueFormatSettings(thousandsSep: false),
         );
-        var splitStdVal = TimeStringRow.splitZoneOffset(stdValFormatted);
+        var splitStdVal = splitZoneOffset(stdValFormatted);
         final stdVal = int.parse(splitStdVal.line1);
         expect(autoVal - stdVal, equals(3600));
       });
@@ -1115,7 +1115,7 @@ void main() {
         zone: ZoneLocal(),
       );
       expect(
-        TimeStringRow.computeClipboardDisplay(timeValue, (
+        computeClipboardDisplay(timeValue, (
           line1: '  XIV  :XXXVIII:   V    PM',
           line2: '',
         )),
