@@ -62,23 +62,42 @@ class _EntryPickerState extends State<_EntryPicker> {
   bool _isAllowed(ValueType t) =>
       widget.allowedTypes == null || widget.allowedTypes!.contains(t);
 
-  // Zone-independent types can only appear once.
-  // Zone-dependent types can always be added (different zones allowed).
+  /// The variants a zone-independent value can have on a tab: what has
+  /// elapsed and, where supported, what is left of the day.
+  static List<TimeValue> _variantsOf(ValueType type) => [
+    TimeValue(valueType: type, zone: const ZoneUtc()),
+    if (type.supportsRemaining)
+      TimeValue(
+        valueType: type,
+        zone: const ZoneUtc(),
+        options: const ValueOptions(remaining: true),
+      ),
+  ];
+
+  /// The first variant of a zone-independent value that is not on the tab yet.
+  TimeValue? _firstFreeVariant(ValueType type) {
+    final takenKeys = widget.existingEntries.map((entry) => entry.key).toSet();
+    return _variantsOf(type)
+        .where((variant) => !takenKeys.contains(variant.key))
+        .firstOrNull;
+  }
+
+  // Greyed out: LMST while it is not set up, and zone-independent values of
+  // which every variant is already there. Zone-dependent values can always be
+  // added (zone and clock change mode make for plenty of variants).
   bool _isDisabled(ValueType t) {
     if (t == ValueType.lmst) {
-      // Grey out when LMST is turned off or longitude not configured
-      final lmstMode = widget.lmstMode;
-      if (lmstMode == LmstMode.off) return true;
+      if (widget.lmstMode == LmstMode.off) return true;
       if (widget.lmstLongitude == null) return true;
     }
     if (!t.isZoneIndependent) return false;
-    final candidateKey = TimeValue(valueType: t, zone: const ZoneUtc()).key;
-    return widget.existingEntries.any((entry) => entry.key == candidateKey);
+    return _firstFreeVariant(t) == null;
   }
 
   void _selectType(ValueType t) {
     if (t.isZoneIndependent) {
-      Navigator.pop(context, TimeValue(valueType: t, zone: const ZoneUtc()));
+      Navigator.pop(context, _firstFreeVariant(t) ??
+          TimeValue(valueType: t, zone: const ZoneUtc()));
     } else {
       setState(() {
         _type = t;
