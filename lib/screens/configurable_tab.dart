@@ -249,14 +249,16 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final detailsShownByDefault = settings.showsDetailsByDefault(
       timeValue.valueType,
     );
+    final detailsHaveGlobalSetting = timeValue.valueType.detailsLineHasGlobalSetting;
+
     bool? selectedShowOptionalPart = timeValue.showOptionalPart;
     bool? selectedShowDetails = timeValue.showDetails;
+    TimezoneClockChangeMode selectedMode = timeValue.timezoneClockChangeMode;
+    bool selectedRemaining = timeValue.remaining;
 
     final controller = TextEditingController(
       text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n),
     );
-    var selectedMode = timeValue.timezoneClockChangeMode;
-    var selectedRemaining = timeValue.remaining;
 
     final result =
         await showDialog<
@@ -356,26 +358,26 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       ),
                     ),
                   ],
-                  if (timeValue.valueType.hasDetailsLine) ...<Widget>[
+                  if (timeValue.valueType.hasDetailsLine)
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       dense: true,
-                      tristate: true,
+                      tristate: detailsHaveGlobalSetting,
                       title: Text(l10n.labelShowDetails),
-                      subtitle: selectedShowDetails == null
-                          ? Text(
-                              l10n.labelDefaultState(
-                                detailsShownByDefault
-                                    ? l10n.settingsOn
-                                    : l10n.settingsOff,
-                              ),
-                            )
+                      subtitle: detailsHaveGlobalSetting && selectedShowDetails == null
+                          ? Text(l10n.labelDefaultState(detailsShownByDefault
+                          ? l10n.settingsOn
+                          : l10n.settingsOff))
                           : null,
-                      value: selectedShowDetails,
-                      onChanged: (value) =>
-                          setDialogState(() => selectedShowDetails = value),
+                      value: detailsHaveGlobalSetting
+                          ? selectedShowDetails
+                          : selectedShowDetails ?? true,
+                      // Two states: "on" is the default and stored as "not set".
+                      onChanged: (value) => setDialogState(() =>
+                      selectedShowDetails = detailsHaveGlobalSetting
+                          ? value
+                          : (value == true ? null : false)),
                     ),
-                  ],
                   if (timeValue.valueType.supportsRemaining)
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,

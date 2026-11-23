@@ -274,6 +274,11 @@ extension ValueTypeProps on ValueType {
     _ => false,
   };
 
+  /// Whether a global setting decides if the detail line is shown. For the
+  /// angle of sidereal time there is none: it is shown unless hidden per value.
+  bool get detailsLineHasGlobalSetting =>
+      hasDetailsLine && this != ValueType.gmst && this != ValueType.lmst;
+
   /// Values that can show what is left of the day instead of what has elapsed.
   bool get supportsRemaining => switch (this) {
     ValueType.time ||

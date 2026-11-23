@@ -312,15 +312,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoOptionDetailsAngle =>
-      'Die Zeile darunter zeigt denselben Winkel in Grad. Sie lässt sich global oder für diesen Wert ausblenden.';
+      'Die Detailzeile unter der Wertzeile zeigt denselben Winkel in Grad. Sie lässt sich für diesen Wert im Edit-Modus ausblenden.';
 
   @override
   String get infoOptionDetailsDate =>
-      'Die Zeile darunter zeigt die ISO-Kalenderwoche (Wochen beginnen am Montag, Woche 1 enthält den ersten Donnerstag) und den Tag des Jahres. Sie lässt sich global oder für diesen Wert ausblenden.';
+      'Die Detailzeile unter der Wertzeile zeigt die ISO-Kalenderwoche (Wochen beginnen am Montag, Woche 1 enthält den ersten Donnerstag) und den Tag des Jahres. Sie lässt sich global oder für diesen Wert ausblenden.';
 
   @override
   String get infoOptionDetailsZone =>
-      'Die Zeile darunter zeigt Zeitzonenkürzel und UTC-Versatz. Sie lässt sich global oder für diesen Wert ausblenden; ein Hinweis auf eine bevorstehende Zeitumstellung erscheint trotzdem.';
+      'Die Detailzeile unter der Wertzeile zeigt Zeitzonenkürzel und UTC-Versatz. Sie lässt sich global oder für diesen Wert ausblenden. Innerhalb von 7 Tagen vor einer Zeitumstellung ersetzt ein Hinweis darauf die Zeile und bleibt auch bei ausgeblendeter Zeile sichtbar.';
 
   @override
   String get infoOptionRemaining =>
@@ -332,15 +332,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoRemainingDayMinute =>
-      'Rest: von `1440:00` um Mitternacht bis hinunter zu `0:01`.';
+      'Rest: von `1440:00` um Mitternacht bis hinunter zu `0:01`. An einem Tag mit Zeitumstellung beginnt er bei `1380:00` oder `1500:00` (Lord Howe: `1410:00` oder `1470:00`; Troll: `1320:00` oder `1560:00`).';
 
   @override
   String get infoRemainingDayPercent =>
-      'Rest: von `100,000` um Mitternacht bis knapp über `0`.';
+      'Rest: von `100,000` um Mitternacht bis knapp über `0`. Er bezieht sich auf die echte Tageslänge: an einem Tag mit Zeitumstellung also 23 oder 25 Stunden (Lord Howe: 23,5 oder 24,5; Troll: 22 oder 26) statt 24 Stunden.';
 
   @override
   String get infoRemainingDaySecond =>
-      'Rest: von `86400` um Mitternacht bis hinunter zu `1`; an einem Tag mit Zeitumstellung von 82.800 oder 90.000.';
+      'Rest: von `86400` um Mitternacht bis hinunter zu `1`. An einem Tag mit Zeitumstellung beginnt er bei `82800` oder `90000` (Lord Howe: `84600` oder `88200`; Troll: `79200` oder `93600`).';
 
   @override
   String get infoRemainingDecimalTime =>
@@ -443,12 +443,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an Deinem Standort: GMST plus Dein Längengrad (15° = 1 Stunde).';
 
   @override
-  String get infoTextModifiedJulianDate2000 =>
-      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD − 51.544 (Epoche: 2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
-
-  @override
   String get infoTextModifiedJulianDate =>
       'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (Epoche: 1858-11-17 00:00:00 UT). Beginnt statt um Mittag um Mitternacht und verwendet kleinere Zahlen. 1957 vom Smithsonian Astrophysical Observatory für die Verfolgung von Satelliten, darunter die Umlaufbahn von Sputnik, eingeführt.';
+
+  @override
+  String get infoTextModifiedJulianDate2000 =>
+      'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD − 51.544 (Epoche: 2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
 
   @override
   String get infoTextNewEarthTime =>

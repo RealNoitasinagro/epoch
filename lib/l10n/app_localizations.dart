@@ -599,19 +599,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoOptionDetailsAngle.
   ///
   /// In en, this message translates to:
-  /// **'The line below shows the same angle in degrees. It can be hidden globally or for this value.'**
+  /// **'The detail line below the value line shows the same angle in degrees. It can be hidden for this value in edit mode.'**
   String get infoOptionDetailsAngle;
 
   /// No description provided for @infoOptionDetailsDate.
   ///
   /// In en, this message translates to:
-  /// **'The line below shows the ISO week number (weeks start on Monday, week 1 contains the first Thursday) and the day of the year. It can be hidden globally or for this value.'**
+  /// **'The detail line below the value line shows the ISO week number (weeks start on Monday, week 1 contains the first Thursday) and the day of the year. It can be hidden globally or for this value.'**
   String get infoOptionDetailsDate;
 
   /// No description provided for @infoOptionDetailsZone.
   ///
   /// In en, this message translates to:
-  /// **'The line below shows the time zone abbreviation and UTC offset. It can be hidden globally or for this value; a notice about an upcoming clock change is shown anyway.'**
+  /// **'The detail line below the value line shows the time zone abbreviation and UTC offset. It can be hidden globally or for this value. Within 7 days before a clock change, a notice about it replaces the line, and stays even if the line is hidden.'**
   String get infoOptionDetailsZone;
 
   /// No description provided for @infoOptionRemaining.
@@ -629,19 +629,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoRemainingDayMinute.
   ///
   /// In en, this message translates to:
-  /// **'Remaining: from `1440:00` at midnight down to `0:01`.'**
+  /// **'Remaining: from `1440:00` at midnight down to `0:01`. On a day with a clock change it starts at `1380:00` or `1500:00` (Lord Howe: `1410:00` or `1470:00`; Troll: `1320:00` or `1560:00`).'**
   String get infoRemainingDayMinute;
 
   /// No description provided for @infoRemainingDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Remaining: from `100.000` at midnight down to just above `0`.'**
+  /// **'Remaining: from `100.000` at midnight down to just above `0`. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
   String get infoRemainingDayPercent;
 
   /// No description provided for @infoRemainingDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Remaining: from `86400` at midnight down to `1`; on a day with a clock change from 82,800 or 90,000.'**
+  /// **'Remaining: from `86400` at midnight down to `1`. On a day with a clock change it starts at `82800` or `90000` (Lord Howe: `84600` or `88200`; Troll: `79200` or `93600`).'**
   String get infoRemainingDaySecond;
 
   /// No description provided for @infoRemainingDecimalTime.
@@ -794,17 +794,17 @@ abstract class AppLocalizations {
   /// **'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location: GMST plus your longitude (15° = 1 hour).'**
   String get infoTextLmst;
 
-  /// No description provided for @infoTextModifiedJulianDate2000.
-  ///
-  /// In en, this message translates to:
-  /// **'Modified Julian Date 2000 (MJD2000) = JD − 2,451,544.5 or MJD − 51,544 (epoch: `2000-01-01 00:00:00 UTC`). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
-  String get infoTextModifiedJulianDate2000;
-
   /// No description provided for @infoTextModifiedJulianDate.
   ///
   /// In en, this message translates to:
   /// **'Modified Julian Date (MJD) = JD − 2,400,000.5 (epoch: `1858-11-17 00:00:00 UT`). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 for satellite tracking, including the orbit of Sputnik.'**
   String get infoTextModifiedJulianDate;
+
+  /// No description provided for @infoTextModifiedJulianDate2000.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified Julian Date 2000 (MJD2000) = JD − 2,451,544.5 or MJD − 51,544 (epoch: `2000-01-01 00:00:00 UTC`). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.'**
+  String get infoTextModifiedJulianDate2000;
 
   /// No description provided for @infoTextNewEarthTime.
   ///

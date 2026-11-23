@@ -239,13 +239,15 @@ Hidden decimals are cut off, not rounded.
 
 ##### Details line
 
-The details line below the value is the time zone line (`time`, `dateTime`, `daySecond`, `dayPercent`, `dayMinute`, `decimalTime`), the week and day of the year (`date`), or the angle (`gmst`, `lmst`). All other value types have none.
+The details line below the value line is the time zone line (`time`, `dateTime`, `daySecond`,
+`dayPercent`, `dayMinute`, `decimalTime`), the week and day of the year (`date`), or the angle
+(`gmst`, `lmst`). All other value types have none.
 
-| Suffix    | Effect                                                                     |
-|-----------|----------------------------------------------------------------------------|
-| *(none)*  | global setting (`zone_display_mode`, `date_cw_doy`; angles always shown)   |
-| `\|det`   | shown (forced on; with `zone_display_mode` `hidden` the full form is used) |
-| `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)     |
+| Suffix    | Effect                                                                      |
+|-----------|-----------------------------------------------------------------------------|
+| *(none)*  | global setting (`zone_display_mode`, `date_cw_doy`, angles shown)           |
+| `\|det`   | shown (forced on; with `zone_display_mode` `hidden` the full form is used)  |
+| `\|nodet` | hidden (forced off; notices of upcoming clock changes are still shown)      |
 
 ##### Remaining time of the day
 
