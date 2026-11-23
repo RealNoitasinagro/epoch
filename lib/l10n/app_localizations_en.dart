@@ -219,6 +219,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintZoneIndicator => 'Timezone-dependent value';
 
   @override
+  String get infoLeapSeconds =>
+      'UTC occasionally got a **leap second** to follow the Earth\'s slowing rotation, 27 since 1972, the last one at the end of 2016. In 2026 the General Conference on Weights and Measures decided to stop adding them from 2027.';
+
+  @override
   String get infoLinkBinaryClockBcd =>
       'https://en.wikipedia.org/wiki/Binary_clock';
 
@@ -260,6 +264,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkJulianDate => 'https://en.wikipedia.org/wiki/Julian_day';
 
   @override
+  String get infoLinkLeapSeconds => 'https://en.wikipedia.org/wiki/Leap_second';
+
+  @override
   String get infoLinkLmst => 'https://en.wikipedia.org/wiki/Sidereal_time';
 
   @override
@@ -294,6 +301,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://en.wikipedia.org/wiki/Unix_time';
 
   @override
+  String get infoOptionDecimals =>
+      'The decimals can be hidden, globally per value type in Settings or for this value in edit mode. Hidden decimals are cut off, not rounded.';
+
+  @override
+  String get infoOptionDetailsAngle =>
+      'The line below shows the same angle in degrees. It can be hidden globally or for this value.';
+
+  @override
+  String get infoOptionDetailsDate =>
+      'The line below shows the ISO week number (weeks start on Monday, week 1 contains the first Thursday) and the day of the year. It can be hidden globally or for this value.';
+
+  @override
+  String get infoOptionDetailsZone =>
+      'The line below shows the time zone abbreviation and UTC offset. It can be hidden globally or for this value; a notice about an upcoming clock change is shown anyway.';
+
+  @override
+  String get infoOptionRemaining =>
+      'Can show what is left until the next midnight of its time zone instead of what has elapsed (edit mode: \"Show what is left of the day\").';
+
+  @override
+  String get infoOptionSeconds =>
+      'The seconds can be hidden, globally per value type in Settings or for this value in edit mode.';
+
+  @override
+  String get infoRemainingDayMinute =>
+      'Remaining: from `1440:00` at midnight down to `0:01`.';
+
+  @override
+  String get infoRemainingDayPercent =>
+      'Remaining: from `100.000` at midnight down to just above `0`.';
+
+  @override
+  String get infoRemainingDaySecond =>
+      'Remaining: from `86400` at midnight down to `1`; on a day with a clock change from 82,800 or 90,000.';
+
+  @override
+  String get infoRemainingDecimalTime =>
+      'Remaining: from `10ʰ00ᵐ00ˢ` at midnight down to `0ʰ00ᵐ01ˢ`; together with the elapsed time it always adds up to 10 decimal hours.';
+
+  @override
+  String get infoRemainingDoomsdayClock =>
+      'Remaining: the time to midnight as a duration, e. g. `00:01:25`.';
+
+  @override
+  String get infoRemainingNewEarthTime =>
+      'Remaining: from `360°` at midnight UTC down to just above `0°`.';
+
+  @override
+  String get infoRemainingSwatchBeats =>
+      'Remaining: from `1000` at midnight BMT down to just above `0`, without the `@` that marks a moment.';
+
+  @override
+  String get infoRemainingTime =>
+      'Remaining: a duration without AM/PM, from `24:00:00` at midnight down to `00:00:01`; on a day with a clock change from 23 or 25 hours.';
+
+  @override
   String get infoTextAnalogClock12h =>
       'The current time in the selected timezone as an analog clock with a 12-hour face. The hour hand turns twice a day; from noon on, \"+12\" appears below the 12.';
 
@@ -315,15 +378,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextCcsdsJulianDate =>
-      'CCSDS Julian Date (CCSDS JD) = JD − 2,436,204.5 (epoch: 1958-01-01 00:00:00 UT). Introduced by the Consultative Committee for Space Data Systems (CCSDS) for standardized spacecraft time codes, using 1958 as the historical reference date of International Atomic Time (TAI).';
+      'CCSDS Julian Date (CCSDS JD) = JD − 2,436,204.5 (epoch: `1958-01-01 00:00:00 UT`). Introduced by the Consultative Committee for Space Data Systems (CCSDS) for standardized spacecraft time codes, using 1958 as the historical reference date of International Atomic Time (TAI).';
 
   @override
   String get infoTextCnesJulianDate =>
-      'CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: 1950-01-01 00:00:00 UT). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.';
+      'CNES Julian Date (CNES JD) = JD − 2,433,282.5 (epoch: `1950-01-01 00:00:00 UT`). Introduced by the French space agency CNES as a compact day count for spaceflight calculations, using the beginning of 1950 as its reference epoch.';
 
   @override
   String get infoTextDate =>
-      'The current calendar date in the selected timezone, by default with the ISO week number (weeks start on Monday, week 1 contains the first Thursday) and the day of the year below.';
+      'The current calendar date in the selected timezone.';
 
   @override
   String get infoTextDateTime =>
@@ -331,27 +394,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextDayMinute =>
-      'Minutes elapsed since midnight in the selected timezone, from 0 to 1,439. On a day with a clock change the last minute is 1,379 or 1,499 (Lord Howe: 1,409 or 1,469; Troll: 1,319 or 1,559).';
+      'Minutes elapsed since midnight in the selected timezone, from `0` to `1,439`. On a day with a clock change the last minute is `1,379` or `1,499` (Lord Howe: `1,409` or `1,469`; Troll: `1,319` or `1,559`).';
 
   @override
   String get infoTextDayPercent =>
-      'Percentage of the day elapsed in the selected timezone, from 0 to just under 100. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.';
+      'Percentage of the day elapsed in the selected timezone, from `0` to just under 100. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.';
 
   @override
   String get infoTextDaySecond =>
-      'Seconds elapsed since midnight in the selected timezone, from 0 to 86,399. On a day with a clock change the last second is 82,799 or 89,999 (Lord Howe: 84,599 or 88,199; Troll: 79,199 or 93,599).';
+      'Seconds elapsed since midnight in the selected timezone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).';
 
   @override
   String get infoTextDecimalTime =>
-      'Decimal time, briefly in use in France in the 1790s, divides the day into 10 decimal hours of 100 decimal minutes of 100 decimal seconds, from 0h 00m 00s to 9h 99m 99s. On a normal day a decimal second lasts 0.864 s; on a day with a clock change the decimal day stretches or shrinks with the real day.';
+      'Decimal time, briefly in use in France in the 1790s, divides the day into 10 decimal hours of 100 decimal minutes of 100 decimal seconds, from `0h 00m 00s` to `9h 99m 99s`. On a normal day a decimal second lasts 0.864 s; on a day with a clock change the decimal day stretches or shrinks with the real day.';
 
   @override
   String get infoTextDoomsdayClock =>
-      'The Doomsday Clock is a symbol of how close humanity is to self-destruction, set by the Bulletin of the Atomic Scientists since 1947. Epoch shows the setting as a time of day; latest: 23:58:35, i.e. 85 seconds to midnight (January 2026). With Time Shift, historical settings are shown.';
+      'The Doomsday Clock is a symbol of how close humanity is to self-destruction, set by the Bulletin of the Atomic Scientists since 1947. Epoch shows the setting as a time of day; latest: `23:58:35`, i.e. `85` seconds to midnight (January 2026). With Time Shift, historical settings are shown.';
 
   @override
   String get infoTextDublinJulianDate =>
-      'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: 1899-12-31 12:00:00 UT). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.';
+      'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: `1899-12-31 12:00:00 UT`). Defined by the International Astronomical Union (IAU) in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.';
 
   @override
   String get infoTextGmst =>
@@ -359,39 +422,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextGps =>
-      'GPS time counts seconds since 1980-01-06 00:00:00 UTC without any leap seconds. It matched UTC at the start; UTC has since added 18 leap seconds, so GPS time is 18 s ahead of UTC and 19 s behind TAI. From 2027 UTC adds no more leap seconds, so the gap stays at 18 s.';
+      'GPS time counts seconds since `1980-01-06 00:00:00 UTC` without any leap seconds. It matched UTC at the start; UTC has since added 18 leap seconds, so GPS time is 18 s ahead of UTC and 19 s behind TAI. From 2027 UTC adds no more leap seconds, so the gap stays at 18 s.';
 
   @override
   String get infoTextHexadecimalTime =>
-      'Seconds elapsed since midnight in the selected timezone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from 0_00_00 to 1_51_7F on a normal day. A day with a clock change ends earlier or later.';
+      'Seconds elapsed since midnight in the selected timezone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from `0_00_00` to `1_51_7F` on a normal day. A day with a clock change ends earlier or later.';
 
   @override
   String get infoTextJulianDate =>
-      'Julian Date (JD) counts days since noon on January 1, 4713 BC in the proleptic Julian calendar (epoch: -4712-01-01 12:00:00 UT). The standard time reference in astronomy for calculating intervals between events. A JD is the Julian day number plus the fraction of a day since the preceding noon UT; at midnight UT it therefore ends in .5.';
+      'Julian Date (JD) counts days since noon on January 1, 4713 BC in the proleptic Julian calendar (epoch: `-4712-01-01 12:00:00 UT`). The standard time reference in astronomy for calculating intervals between events. A JD is the Julian day number plus the fraction of a day since the preceding noon UT; at midnight UT it therefore ends in .5.';
 
   @override
   String get infoTextLmst =>
       'Local Mean Sidereal Time (LMST) – the hour angle of the vernal equinox at your location: GMST plus your longitude (15° = 1 hour).';
 
   @override
-  String get infoTextModifiedJulianDate =>
-      'Modified Julian Date (MJD) = JD − 2,400,000.5 (epoch: 1858-11-17 00:00:00 UT). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 for satellite tracking, including the orbit of Sputnik.';
+  String get infoTextModifiedJulianDate2000 =>
+      'Modified Julian Date 2000 (MJD2000) = JD − 2,451,544.5 or MJD − 51,544 (epoch: `2000-01-01 00:00:00 UTC`). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
 
   @override
-  String get infoTextModifiedJulianDate2000 =>
-      'Modified Julian Date 2000 (MJD2000) = JD − 2,451,544.5 or MJD − 51,544 (epoch: 2000-01-01 00:00:00 UTC). Used in geodesy, geophysics, and spaceflight to simplify calculations with smaller numbers by shifting the reference to the beginning of the year 2000.';
+  String get infoTextModifiedJulianDate =>
+      'Modified Julian Date (MJD) = JD − 2,400,000.5 (epoch: `1858-11-17 00:00:00 UT`). Starts at midnight rather than noon, and has smaller numbers. Introduced by the Smithsonian Astrophysical Observatory in 1957 for satellite tracking, including the orbit of Sputnik.';
 
   @override
   String get infoTextNewEarthTime =>
-      'New Earth Time (NET, 1999), also called degree time, splits the day into 360 degrees: 0° is midnight, 180° noon. A degree lasts 4 minutes and is divided into 60 intervals of 4 seconds. There are no time zones: the whole world shares the same degree time. It is based on UTC+0.';
+      'New Earth Time (NET, 1999), also called degree time, splits the day into `360 degrees`: `0°` is midnight, `180°` noon. A degree lasts 4 minutes and is divided into 60 intervals of 4 seconds. There are no time zones: the whole world shares the same degree time. It is based on UTC+0.';
 
   @override
   String get infoTextOctalTime =>
-      'Seconds elapsed since midnight in the selected timezone, shown in base 8 (octal) with six digits: from 000000 to 250577 on a normal day. A day with a clock change ends earlier or later.';
+      'Seconds elapsed since midnight in the selected timezone, shown in base 8 (octal) with six digits: from `000000` to `250577` on a normal day. A day with a clock change ends earlier or later.';
 
   @override
   String get infoTextReducedJulianDate =>
-      'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: 1858-11-16 12:00:00 UT). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.';
+      'Reduced Julian Date (RJD) = JD − 2,400,000 (epoch: `1858-11-16 12:00:00 UT`). A simple reduction of the Julian Date used mainly in astronomy to make the numbers shorter, while retaining the original noon-based start of the Julian day.';
 
   @override
   String get infoTextRomanNumeralsTime =>
@@ -407,15 +470,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextTai =>
-      'International Atomic Time (TAI, French: Temps Atomique International) is a continuous scale without leap seconds: atomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since 1970-01-01 00:00:00 UTC), i.e. Unix time plus 37. According to a decision by the General Conference on Weights and Measures in October 2026, there will be no more leap seconds, so the 37 s stay.';
+      'International Atomic Time (TAI, French: Temps Atomique International) is a continuous scale without leap seconds: atomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since `1970-01-01 00:00:00 UTC`), i.e. Unix time plus 37. According to a decision by the General Conference on Weights and Measures in October 2026, there will be no more leap seconds, so the 37 s stay.';
 
   @override
-  String get infoTextTime =>
-      'The current time in the selected timezone, by default with the time zone abbreviation and UTC offset below. Within 7 days before a clock change, a notice about it replaces them.';
+  String get infoTextTime => 'The current time in the selected timezone.';
 
   @override
   String get infoTextUnixSeconds =>
-      'Seconds since the Unix epoch, 1970-01-01 00:00:00 UTC. Unix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.';
+      'Seconds since the Unix epoch, `1970-01-01 00:00:00 UTC`. Unix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.';
 
   @override
   String get labelDay => 'DD';
@@ -444,6 +506,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelHours => 'HH';
+
+  @override
+  String get labelInfoDisplayOptions => 'Display options';
 
   @override
   String get labelLocal => 'Local';

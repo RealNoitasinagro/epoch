@@ -12,12 +12,27 @@ void main() {
   );
   const divider = TabDivider(id: 'a');
 
+  const swatchBeats = TimeValue(
+    valueType: ValueType.swatchBeats,
+    zone: ZoneUtc(),
+  );
+  const swatchBeatsRemaining = TimeValue(
+    valueType: ValueType.swatchBeats,
+    zone: ZoneUtc(),
+    options: ValueOptions(remaining: true),
+  );
+
   group('uniqueEntryIds', () {
     test('entries that differ keep their keys', () {
       expect(uniqueEntryIds([time, timeRemaining, divider]), [
         'time/utc',
         'time/utc/rem',
         'divider:a',
+      ]);
+
+      expect(uniqueEntryIds([swatchBeats, swatchBeatsRemaining]), [
+        'swatchBeats/utc',
+        'swatchBeats/utc/rem',
       ]);
     });
 

@@ -11,6 +11,8 @@
 ### Changed
 - CHANGELOG and README links in About dialog, new Wiki link replacing changelog link in Menu
 - external links now have tooltips showing the URL
+- info dialogs: formatting, paragraphs, several links, and notes on the display options
+  (seconds/decimals, details line, remaining time) and on leap seconds
 
 ### Fixed
 - wrongly typed entries in the config could make the app get stuck on a black screen; import

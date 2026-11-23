@@ -16,7 +16,6 @@ class TimeGraphicalRow extends TimeValueRow {
     super.key,
     required super.timeValue,
     required super.now,
-    super.infoLinkOverride,
   });
 
   @override

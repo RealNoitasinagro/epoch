@@ -4,6 +4,7 @@ import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/time_value_formatter.dart';
 import '../../formatting/time_value_texts.dart';
+import '../../formatting/value_info.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/time_value.dart';
 import '../../screens/focus_screen.dart';
@@ -12,41 +13,35 @@ import '../../time/time_utils.dart';
 import '../../time/zone_abbreviations.dart';
 import '../../time/zone_rules.dart';
 import '../../time/zoned_moment.dart';
-import '../link_text.dart';
+import '../info_content.dart';
+import '../section_header.dart';
 
 abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;
   final DateTime now;
-  final String? infoLinkOverride;
 
   const TimeValueRow({
     super.key,
     required this.timeValue,
     required this.now,
-    this.infoLinkOverride,
   });
 
   void showInfo(BuildContext context, AppLocalizations l10n) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);
     String? ianaZone = moment.ianaZone;
-    final link = infoLinkOverride ?? timeValue.localizedInfoLink(l10n);
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        scrollable: true,
         title: Text(timeValue.localizedDisplayLabel(l10n)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(timeValue.localizedInfoText(l10n)),
-            if (link != null) ...[
-              const SizedBox(height: 12),
-              LinkText(url: link),
-            ],
+            InfoContent(blocks: buildInfoBlocks(timeValue, l10n)),
             if (ianaZone != null &&
-                timeValue.timezoneClockChangeMode ==
-                    TimezoneClockChangeMode.auto)
+                timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto)
               ..._buildDstTransitionsSection(ianaZone, ctx, l10n),
           ],
         ),
@@ -182,15 +177,9 @@ abstract class TimeValueRow extends StatelessWidget {
     }
 
     return [
-      const SizedBox(height: 16),
-      Text(
-        l10n.labelNextClockChanges,
-        style: textTheme.labelMedium?.copyWith(
-          color: colorScheme.primary,
-          letterSpacing: 1.5,
-        ),
-      ),
-      const SizedBox(height: 6),
+      const SizedBox(height: 24),
+      SectionHeader(label: l10n.labelNextClockChanges),
+      const SizedBox(height: 8),
       for (var index = 0; index < transitions.length; index++) ...[
         if (index > 0) const Divider(height: 16),
         transitionRow(transitions[index]),

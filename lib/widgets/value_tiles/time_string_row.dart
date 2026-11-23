@@ -20,7 +20,6 @@ class TimeStringRow extends TimeValueRow {
     required super.timeValue,
     required super.now,
     required this.locale,
-    super.infoLinkOverride,
   });
 
   void _copyToClipboard(

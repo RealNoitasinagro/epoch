@@ -90,13 +90,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         );
         return; // stay in edit mode until the duplicate is resolved
       }
-
       // leaving edit mode: clean trailing entries
       final cleaned = _cleanTrailing(widget.entries.toList());
       if (cleaned.length != widget.entries.length) {
         widget.onEntriesChanged(cleaned);
       }
     }
+
     // The display list and the edit list are different widgets. A new
     // ScrollPosition starts at the controller's initialScrollOffset, so a
     // fresh controller that starts at the current offset avoids a first frame

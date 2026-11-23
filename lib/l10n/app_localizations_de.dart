@@ -224,6 +224,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintZoneIndicator => 'Zeitzonen-abhängiger Wert';
 
   @override
+  String get infoLeapSeconds =>
+      'UTC bekam gelegentlich eine **Schaltsekunde**, um der sich verlangsamenden Erdrotation zu folgen, seit 1972 27, zuletzt Ende 2016. Die Generalkonferenz für Maß und Gewicht hat 2026 beschlossen, ab 2027 keine mehr einzufügen.';
+
+  @override
   String get infoLinkBinaryClockBcd =>
       'https://de.wikipedia.org/wiki/Bin%C3%A4re_Uhr';
 
@@ -265,6 +269,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'https://de.wikipedia.org/wiki/Julianisches_Datum';
 
   @override
+  String get infoLinkLeapSeconds =>
+      'https://de.wikipedia.org/wiki/Schaltsekunde';
+
+  @override
   String get infoLinkLmst => 'https://de.wikipedia.org/wiki/Sternzeit';
 
   @override
@@ -299,6 +307,62 @@ class AppLocalizationsDe extends AppLocalizations {
   String get infoLinkUnixSeconds => 'https://de.wikipedia.org/wiki/Unixzeit';
 
   @override
+  String get infoOptionDecimals =>
+      'Die Dezimalstellen lassen sich ausblenden, global pro Werttyp in den Einstellungen oder für diesen Wert im Edit-Modus. Ausgeblendete Dezimalstellen werden abgeschnitten, nicht gerundet.';
+
+  @override
+  String get infoOptionDetailsAngle =>
+      'Die Zeile darunter zeigt denselben Winkel in Grad. Sie lässt sich global oder für diesen Wert ausblenden.';
+
+  @override
+  String get infoOptionDetailsDate =>
+      'Die Zeile darunter zeigt die ISO-Kalenderwoche (Wochen beginnen am Montag, Woche 1 enthält den ersten Donnerstag) und den Tag des Jahres. Sie lässt sich global oder für diesen Wert ausblenden.';
+
+  @override
+  String get infoOptionDetailsZone =>
+      'Die Zeile darunter zeigt Zeitzonenkürzel und UTC-Versatz. Sie lässt sich global oder für diesen Wert ausblenden; ein Hinweis auf eine bevorstehende Zeitumstellung erscheint trotzdem.';
+
+  @override
+  String get infoOptionRemaining =>
+      'Kann statt des Verstrichenen anzeigen, was bis zur nächsten Mitternacht seiner Zeitzone noch übrig ist (Edit-Modus: „Rest des Tages anzeigen“).';
+
+  @override
+  String get infoOptionSeconds =>
+      'Die Sekunden lassen sich ausblenden, global pro Werttyp in den Einstellungen oder für diesen Wert im Edit-Modus.';
+
+  @override
+  String get infoRemainingDayMinute =>
+      'Rest: von `1440:00` um Mitternacht bis hinunter zu `0:01`.';
+
+  @override
+  String get infoRemainingDayPercent =>
+      'Rest: von `100,000` um Mitternacht bis knapp über `0`.';
+
+  @override
+  String get infoRemainingDaySecond =>
+      'Rest: von `86400` um Mitternacht bis hinunter zu `1`; an einem Tag mit Zeitumstellung von 82.800 oder 90.000.';
+
+  @override
+  String get infoRemainingDecimalTime =>
+      'Rest: von `10ʰ00ᵐ00ˢ` um Mitternacht bis hinunter zu `0ʰ00ᵐ01ˢ`; zusammen mit der verstrichenen Zeit ergibt sich immer genau 10 Dezimalstunden.';
+
+  @override
+  String get infoRemainingDoomsdayClock =>
+      'Rest: die Zeit bis Mitternacht als Dauer, z. B. `00:01:25`.';
+
+  @override
+  String get infoRemainingNewEarthTime =>
+      'Rest: von `360°` um Mitternacht UTC bis knapp über `0°`.';
+
+  @override
+  String get infoRemainingSwatchBeats =>
+      'Rest: von `1000` um Mitternacht BMT bis knapp über `0`, ohne das `@`, das einen Zeitpunkt kennzeichnet.';
+
+  @override
+  String get infoRemainingTime =>
+      'Rest: eine Dauer ohne AM/PM, von `24:00:00` um Mitternacht bis hinunter zu `00:00:01`; an einem Tag mit Zeitumstellung von 23 oder 25 Stunden.';
+
+  @override
   String get infoTextAnalogClock12h =>
       'Die aktuelle Uhrzeit in der gewählten Zeitzone als Analoguhr mit 12-Stunden-Ziffernblatt. Der Stundenzeiger macht zwei Umrundungen pro Tag. Ab Mittag erscheint „+12“ unterhalb der 12.';
 
@@ -328,7 +392,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextDate =>
-      'Das aktuelle Kalenderdatum in der gewählten Zeitzone, standardmäßig mit ISO-Kalenderwoche (Wochen beginnen am Montag, Woche 1 enthält den ersten Donnerstag) und Tag des Jahres in der Zeile darunter.';
+      'Das aktuelle Kalenderdatum in der gewählten Zeitzone.';
 
   @override
   String get infoTextDateTime =>
@@ -379,12 +443,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Local Mean Sidereal Time (LMST), lokale mittlere Sternzeit oder mittlere Ortssternzeit – der Stundenwinkel des Frühlingspunkts an Deinem Standort: GMST plus Dein Längengrad (15° = 1 Stunde).';
 
   @override
-  String get infoTextModifiedJulianDate =>
-      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (Epoche: 1858-11-17 00:00:00 UT). Beginnt statt um Mittag um Mitternacht und verwendet kleinere Zahlen. 1957 vom Smithsonian Astrophysical Observatory für die Verfolgung von Satelliten, darunter die Umlaufbahn von Sputnik, eingeführt.';
-
-  @override
   String get infoTextModifiedJulianDate2000 =>
       'Modifiziertes Julianisches Datum 2000 (MJD2000) = JD − 2.451.544,5 oder MJD − 51.544 (Epoche: 2000-01-01 00:00:00 UTC). Wird in der Geodäsie, Geophysik und Raumfahrt verwendet, um Berechnungen durch kleinere Zahlen zu vereinfachen, indem das Referenzdatum an den Beginn des Jahres 2000 verschoben wird.';
+
+  @override
+  String get infoTextModifiedJulianDate =>
+      'Modifiziertes Julianisches Datum (MJD) = JD − 2.400.000,5 (Epoche: 1858-11-17 00:00:00 UT). Beginnt statt um Mittag um Mitternacht und verwendet kleinere Zahlen. 1957 vom Smithsonian Astrophysical Observatory für die Verfolgung von Satelliten, darunter die Umlaufbahn von Sputnik, eingeführt.';
 
   @override
   String get infoTextNewEarthTime =>
@@ -415,8 +479,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Internationale Atomzeit (TAI, französisch Temps Atomique International) ist eine kontinuierliche Zeitskala ohne Schaltsekunden. Da Atomuhren regelmäßig ticken und UTC mehrfach angepasst wurde, ist TAI 37 s vor UTC. Epoch zeigt TAI analog zur Unix-Zeit an (Sekunden seit 1970-01-01 00:00:00 UTC), d. h. Unix-Zeit plus 37. Laut Beschluss der Generalkonferenz für Maß und Gewicht im Oktober 2026 wird es keine weiteren Schaltsekunden geben, so dass der Abstand bei 37 s bestehen bleibt.';
 
   @override
-  String get infoTextTime =>
-      'Die aktuelle Uhrzeit in der gewählten Zeitzone, standardmäßig mit dem Zeitzonenkürzel und dem UTC-Versatz in der Zeile darunter. Innerhalb von 7 Tagen vor einer Zeitumstellung werden sie durch einen entsprechenden Hinweis ersetzt.';
+  String get infoTextTime => 'Die aktuelle Uhrzeit in der gewählten Zeitzone.';
 
   @override
   String get infoTextUnixSeconds =>
@@ -449,6 +512,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labelHours => 'Std';
+
+  @override
+  String get labelInfoDisplayOptions => 'Anzeigeoptionen';
 
   @override
   String get labelLocal => 'Lokal';
