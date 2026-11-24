@@ -571,7 +571,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String messageDuplicateValue(String label) {
-    return '„$label“ wird zweimal angezeigt. Ändere oder entferne einen der beiden, um die Bearbeitung zu beenden.';
+    return '„$label“ wird zweimal angezeigt. Ändere oder entferne einen der beiden Werte, um die Bearbeitung zu beenden. Sommerzeit-Modus und Tagesrestzeit machen Werte verschieden; Bezeichnung, Sekunden und Detailzeile nicht.';
   }
 
   @override

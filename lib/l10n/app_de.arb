@@ -360,7 +360,7 @@
   "labelYear": "JJJJ",
   "linkWiki": "Wiki",
   "messageCopiedToClipboard": "Kopiert: {label}",
-  "messageDuplicateValue": "„{label}“ wird zweimal angezeigt. Ändere oder entferne einen der beiden, um die Bearbeitung zu beenden.",
+  "messageDuplicateValue": "„{label}“ wird zweimal angezeigt. Ändere oder entferne einen der beiden Werte, um die Bearbeitung zu beenden. Sommerzeit-Modus und Tagesrestzeit machen Werte verschieden; Bezeichnung, Sekunden und Detailzeile nicht.",
   "messageEmptyTab": "Konfigurierbarer Tab.\nBenutze den Edit-Modus, um Werte einzufügen.",
   "messageMaxValues": "Maximal {count} Werte erlaubt.",
   "messageMissingTabsRestored": "Einige eingebaute Tabs fehlten in der geladenen Konfiguration und wurden wiederhergestellt.",

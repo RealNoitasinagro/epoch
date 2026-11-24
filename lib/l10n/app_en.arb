@@ -360,7 +360,7 @@
   "labelYear": "YYYY",
   "linkWiki": "Wiki",
   "messageCopiedToClipboard": "Copied: {label}",
-  "messageDuplicateValue": "\"{label}\" is shown twice. Change or remove one of them to finish editing.",
+  "messageDuplicateValue": "\"{label}\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode and remaining time of the day make values different; label, seconds and details line do not.",
   "messageEmptyTab": "Configurable tab.\nUse the edit mode to add values.",
   "messageMaxValues": "Maximum of {count} values reached.",
   "messageMissingTabsRestored": "Some built-in tabs were missing from the loaded configuration and have been restored.",

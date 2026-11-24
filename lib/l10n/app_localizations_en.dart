@@ -565,7 +565,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String messageDuplicateValue(String label) {
-    return '\"$label\" is shown twice. Change or remove one of them to finish editing.';
+    return '\"$label\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode and remaining time of the day make values different; label, seconds and details line do not.';
   }
 
   @override

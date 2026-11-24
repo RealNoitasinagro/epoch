@@ -86,7 +86,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         showAppSnackBar(
           context,
           l10n.messageDuplicateValue(duplicate.localizedDisplayLabel(l10n)),
-          duration: kSnackBarLong,
+          duration: kSnackBarLongest,
         );
         return; // stay in edit mode until the duplicate is resolved
       }
