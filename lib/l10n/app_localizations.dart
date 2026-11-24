@@ -191,7 +191,7 @@ abstract class AppLocalizations {
   /// No description provided for @dialogAboutText.
   ///
   /// In en, this message translates to:
-  /// **'A feature-rich time display app for nerds and amateur astronomers. Displays the current time in civil, technical and astronomical time systems, and a few curiosities.'**
+  /// **'A feature-rich time display app for nerds and amateur astronomers. Displays (not only) the current time in civil, technical and astronomical time systems, and a few curiosities.'**
   String get dialogAboutText;
 
   /// No description provided for @hintAboutThisValue.
@@ -689,13 +689,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles. Lit circles stand for 1, unlit circles for 0. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles. Lit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.'**
   String get infoTextBinaryClockBcd;
 
   /// No description provided for @infoTextBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column (5 bits for hours, 6 for minutes and seconds). Lit circles stand for 1, unlit circles for 0. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column of circles (5 bits for hours, 6 for minutes and seconds). Lit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.'**
   String get infoTextBinaryClockColumns;
 
   /// No description provided for @infoTextBinaryClockString.
@@ -737,19 +737,19 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the selected timezone, from `0` to just under 100. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
+  /// **'Percentage of the day elapsed in the selected timezone, from `0` to just under `100`. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
   String get infoTextDayPercent;
 
   /// No description provided for @infoTextDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).'**
+  /// **'Seconds elapsed since midnight in the selected timezone, from `0` to `86,399`. On a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).'**
   String get infoTextDaySecond;
 
   /// No description provided for @infoTextDecimalTime.
   ///
   /// In en, this message translates to:
-  /// **'Decimal time, briefly in use in France in the 1790s, divides the day into 10 decimal hours of 100 decimal minutes of 100 decimal seconds, from `0h 00m 00s` to `9h 99m 99s`. On a normal day a decimal second lasts 0.864 s; on a day with a clock change the decimal day stretches or shrinks with the real day.'**
+  /// **'Decimal time, briefly in use in France in the 1790s, divides the day into 10 decimal hours of 100 decimal minutes of 100 decimal seconds, from `0ʰ00ᵐ00ˢ` to `9ʰ99ᵐ99ˢ`. On a normal day a decimal second lasts 0.864 s; on a day with a clock change the decimal day stretches or shrinks with the real day.'**
   String get infoTextDecimalTime;
 
   /// No description provided for @infoTextDoomsdayClock.
@@ -773,7 +773,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextGps.
   ///
   /// In en, this message translates to:
-  /// **'GPS time counts seconds since `1980-01-06 00:00:00 UTC` without any leap seconds. It matched UTC at the start; UTC has since added 18 leap seconds, so GPS time is 18 s ahead of UTC and 19 s behind TAI. From 2027 UTC adds no more leap seconds, so the gap stays at 18 s.'**
+  /// **'GPS time counts seconds since `1980-01-06 00:00:00 UTC` without any leap seconds. It matched UTC at the start; UTC has since added 18 leap seconds, so GPS time is 18 s ahead of UTC and 19 s behind TAI.'**
   String get infoTextGps;
 
   /// No description provided for @infoTextHexadecimalTime.
@@ -809,7 +809,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextNewEarthTime.
   ///
   /// In en, this message translates to:
-  /// **'New Earth Time (NET, 1999), also called degree time, splits the day into `360 degrees`: `0°` is midnight, `180°` noon. A degree lasts 4 minutes and is divided into 60 intervals of 4 seconds. There are no time zones: the whole world shares the same degree time. It is based on UTC+0.'**
+  /// **'New Earth Time (NET, 1999), also called degree time, splits the day into `360 degrees`: `0°` is midnight, `180°` noon. A degree lasts 4 minutes and is divided into 60 intervals of 4 seconds. There are no time zones, the whole world shares the same degree time. It is based on UTC+0.'**
   String get infoTextNewEarthTime;
 
   /// No description provided for @infoTextOctalTime.
@@ -827,7 +827,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextRomanNumeralsTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone, shown in Roman numerals. Roman numerals have no zero, so, as medieval scholars did, N for nulla (Latin for \'none\') stands in for it.'**
+  /// **'The current time in the selected timezone, shown in Roman numerals. Roman numerals have no zero, so, as medieval scholars did, `N` for nulla (Latin for \'none\') stands in for it.'**
   String get infoTextRomanNumeralsTime;
 
   /// No description provided for @infoTextSevenSegmentClock.
@@ -839,13 +839,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Swatch Internet Time (1998) divides the day into 1000 .beats of 86.4 seconds each. There are no time zones: the whole world shares the same .beat time. It is based on UTC+1, which Swatch calls Biel Mean Time (BMT).'**
+  /// **'Swatch Internet Time (1998) divides the day into 1000 .beats of 86.4 seconds each. There are no time zones, the whole world shares the same .beat time. It is based on UTC+1, which Swatch calls Biel Mean Time (BMT).'**
   String get infoTextSwatchBeats;
 
   /// No description provided for @infoTextTai.
   ///
   /// In en, this message translates to:
-  /// **'International Atomic Time (TAI, French: Temps Atomique International) is a continuous scale without leap seconds: atomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since `1970-01-01 00:00:00 UTC`), i.e. Unix time plus 37. According to a decision by the General Conference on Weights and Measures in October 2026, there will be no more leap seconds, so the 37 s stay.'**
+  /// **'International Atomic Time (TAI, French: Temps Atomique International) is a continuous scale without leap seconds: atomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since `1970-01-01 00:00:00 UTC`), i.e. Unix time plus 37.'**
   String get infoTextTai;
 
   /// No description provided for @infoTextTime.
