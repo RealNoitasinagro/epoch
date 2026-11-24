@@ -6,7 +6,7 @@
 - redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
   choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
 - remaining time of the day as an option for time, day second, day minute, day percent, decimal
-  time, Swatch beats, New Earth Time and the Doomsday Clock
+  time, Swatch beats, New Earth Time and the Doomsday Clock (cf. [example configs](example_configs))
 
 ### Changed
 - CHANGELOG and README links in About dialog, new Wiki link replacing changelog link in Menu
