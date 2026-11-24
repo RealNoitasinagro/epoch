@@ -112,9 +112,15 @@ class TimeValueFormatter {
         final double beats = remaining
             ? TimeUtils.swatchBeatsRemaining(utcNow)
             : TimeUtils.swatchBeats(utcNow);
-        final beatsText = showOptionalPart
-            ? beats.toStringAsFixed(2)
-            : '${beats.toInt()}';
+        String beatsText = formatDecimal(
+          beats,
+          locale,
+          2,
+          thousandsSep: thousandsSep,
+        );
+        beatsText = showOptionalPart
+            ? beatsText
+            : '${beatsText.substring(0, beatsText.length - 3)}';
         return remaining ? beatsText : '@$beatsText'; // @ marks a moment
       case ValueType.newEarthTime:
         final double degrees = remaining

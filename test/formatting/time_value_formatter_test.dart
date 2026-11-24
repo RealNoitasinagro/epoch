@@ -673,7 +673,18 @@ void main() {
         );
         expect(
           remainingLine1(ValueType.swatchBeats, DateTime.utc(2026, 6, 14, 23)),
-          '1000.00',
+          '1,000.00',
+        );
+        expect(
+          remainingLine1(
+            ValueType.swatchBeats,
+            DateTime.utc(2026, 6, 14, 23),
+            options: const ValueOptions(
+              remaining: true,
+              showOptionalPart: false,
+            ),
+          ),
+          '1,000',
         );
         expect(
           remainingLine1(ValueType.swatchBeats, DateTime.utc(2026, 6, 15, 12)),
