@@ -593,7 +593,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoOptionDecimals.
   ///
   /// In en, this message translates to:
-  /// **'The decimals can be hidden, globally per value type in Settings or for this value in edit mode. Hidden decimals are cut off, not rounded.'**
+  /// **'The decimals can be hidden, globally per value type in Settings, or for this value in edit mode. Hidden decimals are cut off, not rounded.'**
   String get infoOptionDecimals;
 
   /// No description provided for @infoOptionDetailsAngle.
@@ -623,7 +623,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoOptionSeconds.
   ///
   /// In en, this message translates to:
-  /// **'The seconds can be hidden, globally per value type in Settings or for this value in edit mode.'**
+  /// **'The seconds can be hidden, globally per value type in Settings, or for this value in edit mode.'**
   String get infoOptionSeconds;
 
   /// No description provided for @infoRemainingDayMinute.
@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoRemainingDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Remaining: from `100.000` at midnight down to just above `0`. It relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
+  /// **'Remaining: from `100.000` at midnight down to just above `0`. The notice from above regarding the real day length applies here as well.'**
   String get infoRemainingDayPercent;
 
   /// No description provided for @infoRemainingDaySecond.
@@ -653,7 +653,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoRemainingDoomsdayClock.
   ///
   /// In en, this message translates to:
-  /// **'Remaining: the time to midnight as a duration, e. g. `00:01:25`.'**
+  /// **'Remaining: the time to midnight as a duration, e.g. `00:01:25`.'**
   String get infoRemainingDoomsdayClock;
 
   /// No description provided for @infoRemainingNewEarthTime.
@@ -701,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: 10110:110000:010111 is 22:48:23.'**
+  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: `10110:110000:010111` is 22:48:23.'**
   String get infoTextBinaryClockString;
 
   /// No description provided for @infoTextCcsdsJulianDate.
@@ -845,7 +845,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextSwatchBeats.
   ///
   /// In en, this message translates to:
-  /// **'Swatch Internet Time (1998) divides the day into 1000 .beats of 86.4 seconds each.\nThere are no time zones, the whole world shares the same .beat time. It is based on UTC+1, which Swatch calls Biel Mean Time (BMT).'**
+  /// **'Swatch Internet Time (1998) divides the day into 1000 .beats of 86.4 seconds each, from `@0` to `@999`.\nThere are no time zones, the whole world shares the same .beat time. It is based on UTC+1, which Swatch calls Biel Mean Time (BMT).'**
   String get infoTextSwatchBeats;
 
   /// No description provided for @infoTextTai.

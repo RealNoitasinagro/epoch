@@ -308,7 +308,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoOptionDecimals =>
-      'Die Dezimalstellen lassen sich ausblenden, global pro Werttyp in den Einstellungen oder für diesen Wert im Edit-Modus. Ausgeblendete Dezimalstellen werden abgeschnitten, nicht gerundet.';
+      'Die Dezimalstellen lassen sich ausblenden, global pro Werttyp in den Einstellungen, oder für diesen Wert im Edit-Modus. Ausgeblendete Dezimalstellen werden abgeschnitten, nicht gerundet.';
 
   @override
   String get infoOptionDetailsAngle =>
@@ -328,7 +328,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoOptionSeconds =>
-      'Die Sekunden lassen sich ausblenden, global pro Werttyp in den Einstellungen oder für diesen Wert im Edit-Modus.';
+      'Die Sekunden lassen sich ausblenden, global pro Werttyp in den Einstellungen, oder für diesen Wert im Edit-Modus.';
 
   @override
   String get infoRemainingDayMinute =>
@@ -336,7 +336,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoRemainingDayPercent =>
-      'Rest: von `100,000` um Mitternacht bis knapp über `0`. Er bezieht sich auf die echte Tageslänge: an einem Tag mit Zeitumstellung also 23 oder 25 Stunden (Lord Howe: 23,5 oder 24,5; Troll: 22 oder 26) statt 24 Stunden.';
+      'Rest: von `100,000` um Mitternacht bis knapp über `0`. Der Hinweis oben zur echten Tageslänge gilt hier entsprechend.';
 
   @override
   String get infoRemainingDaySecond =>
@@ -380,7 +380,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextBinaryClockString =>
-      'Die Stunden, Minuten und Sekunden in der gewählten Zeitzone wie auf einer Wanduhr (24 Stunden zu 60 Minuten zu 60 Sekunden), jeweils als Binärzahl mit 5, 6 und 6 Stellen.\nDie letzte Stelle einer Zahl zählt 2^0 = 1, links daneben 2^1 = 2, 2^2 = 4 usw. Beispiel: 10110:110000:010111 ist 22:48:23.';
+      'Die Stunden, Minuten und Sekunden in der gewählten Zeitzone wie auf einer Wanduhr (24 Stunden zu 60 Minuten zu 60 Sekunden), jeweils als Binärzahl mit 5, 6 und 6 Stellen.\nDie letzte Stelle einer Zahl zählt 2^0 = 1, links daneben 2^1 = 2, 2^2 = 4 usw. Beispiel: `10110:110000:010111` ist 22:48:23.';
 
   @override
   String get infoTextCcsdsJulianDate =>
@@ -475,7 +475,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get infoTextSwatchBeats =>
-      'Die Swatch-Internetzeit (1998) teilt den Tag in 1000 .beats von je 86,4 Sekunden.\nEs gibt keine Zeitzonen, für die ganze Welt gilt dieselbe .beat-Zeit. Sie basiert auf UTC+1, von Swatch „Biel Mean Time“ (BMT) genannt.';
+      'Die Swatch-Internetzeit (1998) teilt den Tag in 1000 .beats von je 86,4 Sekunden, von `@0` bis `@999`.\nEs gibt keine Zeitzonen, für die ganze Welt gilt dieselbe .beat-Zeit. Sie basiert auf UTC+1, von Swatch „Biel Mean Time“ (BMT) genannt.';
 
   @override
   String get infoTextTai =>
