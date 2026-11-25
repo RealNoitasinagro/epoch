@@ -483,6 +483,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Seconds since the Unix epoch, `1970-01-01 00:00:00 UTC`.\nUnix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.';
 
   @override
+  String infoZone(String zone) {
+    return 'Time zone of this value: `$zone`';
+  }
+
+  @override
   String get labelDay => 'DD';
 
   @override

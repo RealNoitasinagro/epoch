@@ -52,6 +52,13 @@
       }
     }
   },
+  "@infoZone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "@labelDefaultState": {
     "placeholders": {
       "state": {
@@ -337,6 +344,7 @@
   "infoTextTai": "International Atomic Time (TAI, French: *Temps Atomique International*) is a continuous scale without leap seconds.\nAtomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since `1970-01-01 00:00:00 UTC`), i.e. Unix time plus 37.",
   "infoTextTime": "The current time in the selected timezone.",
   "infoTextUnixSeconds": "Seconds since the Unix epoch, `1970-01-01 00:00:00 UTC`.\nUnix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.",
+  "infoZone": "Time zone of this value: `{zone}`",
   "labelDay": "DD",
   "labelDefaultState": "Default: {state}",
   "labelDstChangeInDays": "in {days} {days, plural, one{day} other{days}}",

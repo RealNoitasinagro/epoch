@@ -866,6 +866,12 @@ abstract class AppLocalizations {
   /// **'Seconds since the Unix epoch, `1970-01-01 00:00:00 UTC`.\nUnix time counts every day as exactly 86,400 seconds and ignores leap seconds. A signed 32-bit counter overflows on 2038-01-19 at 03:14:07 UTC (the \"Year 2038 problem\"); Time Shift stops there, too.'**
   String get infoTextUnixSeconds;
 
+  /// No description provided for @infoZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone of this value: `{zone}`'**
+  String infoZone(String zone);
+
   /// No description provided for @labelDay.
   ///
   /// In en, this message translates to:

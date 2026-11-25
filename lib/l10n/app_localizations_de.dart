@@ -489,6 +489,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Sekunden seit der Unix-Epoche: `1970-01-01 00:00:00 UTC`.\nDie Unix-Zeit zählt für jeden Tag genau 86.400 Sekunden und ignoriert Schaltsekunden. Ein Zähler in Form einer vorzeichenbehafteten 32-Bit-Ganzzahl läuft am 19.01.2038 03:14:07 UTC über („Jahr-2038-Problem“); das ist auch die Grenze für Time Shift.';
 
   @override
+  String infoZone(String zone) {
+    return 'Zeitzone dieses Werts: `$zone`';
+  }
+
+  @override
   String get labelDay => 'TT';
 
   @override

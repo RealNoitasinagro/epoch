@@ -299,7 +299,7 @@ if [[ ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
 fi
 echo | tee -a "$build_all_log"
 
-if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" ) ]] ; then
+if [[ ! "$skipCopy" -eq "1" && ! ( "$what" == "web" || "$what" == "linux" || "$what" == "weblinux" ) ]] ; then
     echo "# Copying output files..."
     # overwrite is fine (mostly), but only if all builds succeed; copy linux bundle manually if needed
     if [ ! "$dryRun" -eq "1" ] ; then

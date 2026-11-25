@@ -8,7 +8,9 @@ import '../models/time_value.dart';
 import '../settings/time_shift_start.dart';
 import '../time/effective_clock.dart';
 import '../time/seconds_ticker.dart';
+import '../time/time_utils.dart';
 import '../time/wall_clock_in_zone.dart';
+import '../time/zone_abbreviations.dart';
 import '../time/zone_rules.dart';
 import '../time_zone_search/generated/iana_links_snapshot.g.dart';
 import '../time_zone_search/zones.dart';
@@ -375,18 +377,25 @@ class _TimeShiftScreenState extends State<TimeShiftScreen> {
     return entry?.displayTitle(locale) ?? ianaZone;
   }
 
-  /// IANA name (also for the system zone) and the offset at the shown moment.
+  /// IANA name (also for the system zone), then abbreviation and offset at
+  /// the shown moment, in the style of the time zone search.
   String _zoneSubtitle() {
     final ianaZone = switch (_zone) {
       ZoneLocal() => EpochApp.of(context).systemIanaZone,
       ZoneUtc() => null,
       ZoneNamed(ianaZone: final name) => name,
     };
+    final instant = _displayedInstant;
     final offsetText = formatUtcOffset(
-      offsetInZone(_displayedInstant, _zone),
+      offsetInZone(instant, _zone),
       withUtcPrefix: true,
     );
-    return ianaZone == null ? offsetText : '$ianaZone  ·  $offsetText';
+    if (ianaZone == null) return offsetText;
+    final abbreviation = localizeTimezoneAbbr(
+      TimeUtils.inZone(instant, ianaZone).timeZone.abbreviation,
+      EpochApp.of(context).locale?.languageCode ?? 'en',
+    );
+    return '$ianaZone  ·  $abbreviation  $offsetText';
   }
 
   Widget _zoneTile(AppLocalizations l10n) {

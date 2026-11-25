@@ -49,4 +49,6 @@ app.*.map.json
 *~
 .logs
 *.bak
+*.patch
 sha256sums.txt
+assets/icon/epoch_icon_dev.png

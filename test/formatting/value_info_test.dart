@@ -9,7 +9,7 @@ void main() {
   final l10n = lookupAppLocalizations(const Locale('en'));
 
   List<InfoBlock> blocksOf(ValueType type) => buildInfoBlocks(
-      TimeValue(valueType: type, zone: const ZoneUtc()), l10n);
+      TimeValue(valueType: type, zone: const ZoneUtc()), l10n, null);
 
   List<String> paragraphsOf(ValueType type) => [
     for (final block in blocksOf(type))

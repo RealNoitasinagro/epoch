@@ -26,7 +26,7 @@ class InfoLinkBlock extends InfoBlock {
 const _leapSecondTypes = {ValueType.unixSeconds, ValueType.tai, ValueType.gps};
 
 /// The content of the info dialog of a value (without the clock changes).
-List<InfoBlock> buildInfoBlocks(TimeValue timeValue, AppLocalizations l10n) {
+List<InfoBlock> buildInfoBlocks(TimeValue timeValue, AppLocalizations l10n, String? ianaZone) {
   final type = timeValue.valueType;
   final optionTexts = [
     ?_optionalPartText(type, l10n),
@@ -41,6 +41,7 @@ List<InfoBlock> buildInfoBlocks(TimeValue timeValue, AppLocalizations l10n) {
   return [
     for (final paragraph in splitParagraphs(timeValue.localizedInfoText(l10n)))
       InfoParagraph(paragraph),
+    if (ianaZone != null) InfoParagraph(l10n.infoZone(ianaZone)),
     if (_leapSecondTypes.contains(type)) InfoParagraph(l10n.infoLeapSeconds),
     if (optionTexts.isNotEmpty) InfoHeading(l10n.labelInfoDisplayOptions),
     for (final text in optionTexts) InfoParagraph(text),

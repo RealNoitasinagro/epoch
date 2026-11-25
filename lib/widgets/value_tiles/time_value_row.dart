@@ -20,16 +20,12 @@ abstract class TimeValueRow extends StatelessWidget {
   final TimeValue timeValue;
   final DateTime now;
 
-  const TimeValueRow({
-    super.key,
-    required this.timeValue,
-    required this.now,
-  });
+  const TimeValueRow({super.key, required this.timeValue, required this.now});
 
   void showInfo(BuildContext context, AppLocalizations l10n) {
     final localIanaZone = EpochApp.of(context).localIanaZone;
     final moment = ZonedMoment.of(timeValue, now, localIanaZone);
-    String? ianaZone = moment.ianaZone;
+    String? ianaZoneId = moment.ianaZone;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -39,10 +35,11 @@ abstract class TimeValueRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InfoContent(blocks: buildInfoBlocks(timeValue, l10n)),
-            if (ianaZone != null &&
-                timeValue.timezoneClockChangeMode == TimezoneClockChangeMode.auto)
-              ..._buildDstTransitionsSection(ianaZone, ctx, l10n),
+            InfoContent(blocks: buildInfoBlocks(timeValue, l10n, ianaZoneId)),
+            if (ianaZoneId != null &&
+                timeValue.timezoneClockChangeMode ==
+                    TimezoneClockChangeMode.auto)
+              ..._buildDstTransitionsSection(ianaZoneId, ctx, l10n),
           ],
         ),
         actions: [
