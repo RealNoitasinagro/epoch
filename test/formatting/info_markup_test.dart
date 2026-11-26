@@ -4,8 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('parseInfoMarkup', () {
     test('plain text is one segment', () {
-      expect(parseInfoMarkup('just text'),
-          [(text: 'just text', style: InfoStyle.plain)]);
+      expect(parseInfoMarkup('just text'), [
+        (text: 'just text', style: InfoStyle.plain),
+      ]);
     });
 
     test('bold, italic and code', () {
@@ -24,9 +25,15 @@ void main() {
     });
 
     test('unclosed or empty markers stay literal', () {
-      expect(parseInfoMarkup('2 * 3'), [(text: '2 * 3', style: InfoStyle.plain)]);
-      expect(parseInfoMarkup('a **** b'), [(text: 'a **** b', style: InfoStyle.plain)]);
-      expect(parseInfoMarkup('`open'), [(text: '`open', style: InfoStyle.plain)]);
+      expect(parseInfoMarkup('2 * 3'), [
+        (text: '2 * 3', style: InfoStyle.plain),
+      ]);
+      expect(parseInfoMarkup('a **** b'), [
+        (text: 'a **** b', style: InfoStyle.plain),
+      ]);
+      expect(parseInfoMarkup('`open'), [
+        (text: '`open', style: InfoStyle.plain),
+      ]);
     });
 
     test('code is taken literally', () {

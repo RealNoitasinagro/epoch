@@ -5,7 +5,7 @@ enum InfoStyle { plain, bold, italic, code }
 typedef InfoSegment = ({String text, InfoStyle style});
 
 const _markers = <(String, InfoStyle)>[
-  ('**', InfoStyle.bold),  // before '*': the longer marker wins
+  ('**', InfoStyle.bold), // before '*': the longer marker wins
   ('*', InfoStyle.italic),
   ('`', InfoStyle.code),
 ];
@@ -27,11 +27,11 @@ List<InfoSegment> parseInfoMarkup(String markup) {
       if (!markup.startsWith(marker, index)) continue;
       final contentStart = index + marker.length;
       final closingIndex = markup.indexOf(marker, contentStart);
-      if (closingIndex <= contentStart) continue;  // not closed, or empty
+      if (closingIndex <= contentStart) continue; // not closed, or empty
       flushPlainText();
       segments.add((
-      text: markup.substring(contentStart, closingIndex),
-      style: style,
+        text: markup.substring(contentStart, closingIndex),
+        style: style,
       ));
       index = closingIndex + marker.length;
       consumedMarker = true;
@@ -46,6 +46,8 @@ List<InfoSegment> parseInfoMarkup(String markup) {
 }
 
 /// Paragraphs are separated by an empty line ("\n\n" in the ARB files).
-List<String> splitParagraphs(String text) =>
-    text.split('\n\n').map((paragraph) => paragraph.trim())
-        .where((paragraph) => paragraph.isNotEmpty).toList();
+List<String> splitParagraphs(String text) => text
+    .split('\n\n')
+    .map((paragraph) => paragraph.trim())
+    .where((paragraph) => paragraph.isNotEmpty)
+    .toList();

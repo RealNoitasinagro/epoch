@@ -326,7 +326,9 @@ void main() {
 
     test('only the angle of sidereal time has no global details setting', () {
       final withoutGlobal = ValueType.values
-          .where((type) => type.hasDetailsLine && !type.detailsLineHasGlobalSetting)
+          .where(
+            (type) => type.hasDetailsLine && !type.detailsLineHasGlobalSetting,
+          )
           .toSet();
       expect(withoutGlobal, {ValueType.gmst, ValueType.lmst});
     });

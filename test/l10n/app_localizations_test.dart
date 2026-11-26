@@ -30,12 +30,21 @@ void main() {
 
   test('info texts contain no unbalanced markup characters', () {
     for (final path in ['lib/l10n/app_en.arb', 'lib/l10n/app_de.arb']) {
-      final strings = jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
+      final strings =
+          jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
       strings.forEach((key, value) {
         if (!key.startsWith('info') || key.startsWith('infoLink')) return;
         final text = value as String;
-        expect('*'.allMatches(text).length.isEven, isTrue, reason: '$path $key');
-        expect('`'.allMatches(text).length.isEven, isTrue, reason: '$path $key');
+        expect(
+          '*'.allMatches(text).length.isEven,
+          isTrue,
+          reason: '$path $key',
+        );
+        expect(
+          '`'.allMatches(text).length.isEven,
+          isTrue,
+          reason: '$path $key',
+        );
       });
     }
   });

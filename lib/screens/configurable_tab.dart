@@ -249,7 +249,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     final detailsShownByDefault = settings.showsDetailsByDefault(
       timeValue.valueType,
     );
-    final detailsHaveGlobalSetting = timeValue.valueType.detailsLineHasGlobalSetting;
+    final detailsHaveGlobalSetting =
+        timeValue.valueType.detailsLineHasGlobalSetting;
 
     bool? selectedShowOptionalPart = timeValue.showOptionalPart;
     bool? selectedShowDetails = timeValue.showDetails;
@@ -364,19 +365,26 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       dense: true,
                       tristate: detailsHaveGlobalSetting,
                       title: Text(l10n.labelShowDetails),
-                      subtitle: detailsHaveGlobalSetting && selectedShowDetails == null
-                          ? Text(l10n.labelDefaultState(detailsShownByDefault
-                          ? l10n.settingsOn
-                          : l10n.settingsOff))
+                      subtitle:
+                          detailsHaveGlobalSetting &&
+                              selectedShowDetails == null
+                          ? Text(
+                              l10n.labelDefaultState(
+                                detailsShownByDefault
+                                    ? l10n.settingsOn
+                                    : l10n.settingsOff,
+                              ),
+                            )
                           : null,
                       value: detailsHaveGlobalSetting
                           ? selectedShowDetails
                           : selectedShowDetails ?? true,
                       // Two states: "on" is the default and stored as "not set".
-                      onChanged: (value) => setDialogState(() =>
-                      selectedShowDetails = detailsHaveGlobalSetting
-                          ? value
-                          : (value == true ? null : false)),
+                      onChanged: (value) => setDialogState(
+                        () => selectedShowDetails = detailsHaveGlobalSetting
+                            ? value
+                            : (value == true ? null : false),
+                      ),
                     ),
                   if (timeValue.valueType.supportsRemaining)
                     CheckboxListTile(

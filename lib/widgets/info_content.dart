@@ -34,10 +34,14 @@ class InfoContent extends StatelessWidget {
   }
 
   Widget _markupText(BuildContext context, String markup) {
-    return Text.rich(TextSpan(children: [
-      for (final segment in parseInfoMarkup(markup))
-        TextSpan(text: segment.text, style: _styleOf(segment.style)),
-    ]));
+    return Text.rich(
+      TextSpan(
+        children: [
+          for (final segment in parseInfoMarkup(markup))
+            TextSpan(text: segment.text, style: _styleOf(segment.style)),
+        ],
+      ),
+    );
   }
 
   TextStyle? _styleOf(InfoStyle style) => switch (style) {

@@ -77,9 +77,9 @@ class _EntryPickerState extends State<_EntryPicker> {
   /// The first variant of a zone-independent value that is not on the tab yet.
   TimeValue? _firstFreeVariant(ValueType type) {
     final takenKeys = widget.existingEntries.map((entry) => entry.key).toSet();
-    return _variantsOf(type)
-        .where((variant) => !takenKeys.contains(variant.key))
-        .firstOrNull;
+    return _variantsOf(
+      type,
+    ).where((variant) => !takenKeys.contains(variant.key)).firstOrNull;
   }
 
   // Greyed out: LMST while it is not set up, and zone-independent values of
@@ -96,8 +96,10 @@ class _EntryPickerState extends State<_EntryPicker> {
 
   void _selectType(ValueType t) {
     if (t.isZoneIndependent) {
-      Navigator.pop(context, _firstFreeVariant(t) ??
-          TimeValue(valueType: t, zone: const ZoneUtc()));
+      Navigator.pop(
+        context,
+        _firstFreeVariant(t) ?? TimeValue(valueType: t, zone: const ZoneUtc()),
+      );
     } else {
       setState(() {
         _type = t;
