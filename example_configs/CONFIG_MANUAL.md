@@ -159,39 +159,40 @@ valueType/zone||dst:forceStandard
 
 ##### Value types
 
-| `valueType`              | Description                  |
-|--------------------------|------------------------------|
-| `date`                   | Current date                 |
-| `time`                   | Current time                 |
-| `dateTime`               | Date and time combined       |
-| `daySecond`              | Seconds elapsed today        |
-| `dayMinute`              | Minutes elapsed today        |
-| `dayPercent`             | Day progress as percentage   |
-| *`sevenSegmentClock`*    | Seven-segment clock          |
-| *`analogClock12h`*       | Analog clock (12-hour face)  |
-| *`analogClock24h`*       | Analog clock (24-hour face)  |
-| `unixSeconds`            | Unix timestamp               |
-| `tai`                    | International Atomic Time    |
-| `gps`                    | GPS Time                     |
-| `gmst`                   | Greenwich Mean Sidereal Time |
-| `lmst`                   | Local Mean Sidereal Time     |
-| `julianDate`             | Julian Date                  |
-| `reducedJulianDate`      | Reduced Julian Date          |
-| `modifiedJulianDate`     | Modified Julian Date         |
-| `dublinJulianDate`       | Dublin Julian Date           |
-| `cnesJulianDate`         | CNES Julian Date             |
-| `ccsdsJulianDate`        | CCSDS Julian Date            |
-| `modifiedJulianDate2000` | MJD relative to J2000.0      |
-| `decimalTime`            | Decimal time                 |
-| `swatchBeats`            | Swatch Internet Time         |
-| `newEarthTime`           | New Earth Time               |
-| *`binaryClockBcd`*       | Binary clock (BCD)           |
-| *`binaryClockColumns`*   | Binary clock (columns)       |
-| `binaryClockString`      | Binary time (string)         |
-| `octalTime`              | Octal time                   |
-| `hexadecimalTime`        | Hexadecimal time             |
-| `romanNumeralsTime`      | Roman numerals time          |
-| `doomsdayClock`          | Doomsday Clock               |
+| `valueType`              | Description                     |
+|--------------------------|---------------------------------|
+| `date`                   | Current date                    |
+| `time`                   | Current time                    |
+| `dateTime`               | Date and time combined          |
+| `daySecond`              | Seconds elapsed today           |
+| `dayMinute`              | Minutes elapsed today           |
+| `dayPercent`             | Day progress as percentage      |
+| *`sevenSegmentClock`*    | Seven-segment clock             |
+| *`analogClock12h`*       | Analog clock (12-hour face)     |
+| *`analogClock24h`*       | Analog clock (24-hour face)     |
+| `fuzzyTime`              | Current time deliberately vague |
+| `unixSeconds`            | Unix timestamp                  |
+| `tai`                    | International Atomic Time       |
+| `gps`                    | GPS Time                        |
+| `gmst`                   | Greenwich Mean Sidereal Time    |
+| `lmst`                   | Local Mean Sidereal Time        |
+| `julianDate`             | Julian Date                     |
+| `reducedJulianDate`      | Reduced Julian Date             |
+| `modifiedJulianDate`     | Modified Julian Date            |
+| `dublinJulianDate`       | Dublin Julian Date              |
+| `cnesJulianDate`         | CNES Julian Date                |
+| `ccsdsJulianDate`        | CCSDS Julian Date               |
+| `modifiedJulianDate2000` | MJD relative to J2000.0         |
+| `decimalTime`            | Decimal time                    |
+| `swatchBeats`            | Swatch Internet Time            |
+| `newEarthTime`           | New Earth Time                  |
+| *`binaryClockBcd`*       | Binary clock (BCD)              |
+| *`binaryClockColumns`*   | Binary clock (columns)          |
+| `binaryClockString`      | Binary time (string)            |
+| `octalTime`              | Octal time                      |
+| `hexadecimalTime`        | Hexadecimal time                |
+| `romanNumeralsTime`      | Roman numerals time             |
+| `doomsdayClock`          | Doomsday Clock                  |
 
 *Graphical types* in italics.
 

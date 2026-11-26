@@ -94,6 +94,12 @@ ValueTypeFacts _factsOf(ValueType type) => switch (type) {
     timescale: _civilScale,
     unit: 'hands, 24-hour dial',
   ),
+  ValueType.fuzzyTime => _facts(
+    timescale: _civilScale,
+    reference: _localMidnight,
+    unit: 'misc', // TODO
+    resolution: 'misc', // TODO
+  ),
   // Technical
   ValueType.unixSeconds => _facts(
     timescale: 'UTC (POSIX: leap seconds not counted)',

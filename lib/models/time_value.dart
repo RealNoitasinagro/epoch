@@ -17,6 +17,7 @@ enum ValueType {
   sevenSegmentClock,
   analogClock12h,
   analogClock24h,
+  fuzzyTime,
   // Technical
   unixSeconds,
   tai,
@@ -205,6 +206,7 @@ extension ValueTypeProps on ValueType {
     ValueType.sevenSegmentClock => false,
     ValueType.analogClock12h => false,
     ValueType.analogClock24h => false,
+    ValueType.fuzzyTime => false,
     ValueType.unixSeconds => true,
     ValueType.tai => true,
     ValueType.gps => true,

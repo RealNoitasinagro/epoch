@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- new value type: fuzzy time
 - redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
   choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
 - remaining time of the day as an option for time, day second, day minute, day percent, decimal

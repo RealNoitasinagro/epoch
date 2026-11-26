@@ -74,6 +74,84 @@ class AppLocalizationsDe extends AppLocalizations {
       'Eine Zeitanzeige-App mit vielen Funktionen für Nerds und Hobbyastronomen. Zeigt (nicht nur) die aktuelle Zeit in zivilen, technischen und astronomischen Zeitsystemen an, und ein paar Kuriositäten.';
 
   @override
+  String get fuzzyDayPartAfternoon => 'Nachmittag';
+
+  @override
+  String get fuzzyDayPartDeepNight => 'tiefe Nacht';
+
+  @override
+  String get fuzzyDayPartEarlyAfternoon => 'früher Nachmittag';
+
+  @override
+  String get fuzzyDayPartEarlyEvening => 'früher Abend';
+
+  @override
+  String get fuzzyDayPartEarlyMorning => 'früher Morgen';
+
+  @override
+  String get fuzzyDayPartEvening => 'Abend';
+
+  @override
+  String get fuzzyDayPartLateAfternoon => 'später Nachmittag';
+
+  @override
+  String get fuzzyDayPartLateMorning => 'Vormittag';
+
+  @override
+  String get fuzzyDayPartMorning => 'Morgen';
+
+  @override
+  String get fuzzyDayPartNight => 'Nacht';
+
+  @override
+  String get fuzzyDayPartNoon => 'Mittag';
+
+  @override
+  String get fuzzyLevelDayOrNight => 'Tag oder Nacht';
+
+  @override
+  String get fuzzyLevelEarlyOrLate => 'Früh oder spät';
+
+  @override
+  String get fuzzyLevelFiveMinutes => 'Fünf Minuten';
+
+  @override
+  String get fuzzyLevelMinute => 'Minute';
+
+  @override
+  String get fuzzyLevelPartOfDay => 'Tagesabschnitt';
+
+  @override
+  String get fuzzyLevelQuarterHour => 'Viertelstunde';
+
+  @override
+  String get fuzzyWordDay => 'Tag';
+
+  @override
+  String get fuzzyWordHalf => 'halb';
+
+  @override
+  String get fuzzyWordMinutes => 'Minuten';
+
+  @override
+  String get fuzzyWordNight => 'Nacht';
+
+  @override
+  String get fuzzyWordOClock => 'Uhr';
+
+  @override
+  String get fuzzyWordOneMinute => 'eine Minute';
+
+  @override
+  String get fuzzyWordPast => 'nach';
+
+  @override
+  String get fuzzyWordQuarter => 'viertel';
+
+  @override
+  String get fuzzyWordTo => 'vor';
+
+  @override
   String get hintAboutThisValue => 'Über diesen Wert';
 
   @override
@@ -1082,6 +1160,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get valueTypeDublinJulianDate => 'Dubliner Julianisches Datum';
+
+  @override
+  String get valueTypeFuzzyTime => 'Fuzzy time';
 
   @override
   String get valueTypeGmst => 'GMST';

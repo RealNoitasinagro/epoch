@@ -12,6 +12,7 @@ const civilTypes = [
   ValueType.sevenSegmentClock,
   ValueType.analogClock12h,
   ValueType.analogClock24h,
+  ValueType.fuzzyTime,
 ];
 
 const defaultCivilEntries = [
@@ -29,6 +30,7 @@ const defaultCivilEntries = [
   TimeValue(valueType: ValueType.sevenSegmentClock, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.analogClock12h, zone: ZoneLocal()),
   TimeValue(valueType: ValueType.analogClock24h, zone: ZoneLocal()),
+  TimeValue(valueType: ValueType.fuzzyTime, zone: ZoneLocal()),
   TabDivider(id: 'builtin_divider_civil_1'),
   TabSection(
     id: 'builtin_other',

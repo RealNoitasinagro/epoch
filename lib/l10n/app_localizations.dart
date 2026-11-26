@@ -194,6 +194,162 @@ abstract class AppLocalizations {
   /// **'A feature-rich time display app for nerds and amateur astronomers. Displays (not only) the current time in civil, technical and astronomical time systems, and a few curiosities.'**
   String get dialogAboutText;
 
+  /// No description provided for @fuzzyDayPartAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'afternoon'**
+  String get fuzzyDayPartAfternoon;
+
+  /// No description provided for @fuzzyDayPartDeepNight.
+  ///
+  /// In en, this message translates to:
+  /// **'deep night'**
+  String get fuzzyDayPartDeepNight;
+
+  /// No description provided for @fuzzyDayPartEarlyAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'early afternoon'**
+  String get fuzzyDayPartEarlyAfternoon;
+
+  /// No description provided for @fuzzyDayPartEarlyEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'early evening'**
+  String get fuzzyDayPartEarlyEvening;
+
+  /// No description provided for @fuzzyDayPartEarlyMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'early morning'**
+  String get fuzzyDayPartEarlyMorning;
+
+  /// No description provided for @fuzzyDayPartEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'evening'**
+  String get fuzzyDayPartEvening;
+
+  /// No description provided for @fuzzyDayPartLateAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'late afternoon'**
+  String get fuzzyDayPartLateAfternoon;
+
+  /// No description provided for @fuzzyDayPartLateMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'late morning'**
+  String get fuzzyDayPartLateMorning;
+
+  /// No description provided for @fuzzyDayPartMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'morning'**
+  String get fuzzyDayPartMorning;
+
+  /// No description provided for @fuzzyDayPartNight.
+  ///
+  /// In en, this message translates to:
+  /// **'night'**
+  String get fuzzyDayPartNight;
+
+  /// No description provided for @fuzzyDayPartNoon.
+  ///
+  /// In en, this message translates to:
+  /// **'midday'**
+  String get fuzzyDayPartNoon;
+
+  /// No description provided for @fuzzyLevelDayOrNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Day or night'**
+  String get fuzzyLevelDayOrNight;
+
+  /// No description provided for @fuzzyLevelEarlyOrLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Early or late'**
+  String get fuzzyLevelEarlyOrLate;
+
+  /// No description provided for @fuzzyLevelFiveMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Five minutes'**
+  String get fuzzyLevelFiveMinutes;
+
+  /// No description provided for @fuzzyLevelMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Minute'**
+  String get fuzzyLevelMinute;
+
+  /// No description provided for @fuzzyLevelPartOfDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of day'**
+  String get fuzzyLevelPartOfDay;
+
+  /// No description provided for @fuzzyLevelQuarterHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarter hour'**
+  String get fuzzyLevelQuarterHour;
+
+  /// No description provided for @fuzzyWordDay.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get fuzzyWordDay;
+
+  /// No description provided for @fuzzyWordHalf.
+  ///
+  /// In en, this message translates to:
+  /// **'half past'**
+  String get fuzzyWordHalf;
+
+  /// No description provided for @fuzzyWordMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get fuzzyWordMinutes;
+
+  /// No description provided for @fuzzyWordNight.
+  ///
+  /// In en, this message translates to:
+  /// **'night'**
+  String get fuzzyWordNight;
+
+  /// No description provided for @fuzzyWordOClock.
+  ///
+  /// In en, this message translates to:
+  /// **'o\'clock'**
+  String get fuzzyWordOClock;
+
+  /// No description provided for @fuzzyWordOneMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'one minute'**
+  String get fuzzyWordOneMinute;
+
+  /// No description provided for @fuzzyWordPast.
+  ///
+  /// In en, this message translates to:
+  /// **'past'**
+  String get fuzzyWordPast;
+
+  /// No description provided for @fuzzyWordQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'quarter'**
+  String get fuzzyWordQuarter;
+
+  /// No description provided for @fuzzyWordTo.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get fuzzyWordTo;
+
   /// No description provided for @hintAboutThisValue.
   ///
   /// In en, this message translates to:
@@ -1897,6 +2053,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dublin Julian Date'**
   String get valueTypeDublinJulianDate;
+
+  /// No description provided for @valueTypeFuzzyTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuzzy time'**
+  String get valueTypeFuzzyTime;
 
   /// No description provided for @valueTypeGmst.
   ///
