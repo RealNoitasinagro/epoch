@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:epoch/formatting/time_value_texts.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/time/fuzzy_time.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -45,5 +46,19 @@ void main() {
       options: ValueOptions(customLabel: 'Left today', remaining: true),
     );
     expect(custom.localizedDisplayLabel(english), 'Left today');
+  });
+
+  test('a level is always marked in the label', () {
+    const quarter = TimeValue(
+      valueType: ValueType.fuzzyTime,
+      zone: ZoneLocal(),
+      options: ValueOptions(fuzzyLevel: FuzzyTimeLevel.quarterHour),
+    );
+    expect(quarter.localizedDisplayLabel(english), 'Fuzzy time (local) – Quarter hour');
+    expect(
+      const TimeValue(valueType: ValueType.fuzzyTime, zone: ZoneLocal())
+          .localizedDisplayLabel(english),
+      'Fuzzy time (local) – Five minutes',
+    );
   });
 }

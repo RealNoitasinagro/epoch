@@ -5,6 +5,7 @@ import '../../app/epoch_app.dart';
 import '../../app/layout_constants.dart';
 import '../../formatting/value_display.dart';
 import '../../l10n/app_localizations.dart';
+import '../../models/time_value.dart';
 import '../../settings/app_settings.dart';
 import '../../time/zoned_moment.dart';
 import '../app_snack_bar.dart';
@@ -77,6 +78,7 @@ class TimeStringRow extends TimeValueRow {
         child: TextValueContent(
           line1: display.line1,
           line2: display.line2,
+          equalLines: timeValue.valueType.showsTwoEqualLines,
           dayQuarterColor: dayQuarterColor,
           onDoubleTap: () => openFocusScreen(context, locale),
         ),

@@ -1,3 +1,4 @@
+import '../time/fuzzy_time.dart';
 import '../time/time_utils.dart';
 import '../time/zone_rules.dart';
 import '../time_zone_search/generated/iana_links_snapshot.g.dart';
@@ -91,6 +92,7 @@ class TimeValue implements TabEntry {
   bool? get showOptionalPart => options.showOptionalPart;
   bool? get showDetails => options.showDetails;
   bool get remaining => options.remaining;
+  FuzzyTimeLevel? get fuzzyLevel => options.fuzzyLevel;
 
   // Type and zone; the options that make a different value are added in
   // [key]. The label and the display options do not matter here.
@@ -151,6 +153,9 @@ class TimeValue implements TabEntry {
 
   TimeValue withRemaining(bool value) =>
       withOptions(options.copyWith(remaining: value));
+
+  TimeValue withFuzzyLevel(FuzzyTimeLevel? level) =>
+      withOptions(options.copyWith(fuzzyLevel: NewValue(level)));
 
   /// The IANA zone whose rules apply to this value; null for UTC.
   String? ianaZoneFor(String localIanaZone) {
@@ -280,6 +285,9 @@ extension ValueTypeProps on ValueType {
   /// angle of sidereal time there is none: it is shown unless hidden per value.
   bool get detailsLineHasGlobalSetting =>
       hasDetailsLine && this != ValueType.gmst && this != ValueType.lmst;
+
+  /// Both lines are the value itself (no detail line below a value line).
+  bool get showsTwoEqualLines => this == ValueType.fuzzyTime;
 
   /// Values that can show what is left of the day instead of what has elapsed.
   bool get supportsRemaining => switch (this) {

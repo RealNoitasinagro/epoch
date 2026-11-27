@@ -1,4 +1,5 @@
 import 'package:epoch/models/time_value.dart';
+import 'package:epoch/time/fuzzy_time.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -92,26 +93,30 @@ void main() {
           for (final optionalPart in [null, true, false]) {
             for (final details in [null, true, false]) {
               for (final remaining in [false, true]) {
-                final value = TimeValue(
-                  valueType: ValueType.time,
-                  zone: const ZoneNamed('Europe/Berlin'),
-                  options: ValueOptions(
-                    customLabel: label,
-                    timezoneClockChangeMode: mode,
-                    showOptionalPart: optionalPart,
-                    showDetails: details,
-                    remaining: remaining,
-                  ),
-                );
-                final parsed = TimeValue.fromPrefsString(
-                  value.toPrefsString(),
-                )!;
-                expect(parsed.toPrefsString(), value.toPrefsString());
-                expect(parsed.customLabel, label);
-                expect(parsed.timezoneClockChangeMode, mode);
-                expect(parsed.showOptionalPart, optionalPart);
-                expect(parsed.showDetails, details);
-                expect(parsed.remaining, remaining);
+                for (final fuzzyLevel in [null, FuzzyTimeLevel.quarterHour, FuzzyTimeLevel.minute]) {
+                  final value = TimeValue(
+                    valueType: ValueType.time,
+                    zone: const ZoneNamed('Europe/Berlin'),
+                    options: ValueOptions(
+                      customLabel: label,
+                      timezoneClockChangeMode: mode,
+                      showOptionalPart: optionalPart,
+                      showDetails: details,
+                      remaining: remaining,
+                      fuzzyLevel: fuzzyLevel
+                    ),
+                  );
+                  final parsed = TimeValue.fromPrefsString(
+                    value.toPrefsString(),
+                  )!;
+                  expect(parsed.toPrefsString(), value.toPrefsString());
+                  expect(parsed.customLabel, label);
+                  expect(parsed.timezoneClockChangeMode, mode);
+                  expect(parsed.showOptionalPart, optionalPart);
+                  expect(parsed.showDetails, details);
+                  expect(parsed.remaining, remaining);
+                  expect(parsed.fuzzyLevel, fuzzyLevel);
+                }
               }
             }
           }
@@ -158,6 +163,45 @@ void main() {
       );
       expect(rem.identitySuffix, '/rem');
       expect(remForcedDst.identitySuffix, '/dst/rem');
+    });
+  });
+
+  group('fuzzy level', () {
+    test('is written after the other suffixes, the default is not written', () {
+      const level = ValueOptions(
+        remaining: true,
+        fuzzyLevel: FuzzyTimeLevel.minute,
+      );
+      expect(level.appendTo('fuzzyTime/utc'), 'fuzzyTime/utc|rem|fz:minute');
+      expect(const ValueOptions().appendTo('fuzzyTime/utc'), 'fuzzyTime/utc');
+    });
+
+    test('is read in any order; the default level means "not set"', () {
+      final parsed = ValueOptions.splitPrefsString(
+        'fuzzyTime/utc|fz:quarterHour|dst:forceDst',
+      );
+      expect(parsed.options.fuzzyLevel, FuzzyTimeLevel.quarterHour);
+      expect(parsed.options.timezoneClockChangeMode, TimezoneClockChangeMode.forceDst);
+      expect(parsed.options.customLabel, isNull);
+      expect(
+        ValueOptions.splitPrefsString('fuzzyTime/utc|fz:fiveMinutes').options.fuzzyLevel,
+        isNull,
+      );
+    });
+
+    test('an unknown level is dropped, not taken for a label', () {
+      final parsed = ValueOptions.splitPrefsString('fuzzyTime/utc|fz:nonsense');
+      expect(parsed.options.fuzzyLevel, isNull);
+      expect(parsed.options.customLabel, isNull);
+    });
+
+    test('values with different levels are different values', () {
+      expect(const ValueOptions(fuzzyLevel: FuzzyTimeLevel.minute).identitySuffix, '/fz:minute');
+      expect(const ValueOptions().identitySuffix, '');
+      expect(
+        const ValueOptions().copyWith(fuzzyLevel: const NewValue(kDefaultFuzzyTimeLevel)).fuzzyLevel,
+        isNull,
+      );
     });
   });
 }

@@ -1,9 +1,11 @@
 import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
 import '../settings/app_settings.dart';
+import '../time/fuzzy_time.dart';
 import '../time/time_utils.dart';
 import '../time/zone_abbreviations.dart';
 import '../time/zoned_moment.dart';
+import 'fuzzy_time_words.dart';
 import 'time_value_formatter.dart';
 import 'time_value_texts.dart';
 import 'value_format_settings.dart';
@@ -74,6 +76,25 @@ String _extractOffset(String zoneLine, String format) {
   };
 }
 
+/// Two equal lines: no zone line, no clock change notice.
+({String line1, String line2}) _fuzzyDisplay(
+  TimeValue timeValue,
+  DateTime now,
+  AppLocalizations l10n,
+  ValueFormatSettings settings,
+) {
+  final level = timeValue.options.effectiveFuzzyLevel;
+  final wallClock = ZonedMoment.of(
+    timeValue,
+    now,
+    settings.localIanaZone,
+  ).wallClock;
+  final lines = layoutFuzzyLines(
+    fuzzyTimeSegments(quantizeFuzzyTime(wallClock, level), level, l10n),
+  );
+  return (line1: lines.first, line2: lines.length > 1 ? lines[1] : '');
+}
+
 ({String line1, String line2}) computeDisplay(
   TimeValue timeValue,
   DateTime now,
@@ -81,6 +102,10 @@ String _extractOffset(String zoneLine, String format) {
   AppLocalizations l10n, {
   ValueFormatSettings settings = const ValueFormatSettings(),
 }) {
+  if (timeValue.valueType == ValueType.fuzzyTime) {
+    return _fuzzyDisplay(timeValue, now, l10n, settings);
+  }
+
   final formattedValue = TimeValueFormatter.format(
     timeValue,
     now,
@@ -159,6 +184,10 @@ String computeClipboardDisplay(
   TimeValue timeValue,
   ({String line1, String line2}) display,
 ) {
+  if (timeValue.valueType == ValueType.fuzzyTime) {
+    return [display.line1, display.line2].where((l) => l.isNotEmpty).join(' ');
+  }
+
   String clipboardValue = display.line2.isEmpty
       ? display.line1
       : '${display.line1}\n${display.line2}';

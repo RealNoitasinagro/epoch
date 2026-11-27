@@ -395,6 +395,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The detail line below the value line can show either the time zone display (abbreviation and/or UTC offset), or a notice within 7 days before a clock change. The time zone display can be configured globally (a particular format, or hidden). It can also be hidden for this value only. The clock change notice is shown regardless.';
 
   @override
+  String get infoOptionFuzzyLevel =>
+      'The imprecision level can be set for each value in edit mode (default: *Five minutes*). At 14:27:\n*Day or night*: `day`\n*Part of day*: `afternoon`\n*Early or late*: `early afternoon`\n*Quarter hour*: `half past two`\n*Five minutes*: `twenty-five past two`\n*Minute*: `twenty-seven minutes past two`';
+
+  @override
   String get infoOptionRemaining =>
       'This value type can show what is left until the next midnight of its time zone instead of what has elapsed (edit mode: \"Show what is left of the day\").';
 
@@ -436,23 +440,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextAnalogClock12h =>
-      'The current time in the selected timezone as an analog clock with a 12-hour face.\nThe hour hand turns twice a day; from noon on, \"+12\" appears below the 12.';
+      'The current time in the selected time zone as an analog clock with a 12-hour face.\nThe hour hand turns twice a day; from noon on, \"+12\" appears below the 12.';
 
   @override
   String get infoTextAnalogClock24h =>
-      'The current time in the selected timezone as an analog clock with a 24-hour face.\nThe hour hand turns once a day. Minutes and seconds are read on the outer scale, hours on the inner one.';
+      'The current time in the selected time zone as an analog clock with a 24-hour face.\nThe hour hand turns once a day. Minutes and seconds are read on the outer scale, hours on the inner one.';
 
   @override
   String get infoTextBinaryClockBcd =>
-      'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles.\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.';
+      'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles.\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.';
 
   @override
   String get infoTextBinaryClockColumns =>
-      'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column of circles (5 bits for hours, 6 for minutes and seconds).\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.';
+      'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column of circles (5 bits for hours, 6 for minutes and seconds).\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.';
 
   @override
   String get infoTextBinaryClockString =>
-      'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: `10110:110000:010111` is 22:48:23.';
+      'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: `10110:110000:010111` is 22:48:23.';
 
   @override
   String get infoTextCcsdsJulianDate =>
@@ -464,23 +468,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextDate =>
-      'The current calendar date in the selected timezone.';
+      'The current calendar date in the selected time zone.';
 
   @override
   String get infoTextDateTime =>
-      'The current date and time in the selected timezone, combined in one value.\nUseful e.g. for world clock tabs and copying a complete timestamp to the clipboard.';
+      'The current date and time in the selected time zone, combined in one value.\nUseful e.g. for world clock tabs and copying a complete timestamp to the clipboard.';
 
   @override
   String get infoTextDayMinute =>
-      'Minutes elapsed since midnight in the selected timezone, from `0` to `1,439`.\nOn a day with a clock change the last minute is `1,379` or `1,499` (Lord Howe: `1,409` or `1,469`; Troll: `1,319` or `1,559`).';
+      'Minutes elapsed since midnight in the selected time zone, from `0` to `1,439`.\nOn a day with a clock change the last minute is `1,379` or `1,499` (Lord Howe: `1,409` or `1,469`; Troll: `1,319` or `1,559`).';
 
   @override
   String get infoTextDayPercent =>
-      'Percentage of the day elapsed in the selected timezone, from `0` to just under `100`.\nIt relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.';
+      'Percentage of the day elapsed in the selected time zone, from `0` to just under `100`.\nIt relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.';
 
   @override
   String get infoTextDaySecond =>
-      'Seconds elapsed since midnight in the selected timezone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).';
+      'Seconds elapsed since midnight in the selected time zone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).';
 
   @override
   String get infoTextDecimalTime =>
@@ -495,7 +499,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Dublin Julian Date (DJD) = JD − 2,415,020 (epoch: `1899-12-31 12:00:00 UT`).\nDefined by the *International Astronomical Union (IAU)* in 1955 at its Dublin meeting as a convenient day count for astronomical calculations.';
 
   @override
-  String get infoTextFuzzyTime => '';
+  String get infoTextFuzzyTime =>
+      'The current time in the selected time zone the way people say it, deliberately imprecise: from just `day` or `night` to `twenty-seven minutes past two`.\nIt always uses the 12-hour dial, whatever the time format, and shows no seconds. Noon and midnight are both `twelve` unless a part of the day is shown. Parts of the day have fixed boundaries, the same in every language: daytime is 06:00 to 22:00.';
 
   @override
   String get infoTextGmst =>
@@ -507,7 +512,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextHexadecimalTime =>
-      'Seconds elapsed since midnight in the selected timezone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from `0_00_00` to `1_51_7F` on a normal day.\nA day with a clock change ends earlier or later.';
+      'Seconds elapsed since midnight in the selected time zone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from `0_00_00` to `1_51_7F` on a normal day.\nA day with a clock change ends earlier or later.';
 
   @override
   String get infoTextJulianDate =>
@@ -531,7 +536,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextOctalTime =>
-      'Seconds elapsed since midnight in the selected timezone, shown in base 8 (octal) with six digits: from `000000` to `250577` on a normal day.\nA day with a clock change ends earlier or later.';
+      'Seconds elapsed since midnight in the selected time zone, shown in base 8 (octal) with six digits: from `000000` to `250577` on a normal day.\nA day with a clock change ends earlier or later.';
 
   @override
   String get infoTextReducedJulianDate =>
@@ -539,11 +544,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoTextRomanNumeralsTime =>
-      'The current time in the selected timezone, shown in Roman numerals.\nRoman numerals have no zero, so, as medieval scholars did, `N` for *nulla* (Latin for \'none\') stands in for it.';
+      'The current time in the selected time zone, shown in Roman numerals.\nRoman numerals have no zero, so, as medieval scholars did, `N` for *nulla* (Latin for \'none\') stands in for it.';
 
   @override
   String get infoTextSevenSegmentClock =>
-      'The current time in the selected timezone in alarm clock design.';
+      'The current time in the selected time zone in alarm clock design.';
 
   @override
   String get infoTextSwatchBeats =>
@@ -554,7 +559,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'International Atomic Time (TAI, French: *Temps Atomique International*) is a continuous scale without leap seconds.\nAtomic clocks just keep ticking, and it is UTC that gets adjusted, so TAI is 37 s ahead of UTC. Epoch shows TAI the way Unix time counts (seconds since `1970-01-01 00:00:00 UTC`), i.e. Unix time plus 37.';
 
   @override
-  String get infoTextTime => 'The current time in the selected timezone.';
+  String get infoTextTime => 'The current time in the selected time zone.';
 
   @override
   String get infoTextUnixSeconds =>
@@ -589,6 +594,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelDstChangeTomorrow => 'tomorrow';
+
+  @override
+  String get labelFuzzyTimePrecision => 'Imprecision';
 
   @override
   String get labelHours => 'HH';
@@ -651,7 +659,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String messageDuplicateValue(String label) {
-    return '\"$label\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode and remaining time of the day make values different; label, seconds and details line do not.';
+    return '\"$label\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode, remaining time of the day and precision of fuzzy time make values different; label, seconds and details line do not.';
   }
 
   @override

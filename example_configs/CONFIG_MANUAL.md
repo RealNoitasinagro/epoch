@@ -152,10 +152,13 @@ valueType/zone
 valueType/zone|Custom Label
 valueType/zone|Custom Label|dst:forceDst
 valueType/zone||dst:forceStandard
+valueType/zone|nosec
+valueType/zone|nodet
+valueType/zone|rem
 ```
 > [!NOTE]
 > `valueType` and `zone` are obligatory; custom label, forced clock change mode, seconds/decimals and details line settings are optional.  \
-> For example: `time/named:Europe/Brussels|dst:forceStandard|nosec`. An empty label slot (||) is accepted too.
+> For example: `time/named:Europe/Brussels|dst:forceStandard|nosec`. An empty label slot (`||`) is accepted too.
 
 ##### Value types
 
@@ -170,7 +173,7 @@ valueType/zone||dst:forceStandard
 | *`sevenSegmentClock`*    | Seven-segment clock             |
 | *`analogClock12h`*       | Analog clock (12-hour face)     |
 | *`analogClock24h`*       | Analog clock (24-hour face)     |
-| `fuzzyTime`              | Current time deliberately vague |
+| `fuzzyTime`              | The time as people say it       |
 | `unixSeconds`            | Unix timestamp                  |
 | `tai`                    | International Atomic Time       |
 | `gps`                    | GPS Time                        |
@@ -222,11 +225,8 @@ The optional suffix is only for zones that have DST:
 ##### Seconds and decimals
 
 Some value types have an optional part that can be shown or hidden:
-
-| Optional part | Value types                                                                                                                                           |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| seconds       | `time`, `dateTime`, `dayMinute`, `decimalTime`, `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `romanNumeralsTime` |
-| decimals      | `dayPercent`, `swatchBeats`, `newEarthTime`                                                                                                           |
+- seconds: `time`, `dateTime`, `dayMinute`, `decimalTime`, `sevenSegmentClock`, `binaryClockBcd`, `binaryClockColumns`, `binaryClockString`, `romanNumeralsTime`
+- decimals: `dayPercent`, `swatchBeats`, `newEarthTime`
 
 Whether the part is shown is decided in this order: the suffix of the value itself, then the default for its type, then *shown*. The default is `optional_part_hidden` for all types except `time` and `dateTime`: for these two, a `time_format` with seconds (`ss`) shows them, one without hides them.
 
@@ -256,13 +256,29 @@ Some value types can show what is left until the next midnight of their zone ins
 
 | Suffix   | Effect                                                                                                               |
 |----------|----------------------------------------------------------------------------------------------------------------------|
-| *(none)* | what has elapsed                                                                                                     |
+| *(none)* | what has elapsed, the default                                                                                        |
 | `\|rem`  | what is left of the day, e. g. `daySecond` from `86400` (midnight) down to `1`, `time` as a duration from `24:00:00` |  
 
+##### Fuzzy time
+
+`fuzzyTime` shows the time in words with a configurable precision. The suffix names the level; without it the default `fiveMinutes` applies. Values with different levels can be on the same tab.
+
+| Suffix                         | Example at 14:27                 |
+|--------------------------------|----------------------------------|
+| `\|fz:dayOrNight`              | `day`                            |
+| `\|fz:partOfDay`               | `afternoon`                      |
+| `\|fz:earlyOrLate`             | `early afternoon`                |
+| `\|fz:quarterHour`             | `half past two`                  |
+| *(none)* or `\|fz:fiveMinutes` | `twenty-five past two` (default) |
+| `\|fz:minute`                  | `twenty-seven minutes past two`  |
+
+Always the 12-hour dial, no seconds, independent of `hour_format_24`; the suffix has no effect on other value types.
+`\|fz:fiveMinutes` is accepted, but is not written into the config by the app.
+
 > [!IMPORTANT]
-> The clock change mode (`|dst:forceDst`, `|dst:forceStandard`) and the flags `|sec` and 
-> `|nosec`, `|det` and `|nodet` as well as `|rem` may be combined and are read in any order after 
-> the label, e. g. `time/named:Europe/Brussels|nosec|dst:forceStandard|nodet`.  
+> The clock change mode (`|dst:forceDst`, `|dst:forceStandard`) and the flags `|sec` and
+> `|nosec`, `|det` and `|nodet` as well as `|rem` may be combined and are read in any order after
+> the label, e. g. `time/named:Europe/Brussels|nosec|dst:forceStandard|nodet`.
 > Epoch itself writes them in a fixed order. As custom labels, these words cannot be used.
 
 #### Divider
@@ -302,17 +318,30 @@ Renders a section heading above the following entries.
   "lmst_mode": "manual"
 }
 ```
-Note that the four built-in tabs above are shown with an empty entry list purely for brevity in this example (it's syntactically valid, Civil would show with defaults). 
-In a real config they typically carry their full default entries (cf. `epoch_settings_reference.json`), or your own customizations of them. \
-In case you have the `all_tabs` array in your config and want to see only your custom tabs in the app, you need to specify the builtin tabs explicitly with visibility off (0). Otherwise the app will try to restore missing tabs. 
+The four built-in tabs above are shown with an empty entry list purely for brevity in this
+example (it's syntactically valid, *Civil* would show with defaults).
+In a real config they typically carry their full default entries (cf. `epoch_settings_reference.json`),
+or your own customizations of them. \
+
+> [!IMPORTANT]
+> In case you have the `all_tabs` array in your config and want to see only your custom tabs in
+> the app, you need to specify the builtin tabs explicitly with visibility off (0). \
+> Otherwise the app will try to restore missing tabs.
 
 > [!TIP]
 > The app keeps JSON keys in alphabetical order.
 > Though not necessary technically, you might want to do the same when creating configs manually to facilitate comparing files. 
 
 > [!WARNING]
-> Manually editing configuration files can exceed limits enforced by the app UI  (e.g. more than the max number of values per tab, duplicate entries, trailing dividers). \
-> Duplicates (e. g. the same value twice on a tab) are shown, but the app does not let you leave edit mode until they are resolved. \
+> Manually editing configuration files can exceed limits enforced by the app UI  (e.g. more than the
+> max number of values per tab, duplicate entries, trailing dividers).
+>
+> Duplicates (the same value twice on a tab) are shown, but the app does not let you leave edit
+> mode until they are resolved. \
+> Two values are the same if they have the same value type and time
+> zone, clock change mode, remaining-time setting and fuzzy time level. Label, seconds and
+> details line do not make a difference.
+>
 > The app does not validate imported files beyond basic JSON syntax. Use with care.
 
 ## Contributing

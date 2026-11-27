@@ -1,5 +1,6 @@
 import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
+import 'fuzzy_time_words.dart';
 
 String localizedValueTypeLabel(ValueType type, AppLocalizations l10n) =>
     switch (type) {
@@ -44,6 +45,9 @@ extension TimeValueTexts on TimeValue {
     final remainingSuffix = options.remaining
         ? ' – ${l10n.labelRemaining}'
         : '';
+    final levelSuffix = valueType == ValueType.fuzzyTime
+        ? ' – ${fuzzyLevelName(options.effectiveFuzzyLevel, l10n)}'
+        : '';
     final _localizedTypeLabel = localizedValueTypeLabel(valueType, l10n);
     if (isZoneIndependent) return '$_localizedTypeLabel$remainingSuffix';
     final zoneLabel = switch (zone) {
@@ -51,7 +55,7 @@ extension TimeValueTexts on TimeValue {
       ZoneUtc() => l10n.actionZoneUtc,
       ZoneNamed(ianaZone: final z) => z.split('/').last.replaceAll('_', ' '),
     };
-    return '$_localizedTypeLabel ($zoneLabel)$remainingSuffix';
+    return '$_localizedTypeLabel ($zoneLabel)$remainingSuffix$levelSuffix';
   }
 
   // Localized info text.

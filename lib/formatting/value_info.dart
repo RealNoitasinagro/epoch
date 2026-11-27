@@ -37,6 +37,7 @@ List<InfoBlock> buildInfoBlocks(
     ?_detailsText(type, l10n),
     if (type.supportsRemaining) l10n.infoOptionRemaining,
     ?_remainingRangeText(type, l10n),
+    if (type == ValueType.fuzzyTime) l10n.infoOptionFuzzyLevel,
   ];
   final links = [
     ?timeValue.localizedInfoLink(l10n),

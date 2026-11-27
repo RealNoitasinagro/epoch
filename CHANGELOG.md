@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- new value type: fuzzy time
+- new value type fuzzy time (Civil): the time in words, in six levels from "day or night" to "minute"
 - redesigned color selection for Focus screen: reduced clutter, less disturbing for night use, more
   choices (new colors orange, magenta, violet, azure; random color, dynamic day quarter color)
 - remaining time of the day as an option for time, day second, day minute, day percent, decimal

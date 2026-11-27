@@ -117,6 +117,7 @@ class TextValueContent extends StatelessWidget {
   final String line2;
   final VoidCallback? onDoubleTap;
   final Color? dayQuarterColor; // not: night mode, zone-independent values
+  final bool equalLines;
 
   const TextValueContent({
     super.key,
@@ -124,6 +125,7 @@ class TextValueContent extends StatelessWidget {
     this.line2 = '',
     this.onDoubleTap,
     this.dayQuarterColor,
+    this.equalLines = false,
   });
 
   @override
@@ -164,11 +166,17 @@ class TextValueContent extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               line2,
-              style: textTheme.bodyMedium?.copyWith(
-                fontFamily: fontFamilyDefault,
-                color: colorScheme.onSurface.withAlpha(170),
-                height: 1.2,
-              ),
+              style: equalLines
+                  ? textTheme.bodyLarge?.copyWith(
+                      fontFamily: fontFamilyDefault,
+                      fontWeight: FontWeight.w500,
+                      height: 1.2,
+                    )
+                  : textTheme.bodyMedium?.copyWith(
+                      fontFamily: fontFamilyDefault,
+                      color: colorScheme.onSurface.withAlpha(170),
+                      height: 1.2,
+                    ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

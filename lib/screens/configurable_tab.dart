@@ -3,12 +3,14 @@ import '../app/day_quarter_color.dart';
 import '../app/epoch_app.dart';
 import '../app/layout_constants.dart';
 import '../dialogs/entry_picker.dart';
+import '../formatting/fuzzy_time_words.dart';
 import '../formatting/time_value_texts.dart';
 import '../formatting/value_display.dart';
 import '../l10n/app_localizations.dart';
 import '../models/tab_entry.dart';
 import '../models/time_value.dart';
 import '../settings/app_settings.dart';
+import '../time/fuzzy_time.dart';
 import '../time/time_utils.dart';
 import '../time/zoned_moment.dart';
 import '../widgets/app_snack_bar.dart';
@@ -257,6 +259,13 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
     TimezoneClockChangeMode selectedMode = timeValue.timezoneClockChangeMode;
     bool selectedRemaining = timeValue.remaining;
 
+    var selectedFuzzyLevel = timeValue.options.effectiveFuzzyLevel;
+    final fuzzyWallClock = ZonedMoment.of(
+      timeValue,
+      widget.now.toUtc(),
+      settings.localIanaZone,
+    ).wallClock;
+
     final controller = TextEditingController(
       text: timeValue.customLabel ?? timeValue.localizedDisplayLabel(l10n),
     );
@@ -270,6 +279,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             bool? showOptionalPart,
             bool? showDetails,
             bool remaining,
+            FuzzyTimeLevel? fuzzyLevel,
           })
         >(
           context: context,
@@ -289,6 +299,39 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                       hintText: timeValue.localizedDisplayLabel(l10n),
                     ),
                   ),
+                  if (timeValue.valueType == ValueType.fuzzyTime) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.labelFuzzyTimePrecision,
+                      style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(ctx).colorScheme.primary,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    Slider(
+                      value: selectedFuzzyLevel.index.toDouble(),
+                      max: (FuzzyTimeLevel.values.length - 1).toDouble(),
+                      divisions: FuzzyTimeLevel.values.length - 1,
+                      onChanged: (position) => setDialogState(
+                        () => selectedFuzzyLevel =
+                            FuzzyTimeLevel.values[position.round()],
+                      ),
+                    ),
+                    // Name and an example at the current time, so that the
+                    // steps of the slider speak for themselves.
+                    Row(
+                      children: [
+                        Text(
+                          '${fuzzyLevelName(selectedFuzzyLevel, l10n)}: ',
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        Text(
+                          '${fuzzyTimeText(quantizeFuzzyTime(fuzzyWallClock, selectedFuzzyLevel), selectedFuzzyLevel, l10n)}',
+                          style: const TextStyle(fontFamily: fontFamilyDefault),
+                        ),
+                      ],
+                    ),
+                  ],
                   if (isZoneDependent &&
                       hasDst &&
                       timeValue.zone is ZoneNamed) ...[
@@ -407,6 +450,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     showOptionalPart: null,
                     showDetails: null,
                     remaining: false,
+                    fuzzyLevel: null,
                   )),
                   child: Text(l10n.hintResetToDefaults),
                 ),
@@ -422,6 +466,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
                     showOptionalPart: selectedShowOptionalPart,
                     showDetails: selectedShowDetails,
                     remaining: selectedRemaining,
+                    fuzzyLevel: selectedFuzzyLevel,
                   )),
                   child: const Text('OK'),
                 ),
@@ -447,7 +492,8 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
         .withTimezoneClockChangeMode(newMode)
         .withShowOptionalPart(newShowOptionalPart)
         .withShowDetails(newShowDetails)
-        .withRemaining(result.reset ? false : result.remaining);
+        .withRemaining(result.reset ? false : result.remaining)
+        .withFuzzyLevel(result.reset ? null : result.fuzzyLevel);
     widget.onEntriesChanged(updated);
   }
 
@@ -799,6 +845,7 @@ class _ConfigurableTabState extends State<ConfigurableTab> {
             : TextValueContent(
                 line1: display.line1,
                 line2: display.line2,
+                equalLines: timeValue.valueType.showsTwoEqualLines,
                 dayQuarterColor: dayQuarterColor,
               ),
         actionSlots: _editActionSlots(context, timeValue, id, editIndex, l10n),

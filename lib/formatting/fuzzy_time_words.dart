@@ -82,6 +82,16 @@ int _nextDialHour(int hour) => hour % 12 + 1;
         hour: _nextDialHour(cell.hour),
       );
 
+String fuzzyLevelName(FuzzyTimeLevel level, AppLocalizations l10n) =>
+    switch (level) {
+      FuzzyTimeLevel.dayOrNight => l10n.fuzzyLevelDayOrNight,
+      FuzzyTimeLevel.partOfDay => l10n.fuzzyLevelPartOfDay,
+      FuzzyTimeLevel.earlyOrLate => l10n.fuzzyLevelEarlyOrLate,
+      FuzzyTimeLevel.quarterHour => l10n.fuzzyLevelQuarterHour,
+      FuzzyTimeLevel.fiveMinutes => l10n.fuzzyLevelFiveMinutes,
+      FuzzyTimeLevel.minute => l10n.fuzzyLevelMinute,
+    };
+
 // ── German ─────────────────────────────────────────────────────────────────
 
 List<String> _germanClockSegments(

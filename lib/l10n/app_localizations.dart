@@ -770,6 +770,12 @@ abstract class AppLocalizations {
   /// **'The detail line below the value line can show either the time zone display (abbreviation and/or UTC offset), or a notice within 7 days before a clock change. The time zone display can be configured globally (a particular format, or hidden). It can also be hidden for this value only. The clock change notice is shown regardless.'**
   String get infoOptionDetailsZone;
 
+  /// No description provided for @infoOptionFuzzyLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'The imprecision level can be set for each value in edit mode (default: *Five minutes*). At 14:27:\n*Day or night*: `day`\n*Part of day*: `afternoon`\n*Early or late*: `early afternoon`\n*Quarter hour*: `half past two`\n*Five minutes*: `twenty-five past two`\n*Minute*: `twenty-seven minutes past two`'**
+  String get infoOptionFuzzyLevel;
+
   /// No description provided for @infoOptionRemaining.
   ///
   /// In en, this message translates to:
@@ -833,31 +839,31 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextAnalogClock12h.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone as an analog clock with a 12-hour face.\nThe hour hand turns twice a day; from noon on, \"+12\" appears below the 12.'**
+  /// **'The current time in the selected time zone as an analog clock with a 12-hour face.\nThe hour hand turns twice a day; from noon on, \"+12\" appears below the 12.'**
   String get infoTextAnalogClock12h;
 
   /// No description provided for @infoTextAnalogClock24h.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone as an analog clock with a 24-hour face.\nThe hour hand turns once a day. Minutes and seconds are read on the outer scale, hours on the inner one.'**
+  /// **'The current time in the selected time zone as an analog clock with a 24-hour face.\nThe hour hand turns once a day. Minutes and seconds are read on the outer scale, hours on the inner one.'**
   String get infoTextAnalogClock24h;
 
   /// No description provided for @infoTextBinaryClockBcd.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles.\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.'**
+  /// **'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each decimal digit in binary (BCD, binary-coded decimal) in its own column of circles.\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a digit is the sum of its lit circles. Tens digits need 2 or 3 bits, units digits 4.'**
   String get infoTextBinaryClockBcd;
 
   /// No description provided for @infoTextBinaryClockColumns.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column of circles (5 bits for hours, 6 for minutes and seconds).\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.'**
+  /// **'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each as one binary number in its own column of circles (5 bits for hours, 6 for minutes and seconds).\nLit circles stand for `1`, unlit circles for `0`. The bottom circle is worth 2^0 = 1, above it 2^1 = 2, 2^2 = 4 etc.; a number is the sum of its lit circles.'**
   String get infoTextBinaryClockColumns;
 
   /// No description provided for @infoTextBinaryClockString.
   ///
   /// In en, this message translates to:
-  /// **'Hours, minutes and seconds of the selected timezone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: `10110:110000:010111` is 22:48:23.'**
+  /// **'Hours, minutes and seconds of the selected time zone as on a wall clock (24 hours of 60 minutes of 60 seconds), each written as a binary number with 5, 6 and 6 digits.\nThe rightmost digit of a number is worth 2^0 = 1, to its left 2^1 = 2, 2^2 = 4 etc. Example: `10110:110000:010111` is 22:48:23.'**
   String get infoTextBinaryClockString;
 
   /// No description provided for @infoTextCcsdsJulianDate.
@@ -875,31 +881,31 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextDate.
   ///
   /// In en, this message translates to:
-  /// **'The current calendar date in the selected timezone.'**
+  /// **'The current calendar date in the selected time zone.'**
   String get infoTextDate;
 
   /// No description provided for @infoTextDateTime.
   ///
   /// In en, this message translates to:
-  /// **'The current date and time in the selected timezone, combined in one value.\nUseful e.g. for world clock tabs and copying a complete timestamp to the clipboard.'**
+  /// **'The current date and time in the selected time zone, combined in one value.\nUseful e.g. for world clock tabs and copying a complete timestamp to the clipboard.'**
   String get infoTextDateTime;
 
   /// No description provided for @infoTextDayMinute.
   ///
   /// In en, this message translates to:
-  /// **'Minutes elapsed since midnight in the selected timezone, from `0` to `1,439`.\nOn a day with a clock change the last minute is `1,379` or `1,499` (Lord Howe: `1,409` or `1,469`; Troll: `1,319` or `1,559`).'**
+  /// **'Minutes elapsed since midnight in the selected time zone, from `0` to `1,439`.\nOn a day with a clock change the last minute is `1,379` or `1,499` (Lord Howe: `1,409` or `1,469`; Troll: `1,319` or `1,559`).'**
   String get infoTextDayMinute;
 
   /// No description provided for @infoTextDayPercent.
   ///
   /// In en, this message translates to:
-  /// **'Percentage of the day elapsed in the selected timezone, from `0` to just under `100`.\nIt relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
+  /// **'Percentage of the day elapsed in the selected time zone, from `0` to just under `100`.\nIt relates to the real length of the day: on a day with a clock change that is 23 or 25 hours (Lord Howe: 23.5 or 24.5; Troll: 22 or 26), not 24.'**
   String get infoTextDayPercent;
 
   /// No description provided for @infoTextDaySecond.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).'**
+  /// **'Seconds elapsed since midnight in the selected time zone, from `0` to `86,399`.\nOn a day with a clock change the last second is `82,799` or `89,999` (Lord Howe: `84,599` or `88,199`; Troll: `79,199` or `93,599`).'**
   String get infoTextDaySecond;
 
   /// No description provided for @infoTextDecimalTime.
@@ -923,7 +929,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextFuzzyTime.
   ///
   /// In en, this message translates to:
-  /// **''**
+  /// **'The current time in the selected time zone the way people say it, deliberately imprecise: from just `day` or `night` to `twenty-seven minutes past two`.\nIt always uses the 12-hour dial, whatever the time format, and shows no seconds. Noon and midnight are both `twelve` unless a part of the day is shown. Parts of the day have fixed boundaries, the same in every language: daytime is 06:00 to 22:00.'**
   String get infoTextFuzzyTime;
 
   /// No description provided for @infoTextGmst.
@@ -941,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextHexadecimalTime.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from `0_00_00` to `1_51_7F` on a normal day.\nA day with a clock change ends earlier or later.'**
+  /// **'Seconds elapsed since midnight in the selected time zone, shown in base 16 (hexadecimal) and grouped in pairs from the right: from `0_00_00` to `1_51_7F` on a normal day.\nA day with a clock change ends earlier or later.'**
   String get infoTextHexadecimalTime;
 
   /// No description provided for @infoTextJulianDate.
@@ -977,7 +983,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextOctalTime.
   ///
   /// In en, this message translates to:
-  /// **'Seconds elapsed since midnight in the selected timezone, shown in base 8 (octal) with six digits: from `000000` to `250577` on a normal day.\nA day with a clock change ends earlier or later.'**
+  /// **'Seconds elapsed since midnight in the selected time zone, shown in base 8 (octal) with six digits: from `000000` to `250577` on a normal day.\nA day with a clock change ends earlier or later.'**
   String get infoTextOctalTime;
 
   /// No description provided for @infoTextReducedJulianDate.
@@ -989,13 +995,13 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextRomanNumeralsTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone, shown in Roman numerals.\nRoman numerals have no zero, so, as medieval scholars did, `N` for *nulla* (Latin for \'none\') stands in for it.'**
+  /// **'The current time in the selected time zone, shown in Roman numerals.\nRoman numerals have no zero, so, as medieval scholars did, `N` for *nulla* (Latin for \'none\') stands in for it.'**
   String get infoTextRomanNumeralsTime;
 
   /// No description provided for @infoTextSevenSegmentClock.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone in alarm clock design.'**
+  /// **'The current time in the selected time zone in alarm clock design.'**
   String get infoTextSevenSegmentClock;
 
   /// No description provided for @infoTextSwatchBeats.
@@ -1013,7 +1019,7 @@ abstract class AppLocalizations {
   /// No description provided for @infoTextTime.
   ///
   /// In en, this message translates to:
-  /// **'The current time in the selected timezone.'**
+  /// **'The current time in the selected time zone.'**
   String get infoTextTime;
 
   /// No description provided for @infoTextUnixSeconds.
@@ -1057,6 +1063,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'tomorrow'**
   String get labelDstChangeTomorrow;
+
+  /// No description provided for @labelFuzzyTimePrecision.
+  ///
+  /// In en, this message translates to:
+  /// **'Imprecision'**
+  String get labelFuzzyTimePrecision;
 
   /// No description provided for @labelHours.
   ///
@@ -1175,7 +1187,7 @@ abstract class AppLocalizations {
   /// No description provided for @messageDuplicateValue.
   ///
   /// In en, this message translates to:
-  /// **'\"{label}\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode and remaining time of the day make values different; label, seconds and details line do not.'**
+  /// **'\"{label}\" is shown twice. Change or remove one of the two values to finish editing. Clock change mode, remaining time of the day and precision of fuzzy time make values different; label, seconds and details line do not.'**
   String messageDuplicateValue(String label);
 
   /// No description provided for @messageEmptyTab.

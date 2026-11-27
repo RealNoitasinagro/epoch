@@ -401,6 +401,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Detailzeile unter der Wertzeile kann entweder Zeitzonenangaben (Kürzel und/oder UTC-Versatz) anzeigen, oder einen Hinweis innerhalb von 7 Tagen vor einer Zeitumstellung. Die Zeitzonenangaben können global konfiguriert (ein bestimmtes Format, oder „ausgeblendet“ eingestellt) werden. Sie können auch einzeln für diesen Wert ausgeblendet werden. Der Zeitumstellungshinweis erscheint in jedem Fall.';
 
   @override
+  String get infoOptionFuzzyLevel =>
+      'Die Ungenauigkeitsstufe lässt sich für jeden Wert im Edit-Modus einstellen (Standard: *Fünf Minuten*). Um 14:27 Uhr:\n*Tag oder Nacht*: `Tag`\n*Tagesabschnitt*: `Nachmittag`\n*Früh oder spät*: `früher Nachmittag`\n*Viertelstunde*: `halb drei`\n*Fünf Minuten*: `fünf vor halb drei`\n*Minute*: `siebenundzwanzig Minuten nach zwei`';
+
+  @override
   String get infoOptionRemaining =>
       'Dieser Werttyp kann anstelle der verstrichenen Zeit anzeigen, was bis zur nächsten Mitternacht seiner Zeitzone noch übrig ist (Edit-Modus: „Rest des Tages anzeigen“).';
 
@@ -501,7 +505,8 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dubliner Julianisches Datum (DJD) = JD − 2.415.020 (Epoche: `1899-12-31 12:00:00 UT`).\n1955 von der *Internationalen Astronomischen Union (IAU)* auf ihrer Tagung in Dublin als praktische Tageszählung für astronomische Berechnungen definiert.';
 
   @override
-  String get infoTextFuzzyTime => '';
+  String get infoTextFuzzyTime =>
+      'Die aktuelle Uhrzeit in der gewählten Zeitzone so, wie man sie sagt, absichtlich ungenau: von nur `Tag` oder `Nacht` bis `siebenundzwanzig Minuten nach zwei`.\nSie nutzt immer das 12-Stunden-Ziffernblatt, unabhängig vom Zeitformat, und zeigt keine Sekunden. Mittag und Mitternacht sind beide `zwölf`, solange kein Tagesabschnitt angezeigt wird. Die Tagesabschnitte haben feste Grenzen, in allen Sprachen dieselben: Tag ist von 06:00 bis 22:00 Uhr.';
 
   @override
   String get infoTextGmst =>
@@ -597,6 +602,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelDstChangeTomorrow => 'morgen';
 
   @override
+  String get labelFuzzyTimePrecision => 'Ungenauigkeit';
+
+  @override
   String get labelHours => 'Std';
 
   @override
@@ -657,7 +665,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String messageDuplicateValue(String label) {
-    return '„$label“ wird zweimal angezeigt. Ändere oder entferne einen der beiden Werte, um die Bearbeitung zu beenden. Sommerzeit-Modus und Tagesrestzeit machen Werte verschieden; Bezeichnung, Sekunden und Detailzeile nicht.';
+    return '„$label“ wird zweimal angezeigt. Ändere oder entferne einen der beiden Werte, um die Bearbeitung zu beenden. Sommerzeit-Modus, Rest des Tages und Ungenauigkeitsstufe der Fuzzy Time machen Werte verschieden, Bezeichnung, Sekunden und Detailzeile nicht.';
   }
 
   @override

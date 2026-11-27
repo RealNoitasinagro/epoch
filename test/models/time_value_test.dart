@@ -348,4 +348,8 @@ void main() {
       ValueType.lmst,
     });
   });
+
+  test('only fuzzy time shows two equal lines', () {
+    expect(ValueType.values.where((t) => t.showsTwoEqualLines), [ValueType.fuzzyTime]);
+  });
 }

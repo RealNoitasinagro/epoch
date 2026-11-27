@@ -1,3 +1,5 @@
+import '../time/fuzzy_time.dart';
+
 /// For time zones with daylight saving time: automatic clock changes, or one
 /// pinned value.
 enum TimezoneClockChangeMode { auto, forceDst, forceStandard }
@@ -12,6 +14,9 @@ class NewValue<T> {
 /// What the user can set for a single value, apart from its type and zone.
 /// Null means "the global setting applies" (not for the label and the mode).
 class ValueOptions {
+  static final _dstSuffix = RegExp(r'\|dst:([^|]*)$');
+  static final _fuzzySuffix = RegExp(r'\|fz:([A-Za-z]*)$');
+
   final String? customLabel;
   final TimezoneClockChangeMode timezoneClockChangeMode;
 
@@ -26,12 +31,18 @@ class ValueOptions {
   /// see [ValueTypeProps.supportsRemaining].
   final bool remaining;
 
+  /// Null: the default level ([kDefaultFuzzyTimeLevel]). Never holds the
+  /// default itself, so that "not set" and "explicitly the default" are one
+  /// and the same value (see [identitySuffix]).
+  final FuzzyTimeLevel? fuzzyLevel;
+
   const ValueOptions({
     this.customLabel,
     this.timezoneClockChangeMode = TimezoneClockChangeMode.auto,
     this.showOptionalPart,
     this.showDetails,
     this.remaining = false,
+    this.fuzzyLevel,
   });
 
   static const none = ValueOptions();
@@ -42,6 +53,7 @@ class ValueOptions {
     NewValue<bool>? showOptionalPart,
     NewValue<bool>? showDetails,
     bool? remaining,
+    NewValue<FuzzyTimeLevel?>? fuzzyLevel,
   }) => ValueOptions(
     customLabel: customLabel != null ? customLabel.value : this.customLabel,
     timezoneClockChangeMode:
@@ -51,6 +63,9 @@ class ValueOptions {
         : this.showOptionalPart,
     showDetails: showDetails != null ? showDetails.value : this.showDetails,
     remaining: remaining ?? this.remaining,
+    fuzzyLevel: fuzzyLevel == null
+        ? this.fuzzyLevel
+        : _unlessDefault(fuzzyLevel.value),
   );
 
   /// What makes values of the same type and zone different values, so that
@@ -62,8 +77,18 @@ class ValueOptions {
       TimezoneClockChangeMode.forceDst => '/dst',
       TimezoneClockChangeMode.forceStandard => '/std',
     };
-    return remaining ? '$modeSuffix/rem' : modeSuffix;
+    final levelSuffix = fuzzyLevel == null ? '' : '/fz:${fuzzyLevel!.name}';
+    return '$modeSuffix${remaining ? '/rem' : ''}$levelSuffix';
   }
+
+  FuzzyTimeLevel get effectiveFuzzyLevel =>
+      fuzzyLevel ?? kDefaultFuzzyTimeLevel;
+
+  static String _withoutSuffix(String text, String suffix) =>
+      text.substring(0, text.length - suffix.length);
+
+  static FuzzyTimeLevel? _unlessDefault(FuzzyTimeLevel? level) =>
+      level == kDefaultFuzzyTimeLevel ? null : level;
 
   /// [baseKey] ("valueType/zone") with the options behind it: label, clock
   /// change mode, flags. Everything that is not set is left out.
@@ -75,9 +100,8 @@ class ValueOptions {
     if (showOptionalPart != null) showOptionalPart! ? '|sec' : '|nosec',
     if (showDetails != null) showDetails! ? '|det' : '|nodet',
     if (remaining) '|rem',
+    if (fuzzyLevel != null) '|fz:${fuzzyLevel!.name}',
   ].join();
-
-  static final _dstSuffix = RegExp(r'\|dst:([^|]*)$');
 
   /// Splits [text] into "valueType/zone" and the options behind it. The
   /// suffixes are taken off the end, in any order, as long as one is there;
@@ -91,6 +115,7 @@ class ValueOptions {
     bool? showOptionalPart;
     bool? showDetails;
     bool remaining = false;
+    FuzzyTimeLevel? fuzzyLevel;
 
     while (true) {
       final dstMatch = _dstSuffix.firstMatch(rest);
@@ -117,6 +142,11 @@ class ValueOptions {
       } else if (rest.endsWith('|rem')) {
         remaining = true;
         rest = _withoutSuffix(rest, '|rem');
+      } else if (_fuzzySuffix.firstMatch(rest) case final match?) {
+        fuzzyLevel = FuzzyTimeLevel.values
+            .where((level) => level.name == match.group(1))
+            .firstOrNull;
+        rest = rest.substring(0, match.start);
       } else {
         break;
       }
@@ -133,10 +163,8 @@ class ValueOptions {
         showOptionalPart: showOptionalPart,
         showDetails: showDetails,
         remaining: remaining,
+        fuzzyLevel: _unlessDefault(fuzzyLevel),
       ),
     );
   }
-
-  static String _withoutSuffix(String text, String suffix) =>
-      text.substring(0, text.length - suffix.length);
 }

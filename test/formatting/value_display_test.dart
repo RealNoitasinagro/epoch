@@ -4,6 +4,7 @@ import 'package:epoch/formatting/value_format_settings.dart';
 import 'package:epoch/l10n/app_localizations.dart';
 import 'package:epoch/models/time_value.dart';
 import 'package:epoch/settings/app_settings.dart';
+import 'package:epoch/time/fuzzy_time.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest_all.dart' as tzl;
@@ -312,6 +313,36 @@ void main() {
           reason: valueType.name,
         );
       }
+    });
+  });
+
+  group('computeDisplay: fuzzy time', () {
+    final german = lookupAppLocalizations(const Locale('de'));
+    final english = lookupAppLocalizations(const Locale('en'));
+    final afternoon = DateTime.utc(2026, 6, 15, 14, 27);
+    const fuzzy = TimeValue(valueType: ValueType.fuzzyTime, zone: ZoneUtc());
+    const minute = TimeValue(
+      valueType: ValueType.fuzzyTime,
+      zone: ZoneUtc(),
+      options: ValueOptions(fuzzyLevel: FuzzyTimeLevel.minute),
+    );
+
+    test('the default level fits in one line, without a zone line', () {
+      final display = computeDisplay(fuzzy, afternoon, 'de', german);
+      expect(display, (line1: 'fünf vor halb drei', line2: ''));
+      expect(computeDisplay(fuzzy, afternoon, 'en', english).line1, 'twenty-five past two');
+    });
+
+    test('the minute level is split into amount and hour', () {
+      final display = computeDisplay(minute, afternoon, 'de', german);
+      expect(display, (line1: 'siebenundzwanzig Minuten', line2: 'nach zwei'));
+      expect(computeClipboardDisplay(minute, display), 'siebenundzwanzig Minuten nach zwei');
+    });
+
+    test('a clock change notice never replaces a line', () {
+      const berlin = TimeValue(valueType: ValueType.fuzzyTime, zone: ZoneNamed('Europe/Berlin'));
+      final display = computeDisplay(berlin, DateTime.utc(2027, 3, 25, 12), 'en', english);
+      expect(display.line2, isEmpty);
     });
   });
 }

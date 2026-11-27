@@ -86,4 +86,8 @@ void main() {
       isNot(contains(l10n.infoLeapSeconds)),
     );
   });
+
+  test('fuzzy time explains its precision levels', () {
+    expect(paragraphsOf(ValueType.fuzzyTime), contains(l10n.infoOptionFuzzyLevel));
+  });
 }

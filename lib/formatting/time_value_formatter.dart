@@ -1,12 +1,16 @@
+import 'dart:ui';
+
 import 'package:intl/intl.dart';
 import 'package:numerus/numerus.dart';
 import '../l10n/app_localizations.dart';
 import '../models/time_value.dart';
 import '../settings/app_settings.dart';
+import '../time/fuzzy_time.dart';
 import '../time/time_utils.dart';
 import '../time/zone_abbreviations.dart';
 import '../time/zone_rules.dart';
 import '../time/zoned_moment.dart';
+import 'fuzzy_time_words.dart';
 import 'pattern_tokens.dart';
 import 'time_pattern.dart';
 import 'time_value_texts.dart';
@@ -238,6 +242,10 @@ class TimeValueFormatter {
           wallClock,
           showSeconds: showOptionalPart,
         );
+      case ValueType.fuzzyTime:
+        final level = timeValue.options.effectiveFuzzyLevel;
+        final l10n = lookupAppLocalizations(Locale(locale.split('_').first));
+        return fuzzyTimeText(quantizeFuzzyTime(wallClock, level), level, l10n);
       case ValueType.sevenSegmentClock:
       case ValueType.analogClock12h:
       case ValueType.analogClock24h:

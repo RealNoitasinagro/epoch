@@ -96,9 +96,8 @@ ValueTypeFacts _factsOf(ValueType type) => switch (type) {
   ),
   ValueType.fuzzyTime => _facts(
     timescale: _civilScale,
-    reference: _localMidnight,
-    unit: 'misc', // TODO
-    resolution: 'misc', // TODO
+    unit: 'words, 6 levels (day or night to minute)',
+    resolution: '5 min (default), 1 min at best',
   ),
   // Technical
   ValueType.unixSeconds => _facts(

@@ -407,8 +407,9 @@ class _FocusScreenState extends State<FocusScreen> {
     final tabDisplay = _display(withDetails: false);
     final fullDisplay = _display(withDetails: true);
     _showLine2 ??= tabDisplay.line2.isNotEmpty;
-    final hasLine2 =
-        fullDisplay.line2.isNotEmpty && !widget.timeValue.valueType.isGraphical;
+    bool graphical = widget.timeValue.valueType.isGraphical;
+    final equalLines = widget.timeValue.valueType.showsTwoEqualLines;
+    final hasLine2 = !equalLines && fullDisplay.line2.isNotEmpty && !graphical;
     final optionalPart = widget.timeValue.valueType.optionalPart;
 
     if (_brightness == null) {
@@ -738,6 +739,7 @@ class _FocusScreenState extends State<FocusScreen> {
 
   Widget _buildValueContent(bool isLandscape) {
     final app = EpochApp.of(context);
+    final equalLines = widget.timeValue.valueType.showsTwoEqualLines;
 
     // Horizontal padding: make room for side controls in landscape:
     final hPadding = _horizontalPadding(isLandscape);
@@ -790,15 +792,15 @@ class _FocusScreenState extends State<FocusScreen> {
               ),
               maxLines: 1,
             ),
-            if (_showLine2 == true && display.line2.isNotEmpty) ...[
+            if ((equalLines || _showLine2 == true) && display.line2.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
                 display.line2,
                 style: TextStyle(
-                  color: _textColor.withAlpha(180),
+                  color: equalLines ? _textColor : _textColor.withAlpha(180),
                   fontFamily: fontFamilyDefault,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 80,
+                  fontWeight: equalLines ? FontWeight.w500 : FontWeight.w400,
+                  fontSize: equalLines ? 200 : 80,
                 ),
                 maxLines: 1,
               ),
